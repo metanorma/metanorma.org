@@ -1,0 +1,114 @@
+= Operating Metanorma Open Project Site
+
+== Structure
+
+The site is implemented as a https://jekyllrb.com[Jekyll] site.
+
+It has a `_config.yml` for specifying the directory structure, metadata, build
+defaults, etc.
+
+=== Inputs
+
+All source files are inside the `_jekyll/` directory, as specified in
+`_config.yml`.
+
+=== Outputs
+
+All output files live inside the `_site/` directory, and its content have been
+`gitignore`-d.
+
+
+== Usage
+
+=== Preparation
+
+To begin developing,
+
+[source,sh]
+----
+make prep
+----
+
+which would install the necessary Ruby gems for you.
+
+=== Auto-build
+
+To make it watch for file changes and build automatically (which watches only
+the files specified in the above Inputs section), run:
+
+[source,sh]
+----
+make watch
+----
+
+If you want to be sure all outputs are cleaned prior to building, run:
+
+[source,sh]
+----
+make clean-watch
+----
+
+=== Just build
+
+The non-watching equivalents for the above are simply:
+
+[source,sh]
+----
+make build
+----
+
+[source,sh]
+----
+make clean-build
+----
+
+
+== Deployment
+
+This section is only for deployment.
+
+=== Configuration
+
+Configure the hostname and region in the `ro-site.rc` file as you know it.
+
+[source,sh]
+----
+cp ro-site.rc.template ro-site.rc
+vi ro-site.rc
+----
+
+=== Uploading to S3
+
+If you have access to the bucket, run this.
+
+[source,sh]
+----
+export AWS_PROFILE=myprofile
+source ro-site.rc
+make upload
+----
+
+=== Clear CloudFront caching
+
+The sites are accessed via CloudFront. If you're seeing
+stale data after `make upload`, most likely the CloudFront
+cache needs to be invalidated.
+
+Your AWS account must be authorized to invalidate the CloudFront
+cache for this distribution.
+
+[source,sh]
+----
+export AWS_PROFILE=myprofile
+source ro-site.rc
+make clear-cf
+----
+
+
+== Workflow
+
+. Ensure tests pass
+. Create your feature branch (`git checkout -b my-new-feature`)
+. Commit your changes (`git commit -am 'Add some feature'`)
+. Push to the branch (`git push origin my-new-feature`)
+. Create new Pull Request
