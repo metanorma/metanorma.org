@@ -4,6 +4,7 @@ description: IETF specification document for AsciiRFC.
 ietf_datatracker_id: draft-ribose-asciirfc
 ietf_datatracker_ver: "08"
 source_url: https://github.com/riboseinc/rfc-asciidoc-rfc
+tags: [Draft]
 ---
 
 This document describes an AsciiDoc syntax extension called AsciiRFC,
