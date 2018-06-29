@@ -12,42 +12,6 @@ pitch: >-
   <br>
   It will appear on home page hero unit.
 
-includes_dir: .
-
-collections:
-  software:
-    output: true
-    permalink: /:name/
-  specs:
-    output: true
-    permalink: /:name/
-  posts:
-    output: true
-    permalink: /blog/:month-:day-:year/:title/
-  pages:
-    output: true
-    permalink: /:name/
-
-defaults:
-  - scope:
-      path: ""
-    values:
-      layout: default
-  - scope:
-      path: _posts
-      type: posts
-    values:
-      layout: post
-  - scope:
-      path: _software
-      type: software
-    values:
-      layout: product
-  - scope:
-      path: _specs
-      type: specs
-    values:
-      layout: spec
 
 authors:
   - name: Ribose Inc.
@@ -55,6 +19,8 @@ authors:
 
 contact_email: open.source@ribose.com
 
-# Build settings
-markdown: kramdown
 theme: jekyll-theme-open-project
+
+get_started_url: /specs/draft-ribose-asciirfc/
+
+permalink: /blog/:month-:day-:year/:title/
