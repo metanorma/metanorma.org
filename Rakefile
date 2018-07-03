@@ -1,3 +1,5 @@
+require 'html-proofer'
+
 $sourceDir = "./source"
 $outputDir = "./output"
 $testOpts = {
