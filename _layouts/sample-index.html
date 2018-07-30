@@ -1,0 +1,11 @@
+---
+layout: default
+---
+
+<section class="items">
+  {% for spec in site.samples %}
+    {% if spec.is_metanorma_sample %}
+      {% include software-card-hub.html item=spec item_type='specs' %}
+    {% endif %}
+  {% endfor %}
+</section>

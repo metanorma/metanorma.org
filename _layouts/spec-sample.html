@@ -1,0 +1,84 @@
+---
+layout: default
+---
+
+<section class="documentation">
+  {% assign product_base_url = page.url | split: "/" | slice: 0, 3 | join: "/" | append: "/" %}
+  {% assign docs_base_url = product_base_url | append: "docs/" %} 
+  {% assign nav = item_docs | where_exp: "item", "item.path contains 'docs/navigation'" | first %}
+  {% assign item_data = page %}
+
+  <nav class="nav-sidebar">
+    <header class="sidebar-header">
+      <h3 class="title">
+        <a href="{{ "samples/" | relative_url }}">
+          &larr;
+          Samples
+        </a>
+      </h3>
+    </header>
+
+    <section class="external-links">
+      <ul class="section-items">
+        {% if item_data.source_url %}
+          <li class="item">
+            <a href="{{ item_data.source_url }}">Source Markup</a> {% endif %}
+        {% if item_data.rfc_id %}
+          <li class="item">
+            <a href="http://ietf.org/html/rfc{{ item_data.rfc_id }}">IETF RFC {{ item_data.rfc_id }}</a> {% endif %}
+        {% if item_data.ietf_datatracker_id %}
+          <li class="item">
+            <a href="https://datatracker.ietf.org/doc/{{ item_data.ietf_datatracker_id }}{% if page.ietf_datatracker_ver %}-{{ page.ietf_datatracker_ver }}{% endif %}">IETF document</a> {% endif %}
+      </ul>
+    </section>
+
+    {% for section in nav.sections %}
+      <section>
+        <h4 class="section-title">{{ section.name }}</h4>
+        <ul class="section-items">
+          {% for item in section.items %}
+            {% assign link = docs_base_url | append: item | append: "/" %}
+            {% assign linked_page = include.items | where_exp: "item", "item.url contains link" | first %}
+
+            {% if page.url != link and linked_page %}
+              <li class="item">
+                <a href="{{ link | relative_url }}">
+                  {{ linked_page.title }}
+                </a>
+            {% else %}
+              {% if page.url == link %}
+                <li class="item selected">
+                  <span>
+                    {{ linked_page.title }}
+                  </span>
+              {% else %}
+                <li class="item disabled">
+                  <span>
+                    {{ item }}
+                  </span>
+              {% endif %}
+            {% endif %}
+            {% assign link = "" %}
+          {% endfor %}
+        </ul>
+      </section>
+    {% endfor %}
+  </nav>
+
+  <article>
+    <header>
+      <div class="title" role="presentation">
+        <h1 class="text">{{ page.title }}</h1>
+      </div>
+
+      <div role="presentation">
+        <h3 class="lead">{{ page.description }}</h3>
+      </div>
+    </header>
+
+    <div class="body" role="presentation">
+      {{ content }}
+    </div>
+
+  </article>
+</section>

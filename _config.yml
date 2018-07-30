@@ -38,3 +38,38 @@ home_calls_to_action:
   - { url: "/samples/", title: "Samples" }
 
 permalink: /blog/:month-:day-:year/:title/
+
+collections:
+  samples:
+    output: true
+    permalink: /samples/:path/
+
+defaults:
+  - scope:
+      path: _samples
+      type: samples
+    values:
+      layout: spec-sample
+
+  # Theme defaults.
+  # MUST be duplicated from theme’s _config.yml
+  # (does not get inherited, unlike the collections hash)
+  - scope:
+      path: ""
+    values:
+      layout: default
+  - scope:
+      path: _posts
+      type: posts
+    values:
+      layout: post
+  - scope:
+      path: _software
+      type: software
+    values:
+      layout: product
+  - scope:
+      path: _specs
+      type: specs
+    values:
+      layout: spec
