@@ -21,4 +21,4 @@ edit XML, including references.
 
 This document itself was written and generated into RFC XML v2
 (RFC7749) and RFC XML v3 (RFC7991) directly through asciidoctor-rfc,
-an AsciiRFC generator.ETF document for Metanorma AsciiRFC spec.
+an AsciiRFC generator.
