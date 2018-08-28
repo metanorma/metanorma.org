@@ -20,6 +20,7 @@ gem "jekyll-theme-open-project", "~> 1.0.6"
 # If you have any plugins, put them here!
 group :jekyll_plugins do
   gem "jekyll-seo-tag"
+  gem "jekyll-sitemap"
   gem "jekyll-data"
   gem "jekyll-asciidoc"
   gem "git"
