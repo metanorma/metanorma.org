@@ -21,6 +21,7 @@ gem "jekyll-theme-open-project", "~> 1.0.6"
 group :jekyll_plugins do
   gem "jekyll-seo-tag"
   gem "jekyll-data"
+  gem "jekyll-asciidoc"
   gem "git"
   gem "jekyll-theme-open-project-helpers", "~> 1.0.2"
 end
