@@ -6,4 +6,6 @@ tags: [Ruby, AsciiDoc]
 docs:
   git_repo_url: https://github.com/riboseinc/asciidoctor-rfc
   git_repo_subtree: docs
+
+feature_with_priority: 2
 ---
