@@ -1,0 +1,21 @@
+<script>
+  (function () {
+    var THEME_CSS_PATH_PREFIX = 'assets/css/';
+
+    function setTheme (themeName) {
+      document.getElementById('themeCSS').href = THEME_CSS_PATH_PREFIX + themeName + '.css';
+    }
+
+    document.addEventListener("keypress", function onEvent(event) {
+      if (event.key === "a") {
+        setTheme('theme-a');
+      } else if (event.key === "b") {
+        setTheme('theme-b');
+      } else if (event.key === "c") {
+        setTheme('theme-c');
+      } else if (event.key === "0") {
+        setTheme('style');
+      }
+    });
+  }());
+</script>
