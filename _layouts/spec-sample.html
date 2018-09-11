@@ -1,17 +1,46 @@
 ---
 layout: default
 ---
+{% assign product_base_url = page.url | split: "/" | slice: 0, 3 | join: "/" | append: "/" %}
+{% if page.url == product_base_url %}
+  {% assign is_docs_landing = true %}
+{% else %}
+  {% assign is_docs_landing = false %}
+{% endif %}
 
-<section class="documentation">
-  {% assign product_base_url = page.url | split: "/" | slice: 0, 3 | join: "/" | append: "/" %}
+<section class="documentation {% if is_docs_landing %}docs-landing{% endif %}">
   {% assign docs_base_url = product_base_url | append: "docs/" %} 
+  {% assign item_docs = include.items | where_exp: "item", "item.url contains docs_base_url" %}
   {% assign nav = item_docs | where_exp: "item", "item.path contains 'docs/navigation'" | first %}
   {% assign item_data = page %}
 
+  {% assign num_nav_sections = nav.sections | size %}
+
   <nav class="nav-sidebar">
-    <section class="external-links">
-      {% include item-external-links.html item_type='specs' item_data=item_data %}
-    </section>
+
+    {% if is_docs_landing == false %}
+      <header class="sidebar-header">
+        {% if include.item_type == 'software' %}
+          <div class="logo-container" role="presentation">
+            {% include software-symbol.html item_id=page.id %}
+          </div>
+          <h3 class="title">
+            <a href="{{ product_base_url | relative_url }}">{{ item_data.title }}</a>
+          </h3>
+        {% endif %}
+      </header>
+
+      <section class="external-links">
+        {% include item-external-links.html item_type='specs' item_data=item_data %}
+      </section>
+
+    {% elsif num_nav_sections > 0 %}
+      <header class="sidebar-header">
+        <h3 class="title">
+          Documentation
+        </h3>
+      </header>
+    {% endif %}
 
     {% for section in nav.sections %}
       <section>
@@ -51,6 +80,12 @@ layout: default
       <div class="title" role="presentation">
         <h1 class="text">{{ page.title }}</h1>
       </div>
+
+      {% if is_docs_landing %}
+        <div class="external-links">
+          {% include item-external-links.html item_type=include.item_type item_data=include.item_data %}
+        </div>
+      {% endif %}
 
       <div role="presentation">
         <h3 class="lead">{{ page.description }}</h3>
