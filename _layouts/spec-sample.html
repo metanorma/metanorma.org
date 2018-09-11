@@ -10,17 +10,7 @@ layout: default
 
   <nav class="nav-sidebar">
     <section class="external-links">
-      <ul class="section-items">
-        {% if item_data.source_url %}
-          <li class="item">
-            <a href="{{ item_data.source_url }}">Source Markup</a> {% endif %}
-        {% if item_data.rfc_id %}
-          <li class="item">
-            <a href="http://ietf.org/html/rfc{{ item_data.rfc_id }}">IETF RFC {{ item_data.rfc_id }}</a> {% endif %}
-        {% if item_data.ietf_datatracker_id %}
-          <li class="item">
-            <a href="https://datatracker.ietf.org/doc/{{ item_data.ietf_datatracker_id }}{% if page.ietf_datatracker_ver %}-{{ page.ietf_datatracker_ver }}{% endif %}">IETF document</a> {% endif %}
-      </ul>
+      {% include item-external-links.html item_type='specs' item_data=item_data %}
     </section>
 
     {% for section in nav.sections %}
