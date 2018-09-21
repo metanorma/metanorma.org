@@ -6,4 +6,6 @@ docs:
   git_repo_subtree: docs
 description: Metanorma processor for ISO standards.
 tags: [Ruby, AsciiDoc]
+
+feature_with_priority: 3
 ---
