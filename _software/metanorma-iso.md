@@ -7,5 +7,5 @@ docs:
 description: Metanorma processor for ISO standards.
 tags: [Ruby, AsciiDoc]
 
-feature_with_priority: 3
+feature_with_priority: 1
 ---
