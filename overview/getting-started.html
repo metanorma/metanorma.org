@@ -40,7 +40,58 @@ description: >-
       <li><span class="tbd">RSD</span>
     </ul>
 
-    <h2>Get the Metanorma toolchain</h2>
+    <h2>Installing the Metanorma toolchain</h2>
+
+    <h3>Docker setup</h3>
+
+    <ol>
+      <li>
+        Pull the container:
+        <pre><code
+          >docker pull ribose/metanorma</code></pre>
+      <li>
+        Specify the <code>:local-cache-only:</code> AsciiDoc attribute
+        in document header to speed up rendering
+      <li>
+        To render the document into HTML,
+        execute from within the directory containing the Metanorma document
+        (replacing <code>{my-document-file}</code> with your actual document’s filename):
+        <pre><code
+          >docker run -v "$(pwd)":/metanorma/ -w /metanorma ribose/metanorma metanorma -t iso -x html {my-document-file}</code></pre>
+    </ol>
+
+    <p>
+      See <a href="https://github.com/riboseinc/metanorma-docker">metanorma-docker</a> for more information
+      and some shortcuts, including a pre-made Makefile.
+    </p>
+
+    <h3>All-in-one macOS setup</h3>
+
+    <p>
+      Run the following for an automatic install
+      that would prepare a fresh system to work with Metanorma.
+    </p>
+
+    <p>
+      Note: it installs not just the Metanorma components but also the basics
+      such as Homebrew and Sublime Text.
+    </p>
+
+    <p>
+      This should take less than 15 minutes depending on your machine and Internet connection:
+    </p>
+
+    <pre><code
+      >bash <(curl -s https://raw.githubusercontent.com/riboseinc/metanorma-macos-setup/master/metanorma-setup)</code></pre>
+
+    <h3>Ubuntu Linux setup</h3>
+
+    <p>
+      See <a href="https://github.com/riboseinc/metanorma-linux-setup">metanorma-linux-setup</a>
+      for the recommended sequence of commands.
+    </p>
+
+    <h3>Installing individual components</h3>
 
     <ul>
       <li>
