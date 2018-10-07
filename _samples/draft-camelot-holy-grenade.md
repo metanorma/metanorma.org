@@ -1,8 +1,8 @@
 ---
 title: The Holy Hand Grenade of Antioch
 description: >-
-  IETF AsciiRFC sample document: Camelot.
-  Example of an Internet Draft authored with Metanorma
+  IETF sample document: Camelot.
+  Example of an Internet Draft authored with Metanorma-RFC
   and rendered in IETF-compliant way.
 ietf_datatracker_id: draft-camelot-holy-grenade
 ietf_datatracker_ver: "01"
@@ -10,9 +10,15 @@ source_url: https://github.com/riboseinc/rfc-camelot-holy-grenade
 is_metanorma_sample: true
 ---
 
-To view source markup that generates this document, and for instructions
-on how to create and build your own Internet Draft with AsciiRFC and Metanorma,
-see the linked GitHub repository.
+This is an example document authored with Metanorma-RFC.
+
+Below is a **rendered document**,
+automatically formatted in accordance with IETF requirements.
+(Note: given the layout is set in monospace font,
+it may not fit on narrower screens.)
+
+For the **source markup** that was written by a human
+and used as input to Metanorma, see the linked GitHub repository.
 
 ```
 {% raw %}
