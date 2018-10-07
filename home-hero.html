@@ -1,0 +1,14 @@
+<div class="text">
+  <h1 class="title">{{ site.tagline }}</h1>
+  <p class="desc">{{ site.pitch | safe }}</p>
+
+  <div class="cta">
+    {% assign ctas = site.home_calls_to_action | slice: 0, 2 %}
+
+    {% for link in ctas %}
+      <a class="button" href="{{ link.url | relative_url }}">
+        {{ link.title }}
+      </a>
+    {% endfor %}
+  </div>
+</div>
