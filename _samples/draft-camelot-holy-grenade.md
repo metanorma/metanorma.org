@@ -2,7 +2,7 @@
 title: The Holy Hand Grenade of Antioch
 description: >-
   IETF sample document: Camelot.
-  Example of an Internet Draft authored with Metanorma-RFC
+  Example of an Internet Draft authored with Asciidoctor-RFC
   and rendered in IETF-compliant way.
 ietf_datatracker_id: draft-camelot-holy-grenade
 ietf_datatracker_ver: "01"
