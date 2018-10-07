@@ -10,7 +10,7 @@ source_url: https://github.com/riboseinc/rfc-camelot-holy-grenade
 is_metanorma_sample: true
 ---
 
-This is an example document authored with Asciidoctor-RFC.
+This is an example document authored with [Asciidoctor-RFC](/software/asciidoctor-rfc/).
 
 Below is a **rendered document**,
 automatically formatted in accordance with IETF requirements.
