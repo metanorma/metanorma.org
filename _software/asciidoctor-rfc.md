@@ -9,3 +9,6 @@ docs:
 
 feature_with_priority: 2
 ---
+
+See also:
+[a sample of RFC document rendered with Asciidoctor-RFC](/samples/draft-camelot-holy-grenade/).
