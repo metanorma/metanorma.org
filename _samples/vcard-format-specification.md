@@ -1,0 +1,19 @@
+---
+title: vCard Format Specification
+description: >-
+  CalConnect sample document.
+  Example of a CalConnect Standard authored with Metanorma-CSD
+  and rendered in a compliant way.
+source_url: https://github.com/riboseinc/metanorma-csd/tree/master/spec/examples
+is_metanorma_sample: true
+---
+
+This is an example document authored with Metanorma-CSD: vCard format specification.
+
+For a **rendered document**,
+automatically formatted in accordance with CalConnect requirements,
+follow this link:
+[/vcard-format-specification-rendered/](/vcard-format-specification-rendered/).
+
+For the **source markup** that was written by a human
+and used as input to Metanorma, see the linked GitHub repository.
