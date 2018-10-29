@@ -75,7 +75,20 @@ see corresponding authoring documentation and document samples:
 
 == Installing the Metanorma toolchain
 
+=== General
+
+We strongly recommend the <<docker-setup>> due to the number of components
+involved in Metanorma.
+
+On the other hand, there are certain reasons (such as performance)
+that you may wish to setup the components on your machine.
+
+
+[[docker-setup]]
 === Docker setup
+
+This setup method works for all platforms that support the Docker container
+framework.
 
 . Pull the container: +
 [source,sh]
@@ -99,7 +112,7 @@ docker run -v "$(pwd)":/metanorma/ -w /metanorma ribose/metanorma metanorma -t i
 See https://github.com/riboseinc/metanorma-docker[metanorma-docker] for more information
 and some shortcuts, including a pre-made Makefile.
 
-=== All-in-one macOS setup
+=== macOS setup: all-in-one
 
 Run the following for an automatic install
 that would prepare a fresh system to work with Metanorma.
@@ -115,7 +128,7 @@ bash <(curl -s https://raw.githubusercontent.com/riboseinc/metanorma-macos-setup
 ----
 
 
-=== Ubuntu Linux setup
+=== Linux setup: Ubuntu
 
 Run the following for an automatic install via the https://github.com/riboseinc/metanorma-linux-setup[metanorma-linux-setup] scripts.
 
@@ -132,7 +145,7 @@ curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master
 NOTE: The first command has to be run via `sudo`.
 
 
-=== CentOS Linux setup
+=== Linux setup: CentOS
 
 Run the following for an automatic install via the https://github.com/riboseinc/metanorma-linux-setup[metanorma-linux-setup] scripts.
 
@@ -147,6 +160,10 @@ curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master
 ----
 
 NOTE: The first command has to be run via `sudo`.
+
+=== Windows setup
+
+Refer to the <<docker-setup>> method.
 
 
 === Installing individual components
