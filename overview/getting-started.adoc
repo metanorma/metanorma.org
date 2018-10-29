@@ -1,0 +1,158 @@
+---
+layout: page
+title: Get up and running
+description: >-
+  Get started with Metanorma: installation, samples, customization & usage tips.
+section-title: Getting started with Metanorma
+section-class: getting-started
+---
+
+== Introduction
+
+If you're considering
+*adopting Metanorma in your organization's standard & spec management workflows*,
+customizing one of the existing processors is a good starting point.
+
+For example, *Metanorma-ISO*:
+
+* Check out link:/software/metanorma-iso/[Metanorma-ISO docs]
+for customization tips
+
+* link:/overview/[Learn more] about Metanorma's features
+aiming to help organizations with management of standardization documents
+
+For *authoring documents compliant with the requirements of certain established standard bodies*,
+see corresponding authoring documentation and document samples:
+
+
+=== For standardization bodies
+
+[cols="h,a,a"]
+|===
+
+|ISO documents
+| link:/software/metanorma-iso/docs/guidance/[Quickstart]
+| link:https://github.com/riboseinc/isodoc-rice[ISO Rice document]
+
+|IETF RFC/Internet-Drafts
+| link:https://github.com/riboseinc/asciidoctor-rfc[Manual]
+| link:/samples/draft-camelot-holy-grenade/[Camelot]
+
+|CalConnect CSD
+| link:/software/metanorma-csd/docs/quickstart/[Quickstart]
+| [tbd]#Sample#
+
+|Cloud Security Alliance CSAND
+| link:https://github.com/riboseinc/metanorma-csd[Manual]
+| [tbd]#Sample#
+
+|UNECE Recommendations/Plenary
+| link:https://github.com/riboseinc/metanorma-unece[Manual]
+| [tbd]#Sample#
+
+|M3AAWG
+| link:https://github.com/riboseinc/metanorma-m3d[Manual]
+| [tbd]#Sample#
+
+|===
+
+
+=== For enterprises
+
+[cols="h,a,a"]
+|===
+
+| Mandatory Provident Fund Authority
+| link:https://github.com/riboseinc/metanorma-mpfd[Manual]
+| [tbd]#Sample#
+
+| Ribose RSD
+| link:https://github.com/riboseinc/metanorma-rsd[Manual]
+| [tbd]#Sample#
+
+|===
+
+
+== Installing the Metanorma toolchain
+
+=== Docker setup
+
+. Pull the container: +
+[source,sh]
+----
+docker pull ribose/metanorma
+----
+
+. Specify the `:local-cache-only:` AsciiDoc attribute
+in document header to speed up rendering
+
+. To render the document into HTML,
+execute from within the directory containing the Metanorma document
+(replacing `{my-document-file}` with your actual document's filename):
++
+[source,sh]
+----
+docker run -v "$(pwd)":/metanorma/ -w /metanorma ribose/metanorma metanorma -t iso -x html {my-document-file}
+----
+
+
+See https://github.com/riboseinc/metanorma-docker[metanorma-docker] for more information
+and some shortcuts, including a pre-made Makefile.
+
+=== All-in-one macOS setup
+
+Run the following for an automatic install
+that would prepare a fresh system to work with Metanorma.
+
+NOTE: This installs not just the Metanorma components but also prerequisites
+such as Homebrew and basic tools like Sublime Text.
+
+This should take less than 15 minutes depending on your machine and Internet connection:
+
+[source,sh]
+----
+bash <(curl -s https://raw.githubusercontent.com/riboseinc/metanorma-macos-setup/master/metanorma-setup)
+----
+
+
+=== Ubuntu Linux setup
+
+Run the following for an automatic install via the https://github.com/riboseinc/metanorma-linux-setup[metanorma-linux-setup] scripts.
+
+This should take less than 15 minutes depending on your machine and Internet connection:
+
+[source,sh]
+----
+# Prerequisites: "curl"
+# apt-get update && apt-get install -y curl
+sudo bash -c "curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master/ubuntu.sh | bash"
+curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master/install-gems.sh | bash
+----
+
+NOTE: The first command has to be run via `sudo`.
+
+
+=== CentOS Linux setup
+
+Run the following for an automatic install via the https://github.com/riboseinc/metanorma-linux-setup[metanorma-linux-setup] scripts.
+
+This should take less than 15 minutes depending on your machine and Internet connection:
+
+[source,sh]
+----
+# Prerequisites: "curl"
+# yum install -y curl
+sudo bash -c "curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master/centos.sh | bash"
+curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master/install-gems.sh | bash
+----
+
+NOTE: The first command has to be run via `sudo`.
+
+
+=== Installing individual components
+
+* link:/software/metanorma-cli/docs/installation[Installing Metanorma command-line tools]
+* link:/software/metanorma-iso/docs/quickstart/[Installing the Metanorma-based ISO processor]
+
+== [tbd]#Write your first standard#
+

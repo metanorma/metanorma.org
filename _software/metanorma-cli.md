@@ -7,3 +7,5 @@ docs:
   git_repo_subtree: docs
 tags: [Ruby, AsciiDoc]
 ---
+
+The command-line tool for running Metanorma.
