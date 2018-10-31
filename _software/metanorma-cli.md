@@ -5,7 +5,7 @@ description: Command-line tools for building Metanorma sources.
 docs:
   git_repo_url: https://github.com/strogonoff/metanorma-cli
   git_repo_subtree: docs
-tags: [Ruby, AsciiDoc]
+tags: [CLI_tools]
 ---
 
 The command-line tool for running Metanorma.
