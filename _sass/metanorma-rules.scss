@@ -114,12 +114,16 @@ body > .underlay > header {
   > .top-menu {
     font-size: 16px;
 
-    > * {
+    > :not(.search-widget) {
       font-weight: 700;
       border-radius: 16px;
       padding-left: 18px;
       padding-right: 18px;
       margin-right: 2px;
+    }
+    input[type=search] {
+      padding-left: 18px;
+      padding-right: 18px;
     }
     > .active {
       &:link, &:hover, &:visited {
