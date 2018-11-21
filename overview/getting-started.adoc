@@ -145,13 +145,26 @@ curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master
 
 === Windows setup
 
-Refer to the <<docker-setup>> method.
+Run this command in your `cmd.exe` or `PowerShell` to install
+the Metanorma Docker container and all prerequisites (see <<docker-setup>>):
+
+[source,sh]
+----
+bitsadmin /transfer get https://raw.githubusercontent.com/riboseinc/metanorma-windows-setup/master/install.bat %cd%\install.bat & .\install.bat
+----
+
+If you'd like to do one of the following instead,
+please refer to
+https://github.com/riboseinc/metanorma-windows-setup[metanorma-windows-setup]:
+
+* setup the Metanorma Docker container manually; or
+* setup the Metanorma toolchain directly on your Windows machine.
 
 
 === Installing individual components
 
-* link:/software/metanorma-cli/docs/installation[Installing Metanorma command-line tools]
-* link:/software/metanorma-iso/docs/quickstart/[Installing the Metanorma-based ISO processor]
+* link:/software/metanorma-cli/docs/installation[Install Metanorma command-line tools (CLI)]
+* link:/software/metanorma-iso/docs/quickstart/[Install the Metanorma-ISO processor]
 
 == [tbd]#Write your first standard#
 
