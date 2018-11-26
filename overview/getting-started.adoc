@@ -86,13 +86,13 @@ docker pull ribose/metanorma
 ----
 . Specify the `:local-cache-only:` AsciiDoc attribute
 in document header to speed up rendering
-. To render the document into HTML,
+. To render the document into HTML, Word and XML,
 execute from within the directory containing the Metanorma document
 (replacing `{my-document-file}` with your actual document's filename):
 +
 [source,sh]
 ----
-docker run -v "$(pwd)":/metanorma/ -w /metanorma ribose/metanorma metanorma -t iso -x html {my-document-file}
+docker run -v "$(pwd)":/metanorma/ -w /metanorma ribose/metanorma "metanorma -t iso -x html,doc,xml {my-document-file}"
 ----
 
 
