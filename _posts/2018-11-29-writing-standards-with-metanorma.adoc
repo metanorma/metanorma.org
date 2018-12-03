@@ -1,0 +1,247 @@
+---
+layout: post
+title:  "What Metanorma is for"
+date:   2018-11-29
+categories: about
+excerpt: >-
+    Why Metanorma? If you're in the business of writing standards
+    documents, you are in the business of writing some of the most
+    complicated documents there are. Here's a better alternative
+    than ... Microsoft Word.
+---
+= What Metanorma is for
+
+So. *Why Metanorma*?
+
+== Standardization documents are complex
+
+If you're in the business of writing standards documents, you are in
+the business of writing some of the most complicated documents there
+are.
+
+* You are working on a document that is being *edited by committee*.
+
+* You need *formal accountability and tracking* for each of the edits
+that committee is making to the document.
+
+* You need to deal with *references and bibliographies*.
+
+* You need to deal with *lots of headings and subheadings*.
+
+* You need to deal with *lots of numbered tables and figures and
+examples and notes*.
+
+* You need to deal with *crossreferences* to lots of headings and
+subheadings. *And tables and figures and examples and notes*.
+
+* You need to deal with the fact that the committee is going to be
+wanting to add and remove content from the document. Which means you
+have to make sure all those *crossreferences to headings and subheadings
+and tables and figures and examples and notes are renumbered
+automatically*.
+
+* You often need to deal with *complex (or even not-so-complex)
+mathematical typesetting*.
+
+* You need to deal with *boilerplate text required* by the standards
+body, and make sure it doesn't deviate from the required wording, but
+is also up to date.
+
+
+No, I'm not done yet.
+
+* You have to *align to a fixed structure* of the document, and you need
+to know when the document deviates from that structure.
+
+* You have to *provide document metadata*, such as keywords, working
+groups, and related standards, which is accurate and searchable.
+
+* You have to *align to style guides for standards*, which in some
+instances (certainly including https://www.iso.org[ISO]) are
+detailed and exacting.
+
+* And on top of all of that, you have to *make sure that the document is
+formatted in a way that at least somewhat resembles what the standards
+body expects to see*.
+
+
+And for most of you, your tool for doing all of this...
+
+\... is https://products.office.com/en/word[*Microsoft Word*].
+
+.Clippy for your standards document
+image::/assets/blog/2018-11-29.jpg[Clippy for your standards document,width=100%]
+
+*Microsoft Word works fine... until it doesn't.* Documents of the
+complexity that standards documents can reach are where it stops
+working. *And when it stops working, it crashes*.
+
+NOTE: And keeps on crashing.
+And crashes until you're forced to split your document into three
+pieces, and dread ever opening it up to edit it. (Which, this being a
+standards document, is going to be _All The Time_.)
+
+Some of you reading are already nodding sadly. And *if it doesn't
+crash, it still does random stuff in your document*. If you've ever
+had two ordered lists in a Word document, you will eventually come
+to select "`Restart Numbering`" on the second list.
+
+And that's before you even get into features like *automated
+cross-references*. Word does implement those. And they are *one more
+thing to go wrong when Word crashes*.
+
+And that, in turn, is before you get into features that Word does not
+and cannot implement. *Automated checks of the structure* of your
+document, for example. Yes, your standards body has likely issued you
+with a Word template to populate, complete with Styles and Fields.
+Anyone who has ever received such a template back from authors knows
+that *they are going to spend almost as much time cleaning the document
+up, as if the author had not used a template to begin with*.
+
+Surely, there should be a better way.
+
+== A better way of authoring
+
+If you're in the IT-minded community, you know that there are, in fact,
+better ways. You can use https://www.openoffice.org[OpenOffice] or
+https://www.libreoffice.org[LibreOffice], for example, the
+open source alternatives to Word, which are often more stable than Word
+itself. But that only solves part of the problem with editing standards
+documents: *formatting still ends up substantially manual, content is
+still not truly validated, tracking changes in document still ends up
+overwhelming*.
+
+The real solution, as those in the IT-minded community will tell you,
+is to *step away from the
+https://en.wikipedia.org/wiki/WYSIWYG[WYSIWYG]-style editor* (a
+conventional word processor). They work great for most classes of
+document, particularly if those documents are not particularly complex.
+But there are also things you can't do with binaries, that are much
+easier to do with text. In particular, a
+https://en.wikipedia.org/wiki/WYSIWYM[WYSIWYM]-style editor (a document
+processor): not "`What You See Is What You Get`" (where what you see as
+you type is meant to look like the formatted end product), but
+*"`What You See Is What You Mean`"*, where what you see on the screen is the
+text, and instructions on how to format the text -- but not the text
+itself.
+
+[quote,Wikipedia on WYSIWYM,https://en.wikipedia.org/wiki/WYSIWYM]
+____
+In a WYSIWYM editor, *the user writes the contents in a structured way,
+marking the content according to its meaning*, its significance in the
+document, leaving its final appearance up to one or more separate style
+sheets. [...] The editor also needs a system for exporting structured
+content to generate the document's final format, following the
+indicated structure.
+
+The main advantage of this system is the *total separation of
+presentation and content*: users can *structure and write the document
+once, rather than repeatedly altering it for each mode of presentation*,
+which is left to the export system.
+____
+
+*Metanorma solves these issues using the WYSIWYM approach*:
+
+* If authors are only creating marked up text, that deals primarily
+with the content, then *they don't need to be overwhelmed with the
+business of formatting*; and they don't need to be exposed to the
+instability or fiddling that live formatting of text introduces.
+
+* The formatting can come later; and the *formatting can be automated,
+which better meets the requirements of formal mandated document styles
+— such as what standards bodies like to see*. It also means that the
+standards bodies have a much better guarantee of the documents being
+formatted consistently.
+
+* If a document system has direct access to the content text, it
+becomes *much easier to validate it, with rules specific to the
+standards body*.
+
+* If the document is text and not a binary, then *tracking changes and
+versions of documents becomes a much easier problem*. In particular,
+tracking changes and versions of documents can now use the tools
+already long established for doing the same job with computer code.
+
+* As the document content is updated (and, because you're writing a
+standards document, it will be), the *formatting and presentation of the
+document is updated much more smoothly*. *Cross-references will keep
+pointing to the right place, boilerplate will be automatically
+adjusted, lists and notes will be auto-numbered without you needing to
+keep a tally sheet*.
+
+*Sounds like a god-send. And in fact, it is a god-send*, if your document
+is the right kind of document -- which is why people in the physical
+and mathematical sciences (and computer science by extension) can go
+through life without installing Microsoft Word, and use document
+processors instead, like https://www.latex-project.org/[LaTeX],
+https://daringfireball.net/projects/markdown/[Markdown],
+https://asciidoctor.org[Asciidoctor],
+https://docbook.org[DocBook], and
+https://www.w3.org/html/[HTML].
+
+
+== The right tool for the right job
+
+So why haven't we all switched already?
+
+Because most of us, *most of the time, don't edit the right kind of
+document*. For the kinds of document we normally edit, a text-based
+document editor with a side-arm that does rendering is overkill. It
+means we have to give up on the immediate feedback of seeing the text
+with the formatting we want applied to it, and instead we have to
+remember a whole lot of formatting codes. It means we have to get
+familiar with the command line on our computers; and if you don't
+already spend your day with the command line prompt, it's a big ask to
+start doing so just for document editing. Most of the time, Word is
+more than good enough.
+
+But you're reading this because *standards documents are not
+most-of-the-time kinds of documents*. And you need something more
+structured and rigorous, to deal with the *highly structured and
+rigorous, and complex, and uniformly formatted documents* that standards
+bodies expect to see.
+
+In generating these documents, you sacrifice spontaneity and creativity
+and freedom in your formatting and in how your content is arranged,
+because that's the kind of document you're authoring.
+
+NOTE: It might be fairer to say: you're directing your creativity and
+freedom away from the formatting, and towards the problem-solving
+you're writing about.
+
+Writing a document in a more rigorous system, without WYSIWYG
+formatting, is going to be noticeably different: you are not going to
+be as free to do whatever you want to do with formatting, or with how
+your content is arranged.
+
+But if you wanted *that* kind of freedom, you wouldn't be involved in
+standards documents, would you.
+
+
+== The Metanorma audience
+
+*The Metanorma tool suite has been developed to support the needs of
+standards document production*. A lot of the structures it represents
+originate from ISO, because of how exacting and widely used the ISO
+approach to standards documents is. But Metanorma strives to capture *as
+general a model of standards documents* as possible, and to *offer all
+standards bodies support* in their document generation process -- *to
+make their documents consistent, compliant, and correct*.
+
+Metanorma has a Latin motto (which may be a little
+https://en.wikipedia.org/wiki/Hogwarts[Hogwartian] these
+days); that motto is *_Aequitate Verum_*. *"`Truth Through Equity`"*.
+Truth is not a straightforward thing to move towards; especially not if
+you've only ever used Word, and the command line is foreign territory
+to you. And the Metanorma tool suite is not for everyone, or for every
+document type: there are plenty of contexts where the adjustment just
+isn't worth it.
+
+*But if*:
+
+* your document generation process relies on *Word templates
+no-one uses correctly*, and
+* your committees are resorting to *vetoing all standards proposals*
+just so you can guarantee they can be *proofread a second time*
+
+*Then it might just be worth your while to try something different*.
