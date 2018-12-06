@@ -12,56 +12,69 @@ excerpt: >-
 = What Metanorma is
 
 We've said what Metanorma is for, but we have not said much
-about what Metanorma is like as a tool. This is the overall
-structure of what it does.
+about what Metanorma is like as a tool.
 
-Metanorma refers to three things:
+Overall, Metanorma provides three things:
 
-* The Metanorma document metamodel, which allows different standardization bodies
-defines the document
+* a set of *standard document metamodels* (ISO 36001), that allows different standardization bodies
+to create their own standardized document model for their standard documents;
 
-* Metanorma is software that transforms input text into output formats.
+* a standard XML schema (ISO 36002), as *machine-readable standardization documents*,
+  that is the serialized form of the document models mentioned above; and
+
+* a publishing toolchain that enables authors of standard documents to
+  handle their documents from authoring to publishing in an *end-to-end*,
+  *"`author-to-publish`"* fashion.
+
+
+== Metanorma, the end-to-end standards publishing toolchain
+
+Metanorma is software that transforms input text into output formats.
 It currently supports output to HTML, PDF (via HTML), and Microsoft
-Word (in the older Word DOC format).
+Word.
 
-* The input text is in a markup format, which represents the intent
+The input text is in a markup format, which represents the intent
 of the author around formatting and structure. Currently, the only
 input markup supported is http://asciidoctor.org/docs/user-manual/[Asciidoctor].
 
-** Marked up text is text, not a Word document, which means you will
+NOTE: Marked up text is text, not a Word document, which means you will
 need to get familiar with text editors (Notepad, TextEdit), if you aren't already.
 
-* The transformation to output formats happens via an intermediate
+NOTE: Microsoft Word output is in the older Word `DOC` format.
+
+The transformation to output formats happens via an intermediate
 Metanorma XML file, which is easier to manipulate programmatically,
 and which can be formally validated.
 
-* Metanorma comes in various flavors, one for each standards body it supports.
-The standards bodies currently supported are:
+== Flavors of Metanorma documents
 
-** https://www.iso.org[ISO]
-** https://www.ietf.org[IETF]
-** https://www.calconnect.org[CalConnect]
-** https://cloudsecurityalliance.org[Cloud Security Alliance (CSA)]
-** https://www.m3aawg.org[M3AAWG]
-** http://www.opengeospatial.org[Open Geospatial Consortium (OGC)]
-** the http://www.unece.org[United Nations Economic Commission for Europe (UN/ECE)], and
-** the http://www.sac.gov.cn[Chinese "`Guo Biao`" standards].
+Metanorma comes in various flavors, one for each standards body it supports.
+The standards bodies currently supported include:
 
-* Metanorma defines common formatting and conventions across standards;
+* https://www.iso.org[ISO]
+* https://www.ietf.org[IETF]
+* https://www.calconnect.org[CalConnect]
+* https://cloudsecurityalliance.org[Cloud Security Alliance (CSA)]
+* https://www.m3aawg.org[M3AAWG]
+* http://www.opengeospatial.org[Open Geospatial Consortium (OGC)]
+* the http://www.unece.org[United Nations Economic Commission for Europe (UN/ECE)], and
+* the http://www.sac.gov.cn[Chinese "`Guo Biao`" standards].
+
+Metanorma defines common formatting and conventions across standards;
 the various flavors provide functionality specific to each standards body.
 That includes different validation, different formatting options,
 and different styling.
 
-* Metanorma is invoked on the command line, and you will need to set up
+== Setting Metanorma up and running it
+
+Metanorma is invoked on the command line, and you will need to set up
 a programming environment for Metanorma to work on the command line.
 
-** We are currently setting up a gateway to run Metanorma online, so that
+NOTE: We are currently setting up a gateway to run Metanorma online, so that
 you can submit Metanorma input files to a web server, and get output files back.
 But in the long run, if you are managing the workflow around your document,
 you will still need to set up processing of the document locally.
 
-
-== Setting Metanorma up
 
 To get started, you need to set up your local programming environment.
 
