@@ -5,104 +5,159 @@ date:   2018-12-05
 categories: about
 excerpt: >-
     Metanorma defines common formatting and conventions across standards;
-    the various flavours provide functionality specific to each standards body.
+    the various flavors provide functionality specific to each standards body.
     That includes different validation, different formatting options,
     and different styling.
 ---
 = What Metanorma is
 
-So. We've said what Metanorma is for, but we have not said much
+We've said what Metanorma is for, but we have not said much
 about what Metanorma is like as a tool. This is the overall
 structure of what it does.
 
+Metanorma refers to three things:
+
+* The Metanorma document metamodel, which allows different standardization bodies
+defines the document
+
 * Metanorma is software that transforms input text into output formats.
 It currently supports output to HTML, PDF (via HTML), and Microsoft
-Word (in the older DOC format.)
+Word (in the older Word DOC format).
+
 * The input text is in a markup format, which represents the intent
-of the author around formatting and structure. Currently, the only 
+of the author around formatting and structure. Currently, the only
 input markup supported is http://asciidoctor.org/docs/user-manual/[Asciidoctor].
+
 ** Marked up text is text, not a Word document, which means you will
 need to get familiar with text editors (Notepad, TextEdit), if you aren't already.
-* The transformation to output formats happens via an intermediate 
+
+* The transformation to output formats happens via an intermediate
 Metanorma XML file, which is easier to manipulate programmatically,
 and which can be formally validated.
-* Metanorma comes in various flavours, one for each standards body it supports.
-The standards bodies currently supported are: ISO/IEC, the Chinese GuoBiao standards,
-IETF, Calconnect, the Cloud Security Alliance, M3AAWG, OGC, and the
-United Nations Economic Commision for Europe.
-** Metanorma defines common formatting and conventions across standards; 
-the various flavours provide functionality specific to each standards body.
+
+* Metanorma comes in various flavors, one for each standards body it supports.
+The standards bodies currently supported are:
+
+** https://www.iso.org[ISO]
+** https://www.ietf.org[IETF]
+** https://www.calconnect.org[CalConnect]
+** https://cloudsecurityalliance.org[Cloud Security Alliance (CSA)]
+** https://www.m3aawg.org[M3AAWG]
+** http://www.opengeospatial.org[Open Geospatial Consortium (OGC)]
+** the http://www.unece.org[United Nations Economic Commission for Europe (UN/ECE)], and
+** the http://www.sac.gov.cn[Chinese "`Guo Biao`" standards].
+
+* Metanorma defines common formatting and conventions across standards;
+the various flavors provide functionality specific to each standards body.
 That includes different validation, different formatting options,
 and different styling.
+
 * Metanorma is invoked on the command line, and you will need to set up
 a programming environment for Metanorma to work on the command line.
+
 ** We are currently setting up a gateway to run Metanorma online, so that
 you can submit Metanorma input files to a web server, and get output files back.
 But in the long run, if you are managing the workflow around your document,
 you will still need to set up processing of the document locally.
 
+
 == Setting Metanorma up
 
 To get started, you need to set up your local programming environment.
 
-* If you are on Mac, follow the instructions on https://github.com/riboseinc/metanorma-macos-setup
-* If you are on Linux, follow the instructions on https://github.com/riboseinc/metanorma-linux-setup
-* If you are on Windows follow the instructions on https://github.com/riboseinc/metanorma-windows-setup
+Setup instructions are given for the following platforms:
 
-Once you are set up (which will take a little while), you should be able to create and compile
-a Metanorma document:
+* macOS: https://github.com/riboseinc/metanorma-macos-setup
+* Linux: https://github.com/riboseinc/metanorma-linux-setup
+* Windows: https://github.com/riboseinc/metanorma-windows-setup
+* Docker: https://github.com/riboseinc/metanorma-docker
 
-* Create the following as a new document, saving it to a file as `test.adoc`:
+Once you are set up (which will take a little while), you should be
+able to create and compile a Metanorma document shown below.
 
-[source,asciidoctor]
+
+== Authoring a basic document in Metanorma
+
+Create the following as a new document, saving it to a file as `test.adoc`:
+
+.test.adoc
+[source,adoc]
 ----
 = Test
 
 == Clause 1
+
+A requirement.
 ----
 
-This document is in Asciidoctor markup: `=` indicates the document title, and `==` indicates
-a first level heading within the document. Asciidoctor is 
-http://asciidoctor.org/docs/user-manual/[documented online], so we won't be giving detailed
-tutorials of how Asciidoctor markup works, but we will provide you the basics to get started.
+This document is in Asciidoctor markup:
 
-* In your command line interface, navigate to where you have created the document,
-and compile it as an ISO document:
+* `=` indicates the document title
+* `==` indicates the section heading of a first-level section within the document
+* The content text `A requirement.` is considered content of the section defined above it.
 
-In Mac and Linux:
+Asciidoctor is http://asciidoctor.org/docs/user-manual/[documented online],
+so we won't be giving detailed tutorials of how Asciidoctor markup works, but
+we will provide you the basics to get started.
+
+Let's compile this as an ISO document!
+
+In your command line interface, navigate to where you have created the document,
+and run the following commands.
+
+On macOS and Linux (native installation):
 [source,console]
 ----
-$ cd <wbere you saved test.adoc>
+$ cd <where you saved test.adoc>
 $ metanorma -t iso test.adoc
 ----
 
-In Windows, if you have done the native installation:
+On Windows (native installation):
 
 [source,console]
 ----
-???
+$ cd <where you saved test.adoc>
+$ metanorma -t iso test.adoc
 ----
 
-In Windows, if you have used the docker installation:
+If you are using the Docker installation:
 
 [source,console]
 ----
 $ docker run -v ${pwd}:/metanorma/ ribose/metanorma "metanorma -t iso test.adoc"
 ----
 
+NOTE: On Windows, there are some limitations on folder sharing for Docker.
+Please consult Docker documentation.
+
+
 == What Metanorma outputs
 
-You will see test.xml, test.doc, test.html and test.alt.html created in the same folder as 
-test.adoc. All these documents will contain just one line of content, the title "Clause 1"; but
-the HTML and DOC will also be styled to match the ISO document templates defined for Metanorma,
-including a (very sparsely populated) cover page. The two HTML pages are styled differently:
-the test.doc file is more sparsely formatted, and close to the Word template of ISO, while
-the test.alt.html document is somewhat more colourful.
+You will see the following files created in the same folder as `test.adoc`:
+
+* `test.xml`
+* `test.html`
+* `test.alt.html`
+* `test.doc`
+
+All these documents will contain just the section title ("`Clause 1`") and
+the single line of content (`A requirement.`).
+
+The HTML and DOC are already styled to match the ISO document templates defined
+for Metanorma, including a (very sparsely populated) cover page.
+
+The two HTML pages are styled differently:
+
+* the `test.html` file is more sparsely formatted, made close to the Word template style of ISO (we call this compliance-optimized); yet
+
+* the `test.alt.html` document is more stylish and easier to read (we designed it to be human-optimized).
 
 And the thing is, you did not have to format a thing, to generate three different renderings
-of the document, including a Word document that follows the ISO stylesheet slavishly. Metanorma
-has taken care of the formatting for you. You just need to make sure you get the content right.
-(Which means providing more content than just a clause title.)
+of the document, including a Word document that follows the ISO stylesheet slavishly.
+
+Metanorma has taken care of the formatting for you. You just need to make sure you get the content right.
+
+NOTE: Which means providing more content than just a clause title.
 
 It's like magic. Command-line, pedantic magic, to be sure, and magic that sometimes throws up
 cryptic error messages. But still magic.
@@ -114,30 +169,33 @@ The test.xml document is the formally compliant representation of the document c
 unlike the HTML and DOC versions, there is no formatting in there. If you open it up, you will
 see some metadata about the document ---
 
+.test.xml (contributor)
 [source,xml]
 ----
-  <contributor>
-    <role type="author"/>
-    <organization>
-      <name>International Organization for Standardization</name>
-      <abbreviation>ISO</abbreviation>
-    </organization>
-  </contributor>
+<contributor>
+  <role type="author"/>
+  <organization>
+    <name>International Organization for Standardization</name>
+    <abbreviation>ISO</abbreviation>
+  </organization>
+</contributor>
 ----
 
-(we said that this is an ISO document, so Metanorma has gone ahead and provided the information
-that this is a document with ISO as its corporate author) --- though much of the metadata is empty.
+We said that this is an ISO document, so Metanorma has gone ahead and provided the information
+that this is a document with ISO as its corporate author --- though much of the metadata is empty.
+
 You will also see the one line of content underneath the metadata:
 
+.test.xml (sections)
 [source,xml]
----
+----
 <sections>
   <clause id="_clause_1" inline-header="false" obligation="normative">
-  <title>Clause 1</title>
+    <title>Clause 1</title>
+    <p id="_ae976677-104c-484e-b31b-14ef21c534b8">A requirement.</p>
   </clause>
-</section>
-</clause>
----
+</sections>
+----
 
 Even here, Metanorma has supplied some default information that may come in handy for rendering:
 the clause heading is rendered as a separate line, not inline; the clause it introduces is assumed
@@ -156,25 +214,41 @@ ISO style: Normative References must be followed by Terms and Definitions
 ISO style: Document must contain at least one clause
 ----
 
-ISO specifcally expects to see a whole lot of sections in any standards document that you have 
-not provided, and you are being correctly warned about that. There are also errors raised
+ISO specifically expects to see a whole lot of sections in any standards document that you have
+not provided, and you are being correctly warned about that.
+
+There are also errors raised
 against specific line numbers of the XML document (since that is what is being formally validated
-against a document schema):
+against a document schema).
+
+In the `test.adoc` file provided above, the following errors are shown:
 
 [source,console]
 ----
-ielement "sections" not allowed yet; missing required element "preface" @ 46:11
-element "clause" incomplete; expected element "admonition", "clause", "dl", "example", "figure", "formula", "ol", "p", "quote", "review", "sourcecode", "table" or "ul" @ 49:10
-element "sections" incomplete; expected element "clause" or "terms" @ 50:12
-element "iso-standard" incomplete; missing required element "bibliography" @ 51:16
+element "sections" not allowed yet; missing required element "preface" @ 46:11
+element "sections" incomplete; expected element "clause" or "terms" @ 51:12
+element "iso-standard" incomplete; missing required element "bibliography" @ 52:16
 ----
 
-For example, `@ 49:10` refers to line 49, character 10 (the `</clause>` tag,
-where the one clause in the document has ended). It is complaining about the fact
-that the clause after its title is empty: clauses are expected to contain
-at least one block of text, and the error message lists the kinds of blocks of text
-it would expect to see. Much of the time, you will still get output from Metanorma
+For example, `@ 52:16` refers to line 51, character 16 (the `</iso-standard>` tag,
+the last tag of the document) of the `test.xml` Metanorma XML file.
+It is complaining about the fact that the document does not contain a `<bibliography>` element:
+ISO documents are required to contain a "`Bibliography`" section according to ISO Directives Part 2.
+
+If we remove the content text (`A requirement.`) from `test.adoc`,
+the following extra message will be shown:
+
+[source,console]
+----
+element "clause" incomplete; expected element "admonition", "clause", "dl", "example", "figure", "formula", "ol", "p", "quote", "review", "sourcecode", "table" or "ul" @ 49:10
+----
+
+`@ 49:10` refers to line 49, character 10 (the `</clause>` tag,
+where the one clause in the document has ended) of the `test.xml` Metanorma XML file,
+and it is complaining that the clause after its title is empty.
+Clauses are expected to contain at least one block of text, and the error message
+lists the kinds of blocks of text it would expect to see.
+
+Much of the time, you will still get output from Metanorma
 despite its complaints about structure; but if you want to make sure your document
 is compliant, you should go through the warnings generated at least once.
-
-
