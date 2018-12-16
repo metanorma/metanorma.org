@@ -1,0 +1,196 @@
+---
+layout: post
+title:  "Writing in Asciidoctor"
+date:   2018-12-11
+categories: about
+excerpt: >-
+    Asciidoctor documents are text; so if you already have a document
+    in a PDF file, or a Word file, or an HTML file, the simplest
+    thing to do is to copy its text into a text document, and then to
+    mark it up.
+---
+= Writing in Asciidoctor
+
+== Asciidoctor
+
+If you want to write a document in Metanorma, you will be using the Asciidoctor
+markup language to write text.
+
+The http://asciidoctor.org/docs/user-manual/[Asciidoctor User Manual] gives the
+formatting commands and structures that Asciidoctor can encode; almost all of
+them will result in something meaningful in Metanorma -- although the way they
+are rendered in Metanorma may not always be the same as how they are rendered
+by the Asciidoctor tool itself.
+
+NOTE: There are a few capabilities in Asciidoctor which are not rendered in Metanorma,
+such as embedded video, indexes, and verse quotations. But you are unlikely to run
+into them, because they are not required by the kinds of document Metanorma has modelled
+to date.
+
+There are some areas in which the behaviour of Asciidoctor has been enhanced for Metanorma,
+so that it can do things which Asciidoctor on its own cannot, for example:
+
+* The structure around Terms and Definitions, is somewhat elaborate and quite domain-specific; so we have
+defined markup specific to Terms and Definitions, including markup for term domains,
+alternative terms, deprecated terms, and term sources.
+
+
+The enhancements common to all flavors of Metanorma are listed in https://github.com/riboseinc/metanorma-standoc#asciidoctor-model-additions,
+and any enhancements specific to a flavour of Metanorma are given in the Readme of the
+corresponding Ruby gem; for example, https://github.com/riboseinc/metanorma-iso#asciidoctor-model-additions
+for features specific to ISO.
+
+We also have documentation available online on how to write documents:
+
+* https://www.metanorma.com/software/metanorma-iso/docs/quickstart/[Quickstart Guide]
+* https://www.metanorma.com/software/metanorma-iso/docs/asciiiso-syntax/[AsciiISO syntax reference]
+* https://www.metanorma.com/software/metanorma-iso/docs/guidance/[Guidance for Authoring]
+
+
+NOTE: We are in the process of consolidating our documentation in the one place, but
+as Metanorma services a lot of different standards organisations, there is a continuing
+split between generic functionality and functionality specific to a flavour of Metanorma.
+
+If you're going to spend serious time with Metanorma, you will need to get familiar
+with everything in those documents. But in this series of posts, we will ease you in
+with a simple document.
+
+== Getting started: A text document
+
+Asciidoctor documents are text; so if you already have a document in a PDF file, or a Word file,
+or an HTML file, the simplest thing to do is to copy its text into a text document,
+and then to mark it up. Yes, you will lose all your formatting that way; but remember,
+part of the point of using Metanorma is that much of the formatting will be automated;
+you will be giving only the essentials needed for formatting as markup in the document.
+
+By losing the markup through copy-paste, you are starting with a clean text, and you
+control what markup actually needs to be reintroduced. Your document is going through
+a kind of cleanse. Like a car wash, only with less suds, and with you doing your own
+wax polishing, instead of leaving it to the attendant.
+
+.Asciidoctor document generation as car wash.
+image::/assets/blog/2018-12-11.jpg[Asciidoctor document generation as car wash,width=100%]
+
+NOTE: If you are feeling adventurous, https://github.com/riboseinc/reverse_asciidoctor
+is a tool we have created that maps HTML to Asciidoctor, and can even be used to
+convert Word documents to Asciidoctor. If you've got a lot of "`essential`" formatting,
+particularly mathematics, it might make sense to use it. Most of the time, though,
+it is simpler just to mark up text from scratch.
+
+So, go ahead. Open up a text editor, and cut and paste all the text you need into it.
+(Or, if you don't already have any text to convert, just start typing.)
+
+The next thing you are going to have to do is make sure there are paragraphs in your
+text. In Asciidoctor, a paragraph is not indicated by a single carriage return, but by two:
+you need to be able to see space between the paragraphs on the screen.
+
+[source,asciidoctor]
+----
+There is a parargaph break here.
+But Asciidoctor will still treat these two lines as a single paragraph, and will join this line
+up with the previous line.
+
+This, on the other hand, is a new paragraph.
+----
+
+Markup in Asciidoctor uses non-alphabetic characters. If you want to italicize a word
+within a paragraph, for example, you put `_` around it. (If you're italicizing a whole
+paragraph, on the other hand, because it is a subheading, you probably shouldn't:
+formatting titles is likely to be taken care of by your standard's stylesheet.
+
+[source,asciidoctor]
+----
+Asciidoctor knows about _italics_, *boldface*, `monospace`,
+and a few others. We have added in macros to deal with
+[strike]#strikethrough text# and [smallcap]#text in small capitals#.
+----
+
+Notice that formatting commands involve non-alphabetic text: `_`, `*`, `\``.
+Because strikethrough and small-caps are not built in to Asciidoctor, we had
+to make up new formatting commands, which are also indicated with
+non-alphabetic text: brackets and hashes.
+
+NOTE: Because non-alphabetic characters are used to indicate formatting commands,
+that means they can be misinterpreted in Asciidoctor text. Most of the time they
+won't; but full stops [periods] and square brackets at the start of a line are
+already used to indicate formatting, as will formatting like `*` on either side of a
+group of characters. If you want those characters not to be treated like formatting,
+it is usually enough to put a backslash `\\`, in front of the character.
+
+== Headings
+
+Your document will need to have headings and subheadings, like any non-trivial
+standards document does. Headings are marked up by prefixing a paragraph with
+a number of equal signs -- one more than the heading level -- followed by space.
+So a first level heading is prefixed by `== `; a second level heading by
+`=== `; and so on:
+
+[source,adoc]
+----
+== First Level Heading
+
+Some Text
+
+=== Second Level Heading
+
+Some More Text
+----
+
+You do not need to make the heading italicized or boldface: again, that will be
+taken care of by the Metanorma flavour stylesheets.
+
+=== Document header
+
+To make the text work as an Asciidoctor document, it needs to be introduced by
+a document header, which contains metadata about the document, expressed as
+document attributes: key-value pairs, with the key surrounded by colons.
+
+Different flavors of Metanorma have different kinds of metadata:
+again, the gem README for your particular flavour describes the document attributes
+specific to it
+(https://github.com/riboseinc/metanorma-iso#document-attributes[Metanorma document attributes for ISO]),
+while https://github.com/riboseinc/metanorma-standoc#document-attributes[Metanorma document attributes for StanDoc]
+describes the document attributes that apply across Metanorma.
+
+The textual structure goes in this order:
+
+* The document header consists of the document title, which is a line prefixed
+with an equals sign and a space;
+
+* A line which gives the authors of the document
+(which is ignored in Metanorma, but is still required by Asciidoctor processors);
+
+* The list of document attributes, one per line. There can be no blank lines
+within the document preface, and there has to be a blank line between the document
+header and the rest of the document;
+
+* Actual body text.
+
+For example:
+
+[source,adoc]
+----
+= Document Title
+Author Name Which Metanorma Ignores
+:published-date: 2017-01-02
+:language: en
+:status: published
+:no-isobib:
+
+Text of document starts here.
+----
+
+NOTE: In some flavors (like Metanorma-ISO), titles are compound and multilingual,
+and need to be given in separate document attributes.
+In that case, the title of the document header is ignored.
+
+Once your document has a document header, paragraphs, and headers, it is ready
+for you to process through Metanorma. There will be a lot more to refine in the document,
+(as we'll discuss next post), but that will give you a start to work with.
+
+All those cryptic wax polishing illustrations we showed before should now make a little more
+sense:
+
+.Asciidoctor document generation as car wash, re-contextualized.
+image::/assets/blog/2018-12-11.jpg[Asciidoctor document generation as car wash,width=100%]
+
