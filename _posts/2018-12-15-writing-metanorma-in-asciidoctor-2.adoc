@@ -1,12 +1,11 @@
 ---
 layout: post
-title:  "Writing in Asciidoctor, Part 2"
+title:  "Writing Metanorma in Asciidoctor, Part 2"
 date:   2018-12-15
 categories: about
 excerpt: >-
-By gradually
-building up the document, and testing it as you go, you can prevent unpleasant
-surprises later on.
+    By gradually building up the document, and testing it as you go,
+    you can prevent unpleasant surprises later on.
 ---
 = Writing in Asciidoctor, Part 2
 
@@ -25,7 +24,7 @@ or to crash. And even if those things do not happen, the syntax of the document
 you have authored may violate the requirements of the standard body, as captured
 in the formal grammar used inside Metanorma.
 
-To deal with this, you need to run Metanorma over your Asciidoctor frequently,
+To deal with this, you need to run Metanorma over your Asciidoctor input frequently,
 as you build up its content and markup, so you can narrow down where anything
 went wrong to what you have updated most recently. If that doesn't work in
 narrowing it down, you need to cut the document into smaller and smaller pieces,
@@ -34,24 +33,31 @@ building up the document, and testing it as you go, you can prevent unpleasant
 surprises later on.
 
 The fix depends on what has gone wrong, of course; some of the first things to
-be careful of are: 
+be careful of are:
 
 * Blank lines need to be used to set blocks of text off from each other.
-Asciidoctor marks up paragraph-level objects (blocks), such as tables, lists, 
+Asciidoctor marks up paragraph-level objects (blocks), such as tables, lists,
 and notes: these must be separate by a  blank line from any preceding paragraphs,
-otherwise  they will be treated as part of that paaragraph, and the markup
+otherwise  they will be treated as part of that paragraph, and the markup
 that introduces them will be ignored.
+
 * Characters that are being misinterpreted as markup -- such as square brackets at the start
 of a line.
+
 * The right level is applied to each heading (as indicated by the number of equals
 signs before it).
-* An initial markup tag is matched by its ending tag; for example, if `_` starts an
-italicised passage, make sure the `_` ending the passage is also there. If the initial
+
+:underscore: _
+
+* An initial markup tag is matched by its ending tag; for example, if `{underscore}` (underscore) starts an
+italicized passage, make sure the passage also contains the ending `{underscore}`. If the initial
 tag involves multiple characters as a delimiter (we'll come to those), its corresponding
 ending tag must have the same number of characters.
+
 * Any crossreferences in the text (we'll come to those too) are correct.
+
 * Markup should be kept within a line of text, and not be interrupted by a carriage
-return. So if an italicised passage spans more than one line, close the italics at the
+return. So if an italicized passage spans more than one line, close the italics at the
 end of each line, and restart it at the beginning of the next. If that is not possible,
 particularly for any markup contained within a pair of square brackets, you will
 just need to keep the marked up content as one long line.
@@ -59,7 +65,7 @@ just need to keep the marked up content as one long line.
 The grammar warnings that Metanorma issues about violating the expected structure of the
 document do also need to be looked at, at least once. However, the structure
 of the document needs to be complete  for it to be valid;  so you can defer resolving
-any grammar issues until you have finished putting the document together. 
+any grammar issues until you have finished putting the document together.
 
 Checking the grammar involves you hopping between the Asciidoctor input, and the XML
 intermediate form (which is what is parsed for grammatical issues). Checking that the
@@ -67,20 +73,22 @@ document works as expected involves you hopping between the Asciidoctor input, a
 one of the outputs, either HTML, PDF, or DOC. (The HTML is easier to work with
 for error tracing than the DOC; but eventually, you will have to check both.)
 
-== Lebels of markup
+== Levels of markup
 
 Asciidoctor has three levels of markup:
 
-* Sections, such as clauses and subclauses, marked up by headings; 
-* blocks, which are paragraphs and spans with the same scope as paragraphs, 
-like lists and tables; 
+* sections, such as clauses and subclauses, marked up by headings;
+
+* blocks, which are paragraphs and spans with the same scope as paragraphs,
+like lists and tables;
+
 * and inline markup, such as italics and hyperlinks, which is contained within a block.
 
 Asciidoctor keeps these three levels distinct. You can't have italics markup
 span across two blocks, for example. (As we saw, bad things can happen to some
 inline markup if it even spans across two lines.) A block cannot contain another
-block; that's why there needs to be a blank line between a paragarph and a list
-(although lists can have mutiple levels of nesting.) And every block is meant to
+block; that's why there needs to be a blank line between a paragraph and a list
+(although lists can have multiple levels of nesting.) And every block is meant to
 be contained in a section -- except for blocks before the first section header,
 which defines a section of its own (the preamble, in Asciidoctor terms; Metanorma
 uses it as the foreword).
@@ -91,8 +99,11 @@ contained in square brackets before the section header or block, which contains
 the attribute values. Blocks can also have captions (a line preceded by period/full stop).
 Those two features are why a normal line of text can't start with an open square
 bracket or dot. And both blocks and sections can have an anchor, included in double
-squre brackets: that is the identifier used to cross-reference the block or section
+square brackets: that is the identifier used to cross-reference the block or section
 from elsewhere in the text.
+
+
+=== Example: Metanorma table in Asciidoctor
 
 For example, the following is an Asciidoctor table:
 
@@ -107,18 +118,19 @@ For example, the following is an Asciidoctor table:
 
 | Number of laboratories retained after eliminating outliers | 13 | 11 | 13 | 13
 | Mean value, g/100 g | 81,2 | 82,0 | 81,8 | 77,7
+
 |===
 --
 
 The first line is the anchor for the table: if you want to refer to the table
 from elsewhere in the document, you will use the Asciidoctor inline markup for
-cross-references, `<<tableD-1>>`. The third line is a caption for the table.
-Rendering Metanorma will automatically replace the anchor and caption with 
-an auto-numbered caption for the table 
+cross-references, `\<<tableD-1>>`. The third line is a caption for the table.
+Rendering Metanorma will automatically replace the anchor and caption with
+an auto-numbered caption for the table
 (e.g. _Table 3. Repeatability and reproducibility of husked rice yield_);
 if you add a table before this table and regenerate the Metanorma outputs,
 the caption number will automatically update. More critically, the crossreference
-to that table will be automatically replaced with an autonumbered reference,
+to that table will be automatically replaced with an auto-numbered reference,
 such as _Table 3_, which again will be updated automatically if you insert more
 tables beforehand.
 
@@ -134,27 +146,49 @@ markup: as you can guess, `|` indicates a new cell, while `4+` indicates that
 the following cell spans four columns, and `.2+` that the following cell
 spans two rows.
 
-Markup on sections looks similar. The following is how a bibliography may be marked
-up:
+NOTE: This table example originates from the https://github.com/riboseinc/isodoc-rice[IsoDoc Rice document],
+which demonstrates document elements used in ISO International Standards.
+
+Markup on sections looks similar.
+
+
+=== Example: Metanorma bibliography in Asciidoctor
+
+The following is how a bibliography may be marked up:
 
 [source,asciidoctor]
 --
 [[infobib]]
 [bibliography,obligation=infomrative]
-== Informative Bibliogaphy
+== Informative Bibliography
 
 * [[[ISO3696,ISO 3696]]], _Water for analytical laboratory use -- Specification and test methods_
-==
+
+== Next heading...
 --
 
 Again, the first line is a crossreference anchor, and the third line is a title
 (although this time it is a heading, and a caption, because this is a section and not a block.)
-The second line contains attributes, including the style attribute `bibliography`, 
+
+The second line contains attributes, including the style attribute `bibliography`,
 indicating what kind of a section this is. The style attribute is critical for the sections
 that need it: in this case, the triple bracket notation used to define references
 is only processed if it is contained in a section with a `bibliography` style attribute.
 There is no distinct delimiter for sections -- or rather, the heading is what delimits
 the start of the section, and the next heading (or end of document) delimits its end.
+
+NOTE: In the Metanorma toolchain cited documents from certain standards bodies, such
+as ISO, IETF and IEC can be auto-fetched, meaning that the title doesn't need to be
+supplied, just like this:
+--
+[source,adoc]
+----
+* [[[ISO3696,ISO 3696]]], _AUTOFILLED BY METANORMA_
+----
+--
+
+
+== Summary
 
 This information will help you go back over the document you are marking up, and
 give it the structure it needs to make sense as a standards document.

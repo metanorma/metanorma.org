@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Writing in Asciidoctor, Part 3"
+title:  "Writing Metanorma in Asciidoctor, Part 3"
 date:   2018-12-16
 categories: about
 excerpt: >-
@@ -15,7 +15,7 @@ excerpt: >-
 
 We have already seen headings used inside a document to mark up sections. Standards
 documents have an expected structure of sections, and these need to be marked up
-rigorously in order for a document to comply. This maenas that you will need to go back
+rigorously in order for a document to comply. This means that you will need to go back
 over the headings you have marked up, and add further information to make them the
 right kind of section; either by adding style attributes, or by ensuring the heading
 wording complies with what is expected.
@@ -33,8 +33,8 @@ ISO (the International Organization for Standardization)...
 
 * The _Abstract_ of a document is any section with the style attribute of `[abstract]`,
 regardless of what its actual title is. The abstract may not be rendered in some
-flavours of Metanorma (like ISO), although it will still be added to document metadata
-in the XML file (the `bibdata` element). In flavours where it is rendered, it may
+flavors of Metanorma (like ISO), although it will still be added to document metadata
+in the XML file (the `bibdata` element). In flavors where it is rendered, it may
 appear on the title page (e.g. UN documents), or before the Foreword.
 
 [source,asciidoctor]
@@ -55,7 +55,7 @@ give their particular type.)
 [heading=introduction]
 == Enkonduko
 
-ISO (la Internacia OrganizaÄo por Normigo)...
+ISO (la Internacia Organizafo por Normigo)...
 --
 
 * The abstract, foreword and introduction together count as the preliminary
@@ -63,7 +63,7 @@ material in a Metanorma document: they appear before the main text of the
 document, and in Word they are paginated with Roman rather than Arabic numerals.
 
 
-* Bibliographies, as we have seen, must have the `[bibliography]` style attribute. 
+* Bibliographies, as we have seen, must have the `[bibliography]` style attribute.
 A document may have more than one bibliography, with different titles;
 ISO for example expects to see _Normative References_ as the second clause of the
 document body, and _Bibliography_ as the final clause.
@@ -71,10 +71,10 @@ document body, and _Bibliography_ as the final clause.
 * _Terms and Definitions_ and _Symbols and Abbreviations_ are indicated by
 using that text in the heading, or in the `heading=` attribute. (The two sections
 can be merged together, as _Terms, Definitions, Symbols and Abbreviations_;
-in that case _Symbols and Abbreviations_ is expected to be a distinct subclause.)
+in that case _Symbols and Abbreviations_ is expected to be a distinct sub-clause.)
 Both these section types have particular markup requirements: the contents of
  _Symbols and Abbreviations_ are one long definition list (which we'll come to),
-while _Terms and Definitions_ treats each term as a separate subclause, with its
+while _Terms and Definitions_ treats each term as a separate sub-clause, with its
 internal structure rigorously formatted.
 
 == Marking uo blocks
@@ -85,7 +85,7 @@ make sense. The next step is to go back over and mark up all blocks.
 
 The following are the types of block supported in Metanorma:
 
-* Unordered lists, which are bulleted, and can be nested. (The style of bullet varies by flavour.)
+* Unordered lists, which are bulleted, and can be nested. (The style of bullet varies by flavor.)
 
 [source,asciidoctor]
 --
@@ -98,13 +98,13 @@ The main changes compared to the previous edition are:
 --
 
 * Ordered lists, which can be nested. The label of each list item is normally set
-by the Metanorma flavour; this is so that ordered list items can be referenced consistently.
+by the Metanorma flavor; this is so that ordered list items can be referenced consistently.
 
 [source,asciidoctor]
 --
 . the sampling method used;
 . the test method used;
-. the test result(s) obtained 
+. the test result(s) obtained
 .. or, if the repeatability has been checked, the final quoted result obtained; [nested list item]
 --
 
@@ -142,7 +142,7 @@ stem:[m_S]:: is the mass, in grams, of the test sample.
 image::images/rice_image2.png[]
 --
 
-* Adnomitions (including Notes, and Warnings/Cautions).
+* Admonitions (including Notes, and Warnings/Cautions).
 
 [source,asciidoctor]
 --
@@ -203,36 +203,40 @@ adjustments are documented in the Metanorma documentation:
 * https://www.metanorma.com/software/metanorma-iso/docs/asciiiso-syntax/[AsciiISO syntax reference]
 * https://www.metanorma.com/software/metanorma-iso/docs/guidance/[Guidance for Authoring]
 * https://github.com/riboseinc/metanorma-standoc[The Standoc gem Readme] (which gives
-the docuemnt attributes and markup customisations common to all of Metanorma)
-* The Github page for the gem specific to your Metanorma flavour; e.g.
+the document attributes and markup customizations common to all of Metanorma)
+* The Github page for the gem specific to your Metanorma flavor; e.g.
 https://github.com/riboseinc/metanorma-iso, https://github.com/riboseinc/metanorma-csd
 
 == Marking up inline
 
 The final stage of refining Asciidoctor markup is to focus on inline markup,
-within the bounds of the block. We have already seen formatting marks such as 
-bold, italics, and monospace. 
+within the bounds of the block. We have already seen formatting marks such as
+bold, italics, and monospace.
 
-We have also seen the use of anchors, as an 
-entity to be cross-referenced (`[[anchor]]`, on its own line),
+We have also seen the use of anchors, as an
+entity to be cross-referenced (`\[[anchor]]`, on its own line),
 and of internal cross-references, which
-reference an anchor (`<<anchor>>`); the text of both is generated automatically, and
-is autonumbered. Anything that can be considered a cross-reference
+reference an anchor (`\<<anchor>>`); the text of both is generated automatically, and
+is auto-numbered. Anything that can be considered a cross-reference
 should be, so that the numbering of those references can be handled
 automatically; you will need to sweep through the document, to identify
 all such instances.
 
-URLs are handled by a macro, consisting of a recognisable URL, followed optionally 
+URLs are handled by a macro, consisting of a recognizable URL, followed optionally
 (without space) by square brackets containing the text to be hyperlinked;
-e.g. `http://www.iso.org/[International Organization for Standardization]`.
+e.g.:
+[source,asciidoctor]
+----
+http://www.iso.org/[International Organization for Standardization].
+----
 
 Footnotes are also a macro, consisting of the text `footnote:[]`, with the text
 of the footnote contained within the brackets. Asciidoctor does not permit footnotes
 spanning more than one paragraph, so the contents of the footnote are expected to be a
 single line contained within the brackets. The footnote macro is also expected
-to be preceded by puncutation, although it is recognised as is, and can also be delimited
-by a preceding `{blank}` (which in Asciidoctor is simply empty text; blank headers
-are also indicated by equals signs followed by `{blank}`).
+to be preceded by punctuation, although it is recognised as is, and can also be delimited
+by a preceding `\{blank}` (which in Asciidoctor is simply empty text; blank headers
+are also indicated by equals signs followed by `\{blank}`).
 
 Mathematical formatting, finally, is called STEM formatting in Asciidoctor, and
 are entered using http://asciimath.org[AsciiMath]. Mathematical formatting can be
@@ -258,10 +262,11 @@ You're best placed to build up from simple structures to more complex, reading
 the available documentation, and looking at other existing samples of Metanorma;
 all Metanorma gems include sample documents, as well as snippets of Metanorma
 Asciidoctor used in internal tests (under the `spec/asciidoctor` directory of each
-gem.) And if you get stuck, you can also ask your friendly neighbourhood wizard,
+gem.)
+
+And if you get stuck, you can also ask your friendly neighborhood wizard,
 care of info@ribose.com, or by raising an issue on GitHub on the repository of your
-Metanorma flavour's gem.
+Metanorma flavor's gem.
 
-.The author, trying to pass as a friendly neighbourhood wizard
+.The author, trying to pass as a friendly neighborhood wizard
 image::/assets/blog/2018-12-16.jpg[The author, trying to pass as a friendly neighbourhood wizard,width=100%]
-
