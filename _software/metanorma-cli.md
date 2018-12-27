@@ -1,5 +1,5 @@
 ---
-title: metanorma-cli
+title: Metanorma CLI
 repo_url: https://github.com/riboseinc/metanorma-cli
 description: Command-line tools for building Metanorma sources.
 docs:
