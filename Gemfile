@@ -23,6 +23,7 @@ group :jekyll_plugins do
   gem "jekyll-sitemap"
   gem "jekyll-data"
   gem "jekyll-asciidoc"
+  gem "jekyll-redirect-from"
   gem "git"
   gem "jekyll-theme-open-project-helpers", "~> 1.2.3"
 end
