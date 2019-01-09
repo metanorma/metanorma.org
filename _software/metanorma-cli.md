@@ -7,4 +7,6 @@ docs:
 tags: ["writtenin:Ruby", "interface:CLI"]
 ---
 
-The command-line tool for running Metanorma.
+The Metanorma CLI Ruby gem provides the `metanorma` executable,
+which can be used to build any official Metanorma flavour from the command line.
+(All officially supported Metnaorma flavours are automatically installed as gem dependencies.)
