@@ -1,0 +1,81 @@
+---
+layout: post
+title:  "Metanorma now available on Windows as Chocolatey package"
+date:   2018-12-25
+categories: about
+excerpt: >-
+    Metanorma is now available on Windows as a native install
+    package through the Chocolatey package manager.
+---
+= Metanorma now available on Windows as Chocolatey package
+
+== Metanorma Docker vs Native: maintenance and performance
+
+Metanorma has been available on Windows as a Docker container,
+but running Docker for Metanorma has proven to be very
+resource-draining for users, and at least, an ongoing
+maintenance nightmare for those not familiar with it.
+
+On macOS, the native installation runs few times *faster*
+than the Docker container version, allowing for some very
+realistic gains when iterating standard documents, and
+we have been wanting to bring the same for those on
+Windows.
+
+== A primer on Chocolatey
+
+For a very long time, the world of Windows did not have a
+command-line package management system as in `yum` or `apt` on
+Linux, or like Homebrew on macOS.
+In 2011, a tool called "`Chocolatey`" was released, and life
+on Windows has since been changed...
+
+.Package management under Windows
+image::/assets/blog/2018-12-25.jpg[A change has come for package management under Windows,width=100%]
+
+Chocolatey is a package manager and installer for software packages
+built for Windows. As its base, it is an execution engine using the
+NuGet packaging infrastructure and Windows PowerShell to provide an
+automation tool for installing software on Windows machines.
+
+
+== Installing Metanorma on Windows using Chocolatey
+
+Enter the Metanorma Chocolatey package, the officially
+supported Windows package for installing Metanorma natively
+on your Windows machine.
+
+The very short and simple steps:
+
+. Install Chocolatey according to their
+https://chocolatey.org/docs/installation[Chocolatey installation guide].
+
+. Once Chocolatey is installed, install Metanorma using one single command: `cinst metanorma`.
+
+
+By the end of this command you will see this message:
+
+[source,console]
+----
+Environment Vars (like PATH) have changed. Close/reopen your shell to see the changes (or in powershell/cmd.exe just type `refreshenv`).
+ The install of metanorma was successful.
+   Software install location not explicitly set, could be in package or
+   default install location if installer.
+
+Chocolatey installed 1/1 packages.
+ See the log for details (C:\ProgramData\chocolatey\logs\chocolatey.log).
+----
+
+And voilà! You are now ready to use Metanorma with native performance.
+
+
+== More information
+
+Learn more about how Metanorma can help you create and unify
+your standards at https://www.metanorma.com.
+
+See also:
+
+* https://chocolatey.org/packages/metanorma/1.0.10[The Chocolatey Metanorma package]
+* https://github.com/riboseinc/chocolatey-metanorma[Code for the Chocolatey Metanorma package]
+* https://chocolatey.org/docs/why[Why Chocolatey?]
