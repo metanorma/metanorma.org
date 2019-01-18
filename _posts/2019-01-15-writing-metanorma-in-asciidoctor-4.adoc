@@ -4,20 +4,21 @@ title:  "Writing Metanorma in Asciidoctor, Part 4"
 date:   2019-01-15
 categories: about
 excerpt: >-
-    Two types of section have specialised
-    content, which requires additional markup: _Terms & Definitions_, and _Bibliographies_.
+    Two types of section have specialized
+    content, which requires additional markup: Terms & Definitions, and Bibliographies.
 ---
 = Writing in Asciidoctor, Part 4
 
 In our foregoing discussion, we have presented how to mark up standards documents
-for Metanorma using Asciidoctor markup. Two types of section have specialised
+for Metanorma using Asciidoctor markup. Two types of section have specialized
 content, which requires additional markup: _Terms & Definitions_, and _Bibliographies_.
 
 == Bibliographies
 
 === Bibliographies
 
-We have already seen an example of how bibliographies are marked up in Part 2 of this series:
+We have already seen an example of how bibliographies are marked up in
+link:/blog/12-15-2018/writing-metanorma-in-asciidoctor-2/[Part 2 of this series]:
 
 [source,asciidoctor]
 --
@@ -39,19 +40,19 @@ to be processed by Asciidoctor correctly.
 Any bibliographic anchor must consist of a cross-reference token (without spaces), which
 is how the reference will be cited within Asciidoctor, and the official code used to refer to the
 document as a standard, separated by a comma. The cross-reference token is arbitrary, and does
-not need to correspond to the document code at all: `[[[ref33,ISO 3696]]]` would work just as well.
+not need to correspond to the document code at all: `+[[[ref33,ISO 3696]]]+` would work just as well.
 
 On the other hand, the document code is used to fetch the current correct reference to the standards
 document where the bibliography is accessible online.
 For that reason, the document code needs to be correct, or else the right
 document will not be retrieved. In the case of ISO, IEC, and GB, the code is also expected to
 contain references to part numbers, if only a document part is cited, and to the year, if
-a specific edition of the standard is cited; so `[[[a,ISO 3166-2:2007]]]` refers to the 2007
-edition of ISO standard 3166, part 2, and `[[[b,GB/T 1.1-2009]]]` refers to the 2009 edition
-of GB/T standard 1, part 1.
+a specific edition of the standard is cited; so `+[[[a,ISO 3166-2:2007]]]+` refers to the 2007
+edition of https://www.iso.org/standard/39718.html[ISO standard 3166, part 2],
+and `+[[[b,GB/T 1.1-2009]]]+` refers to the 2009 edition of GB/T standard 1, part 1.
 
 If the document is not a standard but a generic reference, the document code is replaced by a number;
-for example, 
+for example,
 
 [source,asciidoctor]
 --
@@ -67,9 +68,10 @@ of the document.
 
 === Relaton
 
-The `relaton` family of gems is used to fetch references where available from online bibliographies;
+The https://github.com/riboseinc/relaton/[`relaton` family of gems] is used to fetch references where available from online bibliographies;
 it is used within Metanorma to update any bibliographic references with the current correct title.
-It is currently implemented for ISO, IEC, IETF, and the GB family of standards. The bibliographic
+It is currently implemented for https://www.iso.org[ISO], https://www.iec.ch[IEC], https://www.ietf.org[IETF],
+and the GB family of standards. The bibliographic
 entries it fetches online are cached locally, to avoid time-consuming refetching when the Metanorma
 document is re-compiled. (You will notice that when you first compile a document, each reference can
 take several seconds to resolve.)
@@ -77,44 +79,62 @@ take several seconds to resolve.)
 .IEC references gradually being fetched online through the magic of Relaton
 image::/assets/blog/2019-01-15.jpg[IEC references gradually being fetched online through the magic of Relaton,width=100%]
 
-By default two caches are created by relaton: one global cache, storing all accesses to relaton
-(by default `~/.relaton/cache`), and one cache specific to the documents in the current
-directory (by default `relaton/cache`). The caches contain one file for each accessed document,
+By default two caches are created by `relaton`:
+
+* one global cache, storing all accesses to `relaton` (by default `~/.relaton/cache`), and
+* one cache specific to the documents in the current directory (by default `relaton/cache`).
+
+The caches contain one file for each accessed document,
 encoded in an XML schema specific to Relaton; you can edit the files, and reuse them between
-documents. The 
+documents. The
 https://github.com/riboseinc/metanorma-standoc/blob/master/README.adoc#document-attributes[metanorma-standoc document attributes]
-document how to override this behaviour, including not permitting relaton to resolve references
+document how to override this behaviour, including not permitting `relaton` to resolve references
 at all.
 
-In order to work out which website to fetch a reference from, the relaton gem needs to know
+In order to work out which website to fetch a reference from, the `relaton` gem needs to know
 what kind of standard is being referenced. ISO and IEC references always have their code prefixed
-by `ISO` and `IEC`; Relaton also recognises that codes starting with `RFC` are IETF references,
+by `ISO` and `IEC`; Relaton also recognizes that codes starting with `RFC` are IETF references,
 and that codes starting with `GB` are GB references. However, to remove ambiguity, and to deal
 with other document prefixes, the code provided can be wrapped in a prefix specific to the standards body:
 `IETF(I-D.ribose-asciirfc-08)` identifies `I-D.ribose-asciirfc-08` as an IETF standard (an
 Internet Draft), while `CN(GM/T 0009-2012)` is the Chinese sector standard GM/T 0009-2012.
 
 The https://github.com/riboseinc/relaton-cli[relaton-cli] tool exposes various functions of
-relaton to the command line; Specifically `relaton fetch CODE -t TYPE -y YEAR` can fetch
-a document with document code _CODE_ as Relaton XML --- with TYPE one of `isobib, ietfbib, iecbib, gbbib`.
+`relaton` to the command line.
+
+Specifically, this command fetches a document with document code _CODE_ as Relaton XML.:
+
+[source,sh]
+----
+relaton fetch CODE -t TYPE -y YEAR
+----
+
+The accepted _TYPE_'s are one of:
+
+* `iso`, through the https://github.com/riboseinc/isobib[`isobib` gem],
+* `ietf`, through the https://github.com/riboseinc/isobib[`ietfbib` gem],
+* `iec`, through the https://github.com/riboseinc/isobib[`iecbib` gem],
+* `gb`, through the https://github.com/riboseinc/isobib[`gbbib` gem]
+
 The tool can also extract Relaton XML references from Metanorma documents, and it can convert
 Relaton XML to HTML, which allows a set of references (including a set of references to Metanorma
 documents) to be displayed as an HTML file.
 
 === Citations
 
-A citation to a reference is marked up in Asciidoctor the same way as an internal crossreference, 
-in `<< >>`; so if you have a reference defined as `[[[ref33,ISO 3696]]]`, the element
-`<<ref33>>` is a reference to ISO 3696. If you provide a crossreference without a corresponding
+A citation to a reference is marked up in Asciidoctor the same way as an internal crossreference,
+in `+<< >>+`; so if you have a reference defined as `+[[[ref33,ISO 3696]]]+`, the element
+`+<<ref33>>+` is a reference to https://www.iso.org/standard/9169.html[ISO 3696].
+If you provide a crossreference without a corresponding
 reference, Metanorma will issue a warning.
 
 In Asciidoctor, you can provide display text within a crossreference, after a comma; so
-`<<ref33,the aforementioned standard>>` would be rendered as "the aforementioned standard".
+`+<<ref33,the aforementioned standard>>+` would be rendered as "the aforementioned standard".
 Metanorma Asciidoctor uses the display text to convey references to a specific location
 within a document, by using pairs of defined location names (_clause, table, figure_ etc.)
-and numbers or number ranges. So `<<ref33,clause 3,table 3,page 7-9>>` will be rendered as
+and numbers or number ranges. So `+<<ref33,clause 3,table 3,page 7-9>>+` will be rendered as
 "ISO 3696, Clause 3, Table 3, Page 7-9". Within ISO documents in particular, subclause
-references are not prefixed by "Clause"; so `<<ref33,clause 3.1>>` will be rendered as
+references are not prefixed by "Clause"; so `+<<ref33,clause 3.1>>+` will be rendered as
 "ISO 3696, 3.1".
 
 == Terms and Definitions
@@ -128,7 +148,8 @@ common standards formats. ISO and IEC in particular provide a rich amount of inf
 in their Terms and Definitions sections, including alternate and deprecated synonyms for
 the term being defined; the domain of the term (to be used in case of disambiguation);
 related notes and examples; and the source from which the term has been taken, where
-applicable. Moreover, ISO/IEC DIR 2, which prescribes the structure of ISO and IEC standards
+applicable. Moreover, https://www.iso.org/sites/directives/current/part2/index.xhtml[ISO/IEC DIR 2],
+which prescribes the structure of ISO and IEC standards
 documents, imposes a strict structure on how this information will be presented.
 
 Metanorma supports the ISO/IEC structure of Terms and Definitions by using macros,
@@ -170,7 +191,7 @@ _rough rice_, the deprecated synonym _cargo rice_, and is associated with
 the domain _rice_, to disambiguate it from other instances of the term _paddy_.
 The definition is the paragraph following from the header and synonyms;
 it can be followed by one or more examples, one or more notes, and a source
-paragraph. 
+paragraph.
 
 The source paragraph is expected to start with the citation of
 the reference that the term is taken for, optionally followed by text indicating
@@ -182,11 +203,8 @@ Often in ISO and IEC the http://www.electropedia.org[International Electrotechni
 is treated as a source of terms and definitions. The IEV corresponds to a large number
 of IEC 60050 standards, one part per subject area, and each with a different publication year.
 Rather than require authors to track each subject area separately, Metanorma allows
-citations to the dummy reference IEV (e.g. `[[[iev,IEV]]]`): each individual reference
-to an IEV term (e.g. `<<iev,clause 113-01-01>>` for
-http://www.electropedia.org/iev/iev.nsf/display?openform&ievref=113-01-01[space-time])
+citations to the dummy reference IEV (e.g. `+[[[iev,IEV]]]+`): each individual reference
+to an IEV term (e.g. `+<<iev,clause 113-01-01>>+` for
+http://www.electropedia.org/iev/iev.nsf/display?openform&ievref=113-01-01["`space-time`"])
 is converted to a reference to the specific publication (in this case, IEC 60050-113:2011),
-and the bibliography is approrpiately updated.
-
-
-
+and the bibliography is appropriately updated.
