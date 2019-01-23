@@ -1,11 +1,47 @@
 ---
 layout: default
+html-class: docs-page
 ---
 {% assign product_base_url = page.url | split: "/" | slice: 0, 3 | join: "/" | append: "/" %}
+{% assign docs_base_url = product_base_url | append: "docs/" %}
+
 {% if page.url == product_base_url %}
   {% assign is_docs_landing = true %}
 {% else %}
   {% assign is_docs_landing = false %}
+{% endif %}
+
+{% assign docs_base_url = product_base_url | append: "docs/" %} 
+{% assign item_docs = include.items | where_exp: "item", "item.url contains docs_base_url" %}
+{% assign nav = item_docs | where_exp: "item", "item.path contains 'docs/navigation'" | first %}
+{% assign num_top_nav_items = nav.items | size %}
+{% assign item_data = include.items | where_exp: "item", "item.url == product_base_url" | first %}
+
+{% if is_docs_landing != true %}
+  <header class="documentation-header {% if num_top_nav_items > 0 %} has-nav {% endif %}">
+    <span class="section-title">
+      {{ page.title|replace: " ", "&nbsp;" }}
+    </span>
+
+    <div class="nav-header">
+      {% if include.item_type == 'software' %}
+        <div class="logo-container">
+          {% include software-symbol.html item_id=page.id %}
+        </div>
+      {% endif %}
+
+      <h3 class="title">
+        <a href="javascript: void 0;">{{ item_data.title }}</a>
+      </h3>
+
+      {% if num_top_nav_items > 0 %}
+        <span class="nav-toggle-icon">
+          <i class="open far fa-ellipsis-v"></i>
+          <i class="close far fa-times"></i>
+        </span>
+      {% endif %}
+    </div>
+  </header>
 {% endif %}
 
 <section class="documentation {% if is_docs_landing %}docs-landing{% endif %}">
@@ -16,78 +52,31 @@ layout: default
 
   {% assign num_nav_sections = nav.sections | size %}
 
-  <nav class="nav-sidebar">
-
-    {% if is_docs_landing == false %}
-      <header class="sidebar-header">
-        {% if include.item_type == 'software' %}
-          <div class="logo-container" role="presentation">
-            {% include software-symbol.html item_id=page.id %}
-          </div>
-          <h3 class="title">
-            <a href="{{ product_base_url | relative_url }}">{{ item_data.title }}</a>
-          </h3>
-        {% endif %}
-      </header>
-
-      <section class="external-links">
-        {% include item-external-links.html item_type='specs' item_data=item_data %}
-      </section>
-
-    {% elsif num_nav_sections > 0 %}
-      <header class="sidebar-header">
-        <h3 class="title">
-          Documentation
-        </h3>
-      </header>
-    {% endif %}
-
-    {% for section in nav.sections %}
-      <section>
-        <h4 class="section-title">{{ section.name }}</h4>
-        <ul class="section-items">
-          {% for item in section.items %}
-            {% assign link = docs_base_url | append: item | append: "/" %}
-            {% assign linked_page = include.items | where_exp: "item", "item.url contains link" | first %}
-
-            {% if page.url != link and linked_page %}
-              <li class="item">
-                <a href="{{ link | relative_url }}">
-                  {{ linked_page.title }}
-                </a>
-            {% else %}
-              {% if page.url == link %}
-                <li class="item selected">
-                  <span>
-                    {{ linked_page.title }}
-                  </span>
-              {% else %}
-                <li class="item disabled">
-                  <span>
-                    {{ item }}
-                  </span>
-              {% endif %}
-            {% endif %}
-            {% assign link = "" %}
-          {% endfor %}
-        </ul>
-      </section>
-    {% endfor %}
-  </nav>
+  {% if is_docs_landing == false %}
+    <nav class="docs-nav">
+      <ul class="nav-items">
+        {% for item in nav.items %}
+          {% include _nav-item.html item=item base_url=docs_base_url %}
+        {% endfor %}
+      </ul>
+    </nav>
+  {% endif %}
 
   <article>
     <header>
-      <div class="title" role="presentation">
+      <div class="title">
         <h1 class="text">{{ page.title }}</h1>
       </div>
 
-      <div role="presentation">
+      <div>
         <h3 class="lead">{{ page.description }}</h3>
       </div>
 
       {% if is_docs_landing %}
         <div class="external-links">
-          {% include item-external-links.html item_type=include.item_type item_data=include.item_data %}
+          <ul class="nav-items">
+            {% include item-external-links.html item_type=include.item_type item_data=item_data %}
+          </ul>
         </div>
       {% endif %}
     </header>
