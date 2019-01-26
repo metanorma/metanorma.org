@@ -100,12 +100,31 @@ docker run -v "$(pwd)":/metanorma/ -w /metanorma ribose/metanorma "metanorma -t 
 See https://github.com/riboseinc/metanorma-docker[metanorma-docker] for more information
 and some shortcuts, including a pre-made Makefile.
 
-=== macOS setup: all-in-one
+
+[[macos-setup]]
+=== macOS setup: Homebrew
+
+[source,sh]
+----
+brew tap riboseinc/metanorma
+brew install metanorma
+----
+
+This uses Metanorma’s link:/software/homebrew-metanorma[Homebrew formula].
+To install using the HEAD development version of the formula, run:
+
+[source,sh]
+----
+brew install --HEAD https://raw.githubusercontent.com/riboseinc/homebrew-metanorma/master/metanorma.rb
+----
+
+
+=== macOS setup: all-in-one script
 
 Run the following for an automatic install
 that would prepare a fresh system to work with Metanorma.
 
-NOTE: This installs not just the Metanorma components but also prerequisites
+NOTE: This installs not just the Metanorma components, but also prerequisites
 such as Homebrew and basic tools like Sublime Text.
 
 This should take less than 15 minutes depending on your machine and Internet connection:
