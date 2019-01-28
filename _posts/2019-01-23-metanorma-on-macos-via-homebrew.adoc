@@ -1,0 +1,74 @@
+---
+layout: post
+title:  "Metanorma available for macOS as Homebrew formula"
+date:   2019-01-23
+categories: about
+excerpt: >-
+    Metanorma is now available on macOS as a native install
+    through the Homebrew package manager.
+---
+= Metanorma available for macOS as Homebrew formula
+
+Metanorma is now available for installation on macOS via the Homebrew package installer.
+
+You humble wizards here in Metanorma HQ happen to be of the Macintosh persuasion,
+and for there to be a Windows package management solution for Metanorma (our
+link:posts/2018-12-25-metanorma-on-windows-via-chocolatey[Chocolatey package]
+was announced on Christmas, BTW), without an equivalent for the Mac, is something of an imbalance.
+
+.Redressing a package installer imbalance
+image::/assets/blog/2019-01-23.jpg[Redressing a package installer imbalance,width=100%]
+
+An imbalance that has now been addressed: Metanorma is now available on https://brew.sh[Homebrew],
+the storied macOS package management solution.
+
+For the curious: our sourcecode for the Homebrew installer is on https://github.com/riboseinc/homebrew-metanorma.
+
+
+== Installing Metanorma on macOS using Homebrew
+
+The Metanorma Homebrew formula is officially supported
+for installing Metanorma natively on your macOS machine.
+
+As a native install, it is much faster than running Metanorma
+via the Metanorma Docker container.
+
+Short and sweet, simple steps:
+
+. If you don't already have Homebrew installed, install Homebrew
+  according to the https://brew.sh[Homebrew] installation guide.
++
+For your convenience, this is how you install Homebrew, at least today:
+[source,console]
+----
+curl -L ... homebrew
+----
+
+. Install Metanorma from Homebrew:
+[source,console]
+----
+brew tap riboseinc/metanorma
+brew install metanorma
+----
+
+NOTE: Alternatively, if you want to install Metanorma straight from the spigot (er, URL), you can do:
+[source,console]
+----
+brew install --HEAD https://raw.githubusercontent.com/riboseinc/homebrew-metanorma/master/metanorma.rb
+----
+
+
+Happy brewing!
+
+
+== More information
+
+Learn more about how Metanorma can help you create and unify
+your standards at https://www.metanorma.com.
+
+See also:
+
+* https://chocolatey.org/packages/metanorma/1.0.10[The Chocolatey Metanorma package]
+* https://github.com/riboseinc/homebrew-metanorma[Code for the Homebrew Metanorma formula]
+* https://chocolatey.org/docs/why[Why Chocolatey?]
+
