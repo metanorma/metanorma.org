@@ -76,6 +76,10 @@ body.overview section.documentation {
 .site--project.layout--home {
   > .underlay.header {
     > .hero > .text {
+      @media screen and (min-width: $bigscreen-breakpoint) {
+        margin-right: 240px;
+      }
+
       > .title {
         font-weight: 500;
       }
@@ -84,12 +88,98 @@ body.overview section.documentation {
           border-radius: 25px;
           padding-left: 32px;
           padding-right: 32px;
+
           &:first-child {
             &, &:link, &:visited {
               color: white;
               background-color: $accent-color;
             }
           }
+        }
+      }
+    }
+  }
+
+  > main > .underlay > .software,
+  > main > .underlay > .featured-posts,
+  > main > .specs {
+    > .title {
+      align-self: flex-start;
+    }
+  }
+
+  > main .flavors {
+    margin-bottom: 1em;
+
+    h2 {
+      font-weight: 500;
+    }
+
+    &.with-switcher {
+      section h3 {
+        display: none;
+      }
+    }
+
+    .switcher {
+      // Widget added by JS
+      margin-top: 1em;
+      button {
+        border: 0;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        padding: .25em 1em;
+        border-radius: .5em;
+
+        color: $primary-color;
+
+        &.active {
+          background-color: $primary-color;
+          color: white;
+        }
+        &.inactive {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .items {
+      display: flex;
+      flex-wrap: wrap;
+      margin: -0.5em;
+      align-items: flex-start;
+
+      > a:link, > a:visited {
+        color: $primary-color;
+      }
+
+      > * {
+        display: flex;
+        flex-flow: column nowrap;
+
+        > article {
+          flex: 1;
+          padding: 1em 1.5em;
+        }
+
+        //flex: 1 0 5em;
+        //height: 4em;
+
+        margin: 0.5em;
+        max-width: 20em;
+
+        border-radius: .5em;
+        box-shadow: 0 9px 20px rgba(black, 0.1);
+        background-image: linear-gradient(25deg, #FFD77F, #FFF3A3);
+        //background-image: linear-gradient(25deg, $primary-color, #6e79ae);
+
+        header {
+          font-size: 140%;
+          font-weight: 700;
+        }
+        p {
+          margin: .25em 0 0 0;
         }
       }
     }

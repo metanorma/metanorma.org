@@ -1,11 +1,65 @@
 ---
 layout: default
+
+flavours:
+  bodies:
+  - name: ISO
+    path: /flavours/iso/
+  - name: IETF
+    path: /flavours/ietf/
+  - name: CalConnect
+    path: /flavours/csd/
+  - name: RFC
+    path: /flavours/rfc/
+  - name: UNECE
+    path: /flavours/unece/
+  corporate:
+  - name: MPFD
+    path: /flavours/mpfd/
 ---
 
 <div class="underlay summary-background">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-    <polygon fill="white" points="0,0 100,0 100,60 0,100"/>
-  </svg>
+  <section class="flavors switchable-flavours">
+    <h2 class="title">Write compliant documents</h2>
+
+    <section data-mode="standards-bodies">
+      <h3>Standards bodies</h3>
+      <div class="items">
+        {% for fl in layout.flavours.bodies %}
+          <a href="{{ fl.path | relative_url }}">
+            <article class="fl">
+              <header>{{ fl.name }}</header>
+            </article>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section data-mode="corporate">
+      <h3>Corporate users</h3>
+      <div class="items">
+        {% for fl in layout.flavours.corporate %}
+          <a href="{{ fl.path | relative_url }}">
+            <article class="fl">
+              <header>{{ fl.name }}</header>
+            </article>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  </section>
+
+  <section class="flavors">
+    <h2 class="title">Create workflow for your organization</h2>
+
+    <div class="items">
+      <a class="sample" href="{{ "/custom-workflow/" | relative_url }}">
+        <article class="flavor">
+          <header>Get started</header>
+        </article>
+      </a>
+    </div>
+  </section>
 
   <section class="summary">
     <p>
@@ -35,6 +89,10 @@ layout: default
 </div>
 
 {% include home-project.html %}
+
+<script src="https://unpkg.com/react@^16/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@^16/umd/react-dom.production.min.js"></script>
+<script src="{{ "/assets/home-flavour-switcher.js" | relative_url }}"></script>
 
 <!--
 

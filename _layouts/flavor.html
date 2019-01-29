@@ -1,0 +1,87 @@
+---
+layout: docs-base
+html-class: docs-page
+
+docs_title: Metanorma-ISO
+navigation:
+  items:
+  - title: Quickstart
+    items:
+    - title: Install
+      path: /flavours/iso/install/
+
+# title: ISO
+# asciidoctor_flavor: AsciiISO
+# cli_flags: "--type iso -x html,doc,xml"
+
+sample_document_name: my-document-title.adoc
+sample_document_ext: adoc
+
+modes:
+  - title: Docker
+  - title: Homebrew
+  - title: Ruby gem
+---
+<p>
+On installing Metanorma toolchain, refer to installation guidelines.
+
+<ol class="steps">
+  <li>
+    Install Metanorma
+
+    <div class="with-mode-selector">
+      <div data-mode="Docker">
+        <p>Docker</p>
+        <pre class="highlight">docker pull ribose/metanorma</pre>
+      </div>
+      <div data-mode="Homebrew">
+        <p>Homebrew</p>
+        <pre>brew tap riboseinc/metanorma</pre>
+      </div>
+      <div data-mode="Ruby gem">
+        <p>Ruby gem</p>
+        <pre>gem install metanorma</pre>
+      </div>
+    </div>
+  </li>
+
+  <li>
+    Write a document using Asciidoctor markup with {{ page.title }} extensions
+
+    <div class="actions">
+      <a href="https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/">Asciidoctor quick reference</a>
+      <a href="./markup/">{{ page.asciidoctor_flavor }} reference</a>
+    </div>
+  </li>
+
+  <li data-mode="Docker" class="mode-restricted recommended">
+    Specify the `:local-cache-only:` AsciiDoc attribute in document header to speed up rendering
+    when using Docker
+  </li>
+
+  <li>
+    Run Metanorma against your documents
+
+    <div class="with-mode-selector">
+      <div data-mode="Docker">
+        <pre>docker run -v "$(pwd)":/metanorma/ -w /metanorma ribose/metanorma "metanorma {{ page.cli_flags }} [{{ layout.sample_document_name }}.{{ layout.sample_document_ext }}]"</pre>
+      </div>
+      <div data-mode="Homebrew,Ruby gem">
+        <pre>metanorma {{ page.cli_flags }} [{{ layout.sample_document_name }}.{{ layout.sample_document_ext }}]</pre>
+      </div>
+    </div>
+  </li>
+</ol>
+
+<template id="modeSelector">
+  <div class="mode-selector">
+    {% for mode in layout.modes %}
+      <button
+        data-selects-mode="{{ mode.title }}"
+        class="{% if forloop.index == 0 %}selected{% endif %}"
+        >{{ mode.title }}</button>
+    {% endfor %}
+  </div>
+</template>
+
+<script src="{{ "/assets/installation-mode-widget.js" | relative_url }}"></script>
