@@ -1,0 +1,31 @@
+---
+layout: docs
+---
+
+= Output in different languages
+
+Metanorma allows generation of standards in different languages.
+
+The language of the document is specified in following link:../meta-header[document attributes]:
+
+- `:language:`
+- `:script:` (for languages with more than one script)
+
+For each language, language-specific templated text is specified for the boilerplate,
+labels and cross-references that are included in document output.
+Metanorma has predefined templates for English, Chinese (Simplified) and French.
+
+You can specify your own language by providing your own
+http://www.yaml.org/spec/1.2/spec.html[YAML] template file,
+and linking to it with the `:i18nyaml:` link:../meta-header[document attribute].
+
+The YAML template you provide needs to match
+https://github.com/riboseinc/isodoc/blob/master/lib/isodoc/i18n-en.yaml[this file],
+substituting translations for each of the fields given in that file.
+
+https://github.com/riboseinc/metanorma-iso/blob/master/spec/examples/english.yaml[A sample YAML file for English],
+with "Foreword" replaced with "Frontispiece",
+is available in the `metanorma-iso` repository examples directory.
+
+The Chinese (Simplified) template also localises punctuation and spacing,
+mapping them away from the default Latin punctuation used elsewhere in the gem.
