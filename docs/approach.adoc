@@ -1,0 +1,63 @@
+---
+layout: docs
+---
+
+= Metanorma’s approach to authoring documents
+
+Essentially, Metanorma converts given
+source document—a set of files authored using AsciiDoc markup—to an XML-based presentation
+of the document according to the document model.
+It validates the document based on formal schema and outputs
+end documents in appropriate formats (HTML, MS Word), according to Metanorma flavour used.
+
+== Document model
+
+The https://github.com/riboseinc/metanorma-model-iso[Metanorma document model] used in document generation
+intends to introduce rigour into the standards authoring process; existing 
+document templates do not support such rigour down to the element level. It also introduces
+flexibility by decoupling the document structure from its presentation.
+
+Formal definitions of standards prescribe the contents of standards to a level
+amenable to an explicit document model.
+The ISO International Standard format, as prescribed in
+http://www.iec.ch/members_experts/refdocs/iec/isoiecdir-2%7Bed7.0%7Den.pdf[ISO/IEC DIR 2 "Principles and rules for the structure and drafting of ISO and IEC documents"],
+is one of the more detailed such prescriptions available.
+
+A formal document model would allow checking for consistency in format and content, and expedite
+authoring and quality control of ISO standards. Authoring standards through a
+more abstract formal model also permit enhanced functionality such as  
+cross-reference link checking and auto-numbering of sections, figures, tables and formulas.
+Outputting a document in different languages also becomes straightforward.
+
+== AsciiDoc and Asciidoctor
+
+Asciidoctor has been selected as the underlying authoring tool to generate the document
+model representation of standards. The markup language it uses is called AsciiDoc.
+AsciiDoc is somewhat similar to both https://daringfireball.net/projects/markdown/[Markdown]
+and https://docbook.org/[DocBook]: it combines the relative ease of use of the former
+(using relatively lightweight markup), and the rigour and expressively of the
+latter (it has a well-defined syntax, and was in fact initially developed as a
+DocBook document authoring tool).
+
+Asciidoctor itself has built-in capability to output text and HTML,
+so the tool can be used to preview a Metanorma document as it is being authored.
+However, since Metanorma toolchain also outputs HTML and MS Word files, there should
+not be much need for this.
+
+While Metanorma uses AsciiDoc markup, there are some specifics in how it is interpreted.
+Additionally, Asciidoctor has some formatting constraints because of its own document model.
+
+Asciidoctor has some formatting constraints because of its own document model
+that users need to be aware. For example, Asciidoctor disallows
+multiple paragraphs in footnotes
+http://discuss.asciidoctor.org/footnotes-with-paragraph-breaks-td4130.html[by design].
+
+The link:../authoring/[Authoring] section provides details about Metanorma’s interpretation
+of AsciiDoc and format caveats.
+
+[TIP]
+====
+Note that the Metanorma document model does not impose Asciidoctor constraints
+so for example technically you could edit the generated XML presentation to break up paragraphs
+within a footnote.
+====
