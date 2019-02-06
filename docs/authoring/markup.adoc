@@ -7,6 +7,21 @@ layout: docs
 This page details any specific ways in which Metanorma interprets Asciidoctor markup,
 as well as custom markup directives.
 
+
+== Unsupported Asciidoctor features
+
+Sidebars (`aside`) are not supported, and have been repurposed for link:./#reviewer-notes[reviewer comments].
+Page breaks (`thematic break`) are not supported; ASCII art/preformatted text (`literal`)
+are not supported in most link:/flavours/[officially supported Metanorma flavours].
+
+
+== Autonumbering
+
+Autonumbering in Metanorma extends to formulas (which are encoded as "stem" blocks) and notes.
+Autonumbering is applied in the conversion from Metanorma XML to output formats (`isodoc`);
+by default it restarts for each annex, but is continuous for the main body of text.
+
+
 == Document sections
 
 Sections are marked off in Asciidoc with titles prefixed by double equal signs, `==`.
@@ -37,12 +52,204 @@ that provides the English canonical form of the section name. For example:
 == Terms, definitions and abbreviations
 --
 
-=== About the Foreword
+=== Obligations
+
+The obligation of sections—whether they are normative or informative—is indicated
+with the attribute "obligation". For most sections, this is fixed; for annexes and clauses, the
+default value of the obligation is "normative", and users need to set the obligation
+to "informative" as a section attribute. For example:
+
+[source,asciidoctor]
+--
+[[AnnexA]]
+[appendix,obligation=informative]
+== Determination of defects
+--
+
+=== The Foreword
 
 The Foreword of a standard is detected as any text between the document header
 and the first section header (the "document preamble" in Asciidoctor).
 The Rice document gives the `.Foreword` title to the preamble,
 but Metanorma will supply the "Foreword" title regardless of what title is present.
+
+=== The “Terms and Definitions” section
+
+If the Terms and Definitions of a standard are partly or fully sourced from
+another standard, that standard is cited in a `source` attribute to the section,
+which is set to the reference anchor of the standard (given under the Normative
+Referencecs).
+Any boilerplate of the Terms and Definitions section is adjusted accordingly.
+
+[source,asciidoctor]
+--
+[source=ISO712]
+== Terms and Definitions
+--
+
+Multiple sources are allowed, and need to be quoted and comma-delimited:
+
+[source,asciidoctor]
+--
+[source="ISO712,ISO24333"]
+== Terms and Definitions
+--
+
+==== Subclauses within “Terms & Definitions”
+
+Normally any terminal subclause in a Terms & Definitions section is treated as a term
+definition. Exceptionally, an introductory section can be tagged to be treated as a clause,
+instead of a term, by prefixing it with the style attribute `[.nonterm]`.
+
+[source,asciidoctor]
+--
+== Terms and definitions
+
+[.nonterm]
+=== Introduction
+The following terms have non-normative effect, and should be ignored by the ametrical.
+
+=== Anapaest
+
+metrical foot consisting of a short, a long, and a short
+--
+
+Any clause within a Terms & Definitions section which is a nonterminal subclause (has
+child nodes) is automatically itself a terms (or definitions) section. On the other hand,
+any descendant of a nonterm clause is also a nonterm clause.
+
+=== Sections embedded more than 5 levels
+
+Asciidoctor permits only 5 levels of section embedding (not counting the document title).
+Standards do contain more levels of embedding; ISO/IEC DIR 2 only considers it a problem
+if there are more than 7 levels of embedding. To realise higher levels of embedding,
+prefix a 5-level section title with the attribute `level=`:
+
+[source,asciidoctor]
+--
+====== Clause 5
+
+[level=6]
+===== Clause 6
+
+[level=7]
+====== Clause 7A
+
+[level=7]
+====== Clause 7B
+
+[level=6]
+====== Clause 6B
+
+====== Clause 5B
+--
+
+This generates the following ISO XML:
+
+[source,xml]
+--
+<clause id="_" inline-header="false" obligation="normative">
+	<title>
+		Clause 5 
+	</title>
+	<clause id="_" inline-header="false" obligation="normative">
+		<title>
+			Clause 6 
+		</title>
+		<clause id="_" inline-header="false" obligation="normative">
+			<title>
+				Clause 7A 
+			</title>
+		</clause>
+		<clause id="_" inline-header="false" obligation="normative">
+			<title>
+				Clause 7B 
+			</title>
+		</clause>
+	</clause>
+	<clause id="_" inline-header="false" obligation="normative">
+		<title>
+			Clause 6B 
+		</title>
+	</clause>
+</clause>
+<clause id="_" inline-header="false" obligation="normative">
+	<title>
+		Clause 5B 
+	</title>
+</clause>
+--
+
+
+== Paragraphs
+
+Paragraph alignment is defined as an attribute for paragraphs:
+
+[source,asciidoctor]
+--
+[align=left]
+This paragraph is aligned left
+
+[align=right]
+This paragraph is aligned right
+
+[align=center]
+This paragraph is aligned center
+
+[align=justified]
+This paragraph is justified, which is the default
+--
+
+== Block quotes
+
+As in normal Asciidoctor, block quotes are preceded with an author and a citation;
+but the citation is expected to be in the same format as all other citations, 
+a cross-reference optionally followed by text, which may include the bibliographic
+sections referenced:
+
+[source,asciidoctor]
+--
+[quote, ISO, "ISO7301,section 1"]
+_____
+This International Standard gives the minimum specifications for rice (_Oryza sativa_ L.) 
+which is subject to international trade. It is applicable to the following types: husked rice 
+and milled rice, parboiled or not, intended for direct human consumption. It is neither 
+applicable to other products derived from rice, nor to waxy rice (glutinous rice).
+_____
+--
+
+
+== Strikethrough and small caps
+
+The following formatting macros are used for strikethrough and small caps text:
+
+[source,asciidoctor]
+--
+[strike]#strike through text#
+[smallcap]#small caps text#
+--
+
+
+== Terms
+
+To ensure the structure of Terms and Definitions is captured accurately, the following
+macros are defined, and must be used to mark up their respective content:
+
+`alt:[TERM]`:: for alternative terms
+`deprecated:[TERM]`:: for deprecated terms
+`domain:[TERM]`:: for term domains
+
+The macro contents can contain their own markup.
+
+[source,asciidoctor]
+--
+=== paddy 
+alt:[_paddy_ rice]
+deprecated:[#[smallcap]#cargo# rice]
+domain:[rice]
+
+_paddy_ (<<paddy>>) from which the husk only has been removed
+--
 
 
 == Lists
@@ -79,6 +286,7 @@ In HTML output, all the paragraphs within a list item will be aligned.
   the subsequent paragraphs will not be preceded by a bullet in Word,
   but they will also not be indented under the first paragraph of the list item.
 
+
 == Tables
 
 While Asciidoctor tables are quite powerful for a non-XML markup language,
@@ -88,9 +296,34 @@ Metanorma adds the option of multiple header rows (attribute `headerrows=n`)
 to deal with the complexity of ISO tables
 requiring labels, variables, and units to lining up in the header.
 
-Asciidoc allows table cells to have footnotes (which the gem renders inside the table)
-and notes following the table (which the gem moves inside the table footer).
-Table 1 in the AsciiISO Rice document illustrates a large range of table formatting options.
+Asciidoc allows table cells to have footnotes (which Metanorma renders inside the table)
+and notes following the table (which Metanorma moves inside the table footer).
+
+[TIP]
+====
+Table 1 in the AsciiISO Rice example document illustrates
+a large range of table formatting options.
+====
+
+=== Count of table header and footer rows
+
+In Asciidoc, a table can have at most one header row or footer row. In Metanorma,
+a nominal single header row is routinely broken up into multiple rows in order
+to accommodate units or symbols, that line up against each other, though
+they are displayed as merged cells with no grid between them. To address this,
+tables can be marked up with an optional `headerrows` attribute:
+
+[source,asciidoctor]
+--
+[headerrows=2]
+|===
+.2+|Defect 4+^| Maximum permissible mass fraction of defects in husked rice +
+stem:[w_max]
+| in husked rice | in milled rice (non-glutinous) | in husked parboiled rice | in milled parboiled rice
+
+| Extraneous matter: organic footnote:[Organic extraneous matter includes foreign seeds, husks, bran, parts of straw, etc.] | 1,0 | 0,5 | 1,0 | 0,5
+|===
+--
 
 == Formulae
 
@@ -144,6 +377,8 @@ P:: point of the curve corresponding to a cooking time of stem:[t_90]
 NOTE: These results are based on a study carried out on three different types of kernel.
 --
 
+=== Subfigures
+
 Subfigures (which appear in ISO) are entered by including images in an Asciidoctor example:
 
 [source,asciidoc]
@@ -163,6 +398,54 @@ image::rice_images/rice_image3_3.png[]
 ====
 --
 
+=== Image size
+
+The value `auto` is accepted for image width and height attributes. It is only passed on
+to HTML output; if the output is to Word, both the width and height attributes are stripped
+from the image.
+
+[source,asciidoctor]
+--
+[height=90,width=auto]
+image::logo.jpg
+--
+
+=== Diagrams using PlantUML
+
+The http://plantuml.com[PlantUML] diagramming tool is integrated with Asciidoctor
+in this gem, as a literal block with the style attribute `plantuml`:
+
+[source,asciidoctor]
+--
+[plantuml]
+....
+@startuml
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: another authentication Response
+@enduml
+....
+--
+
+The integration runs PlantUML for each such block, generating a PNG image.
+The images are stored in the `plantuml` directory, and linked into the output
+document in place of the PlantUML.
+
+[NOTE]
+====
+PlantUML needs to be installed by users separately, and accesssible from the
+command line:
+
+* `brew install plantuml` on MacOS.
+* For Linux, link the PlantUML jar file into a command line executable; see
+`.travis.yml` for an example.
+
+If PlantUML is not installed locally, the source PlantUML is incorporated into
+the output document as sourcecode.
+====
+
 
 == Notes
 
@@ -174,7 +457,7 @@ That is, notes are folded into a preceding paragraph, list, formula, or figure.
 == Cross-references
 
 The guidance given in ISO/IEC DIR 2 for internal cross-references
-guarantees unambiguous referencing, and it is followed rigorously by Metanorma.
+guarantees unambiguous referencing and is followed rigorously by Metanorma.
 
 In particular, if a formula, example, figure, list, list item or table is cross-referenced
 outside its (sub)clause, the clause containing the item is always given in the cross-reference,
@@ -201,6 +484,8 @@ in the Asciidoctor source
 (e.g. `<<``formulaB-1``>>` generates either "Formula (B.1)" or "B.6, Formula (B.1)",
 depending on where in the document it occurs.)
 
+=== List items
+
 List items can be cross-referenced by inserting a bookmark at the very start of the list item:
 
 [source,asciidoc]
@@ -210,10 +495,172 @@ List items can be cross-referenced by inserting a bookmark at the very start of 
 ... [[id]] This is a list sub-item
 --
 
+=== Cross-references to external documents
+
+Metanorma Asciidoctor, like normal Asciidoctor, will process cross-references to
+anchors within external documents. For example,
+
+[source,asciidoc]
+--
+<<document1.adoc#b>>
+--
+
+will be processed as a link to anchor `#b` in document `document1.adoc`.
+
+If the reference uses `.adoc` suffix, as in above example, it is stripped in Metanorma XML
+and substituted with the extension of the current document type during document generation.
+
+The above example is rendered in Metanorma XML as `<xref target="document1#b">`,
+in HTML as `<a href="document1.html#b">`, and in PDF as `<a href="document1.pdf#b">`.
+
 
 == Reviewer notes
 
-To annotate document with arbitrary blocks of text, Metanorma allows
-using Asciidoctor sidebars and anchors for the beginning and end of the annotation.
+To annotate document with reviewer notes (essentially, arbitrary blocks of text),
+Metanorma allows using Asciidoctor sidebars.
 
-See also: https://github.com/riboseinc/metanorma-standoc#reviewer-notes[a discussion in the README for `metanorma-standoc`].
+Sidebars can be separated at a distance from the text they are annotating;
+the text they are annotating is indicated through anchors. 
+
+[NOTE]
+====
+Reviewer notes are only rendered if the document has a `:draft:` attribute.
+====
+
+The following attributes on reviewer notes are mandatory:
+
+* `reviewer` attribute (naming the reviewer) 
+* the starting target anchor of the note (`from` attribute)
+
+The following attributes are optional:
+
+* `date` attribute, optionally including the time (as xs:date or xs:datetime)
+* the ending target anchor of the note (`to` attribute)
+
+The span of text covered by the reviewer note is from the start of the
+text encompassed by the `from` element, to the end of the text encompassed
+by the `to` element. If only the `from` element supplied, the reviewer note
+covers the `from` element. The `from` and `to` elements can be bookmarks,
+which cover no space.
+
+[source,asciidoctor]
+--
+[[clause_address_profile_definition]]
+=== Address Profile Definition (AddressProfileDescription)
+
+[[para1]]
+This is a clause address [[A]]profile[[B]] definition
+
+[reviewer="Nick Nicholas",date=20180125T0121,from=clause_address_profile_definition,to=para1]
+****
+I do not agree with this statement.
+****
+
+[reviewer="Nick Nicholas",date=20180125T0121,from=A,to=B]
+****
+Profile?!
+****
+--
+
+
+== Footnotes
+
+Table and figure footnotes are treated diffferently from all other footnotes: they are
+rendered at the bottom of the table or figure, and they are numbered separately.
+
+
+== References & bibliography
+
+Generic references in bibliographies use bracketed numbers, like `[1]`.
+
+Citations can include details of where in the document the citation is located (or the word “whole”);
+these are entered by suffixing the type of locality, then an equals sign, then the reference. 
+Multiple instances of locality and reference can be provided, delimited by comma or colon.
+Any trailing text after the sequence of locality=reference (or locality, space, reference)
+is treated as substitute text, as would occur normally in an Asciidoctor crossreference.
+
+For example:
+
+[source,asciidoctor]
+--
+<<ISO712,the foregoing reference>>     # renders as: the foregoing reference
+<<ISO712,section=5, page 8-10>>         # renders as: ISO 712, Section 5, Page 8-10
+<<ISO712,section=5, page=8-10: 5:8-10>> # renders as ISO 712, 5:8-10 ("5:8-10" treated as replacement text for all the foregoing)
+<<ISO712,whole>>                        # renders as: ISO 712, Whole of text
+--
+
+The references cannot contain spaces. Any text following the sequence of localities
+will be displayed instead of the localities.
+
+A custom locality can be entered by prefixing it with `locality:`:
+
+[source,asciidoctor]
+--
+<<ISO712,locality:frontispiece=5, page=8-10>>         # renders as: ISO 712, Frontispiece 5, Page 8-10
+--
+
+Custom localities may not contain commas, colons, or space. Localities with the `locality:`
+prefix are recognised in internationalisation configuration files.
+
+
+=== Referencing established standards
+
+References to well-defined standards codes use the document identifiers
+(e.g. `ISO 20483:2013`) for citations.
+
+Bibliographic entries for standards are expected to have the standard document
+identifier as the item label.
+
+[source,asciidoctor]
+--
+* [[[ref1,ISO 712]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+--
+
+==== Automatic reference lookup
+
+For references to certain standards, Metanorma will attempt to look up references online
+during document build.
+
+By default, the https://github.com/riboseinc/relaton[`relaton`] gem is used to look up the reference details for
+standards known to have online bibliographies. For bibliographic standards to be looked up via relaton,
+the standard document identifier needs to be encoded in a format recognised by relaton as a key:
+
+* For ISO: `ISO(identifier)`, or any identifier prefixed with `ISO`
+* For IEC: `IEC(identifier)`, or any identifier prefixed with `IEC`
+* For IETF: `IETF(identifier)` (e.g. `IETF(I-D.-burger-xcon-mmodels)`), or any identifier prefixed with `RFC`
+* For GB: `CN(identifier)` (e.g. `CN(JB/T 13368-2018)`)
+
+The full bibliographic details of the item are screenscraped from the online bibliography and inserted into the XML file 
+(although only the title of the reference is used in rendering).
+
+In addition, if any entries in Terms and Definitions cite the International Electrotechnical Vocabulary (IEV),
+the http://www.electropedia.org[IEV Electropedia] termbank is queried during validation, to confirm
+that the cited entries are the same as what is cited online; those queries are routed through the `iev` gem
+
+===== Caching
+
+The results of all `relaton` searches done to date, across all documents,
+are cached in the global cache file `~/.relaton/cache`,  
+so they do not need to be re-fetched each time a document is processed.
+(The web query takes a few seconds per reference.)
+
+The results of all `relaton` searches done to date in a given directory
+are stored in the same directory as the current document,
+by default to the file `relaton/cache`. (The filename can be overriden in
+document attributes.) The local cache overrides entries in
+the global cache, and can be manually edited. The local cache is only used
+if the `:local-cache:` or `:local-cache-only:` document attribute is set.
+
+If the document attribute `:no-isobib:` is set, the reference details for
+items are not looked up via `isobib`, and the `isobib` caches are not used.
+If the document attribute `:no-isobib-cache:` is set, the reference details for
+items are still looked up via `isobib`, but the `isobib` caches are not used.
+
+Any entry in the cache that corresponds to an undated ISO reference fetches its details
+from the latest available entry on the ISO web site. If the entry is more than 60
+days old, it is refetched.
+
+The results of all `iev` searches done to date across all documents are cached
+in the global cache fule `~/iev.pstore`, and the results of all `iev` searches
+done to date for the current document are stored in the same directory as the
+current document, in the file `(filename).iev.pstore`.

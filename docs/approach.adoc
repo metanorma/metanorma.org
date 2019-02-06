@@ -31,18 +31,22 @@ Outputting a document in different languages also becomes straightforward.
 
 == AsciiDoc and Asciidoctor
 
-Asciidoctor has been selected as the underlying authoring tool to generate the document
-model representation of standards. The markup language it uses is called AsciiDoc.
+AsciiDoc was chosen as the markup language for writing Metanorma documents,
+and Asciidoctor is the tool used to convert the document model representation of standards.
+
 AsciiDoc is somewhat similar to both https://daringfireball.net/projects/markdown/[Markdown]
 and https://docbook.org/[DocBook]: it combines the relative ease of use of the former
 (using relatively lightweight markup), and the rigour and expressively of the
 latter (it has a well-defined syntax, and was in fact initially developed as a
 DocBook document authoring tool).
 
-Asciidoctor itself has built-in capability to output text and HTML,
-so the tool can be used to preview a Metanorma document as it is being authored.
-However, since Metanorma toolchain also outputs HTML and MS Word files, there should
+Since Metanorma uses Asciidoctor, and Asciidoctor can output text and HTML,
+if desired Asciidoctor toolchain can be used to preview a Metanorma document
+as it is being authored.
+However, since Metanorma toolchain outputs HTML and MS Word files, there should
 not be much need for this.
+
+=== Differences from Asciidoctor
 
 While Metanorma uses AsciiDoc markup, there are some specifics in how it is interpreted.
 Additionally, Asciidoctor has some formatting constraints because of its own document model.
@@ -52,12 +56,12 @@ that users need to be aware. For example, Asciidoctor disallows
 multiple paragraphs in footnotes
 http://discuss.asciidoctor.org/footnotes-with-paragraph-breaks-td4130.html[by design].
 
-The link:../authoring/[Authoring] section provides details about Metanorma’s interpretation
-of AsciiDoc and format caveats.
-
 [TIP]
 ====
-Note that the Metanorma document model does not impose Asciidoctor constraints
+Note that the Metanorma document model does not impose Asciidoctor constraints,
 so for example technically you could edit the generated XML presentation to break up paragraphs
 within a footnote.
 ====
+
+The link:../authoring/[Authoring] section provides details about Metanorma’s interpretation
+of AsciiDoc and format caveats.
