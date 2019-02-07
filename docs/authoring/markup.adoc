@@ -5,14 +5,15 @@ layout: docs
 = Text markup
 
 This page details any specific ways in which Metanorma interprets Asciidoctor markup,
-as well as custom markup directives.
+as well as custom markup directives supported across most of the
+link:/flavours/[officially supported Metanorma flavours].
 
 
 == Unsupported Asciidoctor features
 
 Sidebars (`aside`) are not supported, and have been repurposed for link:./#reviewer-notes[reviewer comments].
 Page breaks (`thematic break`) are not supported; ASCII art/preformatted text (`literal`)
-are not supported in most link:/flavours/[officially supported Metanorma flavours].
+are not supported in most Metanorma flavours.
 
 
 == Autonumbering
@@ -54,10 +55,12 @@ that provides the English canonical form of the section name. For example:
 
 === Obligations
 
-The obligation of sections—whether they are normative or informative—is indicated
-with the attribute "obligation". For most sections, this is fixed; for annexes and clauses, the
-default value of the obligation is "normative", and users need to set the obligation
-to "informative" as a section attribute. For example:
+The obligation of a section—whether it is normative or informative—is indicated
+with the attribute "obligation".
+
+For most sections, this is fixed; for annexes and clauses,
+the default value of the obligation is "normative" and users need to set the obligation
+to "informative" as a section attribute if needed. For example:
 
 [source,asciidoctor]
 --
@@ -75,10 +78,112 @@ but Metanorma will supply the "Foreword" title regardless of what title is prese
 
 === The “Terms and Definitions” section
 
+==== Grammar
+
+Terms and Definitions sections follow a strict grammar, which is reflected in their AsciiDoc markup:
+
+* The term is given as a subheading at the appropriate level (three equal signs, unless there are subsections in the Terms and Definition section). The term may be crossreferenced from other terms, in which case it should have an anchor.
+* The term is optionally followed by alternative/admitted terms, which must be marked up in an `+alt:[...]+` macro; deprecated terms, which must be marked up in a `+deprecated:[...]+` macro; and a term domain, which must be marked up in a `+domain:[...]+` macro.
+* The definition of the term is given in a separate paragraph.
+* The definition is optionally followed by examples (paragraphs with an `[example]` style attribute).
+* The definition is then optionally followed by notes (denoted with a `NOTE:` prefix).
+* The definition is then followed by a citation for the term, marked with a `[.source]` role attribute). 
+* The citation is a cross-reference to a normative reference, optionally followed by a comma and a modification if applicable.
+
+For example,
+
+[source,asciidoc]
+--
+[[paddy]]
+=== paddy 
+alt:[paddy rice]
+alt:[rough rice]
+deprecated:[cargo rice]
+domain:[rice]
+
+rice retaining its husk after threshing
+
+[example]
+Foreign seeds, husks, bran, sand, dust.
+
+NOTE: The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking. 
+
+[.source]
+<<ISO7301,section 3.2>>, The term "cargo rice" is shown as deprecated,
+and Note 1 to entry is not included here
+--
+
+The requirement that the source of a term be given in a citation also applies when the source is a term bank, such as the http://www.electropedia.org[International Electrotechnical Vocabulary (IEV)]. Formally, IEV references should be cited as `IEC 60050-nnn:20xx`, where `n` is the top-level clause, and `20xx` is the year when that particular specification was published; e.g. `IEC 60050-113:2011, 113-01-07`. For convenience, this gem requires all IEV references to be to a single reference, named `IEV` in the normative references. In rendering the Asciidoctor into Metanorma XML, this reference will be replaced by the various required IEC 60050-nnn:20xx references. (That means that you should not insert your own instances of IEC 60050 references for IEV citations: they will be duplicated by the automatically generated references.)
+
+[source,asciidoc]
+--
+[.source]
+<<ievtermbank,clause="103-01-02">>
+
+...
+
+[bibliography]
+* [[[ievtermbank,IEV]]], _IEV: Electropedia_
+// will be excluded from HTML and Word output. Will be replaced by a canonical reference in XML output.
+--
+
+Note that, for IEV entries to be validated, the IEV reference must be given as a Clause, and in quotes (otherwise the locality syntax would be interpreted as a range); so `<<ievtermbank,clause="103-01-02">>` for IEV 103-01-02.
+
+Asciidoctor does not permit macros to be nested inside other macros; so the following markup, introducing a stem expression as an admitted term, is illegal. (The use of stem expressions as preferred terms is not a problem, because the macro appears as a header.)
+
+[source,asciidoc]
+--
+=== stem:[t_90] 
+alt:[stem:[t_A]]
+
+Time to launch.
+--
+
+However, the gem will treat any standalone paragraph in a term section, consisting of just a stem macro, as an admitted term:
+
+[source,asciidoc]
+--
+=== stem:[t_90] 
+
+stem:[t_A]
+
+Time to launch.
+--
+
+As defined above, all terminal subclauses of a term section are treated as term definitions. Exceptionally, an introductory section can be treated as a subclause instead of a term, by prefixing it with the style attribute `[.nonterm]`:
+
+[source,asciidoctor]
+--
+== Terms and definitions
+
+[.nonterm]
+=== Introduction
+The following terms have non-normative effect, and should be ignored by the ametrical.
+
+=== Anapaest
+
+metrical foot consisting of a short, a long, and a short
+--
+
+==== Title
+
+The title of a top-level Terms and Definitions clause is populated automatically,
+overriding the title provided by the user: if it contains a Symbols and Abbreviated Terms subclause,
+it is titled _Terms, definitions, symbols and abbreviated terms_,
+otherwise it is titled _Terms and definitions_.
+A Terms and Definitions clause will be recognised if either title is given,
+regardless of case.
+Symbols and Abbreviated Terms subclauses are also automatically titled;
+other subclauses of Terms and Definitions clauses are not.
+
+==== Source
+
 If the Terms and Definitions of a standard are partly or fully sourced from
 another standard, that standard is cited in a `source` attribute to the section,
-which is set to the reference anchor of the standard (given under the Normative
-Referencecs).
+which is set to the reference anchor of the standard given under the Normative
+References.
+(The attribute needs to be applied to the top-level clause, if there are subclauses.)
+
 Any boilerplate of the Terms and Definitions section is adjusted accordingly.
 
 [source,asciidoctor]
@@ -117,6 +222,75 @@ metrical foot consisting of a short, a long, and a short
 Any clause within a Terms & Definitions section which is a nonterminal subclause (has
 child nodes) is automatically itself a terms (or definitions) section. On the other hand,
 any descendant of a nonterm clause is also a nonterm clause.
+
+Informative clauses are indicated with the attribute `[obligation=informative]`;
+clauses are normative by default.
+
+===== Blank subclases
+
+Blank subclause headings can be given as `=== {blank}`.
+These are used when you want to give a subclause number for a new subclause,
+but without an associated header text. So e.g. in the Rice Model document,
+
+[source,asciidoc]
+--
+=== Physical and chemical characteristics 
+
+==== {blank}
+
+The mass fraction of moisture, determined in accordance with...
+--
+
+renders as 
+
+____
+*4.2. Physical and chemical characteristics*
+
+*4.2.1.*  The mass fraction of moisture, determined in accordance with...
+____
+
+[NOTE]
+====
+This notation should not be used to implement paragraph numbering as required for UNECE.
+The link:/flavours/unece/[UNECE Metanorma flavour] treats each paragraph
+as a distinct clause and automatically numbers it.
+====
+
+===== Inline headings
+
+Inline subclause headings (e.g. for test methods) are indicated by preceding the heading
+with the `[%inline-header]` option attribute. So in the Rice Model document,
+
+[source,asciidoc]
+--
+[%inline-header]
+==== Sieve, 
+
+with round perforations of diameter 1,4 mm.
+--
+
+renders as 
+
+____
+*A.2.1.1. Sieve,* with round perforations of diameter 1,4 mm.
+____
+
+==== Symbols and Abbreviations
+
+Symbols and Abbreviations sections are expected to be simple definition lists
+(http://asciidoctor.org/docs/user-manual/#labeled-list[“labelled lists”]
+in Asciidoctor nomenclature).
+
+Metanorma takes care of sorting the symbol entries in the order prescribed by ISO/IEC DIR 2,
+provided the symbols are in AsciiMath; sorting MathML entries is not currently supported.
+
+==== Empty section
+
+If there are no terms and definitions defined in this standards document,
+no terms should be included in the section body (it should be blank).
+The boilerplate at the start of the section is adjusted to reflect both possibilities;
+any paragraphs or lists in the Asciidoctor input (which can replicate the expected boilerplate)
+is stripped in the intermediate XML format.
 
 === Sections embedded more than 5 levels
 
@@ -266,15 +440,13 @@ to align with ISO/IEC DIR 2:
 The `type` attribute for ordered lists in Asciidoctor,
 which allows the user to specify the label of an ordered list, is ignored.
 
-TIP: The stylesheets for ISO render unordered lists with em-dashes instead of bullets,
-as preferred by ISO. Ordered lists in Word are rendered with their labels bracketed.
-(_a)_, _1)_, etc.)
+=== List items with more than one paragraph
 
-TIP: Asciidoctor and HTML support multiple paragraphs within a single list item
+Asciidoctor and HTML support multiple paragraphs within a single list item
 (see https://asciidoctor.org/docs/user-manual/#list-continuation[list continuation]).
 In HTML output, all the paragraphs within a list item will be aligned.
 
-=== MS Word caveats
+==== MS Word caveats
 
 - For list items containing multiple paragraphs,
   Metanorma attempts to format them appropriately by using custom list continuation styles
@@ -484,6 +656,17 @@ in the Asciidoctor source
 (e.g. `<<``formulaB-1``>>` generates either "Formula (B.1)" or "B.6, Formula (B.1)",
 depending on where in the document it occurs.)
 
+=== Localities
+
+Normally in Asciidoctor, any text in a cross-reference that follows a comma
+constitutes custom text for the cross-reference.
+So a cross-reference `<<ISO7301,the foregoing reference>>`
+would be rendered as "the foregoing reference", and hyperlinked to the ISO7301 reference.
+
+In Metanorma Asciidoctor cross-references, bibliographic localities
+(e.g. page numbers, clause numbers) can be added directly after the comma,
+as part of the cross-reference text. This overrides the normal Asciidoctor treatment of custom text.
+
 === List items
 
 List items can be cross-referenced by inserting a bookmark at the very start of the list item:
@@ -569,17 +752,53 @@ Table and figure footnotes are treated diffferently from all other footnotes: th
 rendered at the bottom of the table or figure, and they are numbered separately.
 
 
-== References & bibliography
+== References & Bibliography
+
+The Normative References and the Bibliography must be preceded by the style attribute
+`[bibliography]`, so that the references they contain may be recognised as such. 
+
+All bibliographic entries must be given as unordered lists. 
 
 Generic references in bibliographies use bracketed numbers, like `[1]`.
 
+Bibliographic entries for standards are expected to have the standard document
+identifier as the item label.
+
+[source,asciidoctor]
+--
+* [[[ref1,ISO 712]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+--
+
+[TIP]
+====
+Currently the gem only supports formatted citations, which are given as such in the Asciidoc source.
+In the future, we expect to integrate the documents with rendering of Relaton-model bibliographies,
+so that the text of the citation itself doesn’t have to be entered by hand.
+====
+
+=== Localities
+
 Citations can include details of where in the document the citation is located (or the word “whole”);
-these are entered by suffixing the type of locality, then an equals sign, then the reference. 
+these are entered by suffixing the lowercase type of locality, then an equals sign,
+then the locality value or range of values.
+
 Multiple instances of locality and reference can be provided, delimited by comma or colon.
 Any trailing text after the sequence of locality=reference (or locality, space, reference)
-is treated as substitute text, as would occur normally in an Asciidoctor crossreference.
+is treated as substitute text, as would occur normally in an Asciidoctor cross-reference.
 
+The locality can appear in quotations if it contains special characters (like dashes or commas).
 For example:
+
+[source,asciidoctor]
+--
+<<ISO7301,clause=3.1-3.4>>
+
+NOTE: This table is based on <<ISO7301,table=1>>.
+
+Sampling shall be carried out in accordance with <<xxx,section="5-3-1,bis">>
+--
+
+More examples:
 
 [source,asciidoctor]
 --
@@ -602,19 +821,18 @@ A custom locality can be entered by prefixing it with `locality:`:
 Custom localities may not contain commas, colons, or space. Localities with the `locality:`
 prefix are recognised in internationalisation configuration files.
 
+Any text after the bibliographic localities is still treated as custom cross-reference text;
+for example:
+
+[source,asciidoctor]
+--
+<<ISO7301,clause=5,table=1,the foregoing reference>>
+--
 
 === Referencing established standards
 
 References to well-defined standards codes use the document identifiers
 (e.g. `ISO 20483:2013`) for citations.
-
-Bibliographic entries for standards are expected to have the standard document
-identifier as the item label.
-
-[source,asciidoctor]
---
-* [[[ref1,ISO 712]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
---
 
 ==== Automatic reference lookup
 
@@ -635,7 +853,7 @@ The full bibliographic details of the item are screenscraped from the online bib
 
 In addition, if any entries in Terms and Definitions cite the International Electrotechnical Vocabulary (IEV),
 the http://www.electropedia.org[IEV Electropedia] termbank is queried during validation, to confirm
-that the cited entries are the same as what is cited online; those queries are routed through the `iev` gem
+that the cited entries are the same as what is cited online; those queries are routed through the `iev` gem.
 
 ===== Caching
 
@@ -664,3 +882,15 @@ The results of all `iev` searches done to date across all documents are cached
 in the global cache fule `~/iev.pstore`, and the results of all `iev` searches
 done to date for the current document are stored in the same directory as the
 current document, in the file `(filename).iev.pstore`.
+
+== Annexes
+
+All annexes must be preceded by the style attribute `[appendix]`.
+
+Like all clauses, annexes are **normative by default**,
+an informative annex is indicated with `[appendix,obligation=informative]`.
+
+The **numbering** of annexes and appendices is automatic:
+do not insert "Annex A" or "Appendix 1" as part of the title.
+
+Annex and Appendix **titles** can be left blank, as with Clauses.
