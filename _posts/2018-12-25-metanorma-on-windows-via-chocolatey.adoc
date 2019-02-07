@@ -13,7 +13,7 @@ excerpt: >-
     Metanorma is now available on Windows as a native install
     package through the Chocolatey package manager.
 ---
-= Metanorma now available on&nbsp;Windows as&nbsp;Chocolatey&nbsp;package
+= Metanorma now available on Windows as Chocolatey package
 
 == Metanorma Docker vs Native: maintenance and performance
 
@@ -56,30 +56,53 @@ The very short and simple steps:
 . Install Chocolatey according to their
 https://chocolatey.org/docs/installation[Chocolatey installation guide].
 
-. Once Chocolatey is installed, install Metanorma using one single command (`-y` for "`yes to all`"): +
+. Once Chocolatey is installed, install Metanorma using one single command (`-y` for "`yes to all`") (well, some more commands need to be run before that one): +
 +
 --
 [source,console]
 ----
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+cinst ruby --version 2.5.3.101 -y # install ruby
+cinst msys2 --params "/NoUpdate" -y # install msys2 without system update
+$env:ChocolateyInstall = Convert-Path "$((Get-Command choco).path)\..\.." # reload chocolatey env
+Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1" # reload chocolatey env
+refreshenv
+ridk install 2 3                  # use ruby's ridk to update the system and install development toolchain
 cinst metanorma -y
+refreshenv
 ----
 
 By the end of this command you will see this message:
 
 [source,console]
 ----
-Environment Vars (like PATH) have changed. Close/reopen your shell to see the changes (or in powershell/cmd.exe just type `refreshenv`).
+Environment Vars (like PATH) have changed. Close/reopen your shell to
+ see the changes (or in powershell/cmd.exe just type `refreshenv`).
  The install of metanorma was successful.
-   Software install location not explicitly set, could be in package or
-   default install location if installer.
+  Software install location not explicitly set, could be in package or
+  default install location if installer.
 
-Chocolatey installed 1/1 packages.
+Chocolatey installed 13/13 packages.
  See the log for details (C:\ProgramData\chocolatey\logs\chocolatey.log).
+
+Installed:
+ - nodejs v11.9.0
+ - plantuml v1.2019.0
+ - javaruntime v8.0.191
+ - sed v4.5
+ - gnuwin32-coreutils.portable v5.3.0
+ - metanorma v1.1.3
+ - graphviz v2.38.0.20171119
+ - xsltproc v1.1.28.0
+ - git.install v2.20.1
+ - jre8 v8.0.201
+ - nodejs.install v11.9.0
+ - git v2.20.1
+ - make v4.2.1
 ----
 --
 
 And voilà! You are now ready to use Metanorma with native performance.
-
 
 == More information
 
