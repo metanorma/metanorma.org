@@ -22,16 +22,3 @@ navigation:
 ---
 
 {{ content }}
-
-<template id="modeSelector">
-  <div class="mode-selector">
-    {% for mode in layout.modes %}
-      <button
-        data-selects-mode="{{ mode.title }}"
-        class="{% if forloop.index == 0 %}selected{% endif %}"
-        >{{ mode.title }}</button>
-    {% endfor %}
-  </div>
-</template>
-
-<script src="{{ "/assets/installation-mode-widget.js" | relative_url }}"></script>
