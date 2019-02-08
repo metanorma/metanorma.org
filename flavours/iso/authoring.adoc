@@ -52,14 +52,21 @@ Custom cross-references should not be used in ISO standards,
 either for an external reference, or for a section of the current document:
 ISO/IEC DIR 2 requires any cross-references to be transparent in text.
 
-For example, a cross-reference to the anchor `[[tabular]]` on clause 5 should be given as just:
+For example, a cross-reference to the anchor such as:
+
+[source,asciidoctor]
+--
+[[tabular]]
+--
+
+on clause 5 should be given as just:
 
 [source,asciidoctor]
 --
 <<tabular>>
 --
 
-Custom text will be automatically rendered as `Clause 5` by Metanorma-ISO.
+…and custom text will be automatically rendered as `Clause 5` by Metanorma-ISO.
 
 ISO clause references in particular will suppress the word "Clause" before a subclause reference,
 following ISO/IEC DIR 2: `<``<ISO24333,clause=5>``>` will be rendered as _ISO 24333, Clause 5_,
