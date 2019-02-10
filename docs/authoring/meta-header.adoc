@@ -2,32 +2,32 @@
 layout: docs
 ---
 
-= Document metadata header
+= Document attrbutes
 
-The core metadata about the standard comes from the Asciidoctor document header
-(the list of colon-delimited attributes at the start of the document).
+The core metadata about a standard comes from the AsciiDoc document attributes.
+The convention is to provide those documents as part of document header.
 
 Some of the attributes are simple flags, while other expect a value to be provided.
 
 
-== Providing via command-line flags
+== Passing as command-line flags
 
-Most document metadata attributes can be supplied as command line flags
-to the Metanorma CLI tool, instead of the header of the document.
+In addition to document header, document attributes can also be supplied
+to the Metanorma command-line tool using flag `-a`.
 
-For example, this calls `metanorma` to build an ISO document while specifying
-`:nodoc:` attribute:
+Following example calls `metanorma` to build an ISO document while specifying
+`:nodoc:` attribute same as if it was provided in document header:
 
 [source,console]
 --
-asciidoctor -a nodoc -b iso -r "metanorma-iso" a.adoc
+metanorma -a nodoc --type iso a.adoc
 --
 
 
-== Referencing in document body
+== Referencing attributes in the text
 
-The document proper can reference the values of document attributes, which is convenient
-for reusability. For example, this references:
+The body of the document can reference the values of document attributes.
+Here’s an example of referncing committee-related metadata entries:
 
 [source,asciidoc]
 --
@@ -40,7 +40,7 @@ themselves will not be populated.
 
 == Dealing with HTML entities
 
-The document header, unlike the main document body, cannot deal with HTML entities.
+Document attribute values, unlike document text, cannot deal with HTML entities.
 If you need to have non-ASCII characters in document title, or dashes for compound titles,
 you will need to enter them directly as Unicode.
 
@@ -63,7 +63,7 @@ However, this wouldn’t:
 
 [TIP]
 ====
-As usual, if you’re using one of the link:/flavours/[officially supported flavours of Metanorma],
+If you’re using one of the link:/flavours/[officially supported flavours of Metanorma],
 see also flavour-specific guidance for any additional supported or required headers.
 ====
 
