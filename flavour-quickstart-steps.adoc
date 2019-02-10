@@ -1,6 +1,8 @@
 == Quick start
 
+{% if include.flavour.sample %}
 - Play with the link:./sample/[sample Metanorma {{ include.flavour.title }} document]
+{% endif %}
 
 - Read about link:./authoring/[authoring {{ include.flavour.title }} documents] using {{ include.flavour.markup_name }} markup language
 
@@ -8,7 +10,7 @@
 +
 [source,console]
 --
-{{ page.cli_flags }}
+{{ include.flavour.build.cli_flags }}
 --
 
 == If you’re new to Metanorma or AsciiDoc
