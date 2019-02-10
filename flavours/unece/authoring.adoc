@@ -1,0 +1,89 @@
+---
+layout: unece-flavour
+---
+
+= Syntax for writing UNECE documents using Metanorma
+
+== Document header attributes
+
+`:distribution:`::
+Extent of distribution allowed. For example: _General_
+
+=== Recommendations
+
+`:docnumber:`::
+The document number if the document is a Recommendation (required only for Recommendations).
+For example, specify _42_ for Recommendation 42.
+
+`:submissionlanguage:`::
+The language(s) in which the document was originally submitted.
+ISO-639-1 codes are used for languages. Multiple languages can be comma-delimited. 
+
+=== Plenary documents
+
+`:session-date:`::
+The session where this document will be discussed.
+For example, _Geneva, 30 April – 1 May 2018_
+
+`:item-number:`::
+  Number of the agenda item this document belongs to.
+  For example, _Item 6 of the provisional agenda_.
+  - If the document corresponds to multiple items, they are comma-delimited.
+  - If the document belongs to multiple subitems under a single item,
+    following
+    http://dd.dgacm.org/editorialmanual/ed-guidelines/format/Model_mast21.pdf[editorial practice of th UN],
+    give the item and subitems identifiers here.
+
+`:item-name:`::
+Name of the agenda item this document belongs to.
+If the document corresponds to multiple items, they are comma-delimited. 
+
+`:subitem-name:`::
+Name of the agenda subitem this document belongs to.
+If the document corresponds to multiple subitems, they are comma-delimited. 
+
+`:collaborator:`::
+Collaborator of this document, if any. For example, _World Economic Forum_
+
+`:agenda-id:`::
+The unique identifier of this agenda item. 
+For example, _ECE/TRADE/C/CEFACT/2018/6_.
+If there are multiple agenda items or subitems, given them comma-delimited.
+
+`:item-footnote:`::
+Footnoted reference to item, if item is on the preliminary list or the provisional agenda.
+
+== Markup
+
+=== Abstract
+
+Abstracts are moved to the front page in Plenary documents.
+In Recommendation documents, they appear in the document preface,
+before the foreword and introduction.
+
+=== Paragraph numbering
+
+Paragraphs are automatically numbered in this gem,
+and paragraph numbers should not be entered in the AsciiDoc source.
+
+Paragraphs are numbered by treating each paragraph in the Metanorma XML as a separate clause;
+all terminal clauses in UNECE Metanorma XML are rendered as a numbered paragraph.
+
+Non-paragraph blocks (tables, figures, admonitions,  lists) are not numbered;
+nor are paragraphs in prefatory material (introduction, foreword, abstract). 
+
+=== Admonitions
+
+The admonition container "IMPORTANT" is used to render UNECE document boxes.
+Unlike normal Metanorma admonitions, UNECE admonitions can have titles.
+
+For example:
+
+[source,asciidoctor]
+--
+[IMPORTANT]
+.Business Process Analysis Plus (BPA+)   (<==== This is the box title)
+====
+Business Process Analysis was initially designed to document and evaluate an import/export process at a given point time and its relative simplicity. It also specifically includes a measurement of the time and cost of the complete range of procedures as one of the main outputs of the analysis. This combination makes it suitable as the basis/core of a trade facilitation monitoring and improvement system.
+====
+--
