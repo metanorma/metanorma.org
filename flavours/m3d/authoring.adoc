@@ -1,0 +1,26 @@
+---
+layout: m3d-flavour
+---
+
+= Writing M3AAWG documents using Metanorma
+
+== Output formats
+
+* (Optional) An HTML preview generated directly from the Asciidoctor document,
+using native Asciidoctor formatting.
+** http://asciimath.org[AsciiMathML] is to be used for mathematical formatting.
+The gem uses the https://github.com/asciidoctor/asciimath[Ruby AsciiMath parser],
+which is syntactically stricter than the common MathJax processor;
+if you do not get expected results, try bracketing terms your in AsciiMathML
+expressions.
+* an XML representation of the document, intended as a document model for M3D
+International Standards.
+* The XML representation is processed in turn to generate the following outputs
+as end deliverable M3D standard drafts.
+** HTML
+** Microsoft Word DOC
+
+== Markup
+
+`+[keyword]#...#+`: encodes keywords, such as "MUST", "MUST NOT".
+(They are formatted as `<span class="keyword">...</span>`.)
