@@ -1,0 +1,37 @@
+---
+layout: csd-flavour
+title: "Metanorma AsciiCSD sample: vCard Format Specification"
+---
+:page-liquid:
+
+{% include flavour-sample-summary.html flavour=layout.csd_flavour %}
+
+== Building the sample
+
+Clone the Metanorma-CSD repository and change into the directory with the example:
+
+[source,console]
+--
+git clone https://github.com/riboseinc/metanorma-csd.git
+cd /spec/examples/
+--
+
+If you’re using Docker distribution of Metanorma, run the Docker container like this:
+
+[source,console]
+--
+docker run -v "$(pwd)":/metanorma/ -w /metanorma ribose/metanorma "metanorma -t csd -x xml,html,pdf,doc rfc6350.adoc"
+--
+
+If you have Metanorma installed on your machine (not via Docker container), the command is simpler:
+
+[source,console]
+--
+metanorma -t csd -x xml,html,pdf,doc rfc6350.adoc
+--
+
+[NOTE]
+====
+See link:/docs/getting-started/#install-metanorma[Getting started]
+for the different ways of getting the Metanorma toolchain set up.
+====

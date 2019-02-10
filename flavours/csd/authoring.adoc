@@ -1,0 +1,93 @@
+---
+layout: csd-flavour
+---
+
+
+== Document header
+
+`:docnumber:`::
+    CalConnect document number, as allocated by TCC.
+
+`:status:`::
+    The status of the document. Can be one of:
+
+    * proposal
+    * working-draft
+    * committee-draft
+    * draft-standard
+    * final-draft
+    * published
+    * withdrawn
+
+`:doctype:`::
+    The type of the document. Can be one of:
+
+    * standard
+    * directive
+    * guide
+    * specification
+    * report
+    * amendment
+    * technical-corrigendum
+
+== Markup
+
+=== Terms and Definitions
+
+This must be clause 3.
+
+[source,adoc]
+----
+[[tda]]                      <= anchor if you want it
+[source=ISO8601-1]           <= allows inheriting terms and definitions from
+another document
+== Terms, definitions, symbols and abbreviations   <= can combine T&D and S&A
+
+=== Terms and definitions    <= the real T&D clause
+
+[[term-explicit]]            <= anchor if you want it
+==== explicit form           <= term item
+
+date and time representation that uses designator symbols to delimit
+time scale components
+----
+
+==== Term entries within a Terms & Definitions section
+
+The structure is strict. The following illustrates the complete structure of a term entry.
+
+In the term source (`[.source]`), all content after the reference and the "`comma`"
+is about "`modifications`" to the original definition.
+
+[source,adoc]
+----
+[[paddy]]                  <= anchor
+=== paddy                  <= term
+alt:[paddy rice]           <= alternative term
+alt:[rough rice]           <= second alternative
+deprecated:[cargo rice]    <= deprecated term
+domain:[rice]              <= domain
+
+rice retaining its husk after threshing  <= definition
+
+[example]              <= example
+Foreign seeds, husks, bran, sand, dust.
+
+NOTE: The starch of waxy rice consists almost entirely of amylopectin. <= note
+
+[.source]
+<<ISO7301,section 3.2>>, The term "cargo rice" is shown as deprecated, <= source
+and Note 1 to entry is not included here.
+----
+
+=== Annexes
+
+Annexes have to be placed before the bibliography.
+
+[source,adoc]
+----
+[[AnnexA]]
+[appendix,subtype=informative]
+== Example date and time expressions, and representations
+...
+----
