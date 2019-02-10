@@ -123,7 +123,17 @@ NOTE: The starch of waxy rice consists almost entirely of amylopectin. The kerne
 and Note 1 to entry is not included here
 --
 
-The requirement that the source of a term be given in a citation also applies when the source is a term bank, such as the http://www.electropedia.org[International Electrotechnical Vocabulary (IEV)]. Formally, IEV references should be cited as `IEC 60050-nnn:20xx`, where `n` is the top-level clause, and `20xx` is the year when that particular specification was published; e.g. `IEC 60050-113:2011, 113-01-07`. For convenience, this gem requires all IEV references to be to a single reference, named `IEV` in the normative references. In rendering the Asciidoctor into Metanorma XML, this reference will be replaced by the various required IEC 60050-nnn:20xx references. (That means that you should not insert your own instances of IEC 60050 references for IEV citations: they will be duplicated by the automatically generated references.)
+The requirement that the source of a term be given in a citation also applies when the source is a term bank,
+such as the http://www.electropedia.org[International Electrotechnical Vocabulary (IEV)].
+Formally, IEV references should be cited as `IEC 60050-nnn:20xx`,
+where `n` is the top-level clause, and `20xx` is the year when that particular specification
+was published; e.g. `IEC 60050-113:2011, 113-01-07`.
+
+For convenience, Metanorma requires all IEV references to be to a single reference,
+named `IEV` in the normative references. During the rendering of AsciiDoc into Metanorma XML,
+this reference will be replaced by the various required IEC 60050-nnn:20xx references.
+(That means that you should not insert your own instances of IEC 60050 references
+for IEV citations: they will be duplicated by the automatically generated references.)
 
 [source,asciidoc]
 --
