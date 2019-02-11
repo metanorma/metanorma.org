@@ -1,65 +1,11 @@
 ---
-layout: docs
+layout: author-docs
 ---
 
-= Document attrbutes
+= Document attributes
 
-The core metadata about a standard comes from the AsciiDoc document attributes.
-The convention is to provide those documents as part of document header.
-
-Some of the attributes are simple flags, while other expect a value to be provided.
-
-
-== Passing as command-line flags
-
-In addition to document header, document attributes can also be supplied
-to the Metanorma command-line tool using flag `-a`.
-
-Following example calls `metanorma` to build an ISO document while specifying
-`:nodoc:` attribute same as if it was provided in document header:
-
-[source,console]
---
-metanorma -a nodoc --type iso a.adoc
---
-
-
-== Referencing attributes in the text
-
-The body of the document can reference the values of document attributes.
-Here’s an example of referncing committee-related metadata entries:
-
-[source,asciidoc]
---
-This document was prepared by Technical Committee ISO/TC {technical-committee-number}, _{technical-committee}_, Subcommittee SC {subcommittee-number}, _{subcommittee}_.
---
-
-If the corresponding document attributes are not populated in the header, then the references
-themselves will not be populated.
-
-
-== Dealing with HTML entities
-
-Document attribute values, unlike document text, cannot deal with HTML entities.
-If you need to have non-ASCII characters in document title, or dashes for compound titles,
-you will need to enter them directly as Unicode.
-
-As an example, this would work:
-
-[source,adoc]
---
-:title-main-fr: Spécification et méthodes d'essai
---
-
-However, this wouldn’t:
-
-[source,adoc]
---
-:title-main-fr: Sp\&eacute;cification et m\&eacute;thodes d'essai`; `:title-part-en:Information Technology—Security`, not `:title-part-en:Information Technology\&mdash;Security
---
-
-
-== Supported header attributes
+This is the list of link:/author/topics/document-format/meta-attributes[document attributes]
+supported by most flavours of Metanorma.
 
 [TIP]
 ====
@@ -67,34 +13,13 @@ If you’re using one of the link:/flavours/[officially supported flavours of Me
 see also flavour-specific guidance for any additional supported or required headers.
 ====
 
-Following is a reference for document attributes expected by most Metanorma flavours.
-
-=== Build settings
+== Build & validation
 
 `:nodoc:`::
 Instructs Metanorma to not generate Word and HTML output, means only XML output will be generated.
 
 `:novalid:`::
 Suppress document validation.
-
-=== Languages & localization
-
-`:i18nyaml:`::
-Name of YAML file of internationalisation text to localize labels in the document
-(e.g. "Table", "Foreword", boilerplate text for Normative References, etc.)
-Use if you wish to output an standard in a language other than those three—see
-link:../languages[Output in different languages].
-
-`:language:` :: The language of the document (`en` or `fr`). Defaults to `en`.
-
-`:script:` :: The script of the document (defaults to `Latn`). Must be supplied as
-`Hans` for Simplified Chinese.
-
-=== Reference lookup
-
-`:no-isobib:`::
-If set, do not use the `relaton` or `iev` gem functionality to look up
-ISO and IEV references online, nor the cache of `relaton` and `iev` searches.
 
 === Caches
 
@@ -115,7 +40,32 @@ If a directory name is given for the attribute, that name overrides `relaton` as
 `:flush-caches:`::
 If set, delete and reinitialise the cache of `https://www.relaton.com/[relaton]` searches.
 
-=== Document info
+=== Math
+
+`:stem:`::
+This attribute is required if you have any AsciiMath or MathML
+included in the document; otherwise they will not be detected.
+
+=== Reference lookup
+
+`:no-isobib:`::
+If set, do not use the `relaton` or `iev` gem functionality to look up
+ISO and IEV references online, nor the cache of `relaton` and `iev` searches.
+
+== Languages & localization
+
+`:i18nyaml:`::
+Name of YAML file of internationalisation text to localize labels in the document
+(e.g. "Table", "Foreword", boilerplate text for Normative References, etc.)
+Use if you wish to output an standard in a language that’s not supported out of the box.
+See link:../languages[Languages & localization topic].
+
+`:language:` :: The language of the document (`en` or `fr`). Defaults to `en`.
+
+`:script:` :: The script of the document (defaults to `Latn`). Must be supplied as
+`Hans` for Simplified Chinese.
+
+== Document info
 
 `:publisher:`:: The standards agency publishing the standard; can be multiple
 (comma-delimited). Defaults to `ISO`.
@@ -155,7 +105,7 @@ The document draft
 (used in addition to document stage, for multiple iterations: expected format _X.Y_).
 If present, includes review notes in the XML output; these are otherwise suppressed.
 
-==== URIs
+=== URIs
 
 `:uri:`:: The URI to which this standard is published.
 `:xml-uri:`:: The URI to which the (Metanorma) XML representation of this standard is published.
@@ -164,7 +114,7 @@ If present, includes review notes in the XML output; these are otherwise suppres
 `:doc-uri:`:: The URI to which the DOC representation of this standard is published.
 `:relaton-uri:`:: The URI to which the Relaton XML representation of this standard is published.
 
-==== Timestamps
+=== Timestamps
 
 `:copyright-year:`::
 The year which will be claimed as when the copyright for the document was issued.
@@ -199,7 +149,7 @@ The date on which the unpublished standard was last circulated officially as a p
 `:date:`::
 An arbitrary date in the production of the standard. Content of the attribute should be a token, giving the type of date, then space, then the date itself. Multiple dates can be added as `:date_2:`, `:date_3:`, etc.
 
-=== Author info
+== Author info
 
 `:technical-committee:`::
 The name of the relevant technical committee.
@@ -234,13 +184,7 @@ The URI of a person who is a contributor to the document.
 `:email{_i}:`::
 The email of a person who is a contributor to the document.
 
-=== Document contents
-
-`:stem:`::
-This attribute is required if you have any AsciiMath or MathML
-included in the document; otherwise they will not be detected.
-
-=== Document appearance
+== Visual appearance
 
 `:body-font:`::
 Font for body text; will be inserted into CSS.

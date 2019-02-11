@@ -1,30 +1,8 @@
 ---
-layout: docs
-title: Get started
-description: >-
-  Metanorma installation, samples, customization & usage tips.
-html-class: getting-started
-redirect_from:
-  - /overview/getting-started/
+layout: author-docs
 ---
 
-== Choose your starting point
-
-If you'd like to *adopt Metanorma for your organization's standard & specification management workflows*,
-the best starting point is to customize an existing processor that
-matches your requirements best, such as Metanorma-ISO.
-
-* link:/docs/[Learn more] about Metanorma's features
-aiming to help organizations with management of standardization documents
-
-* Check out link:/docs/customization/[Metanorma customization guidelines]
-
-To *author documents compliant with the requirements of certain established standard bodies*,
-you may already find an existing Metanorma processor:
-see link:/flavours/[Metanorma’s officially supported document flavours]
-
-
-== Install Metanorma
+= How to install Metanorma
 
 To be able to build Metanorma documents of any flavour, you need to have the
 `metanorma-cli` Ruby gem installed.
@@ -32,7 +10,7 @@ To simplify installation of the gem and its dependencies,
 following installation methods are currently supported.
 
 [[docker-setup]]
-=== Docker setup
+== Docker setup
 
 This setup method works for all platforms that support the Docker container
 framework.
@@ -61,13 +39,14 @@ execute from within the directory containing the Metanorma document
 docker run -v "$(pwd)":/metanorma/ -w /metanorma ribose/metanorma "metanorma -t iso -x html,doc,xml {my-document-file}"
 ----
 
-
-See https://github.com/riboseinc/metanorma-docker[metanorma-docker] for more information
-and some shortcuts, including a pre-made Makefile.
+[TIP]
+====
+See https://github.com/riboseinc/metanorma-docker[metanorma-docker] for more information.
+====
 
 
 [[macos-setup]]
-=== macOS setup: Homebrew
+== macOS setup: Homebrew
 
 [source,sh]
 ----
@@ -84,7 +63,7 @@ brew install --HEAD https://raw.githubusercontent.com/riboseinc/homebrew-metanor
 ----
 
 
-=== macOS setup: all-in-one script
+== macOS setup: all-in-one script
 
 Run the following for an automatic install
 that would prepare a fresh system to work with Metanorma.
@@ -100,7 +79,7 @@ bash <(curl -s https://raw.githubusercontent.com/riboseinc/metanorma-macos-setup
 ----
 
 
-=== Linux setup: Ubuntu
+== Linux setup: Ubuntu
 
 Run the following for an automatic install via the https://github.com/riboseinc/metanorma-linux-setup[metanorma-linux-setup] scripts.
 
@@ -114,7 +93,7 @@ sudo bash -c "curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linu
 curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master/install-gems.sh | bash
 ----
 
-=== Linux setup: CentOS
+== Linux setup: CentOS
 
 Run the following for an automatic install via the https://github.com/riboseinc/metanorma-linux-setup[metanorma-linux-setup] scripts.
 
@@ -128,7 +107,7 @@ sudo bash -c "curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linu
 curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master/install-gems.sh | bash
 ----
 
-=== Windows setup
+== Windows setup
 
 Run this command in your `cmd.exe` or `PowerShell` to install
 the Metanorma Docker container and all prerequisites (see <<docker-setup>>):
@@ -146,10 +125,7 @@ https://github.com/riboseinc/metanorma-windows-setup[metanorma-windows-setup]:
 * setup the Metanorma toolchain directly on your Windows machine.
 
 
-=== Installing individual components
+== Installing individual components
 
 You can also link:/software/metanorma-cli/docs/installation[install Metanorma command-line tool]
 as a gem on its own, but be sure to note the dependencies.
-
-== [tbd]#Write your first standard#
-
