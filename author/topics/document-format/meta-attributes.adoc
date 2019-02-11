@@ -11,6 +11,31 @@ Document attributes specify such aspects as languages, build settings,
 and aspects of document appearance.
 
 The convention is to supply those attributes as part of document header.
+The order of attributes doesn’t matter to Metanorma.
+
+[source,asciidoc]
+.Example of document header with title and various attributes
+----
+= Rice model <1>
+:docnumber: 17301 <2>
+:tc-docnumber: 17301
+:ref-docnumber: ISO 17301-1:2016(E)
+:partnumber: 1
+:draft: <3>
+:edition: 2
+:copyright-year: 2016
+:language: en
+:docfile: iso-rice-en.adoc
+:mn-document-class: iso
+:mn-output-extensions: xml,html,doc,html_alt <4>
+:local-cache-only:
+:data-uri-image:
+----
+<1> Document title
+<2> `:docnumber:` is the first document attribute, and it has the value _17301_
+<3> `:draft:` is a kind of attribute that doesn’t require a value (if it’s specified, then
+    the document considered a draft)
+<4> Some attributes allow multiple values, which usually must be comma-delimited
 
 
 == Which attributes to specify?
