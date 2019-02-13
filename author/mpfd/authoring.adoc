@@ -1,0 +1,202 @@
+---
+layout: mpfd-flavour
+---
+
+= Authoring MPFA documents with Metanorma
+
+== Document attributes
+
+The commonly used in MPFA documents
+link:/author/topics/document-format/attributes/[document attributes]
+are:
+
+`:edition:`::
+Document edition
+
+`:revdate:`::
+Date the document was last updated
+
+`:copyright-year:`::
+Year which will be claimed as when the copyright for
+the document was issued
+
+`:title:`::
+*Mandatory.* Main component of the English title of the document
+NOTE: The first line of the AsciiDoc document, which contains the title
+introduced with `=`, is ignored
+
+`:doctype:`::
+*Mandatory.* Document type (see RSD deliverables: The different types of
+MPFD publications) 
+
+`:status:`::
+Document status. For example, `published` or `draft`
+
+`:draft:`::
+Signals to render reviewer notes
+
+`:committee:`::
+Name of relevant authoring committee
+
+`:committee-type:`::
+Type of relevant authoring committee
+
+== Text markup
+
+=== Glossary
+
+Sections with the title `glossary` are treated as equivalent to `Terms and Definitions`
+in other Metanorma docuemnts.
+
+[source,asciidoctor]
+--
+== Glossary
+=== Term
+
+Definition
+
+=== Term 2
+
+Definition 2
+--
+
+Also unlike other Metanorma documents, the glossary is considererd part of the document
+preface, along with the foreword and introduction, and is moved to the preface regardless
+of where it appears in the source Asciidoctor document.
+
+Any clause that has the `preface` style attribute is also moved to the document preface,
+regardless of where it appears in the source Asciidoctor document.
+
+[source,asciidoctor]
+--
+[preface]
+== Initial Discussion
+This section will be moved to the document preface, after the foreword, introduction,
+and glossary.
+--
+
+=== Guidance clauses
+
+Compliance documents in the MPFA (e.g. https://github.com/riboseinc/mpfd-documents/blob/master/compliance/mpfd-compliance.adoc)
+present compliance standards, following by an "Explanatory Notes and Guidance" clause. That clause is nested within the
+standards clause, and has a special identifier: the standards clause identifier, followed by E.
+
+In MPFD Asciidoctor, the "Explanatory Notes and Guidance" clause is tagged with a `.guidance` role attribute,
+and should be entered as a sibling clause to the standard clause it elaborates on:
+
+[source,asciidoctor]
+--
+== Compliance Programme to Address Statutory Obligations
+
+An approved trustee should have in place a compliance programme to help it meet its statutory obligations.
+
+[.guidance]
+== Explanatory Notes and Guidance
+
+An approved trustee must comply with obligations under the Legislation, including the general trustee duties as well as specific requirements relating to the operation of MPF schemes.
+--
+
+This will be rendered as follows:
+
+____
+*1. Compliance Programme to Address Statutory Obligations*
+
+An approved trustee should have in place a compliance programme to help it meet its statutory obligations.
+
+_1E. Explanatory Notes and Guidance_
+
+An approved trustee must comply with obligations under the Legislation, including the general trustee duties as well as specific requirements relating to the operation of MPF schemes.
+____
+
+=== Container clauses
+
+MPFD docuemnts follow a hierarchically numbered clause structure. However, there are some floating titles
+in MPFD which group clauses together, but are not numbered themselves. These are tagged in MPFD Asciidoctor
+with a `.container` role attribute. When the gem numbers clauses, these containers are ignored.
+
+[source,asciidoctor]
+--
+== MPFD Structure
+
+[.container]
+=== Benefits
+
+==== Autonumbering
+
+==== Automaated cross-references
+
+[.container]
+=== Challenges
+
+==== No WYSIWYG
+
+==== Command Line Interface
+--
+
+Without the `.container` tags, the foregoing example would be rendered in HTML as:
+
+[source,html]
+--
+<h1>1. MPFD Structure</h1>
+
+<h2>1.1. Benefits</h2>
+
+<h3>1.1.1. Autonumbering</h3>
+
+<h3>1.1.2. Automated cross-references</h3>
+
+<h2>1.2. Challenges</h2>
+
+<h3>1.2.1. No WYSIWYG</h3>
+
+<h3>1.2.2. Command Line Interface</h3>
+--
+
+With the `.container` tags, the nesting of clauses is the same, but the container titles
+are at the same level as their parent sections, and are ignored in numbering:
+
+[source,html]
+--
+<h1>1. MPFD Structure</h1>
+
+<h1>Benefits</h1>
+
+<h3>1.1. Autonumbering</h3>
+
+<h3>1.2. Automated cross-references</h3>
+
+<h1>Challenges</h1>
+
+<h3>1.3. No WYSIWYG</h3>
+
+<h3>1.4. Command Line Interface</h3>
+--
+
+=== Paragraph numbering
+
+Currently paragraph numbering at the terminal node level is implemented by giving the paragraph a blank section title,
+at the appropriate nesting level, which makes it a separate subclause. with an inline clause number.
+
+[source,asciidoctor]
+--
+[[clause1]]
+== Relationship between MPF trustees and promoters
+
+[[clause1-1]]
+=== {blank}
+
+The Authority imposes a number of conditions when approving applications to become an approved MPF trustee. 
+--
+
+This is rendered as
+
+[source,html]
+--
+<div id="clause1">
+        <h1>1.&#xA0; Relationship between MPF trustees and promoters</h1>
+        <div id="clause1-1"><h2>1.1. </h2>
+
+  <p id="_">The Authority imposes a number of conditions when approving applications to become an approved MPF trustee.</p>
+</div>
+</div>
+--
