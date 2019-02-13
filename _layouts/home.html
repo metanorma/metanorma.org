@@ -28,31 +28,22 @@ flavours:
   <section class="flavors switchable-flavours">
     <h2 class="title">Author standards with Metanorma</h2>
 
-    <section data-mode="standards-bodies">
-      <h3>Standards bodies</h3>
-      <div class="items">
-        {% for fl in layout.flavours.bodies %}
-          <a href="{{ fl.path | relative_url }}">
-            <article class="fl">
-              <header>{{ fl.name }}</header>
-            </article>
-          </a>
-        {% endfor %}
-      </div>
-    </section>
-
-    <section data-mode="corporate">
-      <h3>Enterprises</h3>
-      <div class="items">
-        {% for fl in layout.flavours.corporate %}
-          <a href="{{ fl.path | relative_url }}">
-            <article class="fl">
-              <header>{{ fl.name }}</header>
-            </article>
-          </a>
-        {% endfor %}
-      </div>
-    </section>
+    <div class="items">
+      {% for fl in layout.flavours.bodies %}
+        <a href="{{ fl.path | relative_url }}">
+          <article class="fl">
+            <header>{{ fl.name }}</header>
+          </article>
+        </a>
+      {% endfor %}
+      {% for fl in layout.flavours.corporate %}
+        <a href="{{ fl.path | relative_url }}">
+          <article class="fl">
+            <header>{{ fl.name }}</header>
+          </article>
+        </a>
+      {% endfor %}
+    </div>
   </section>
 
   <section class="flavors">
@@ -98,7 +89,6 @@ flavours:
 
 <script src="https://unpkg.com/react@^16/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@^16/umd/react-dom.production.min.js"></script>
-<script src="{{ "/assets/home-flavour-switcher.js" | relative_url }}"></script>
 
 <!--
 
