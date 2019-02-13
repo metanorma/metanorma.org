@@ -1,14 +1,25 @@
 ---
 layout: gb-flavour
-title: The GB flavour of Metanorma
 ---
 :page-liquid:
 
-Metanorma-GB is a standard for creating
+Metanorma-GB is a document processor & standard for creating
 https://en.wikipedia.org/wiki/Guobiao_standards[Chinese Standards].
-It is fully compliant with GB/T 1.1.
 
-See link:./supported-document-types/[standard types] which you can author
-with Metanorma-GB.
+It can also be used to generate Chinese local or sector standards, which
+have the same format; it formats the title page to have the correct
+metadata displayed.
 
-{% include flavour-quickstart-steps.adoc flavour=layout.gb_flavour %}
+Standards are generated from AsciiDoc-based markup in a way that is
+compliant with GB/T 1.1.
+
+[NOTE]
+====
+Across Metanorma-GB documentation, "GB standard" should be read as referring
+to any Chinese national, sector or local standard.
+====
+
+{% include flavour-quickstart-steps.adoc
+    flavour=layout.gb_flavour
+    has_topics=true
+    has_references=true %}

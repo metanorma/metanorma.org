@@ -2,51 +2,9 @@
 layout: iso-flavour
 ---
 
-= Authoring ISO documents with Metanorma
+= AsciiISO markup
 
-If you’re new to Metanorma, see also
-link:/docs/authoring/markup/[Authoring documents with Metanorma]
-for guidelines & references relevant to Metanorma authoring in general.
-
-== Validation
-
-=== Content warnings
-
-Style rules are currently specific to content in English.
-
-They try to impose rules on content taken from http://www.iec.ch/members_experts/refdocs/iec/isoiecdir-2%7Bed7.0%7Den.pdf[ISO/IEC DIR 2], including restrictions on where requirements may be stated, usage of decimal points, hanging clauses, and subclauses that are the only child of their parent clause. While the error detection is not infallible, they should be reviewed at least once. Where possible, the gem will give the ID or section heading associated with the error. For example:
-
-[source,console]
---
-ISO style: WARNING (Section: ): Footnote may contain requirement: The maximum permissible mass fraction of defects shall be determined with respect to the mass fraction obtained after milling.
-ISO style: WARNING (Section: Wire sieve,): possible decimal point: 0.02
-ISO style: invalid technical committee type XYZ
-ISO style: AnnexA-4-1:Preparation of test sample: subsection is only child
---
-
-If any content warnings are generated during build, you will see them prefixed with `ISO Style`.
-
-== Document header
-
-[TIP]
-====
-Be careful about sticking to the guidelines on populating document header fields!
-
-And as usual, use the link:../sample/[AsciiISO Rice sample document] as an example.
-====
-
-== AsciiISO markup
-
-This is a reference of additions and customizations of AsciiDoc
-that are specific to ISO documents authored with Metanorma.
-
-=== Lists
-
-The stylesheets for ISO render unordered lists with em-dashes instead of bullets,
-as preferred by ISO. Ordered lists in Word are rendered with their labels bracketed.
-(_a)_, _1)_, etc.)
-
-=== Cross-references
+== Cross-references
 
 Custom cross-references should not be used in ISO standards,
 either for an external reference, or for a section of the current document:
@@ -72,7 +30,7 @@ ISO clause references will suppress the word "Clause" before a subclause referen
 following ISO/IEC DIR 2: `<``<ISO24333,clause=5>``>` will be rendered as _ISO 24333, Clause 5_,
 but `<``<ISO7301,clause=3.1>``>` will be rendered as _ISO 7301, 3.1_.
 
-=== Bibliographies
+== Bibliographies
 
 For references to standards with a document identifier,
 the entry must be preceded by a bibliographic anchor, in triple brackets:
@@ -132,7 +90,7 @@ ____
 
 The bracketed reference numbers are expected to be correct and in order: they are not overriden in rendering.
 
-==== Automatic reference fetching
+=== Automatic reference fetching
 
 https://www.relaton.com/[Relaton] can fetch bibliographic entries
 for any standards known to have online bibliographic databases (ISO, IEC, IETF, GB).
@@ -142,7 +100,7 @@ will by default have its bibliographic entry fetched by that gem.
 The fetched data overrides any content about the item provided in the document,
 since the online bibliography is treated as the source of truth for that standards document.
 
-=== Annexes & appendices
+== Annexes & appendices
 
 In ISO, Appendixes to annexes can occur, although they are not mentioned in ISO/IEC DIR 2; ISO/IEC DIR 1 features them. They are marked up as immediate subsections of annexes, and must be tagged with an option attribute of "appendix":
 

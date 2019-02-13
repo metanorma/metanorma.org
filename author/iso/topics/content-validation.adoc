@@ -1,0 +1,19 @@
+---
+layout: iso-flavour
+---
+
+= Content style validation
+
+Style rules are currently specific to content in English.
+
+They try to impose rules on content taken from http://www.iec.ch/members_experts/refdocs/iec/isoiecdir-2%7Bed7.0%7Den.pdf[ISO/IEC DIR 2], including restrictions on where requirements may be stated, usage of decimal points, hanging clauses, and subclauses that are the only child of their parent clause. While the error detection is not infallible, they should be reviewed at least once. Where possible, the gem will give the ID or section heading associated with the error. For example:
+
+[source,console]
+--
+ISO style: WARNING (Section: ): Footnote may contain requirement: The maximum permissible mass fraction of defects shall be determined with respect to the mass fraction obtained after milling.
+ISO style: WARNING (Section: Wire sieve,): possible decimal point: 0.02
+ISO style: invalid technical committee type XYZ
+ISO style: AnnexA-4-1:Preparation of test sample: subsection is only child
+--
+
+If any content warnings are generated during build, you will see them prefixed with `ISO Style`.

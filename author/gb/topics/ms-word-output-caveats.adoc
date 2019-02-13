@@ -1,0 +1,23 @@
+---
+layout: gb-flavour
+---
+
+= Caveats regarding MS Word output
+
+The Word output is meticulously aligned to the GB/T 1.1 specification, which is highly
+prescriptive on the positioning of elements on the page. This means that the Word output
+uses http://www.addbalance.com/word/frames_textboxes.htm[frames] and 
+https://en.wikipedia.org/wiki/Vector_Markup_Language[VML] extensively, as the best mechanism 
+Word HTNL has to ensure precise positioning of elements. However, the use of frames
+makes Word documents more cumbersome to edit; it is envisaged that the bulk of document
+editing should be happening in Asciidoctor, with Word treated as a write-only output format.
+
+The use of VML and frames is mostly confined to the cover page, which is the most heavily
+prescribed by GB/T 1.1. However, Word as of 2016 suppresses space before a paragraph
+after a page break (though not a section break--which means that the Foreword, Introduction,
+Document Title, Annex and Bibliography titles would all either lose their mandated initial
+space in Word, or else would all have to be treated as separate sections. For that reason,
+those headings are instead treated by Metanorma-GB as frames (in-line with their following text),
+which preserve their initial spacing.
+
+Read about Metanorma-GB’s link:../topics/gbt11-compliance/[compliance with GB/T 1.1].

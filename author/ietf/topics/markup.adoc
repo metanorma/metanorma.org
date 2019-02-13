@@ -1,0 +1,224 @@
+---
+layout: ietf-flavour
+---
+
+= Markup
+
+== Abstract
+
+Any paragraphs following the document header are treated as the abstract
+(`front/abstract`), whether or not they are in abstract style. The abstract is
+terminated by either the first section header (which ends the document
+preamble), or an admonition (e.g. `note`).
+
+Any admonitions before the first section header are treated as notes (`front/note`).
+
+[source,asciidoc]
+----
+[[abstract-id]] <1>
+[abstract]
+This is an abstract <2>
+
+NOTE: This is a note <3>
+
+[NOTE,remove-in-rfc=true] <4>
+.Note 2 Title <5>
+===
+This is another note <3>
+===
+----
+<1> v3 only: `front/abstract@anchor` (attribute only available in v3)
+<2> `front/abstract`
+<3> `front/note`
+<4> v3 only: `front/note@removeInRFC` (attribute only available in v3)
+<5> v3: `front/note/name`; v2: `front/note@title` (mandatory attribute; if not provided, `NOTE` is supplied)
+
+
+== Source code listings
+
+In RFC XML, `sourcecode` (v3) and `artwork` (v2) elements only occur within a
+`figure` wrapper; Metanorma-IETF supplies that wrapper if it is not provided
+explicitly.
+
+[source,asciidoc]
+.Without Figure Wrapper
+--
+[[id]] <1>
+.Source code listing title <2>
+[source,type,src=uri,align,alt] <3>
+----
+begin() {
+  source code listing <4>
+}
+----
+--
+<1> v3: `figure/sourcecode@anchor`; v2: `figure@anchor` (moved into supplied wrapper: anchors not supported on `artwork`)
+<2> v3: `figure/sourcecode@name`; v2: `figure/artwork@name`
+<3> v3: `figure/sourcecode@type`; `figure/sourcecode@src` (`align` and `alt` not supported). If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute. v2: `figure/artwork@type`, `figure/artwork@src`, `figure/artwork@align`, `figure/artwork@alt`.
+<4> v3: `figure/sourcecode`; v2: `figure/artwork`
+
+[source,asciidoc]
+.With Figure Wrapper
+--
+[[id]] <1>
+[align,alt,suppress-title] <2>
+.Figure 1 <3>
+====
+Preamble text <4>
+
+[[id1]] <5>
+.Source code listing title <6>
+[source,type,src=uri,align,alt] <7>
+----
+begin() {
+  source code listing <8>
+}
+----
+
+Postamble text <9>
+====
+--
+<1> `figure@anchor`
+<2> v2 only: `figure/artwork@align`, `figure/artwork@alt`, `figure@suppress-title` (attributes only available in v2)
+<3> `figure/name`
+<4> v2 only: `figure/preamble` (only available in v2)
+<5> v3: `figure/sourcecode@anchor`; v2: Not supported: use `figure@anchor`
+<6> v3: `figure/sourcecode@name`; v2: `figure/artwork@name`
+<7> v3: `figure/sourcecode@type`; `figure/sourcecode@src` (`align` and `alt` not supported). If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute. v2: `figure/artwork@type`, `figure/artwork@src`, `figure/artwork@align`, `figure/artwork@alt`.
+<8> v3: `figure/sourcecode`; v2: `figure/artwork`
+<9> v2 only: `figure/postamble` (only available in v2)
+
+
+== ASCII Art and Images
+
+In RFC XML, `artwork` elements only occur within a
+`figure` wrapper; Metanorma-IETF supplies that wrapper if it is not provided
+explicitly.
+
+
+[source,asciidoc]
+.Ascii-Art Without Figure Wrapper
+--
+[[id]] <1>
+.Figure2.jpg <2>
+[align=left|center|right,alt=Ascii Art,type=text/plain] <3>
+....
+------------------------
+|        Ascii Art     |
+------------------------ <4>
+....
+--
+<1> v3 only: `figure/artwork@anchor`; v2: `figure@anchor` (moved into supplied wrapper: anchors not supported on `artwork`)
+<2> `figure/artwork@name`
+<3> `figure/artwork@align`, `figure/artwork@alt`; `figure@type` (attribute only available in v2)
+<4> `figure/artwork`
+
+[source,asciidoc]
+.Image Without Figure Wrapper
+--
+[[id]] <1>
+.Figure2.jpg <2>
+[align=left|center|right,alt=alt_text,type=img/jpeg] <3>
+image::filename.jpg[alt_text,700,200] <4>
+--
+<1> v3 only: `figure/artwork@anchor`; v2: `figure@anchor` (moved into supplied wrapper: anchors not supported on `artwork`)
+<2> `figure/artwork@name`
+<3> `figure/artwork@align`, `figure/artwork@alt`; `figure/artwork@type` (only available in v2, intended to be a MIME type; v3: populated as either `svg` or `binary-art` depending on file suffix)
+<4> `figure/artwork@src`, `figure/artwork@alt`, `figure/artwork@width` (deprecated in v3), `figure/artwork@height` (deprecated in v3)
+
+
+[source,asciidoc]
+.With Figure Wrapper
+--
+[[id]] <1>
+[align,alt,suppress-title] <2>
+.Figure 1 <3>
+====
+Preamble text <4>
+
+[[id]] <5>
+.Figure2.jpg <8>
+[align=left|center|right,alt=alt_text,type=text/plain] <6>
+....
+Figures are
+      only permitted to contain listings (sourcecode),
+           images (artwork),
+or literal (artwork) <7>
+....
+[[id]] <5>
+.Figure2.jpg <8>
+[align=left|center|right,alt=alt_text,type=img/jpeg] <9>
+image::filename.jpg[alt_text,700,200] <10>
+
+Postamble text <11>
+====
+--
+<1> `figure@anchor`
+<2> v2 only: `figure/artwork@align`, `figure/artwork@alt`, `figure@suppress-title` (attributes only available in v2)
+<3> `figure/name`
+<4> v2 only: `figure/preamble` (only available in v2)
+<5> v3: `figure/artwork@anchor`; v2: Not supported: use `figure@anchor`
+<6> `figure/artwork@align`, `figure/artwork@alt`; `figure@type` (attribute only available in v2)
+<7> `figure/artwork`
+<8> `figure/artwork@name`
+<9> `figure/artwork@align`, `figure/artwork@alt`; `figure/artwork@type` (only available in v2, intended to be a MIME type; v3: populated as either `svg` or `binary-art` depending on file suffix)
+<10> `figure/artwork@src`, `figure/artwork@alt`, `figure/artwork@width` (deprecated in v3), `figure/artwork@height` (deprecated in v3)
+<11> v2 only: `figure/postamble` (only available in v2)
+
+
+== Mathematical examples
+
+Mathematical examples are treated identically to literals, and are rendered as `artwork` in both v2 and v3;
+however their default alignment is set as `center`. As with inline stem expressions, they are treated identically
+to monospace expressions in the RFC XML output; they are not currently rendered as MathML or any other notation.
+
+== Lists
+
+RFC XML v2 does not support multiparagraph list items. Following the specification recommendation,
+paragraphs within v2 list items are replaced with `vspace` tages.
+
+== Sidebar (RFC v3 only)
+
+[source,asciidoc]
+--
+[[id]] <1>
+****
+Sidebar <2>
+****
+--
+<1> `aside@anchor`
+<2> `<aside>Sidebar</aside>`
+
+== Tables
+
+The converter respects the AsciiDoc (horizontal) align attributes of cells (v2,
+v3), column widths (v2), and `colspan`, `rowspan` attributes (v3).
+
+(Exceptionally,
+column widths specified for v2 as `"1,1,1,1,1,1...."` will be ignored, since Asciidoctor
+internally treats them identically to unspecified column widths on a table.)
+
+[source,asciidoc]
+--
+[[id]] <1>
+[suppress-title=true|false,align=left|center|right,grid=all|cols|none|rows] <2>
+.Table Title <3>
+|===
+|[[id]] head | head <4>
+
+h|header cell | body cell <5>
+| | [[id]] body cell <6>
+
+|foot | foot <7>
+|===
+--
+<1> v3: `table@anchor`; v2: `texttable@anchor`
+<2> v2: `texttable@suppress-title`, `texttable@align`, `texttable@style` (attributes only available in v2). Mapping of Asciidoc grid attribute to RFC XML style attribute is: `all` > `all`, `cols` > `full`, `none` > `none`, `rows` > `headers` (although the two are not strictly equivalent).
+<3> v3: `table/name`; v2: `texttable@title`
+<4> v3: `table/thead/tr/td`; v2: `texttable/ttcol@id` (attribute only available in v2), `texttable/ttcol`
+<5> v3: `table/tbody/tr/th`, `table/tbody/tr/td`; v2: `texttable/c`, `texttable/c`
+<6> v3: `table/tbody/tr/td@anchor` (attribute only available in v3)
+<7> v3: `table/tfoot/tr/td`; v2: `texttable/c`
+
+NOTE: v3 permits table cells to contain block elements, such as paragraphs and lists. (This is done in Asciidoc by prefixing
+the table cell with `a|`.) However v2 only permits inline tagging, and any block tags are ignored.
