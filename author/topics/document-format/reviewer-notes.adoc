@@ -1,0 +1,51 @@
+---
+layout: author-docs
+---
+
+= Reviewer notes
+
+To annotate document with reviewer notes (essentially, arbitrary blocks of text),
+Metanorma uses Asciidoctor sidebars.
+
+Sidebars can be separated at a distance from the text they are annotating;
+the text they are annotating is indicated through anchors. 
+
+[NOTE]
+====
+Reviewer notes are only rendered if the document has a `:draft:` attribute.
+====
+
+The following attributes on reviewer notes are mandatory:
+
+* `reviewer` attribute (naming the reviewer) 
+* the starting target anchor of the note (`from` attribute)
+
+The following attributes are optional:
+
+* `date` attribute, optionally including the time (as xs:date or xs:datetime)
+* the ending target anchor of the note (`to` attribute)
+
+The span of text covered by the reviewer note is from the start of the
+text encompassed by the `from` element, to the end of the text encompassed
+by the `to` element. If only the `from` element supplied, the reviewer note
+covers the `from` element. The `from` and `to` elements can be bookmarks,
+which cover no space.
+
+[source,asciidoctor]
+--
+[[clause_address_profile_definition]]
+=== Address Profile Definition (AddressProfileDescription)
+
+[[para1]]
+This is a clause address [[A]]profile[[B]] definition
+
+[reviewer="Nick Nicholas",date=20180125T0121,from=clause_address_profile_definition,to=para1]
+****
+I do not agree with this statement.
+****
+
+[reviewer="Nick Nicholas",date=20180125T0121,from=A,to=B]
+****
+Profile?!
+****
+--

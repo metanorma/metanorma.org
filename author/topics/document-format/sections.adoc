@@ -1,0 +1,155 @@
+---
+layout: author-docs
+---
+
+= Document sections
+
+Sections are marked off in Asciidoc with titles prefixed by double equal signs, `==`.
+
+== Fixed section names
+
+Metanorma relies on certain pre-defined section titles
+to identify the different kinds of sections in the document, namely these:
+
+- `Abstract`
+- `Introduction`
+- `Scope`
+- `Normative References`
+- `Terms and Definitions`
+- `Symbols and Abbreviations`
+- `Bibliography`
+
+[NOTE]
+====
+A dedicated topic link:../terms/[expands on Terms and Definitions section grammar], specifically.
+====
+
+As an alternative
+(if the document deviates from that naming structure, or is in a language other than English),
+the section can be prefixed with a `heading=` attribute
+that provides the English canonical form of the section name. For example:
+
+[source,asciidoc]
+--
+== Normative References
+
+[heading=terms and definitions]
+== Terms, definitions and abbreviations
+--
+
+== Obligations
+
+The obligation of a section—whether it is normative or informative—is indicated
+with the attribute "obligation".
+
+For most sections, this is fixed; for annexes and clauses,
+the default value of the obligation is "normative" and users need to set the obligation
+to "informative" as a section attribute if needed. For example:
+
+[source,asciidoctor]
+--
+[[AnnexA]]
+[appendix,obligation=informative]
+== Determination of defects
+--
+
+== The Foreword
+
+The Foreword of a standard is detected as any text between the document header
+and the first section header.
+
+In the example below, AsciiISO Rice document specifies the `.Foreword` title
+to the foreword in the source, but Metanorma will supply the "Foreword" title
+regardless of what title is given.
+
+----
+[[foreword]]
+.Foreword
+The Calendaring and Scheduling Consortium ("`CalConnect`") is global non-profit
+organization with the aim to facilitate interoperability of technologies across
+user-centric systems and applications...
+----
+
+== Symbols and Abbreviations
+
+Symbols and Abbreviations sections are expected to be simple definition lists
+(http://asciidoctor.org/docs/user-manual/#labeled-list[“labelled lists”]
+in Asciidoctor nomenclature).
+
+Metanorma takes care of sorting the symbol entries in the order prescribed by ISO/IEC DIR 2,
+provided the symbols are in AsciiMath; sorting MathML entries is not currently supported.
+
+== Annexes
+
+All annexes must be preceded by the style attribute `[appendix]`.
+
+Like all clauses, annexes are **normative by default**,
+an informative annex is indicated with `[appendix,obligation=informative]`.
+
+The **numbering** of annexes and appendices is automatic:
+do not insert "Annex A" or "Appendix 1" as part of the title.
+
+Annex and Appendix **titles** can be left blank, as with Clauses.
+
+
+== Sections deeper than 5 levels
+
+Asciidoctor permits only five levels of section embedding (not counting the document title).
+Standards do contain more levels of embedding; ISO/IEC DIR 2 only considers it a problem
+if there are more than 7 levels of embedding. To realise higher levels of embedding,
+prefix a 5-level section title with the attribute `level=`:
+
+[source,asciidoctor]
+--
+====== Clause 5
+
+[level=6]
+===== Clause 6
+
+[level=7]
+====== Clause 7A
+
+[level=7]
+====== Clause 7B
+
+[level=6]
+====== Clause 6B
+
+====== Clause 5B
+--
+
+This generates the following ISO XML:
+
+[source,xml]
+--
+<clause id="_" inline-header="false" obligation="normative">
+	<title>
+		Clause 5 
+	</title>
+	<clause id="_" inline-header="false" obligation="normative">
+		<title>
+			Clause 6 
+		</title>
+		<clause id="_" inline-header="false" obligation="normative">
+			<title>
+				Clause 7A 
+			</title>
+		</clause>
+		<clause id="_" inline-header="false" obligation="normative">
+			<title>
+				Clause 7B 
+			</title>
+		</clause>
+	</clause>
+	<clause id="_" inline-header="false" obligation="normative">
+		<title>
+			Clause 6B 
+		</title>
+	</clause>
+</clause>
+<clause id="_" inline-header="false" obligation="normative">
+	<title>
+		Clause 5B 
+	</title>
+</clause>
+--

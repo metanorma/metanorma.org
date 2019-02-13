@@ -1,0 +1,87 @@
+---
+layout: author-docs
+---
+
+= References & Bibliography
+
+The Normative References and the Bibliography must be preceded by the style attribute
+`[bibliography]`, so that the references they contain may be recognised as such. 
+
+All bibliographic entries must be given as unordered lists. 
+
+Generic references in bibliographies use bracketed numbers, like `[1]`.
+
+Bibliographic entries for standards are expected to have the standard document
+identifier as the item label.
+
+[source,asciidoctor]
+--
+* [[[ref1,ISO 712]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+--
+
+[TIP]
+====
+Currently the gem only supports formatted citations, which are given as such in the AsciiDoc source.
+In the future, we expect to integrate the documents with rendering of Relaton-model bibliographies,
+so that the text of the citation itself doesn’t have to be entered by hand.
+
+See link:/author/topics/building/reference-lookup[Automatic reference lookup] topic.
+====
+
+== Localities
+
+Citations can include details of where in the document the citation is located (or the word “whole”);
+these are entered by suffixing the lowercase type of locality, then an equals sign,
+then the locality value or range of values.
+
+Multiple instances of locality and reference can be provided, delimited by comma or colon.
+Any trailing text after the sequence of locality=reference (or locality, space, reference)
+is treated as substitute text, as would occur normally in an Asciidoctor cross-reference.
+
+The locality can appear in quotations if it contains special characters (like dashes or commas).
+For example:
+
+[source,asciidoctor]
+--
+<<ISO7301,clause=3.1-3.4>>
+
+NOTE: This table is based on <<ISO7301,table=1>>.
+
+Sampling shall be carried out in accordance with <<xxx,section="5-3-1,bis">>
+--
+
+More examples:
+
+[source,asciidoctor]
+--
+<<ISO712,the foregoing reference>>     # renders as: the foregoing reference
+<<ISO712,section=5, page 8-10>>         # renders as: ISO 712, Section 5, Page 8-10
+<<ISO712,section=5, page=8-10: 5:8-10>> # renders as ISO 712, 5:8-10 ("5:8-10" treated as replacement text for all the foregoing)
+<<ISO712,whole>>                        # renders as: ISO 712, Whole of text
+--
+
+The references cannot contain spaces. Any text following the sequence of localities
+will be displayed instead of the localities.
+
+A custom locality can be entered by prefixing it with `locality:`:
+
+[source,asciidoctor]
+--
+<<ISO712,locality:frontispiece=5, page=8-10>>         # renders as: ISO 712, Frontispiece 5, Page 8-10
+--
+
+Custom localities may not contain commas, colons, or space. Localities with the `locality:`
+prefix are recognised in internationalisation configuration files.
+
+Any text after the bibliographic localities is still treated as custom cross-reference text;
+for example:
+
+[source,asciidoctor]
+--
+<<ISO7301,clause=5,table=1,the foregoing reference>>
+--
+
+== Referencing established standards
+
+References to well-defined standards codes use the document identifiers
+(e.g. `ISO 20483:2013`) for citations.

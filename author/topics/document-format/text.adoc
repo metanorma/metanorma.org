@@ -1,0 +1,301 @@
+---
+layout: author-docs
+---
+
+= Text formatting
+
+== Strikethrough and small caps
+
+The following formatting macros are used for strikethrough and small caps text:
+
+[source,asciidoctor]
+--
+[strike]#strike through text#
+[smallcap]#small caps text#
+--
+
+== Paragraph alignment
+
+Paragraph alignment is defined as an attribute for paragraphs:
+
+[source,asciidoctor]
+--
+[align=left]
+This paragraph is aligned left
+
+[align=right]
+This paragraph is aligned right
+
+[align=center]
+This paragraph is aligned center
+
+[align=justified]
+This paragraph is justified, which is the default
+--
+
+== Block quotes
+
+As in normal Asciidoctor, block quotes are preceded with an author and a citation;
+but the citation is expected to be in the same format as all other citations, 
+a cross-reference optionally followed by text, which may include the bibliographic
+sections referenced:
+
+[source,asciidoctor]
+--
+[quote, ISO, "ISO7301,section 1"]
+_____
+This International Standard gives the minimum specifications for rice (_Oryza sativa_ L.) 
+which is subject to international trade. It is applicable to the following types: husked rice 
+and milled rice, parboiled or not, intended for direct human consumption. It is neither 
+applicable to other products derived from rice, nor to waxy rice (glutinous rice).
+_____
+--
+
+== Notes
+
+Notes that are not at the end of a clause are folded into the preceding block,
+if that block is not delimited (so that the user could not choose to include or exclude a note).
+That is, notes are folded into a preceding paragraph, list, formula, or figure.
+
+== Footnotes
+
+Table and figure footnotes are treated differently from all other footnotes: they are
+rendered at the bottom of the table or figure, and they are numbered separately.
+
+== Lists
+
+Ordered lists in both HTML and Word have their labels pre-configured
+to align with ISO/IEC DIR 2:
+
+- _a), b), c)_ for the first level,
+- then _1), 2), 3)_ for the second level,
+- then _i), ii), iii)_,
+- then _A), B), C)_,
+- then _I), II), III)_.
+
+The `type` attribute for ordered lists in Asciidoctor,
+which allows the user to specify the label of an ordered list, is ignored.
+
+=== List items with more than one paragraph
+
+Asciidoctor and HTML support multiple paragraphs within a single list item
+(see https://asciidoctor.org/docs/user-manual/#list-continuation[list continuation]).
+In HTML output, all the paragraphs within a list item will be aligned.
+
+[NOTE]
+====
+.MS Word caveats
+
+- For list items containing multiple paragraphs,
+  Metanorma attempts to format them appropriately by using custom list continuation styles
+  (`ListContLevel1` etc.); however, you should check the output document
+  and may need to manually intervene.
+
+- In MS Word, each list entry must be a single paragraph.
+  if the Asciidoctor contains more than one paragraph for a list item,
+  the subsequent paragraphs will not be preceded by a bullet in Word,
+  but they will also not be indented under the first paragraph of the list item.
+====
+
+
+== Tables
+
+While Asciidoctor tables are quite powerful for a non-XML markup language,
+they still have not dealt with the full range of complexity required in Metanorma.
+
+Metanorma adds the option of multiple header rows (attribute `headerrows=n`)
+to deal with the complexity of ISO tables
+requiring labels, variables, and units to lining up in the header.
+
+Asciidoc allows table cells to have footnotes (which Metanorma renders inside the table)
+and notes following the table (which Metanorma moves inside the table footer).
+
+[TIP]
+====
+Table 1 in the AsciiISO Rice example document illustrates
+a large range of table formatting options.
+====
+
+=== Count of table header and footer rows
+
+In Asciidoc, a table can have at most one header row or footer row. In Metanorma,
+a nominal single header row is routinely broken up into multiple rows in order
+to accommodate units or symbols, that line up against each other, though
+they are displayed as merged cells with no grid between them. To address this,
+tables can be marked up with an optional `headerrows` attribute:
+
+[source,asciidoctor]
+--
+[headerrows=2]
+|===
+.2+|Defect 4+^| Maximum permissible mass fraction of defects in husked rice +
+stem:[w_max]
+| in husked rice | in milled rice (non-glutinous) | in husked parboiled rice | in milled parboiled rice
+
+| Extraneous matter: organic footnote:[Organic extraneous matter includes foreign seeds, husks, bran, parts of straw, etc.] | 1,0 | 0,5 | 1,0 | 0,5
+|===
+--
+
+== Formulae
+
+Formulae are marked up as `[stem]` blocks.
+Any explanation of symbols in the formula is given as a "where" paragraph,
+followed by a definition list.
+
+For example:
+
+[source,asciidoc]
+--
+[[formulaA-1]]
+[stem]
+++++
+w = (m_D) / (m_s)
+++++
+
+where
+
+stem:[w]:: is the mass fraction of grains with a particular defect in the test sample;
+stem:[m_D]:: is the mass, in grams, of grains with that defect; 
+stem:[m_S]:: is the mass, in grams, of the test sample. 
+--
+
+[NOTE]
+====
+Mathematical formatting is done using the `[stem]` macro.
+While Asciidoctor supports http://asciimath.org[AsciiMath] and LaTeX natively (AsciiMath by default),
+Metanorma supports **only AsciiMath**.
+
+AsciiMath is converted to Microsoft Word's OOXML via MathML,
+using the https://github.com/asciidoctor/asciimath[AsciiMath] Ruby gem;
+the syntax of the Ruby gem may be at odds with the usual MathJax processor of AsciiMath.
+(We have found that the Ruby gem insists on numerators being bracketed.)
+====
+
+== Figures
+
+Like formulae, figures can be followed by a definition list for the variables used in the figure;
+the definition list is preceded by `+*Key*+`. For example:
+
+[source,asciidoc]
+--
+[[figureC-1]]
+.Typical gelatinization curve
+image::rice_images/rice_image2.png[]
+footnote:[The time stem:[t_90] was estimated to be 18,2 min for this example.]
+
+*Key*
+
+stem:[w]:: mass fraction of gelatinized kernels, expressed in per cent
+stem:[t]:: cooking time, expressed in minutes
+stem:[t_90]:: time required to gelatinize 90 % of the kernels
+P:: point of the curve corresponding to a cooking time of stem:[t_90]
+
+NOTE: These results are based on a study carried out on three different types of kernel.
+--
+
+=== Subfigures
+
+Subfigures (which appear in ISO formats, for examlpe)
+are entered by including images in an AsciiDoc example:
+
+[source,asciidoc]
+--
+[[figureC-2]]
+.Stages of gelatinization
+====
+.Initial stages: No grains are fully gelatinized (ungelatinized starch granules are visible inside the kernels)
+image::rice_images/rice_image3_1.png[]
+
+.Intermediate stages: Some fully gelatinized kernels are visible
+image::rice_images/rice_image3_2.png[]
+
+.Final stages: All kernels are fully gelatinized
+image::rice_images/rice_image3_3.png[]
+
+====
+--
+
+=== Image size
+
+The value `auto` is accepted for image width and height attributes. It is only passed on
+to HTML output; if the output is to Word, both the width and height attributes are stripped
+from the image.
+
+[source,asciidoctor]
+--
+[height=90,width=auto]
+image::logo.jpg
+--
+
+
+
+== Cross-references
+
+The guidance given in ISO/IEC DIR 2 for internal cross-references
+guarantees unambiguous referencing and is followed rigorously by Metanorma.
+
+In particular, if a formula, example, figure, list, list item or table is cross-referenced
+outside its (sub)clause, the clause containing the item is always given in the cross-reference,
+unless the item is being referenced in the same clause.
+
+In the case of notes, the containing clause is extended to containing example, figure or table.
+
+[NOTE]
+====
+For example, in the AsciiISO Rice model sample document
+formula B.1 is defined in Annex B.6, and is referenced in B.6 and B.7.
+
+In the Rice model document published by ISO, both instances are cited as "Formula (B.1)".
+However, Metanorma follows ISO/IEC DIR 2 in citing the former
+as "Formula (B.1)", but the latter as "B.6, Formula (B.1)".
+
+In this sense, Metanorma is "more royalist than the king" in applying formatting rules and
+validation—which is what you would want of a computer-based tool.
+====
+
+The label of the item cross-referenced, the use of brackets, and the containing reference
+are all taken care of by Metanorma; the document author needs only give the item identifier
+in the Asciidoctor source
+(e.g. `<<``formulaB-1``>>` generates either "Formula (B.1)" or "B.6, Formula (B.1)",
+depending on where in the document it occurs.)
+
+=== Localities
+
+Normally in Asciidoctor, any text in a cross-reference that follows a comma
+constitutes custom text for the cross-reference.
+So a cross-reference `<<ISO7301,the foregoing reference>>`
+would be rendered as "the foregoing reference", and hyperlinked to the ISO7301 reference.
+
+In Metanorma Asciidoctor cross-references, bibliographic localities
+(e.g. page numbers, clause numbers) can be added directly after the comma,
+as part of the cross-reference text. This overrides the normal Asciidoctor treatment of custom text.
+
+=== List items
+
+List items can be cross-referenced by inserting a bookmark at the very start of the list item:
+
+[source,asciidoc]
+--
+. Ordered list
+.. [[id]] This is the first list item
+... [[id]] This is a list sub-item
+--
+
+=== Cross-references to external documents
+
+Metanorma will process cross-references to anchors within external documents
+just like Asciidoctor would normally. For example,
+
+[source,asciidoc]
+--
+<<document1.adoc#b>>
+--
+
+will be processed as a link to anchor `#b` in document `document1.adoc`.
+
+If the reference uses `.adoc` suffix, as in above example, it is stripped in Metanorma XML
+and substituted with the extension of the current document type during document generation.
+
+The above example is rendered in Metanorma XML as `<xref target="document1#b">`,
+in HTML as `<a href="document1.html#b">`, and in PDF as `<a href="document1.pdf#b">`.
+
