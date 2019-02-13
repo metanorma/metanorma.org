@@ -1,0 +1,32 @@
+---
+layout: builder-docs
+---
+
+= Localization
+
+Metanorma allows for documents to be authored in any language.
+
+Localizing boilerplate text that appears in document output
+(labels such as "Table", "Foreword", boilerplate text for Normative References, etc.)
+for each language apart from English is done using a YAML template file.
+
+== Supported languages
+
+Metanorma has predefined language templates for English, Chinese (Simplified) and French.
+The Chinese (Simplified) template localises punctuation and spacing,
+mapping them away from the default Latin punctuation used normally in Metanorma.
+
+== Adding a language
+
+You can add a new language by creating a YAML template file with boilerplate text.
+Document authors will need to link to that file via `:i18nyaml:` document attribute
+(see link:/author/topics/languages[Langauges] in Author’s documentation).
+
+See https://github.com/riboseinc/metanorma-iso/blob/master/spec/examples/english.yaml[sample YAML file for English],
+where "Foreword" is replaced with "Frontispiece",
+under `metanorma-iso` repository’s examples directory.
+
+[TIP]
+====
+A good way to start is to take that sample template and customize it for your language.
+====

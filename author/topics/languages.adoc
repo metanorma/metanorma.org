@@ -6,27 +6,17 @@ layout: author-docs
 
 Metanorma allows generation of standards in different languages.
 
-For each language, language-specific templates are specified for boilerplate text,
-labels and cross-references that are included in document output.
-
-== Specifying document language
-
 The language of the document is specified in following link:/author/ref/document-attributes/#languages-localization[document attributes]:
 
-- `:language:`
-- `:script:` (for languages with more than one script)
+- `:language:` — two-letter language code, such as `en` (default) or `fr`.
+- `:script:` — script (for languages with more than one script). Specify
+  `Hans` for Simplified Chinese. Default is `Latn`.
+- `:i18nyaml:` — language template file. Only needed if you’re using a language other than
+  English, Chinese (Simplified) or French.
 
-== Supported languages
-
-Metanorma has predefined templates for English, Chinese (Simplified) and French.
-The Chinese (Simplified) template localises punctuation and spacing,
-mapping them away from the default Latin punctuation used normally in Metanorma.
-
-== Adding a language
-
-You can add a new language by providing a YAML template file
-and linking to that file with the `:i18nyaml:` link:/author/ref/document-attributes/#languages-localization[document attribute].
-
-See https://github.com/riboseinc/metanorma-iso/blob/master/spec/examples/english.yaml[sample YAML file for English],
-where "Foreword" is replaced with "Frontispiece",
-under `metanorma-iso` repository’s examples directory.
+[TIP]
+====
+If you’re looking for information about how to add support for a new language
+in your custom Metanorma workflow, see link:/builder/topics/localization/[localization]
+in Metanorma builder’s documentation.
+====
