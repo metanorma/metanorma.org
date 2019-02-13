@@ -1,0 +1,114 @@
+---
+layout: gb-flavour
+---
+
+= Document attributes
+
+Attributes marked with asterisk (*) are mandatory.
+
+`:title-intro-zh:`, `:title-main-zh:`*, `:title-part-zh:`::
+These are the title introduction, main title, and part title in Chinese.
+The intro and part titles are optional
+(they replace their French counterparts in
+https://github.com/riboseinc/metanorma-iso[metanorma-iso].)
+This and the other `:title-*` document attributes are used instead
+of the metanorma-standoc `:title:` attribute and the default Asciidoctor title
+(the first line of the document header, prefixed with `=`).
+
+`:title-intro-en:`, `:title-main-en:`*, `:title-part-en:`::
+These are the title introduction, main title, and part title in English.
+The intro and part titles are optional.
+(They form the document subtitle, instead of the document title as in
+https://github.com/riboseinc/metanorma-iso[metanorma-iso].)
+
+`:technical-committee-type:`::
+The type of the technical committee (`technical` or `provisional`).
+
+`:iso-standard:`::
+(optional) A corresponding ISO standard that the GB standard relates to. Format
+is full document code, then optionally comma followed by document title;
+e.g. `ISO/IEC 27001:2013, Information security management systems`
+
+`:equivalence:`::
+(optional, only valid if there is a corresponding `:iso-standard:`)
+The relation of the GB standard to the corresponding ISO standard
+(`equivalent`, `identical`, `nonequivalent`). Defaults to `equivalent`.
+
+`:obsoletes:`::
+(optional)
+A corresponding GB standard that this GB standard obsoletes. Format is full
+document code, then optionally comma followed by document title;
+e.g. `GB/T 22080-2008`
+
+`:obsoletes-parts:`::
+A list of bibliographic localities in the corresponding GB standard that this
+GB standard obsoletes. These are formatted the same way as the localities in
+citations; e.g. `clause 7-9, clause 11`
+
+`:scope:`::
+The scope of the GB standard (`national`, `sector`, `professional`, `local`,
+`enterprise`, `social-group`). Defaults to `national`.
+
+`:mandate:`::
+The mandate of the GB standard (`mandatory`, `recommended`, `guidelines`).
+Defaults to `mandatory`.
+
+`:topic:`::
+The topic of the GB standard (`basic`, `health-and-safety`, `environment-protection`, `engineering-and-construction`, `product`, `method`, `management-techniques`, `other`). Defaults to `basic`.
+
+`:prefix:`::
+The prefix classifying the GB standard.
+(Refer to
+https://github.com/riboseinc/gbdoc/blob/master/models/gb-standard-national-prefix.adoc[GB National Standard Prefixes],
+https://github.com/riboseinc/gbdoc/blob/master/models/gb-standard-sector-prefix.adoc[GB Sector Standard Prefixes],
+https://github.com/riboseinc/gbdoc/blob/master/models/gb-standard-local-prefix.adoc[GB Local Standard Prefixes],
+https://github.com/riboseinc/metanorma-gb/issues/54[GB Social and Enterprise Standard Prefixes].)
+Any `/Z` or `/T` suffix (indicating "recommended" and "guidelines" mandate) is 
+ignored unless the `:mandate:` attribute is not given. Any `Q/` or `T/` prefix for social and enterprise
+standards is ignored unless the `:scope:` attribute is not given.
+
+`:library-ics:`::
+The ICS (International Categorization for Standards) number for the GB standard. There may be more than one ICS for a document; if so, they should be comma-delimited. (Unlike the case for ISO, the ICS identifier is output to the front page of the GB standard.)
+
+`:library-ccs:`::
+The CCS (Chinese Categorization Scheme) code for the GB standard. See https://github.com/riboseinc/cn-ccs-codes
+
+`:plan-number:`::
+The Plan Number (计划单号) for the GB standard.
+
+`:issuer:`::
+The issuer of the standard. This is the authority which authors, manages, and issues the standard. For social standards, this is the social group; for enterprise standards, this is the company. The issuer appears on the standard frontispiece. By default, the issuer is inferred from the prefix of the standard; this attribute overrides the value inferred from the prefix. It is required for social and entperprise standards.
+
+`:publisher:`::
+The publisher of the standard, which distributes the standard. This is distinct from the issuer, the authority which authors, manages, and issues the standard.
+
+`:proposer:`::
+The party which proposed the standard.
+
+`:authority:`::
+The authority which sponsored the standard.
+
+`:author:`::
+The individuals who drafted the standard.
+
+`:author-committee:`::
+The committees which drafted the standard. (Also `:author-committee_2:`, `:author-committee_3:`...)
+
+`:title-font:`::
+The font to use for the standard class and issuer on the (Word) cover page; described in GB/T 1.1 as 
+"custom font". If not provided, the font is inferred from the scope of the standard, aligning
+with existing practice: SimSun for national scope, SimHei for all other scopes.
+
+`:keep-boilerplate:`::
+If absent (default), any paragraphs supplied at the start of the Terms and Definitions
+section are deleted, and replaced with standard boilerplate. If present, any such
+paragraphs in the text are retained.
+
+`:standard-logo-img:`::
+User-supplied graphic to overwrite the logo for the standard on the title page.
+
+`:standard-class-img:`::
+User-supplied graphic to overwrite the name of the standard class on the title page.
+
+`:standard-issuer-img:`::
+User-supplied graphic to overwrite the name of the standard issuer on the title page.

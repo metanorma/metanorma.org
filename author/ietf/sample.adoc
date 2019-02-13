@@ -1,0 +1,66 @@
+---
+layout: ietf-flavour
+title: "Metanorma AsciiIETF sample: The Holy Hand Grenade of Antioch"
+---
+:page-liquid:
+
+{% include flavour-sample-summary.html flavour=layout.ietf_flavour
+    markup_link="../topics/markup/" %}
+
+== Working with the sample
+
+=== Requirements
+
+You will need Ruby, `xml2rfc` and `idnits` (for submission preflight) installed.
+
+On macOS:
+
+[source,console]
+--
+brew install idnits
+brew install python
+easy_install pip
+pip install -r requirements.txt
+gem install bundler
+bundle install
+--
+
+=== Building
+
+[source,console]
+--
+make all
+--
+
+Alternatively:
+
+[source,console]
+--
+export ID_NAME=camelot-holy-grenade
+make draft-${ID_NAME}.txt
+--
+
+=== Validating with `idnits`
+
+`https://tools.ietf.org/tools/idnits/[idnits]` is the tool for checking RFCs prior to submission.
+
+[source,console]
+--
+export ID_NAME=camelot-holy-grenade
+make draft-${ID_NAME}.nits
+--
+
+[NOTE]
+====
+The Makefile target infers the document name from the `:name:` document attribute
+and puts the file in the right place before calling `idnits`
+to prevent it complaining about the location.
+====
+
+=== Iterating on your document
+
+[source,console]
+--
+export ID_NAME=camelot-holy-grenade
+make clean all; open draft-${ID_NAME}.txt
+--

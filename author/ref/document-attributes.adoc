@@ -1,0 +1,266 @@
+---
+layout: author-docs
+---
+
+= Document attributes
+
+This is the list of link:/author/topics/document-format/meta-attributes[document attributes]
+supported by most flavours of Metanorma.
+
+[TIP]
+====
+If you’re using one of the link:/flavours/[officially supported flavours of Metanorma],
+see also flavour-specific guidance for any additional supported or required headers.
+====
+
+== Build & validation
+
+`:nodoc:`::
+Instructs Metanorma to not generate Word and HTML output, means only XML output will be generated.
+
+`:novalid:`::
+Suppress document validation.
+
+=== Caches
+
+`:no-isobib-cache:`::
+If set, use the `relaton` and `iev` gem functionality to look up
+ISO and IEV references online, but do not use the cache of `relaton` and `iev` searches.
+
+`:local-cache:`::
+Use the local relaton and iev search caches to override the global `relaton` and `iev` search
+caches. If a directory name is given for the attribute, that name overrides `relaton` as the
+cache name.
+
+`:local-cache-only:`::
+Use the local relaton and iev search caches to the exclusion of the global
+`relaton` and `iev` search caches.
+If a directory name is given for the attribute, that name overrides `relaton` as the cache name.
+
+`:flush-caches:`::
+If set, delete and reinitialise the cache of `https://www.relaton.com/[relaton]` searches.
+
+=== Math
+
+`:stem:`::
+This attribute is required if you have any AsciiMath or MathML
+included in the document; otherwise they will not be detected.
+
+=== Reference lookup
+
+`:no-isobib:`::
+If set, do not use the `relaton` or `iev` gem functionality to look up
+ISO and IEV references online, nor the cache of `relaton` and `iev` searches.
+
+== Languages & localization
+
+See also the link:/author/topics/languages[Languages] topic.
+
+`:i18nyaml:`::
+Name of YAML language template file.
+Use if you wish to output an standard in a language that’s not supported out of the box.
+
+`:language:`::
+Two-letter code of the language the document is written in. Defaults to `en`.
+
+`:script:`::
+The script of the document. Defaults to `Latn`. Must be supplied as
+`Hans` for Simplified Chinese.
+
+== Document info
+
+`:publisher:`:: The standards agency publishing the standard; can be multiple
+(comma-delimited). Defaults to `ISO`.
+
+`:docnumber:`::
+The numeric component of the document identifier (mandatory).
+The full identifier is formed by prefixing and suffixing this element with other strings
+derived from metadata.
+
+`:edition:`::
+The document edition.
+
+`:revdate:`::
+The date the document was last updated.
+
+`:library-ics:`::
+The ICS (International Categorization for Standards) number for the standard.
+There may be more than one ICS for a document; if so, they should be comma-delimited.
+(The ICS identifier is added to the document metadata,
+but may not be visible in the resulting document, depending on Metanorma flavour.)
+
+`:title:`::
+The title of the document. If not supplied, the built-in Asciidoctor title
+(first line of document header) is used instead.
+
+`:title-XX:`::
+The title of the document in the language `XX` (where “XX” is a ISO 639-1 code).
+
+`:doctype:`::
+The document type; e.g. "standard", "guide", "report".
+
+`:status:`::
+The status of the document; e.g. "draft", "published".
+
+`:draft:`::
+The document draft
+(used in addition to document stage, for multiple iterations: expected format _X.Y_).
+If present, includes review notes in the XML output; these are otherwise suppressed.
+
+=== URIs
+
+`:uri:`:: The URI to which this standard is published.
+`:xml-uri:`:: The URI to which the (Metanorma) XML representation of this standard is published.
+`:html-uri:`:: The URI to which the HTML representation of this standard is published.
+`:pdf-uri:`:: The URI to which the PDF representation of this standard is published.
+`:doc-uri:`:: The URI to which the DOC representation of this standard is published.
+`:relaton-uri:`:: The URI to which the Relaton XML representation of this standard is published.
+
+=== Timestamps
+
+`:copyright-year:`::
+The year which will be claimed as when the copyright for the document was issued.
+
+`:issued-date:`::
+The date on which the standard was issued (authorised for publication by the issuing authority).
+
+`:published-date:`::
+The date on which the standard was published (distributed by the publisher).
+
+`:implemented-date:`::
+The date on which the standard became active.
+
+`:created-date:`::
+The date on which the first version of the standard was created.
+
+`:updated-date:`::
+The date on which the current version of the standard was updated.
+
+`:obsoleted-date:`::
+The date on which the standard was obsoleted/revoked.
+
+`:confirmed-date:`::
+The date on which the standard was reviewed and approved by the issuing authority.
+
+`:unchanged-date:`::
+The date on which the standard was last renewed without any changes in content.
+
+`:circulated-date:`::
+The date on which the unpublished standard was last circulated officially as a preprint. For standards, this is associated with the latest transition to a formally defined preparation stage, such as Working Draft or Committee Draft.
+
+`:date:`::
+An arbitrary date in the production of the standard. Content of the attribute should be a token, giving the type of date, then space, then the date itself. Multiple dates can be added as `:date_2:`, `:date_3:`, etc.
+
+== Author info
+
+`:technical-committee:`::
+The name of the relevant technical committee.
+
+`:fullname{_i}:`::
+The full name of a person who is a contributor to the document.
+A second person is indicated by using a numeric suffix: `:fullname:`, `:fullname_2:`, `fullname_3:`, &c.
+(This and the other personal name attributes are not displayed in all standards.)
+
+`:surname{_i}:`::
+The surname of a person who is a contributor to the document.
+
+`:givenname{_i}:`::
+The given name(s) of a person who is a contributor to the document.
+
+`:initials{_i}:`::
+The initials(s) of a person who is a contributor to the document.
+
+`:role{_i}:`::
+The role of a a person who is a contributor to the document.
+By default, they are coded as an `editor`; they can also be represented as an `author`.
+
+`:affiliation{_i}:`::
+The organisational affiliation of a person who is a contributor to the document.
+
+`:address{_i}:`::
+The organisational address of a person who is a contributor to the document.
+
+`:contributor-uri{_i}:`::
+The URI of a person who is a contributor to the document.
+
+`:email{_i}:`::
+The email of a person who is a contributor to the document.
+
+== Visual appearance
+
+`:body-font:`::
+Font for body text; will be inserted into CSS.
+Defaults to Cambria for Latin script, SimSun for Simplified Chinese.
+
+`:header-font:`::
+Font for headers; will be inserted into CSS.
+Defaults to Cambria for Latin script, SimHei for Simplified Chinese.
+
+`:monospace-font:`::
+Font for monospace; will be inserted into CSS. Defaults to Courier New.
+
+`:htmlstylesheet:`::
+SCSS stylesheet to use for HTML output.
+Defaults to built-in stylesheet, which adheres with ISO formatting requirements.
+Overriding is not recommended.
+
+`:htmlcoverpage:`::
+HTML template for cover page.
+Defaults to built in template.
+Overriding is not recommended.
+
+`:htmlintropage:`::
+HTML template for introductory section. Defaults to built in template.
+Overriding is not recommended.
+
+`:scripts:`::
+Javascript scripts for HTML output. Defaults to built in scripts.
+Overriding is not recommended.
+
+`:scripts-pdf:`::
+Javascript scripts for HTML to PDF output. Defaults to built in scripts.
+Overriding is not recommended.
+
+`:wordstylesheet:`::
+Primary SCSS stylesheet to use for Word output. Defaults to built in stylesheet,
+which adheres with ISO formatting requirements.
+Overriding is not recommended.
+
+`:standardstylesheet:`::
+Secondary SCSS stylesheet use for Word output. Defaults to built-in stylesheet,
+which adheres to ISO formatting requirements.
+Overriding is not recommended.
+
+`:header:`::
+Header and footer file for Word output. Defaults to built in template.
+Overriding is not recommended.
+
+`:wordcoverpage:`::
+Word template for cover page. Defaults to built in template.
+Overriding is not recommended.
+
+`:wordintropage:`::
+Word template for introductory section. Defaults to built in template.
+Overriding is not recommended.
+
+`:ulstyle:`::
+Word CSS selector for unordered lists in supplied stylesheets.
+Defaults to value for built in stylesheet.
+Overriding is not recommended.
+
+`:olstyle:`::
+Word CSS selector for ordered lists in supplied stylesheets.
+Defaults to value for built in stylesheet.
+Overriding is not recommended.
+
+`:data-uri-image:`::
+Encode all images in HTML output as inline data-URIs. Defaults to true.
+
+`:smartquotes:`::
+Apply smartquotes and other autoformatting to the XML output (and hence the downstream outputs)
+(default true).
+The rules for smart formatting follow the
+https://github.com/pbhogan/sterile[sterile] gem, and are given in
+https://github.com/pbhogan/sterile/blob/master/lib/sterile/data/smart_format_rules.rb[smart_format_rules.rb].
+If this attribute is set to `false`, the Asciidoctor default is used to generate smart quotes:
+`"&#x060; &#x060;"`, `'&#x060; &#x060;'`.

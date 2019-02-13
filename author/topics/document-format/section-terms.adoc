@@ -1,0 +1,264 @@
+---
+layout: author-docs
+---
+
+= The “Terms and Definitions” section
+
+== Grammar summary
+
+Terms and Definitions sections follow a strict grammar, which is reflected in their AsciiDoc markup:
+
+* The term is given as a *subheading* at the appropriate level
+  (three equal signs, unless there are subsections in the Terms and Definition section).
+  The term may be cross-referenced from other terms, in which case it should have an *anchor*.
+* The term is optionally followed by *alternative/admitted terms*,
+  which must be marked up in an `+alt:[...]+` macro;
+  *deprecated terms*, which must be marked up in a `+deprecated:[...]+` macro;
+  and a term *domain*, which must be marked up in a `+domain:[...]+` macro.
+* The *definition* of the term is given in a separate paragraph.
+* The definition is optionally followed by *examples*
+  (paragraphs with an `[example]` style attribute).
+* The definition is then optionally followed by *notes* (denoted with a `NOTE:` prefix).
+* The definition is then followed by a *citation* for the term
+  (marked with a `[.source]` role attribute).
+* The citation is a cross-reference to a normative reference,
+  optionally followed by a comma and a modification if applicable.
+
+For example:
+
+[source,asciidoc]
+--
+[[paddy]]
+=== paddy 
+alt:[paddy rice]
+alt:[rough rice]
+deprecated:[cargo rice]
+domain:[rice]
+
+rice retaining its husk after threshing
+
+[example]
+Foreign seeds, husks, bran, sand, dust.
+
+NOTE: The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking. 
+
+[.source]
+<<ISO7301,section 3.2>>, The term "cargo rice" is shown as deprecated,
+and Note 1 to entry is not included here
+--
+
+[NOTE]
+====
+The requirement that the source of a term be given in a citation also applies when the source
+is a term bank,
+such as the http://www.electropedia.org[International Electrotechnical Vocabulary (IEV)].
+Formally, IEV references should be cited as `IEC 60050-nnn:20xx`,
+where `n` is the top-level clause, and `20xx` is the year when that particular specification
+was published; e.g. `IEC 60050-113:2011, 113-01-07`.
+====
+
+[NOTE]
+====
+.Empty section
+
+If there are no terms and definitions defined in this standards document,
+no terms should be included in the section body (it should be blank).
+The boilerplate at the start of the section is adjusted to reflect both possibilities;
+any paragraphs or lists in the AsciiDoc input (which can replicate the expected boilerplate)
+is stripped in the intermediate XML format.
+====
+
+
+== Grouping IEV references
+
+For convenience, Metanorma requires all IEV references to be to a single reference,
+named `IEV` in the normative references. During the rendering of AsciiDoc into Metanorma XML,
+this reference will be replaced by the various required IEC 60050-nnn:20xx references.
+(That means that you should not insert your own instances of IEC 60050 references
+for IEV citations: they will be duplicated by the automatically generated references.)
+
+[source,asciidoc]
+--
+[.source]
+<<ievtermbank,clause="103-01-02">>
+
+...
+
+[bibliography]
+* [[[ievtermbank,IEV]]], _IEV: Electropedia_
+// will be excluded from HTML and Word output. Will be replaced by a canonical reference in XML output.
+--
+
+Note that, for IEV entries to be validated, the IEV reference must be given as a Clause,
+and in quotes (otherwise the locality syntax would be interpreted as a range);
+so `<<ievtermbank,clause="103-01-02">>` for IEV 103-01-02.
+
+== Title
+
+The title of a top-level Terms and Definitions clause is populated automatically,
+overriding the title provided by the user: if it contains a Symbols and Abbreviated Terms subclause,
+it is titled _Terms, definitions, symbols and abbreviated terms_,
+otherwise it is titled _Terms and definitions_.
+A Terms and Definitions clause will be recognised if either title is given,
+regardless of case.
+Symbols and Abbreviated Terms subclauses are also automatically titled;
+other subclauses of Terms and Definitions clauses are not.
+
+
+== Source
+
+If the Terms and Definitions of a standard are partly or fully sourced from
+another standard, that standard is cited in a `source` attribute to the section,
+which is set to the reference anchor of the standard given under the Normative
+References.
+(The attribute needs to be applied to the top-level clause, if there are subclauses.)
+
+Any boilerplate of the Terms and Definitions section is adjusted accordingly.
+
+[source,asciidoctor]
+--
+[source=ISO712]
+== Terms and Definitions
+--
+
+Multiple sources are allowed, and need to be quoted and comma-delimited:
+
+[source,asciidoctor]
+--
+[source="ISO712,ISO24333"]
+== Terms and Definitions
+--
+
+
+== Term markup macros
+
+To ensure the structure of Terms and Definitions is captured accurately, the following
+macros are defined, and must be used to mark up their respective content:
+
+`alt:[TERM]`:: for alternative terms
+`deprecated:[TERM]`:: for deprecated terms
+`domain:[TERM]`:: for term domains
+
+The macro contents can contain their own markup.
+
+[source,asciidoctor]
+--
+=== paddy 
+alt:[_paddy_ rice]
+deprecated:[#[smallcap]#cargo# rice]
+domain:[rice]
+
+_paddy_ (<<paddy>>) from which the husk only has been removed
+--
+
+=== Stem expressions
+
+AsciiDoc does not permit macros to be nested inside other macros;
+so the following markup, introducing a stem expression as an admitted term, is illegal.
+(The use of stem expressions as preferred terms is not a problem,
+because the macro appears as a header.)
+
+[source,asciidoc]
+.Bad example
+--
+=== stem:[t_90] 
+alt:[stem:[t_A]]
+
+Time to launch.
+--
+
+However, Metanorma will treat any standalone paragraph in a term section,
+consisting of just a stem macro, as an admitted term:
+
+[source,asciidoc]
+.Good example
+--
+=== stem:[t_90] 
+
+stem:[t_A]
+
+Time to launch.
+--
+
+== Subclauses
+
+Any clause within a Terms & Definitions section which is a nonterminal subclause (has
+child nodes) is automatically itself a terms (or definitions) section. On the other hand,
+any descendant of a nonterm clause is also a nonterm clause.
+
+Informative clauses are indicated with the attribute `[obligation=informative]`;
+clauses are normative by default.
+
+=== Introductory non-clause section
+
+As defined above, all terminal subclauses of a term section are treated as term definitions.
+Exceptionally, an introductory section can be treated as a subclause instead of a term,
+by prefixing it with the style attribute `[.nonterm]`:
+
+[source,asciidoctor]
+--
+== Terms and definitions
+
+[.nonterm]
+=== Introduction
+The following terms have non-normative effect, and should be ignored by the ametrical.
+
+=== Anapaest
+
+metrical foot consisting of a short, a long, and a short
+--
+
+=== Blank subclases
+
+Blank subclause headings can be given like this:
+
+[source,asciidoc]
+--
+=== {blank}
+--
+
+These are used when you want to give a subclause number for a new subclause,
+but without an associated header text. For example, in AsciiISO Rice sample document,
+
+[source,asciidoc]
+--
+=== Physical and chemical characteristics 
+
+==== {blank}
+
+The mass fraction of moisture, determined in accordance with...
+--
+
+renders as 
+
+____
+*4.2. Physical and chemical characteristics*
+
+*4.2.1.*  The mass fraction of moisture, determined in accordance with...
+____
+
+[NOTE]
+====
+This notation should not be used to implement paragraph numbering as required for UNECE.
+The link:/flavours/unece/[UNECE Metanorma flavour] treats each paragraph
+as a distinct clause and automatically numbers it.
+====
+
+=== Inline headings
+
+Inline subclause headings (e.g. for test methods) are indicated by preceding the heading
+with the `[%inline-header]` option attribute. So in the Rice Model document,
+
+[source,asciidoc]
+--
+[%inline-header]
+==== Sieve, 
+
+with round perforations of diameter 1,4 mm.
+--
+
+renders as 
+
+____
+*A.2.1.1. Sieve,* with round perforations of diameter 1,4 mm.
+____

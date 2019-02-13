@@ -1,0 +1,98 @@
+---
+layout: author-docs
+---
+
+= Document attributes
+
+The core metadata about a standard comes from the AsciiDoc document attributes.
+Some of the attributes are simple flags, while other expect a value to be provided.
+
+Document attributes specify such aspects as languages, build settings,
+and aspects of document appearance.
+
+The convention is to supply those attributes as part of document header.
+The order of attributes doesn’t matter to Metanorma.
+
+[source,asciidoc]
+.Example of document header with title and various attributes
+----
+= Rice model <1>
+:docnumber: 17301 <2>
+:tc-docnumber: 17301
+:ref-docnumber: ISO 17301-1:2016(E)
+:partnumber: 1
+:draft: <3>
+:edition: 2
+:copyright-year: 2016
+:language: en
+:docfile: iso-rice-en.adoc
+:mn-document-class: iso
+:mn-output-extensions: xml,html,doc,html_alt <4>
+:local-cache-only:
+:data-uri-image:
+----
+<1> Document title
+<2> `:docnumber:` is the first document attribute, and it has the value _17301_
+<3> `:draft:` is a kind of attribute that doesn’t require a value (if it’s specified, then
+    the document considered a draft)
+<4> Some attributes allow multiple values, which usually must be comma-delimited
+
+
+== Which attributes to specify?
+
+The attributes required or allowed to be specified for given document
+depend on the type of document and the Metanorma flavour used.
+
+See link:/author/ref/document-attributes/[generic attribute reference]
+for attributes supported by most Metanorma flavours.
+If you’re using one of the officially supported Metanorma flavours,
+consult your flavour’s author documentation as well.
+
+
+== Passing as command-line flags
+
+In addition to document header, document attributes can also be supplied
+to the Metanorma command-line tool using flag `-a`.
+
+Following example calls `metanorma` to build an ISO document while specifying
+`:nodoc:` attribute same as if it was provided in document header:
+
+[source,console]
+--
+metanorma -a nodoc --type iso a.adoc
+--
+
+
+== Referencing attributes in the text
+
+The body of the document can reference the values of document attributes.
+Here’s an example of referncing committee-related metadata entries:
+
+[source,asciidoc]
+--
+This document was prepared by Technical Committee ISO/TC {technical-committee-number}, _{technical-committee}_, Subcommittee SC {subcommittee-number}, _{subcommittee}_.
+--
+
+If the corresponding document attributes are not populated in the header, then the references
+themselves will not be populated.
+
+
+== Dealing with HTML entities
+
+Document attribute values, unlike document text, cannot deal with HTML entities.
+If you need to have non-ASCII characters in document title, or dashes for compound titles,
+you will need to enter them directly as Unicode.
+
+As an example, this would work:
+
+[source,adoc]
+--
+:title-main-fr: Spécification et méthodes d'essai
+--
+
+However, this wouldn’t:
+
+[source,adoc]
+--
+:title-main-fr: Sp\&eacute;cification et m\&eacute;thodes d'essai`; `:title-part-en:Information Technology—Security`, not `:title-part-en:Information Technology\&mdash;Security
+--

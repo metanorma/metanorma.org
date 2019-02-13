@@ -1,0 +1,53 @@
+---
+layout: author-docs
+---
+
+= Automatic reference lookup
+
+For references to certain standards, Metanorma will attempt to look up references online
+during document build automatically.
+
+https://www.relaton.com/[Relaton] is used to look up the reference details for
+standards known to have online bibliographies. For bibliographic standards to be looked up via relaton,
+the standard document identifier needs to be encoded in a format recognised by relaton as a key:
+
+* For ISO: `ISO(identifier)`, or any identifier prefixed with `ISO`
+* For IEC: `IEC(identifier)`, or any identifier prefixed with `IEC`
+* For IETF: `IETF(identifier)` (e.g. `IETF(I-D.-burger-xcon-mmodels)`), or any identifier prefixed with `RFC`
+* For GB: `CN(identifier)` (e.g. `CN(JB/T 13368-2018)`)
+
+The full bibliographic details of the item are screenscraped from the online bibliography and inserted into the XML file 
+(although only the title of the reference is used in rendering).
+
+In addition, if any entries in Terms and Definitions cite the International Electrotechnical Vocabulary (IEV),
+the http://www.electropedia.org[IEV Electropedia] termbank is queried during validation, to confirm
+that the cited entries are the same as what is cited online; those queries are routed through the `iev` gem.
+
+== Lookup result caching
+
+The results of reference lookups made across all documents
+are cached in the global cache file `~/.relaton/cache`,  
+so they do not need to be re-fetched each time a document is processed.
+
+(Otherwise, each web query takes a few seconds per reference.)
+
+The results of all Relaton searches done to date in a given directory
+are stored in the same directory as the current document,
+by default to the file `relaton/cache`. (The filename can be overriden in
+document attributes.) The local cache overrides entries in
+the global cache, and can be manually edited. The local cache is only used
+if the `:local-cache:` or `:local-cache-only:` document attribute is set.
+
+If the document attribute `:no-isobib:` is set, the reference details for
+items are not looked up via `isobib`, and the `isobib` caches are not used.
+If the document attribute `:no-isobib-cache:` is set, the reference details for
+items are still looked up via `isobib`, but the `isobib` caches are not used.
+
+Any entry in the cache that corresponds to an undated ISO reference fetches its details
+from the latest available entry on the ISO web site. If the entry is more than 60
+days old, it is refetched.
+
+The results of all `iev` searches done to date across all documents are cached
+in the global cache fule `~/iev.pstore`, and the results of all `iev` searches
+done to date for the current document are stored in the same directory as the
+current document, in the file `(filename).iev.pstore`.

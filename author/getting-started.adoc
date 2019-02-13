@@ -1,0 +1,66 @@
+---
+layout: author-docs
+title: Get started
+description: >-
+  Metanorma installation, samples, customization & usage tips.
+html-class: getting-started
+redirect_from:
+  - /overview/getting-started/
+  - /docs/getting-started/
+---
+
+== Choose your starting point
+
+If you'd like to *adopt Metanorma for your organization's standard & specification management workflows*,
+the best starting point is to customize an existing processor that
+matches your requirements best, such as Metanorma-ISO.
+
+* link:/docs/[Learn more] about Metanorma's features
+aiming to help organizations with management of standardization documents
+
+* Check out link:/docs/customization/[Metanorma customization guidelines]
+
+To *author documents compliant with the requirements of certain established standard bodies*,
+you may already find an existing Metanorma processor:
+see link:/flavours/[Metanorma’s officially supported document flavours]
+
+
+[[install-metanorma]]
+== Quick install guide
+
+Here is the simplest way to install Metanorma on any OS.
+This uses a Docker container, wrapping the Ruby gem
+and all dependencies such as Node, Puppeteer, and PlantUML.
+
+[TIP]
+====
+If you would rather avoid using the Docker distribution, for performance reasons or otherwise,
+refer to a link:/author/topics/install/[complete installation guide] that covers
+different ways of getting Metanorma up and running.
+====
+
+Steps:
+
+. Install Docker. Get the latest version for your operating system at https://docker.com/.
+
+. Pull the container:
++
+[source,console]
+--
+docker pull ribose/metanorma
+--
+
+Now you should be able to run Metanorma executable like this:
+
+[source,console]
+--
+docker run -v "$(pwd)":/metanorma/ -w /metanorma ribose/metanorma "metanorma -t {Metanorma flavour} -x {output formats} {my document filename}"
+--
+
+[NOTE]
+====
+To speed up document generation when using Metanorma in Docker,
+it is recommended to specify `local-cache-only` document attribute.
+====
+
+== [tbd]#Write your first standard#

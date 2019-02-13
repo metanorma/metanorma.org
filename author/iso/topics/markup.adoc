@@ -1,0 +1,116 @@
+---
+layout: iso-flavour
+---
+
+= AsciiISO markup
+
+== Cross-references
+
+Custom cross-references should not be used in ISO standards,
+either for an external reference, or for a section of the current document:
+ISO/IEC DIR 2 requires any cross-references to be transparent in text.
+
+For example, a cross-reference to the anchor such as:
+
+[source,asciidoctor]
+--
+[[tabular]]
+--
+
+on clause 5 should be given as just:
+
+[source,asciidoctor]
+--
+<<tabular>>
+--
+
+…and custom text will be automatically rendered as `Clause 5` by Metanorma-ISO.
+
+ISO clause references will suppress the word "Clause" before a subclause reference,
+following ISO/IEC DIR 2: `<``<ISO24333,clause=5>``>` will be rendered as _ISO 24333, Clause 5_,
+but `<``<ISO7301,clause=3.1>``>` will be rendered as _ISO 7301, 3.1_.
+
+== Bibliographies
+
+For references to standards with a document identifier,
+the entry must be preceded by a bibliographic anchor, in triple brackets:
+this consists of an arbitrary internal identifier (used in citations),
+followed by the canonical document identifier for the reference as its label.
+
+All references under Normative References are expected to have such an identifier. For example:
+
+[source,asciidoc]
+--
+* [[[ricepotentialmilling,ISO 6646]]], _Rice -- Determination of the potential milling yield from paddy and from husked rice_
+* [[[ISOGuide73, ISO Guide 73:2009]]], _Risk management -- Vocabulary_
+--
+
+[subs="quotes"]
+ISO 6646 in this example would be cited from elsewhere in the document through crossreferences to the `ricepotentialmilling` identifier; e.g. `<< ricepotentialmilling>>` (which will be rendered as `ISO 6646`), `<<``ricepotentialmilling, section 5``>>` (which will be rendered as `ISO 6646, Section 5`), `<<``ricepotentialmilling,section 5: the foregoing discussion``>>` (which will be tagged in the XML representation as Section 5 of ISO 6646, but will be displayed as `the foregoing discussion`.)
+
+[TIP]
+====
+If an ISO reference is in preparation, ISO/IEC DIR 2 dictates that details of the reference status be given as a footnote. In Asciidoc, this is done by giving the date as a double dash, and following the bibliographic anchor with a footnote macro:
+
+[source,asciidoc]
+--
+* [[[ISO16634,ISO 16634:--]]] footnote:[Under preparation. (Stage at the time of publication ISO/DIS 16634)], _Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs -- Determination of the total nitrogen content by combustion according to the Dumas principle and calculation of the crude protein content_
+--
+
+If an ISO reference includes all parts of the standard, that is indicated by appending `(all parts)` after the reference anchor:
+
+[source,asciidoc]
+--
+* [[[ISO16634,ISO 16634 (all parts)]]] _Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs -- Determination of the total nitrogen content by combustion according to the Dumas principle and calculation of the crude protein content_
+--
+====
+
+In informative references, references to standards documents are still given with the same format of bibliographic anchor, and they are cited by their document identifier -- although they are displayed with an incrementing reference number in brackets, for consistency with any bibliographic entries that are not standards documents. (This convention is taken from ISO.) So
+
+[source,asciidoc]
+--
+[bibliography]
+== Bibliography 
+
+* [[[ISO3696,ISO 3696]]], _Water for analytical laboratory use -- Specification and test methods_
+...
+* [[[ref11,11]]] Nitrogen-ammonia-protein modified Kjeldahl method -- Titanium oxide and copper sulfate catalyst. _Official Methods and Recommended Practices of the AOCS_ (ed. Firestone, D.E.), AOCS Official Method Ba Ai 4-91, 1997, AOCS Press, Champaign, IL
+--
+
+is displayed as:
+
+[quote]
+____
+*Bibliography*
+
+[1] ISO 3696, _Water for analytical laboratory use -- Specification and test methods_
+...
+[11] Nitrogen-ammonia-protein modified Kjeldahl method -- Titanium oxide and copper sulfate catalyst. _Official Methods and Recommended Practices of the AOCS_ (ed. Firestone, D.E.), AOCS Official Method Ba Ai 4-91, 1997, AOCS Press, Champaign, IL
+____
+
+The bracketed reference numbers are expected to be correct and in order: they are not overriden in rendering.
+
+=== Automatic reference fetching
+
+https://www.relaton.com/[Relaton] can fetch bibliographic entries
+for any standards known to have online bibliographic databases (ISO, IEC, IETF, GB).
+
+Any bibliographic entry recognised through its document identifier prefix
+will by default have its bibliographic entry fetched by that gem.
+The fetched data overrides any content about the item provided in the document,
+since the online bibliography is treated as the source of truth for that standards document.
+
+== Annexes & appendices
+
+In ISO, Appendixes to annexes can occur, although they are not mentioned in ISO/IEC DIR 2; ISO/IEC DIR 1 features them. They are marked up as immediate subsections of annexes, and must be tagged with an option attribute of "appendix":
+
+[source,asciidoc]
+--
+[appendix]
+== Annex A
+Text
+
+[%appendix]
+=== Appendix 1
+Text
+--

@@ -1,0 +1,42 @@
+---
+layout: rsd-flavour
+---
+
+= Using Metanorma-RSD
+
+== Document attributes
+
+`:security:`::
+Security level classification. For example, "confidential", "client confidential"
+
+`:doctype:`::
+*Mandatory.* Document type (see RSD deliverables: The different types of
+RSD publications). Permitted types:
++
+--
+* policy-and-procedures
+* best-practices
+* supporting-document
+* report
+* legal
+* directives
+* proposal
+* standard
+--
+
+`:status:``::
+Document status.
+Permitted types: `proposal`, `working-draft`, `committee-draft`, `draft-standard`, `final-draft`,
+`published`, `withdrawn`
+
+`:committee:`::
+*Mandatory.* Name of relevant RSD committee
+
+`:committee-type:`::
+*Mandatory.* Type of relevant RSD committee. Could be `technical`
+or `provisional`
+
+== Markup features
+
+* `+[keyword]#...#+`: encodes keywords, such as "MUST", "MUST NOT". (Encoded as
+`<span class="keyword">...</span>`.

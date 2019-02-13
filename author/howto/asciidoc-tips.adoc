@@ -1,0 +1,91 @@
+---
+layout: author-docs
+---
+
+= Asciidoctor tips
+
+As noted, the http://asciidoctor.org/docs/user-manual/[Asciidoctor User Manual] should be your companion
+when authoring any AsciiDoc documents, including AsciiDoc documents under Metanorma.
+
+There are some more specialised aspects of Asciidoctor markup,
+which you might need to dig deeper to find in the manual; we list some of them here.
+
+== Multi-paragraph footnotes
+
+Asciidoctor supports only single-paragraph footnotes through its footnote macro (which can only contain a single line of text).
+This reflects a stylistic bias against digressive text by the Asciidoc creator, and probably will not change.
+
+This can be worked around by introducing line breaks into the macro. See:
+
+- https://github.com/asciidoctor/asciidoctor.org/issues/599
+- http://discuss.asciidoctor.org/footnotes-with-paragraph-breaks-td4130.html
+
+== Complex notes and admonitions
+
+A note or admonition can be made to span multiple paragraphs (including lists and tables)
+by making it a https://asciidoctor.org/docs/user-manual/#delimited-blocks[delimited block]:
+
+[source,asciidoc]
+--
+[NOTE]
+====
+This is a multi-paragraph note.
+
+It includes:
+
+* A list
+
+|===
+| And 
+
+| a table
+|===
+====
+--
+
+== Attribute references
+
+https://asciidoctor.org/docs/user-manual/#using-attributes-set-assign-and-reference[Attribute references]
+can be used as template variables in a document:
+if your document contains the text `{foo}`,
+you can assign the value to be populated in `{foo}`
+by setting it as a document attribute in the Asciidoctor header:
+`:foo: this is the text to replace "foo"`.
+
+In the AsciiISO Rice model sample document, document attributes are used
+to provide the Subcommittee and Technical Committee names, which are populated
+as template entries in the document foreword.
+
+See also: link:/author/topics/document-format/meta-attributes/[Document attributes].
+
+== List items with complex contents
+
+List items can contain other blocks in Asciidoctor through concatenating blocks; for example:
+
+[source.asciidoc]
+--
+* List
++
+|===
+| Contains | A table
+
+|===
+--
+
+However, output formatters (such as MS Word) may not be able to cope with embedding blocks
+within list items.
+
+In particular, MS Word will force a carriage return between a list item,
+and a list or table contained in the item.
+
+This means the output like follows, with the list number flush with the embedded block,
+is not possible in MS Word (though it is in HTML):
+
+....
+a)  1. Text
+b)  |-------|------ |
+    | table | table |
+    |---------------|
+c)  Definition Term   Definition
+    Definition Term   Definition
+....

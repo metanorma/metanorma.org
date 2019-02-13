@@ -1,0 +1,39 @@
+== Quick start
+
+{% if include.flavour.sample %}
+- Play with a link:./sample/[sample Metanorma-{{ include.flavour.title }} project]
+{% endif %}
+
+- Build Metanorma-{{ include.flavour.title }} projects by passing following command flags:
++
+[source,console]
+--
+{{ include.flavour.build.cli_flags }}
+--
+
+{% if include.has_topics or include.has_references %}
+- Read {% if include.has_topics %}link:./topics/[topics]{% if include.has_references %} and {% endif %}{% endif %} {% if include.has_references %}link:./ref/[reference guides]{% endif %}
+  about authoring {{ include.flavour.title_org | default: include.flavour.title }} documents
+  using {{ include.flavour.markup_name }} markup language
+{% endif %}
+
+[IMPORTANT]
+====
+.If you’re new to Metanorma or AsciiDoc
+Metanorma-{{ include.flavour.title }} flavour documentation
+should be treated in addition to general Metanorma documentation,
+and in addition to AsciiDoc format reference.
+
+- link:/author/getting-started/[Get started authoring with Metanorma]
+
+- Get familiar with link:/author/approach/[Metanorma’s approach to creating standards documents]
+
+- Learn about link:/author/topics/document-format/[document file format]
+
+- Read https://asciidoctor.org/docs/user-manual/[the Asciidoctor manual]
+====
+
+== Implementation
+
+{{ include.flavour.title }} flavour of Metanorma
+is implemented by link:/software/{{ include.flavour.implemented_by }}[{{ include.flavour.implemented_by }}] package.

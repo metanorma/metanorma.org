@@ -1,83 +1,26 @@
 ---
-layout: docs
-title: Get started
-description: >-
-  Metanorma installation, samples, customization & usage tips.
-html-class: getting-started
-redirect_from:
-  - /overview/getting-started/
+layout: author-docs
 ---
 
-== Introduction
+= How to install Metanorma
 
-If you'd like to *adopt Metanorma for your organization's standard & specification management workflows*,
-the best starting point is to customize an existing processor that
-matches your requirements best, such as Metanorma-ISO.
-
-* Check out link:/software/metanorma-iso/[Metanorma-ISO docs]
-for customization tips
-
-* link:/docs/[Learn more] about Metanorma's features
-aiming to help organizations with management of standardization documents
-
-* See Metanorma ecosystem's existing link:/software/Sample_processor/[example processors]
-and link:/software/For_enterprises/[enterprise processors]
-
-To *author documents compliant with the requirements of certain established standard bodies*,
-you may already find an existing Metanorma processor -- see corresponding authoring documentation
-and document samples:
-
-[cols="h,a,a"]
-|===
-|Processor |Docs |Samples
-
-|ISO documents
-| link:/software/metanorma-iso/docs/guidance/[Authoring quickstart]
-| https://github.com/riboseinc/isodoc-rice[ISO Rice document]
-
-|IETF RFC/Internet-Drafts
-| https://github.com/riboseinc/metanorma-ietf[README]
-| link:/samples/draft-camelot-holy-grenade/[Camelot]
-
-|CalConnect CSD
-| link:/software/metanorma-csd/docs/quickstart/[Authoring quickstart]
-| https://github.com/CalConnect/csd-calspam-bcp[CC/R 18003]
-
-|Cloud Security Alliance CSAND
-| https://github.com/riboseinc/metanorma-csd[README]
-| https://github.com/riboseinc/csand-devsecops-whitepaper[DevSecOps Whitepaper]
-
-|UN/ECE Recommendations/Plenary
-| https://github.com/riboseinc/metanorma-unece[README]
-| https://github.com/riboseinc/unece-cefact-recommendation-42[UN/CEFACT Recommendation 42]
-
-|Chinese Standards
-| https://github.com/riboseinc/metanorma-gb[README]
-| https://github.com/riboseinc/gmt-0009-2012/[GM/T 0009-2012 translation]
-
-|M3AAWG
-| link:https://github.com/riboseinc/metanorma-m3d[README]
-| [tbd]#Sample#
-
-|===
-
-
-== Installing the Metanorma toolchain
-
-=== General
-
-We strongly recommend the <<docker-setup>> due to the number of components
-involved in Metanorma.
-
-On the other hand, there are certain reasons (such as performance)
-that you may wish to setup the components on your machine.
-
+To be able to build Metanorma documents of any flavour, you need to have the
+`metanorma-cli` Ruby gem installed.
+To simplify installation of the gem and its dependencies,
+following installation methods are currently supported.
 
 [[docker-setup]]
-=== Docker setup
+== Docker setup
 
 This setup method works for all platforms that support the Docker container
 framework.
+
+[TIP]
+====
+This method is the recommended way of getting Metanorma installed, although
+for certain reasons (such as performance)
+that you may wish to setup the components directly on your machine.
+====
 
 . Pull the container:
 +
@@ -96,13 +39,14 @@ execute from within the directory containing the Metanorma document
 docker run -v "$(pwd)":/metanorma/ -w /metanorma ribose/metanorma "metanorma -t iso -x html,doc,xml {my-document-file}"
 ----
 
-
-See https://github.com/riboseinc/metanorma-docker[metanorma-docker] for more information
-and some shortcuts, including a pre-made Makefile.
+[TIP]
+====
+See https://github.com/riboseinc/metanorma-docker[metanorma-docker] for more information.
+====
 
 
 [[macos-setup]]
-=== macOS setup: Homebrew
+== macOS setup: Homebrew
 
 [source,sh]
 ----
@@ -119,7 +63,7 @@ brew install --HEAD https://raw.githubusercontent.com/riboseinc/homebrew-metanor
 ----
 
 
-=== macOS setup: all-in-one script
+== macOS setup: all-in-one script
 
 Run the following for an automatic install
 that would prepare a fresh system to work with Metanorma.
@@ -135,7 +79,7 @@ bash <(curl -s https://raw.githubusercontent.com/riboseinc/metanorma-macos-setup
 ----
 
 
-=== Linux setup: Ubuntu
+== Linux setup: Ubuntu
 
 Run the following for an automatic install via the https://github.com/riboseinc/metanorma-linux-setup[metanorma-linux-setup] scripts.
 
@@ -149,7 +93,7 @@ sudo bash -c "curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linu
 curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master/install-gems.sh | bash
 ----
 
-=== Linux setup: CentOS
+== Linux setup: CentOS
 
 Run the following for an automatic install via the https://github.com/riboseinc/metanorma-linux-setup[metanorma-linux-setup] scripts.
 
@@ -163,7 +107,7 @@ sudo bash -c "curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linu
 curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master/install-gems.sh | bash
 ----
 
-=== Windows setup
+== Windows setup
 
 Run this command in your `cmd.exe` or `PowerShell` to install
 the Metanorma Docker container and all prerequisites (see <<docker-setup>>):
@@ -181,10 +125,7 @@ https://github.com/riboseinc/metanorma-windows-setup[metanorma-windows-setup]:
 * setup the Metanorma toolchain directly on your Windows machine.
 
 
-=== Installing individual components
+== Installing individual components
 
-* link:/software/metanorma-cli/docs/installation[Install Metanorma command-line tools (CLI)]
-* link:/software/metanorma-iso/docs/quickstart/[Install the Metanorma-ISO processor]
-
-== [tbd]#Write your first standard#
-
+You can also link:/software/metanorma-cli/docs/installation[install Metanorma command-line tool]
+as a gem on its own, but be sure to note the dependencies.

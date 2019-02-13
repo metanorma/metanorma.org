@@ -1,0 +1,56 @@
+---
+layout: unece-flavour
+title: "Metanorma AsciiUNECE samples"
+---
+:page-liquid:
+
+{% include flavour-sample-summary.html flavour=layout.unece_flavour
+  markup_link="../authoring/" %}
+
+== Building the sample
+
+Clone the repository:
+
+[source,console]
+--
+git clone https://github.com/riboseinc/unece-docs/
+--
+
+Build the documents via the provided Makefile from within repository root:
+
+[source,console]
+--
+cd unece-docs
+make clean all
+--
+
+[NOTE]
+====
+By default, `make` expects that  `metanorma` binary is available somewhere on your path.
+
+If you are using Docker-based distribution of Metanorma,
+run `export METANORMA_DOCKER=1`, then `make` will invoke Metanorma through Docker container.
+
+- See link:/docs/getting-started/#install-metanorma[Getting started]
+  for the different ways of getting the Metanorma toolchain set up.
+====
+
+The following outputs will be built:
+
+* UNECE XML (link:/specs/metanorma-model-unece/UnDocument/[UnDocument model spec]) (`[filename].xml`)
+* HTML (`[filename].html`)
+* Word DOC (`[filename].doc`)
+
+[TIP]
+====
+If you’re using macOS, the following sequence will rebuild the documents
+and open the HTML deliverable showing your changes:
+
+[source,console]
+--
+make html
+open *.html
+--
+
+This is handy if you’re using the sample as a starting point to write your own document.
+====

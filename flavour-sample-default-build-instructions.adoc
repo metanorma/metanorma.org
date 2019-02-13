@@ -1,0 +1,29 @@
+Clone the Metanorma-{{ include.flavour.title }} repository and change into the directory with the example:
+
+[source,console]
+--
+git clone {{ include.sample_repo }}
+{% if include.sample_subdir %}
+cd {{ include.sample_subdir }}
+{% endif %}
+--
+
+If you’re using Docker distribution of Metanorma, run the Docker container like this:
+
+[source,console]
+--
+docker run -v "$(pwd)":/metanorma/ -w /metanorma ribose/metanorma "metanorma {{ include.flavour.build.cli_flags }} {{ include.sample_filename }}"
+--
+
+If you have Metanorma installed on your machine (not via Docker container), the command is simpler:
+
+[source,console]
+--
+metanorma {{ include.flavour.build.cli_flags }} {{ include.sample_filename }}
+--
+
+[NOTE]
+====
+See link:/author/getting-started/#install-metanorma[Getting started]
+for the different ways of getting the Metanorma toolchain set up.
+====

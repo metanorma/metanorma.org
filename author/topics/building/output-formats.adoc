@@ -1,0 +1,60 @@
+---
+layout: author-docs
+---
+
+= Outputs
+
+Metanorma toolchain currently outputs documents in these formats:
+
+== Metanorma XML
+
+The Metanorma XML output is the intermediate format which marks up the semantic content of the standards document, and is 
+used to drive the other formats. The Metanorma XML file is also the file which is used during
+the link:/docs/authoring/validation[validation stage].
+
+== HTML
+
+The HTML output is in HTML 5. It has optional Data-URI encoding of local images; if images in the output are are not Data-URI encoded, 
+they are moved to a folder called `{filename}_images`, and renamed with GUID names, to prevent collisions. Audio and video files are
+not supported. All HTML output has a sidebar with a Javascript-generated Table of Contents, which is two section levels deep.
+
+== PDF
+
+PDF output, for those standards gems that support it, is generated from the HTML output via Google Puppeteer (which runs in Node.js). 
+The PDF output generation takes advantage of the print mode in the HTML CSS stylesheet, so much of the browser-like styling of the HTML
+is rendered as a more print-like document. Because it is generated from HTML, the PDF output does not support page numbers in its
+Table of Contents. Nor does it support advanced paragraph formatting, such as Keep With Next or Widow/Orphan control.
+
+== Microsoft Word
+
+The Word output is output as legacy DOC format (used in pre-2007 version of MS Word) rather than DOCX, and it is generated using the 
+Microsoft Office flavour of HTML 4, as a Multipart HTML Word Document (MHT,
+the MIME-encoded counterpart to the HTML obtained when you save a Word document as HTML).
+
+=== Limitations of .doc format
+
+Using .doc imposes some constraints:
+
+* SVG images are not supported. (Word internally converts them into PNG files to render them in Word HTML.)
+* .doc files cannot be processed by Apple Pages or LibreOffice, only by Microsoft Word.
+
+[TIP]
+====
+To open the Word output in LibreOffice in particular, you will need to convert .doc file to .docx file
+in a specific way:
+
+. Open file with MS Word
+. Save it once by changing filename extension to `.doc` (you can confirm file overwrite, when asked)
+. "Save As" and choose `.docx` format this time
+====
+
+=== Why not .docx
+
+Using DOC HTML makes it much easier to generate documents with
+the advanced formatting requirements of Metanorma (including complex tables, formulas, footnotes, headers and footers, 
+nested list numbering and crossreferences) than generating either native DOCX (in OOXML), or the DOCX flavour of MHT.
+
+[TIP]
+====
+For more on why Metanorma uses .doc, see https://github.com/riboseinc/html2doc/wiki/Why-not-docx%3F.
+====

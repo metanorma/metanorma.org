@@ -1,0 +1,48 @@
+---
+layout: flavor
+
+docs_title: IETF flavour of Metanorma
+title: Author IETF I-Ds and RFCs using Metanorma
+
+ietf_flavour:
+  implemented_by: metanorma-ietf
+  title: IETF
+  markup_name: AsciiRFC
+  build:
+    cli_flags: "--type rfc3"
+  sample:
+    title: The Holy Hand Grenade of Antioch
+    repo_url: https://github.com/riboseinc/rfc-camelot-holy-grenade
+    rendered_url: https://www.metanorma.com/samples/draft-camelot-holy-grenade/
+
+base_url: /author/ietf
+
+navigation:
+  items:
+  - title: Get started
+    path: /
+  - title: Sample
+    description: Sample document
+    path: /sample/
+  - title: Using the flavour
+    path: /topics/
+    items:
+      - title: AsciiRFC markup
+        path: /topics/markup/
+      - title: References
+        description: Bibliographic references
+        path: /topics/references/
+      - title: Output formats
+        path: /topics/output-formats/
+  - title: Reference guides
+    path: /ref/
+    items:
+      - title: Document attributes
+        path: /ref/document-attributes/
+      - title: RFC element support
+        path: /ref/unsupported-rfc-elements/
+      - title: AsciiDoc feature support
+        path: /ref/unsupported-adoc-features/
+---
+
+{{ content }}
