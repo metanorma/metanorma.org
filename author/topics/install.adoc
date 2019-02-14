@@ -29,7 +29,7 @@ that you may wish to setup the components directly on your machine.
 docker pull ribose/metanorma
 ----
 . Specify the `:local-cache-only:` AsciiDoc attribute
-in document header to speed up rendering
+in document header to speed up rendering (optional)
 . To render the document into HTML, Word and XML,
 execute from within the directory containing the Metanorma document
 (replacing `{my-document-file}` with your actual document's filename):
@@ -46,7 +46,9 @@ See https://github.com/riboseinc/metanorma-docker[metanorma-docker] for more inf
 
 
 [[macos-setup]]
-== macOS setup: Homebrew
+== macOS
+
+=== Using https://brew.sh/[Homebrew]
 
 [source,sh]
 ----
@@ -63,7 +65,7 @@ brew install --HEAD https://raw.githubusercontent.com/riboseinc/homebrew-metanor
 ----
 
 
-== macOS setup: all-in-one script
+=== All-in-one script
 
 Run the following for an automatic install
 that would prepare a fresh system to work with Metanorma.
@@ -79,35 +81,44 @@ bash <(curl -s https://raw.githubusercontent.com/riboseinc/metanorma-macos-setup
 ----
 
 
-== Linux setup: Ubuntu
+== Linux
 
-Run the following for an automatic install via the https://github.com/riboseinc/metanorma-linux-setup[metanorma-linux-setup] scripts.
+Linux setup uses all-in-one script. You need to have `curl` installed beforehand.
 
-This should take less than 15 minutes depending on your machine and Internet connection:
+TIP: See more in https://github.com/riboseinc/metanorma-linux-setup[metanorma-linux-setup] repository.
+
+=== Ubuntu
 
 [source,sh]
 ----
-# Prerequisites: "curl"
-# apt-get update && apt-get install -y curl
 sudo bash -c "curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master/ubuntu.sh | bash"
 curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master/install-gems.sh | bash
 ----
 
-== Linux setup: CentOS
-
-Run the following for an automatic install via the https://github.com/riboseinc/metanorma-linux-setup[metanorma-linux-setup] scripts.
-
-This should take less than 15 minutes depending on your machine and Internet connection:
+=== CentOS
 
 [source,sh]
 ----
-# Prerequisites: "curl"
-# yum install -y curl
 sudo bash -c "curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master/centos.sh | bash"
 curl -L https://raw.githubusercontent.com/riboseinc/metanorma-linux-setup/master/install-gems.sh | bash
 ----
 
-== Windows setup
+== Windows
+
+=== Using https://chocolatey.org/[Chocolatey]
+
+[source,sh]
+----
+choco install metanorma
+----
+
+[TIP]
+====
+See also
+link:/blog/12-25-2018/metanorma-on-windows-via-chocolatey/[the blog post on Metanorma Chocolatey package].
+====
+
+=== Docker installation shortcut
 
 Run this command in your `cmd.exe` or `PowerShell` to install
 the Metanorma Docker container and all prerequisites (see <<docker-setup>>):
@@ -117,15 +128,15 @@ the Metanorma Docker container and all prerequisites (see <<docker-setup>>):
 bitsadmin /transfer get https://raw.githubusercontent.com/riboseinc/metanorma-windows-setup/master/install.bat %cd%\install.bat & .\install.bat
 ----
 
-If you'd like to do one of the following instead,
-please refer to
-https://github.com/riboseinc/metanorma-windows-setup[metanorma-windows-setup]:
+=== Other
 
-* setup the Metanorma Docker container manually; or
-* setup the Metanorma toolchain directly on your Windows machine.
+[TIP]
+====
+Refer to https://github.com/riboseinc/metanorma-windows-setup[metanorma-windows-setup]
+for more information.
+====
 
+== Installing gems separately
 
-== Installing individual components
-
-You can also link:/software/metanorma-cli/docs/installation[install Metanorma command-line tool]
-as a gem on its own, but be sure to note the dependencies.
+See link:/software/metanorma-cli/[Metanorma CLI docs]
+on how to install that gem on its own, be sure to note the dependencies.
