@@ -112,12 +112,8 @@ Execute the following:
 [source,console]
 ----
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-cinst ruby --version 2.5.3.101 -y # install ruby
 cinst msys2 --params "/NoUpdate" -y # install msys2 without system update
-$env:ChocolateyInstall = Convert-Path "$((Get-Command choco).path)\..\.." # reload chocolatey env
-Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1" # reload chocolatey env
 refreshenv
-ridk install 2 3                  # use ruby's ridk to update the system and install development toolchain
 cinst metanorma -y
 refreshenv
 ----
