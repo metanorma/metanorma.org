@@ -1,0 +1,42 @@
+---
+layout: itu-flavour
+---
+
+= Syntax for writing ITU-T documents using Metanorma
+
+== Document header attributes
+
+`:status:``::
+Document status. Choices: `proposal`,
+`working-draft`, `committee-draft`, `draft-standard`, `final-draft`,
+`published`, `withdrawn`.
+
+`:technical-committee:`::
+*Mandatory.* Name of relevant ITU technical committee.
+
+`:bureau:`::
+*Mandatory.*
+Bureau that the document belongs to. Choices: `R` (Radiocommunication),
+`T` (Telecommunication Standardization), `D` (Development).
+_Defaults to `T`._
+
+`:series:`::
+Series that the recommendation belongs to. Use full title, for example:
+_H: Audiovisual and Multimedia Systems_
+
+`:series1:`::
+First level subseries, for example: _IPTV multimedia services and applications for IPTV_
+(= H.700&ndash;H.789)
+
+`:series2:`::
+Second level subseries, for example: _Digital Signage_
+(= H.780&ndash;H.789)
+
+`:keywords:`::
+Comma-delimited list of keywords associated with the document.
+
+== Markup
+
+=== Summaries
+
+The summary sections of recommendations are marked up with the style attribute `[abstract]`.
