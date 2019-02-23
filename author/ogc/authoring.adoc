@@ -1,0 +1,213 @@
+---
+layout: ogc-flavour
+---
+
+= Syntax for writing OGC documents using Metanorma
+
+== Document header attributes
+
+`:doctype:`::
+*Mandatory.*
+Document type. Choices:
+* Standards
+** `standard` — Implementation Standard
+** `standard-with-suite` — Implementation Standard with Compliance Suite
+** `abstract-specification` — Abstract Specification
+** `community-standard` — Community Standard
+** `profile` — Profile / Application Profile
+** `best-practice` — Best Practices Document
+* Other
+** `engineering-report` — Engineering Report
+** `discussion-paper` — Discussion Paper
+** `reference-model` — OGC Reference Model
+** `user-guide` — User Guide
+** `policy` — OGC Policy Document
+** `guide` — Guide
+** `amendment` — Technical Amendment
+** `technical-corrigendum` — Corrigendum (errata) Changes to OGC Standards
+** `administrative` — Internal administrative documents
+
+`:status:`::
+Document status/stage. Choices:
++
+* `rfc` — OGC RFC (proposal)
+* `candidate` — Candidate Standard
+* `published` — Published
+* `deprecated` — Deprecated
+* `retired` — Retired
+
+`:keywords:`::
+Comma-delimited list of the keywords associated with the document.
+
+=== Author info
+
+`:committee:`::
+*Mandatory.*
+Name of relevant committee producing the document. Use one of:
+`technical`, `planning`, `strategic-member-advisory`
+
+`:subcommittee-type:`::
+The type of the relevant subcommittee producing the document
+
+`:subcommittee-number:`::
+The number of the relevant subcommittee producing the document
+
+`:workingGroup:`::
+*Mandatory.*
+Name of relevant working group producing the document.
+
+`:workgroup-type:`::
+Type of the relevant workgroup producing the document.
+
+`:workgroup-number:`::
+Number of the relevant workgroup producing the document.
+
+`:submitting-organizations:`::
+Semicolon-delimited list of the submitting organisations
+for this document. The organisation names themselves may contain commas. For example:
+_University of Calgary, Canada; National Central University, Taiwan_
+
+`:fullname{_i}:`::
+See `link:/author/ref/document-attributes/#fullname[:fullname:]`.
+
+`:surname{_i}:`::
+See `link:/author/ref/document-attributes/#surname[:surname:]`.
+
+`:givenname{_i}:`::
+See `link:/author/ref/document-attributes/#givenname[:givenname:]`.
+
+`:role{_i}:`::
+See `link:/author/ref/document-attributes/#role[:role:]`.
+
+`:editor:`::
+Same as `link:/author/ref/document-attributes/#fullname[:fullname:]`
+alongside `link:/author/ref/document-attributes/#role[:role:]` specified as “editor”.
+
+
+=== Timestamps
+
+`:created-date:`::
+Creation date of the document.
+
+`:submissionDate:`::
+Date at which the document was submitted to the standards body.
+
+`:approvalDate:`::
+Used instead of `link:/author/ref/document-attributes/#issued-date[:issued-date:]`
+with same semantics.
+
+`:publicationDate:`::
+Used instead of `link:/author/ref/document-attributes/#published-date[:published-date:]`
+with same semantics.
+
+`:copyrightYear:`::
+Used instead of `link:/author/ref/document#copyright-year[:copyright-year:]`
+with same semantics.
+
+=== URIs and IDs
+
+`:docReference:`::
+Used instead of `link:/author/ref/document-attributes/#docnumber[:docnumber:]`
+with same semantics.
+
+`:external-id:`::
+External identifier referring to this document.
+
+`:referenceURLID:`::
+Identifier embedded into a document type-specific external URL.
+
+`:previous-uri:`::
+URI of previous version of the document.
+
+
+== Markup
+
+=== Sections
+
+The Normative References section may be named just "References", reflecting OGC practice.
+
+=== Preliminary elements
+
+The following clauses are preliminary elements, and are moved into the frontispiece
+of the document (in Metanorma, the document preface):
+
+* Abstract
+* Keywords
+* Preface
+* Submitting Organizations
+* Submitters
+
+The abstract is recognised as the first clause with an `abstract` style attribute:
+
+[source,asciidoc]
+----
+[abstract]
+== Abstract
+
+xxx
+----
+
+The preface is recognised as the text between the Asciidoctor document attributes and
+the first Asciidoctor section title; it must not be given a section title of its own.
+
+[source,asciidoc]
+----
+:received-date: 2019-01-01
+
+.Preface
+
+preface text
+
+=== Submitters
+----
+
+Keywords and Submitting Organizations consist of lists. They are treated as document metadata,
+and are entered as a document attribute.
+The prefatory text introducing them is added automatically.
+
+Submitters are treated as a table, contained in a section with the title `Submitters`:
+
+[source,asciidoc]
+----
+=== Submitters
+
+|===
+|Name |Representing |OGC member
+
+|Steve Liang | University of Calgary, Canada / SensorUp Inc. | Yes
+|===
+----
+
+=== Examples
+
+Unlike the normal case in Metanorma, examples can have captions:
+
+[source,asciidoc]
+----
+[example]
+.Example caption
+====
+Text
+====
+----
+
+=== Recommendations, requirements, and permissions
+
+Distinct recommendations, requirements and permissions are recognised in Metanorma
+Asciidoctor as tables whose first cell contains the text _Recommendation_, _Requirement_, _Permission_,
+optionally followed by a number (which is ignored in parsing; the elements are renumberd
+automatically in rendering.) These are currently constituted of two elements: an internal
+label, which is parsed as the first paragraph of the second table cell, and the body of
+the recommendation etc., which is parsed as the remainder of the second table cell.
+
+[source,asciidoc]
+----
+[[recommendation1]]
+|===
+|Recommendation |/ogc/recommendation/wfs/2 +
+
+If the API definition document uses the OpenAPI Specification 3.0,
+the document SHOULD conform to the
+<<rc_oas30,OpenAPI Specification 3.0 requirements class>>.
+|===
+----
