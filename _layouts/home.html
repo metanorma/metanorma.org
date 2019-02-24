@@ -8,24 +8,34 @@ flavours:
     path: /author/iso/
   - name: IETF
     path: /author/ietf/
-  - name: 国标
-    description: Chinese Guobiao standards
-    path: /author/gb/
-  - name: UNECE
+  - name: UN/ECE
     path: /author/unece/
-  - name: M<sup>3</sup>AAWG
-    description: Messaging, Malware and Mobile Anti-Abuse Working Group
-    path: /author/m3d/
+  - name: OGC
+    description: Open Geospatial Consortium
+    path: /author/ogc/
   - name: CSA
     description: Cloud Security Alliance
     path: /author/csand/
   - name: CalConnect
     path: /author/csd/
 
+  - name: ITU
+    path: /author/itu/
+    experimental: yes
+  - name: 国标
+    description: Chinese Guobiao standards
+    path: /author/gb/
+    experimental: yes
+  - name: M<sup>3</sup>AAWG
+    description: Messaging, Malware and Mobile Anti-Abuse Working Group
+    path: /author/m3d/
+    experimental: yes
+
   corporate:
   - name: MPFA
     description: Mandatory Provident Fund Authority of Hong Kong
     path: /author/mpfd/
+    experimental: yes
   - name: Ribose
     path: /author/rsd/
 ---
@@ -43,14 +53,18 @@ flavours:
 
     <div class="items">
       {% for fl in layout.flavours.bodies %}
-        <a href="{{ fl.path | relative_url }}" {% if fl.description %}title="{{ fl.description }}"{% endif %}>
+        <a href="{{ fl.path | relative_url }}"
+            {% if fl.experimental %}class="experimental"{% endif %}
+            {% if fl.description %}title="{{ fl.description }}"{% endif %}>
           <article class="fl">
             <header>{{ fl.name }}</header>
           </article>
         </a>
       {% endfor %}
       {% for fl in layout.flavours.corporate %}
-        <a href="{{ fl.path | relative_url }}" {% if fl.description %}title="{{ fl.description }}"{% endif %}>
+        <a href="{{ fl.path | relative_url }}"
+            {% if fl.experimental %}class="experimental"{% endif %}
+            {% if fl.description %}title="{{ fl.description }}"{% endif %}>
           <article class="fl">
             <header>{{ fl.name }}</header>
           </article>
