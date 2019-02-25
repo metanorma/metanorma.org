@@ -25,10 +25,13 @@ gem.
 metanorma {{ include.flavour.build.cli_flags }} {my-document-filename.adoc}
 --
 
-{% if include.has_topics or include.has_references %}
-- Read {% if include.has_topics %}link:./topics/[topics]{% if include.has_references %} and {% endif %}{% endif %} {% if include.has_references %}link:./ref/[reference guides]{% endif %}
-  about authoring {{ include.flavour.title_org | default: include.flavour.title }} documents
-  using {{ include.flavour.markup_name }} markup language
+{% if include.flavour.docs_entry_points %}
+- Check out
+  {%- for p in include.flavour.docs_entry_points %}
+  link:.{{ p.path }}[{{ p.title }}]{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor %}
+  for authoring {{ include.flavour.title_org | default: include.flavour.title }} documents
+  with Metanorma and {{ include.flavour.markup_name }} markup language
 {% endif %}
 
 [IMPORTANT]
