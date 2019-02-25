@@ -28,7 +28,7 @@ metanorma {{ include.flavour.build.cli_flags }} {my-document-filename.adoc}
 {% if include.flavour.docs_entry_points %}
 - Check out
   {%- for p in include.flavour.docs_entry_points %}
-  link:.{{ p.path }}[{{ p.title }}]{%- unless forloop.last -%},{%- endunless -%}
+  link:{{ p.path }}[{{ p.title }}]{%- unless forloop.last -%},{%- endunless -%}
   {%- endfor %}
   for authoring {{ include.flavour.title_org | default: include.flavour.title }} documents
   with Metanorma and {{ include.flavour.markup_name }} markup language
