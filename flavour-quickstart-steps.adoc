@@ -47,7 +47,25 @@ and in addition to AsciiDoc format reference.
 - Read https://asciidoctor.org/docs/user-manual/[the Asciidoctor manual]
 ====
 
+{% if include.flavour.implemented_by or include.flavour.data_models or include.flavour.markup_spec %}
 == Implementation
 
-{{ include.flavour.title }} flavour of Metanorma
-is implemented by link:/software/{{ include.flavour.implemented_by }}[{{ include.flavour.implemented_by }}] package.
+{% if include.flavour.implemented_by %}
+* link:/software/{{ include.flavour.implemented_by }}/[{{ include.flavour.implemented_by }} Ruby gem]
+  implements {{ include.flavour.title }} flavour of Metanorma,
+  building on top of link:/software/metanorma/[core Metanorma library].
+{% endif %}
+
+{% if include.flavour.data_models %}
+* link:/specs/{{ include.flavour.data_models }}/[Metanorma-{{ include.flavour.title }} data models]
+  describe document schema.
+{% endif %}
+
+{% if include.flavour.markup_spec %}
+* link:/specs/{{ include.flavour.markup_spec }}/[{{ include.flavour.markup_name }} markup language specification]
+  describes AsciiDoc syntax extension
+  designed for authoring {{ include.flavour.title_org | default: include.flavour.title }} documents
+  with Metanorma.
+{% endif %}
+
+{% endif %}
