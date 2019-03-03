@@ -48,7 +48,7 @@ Metanorma-IETF will have difficulty processing them.
 
 == External Directory
 
-As an alternative, the document attribute `:biblio-dir:` can nominate a directory in which separate XML files can be placed, one for each reference to be included. (RFC XML v3 referencegroup elements will also be recognised as files.)
+As an alternative, the document attribute `:biblio-dir:` can nominate a directory in which separate XML files can be placed, one for each reference to be included. (RFC XML v3 referencegroup elements will also be recognized as files.)
 Metanorma-IETF will read in from that directory only the files that have actually been cited,
 and insert them into the appropriate bibliography,
 without the references needing to be given under the bibliographies as above.
@@ -59,7 +59,7 @@ can be used to specify a comma-delimited list of normative references.
 
 Metanorma will issue a warning if any cited reference is not included in the directory.
 External references do not have to be included in the directory:
-they will be recognised by comparing their anchors against the external bibliography cache,
+they will be recognized by comparing their anchors against the external bibliography cache,
 and referenced as entities or includes.
 Particular drafts of Internet-Draft documents do still need to be included as separate documents
 (see <<external-ref-lookup>>.)
@@ -99,9 +99,9 @@ See biblio
 [bibliography]
 == Informative References <6>
 --
-<1> The RFC XML references are included in the directory `./refs`, with one file per reference. For example, we would expect it to contain a file corresponding to the reference `mathrefs`. A file corresponding to `RFC2119` is optional, and in fact will be ignored, since the anchor is recognised as an external reference. A file corresponding to `I-D.abarth-cake` will not be ignored, if that file contains a `seriesInfo` element nominating a specific draft version.
+<1> The RFC XML references are included in the directory `./refs`, with one file per reference. For example, we would expect it to contain a file corresponding to the reference `mathrefs`. A file corresponding to `RFC2119` is optional, and in fact will be ignored, since the anchor is recognized as an external reference. A file corresponding to `I-D.abarth-cake` will not be ignored, if that file contains a `seriesInfo` element nominating a specific draft version.
 <2> The references in the `./refs` directory are by default considered informative; this attribute indicates that `RFC2119` and `AsciiDoc` are to be considered normative.
-<3> References are recognised in `relref` as well as `xref` elements.
+<3> References are recognized in `relref` as well as `xref` elements.
 <4> Metanorma-IETF differentiates between bibliographic references and crossreferences to other anchors within the document.
 <5> The bibliographic headers need to be provided as above, and its titles are expected to be "Normative References" and "Informative References";
     Metanorma will look for those titles specifically in order to insert the references it identifies from the file. However, no XML content is expected to be provided under each heading, and any XML content that is provided will be ignored.
