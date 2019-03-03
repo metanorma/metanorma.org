@@ -1,0 +1,74 @@
+{% if include.flavor.experimental %}
+[WARNING]
+====
+.Beta flavor
+The {{ include.flavor.title }} flavor of Metanorma is currently
+experimental and under active development.
+
+While you could use it in production, some glitches are possible.
+We would greatly appreciate any such issues filed against the GitHub repository of
+link:/software/{{ include.flavor.implemented_by }}[{{ include.flavor.implemented_by }}]
+gem.
+====
+{% endif %}
+
+== Quick start
+
+{% if include.flavor.sample %}
+- Play with a link:./sample/[sample Metanorma-{{ include.flavor.title }} project]
+{% endif %}
+
+- Build Metanorma-{{ include.flavor.title }} documents with a command like this:
++
+[source,console]
+--
+metanorma {{ include.flavor.build.cli_flags }} {my-document-filename.adoc}
+--
+
+{% if include.flavor.docs_entry_points %}
+- Check out
+  {%- for p in include.flavor.docs_entry_points %}
+  link:{{ p.path }}[{{ p.title }}]{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor %}
+  for authoring {{ include.flavor.title_org | default: include.flavor.title }} documents
+  with Metanorma and {{ include.flavor.markup_name }} markup language
+{% endif %}
+
+[IMPORTANT]
+====
+.If you’re new to Metanorma or AsciiDoc
+Metanorma-{{ include.flavor.title }} flavor documentation
+should be treated in addition to general Metanorma documentation,
+and in addition to AsciiDoc format reference.
+
+- link:/author/getting-started/[Get started authoring with Metanorma]
+
+- Get familiar with link:/author/approach/[Metanorma’s approach to creating standards documents]
+
+- Learn about link:/author/topics/document-format/[document file format]
+
+- Read https://asciidoctor.org/docs/user-manual/[the Asciidoctor manual]
+====
+
+{% if include.flavor.implemented_by or include.flavor.data_models or include.flavor.markup_spec %}
+== Implementation
+
+{% if include.flavor.implemented_by %}
+* link:/software/{{ include.flavor.implemented_by }}/[Ruby gem “{{ include.flavor.implemented_by }}”]
+  implements the {{ include.flavor.title }} flavor of Metanorma,
+  building on top of link:/software/metanorma/[core Metanorma library].
+{% endif %}
+
+{% if include.flavor.data_models %}
+* link:/specs/{{ include.flavor.data_models }}/[Metanorma-{{ include.flavor.title }} data models]
+  describe document schema.
+{% endif %}
+
+{% if include.flavor.markup_spec %}
+* link:/specs/{{ include.flavor.markup_spec }}/[{{ include.flavor.markup_name }} markup language specification]
+  describes AsciiDoc syntax extension
+  designed for authoring {{ include.flavor.title_org | default: include.flavor.title }} documents
+  with Metanorma.
+{% endif %}
+
+{% endif %}

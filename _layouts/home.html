@@ -1,7 +1,7 @@
 ---
 layout: default
 
-flavours:
+flavors:
 
   bodies:
   - name: ISO
@@ -48,11 +48,11 @@ flavours:
     </p>
   </section>
 
-  <section class="flavors switchable-flavours">
+  <section class="flavors switchable-flavors">
     <h2 class="title">Author standards with Metanorma</h2>
 
     <div class="items">
-      {% for fl in layout.flavours.bodies %}
+      {% for fl in layout.flavors.bodies %}
         <a href="{{ fl.path | relative_url }}"
             {% if fl.experimental %}class="experimental"{% endif %}
             {% if fl.description %}title="{{ fl.description }}"{% endif %}>
@@ -61,7 +61,7 @@ flavours:
           </article>
         </a>
       {% endfor %}
-      {% for fl in layout.flavours.corporate %}
+      {% for fl in layout.flavors.corporate %}
         <a href="{{ fl.path | relative_url }}"
             {% if fl.experimental %}class="experimental"{% endif %}
             {% if fl.description %}title="{{ fl.description }}"{% endif %}>
