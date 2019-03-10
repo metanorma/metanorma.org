@@ -108,8 +108,8 @@ other subclauses of Terms and Definitions clauses are not.
 == Source
 
 If the Terms and Definitions of a standard are partly or fully sourced from
-another standard, that standard is cited in a `source` attribute to the section,
-which is set to the reference anchor of the standard given under the Normative
+another standard, that standard is cited in a `source=` attribute to the section,
+which is set to the reference anchor of the cited standard as given under the Normative
 References.
 (The attribute needs to be applied to the top-level clause, if there are subclauses.)
 
@@ -132,14 +132,8 @@ Multiple sources are allowed, and need to be quoted and comma-delimited:
 
 == Term markup macros
 
-To ensure the structure of Terms and Definitions is captured accurately, the following
-macros are defined, and must be used to mark up their respective content:
-
-`alt:[TERM]`:: for alternative terms
-`deprecated:[TERM]`:: for deprecated terms
-`domain:[TERM]`:: for term domains
-
-The macro contents can contain their own markup.
+The macros `+alt:[...]+`, `+deprecated:[...]+` and `+domain:[...]+` 
+can contain their own markup.
 
 [source,asciidoctor]
 --
@@ -191,7 +185,8 @@ clauses are normative by default.
 
 === Introductory non-clause section
 
-As defined above, all terminal subclauses of a term section are treated as term definitions.
+As defined above, all terminal subclauses of a term section (i.e. clauses that have no subclauses
+of their own) are treated as term definitions.
 Exceptionally, an introductory section can be treated as a subclause instead of a term,
 by prefixing it with the style attribute `[.nonterm]`:
 
@@ -244,21 +239,3 @@ The link:/flavors/unece/[UNECE Metanorma flavor] treats each paragraph
 as a distinct clause and automatically numbers it.
 ====
 
-=== Inline headings
-
-Inline subclause headings (e.g. for test methods) are indicated by preceding the heading
-with the `[%inline-header]` option attribute. So in the Rice Model document,
-
-[source,asciidoc]
---
-[%inline-header]
-==== Sieve, 
-
-with round perforations of diameter 1,4 mm.
---
-
-renders as 
-
-____
-*A.2.1.1. Sieve,* with round perforations of diameter 1,4 mm.
-____
