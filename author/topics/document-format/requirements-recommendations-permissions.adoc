@@ -2,33 +2,47 @@
 layout: author-docs
 ---
 
-= Requirements, Recommendations, and Permissions
+= Requirement, Recommendation, and Permission blocks
 
-Requirements, Recommendations, and Permissions are encoded as Asciidoctor examples,
-with the style attribute value indicating that it is a Requirement, Recommendation, or Permission:
+Requirements, Recommendations, and Permissions are encoded using AsciiDoc markup
+for example blocks, prepended with an attribute list containing the type of the block
+(i.e., its obligation)—one of “requirement”, “recommendation”, or “permission”. For example:
 
 [source,asciidoctor]
---
+.Most basic example
+====
 [permission]
 ====
 I recommend this
 ====
---
+====
 
-(In the following, "requirement" shall be used as the cover-all term.)
+(Below, "requirement" is used to refer to any of these three block types.)
 
-The named attributes `subject` and `label` may be used to indicate the subject of the
-requirement, and the conventional label assigned to the requirement. The named attribute
-`classification` may be used to give an arbitrary number of key-value pairs of tags describing
-the requirement; key-value pairs are delimited by semicolon, key and value are delimited by
-colon, multiple values are delimited by comma, 
-and key and value are both intended to be tokens (containing no punctuation). The `obligation`
-attribute can contain one or more of "requirement", "permission", "recommendation", comma-delimited:
-it can be used to override the obligation in the tag name. The `inherit`
-attribute may be used to reference the label of a requirement that is imported or
-presupposed by this requirement:
+== Attributes
+
+In addition to block type described above,
+following attributes are supported (see usage example below):
+
+`subject`:: Indicates the subject of the requirement.
+Does not get rendered in final output.
+
+`label`:: Indicates conventional label assigned to the requirement.
+If present, it will be rendered in final output.
+
+`classification`:: May be used to give an arbitrary number of key-value pairs of tags describing
+the requirement. Key and value are separated by a colon, multiple values are delimited by comma,
+and key-value pairs are delimited by semicolon.
+Both key and value are expected to be tokens containing no punctuation.
+
+`obligation`:: Can contain one or more of "requirement", "permission", "recommendation",
+comma-delimited. Using this attribute will override the obligation of the blog.
+
+`inherit`:: May be used to reference the label of a requirement that is imported or
+presupposed by this requirement.
 
 [source,asciidoctor]
+.An exhaustive attribute example
 --
 [recommendation,label="/ogc/recommendation/wfs/2",subject="user",inherit="/ss/584/2015/level/1",classification="control-class:Technical;priority:P0;family:System and Communications Protection,System and Communications Protocols",obligation="permission,recommendation"]
 ====
@@ -36,10 +50,13 @@ I recommend this
 ====
 --
 
+== Nested blocks
+
 Requirements can be nested, as is the case with any delimited block in Asciidoctor,
 by adding one more delimiter symbol than its containing block:
 
 [source,asciidoctor]
+.Nesting example
 --
 [permission]
 ====
@@ -54,7 +71,9 @@ I also permit this
 ====
 --
 
-The internal structure of a requirement can also be marked up to make it machine-readable,
+== Named blocks and descriptions
+
+You can mark up the internal structure of a requirement to make it machine-readable,
 although this is not expected to be reflected in rendering.
 
 Any text not wrapped in a named open block is considered to be part of a description.
@@ -73,14 +92,13 @@ that the code is to be run under.)
 The language of a source code block is likely to be distinct from the type of named block
 it is contained in.
 
-By default, both named blocks and descriptions will be included in the document output.
-Often, though not always, the named blocks contain machine-readable code which is not
-intended to be included in the document output, but is supplemental to the human-readable
+By default, both named blocks and descriptions will be included in final output.
+Often, though not always, named blocks contain machine-readable code which is not
+intended to be included in the output, but is supplemental to the human-readable
 description. That is signalled through the options attribute `exclude` on the named block.
 
-The label attribute is always rendered if present. The subject attribute is never rendered.
-
 [source,asciidoctor]
+.An example of a complex recommendation with named blocks
 --
 [recommendation,label="/ogc/recommendation/wfs/2",subject="user"]
 ====
