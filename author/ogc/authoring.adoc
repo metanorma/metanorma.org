@@ -67,48 +67,12 @@ Semicolon-delimited list of the submitting organizations
 for this document. The organization names themselves may contain commas. For example:
 _University of Calgary, Canada; National Central University, Taiwan_
 
-`:fullname{_i}:`::
-See `link:/author/ref/document-attributes/#fullname[:fullname:]`.
-
-`:surname{_i}:`::
-See `link:/author/ref/document-attributes/#surname[:surname:]`.
-
-`:givenname{_i}:`::
-See `link:/author/ref/document-attributes/#givenname[:givenname:]`.
-
-`:role{_i}:`::
-See `link:/author/ref/document-attributes/#role[:role:]`.
-
 `:editor:`::
 Same as `link:/author/ref/document-attributes/#fullname[:fullname:]`
 alongside `link:/author/ref/document-attributes/#role[:role:]` specified as “editor”.
 
 
-=== Timestamps
-
-`:created-date:`::
-Creation date of the document.
-
-`:submissionDate:`::
-Date at which the document was submitted to the standards body.
-
-`:approvalDate:`::
-Used instead of `link:/author/ref/document-attributes/#issued-date[:issued-date:]`
-with same semantics.
-
-`:publicationDate:`::
-Used instead of `link:/author/ref/document-attributes/#published-date[:published-date:]`
-with same semantics.
-
-`:copyrightYear:`::
-Used instead of `link:/author/ref/document#copyright-year[:copyright-year:]`
-with same semantics.
-
 === URIs and IDs
-
-`:docReference:`::
-Used instead of `link:/author/ref/document-attributes/#docnumber[:docnumber:]`
-with same semantics.
 
 `:external-id:`::
 External identifier referring to this document.
@@ -119,6 +83,23 @@ Identifier embedded into a document type-specific external URL.
 `:previous-uri:`::
 URI of previous version of the document.
 
+=== Mapping to OGC Asciidoctor
+
+Where these preexisting metanorma attributes correspond to attributes already used
+by OGC in their Asciidoctor template, Metanorma-OGC permits those attributes, and they are
+treated as synonyms of the Metanorma attributes:
+
+|===
+| OGC Asciidoctor | Metanorma-OGC
+
+| `:copyrightYear` | `:copyright-year:`
+| `:workingGroup:` | `:workgroup:`
+| `:publicationDate:` | `:published-date:`
+| `:approvalDate:` | `:issued-date:`
+| `:submissionDate:` | `:received-date:`
+| `docReference` | `:docnumber:`
+| `editor` | `:fullname:`, with `:role:` = "editor"
+|===
 
 == Markup
 
@@ -193,7 +174,8 @@ Text
 
 === Recommendations, requirements, and permissions
 
-Distinct recommendations, requirements and permissions are recognized in Metanorma
+For legacy reasons, a second Asciidoctor syntax is permitted for
+recommendations, requirements and permissions. These may also be recognized in Metanorma
 Asciidoctor as tables whose first cell contains the text _Recommendation_, _Requirement_, _Permission_,
 optionally followed by a number (which is ignored in parsing; the elements are renumberd
 automatically in rendering.) These are currently constituted of two elements: an internal

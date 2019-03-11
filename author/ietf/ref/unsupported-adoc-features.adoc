@@ -10,30 +10,44 @@ These AsciiDoc features are not supported in one or both RFC output formats:
 | AsciiDoc feature | RFC XML v2 | RFC XML v3
 
 | http://asciidoctor.org/docs/user-manual/#quote[Quote] | Rendered as normal paragraph | Supported
-| http://asciidoctor.org/docs/user-manual/#quote[Quote]: Non-URL Citations 2+| Ignored
+| http://asciidoctor.org/docs/user-manual/#quote[Quote]: Non-URL Citations | Ignored | Ignored
 | http://asciidoctor.org/docs/user-manual/#verse[Verse] | Rendered as normal paragraph | Rendered as Quote
 | http://asciidoctor.org/docs/user-manual/#sidebar[Sidebar] | Rendered as normal paragraph | Supported
-| http://asciidoctor.org/docs/user-manual/#index-terms[Index Term]: Tertiary 2+| Ignored
-| List: http://asciidoctor.org/docs/user-manual/#numbering-styles[Ordered List numbering] `decimal`, `lowergreek` 2+| Treated as `arabic`
-| http://asciidoctor.org/docs/user-manual/#callouts[Callouts] 2+| Ignored
+| http://asciidoctor.org/docs/user-manual/#index-terms[Index Term]: Tertiary | Ignored | Ignored
+| List: http://asciidoctor.org/docs/user-manual/#numbering-styles[Ordered List numbering] `decimal`, `lowergreek` | Treated as `arabic` | Treated as `arabic`
+| http://asciidoctor.org/docs/user-manual/#callouts[Callouts] | Ignored | Ignored
 | http://asciidoctor.org/docs/user-manual/#admonition[Adminitions: formatting] | Ignored | Supported
-| Formatting: http://asciidoctor.org/docs/user-manual/#discrete-headings[Floating Title] 2+| Rendered as strong paragraph
-| Formatting: http://asciidoctor.org/docs/user-manual/#page-break[Page Break] 2+| Ignored
-| Formatting: http://asciidoctor.org/docs/user-manual/#horizontal-rules[Horizontal Rule] 2+| Ignored
+| Formatting: http://asciidoctor.org/docs/user-manual/#discrete-headings[Floating Title] | Rendered as strong paragraph | Rendered as strong paragraph
+| Formatting: http://asciidoctor.org/docs/user-manual/#page-break[Page Break] | Ignored | Ignored
+| Formatting: http://asciidoctor.org/docs/user-manual/#horizontal-rules[Horizontal Rule] | Ignored | Ignored
 | Formatting: http://asciidoctor.org/docs/user-manual/#line-breaks[Line breaks] | Supported | Only supported within table cells
-| Media: http://asciidoctor.org/docs/user-manual/#audio[Audio] 2+| Ignored
-| Media: http://asciidoctor.org/docs/user-manual/#video[Video] 2+| Ignored
-| Media: http://asciidoctor.org/docs/user-manual/#images[Inline images] 2+| Ignored
-| Macro: http://asciidoctor.org/docs/user-manual/#keyboard-shortcuts[Keyboard shortcuts] 2+| Ignored
-| Macro: http://asciidoctor.org/docs/user-manual/#menu-selections[Menu selections] 2+| Ignored
-| Macro: http://asciidoctor.org/docs/user-manual/#ui-buttons[UI buttons] 2+| Ignored
+| Media: http://asciidoctor.org/docs/user-manual/#audio[Audio] | Ignored | Ignored
+| Media: http://asciidoctor.org/docs/user-manual/#video[Video] | Ignored | Ignored
+| Media: http://asciidoctor.org/docs/user-manual/#images[Inline images] | Ignored | Ignored
+| Macro: http://asciidoctor.org/docs/user-manual/#keyboard-shortcuts[Keyboard shortcuts] | Ignored | Ignored
+| Macro: http://asciidoctor.org/docs/user-manual/#menu-selections[Menu selections] | Ignored | Ignored
+| Macro: http://asciidoctor.org/docs/user-manual/#ui-buttons[UI buttons] | Ignored | Ignored
 | Table: http://asciidoctor.org/docs/user-manual/#footer-row[Distinction between table body and table footer] | No | Supported
 | Table: http://asciidoctor.org/docs/user-manual/#header-row[Multiple table header rows] | No | Supported
 | Table: http://asciidoctor.org/docs/user-manual/#table-borders[Table borders: grid = rows] | Rendered as `headers` | Ignored
 | Table: http://asciidoctor.org/docs/user-manual/#table-borders[Table borders: grid = cols\|none] | Supported | Ignored
-| Table: http://asciidoctor.org/docs/user-manual/#table-borders[Table borders: frame] 2+| Ignored
+| Table: http://asciidoctor.org/docs/user-manual/#table-borders[Table borders: frame] | Ignored | Ignored
 | Table: http://asciidoctor.org/docs/user-manual/#cell[Table cells: rowspan] | Ignored | Supported
 | Table: http://asciidoctor.org/docs/user-manual/#cell[Table cells: colspan] | Ignored | Supported
 | Table: http://asciidoctor.org/docs/user-manual/#cell[Table cells: Asciidoctor formatting (blocks within cells)] | Ignored | Supported
 | Table: http://asciidoctor.org/docs/user-manual/#cols-format[Table columns: width] | Supported | Ignored
 |===
+
+The document model of AsciiDoc and RFC XML are different. In particular,
+
+* AsciiDoc and RFC XML differ in where they allow anchors to be placed:
+AsciiDoc does not allow anchors within tables and lists, and RFC XML v3 does
+not permit anchors for the `note` or `abstract` elements, while RFC XML v2
+uses anchors for much fewer block elements (e.g. `artwork`, `list`.)
+* AsciiDoc has a more restrictive block model: it regards elements such as
+admonitions, lists, and tables as blocks, and does not allow them to be nested
+within paragraphs.
+
+As a result, it may be necessary to post-edit the RFC XML output if the block
+model produced does not reflect the intended structure accurately.
+

@@ -6,7 +6,7 @@ layout: iso-flavor
 
 Style rules are currently specific to content in English.
 
-They try to impose rules on content taken from http://www.iec.ch/members_experts/refdocs/iec/isoiecdir-2%7Bed7.0%7Den.pdf[ISO/IEC DIR 2], including restrictions on where requirements may be stated, usage of decimal points, hanging clauses, and subclauses that are the only child of their parent clause. While the error detection is not infallible, they should be reviewed at least once. Where possible, the gem will give the ID or section heading associated with the error. For example:
+These try to impose rules on content taken from http://www.iec.ch/members_experts/refdocs/iec/isoiecdir-2%7Bed7.0%7Den.pdf[ISO/IEC DIR 2], including restrictions on where requirements may be stated, usage of decimal points, hanging clauses, and subclauses that are the only child of their parent clause. While the error detection is not infallible, they should be reviewed at least once. Where possible, the gem will give the ID or section heading associated with the error. For example:
 
 [source,console]
 --
@@ -17,3 +17,35 @@ ISO style: AnnexA-4-1:Preparation of test sample: subsection is only child
 --
 
 If any content warnings are generated during build, you will see them prefixed with `ISO Style`.
+
+The style rules implemented include:
+
+* Numbers with what looks like dots instead of commas for decimal points.
+
+* Groups of numbers without spacing for every three digits. (The gem attempts
+to ignore ISO references.)
+
+* No space before percent sign.
+
+* No bracketing of tolerance in percentage (e.g. `15 ± 7 % .`)
+
+* No recommendations, permissions or requirements (detected by keyword) in:
+foreword, scope, introduction, term examples and examples, notes, footnotes.
+
+* No subclauses that are the only child of a clause (in clauses, annexes, or
+scopes.)
+
+* 5 levels of subclause nesting. 
+
+* Non-ISO/IEC reference turning up as normative.
+
+* Term definition starts with an article, or ends with a period.
+
+* Title intro or title part appears in only one of French or English.
+
+== Syntax validation
+
+ISO/IEC DIR 2 is more strict than most standards about the order and contents of
+clauses. Many of these rules are realized through the XML schema of the Metanorma ISO
+flavour, and they are reported on through syntax validation. Users should pay particular
+attention to syntax errors in Metanorma ISO documents.
