@@ -40,7 +40,7 @@ that provides the English canonical form of the section name. For example:
 == Obligations
 
 The obligation of a section—whether it is normative or informative—is indicated
-with the attribute "obligation".
+via attribute “obligation” (see example below).
 
 For most sections, this is fixed; for annexes and clauses,
 the default value of the obligation is "normative" and users need to set the obligation
@@ -91,6 +91,24 @@ do not insert "Annex A" or "Appendix 1" as part of the title.
 
 Annex and Appendix **titles** can be left blank, as with Clauses.
 
+=== Inline headings
+
+Inline subclause headings (e.g. for test methods) are indicated by preceding the heading
+with the `[%inline-header]` option attribute. So in the Rice Model document,
+
+[source,asciidoc]
+--
+[%inline-header]
+==== Sieve, 
+
+with round perforations of diameter 1,4 mm.
+--
+
+renders as
+
+____
+*A.2.1.1. Sieve,* with round perforations of diameter 1,4 mm.
+____
 
 == Sections deeper than 5 levels
 

@@ -103,26 +103,9 @@ In HTML output, all the paragraphs within a list item will be aligned.
 While Asciidoctor tables are quite powerful for a non-XML markup language,
 they still have not dealt with the full range of complexity required in Metanorma.
 
-Metanorma adds the option of multiple header rows (attribute `headerrows=n`)
-to deal with the complexity of ISO tables
-requiring labels, variables, and units to lining up in the header.
-
-Asciidoc allows table cells to have footnotes (which Metanorma renders inside the table)
-and notes following the table (which Metanorma moves inside the table footer).
-
-[TIP]
-====
-Table 1 in the AsciiISO Rice example document illustrates
-a large range of table formatting options.
-====
-
-=== Count of table header and footer rows
-
-In Asciidoc, a table can have at most one header row or footer row. In Metanorma,
-a nominal single header row is routinely broken up into multiple rows in order
-to accommodate units or symbols, that line up against each other, though
-they are displayed as merged cells with no grid between them. To address this,
-tables can be marked up with an optional `headerrows` attribute:
+Unlike Asciidoctor, Metanorma adds the option of multiple header rows 
+via attribute “headerrows” to deal with the complexity of ISO tables
+requiring labels, variables, and units to lining up in the header; for example:
 
 [source,asciidoctor]
 --
@@ -135,6 +118,52 @@ stem:[w_max]
 | Extraneous matter: organic footnote:[Organic extraneous matter includes foreign seeds, husks, bran, parts of straw, etc.] | 1,0 | 0,5 | 1,0 | 0,5
 |===
 --
+
+AsciiDoc allows table cells to have footnotes (which Metanorma renders inside the table)
+and notes following the table (which Metanorma moves inside the table footer).
+
+[TIP]
+====
+Table 1 in the AsciiISO Rice example document illustrates
+a large range of table formatting options.
+====
+
+== Mathematical expressions
+
+Use `[stem]`, `[asciimath]`, or `[latexmath]` macros to tag mathematical expressions.
+
+Like Asciidoctor proper, Metanorma Asciidoctor accepts mathematical input
+in either LaTeX or AsciiMath, following the conventions of Asciidoctor:
+
+* Using attribute `link:/author/ref/document-attributes/#stem[:stem:]`
+with no value means that in the current document all markup tagged with `[stem]`
+(i.e., `pass:[stem:[...]]`, or `[stem]` before a block delimited with `pass:[++++]`)
+will be interpreted as AsciiMath.
+* Using attribute `:stem:` with value of “latexmath”
+(i.e., `:stem: latexmath`) means that any markup tagged as `[stem]`
+(i.e., `pass:[stem:[...]]`, or `[stem]` before a block delimited with `pass:[++++]`)
+will be interpreted as LaTeX.
+* Any markup tagged as `[asciimath]`
+(i.e., `pass:[asciimath:[...]]`, or `[asciimath]` before a block delimited with `pass:[++++]`)
+will be interpreted as AsciiMath.
+* Any markup tagged as `[latexmath]`
+(i.e., `pass:[latexmath:[...]]`, or `[latexmath]` before a block delimited with `pass:[++++]`)
+will be interpreted as LaTeX.
+
+STEM markup that contains MathML markup (indicated by the initial `<math ... >`)
+is interpreted as MathML.
+
+Any Unicode characters in the LaTeX source are translated into LaTeX escapes
+using the https://github.com/metanorma/unicode2latex[unicode2latex] gem.
+
+[small]#For internal representation of STEM expressions Metanorma uses MathML.
+AsciiMath and LaTeX in Metanorma Asciidoctor are converted into MathML
+using the https://github.com/asciidoctor/asciimath[asciimath] gem and the
+https://dlmf.nist.gov/LaTeXML/manual/commands/latexmlmath.html[latexmath]
+processor of LaTeXML, respectively.
+(Latexmath is much slower than other available LaTeX to MathML converters,
+but is also more accurate.)#
+
 
 == Formulae
 
@@ -158,18 +187,6 @@ stem:[w]:: is the mass fraction of grains with a particular defect in the test s
 stem:[m_D]:: is the mass, in grams, of grains with that defect; 
 stem:[m_S]:: is the mass, in grams, of the test sample. 
 --
-
-[NOTE]
-====
-Mathematical formatting is done using the `[stem]` macro.
-While Asciidoctor supports http://asciimath.org[AsciiMath] and LaTeX natively (AsciiMath by default),
-Metanorma supports **only AsciiMath**.
-
-AsciiMath is converted to Microsoft Word's OOXML via MathML,
-using the https://github.com/asciidoctor/asciimath[AsciiMath] Ruby gem;
-the syntax of the Ruby gem may be at odds with the usual MathJax processor of AsciiMath.
-(We have found that the Ruby gem insists on numerators being bracketed.)
-====
 
 == Figures
 
@@ -195,8 +212,8 @@ NOTE: These results are based on a study carried out on three different types of
 
 === Subfigures
 
-Subfigures (which appear in ISO formats, for examlpe)
-are entered by including images in an AsciiDoc example:
+Subfigures (which appear in ISO formats, for example)
+are entered by including images.
 
 [source,asciidoc]
 --
@@ -293,7 +310,7 @@ just like Asciidoctor would normally. For example,
 
 will be processed as a link to anchor `#b` in document `document1.adoc`.
 
-If the reference uses `.adoc` suffix, as in above example, it is stripped in Metanorma XML
+If the reference uses the `.adoc` suffix, as in the example above, it is stripped in Metanorma XML
 and substituted with the extension of the current document type during document generation.
 
 The above example is rendered in Metanorma XML as `<xref target="document1#b">`,
