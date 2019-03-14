@@ -52,11 +52,14 @@ If set, delete and reinitialise the cache of `https://www.relaton.com/[relaton]`
 
 === Math
 
-`:stem:`::
+[[stem]] `:stem:`::
 This attribute is required if you have any AsciiMath, MathML, or LaTeX
 included in the document; otherwise they will not be detected. If you want
 the STEM expressions in your document to be interpreted as LaTeX by default,
 use `:stem: latexmath`.
+
+Read more about
+link:/author/topics/document-format/text/#mathematical-expressions[mathematical expressions].
 
 == Languages & localization
 
@@ -111,10 +114,13 @@ The document type; e.g. "standard", "guide", "report".
 `:status:`::
 The status of the document; e.g. "draft", "published".
 
-`:draft:`::
-The document draft
-(used in addition to document stage, for multiple iterations: expected format _X.Y_).
-If present, includes review notes in the XML output; these are otherwise suppressed.
+[[draft]] `:draft:`::
+The document draft.
+Used in addition to document stage.
+The value must provide the exact draft iteration in _X.Y_ format
+(major version number and minor version number separated by a dot).
+If present, link:/author/topics/document-format/reviewer-notes[reviewer notes]
+will be rendered (otherwise those are suppressed).
 
 === URIs
 
@@ -211,62 +217,62 @@ Font for monospace; will be inserted into CSS, overriding the default set for
 the particular Metanorma flavour. 
 
 `:htmlstylesheet:`::
-SCSS stylesheet to use for HTML output. Defaults to built in template
+SCSS stylesheet to use for HTML output. Defaults to built-in template
 for the particular Metanorma flavour.  Overriding is not recommended.
 
 `:htmlcoverpage:`::
 HTML template for cover page.
-Defaults to built in template for the particular Metanorma flavour.
+Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:htmlintropage:`::
 HTML template for introductory section. 
-Defaults to built in template for the particular Metanorma flavour.
+Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:scripts:`::
 Javascript scripts for HTML output. 
-Defaults to built in scripts for the particular Metanorma flavour.
+Defaults to built-in scripts for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:scripts-pdf:`::
 Javascript scripts for HTML to PDF output. 
-Defaults to built in scripts for the particular Metanorma flavour.
+Defaults to built-in scripts for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:wordstylesheet:`::
 Primary SCSS stylesheet to use for Word output. 
-Defaults to built in template for the particular Metanorma flavour.
+Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:standardstylesheet:`::
 Secondary SCSS stylesheet use for Word output. 
-Defaults to built in template for the particular Metanorma flavour.
+Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:header:`::
 Header and footer file for Word output. 
-Defaults to built in template the particular Metanorma flavour.
+Defaults to built-in template the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:wordcoverpage:`::
 Word template for cover page. 
-Defaults to built in template for the particular Metanorma flavour.
+Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:wordintropage:`::
 Word template for introductory section. 
-Defaults to built in template for the particular Metanorma flavour.
+Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:ulstyle:`::
 Word CSS selector for unordered lists in supplied stylesheets.
-Defaults to value for built in stylesheet.
+Defaults to value for built-in stylesheet.
 Overriding is not recommended.
 
 `:olstyle:`::
 Word CSS selector for ordered lists in supplied stylesheets.
-Defaults to value for built in stylesheet.
+Defaults to value for built-in stylesheet.
 Overriding is not recommended.
 
 `:data-uri-image:`::

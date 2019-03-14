@@ -5,14 +5,16 @@ layout: author-docs
 = Reviewer notes
 
 To annotate document with reviewer notes (essentially, arbitrary blocks of text),
-Metanorma uses Asciidoctor sidebars.
+Metanorma uses AsciiDoc sidebar notation.
 
 Sidebars can be separated at a distance from the text they are annotating;
 the text they are annotating is indicated through anchors. 
 
 [NOTE]
 ====
-Reviewer notes are only rendered if the document has a `:draft:` attribute.
+Reviewer notes are only rendered
+if `link:/author/ref/document-attributes/#draft[:draft:]` attribute has been specified
+for the document(s).
 ====
 
 The following attributes on reviewer notes are mandatory:
@@ -50,11 +52,12 @@ Profile?!
 ****
 --
 
-=== TODO expressions
+== TODO expressions
 
-It is a commonplace convention of sourcecode and lightly marked up text
-to prefix comments indicating pending actions with `TODO`. Metanorma Asciidoctor
-treats `TODO` as an admonition label, and converts it into a Reviewer note.
+A commonplace convention in software source code, as well as lightly marked up text,
+is to prefix comments indicating pending actions with `TODO`.
+Metanorma treats `TODO` as an admonition label, and converts it into a reviewer note.
+
 The `from`, `to` `reviewer` and `date` attributes are all treated as optional.
 
 [source,asciidoctor]
@@ -63,7 +66,7 @@ TODO: This is treated as a Reviewer note:
 
 [TODO]
 ====
-This is also treated as a Reviwer note
+This is also treated as a Reviewer note
 ====
 ----
 
