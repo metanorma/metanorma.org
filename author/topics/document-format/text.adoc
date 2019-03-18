@@ -287,7 +287,30 @@ from the image.
 image::logo.jpg
 --
 
+== Filenames for extraction
 
+Images, source code, and requirements can all be extracted out of the
+generated Metanorma XML downstream, by the `metanorma -e` command.
+By default, the filename for each extracted snippet is automatically
+generated. (Extraction only applies to data-uri encoded images,
+which no longer preserve their filename.)
+
+The attribute `filename` on images, source code, and requirements
+gives the filename that any inline-encoded 
+images, source code, and requirements should be
+exported to, if that is requested by downstream tools.
+
+[source,asciidoctor]
+--
+[filename="image1.gif"]
+image::logo.gif
+--
+
+In this instance, the image is read in from logo.gif, but is converted in the 
+XML output to a data-uri encoding. The encoding will have the filename attribute
+of "image1.gif"; that instructs any downstream processing that extracts images
+out of the file (such as `metanorma -e`) to extract this image to the file image1.gif,
+instead of using an automatically generated filename.
 
 == Cross-references
 
