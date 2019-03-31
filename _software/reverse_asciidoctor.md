@@ -8,8 +8,6 @@ external_links:
   - url: https://rubygems.org/gems/reverse_asciidoctor
   - url: https://www.rubydoc.info/github/metanorma/reverse_asciidoctor/
 
-docs:
-  git_repo_subtree: .
 tags: ["writtenin:Ruby", "interface:CLI"]
 
 feature_with_priority: 2
