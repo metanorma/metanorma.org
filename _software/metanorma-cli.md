@@ -12,7 +12,7 @@ docs:
   git_repo_subtree: docs
 tags: ["writtenin:Ruby", "interface:CLI"]
 
-feature_with_priority: 2
+feature_with_priority: 1
 ---
 
 The Metanorma CLI Ruby gem provides the `metanorma` executable,
