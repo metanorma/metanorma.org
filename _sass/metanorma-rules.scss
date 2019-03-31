@@ -75,13 +75,14 @@ body.overview section.documentation {
 
 .site--project.layout--home {
   > .underlay.header {
-    > .hero > .text {
-      @media screen and (min-width: $bigscreen-breakpoint) {
-        margin-right: 240px;
-      }
+    color: white;
 
+    > .hero > .text {
       > .title {
         font-weight: 500;
+        @media screen and (min-width: $bigscreen-breakpoint) {
+          margin-right: 100px;
+        }
       }
       > .cta {
         .button {
@@ -110,6 +111,11 @@ body.overview section.documentation {
 
   > main .flavors {
     margin-bottom: 1em;
+    color: white;
+
+    @media screen and (min-width: $bigscreen-breakpoint) {
+      padding-right: 10vw;
+    }
 
     h2 {
       font-weight: 500;
@@ -141,27 +147,27 @@ body.overview section.documentation {
 
         border-radius: .5em;
         box-shadow: 0 9px 20px rgba(black, 0.1);
-        background-image: linear-gradient(25deg, #FFD77F, #FFF3A3);
+        background-image: linear-gradient(25deg, rgb(255, 215, 127), rgb(255, 243, 163));
 
         &.experimental {
           position: relative;
           overflow: hidden;
-          background-image: linear-gradient(25deg, #ccc, #eee);
 
           &:after {
-            content: "BETA";
+            content: "Beta";
             position: absolute;
             right: 0;
             top: 0;
-            transform: translateX(10%) rotate(45deg) translateX(20%);
+            left: 0;
+            bottom: 0;
+
+            transform: rotate(-1deg);
+            background: linear-gradient(rgb(255, 215, 127) 0px, rgb(255, 215, 127) 13px, rgba(black, 0.2) 14px, rgba(black, 0.2) 80%, rgb(255, 215, 127) 81%, rgb(255, 215, 127) 100%);
 
             font-size: 10px;
             font-weight: bold;
             letter-spacing: .04em;
-            padding: 0 2em;
-
-            background: #FFF3A3;
-            color: $main-font-color;
+            padding-left: 1em;
           }
         }
 
@@ -190,8 +196,9 @@ body > .underlay > header {
 
   .site-logo {
     margin-right: 40px;
+
     svg {
-      height: 52px;
+      height: 48px;
       margin-right: -4px;
     }
     .title {
@@ -201,6 +208,12 @@ body > .underlay > header {
   }
   > .top-menu {
     font-size: 16px;
+
+    a {
+      &:link, &:visited, &:hover {
+        color: white;
+      }
+    }
 
     > :not(.search-widget) {
       font-weight: 700;
