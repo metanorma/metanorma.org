@@ -6,18 +6,34 @@ layout: itu-flavor
 
 == Document attributes
 
+=== Document Info
+
+`doctype`::
+Document type. Choices:
++
+--
+* `recommendation` (default)
+* `recommendation-supplement`
+* `recommendation-amendment`
+* `recommendation-corrigendum`
+* `recommendation-errata`
+* `recommendation-annex`
+* `focus-group`
+* `implementers-guide`
+* `technical-paper`
+* `technical-report`
+* `joint-itu-iso-iec`
+--
+
 `:status:`::
-Document status. Choices: `proposal`,
-`working-draft`, `committee-draft`, `draft-standard`, `final-draft`,
-`published`, `withdrawn`.
-
-`:technical-committee:`::
-*Mandatory.* Name of relevant ITU technical committee.
-
-`:bureau:`::
-Bureau that the document belongs to. Choices: `R` (Radiocommunication),
-`T` (Telecommunication Standardization), `D` (Development).
-_Defaults to `T`_
+Document status. Choices: 
++
+--
+* `in-force`
+* `superseded`
+* `in-force-prepublished`
+* `withdrawn`
+--
 
 `:series:`::
 Series that the recommendation belongs to. Use full title, for example:
@@ -33,6 +49,88 @@ Second level subseries, for example: _Digital Signage_
 
 `:keywords:`::
 Comma-delimited list of keywords associated with the document.
+
+`:language:` :: The language of the document (only `en` for now; will eventually support
+`ar`, `zh`, `en`, `fr`, `ru`, `es`)  (default: `en`)
+
+`:provisional-name:`:: A provisional identifier allocated to the document if the proper
+document identifier (`:docnumber:`) is not yet known.
+
+=== Author Info
+
+`:bureau_{i}:`::
+Mandatory. Bureau that the document belongs to. Choices: `R` (Radiocommunication),
+`T` (Telecommunication Standardization), `D` (Development).
+_Defaults to `T`_. `bureau`, `group`, `subgroup`, and `workgroup` together form
+a project group, and there may be multiple project groups associated with a document;
+each group after the first is indicated by a trailing number, e.g. `bureau_2`, `group_2`.
+
+`:group_{i}:`::
+Mandatory. Project group that the document belongs to.
+
+`:grouptype_{i}:`::
+Type of Project group that the document belongs to. Permitted values:
+`tsag`, `study-group`, `work-group`
+
+`:groupacronym_{i}:`::
+Acronym of Project group that the document belongs to.
+
+`:groupyearstart_{i}:`::
+Year that Project group study period started.
+
+`:groupyearend_{i}:`::
+Year that Project group study period ended.
+
+`:subgroup_{i}:`::
+Project subgroup that the document belongs to.
+
+`:subgrouptype_{i}:`::
+Type of Project subgroup that the document belongs to. Permitted values:
+`tsag`, `study-group`, `work-group`
+
+`:subgroupacronym_{i}:`::
+Acronym of Project subgroup that the document belongs to.
+
+`:subgroupyearstart_{i}:`::
+Year that Project subgroup study period started.
+
+`:subgroupyearend_{i}:`::
+Year that Project subgroup study period ended.
+
+`:workgroup_{i}:`::
+Project workgroup that the document belongs to.
+
+`:workgrouptype_{i}:`::
+Type of Project workgroup that the document belongs to. Permitted values:
+`tsag`, `study-group`, `work-group`
+
+`:workgroupacronym_{i}:`::
+Acronym of Project workgroup that the document belongs to.
+
+`:workgroupyearstart_{i}:`::
+Year that Project workgroup study period started.
+
+`:workgroupyearend_{i}:`::
+Year that Project workgroup study period ended.
+
+=== Recommendation Status
+
+`:recommendation-from:`::
+Date from which recommendation status applies
+
+`:recommendation-to:`::
+Date to which recommendation status applies
+
+`:approval-process:`::
+Approval Process for recommendation status. Legal values: `tap`, `aap`
+
+`:approval-status:`::
+Approval status code for recommendation status. Legal values are:
++
+--
+* For Approval Process `tap`: `determined`, `in-force`
+* For Approval Process `aap`: `a`, `lc`, `ac`, `lj`, `aj`, `na`, `ar`, `ri`, `at`, `sg`, `c`, `tap`
+--
 
 == Markup
 

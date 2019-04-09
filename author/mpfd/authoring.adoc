@@ -4,36 +4,10 @@ layout: mpfd-flavor
 
 = Authoring MPFA documents with Metanorma
 
+All the following modifications to the basic Metanorma model are provisional, as a full analysis of the
+formatting requirements of MPFD has not yet been conducted.
+
 == Document attributes
-
-The commonly used in MPFA documents
-link:/author/topics/document-format/attributes/[document attributes]
-are:
-
-`:edition:`::
-Document edition
-
-`:revdate:`::
-Date the document was last updated
-
-`:copyright-year:`::
-Year which will be claimed as when the copyright for
-the document was issued
-
-`:title:`::
-*Mandatory.* Main component of the English title of the document
-NOTE: The first line of the AsciiDoc document, which contains the title
-introduced with `=`, is ignored
-
-`:doctype:`::
-*Mandatory.* Document type (see RSD deliverables: The different types of
-MPFD publications) 
-
-`:status:`::
-Document status. For example, `published` or `draft`
-
-`:draft:`::
-Signals to render reviewer notes
 
 `:committee:`::
 Name of relevant authoring committee
@@ -77,9 +51,9 @@ and glossary.
 
 === Guidance clauses
 
-Compliance documents in the MPFA (e.g. https://github.com/riboseinc/mpfd-documents/blob/master/compliance/mpfd-compliance.adoc)
+Compliance documents in the MPFA (e.g. https://github.com/metanorma/mpfd-documents/blob/master/compliance/mpfd-compliance.adoc)
 present compliance standards, following by an "Explanatory Notes and Guidance" clause. That clause is nested within the
-standards clause, and has a special identifier: the standards clause identifier, followed by E.
+standards clause, and has a special identifier: the standards clause identifier, followed by _E_.
 
 In MPFD Asciidoctor, the "Explanatory Notes and Guidance" clause is tagged with a `.guidance` role attribute,
 and should be entered as a sibling clause to the standard clause it elaborates on:

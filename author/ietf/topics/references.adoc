@@ -45,7 +45,7 @@ with external references to that entry, using XML entities in RFC XML v2, and XM
 in RFC XML v3. Do not insert your own entities or XML includes into the references;
 Metanorma-IETF will have difficulty processing them.
 
-
+[[external-directory-refs]]
 == External Directory
 
 As an alternative, the document attribute `:biblio-dir:` can nominate a directory in which separate XML files can be placed, one for each reference to be included. (RFC XML v3 referencegroup elements will also be recognized as files.)
@@ -103,6 +103,82 @@ See biblio
 <2> The references in the `./refs` directory are by default considered informative; this attribute indicates that `RFC2119` and `AsciiDoc` are to be considered normative.
 <3> References are recognized in `relref` as well as `xref` elements.
 <4> Metanorma-IETF differentiates between bibliographic references and crossreferences to other anchors within the document.
-<5> The bibliographic headers need to be provided as above, and its titles are expected to be "Normative References" and "Informative References";
-    Metanorma will look for those titles specifically in order to insert the references it identifies from the file. However, no XML content is expected to be provided under each heading, and any XML content that is provided will be ignored.
+<5> The bibliographic headers need to be provided as above, and its titles are expected to be "Normative References" and "Informative References"; Metanorma will look for those titles specifically in order to insert the references it identifies from the file. However, no XML content is expected to be provided under each heading, and any XML content that is provided will be ignored.
+
+[[external-ref-lookup]]
+== Lookup of external references
+
+In order to speed the lookup of references on the http://xml.resource.org/public/rfc website for external
+references, a cache of references is built the first time the gem is run, in the user's home directory:
+`~/.asciidoc-rfc-biblio-cache.json`. This maps all the canonical anchors for external references as defined
+by the IETF, such as `RFC2119` or `CCITT.E163.1988`, to the URLs that their RFC reference is stored on.
+References are detected for replacement in the Asciidoc document by matching the `references@anchor`
+attribute to one of those canonical anchors; the content of the local RFC XML reference is not checked.
+
+(For rebuilding the cache, see <<caches>>.)
+
+Rather than hand crafting RFC XML references for RFC documents, or other references hosted at `http://xml.resource.org/public/rfc/`,
+you need only create a dummy `<reference>` element containing the IETF-defined anchor for that citation. In postprocessing, any
+references that are hosted at xml.resource.org will be identified by their anchor, and replaced by entities or XML includes,
+for RFC XML v2 and v3 respectively. (The complete list of authoritative
+RFC XML bibliographies is available from https://xml2rfc.tools.ietf.org , online and in zipped form.)
+
+Because the content of any externally defined `<reference>` element is overwritten with an entity or include,
+you do not need to provide a full reference. You can supply a minimal reference like `<reference anchor="RFC2119"/>`,
+but note that such a reference is invalid in the RFC XML schema, and the gem will report a missing element during processing.
+(The document will still be processed successfully.) To prevent any validation error reports, the minimal syntactically valid reference is:
+
+[source,xml]
+--
+<reference anchor="RFC2119">
+  <front>
+    <title/>
+    <author/>
+    <date/>
+  </front>
+</reference>
+--
+
+If you wish to cite a specific version of an Internet-Draft, you will need to include the `seriesInfo` element
+in the reference that identifies the specific version; the anchor is the same for all internet drafts. For example:
+
+[source,xml]
+--
+<reference anchor="I-D.abarth-cake">
+  <front>
+    <title/>
+    <author/>
+    <date/>
+  </front>
+  <seriesInfo name="Internet-Draft" value="draft-abarth-cake-00"/>
+</reference>
+--
+
+As discussed under <<external-directory-refs>>, any citations of specific versions of an Internet-Draft need to be included as explicit files in an external directory of RFC XML references, since the seriesInfo draft information cannot be recovered by the anchor. However, any other external references do not require a corresponding directory file (although normative references do still need to be named in the `:normative:` document attribute.)
+
+[[caches]]
+=== Caches
+
+The cache of externally addressable bibliographic information is built from screenscraping the contents of:
+
+* https://xml2rfc.tools.ietf.org/public/rfc/bibxml/
+* https://xml2rfc.tools.ietf.org/public/rfc/bibxml2/
+* https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/
+* https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/
+* https://xml2rfc.tools.ietf.org/public/rfc/bibxml5/
+
+The cache of current IETF and IRTF workgroups is built from screenscraping the contents of:
+
+* https://tools.ietf.org/wg/
+* https://irtf.org/groups
+
+The caches are not rebuilt daily, as the bibliographic cache is with `xml2rfc`.
+If you want to refresh the caches,
+
+* delete
+your `~/.asciidoc-rfc-biblio-cache.json` and `~/.asciidoc-rfc-workgroup-cache.json` files;
+* insert the document attribute `:flush-caches: true` into
+the header of the document being processed; or
+* run the asciidoctor executable with option `-a flush-caches=true`
+(which has the same effect).
 

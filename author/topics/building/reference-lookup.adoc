@@ -34,7 +34,9 @@ so they do not need to be re-fetched each time a document is processed.
 The results of all Relaton searches done to date in a given directory
 are stored in the same directory as the current document,
 by default to the file `relaton/cache`. (The filename can be overriden in
-document attributes.) The local cache overrides entries in
+document attributes, if a value is given to the 
+`:local-cache:` or `:local-cache-only:` attribute, that becomes the directory
+name for the cache.) The local cache overrides entries in
 the global cache, and can be manually edited. The local cache is only used
 if the link:/author/ref/document-attributes/#caches[`:local-cache:` or `:local-cache-only:` document attribute] is set.
 
@@ -48,6 +50,12 @@ from the latest available entry on the ISO web site. If the entry is more than 6
 days old, it is refetched.
 
 The results of all `iev` searches done to date across all documents are cached
-in the global cache fule `~/iev.pstore`, and the results of all `iev` searches
-done to date for the current document are stored in the same directory as the
-current document, in the file `(filename).iev.pstore`.
+in the global cache fule `~/.relaton/cache`. The results of all `iev` searches 
+done to date in a given directory
+are stored in the same directory as the current document,
+by default to the file `iev/cache`. (The filename can be overriden in
+document attributes: if a value is given to `:local-cache:` or `:local-cache-only:`
+attribute, the directory name for the cache is that value suffixed with `_iev`.) 
+The local cache overrides entries in
+the global cache, and can be manually edited. The local cache is only used
+if the `:local-cache:` or `:local-cache-only:` document attribute is set.

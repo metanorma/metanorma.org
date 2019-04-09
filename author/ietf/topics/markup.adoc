@@ -4,7 +4,9 @@ layout: ietf-flavor
 
 = AsciiRFC markup
 
-== Abstract
+== Sections
+
+=== Abstract
 
 Any paragraphs following the document header are treated as the abstract
 (`front/abstract`), whether or not they are in abstract style. The abstract is
@@ -33,8 +35,58 @@ This is another note <3>
 <4> v3 only: `front/note@removeInRFC` (attribute only available in v3)
 <5> v3: `front/note/name`; v2: `front/note@title` (mandatory attribute; if not provided, `NOTE` is supplied)
 
+=== Sections and Subsections
 
-== Source code listings
+[source,asciidoc]
+----
+:sectnums: <1>
+[[id]] <2>
+[remove-in-rfc=true,toc=include|exclude|default] <3>
+== Section title <4>
+First paragraph of section <5>
+
+Second paragraph of section <5>
+
+:sectnums!: <6>
+=== Subsection title <7>
+First paragraph of subsection <8>
+
+==== Subsubsection title <9>
+Content content content <10>
+----
+<1> `middle/section@numbered=true` (attribute only available in v3)
+<2> `middle/section@anchor`
+<3> v3 only: `middle/section@removeInRFC`, `middle/section@toc` (attributes only available in v3)
+<4> v3: `middle/section/name`; v2: `middle/section@title`
+<5> `middle/section/t`
+<6> `middle/section@numbered=false` (attribute only available in v3) (toggle)
+<7> v3: `middle/section/section/name`; v2: `middle/section/section@title`
+<8> `middle/section/section/t`
+<9> v3: `middle/section/section/section/name`; v2: `middle/section/section/section@title`
+<10> `middle/section/section/section/t`
+
+
+=== Appendices
+
+[source,asciidoc]
+--
+[[id]] <1>
+[appendix]
+== Appendix 1 <2>
+Content <3>
+--
+<1> `back/section@anchor`
+<2> v3: `back/section/name`; v2: `back/section@title`
+<3> `back/section/t`
+
+
+
+
+
+
+== Blocks
+
+=== Source code listings
 
 In RFC XML, `sourcecode` (v3) and `artwork` (v2) elements only occur within a
 `figure` wrapper; Metanorma-IETF supplies that wrapper if it is not provided
@@ -89,7 +141,7 @@ Postamble text <9>
 <9> v2 only: `figure/postamble` (only available in v2)
 
 
-== ASCII Art and Images
+=== ASCII Art and Images
 
 In RFC XML, `artwork` elements only occur within a
 `figure` wrapper; Metanorma-IETF supplies that wrapper if it is not provided
@@ -166,18 +218,87 @@ Postamble text <11>
 <11> v2 only: `figure/postamble` (only available in v2)
 
 
-== Mathematical examples
+=== Mathematical examples
+
+In order for mathematical formatting to be recognised in Asciidoc, the document attribute `:stem:` needs to be set.
+
+[source,asciidoc]
+--
+:stem:
+
+[stem]
+++++
+sqrt(4) = 2
+++++
+--
 
 Mathematical examples are treated identically to literals, and are rendered as `artwork` in both v2 and v3;
 however their default alignment is set as `center`. As with inline stem expressions, they are treated identically
 to monospace expressions in the RFC XML output; they are not currently rendered as MathML or any other notation.
 
-== Lists
+=== Lists
+
+[source,asciidoc]
+--
+[[id]] <1>
+[empty=true,spacing=normal|compact,hang-indent=n] <2>
+* Unordered list 1 <3>
+* Unordered list 2 <3>
+** Nested list <4>
+
+[[id]] <5>
+[spacing=compact,empty=true,start=n,group=n,counter=token,hang-indent=n,format=List #%d,arabic|loweralpha|upperralpha|lowerroman|upperroman] <6>
+. A <7>
+. B <7>
+--
+<1> v3: `ul@anchor`; attribute only available in v3
+<2> v3: `ul@empty`, `ul@spacing` (`hangIndent` not available); v2: `ul@style = empty`, `ul@hangIndent` (`spacing` not available)
+<3> v2: `list[@style="symbols"]/t`; v3: ul/li
+<4> v2: `list[@style="symbols"]/t/list[@style="symbols"]/t`; v3: `ul/li/ul/li`
+<5> v3: `ol@anchor`; attribute only available in v3
+<6> v2: `list/counter`,  `list@hangIndent`, `list@style = format List #%d`, `list@style` (for arabic|loweralpha|upperralpha|lowerroman|upperroman) (`spacing`, `start`, `empty` and `group` not available) v3: `ol@spacing`, `ol@empty`, `ol@start`, `ol@group`, `ol@type = "#%d", `ol@type` (for arabic|loweralpha|upperralpha|lowerroman|upperroman) (`counter`, `hangIndent` not available)
+<7> v2: `list/t`; v3: `ol/li`
+
+Asciidoctor does not permit anchors on list items: the anchors in the following are ignored.
+
+[source,asciidoc]
+--
+* [[id1]] A
+
+. [[id2]] A
+--
 
 RFC XML v2 does not support multiparagraph list items. Following the specification recommendation,
 paragraphs within v2 list items are replaced with `vspace` tages.
 
-== Sidebar (RFC v3 only)
+=== Definition Lists
+
+[source,asciidoc]
+--
+[[id]] <1>
+[horizontal,compact,hang-indent=n] <2>
+A:: B <3>
+--
+<1> v3 only: `dl@anchor` (attribute only available in v3)
+<2> v3 only: `dl@hanging`, `dl@spacing` (attributes only available in v3); v2 only: `list@hangIndent` (attribute only available in v2). Note that the `compact` and `horizontal` attributes are mutually exclusive in AsciiDoc.
+<3> v3: `dl/dt`, `dl/dd`; v2: `list[@style="hanging"]/t@hangText`, `list[@style="hanging"]/t`
+
+Asciidoctor does not permit anchors on either definition list terms,
+or definition list definitions: the anchors in the following are ignored.
+
+In RFC XML v2, `idnits` considers inline definition lists invalid; the gem
+renders them as paragraphed definition lists. The gem option `:inline-definition-lists`
+disables this behaviour.
+
+[source,asciidoc]
+--
+[[id1]] A:: [[id2]]B
+--
+
+RFC XML v2 does not support multiparagraph list items. Following the specification recommendation,
+paragraphs within v2 list items are replaced with `vspace` tages.
+
+=== Sidebar (RFC v3 only)
 
 [source,asciidoc]
 --
@@ -189,7 +310,7 @@ Sidebar <2>
 <1> `aside@anchor`
 <2> `<aside>Sidebar</aside>`
 
-== Tables
+=== Tables
 
 The converter respects the AsciiDoc (horizontal) align attributes of cells (v2,
 v3), column widths (v2), and `colspan`, `rowspan` attributes (v3).
@@ -222,3 +343,243 @@ h|header cell | body cell <5>
 
 NOTE: v3 permits table cells to contain block elements, such as paragraphs and lists. (This is done in Asciidoc by prefixing
 the table cell with `a|`.) However v2 only permits inline tagging, and any block tags are ignored.
+
+=== Paragraphs
+
+[source,asciidoc]
+--
+[[id]] <1>
+[keep-with-next=true,keep-with-previous=true] <2>
+Paragraph text <3>
+--
+<1> `t@anchor`
+<2> v3 only: `t@keepWithNext`, `t@keepWithPrevious` (attributes only available in v3)
+<3> `<t>Paragraph text</t>`
+
+=== Quotes (v3 only)
+
+[source,asciidoc]
+--
+[[id]] <1>
+[quote, attribution, citation info] <2>
+Quotation <3>
+--
+<1> `blockquote@anchor`
+<2> `blockquote@quotedFrom`, `blockquote@cite`. In v3, `citation info` is limited to a URL.
+<3> `<blockquote>Quotation</blockquote>` 
+
+
+=== Comments
+
+==== Asciidoctor comments
+
+Asciidoctor implements both inline comments (prefixed with `\\`)
+and block comments (prefixed with `\\\\`). Both are ignored by
+the Asciidoctor processor, and are not rendered in any output,
+including RFC XML.
+
+Asciidoctor also permits paragraphs and open blocks (which can contain
+multiple paragraphs) to be treated as Asciidoctor comments, if
+they have the style attribute `[comment]`:
+
+[source,asciidoc]
+----
+
+// This is an inline Asciidoctor comment, which will not be output to XML.
+
+[comment]
+This is a single paragraph Asciidoctor comment,
+which will not be output to XML.
+
+////
+This is a block Asciidoctor comment,
+
+which will not be output to XML.
+////
+
+[comment]
+--
+This is a
+
+multiple paragraph
+
+Asciidoctor comment, which will not be output to XML.
+--
+----
+
+==== XML comments
+
+XML inline comments may be introduced into XML through the `[comment]`
+formatting macro: any such comments may not span more than one line.
+
+[source,asciidoc]
+--
+Text [comment]#This is a comment# Text
+--
+
+The foregoing will be rendered in RFC XML as:
+
+[source,xml]
+--
+<t>Text <!-- This is a comment --> Text</t>
+--
+
+XML block comments are introduced through the role attribute
+`[.comment]`, which can be prefied to a paragraph or an open
+block (which can contain multiple paragraphs):
+
+[source,asciidoc]
+----
+[.comment]
+This is a single paragraph XML comment.
+
+[.comment]
+--
+This is a
+
+multiple paragraph
+
+XML comment.
+--
+----
+
+==== Text Comments
+
+RFC XML provides for editorial comments which may optionally appear
+in the published text (subject to either the v3 `cref@display`
+attribute, or the `comments` processing instruction).
+
+In v2 RFC XML, comment text is stripped of all formatting.
+
+[source,asciidoc]
+--
+NOTE: Any admonition inside the body of the text is a comment. <1>
+// Note that actual AsciiDoc comments are ignored by the converter.
+
+[[id]] <2>
+[NOTE,display=true|false,source=name] <3>
+.Note Title <4>
+====
+Any admonition inside the body of the text is a comment.
+====
+--
+<1> `<cref>Any admonition inside the body of the text is a comment.</cref>`
+<2> `cref@anchor`
+<3> v3 only: `cref@display` (not supported in v2); v2: `cref@source`
+<4> v3 only: `cref/name` (not suppported in v2)
+
+
+
+
+
+
+
+=== Inline markup
+
+=== Indexing
+
+[source,asciidoc]
+--
+This ((<indexterm>)) <1>
+is visible in the text,
+this one is not (((indexterm, index-subterm))). <2>
+--
+<1> `<iref item="indexterm">indexterm</iref>`
+<2> `<iref item="indexterm" subitem="index-subterm"/>`
+
+
+=== Inline formatting
+
+[source,asciidoc]
+--
+Linebreak: + <1>
+_Italic_ <2>
+*Bold* <3>
+`Monospace` <4>
+~subscript~ <5>
+^superscript^ <6>
+[bcp14]#MUST NOT# <7>
+*MUST NOT* <8>
+stem:[sqrt(4) = 2]
+--
+<1> That is, "+ " at the end of a line. v3: `<br/>`; v2: `<vspace/>`.
+<2> v3: `<em>Italic</em>`; v2: `<spanx style="emph">Italic</spanx>`
+<3> v3: `<strong>Bold</strong>`; v2: `<spanx style="strong">Bold</spanx>`
+<4> v3: `<tt>Monospace</tt>`; v2: `<spanx style="verb">Monospace</spanx>`
+<5> v3 only: `<sub>subscript</sub>`. Not supported in v2; rendered as `\_subscript_`
+<6> v3 only: `<sup>superscript</sup>`. Not supported in v2; rendered as `\^superscript^`
+<7> v3 only: `<bcp14>MUST NOT</bcp14>`. Not supported in v2; rendered as `<spanx style="strong">MUST NOT</spanx>`. 
+<8> v3: if document flag `:no-rfc-bold-bcp14:` is present, then `<strong>MUST NOT</strong>`, else (by default) any BCP14/RFC2119 phrase in boldface and capitals is assumed to be intended to be tagged in `<bcp14>`. v2: `<spanx style="strong">MUST NOT</spanx>`.
+<9> Stem expressions are treated identically to monospace expressions; they are not currently rendered as MathML or any other notation.
+
+NOTE: The delimiters must occur within the one line; the following is invalid in Asciidoctor:
+[source,asciidoc]
+--
+*WOULD
+PROBABLY*
+--
+
+Any formatting XML spans within `spanx` elements are stripped in postprocessing.
+
+=== Cross-References
+
+[source,asciidoc]
+----
+Content content content
+<<crossreference>> <1>
+<<crossreference,text>> <2>
+<<crossreference,format=(counter|title|none|default): text>> <3>
+http://example.com/[linktext] <4>
+The following represent the v3 relref element
+<<crossreference,section_number (of|comma|parens|bare)>> <5>
+<<crossreference,section_number (of|comma|parens|bare): text>> <6>
+<<crossreference#fragment,section_number (of|comma|parens|bare)>> <7>
+<<crossreference#fragment,section_number (of|comma|parens|bare): text>> <8>
+----
+<1> `<xref target="crossreference"/>`
+<2> `<xref target="crossreference">text</xref>`
+<3> `<xref format="counter|title|none|default" target="crossreference">text</xref>`
+<4> `<eref href="http://example.com/">linktext</eref>`
+<5> v3 only: `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>` (element only available in v3)
+<6> v3 only: `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>` (element only available in v3)
+<7> v3 only: `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>` (element only available in v3)
+<8> v3 only: `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>` (element only available in v3)
+
+In v2, the relref style crossreferences are rendered as equivalent `xref` crossreferences,
+inserting section numbers as appropriate.
+
+Note that fragments (e.g. `crossreference#fragment`) are not supported on the `xref@target` attribute,
+in either v2 or v3: the RFC XML specification requires that the `xref@target` attribute equals
+the value of an anchor attribute elsewhere in the document.
+
+Internal crossreferences and bibliographic references are marked up in the same way; but
+bibliographic references are marked up separately from the main flow of Asciidoctor, and are
+processed later.
+
+NOTE: Normally, Asciidoctor attempts to match a crossreference to a section title, if it does not find
+a matching anchor ID. This behaviour has become optional as of Asciidoctor 1.5.7, and is suppressed in
+this gem. If you have a citation of a bibliographic item which is identical to a section title (e.g. you have a
+bibliographic citation with the anchor "WHIRLPOOL", and a section with the title "WHIRLPOOL"),
+this gem will correctly pick the former as the target of the reference, so long as that section
+has a different anchor ID:
+
+[source,asciidoc]
+----
+[[hash_whirlpool]]
+=== WHIRLPOOL
+
+The WHIRLPOOL hash function is defined in <<WHIRLPOOL>>.
+
+This section should actually be referenced as <<hash_whirlpool>>.
+...
+
+[bibliography]
+== Informative References
+++++
+<reference anchor='WHIRLPOOL' target='http://www.larc.usp.br/~pbarreto/WhirlpoolPage.html'>
+...
+++++
+----
+
+
+
