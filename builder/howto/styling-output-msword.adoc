@@ -30,6 +30,7 @@ The process for generating Word output is fairly similar to that for generating 
 ** Any HTML escapes must be replaced by Unicode entities; e.g. `&nbsp;` becomes `&#xa0;`
 ** Any standalone tags must be closed; e.g. `<br>` becomes `<br/>`
 ** Any attributes must be quoted; e.g. `<p class=MsoNormal>` becomes `<p class="MsoNormal">`
+** Idiosyncratic Word HTML comments, used for fallback HTML if the HTML is not rendered in Word, are not well-formed XML and  must be removed (e.g. `<![if !mso]>`, `<![endif]>`)
 * The styling files to be loaded in are set in the `default_file_locations()` method of `IsoDoc::...::WordConvert`. 
 * As with HTML generation, additional files (e.g. logos) can be loaded in the `initialize()` method of `IsoDoc::...::WordConvert`. The `initialize()` method also sets the `@` styles in the stylesheet to be used for unordered and ordered lists; a single such style is intended to capture the behaviour of all levels of indentation. 
 * As with HTML output, the HTML templates are populated through Liquid Templates: variables in `{{` correspond to the hash keys for metadata extracted in `IsoDoc::...::Metadata`, and its superclass `IsoDoc::Metadata` in the isodoc gem.
