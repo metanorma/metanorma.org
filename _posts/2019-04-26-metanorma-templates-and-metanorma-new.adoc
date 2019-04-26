@@ -16,19 +16,19 @@ excerpt: >-
 
 == Introduction
 
-Today `metanorma-cli` 1.1.7 has been released that provides a much requested feature: Metanorma document templates.
+Today `metanorma-cli` 1.1.7 has been released and provides a much requested feature: Metanorma document templates.
 
 Previously, there were two ways to create a new Metanorma document:
 
 . Copy over an existing document and edit it; or
-. Handcraft a new document
+. Handcraft a new document from scratch.
 
-Both methods are error-prone (and stressful). Worse, they also risks incompatibility with newer versions of the Metanorma framework.
+Both methods are error-prone (and stressful). Worse, they also risk incompatibility with newer versions of the Metanorma framework,
+as attributes are updated.
 
 Metanorma templates are supposed to help you exactly with this. A template provides not only a Metanorma document
-that allows you to get started easily, it also comes with a set of supporting files, including sample files
-for continuous integration services (Travis CI, Gitlab, AppVeyor).
-
+that allows you to get started easily, it also comes with a set of supporting files for you to manage your document project,
+including sample files for continuous integration services (Travis CI, Gitlab, AppVeyor).
 
 As of today, the following standard flavors are officially supported (with the rest to come):
 
@@ -36,8 +36,10 @@ As of today, the following standard flavors are officially supported (with the r
 * OGC
 * CalConnect / CSD
 
+NOTE: OGC is the https://www.opengeospatial.org[Open Geospatial Consortium],
+which much of the world's geographic information depends on.
 
-The following command demonstrates how to create a new "`OGC standard`":
+The following command demonstrates how to create a new "`OGC standard`" document:
 
 [source,sh]
 ----
@@ -73,17 +75,15 @@ metanorma new my-new-ogc-standard -t ogc -d standard
 # Creating my-new-ogc-standard/figures/README.adoc
 ----
 
-The main document file is provided as `document.adoc`.
-
-
-NOTE: OGC is the https://www.opengeospatial.org[Open Geospatial Consortium],
-where much of the world's geographic information depends on.
+The main document file is provided as `document.adoc`. The template uses Asciidoctor includes to split the
+document up into different files.
 
 NOTE: The bulk of functionality described here was merged in https://github.com/metanorma/metanorma-cli/issues/35.
 
 == Usage
 
-It's easy to find out how to use this with our new-ish CLI interface.
+It's easy to find out how to use this with our (relative new) CLI interface.
+
 Simply type `metanorma help new` to see usage instructions for the `metanorma new` command:
 
 [source,sh]
@@ -104,8 +104,8 @@ metanorma help new
 
 As for the options:
 
-`-t` or `--type=`:: the standard flavor, such as, `iso`, `ogc`, `csd`
-`-d` or `--doctype=`:: the document type within the standard flavor, for example, `ogc` templates offers `standard`, `best-practice`, `white-paper`, etc.
+`-t` or `--type=`:: the standard flavor such as, `iso`, `ogc`, `csd`
+`-d` or `--doctype=`:: the document type within the standard flavor; for example, `ogc` templates offers `standard`, `best-practice`, `white-paper`, etc.
 `-g` or `--template=`:: (optional) for loading a template from a Git repository. (more on this later)
 
 
@@ -113,15 +113,17 @@ As for the options:
 
 A Metanorma template is located within a Metanorma template repository.
 
-Right now, all official Metanorma template repositories is provided at https://github.com/metanorma[Metanorma's GitHub account]
-under the repository prefix `mn-templates-{flavor}`.
+Right now, all official Metanorma template repositories are provided at https://github.com/metanorma[Metanorma's GitHub account]
+under the repository prefix `mn-templates-{flavor}`. For example, the repository for CSD is located at https://github.com/metanorma/mn-templates-csd .
 
-For example, the repository for CSD is located at https://github.com/metanorma/mn-templates-csd .
+The `metanorma new` command fetches the correct template from the repository, and populates a new directory with it.
+The makefile provided with the template will compile it into a Metanorma document, with the correct outputs. The
+template Asciidoctor files are nearly empty: you replace what is in them with your content. Consult the README.adoc
+files in each subdirectory for more instructions on how to populate each file.
 
+== Selecting a template
 
-== Listing Metanorma templates of a standard flavor
-
-The easiest way to list available templates from a template repository
+The easiest way to list the available templates from a template repository
 is to go straight to the repository source.
 
 NOTE: A command for listing out available templates is being
@@ -136,27 +138,25 @@ the following directory structure:
 * `report/`
 * `standard/`
 
-All directories shown here are Metanorma templates, namely: `admin`, `advisory`, `directive`, `report` and `standard`.
+All directories shown here are Metanorma templates: `admin`, `advisory`, `directive`, `report` and `standard`.
 Each of these templates takes the directory name as its name, and provides a fully-buildable document within it.
-
 
 In this template repository, the names of templates match the names of document types at CalConnect.
 However, this is not necessary -- one can create a template of any name for any document type.
-Fictitious example: we can also have `standard-serious` and `standard-fun` to represent real and pretend standards.
+For example, we could create a separate template for draft directives, for published directives, and for withdrawn directives.
 
 NOTE: The full list of CalConnect document types are provided in
 https://standards.calconnect.org/csd/cc-10001.html[CC/DIR 10001:2019].
 
-NOTE: If you do go list the templates you will notice an obvious omission, the `common/` directory. More on this below.
-
+NOTE: We have not mentioned the `common/` directory, because it is not a template. More on this below.
 
 
 == Creating from a custom template
 
 For those using private Metanorma standard flavors, you could also host your own Git repository
-for your templates where access control can be performed.
+for your templates, where access control can be performed.
 
-To create documents using these templates, run the following:
+To create documents using custom templates, run the following:
 
 [source,ruby]
 ----
@@ -172,9 +172,7 @@ Here,
 
 `private-flavor`:: represents a private Metanorma standard flavor
 `special-doctype`:: represents a specific template provided in your private Metanorma template repository
-`https://gitlab.com/my-account/my-private-mn-template-repo`:: represents the location of the private Metanorma template repository. This address represents a Git address, both HTTPS and SSH are supported.
-
-
+`https://gitlab.com/my-account/my-private-mn-template-repo`:: represents the location of the private Metanorma template repository. This address represents a Git address; both HTTPS and SSH are supported.
 
 
 == Structure of a template repository
@@ -182,10 +180,10 @@ Here,
 
 A template repository is composed of the following structure:
 
-`{template}/`:: a template of the repository, can be named to anything (except the reserved word `common`)
+`{template}/`:: a template of the repository, can be named as anything (except the reserved word `common`)
 
-`common/`:: all files under `common` are copied to a generated template. This is a convenience
-feature for template repository managers to ensure all templates utilize the same common
+`common/`:: all files under `common` are copied across to a generated template. This is a convenience
+feature for template repository managers, to ensure all templates utilize the same common
 files, such as continuous integration configuration and scripts, `Makefile` and `Makefile.win`, etc.
 
 `README.adoc`:: (optional) the README of the template repository that describes what templates
@@ -203,7 +201,7 @@ Each template under `{template}/` has the following structure:
 
 `README.adoc`:: (optional) a README file meant for the generated document per the standard flavor's requirements.
 
-Others:: all other directories and files are allowed in the template directory, they will be faithfully copied
+Others:: all other directories and files are allowed in the template directory; they will be faithfully copied
 to the generated document.
 
 
