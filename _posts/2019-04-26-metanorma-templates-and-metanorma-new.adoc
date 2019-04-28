@@ -80,6 +80,10 @@ document up into different files.
 
 NOTE: The bulk of functionality described here was merged in https://github.com/metanorma/metanorma-cli/issues/35.
 
+.Metanorma templates,  raining structure down onto your documents
+image::/assets/blog/2019-04-28.jpg[Metanorma templates,  raining structure down onto your documents,width=100%]
+
+
 == Usage
 
 It's easy to find out how to use this with our (relative new) CLI interface.
@@ -116,10 +120,13 @@ A Metanorma template is located within a Metanorma template repository.
 Right now, all official Metanorma template repositories are provided at https://github.com/metanorma[Metanorma's GitHub account]
 under the repository prefix `mn-templates-{flavor}`. For example, the repository for CSD is located at https://github.com/metanorma/mn-templates-csd .
 
-The `metanorma new` command fetches the correct template from the repository, and populates a new directory with it.
-The makefile provided with the template will compile it into a Metanorma document, with the correct outputs. The
-template Asciidoctor files are nearly empty: you replace what is in them with your content. Consult the README.adoc
-files in each subdirectory for more instructions on how to populate each file.
+The `metanorma new` command fetches the correct template from the repository, and populates a new directory (with name of your choice) with it.
+
+The template files provided are nearly empty: you replace what is in them with your content.
+
+Other than actual document files, build scripts are also typically included in the directory. For example, the `Makefile` (macOS, Linux) and `Makefile.win` (Windows) provided allows you to run `make` compile the generated Metanorma document with correct outputs, and clean up built files with `make clean` (via the `make` utility).
+
+Consult the `README.adoc` files in each subdirectory for more instructions on how to populate each file.
 
 == Selecting a template
 
