@@ -10,12 +10,12 @@ for example blocks, prepended with an attribute list containing the type of the 
 
 [source,asciidoctor]
 .Most basic example
---
+-----
 [permission]
 ====
 I recommend this
 ====
---
+-----
 
 (Below, "requirement" is used to refer to any of these three block types.)
 
@@ -43,12 +43,12 @@ presupposed by this requirement.
 
 [source,asciidoctor]
 .An exhaustive attribute example
---
+-----
 [recommendation,label="/ogc/recommendation/wfs/2",subject="user",inherit="/ss/584/2015/level/1",classification="control-class:Technical;priority:P0;family:System and Communications Protection,System and Communications Protocols",obligation="permission,recommendation"]
 ====
 I recommend this
 ====
---
+-----
 
 == Nested blocks
 
@@ -58,7 +58,7 @@ nested requirements are marked up as nested examples.
 
 [source,asciidoctor]
 .Nesting example
---
+-----
 [permission]
 ====
 I permit this
@@ -70,7 +70,7 @@ Example 2
 I also permit this
 =====
 ====
---
+-----
 
 == Named blocks and descriptions
 
@@ -92,38 +92,38 @@ For example:
 
 [source,asciidoctor]
 .An example of a requirement with four components
---
+-----
 [requirement]
 ====
 [specification]
----
+--
 This is a formal specification
----
+--
 
 [measurement-target]
----
+--
 This is a measurement target
----
+--
 
 [verification]
----
+--
 This is a verification step
----
+--
 
 [import]
----
+--
 This is a code stub
----
+--
 
 ====
---
+-----
 
 The combination of example markup and open block markup  allows us to combine 
 nested requirements with internal structure for the nested requirements:
 
 [source,asciidoctor]
 .An example of nested requirements with components
---
+-----
 [requirement,label="requirement A"]
 ====
 
@@ -131,9 +131,9 @@ nested requirements with internal structure for the nested requirements:
 =====
 
 [specification]
----
+--
 This is a formal specification
----
+--
 
 =====
 
@@ -141,14 +141,14 @@ This is a formal specification
 =====
 
 [measurement-target]
----
+--
 This is a measurement target
----
+--
 
 =====
 
 ====
---
+-----
 
 Any text not wrapped in a named open block is considered to be part of a description.
 
@@ -159,21 +159,21 @@ on the open block:
 
 [source,asciidoctor]
 .An example of mixed descriptions and typed open blocks
---
+-----
 [requirement,label="requirement A"]
 ====
 
 This is some descriptive text.
 
 [specification,type=EBNF]
----
+--
 This is a formal specification in EBNF
----
+--
 
 This is some more descriptive text.
 
 ====
---
+-----
 
 
 Text in a named open block may be include or consist of machine readable code; any such
@@ -187,24 +187,24 @@ it is contained in.
 
 [source,asciidoctor]
 .An example of machine readable code in a specification
---
+-----
 [requirement,label="requirement A"]
 ====
 
 This is some descriptive text.
 
 [verification,type=heuristic]
----
+--
 [source,ruby]
 ----
 instances.each do |i|
   warn "uh-oh" if i > 5
 end
 ----
----
+--
 
 ====
---
+-----
 
 
 By default, both named blocks and descriptions will be included in final output.
@@ -214,29 +214,29 @@ description. That is signalled through the options attribute `exclude` on the na
 
 [source,asciidoctor]
 .An example of a complex recommendation with named blocks
---
+-----
 [recommendation,label="/ogc/recommendation/wfs/2",subject="user"]
 ====
 I recommend _this_.
 [specification,type="tabular"]
----
+--
 This is the object of the recommendation:
 |===
 |Object |Value
 |Mission | Accomplished
 |===
----
+--
 As for the measurement targets,
 [measurement-target]
----
+--
 The measurement target shall be measured as:
 [stem]
 ++++
 r/1 = 0
 ++++
----
+--
 [verification,type="comprehensive"]
----
+--
 The following code will be run for verification:
 [source,CoreRoot]
 ----
@@ -245,15 +245,15 @@ if (success)
   recommendation(label: success-response)
 end
 ----
----
+--
 
 [import%exclude]
----
+--
 [source,CoreRoot]
 ----
 success-response()
 ----
----
-====
 --
+====
+-----
 
