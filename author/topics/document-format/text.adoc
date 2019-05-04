@@ -105,11 +105,13 @@ they still have not dealt with the full range of complexity required in Metanorm
 
 Unlike Asciidoctor, Metanorma adds the option of multiple header rows 
 via attribute “headerrows” to deal with the complexity of ISO tables
-requiring labels, variables, and units to lining up in the header; for example:
+requiring labels, variables, and units to lining up in the header.
+Tables can also have alternate text, to be rendered as a summary of the table
+for accessibility:
 
 [source,asciidoctor]
 --
-[headerrows=2]
+[headerrows=2,alt=Table of maximum mass fraction of defects in husked rice]
 |===
 .2+|Defect 4+^| Maximum permissible mass fraction of defects in husked rice +
 stem:[w_max]
@@ -362,6 +364,19 @@ List items can be cross-referenced by inserting a bookmark at the very start of 
 . Ordered list
 .. [[id]] This is the first list item
 ... [[id]] This is a list sub-item
+--
+
+=== Hyperlinks
+
+Hyperlinks to URIs can have alt text, which is used in accessibility (corresponding to the HTML
+`a@title` attribute). This is specified by appending ",title=..." after the text in the
+URL macro in Asciidoctor:
+
+[source,asciidoc]
+--
+http://www.example.com[text to go into the hyperlink]
+
+http://www.example2.com[text to go into the second hyperlink,title=This is a tooltip for the link]
 --
 
 === Cross-references to external documents
