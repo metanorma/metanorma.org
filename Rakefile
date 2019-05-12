@@ -1,6 +1,5 @@
 require 'html-proofer'
 
-$sourceDir = "./source"
 $outputDir = "./output"
 $testOpts = {
   # Ignore errors "linking to internal hash # that does not exist"
