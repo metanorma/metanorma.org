@@ -86,6 +86,12 @@ Content <3>
 
 == Blocks
 
+=== Examples
+
+RFC XML does not recognise examples as a distinct element. Under v2, any Asciidoctor
+example blocks are treated by default as `figure`; if they do not contain source code,
+code listing, mathematical formatting or Ascii art, they are treated as a block of text.
+
 === Source code listings
 
 In RFC XML, `sourcecode` (v3) and `artwork` (v2) elements only occur within a
@@ -342,7 +348,7 @@ h|header cell | body cell <5>
 <7> v3: `table/tfoot/tr/td`; v2: `texttable/c`
 
 NOTE: v3 permits table cells to contain block elements, such as paragraphs and lists. (This is done in Asciidoc by prefixing
-the table cell with `a|`.) However v2 only permits inline tagging, and any block tags are ignored.
+the table cell with `a|`.) However v2 only permits inline tagging. Paragraph tags (`<t>`) are stripped by the gem.
 
 === Paragraphs
 
