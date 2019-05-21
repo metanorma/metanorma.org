@@ -314,6 +314,25 @@ of "image1.gif"; that instructs any downstream processing that extracts images
 out of the file (such as `metanorma -e`) to extract this image to the file image1.gif,
 instead of using an automatically generated filename.
 
+== Auto-numbering
+
+All figures, tables, examples, formulas, permissions, recommendations and requirements
+("assets") are autonumbered by Metanorma, so users do not need to specify any numbering in their
+source documents. The conventions for numbering vary by Metanorma flavour, but the
+default is to number all assets consecutively in the main body of a document, and
+separately in each Annex/Appendix, prefixed bt the Annex/Appendix number.
+
+Rarely an asset needs to be excluded from autonumbering. This is indicated by giving
+it the option attribute `%unnumbered`:
+
+[source,asciidoctor]
+--
+[[figureC-1]]
+[%unnumbered]
+.Typical gelatinization curve
+image::rice_images/rice_image2.png[]
+--
+
 == Cross-references
 
 The guidance given in ISO/IEC DIR 2 for internal cross-references

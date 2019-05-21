@@ -110,13 +110,16 @@ nor are paragraphs in prefatory material (introduction, foreword, abstract).
 === Admonitions
 
 The admonition container "IMPORTANT" is used to render UNECE document boxes.
-Unlike normal Metanorma admonitions, UNECE admonitions can have titles.
+Unlike normal Metanorma admonitions, UNECE admonitions can have titles, and
+can be numbered in output. As with other assets in Metanorma, the option
+attribute `unnumbered` can be applied to prevent an admonition being numbered. 
+(So `[IMPORTANT%unnumbered]` or `[IMPORTANT,options="unnumbered"]`.)
 
 For example:
 
 [source,asciidoctor]
 --
-[IMPORTANT]
+[IMPORTANT%unnumbered]
 .Business Process Analysis Plus (BPA+)   (<==== This is the box title)
 ====
 Business Process Analysis was initially designed to document and evaluate an import/export process at a given point time and its relative simplicity. It also specifically includes a measurement of the time and cost of the complete range of procedures as one of the main outputs of the analysis. This combination makes it suitable as the basis/core of a trade facilitation monitoring and improvement system.
