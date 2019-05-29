@@ -15,7 +15,10 @@ excerpt: >-
 = Announcing Metanorma support for TeX math
 
 Until recently, Metanorma has only processed AsciiMath and MathML, but
-Metanorma now accepts the following methods for writing mathematical formulas that are https://en.wikipedia.org/wiki/WYSIWYM[WYSIWYM]:
+Metanorma now accepts the following methods for writing mathematical formulas that are
+
+These are generally the https://en.wikipedia.org/wiki/WYSIWYM[WYSIWYM]
+methods for writing mathematical formulas:
 
 * http://asciimath.org[AsciiMath];
 
@@ -24,15 +27,15 @@ Metanorma now accepts the following methods for writing mathematical formulas th
 * https://www.latex-project.org[TeX/LaTeX math]
 
 
-== AsciiMath is supported by default
+== Metanorma uses AsciiMath by default
 
 AsciiMath, that most elegant, parsimonious, human-readable and human-pleasing format (why yes, your humble wizard is biased), is recognised by default. anything inside of a `stem` macro or `stem` block is assumed by default to be in AsciiMath:
 
 [source,adoc]
 ----
-The formula is stem:[sum_(i=1)^n i^3=((n(n+1))/2)^2]
+This is an inline formula in AsciiMath: stem:[sum_(i=1)^n i^3=((n(n+1))/2)^2]
 
-The formula is:
+This is a formula block in AsciiMath:
 
 [stem]
 ++++
@@ -56,7 +59,7 @@ or the metanorma option `metanorma --asciimath`.
 
 [source,adoc]
 ----
-The formula is:
+The is a formula block in MathML:
 
 [stem]
 ++++
@@ -111,10 +114,11 @@ instead of `[stem]` with AsciiMath.
 
 [source,adoc]
 ----
-// When general [stem] is AsciiMath:
-The formula is latexmath:[\displaystyle{\sum_{{{i}={1}}}^{{n}}}{i}^{3}={\left(\frac{{{n}{\left({n}+{1}\right)}}}{{2}}\right)}^{2}]
+// `latexmath:[...]` must be kept on a single line
+The is an inline TeX formula
+latexmath:[\displaystyle{\sum_{{{i}={1}}}^{{n}}}{i}^{3}={\left(\frac{{{n}{\left({n}+{1}\right)}}}{{2}}\right)}^{2}]
 
-The formula is:
+This is a TeX math block:
 
 [latexmath]
 ++++
@@ -131,21 +135,26 @@ instead of AsciiMath.
 In this case, you need to use `[asciimath]` to
 indicate that a mathematical expression is in AsciiMath.
 
-(Read more about
-link:/author/topics/document-format/text/#mathematical-expressions[mathematical expressions] in AsciiDoc.)
-
 [source,adoc]
 ----
-// When general [stem] is TeX math:
-The formula is stem:[\displaystyle{\sum_{{{i}={1}}}^{{n}}}{i}^{3}={\left(\frac{{{n}{\left({n}+{1}\right)}}}{{2}}\right)}^{2}]
+// again, `stem:[...]` must be kept on a single line
+This is an inline TeX formula:
+stem:[\displaystyle{\sum_{{{i}={1}}}^{{n}}}{i}^{3}={\left(\frac{{{n}{\left({n}+{1}\right)}}}{{2}}\right)}^{2}]
 
-The formula is:
+This is a TeX math block:
 
 [stem]
 ++++
 \displaystyle{\sum_{{{i}={1}}}^{{n}}}{i}^{3}={\left(\frac{{{n}{\left({n}+{1}\right)}}}{{2}}\right)}^{2}
 ++++
+
+And this is an inline AsciiMath formula:
+asciimath:[sum_(i=1)^n i^3=((n(n+1))/2)^2]
 ----
+
+NOTE: Read more about
+link:/author/topics/document-format/text/#mathematical-expressions[mathematical expressions]
+in AsciiDoc.
 
 
 == Under the hood: TeX math in Metanorma
@@ -161,6 +170,7 @@ of TeX documents.
 
 NOTE: The specific command Metanorma uses for LaTeXML is
 `latexmlmath --preload=amsmath -- -`.
+
 
 == Caveats on Windows
 
@@ -189,8 +199,9 @@ there is no TeX distribution necessary at all.
 
 Feel free to TeX your math away in Metanorma!
 
-NOTE: Pssst... we also helped https://dlmf.nist.gov/LaTeXML[LaTeXML] create
-the https://dlmf.nist.gov/LaTeXML/get.html[LaTeXML Chocolatey package]
+NOTE: Pssst... we also helped https://dlmf.nist.gov/LaTeXML[LaTeXML]
+create the
+https://dlmf.nist.gov/LaTeXML/get.html[LaTeXML Chocolatey package]
 to reciprocate their team's kindness in working with us!
 
 ////
