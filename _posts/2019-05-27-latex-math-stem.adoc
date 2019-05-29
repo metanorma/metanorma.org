@@ -96,21 +96,48 @@ The formula is:
 .TeX math is processed by Metanorma as MathML
 image::/assets/blog/2019-05-27.png[TeX math is processed by Metanorma into MathML,width=100%]
 
-But what of TeX math?
+TeX math is now fully supported by Metanorma.
+Metanorma AsciiDoc allows you to mix AsciiMath and TeX math in the same document.
+By default, it converts both to MathML.
 
-TeX math is now fully supported by Metanorma as well. Following the convention set in AsciiDoc,
-you can specify that a mathematical expression is LaTeX and AsciiMath, in two ways:
+Following the convention set in AsciiDoc,
+you can indicate that a mathematical expression is TeX math or AsciiMath,
+in these two ways.
 
-. By using `[latexmath]` as the style attribute, instead of `[stem]`
+=== Using TeX math with AsciiMath
 
-. By setting the document attribute `:stem: latexmath`, meaning that all `[stem]` expressions are taken as being TeX math instead of AsciiMath. (In that case, you need to use `[asciimath]` to indicate that a mathematical expression is in AsciiMath.
+You can enter TeX math using the `[latexmath]` style attribute,
+instead of `[stem]` with AsciiMath.
+
+[source,adoc]
+----
+// When general [stem] is AsciiMath:
+The formula is latexmath:[\displaystyle{\sum_{{{i}={1}}}^{{n}}}{i}^{3}={\left(\frac{{{n}{\left({n}+{1}\right)}}}{{2}}\right)}^{2}]
+
+The formula is:
+
+[latexmath]
+++++
+\displaystyle{\sum_{{{i}={1}}}^{{n}}}{i}^{3}={\left(\frac{{{n}{\left({n}+{1}\right)}}}{{2}}\right)}^{2}
+++++
+----
+
+=== Using TeX math everywhere
+
+By setting the document attribute `:stem: latexmath`,
+all `[stem]` expressions are taken as being TeX math
+instead of AsciiMath.
+
+In this case, you need to use `[asciimath]` to
+indicate that a mathematical expression is in AsciiMath.
 
 (Read more about
 link:/author/topics/document-format/text/#mathematical-expressions[mathematical expressions] in AsciiDoc.)
 
-[source,asciidoctor]
+[source,adoc]
 ----
-The formula is latexmath:[\displaystyle{\sum_{{{i}={1}}}^{{n}}}{i}^{3}={\left(\frac{{{n}{\left({n}+{1}\right)}}}{{2}}\right)}^{2}]
+// When general [stem] is TeX math:
+The formula is stem:[\displaystyle{\sum_{{{i}={1}}}^{{n}}}{i}^{3}={\left(\frac{{{n}{\left({n}+{1}\right)}}}{{2}}\right)}^{2}]
 
 The formula is:
 
@@ -120,33 +147,51 @@ The formula is:
 ++++
 ----
 
-Metanorma AsciiDoc allows you to mix AsciiMath and TeX math in the same document.
-By default, it converts both to MathML.
 
-Now, to convert TeX math to MathML, and make it usable downstream, your system needs
-to be able to process TeX math.
-Under the hood, Metanorma uses https://dlmf.nist.gov/LaTeXML/[LaTeXML], developed at the
+== Under the hood: TeX math in Metanorma
+
+Now, to convert TeX math to MathML, and make it usable downstream,
+your system needs to be able to process TeX math.
+
+Under the hood, Metanorma uses https://dlmf.nist.gov/LaTeXML/[LaTeXML],
+developed at the
 https://www.nist.gov[National Institute for Science and Technology]
-by Bruce Miller -- an excellent tool that creates LaTeXML
-(an XML representation of TeX documents).
+by Dr. Bruce Miller. Best tool that outputs XML representation
+of TeX documents.
 
-NOTE: The specific command Metanorma uses for LaTeXML is `latexmlmath --preload=amsmath -- -`.
+NOTE: The specific command Metanorma uses for LaTeXML is
+`latexmlmath --preload=amsmath -- -`.
 
-WARNING: On Windows, it is important to use UTF-8 encoding in the `cmd` shell,
+== Caveats on Windows
+
+As usual, there is something extra that Windows users
+need to be aware of.
+
+On Windows, it is important to use UTF-8 encoding in the `cmd` shell,
 otherwise TeX math will not be processed correctly.
-To ensure that `cmd` is using UTF-8 encoding, make sure you
-execute the command `chcp 65001` before processing any documents
-with TeX math in them under Metanorma.
 
-And the Metanorma installation will install LaTeXML for you.
+To ensure that `cmd` is using UTF-8 encoding, make sure you
+execute this command before processing any documents
+with TeX math in them under Metanorma:
+
+[source,sh]
+----
+chcp 65001
+----
+
+== Conclusion
+
+The Metanorma installation automatically installs LaTeXML
+for you and allows TeX math to be used immediately.
+
 Most TeX math packages are already supported by LaTeXML,
 there is no TeX distribution necessary at all.
 
 Feel free to TeX your math away in Metanorma!
 
-(Pssst... we also helped https://dlmf.nist.gov/LaTeXML[LaTeXML] create
+NOTE: Pssst... we also helped https://dlmf.nist.gov/LaTeXML[LaTeXML] create
 the https://dlmf.nist.gov/LaTeXML/get.html[LaTeXML Chocolatey package]
-to reciprocate their team's kindness in working with us!)
+to reciprocate their team's kindness in working with us!
 
 ////
 Most LaTeX packages are supported in the LaTeXML installation,
