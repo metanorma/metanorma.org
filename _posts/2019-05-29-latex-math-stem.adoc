@@ -46,16 +46,14 @@ sum_(i=1)^n i^3=((n(n+1))/2)^2
 == MathML is the canonical math format used in Metanorma
 
 MathML (https://www.iso.org/standard/58439.html[ISO 40314:2016]) is not
-parsimonious or human-readable, but it is widespread and supported
+parsimonious or human-readable, but it is widespread, well-supported,
 and a very complete math language.
 
-In fact, it is what Metanorma by default converts AsciiMath into in Metanorma XML.
+In fact, by default Metanorma converts all math into in MathML
+inside Metanorma XML.
 But notice how verbose (and less readable) it is compared with AsciiMath.
 
 Metanorma will also recognize MathML injected into a `stem` macro or block, provided the root element is `<math>`.
-
-NOTE: You can prevent AsciiMath to MathML conversion through the document attribute `:mn-keep-asciimath:`,
-or the metanorma option `metanorma --asciimath`.
 
 [source,adoc]
 ----
@@ -92,6 +90,9 @@ The is a formula block in MathML:
 ++++
 ----
 
+NOTE: You can keep AsciiMath (prevent its conversion to MathML)
+through the document attribute `:mn-keep-asciimath:`,
+or the metanorma option `metanorma --asciimath`.
 
 
 == Enter TeX math!
@@ -106,6 +107,7 @@ By default, it converts both to MathML.
 Following the convention set in AsciiDoc,
 you can indicate that a mathematical expression is TeX math or AsciiMath,
 in these two ways.
+
 
 === Using TeX math with AsciiMath
 
