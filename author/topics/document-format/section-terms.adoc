@@ -95,14 +95,9 @@ so `<<ievtermbank,clause="103-01-02">>` for IEV 103-01-02.
 
 == Title
 
-The title of a top-level Terms and Definitions clause is populated automatically,
-overriding the title provided by the user: if it contains a Symbols and Abbreviated Terms subclause,
-it is titled _Terms, definitions, symbols and abbreviated terms_,
-otherwise it is titled _Terms and definitions_.
-A Terms and Definitions clause will be recognized if either title is given,
+A Terms and Definitions clause will be recognized if either _Terms, definitions, symbols and abbreviated terms_
+or _Terms and definitions_ is given as the title,
 regardless of case.
-Symbols and Abbreviated Terms subclauses are also automatically titled;
-other subclauses of Terms and Definitions clauses are not.
 
 
 == Source
@@ -203,40 +198,4 @@ The following terms have non-normative effect, and should be ignored by the amet
 
 metrical foot consisting of a short, a long, and a short
 --
-
-=== Blank subclases
-
-Blank subclause headings can be given like this:
-
-[source,asciidoc]
---
-=== {blank}
---
-
-These are used when you want to give a subclause number for a new subclause,
-but without an associated header text. For example, in AsciiISO Rice sample document,
-
-[source,asciidoc]
---
-=== Physical and chemical characteristics 
-
-==== {blank}
-
-The mass fraction of moisture, determined in accordance with...
---
-
-renders as 
-
-____
-*4.2. Physical and chemical characteristics*
-
-*4.2.1.*  The mass fraction of moisture, determined in accordance with...
-____
-
-[NOTE]
-====
-This notation should not be used to implement paragraph numbering as required for UNECE.
-The link:/flavors/unece/[UNECE Metanorma flavor] treats each paragraph
-as a distinct clause and automatically numbers it.
-====
 

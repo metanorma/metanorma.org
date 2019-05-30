@@ -7,9 +7,9 @@ layout: author-docs
 The Normative References and the Bibliography must be preceded by the style attribute
 `[bibliography]`, so that the references they contain may be recognized as such. 
 
-All bibliographic entries must be given as unordered lists. 
-
-Generic references in bibliographies use bracketed numbers, like `[1]`.
+All bibliographic entries must be given as unordered lists. The entry must be preceded by a 
+bibliographic anchor, in triple brackets: this consists of an internal identifier (used within
+Asciidoc for crossreferences), followed by a document identifier
 
 Bibliographic entries for standards are expected to have the standard document
 identifier as the item label. References to well-defined standards codes use the document identifiers for citations
@@ -17,7 +17,14 @@ identifier as the item label. References to well-defined standards codes use the
 
 [source,asciidoctor]
 --
-* [[[ref1,ISO 712]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ref1,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+--
+
+Generic references in bibliographies use numbers, which are rendered bracketed, like `[1]`.
+
+[source,asciidoctor]
+--
+* [[[ref1,1]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
 --
 
 [TIP]
@@ -29,6 +36,15 @@ so that the text of the citation itself doesn’t have to be entered by hand.
 See link:/author/topics/building/reference-lookup[Automatic reference lookup] topic.
 ====
 
+== Citations
+
+Citations of references in Metanora are formulated as cross-references; the id crossreferenced is the
+internal identifier given for the bibliographic entry (`ref1` in the examples above).
+
+Normally in Asciidoctor, any text in a cross-reference that follows a comma constitutes custom text for the cross-reference. 
+So a cross-reference `<<ISO7301,the foregoing reference>>` will be rendered as "the foregoing reference", and hyperlinked to the ISO7301 reference.
+
+
 == Localities
 
 Citations can include details of where in the document the citation is located (or the word “whole”);
@@ -36,8 +52,8 @@ these are entered by suffixing the lowercase type of locality, then an equals si
 then the locality value or range of values.
 
 Multiple instances of locality and reference can be provided, delimited by comma or colon.
-Any trailing text after the sequence of locality=reference (or locality, space, reference)
-is treated as substitute text, as would occur normally in an Asciidoctor cross-reference.
+Any trailing text after the sequence of _locality=reference_ (or _locality{space}reference_)
+is treated as custom text for the cross-reference, as would occur normally in an Asciidoctor cross-reference.
 
 The locality can appear in quotations if it contains special characters (like dashes or commas).
 For example:
@@ -81,4 +97,15 @@ for example:
 --
 <<ISO7301,clause=5,table=1,the foregoing reference>>
 --
+
+=== Automatic reference fetching
+
+https://www.relaton.com/[Relaton] can fetch bibliographic entries
+for any standards known to have online bibliographic databases (ISO, IEC, IETF, GB, NIST).
+
+Any bibliographic entry recognized through its document identifier prefix
+will by default have its bibliographic entry fetched by that gem.
+The fetched data overrides any content about the item provided in the document,
+since the online bibliography is treated as the source of truth for that standards document.
+
 

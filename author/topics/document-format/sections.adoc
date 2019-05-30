@@ -4,7 +4,8 @@ layout: author-docs
 
 = Document sections
 
-Sections are marked off in Asciidoc with titles prefixed by double equal signs, `==`.
+Sections are marked off in Asciidoc with titles prefixed by at least two equal signs, `==`.
+`===` indicates a first level subsection; `====` a second level subsection; and so on.
 
 == Fixed section names
 
@@ -37,10 +38,46 @@ that provides the English canonical form of the section name. For example:
 == Terms, definitions and abbreviations
 --
 
+=== Blank subclases
+
+Blank subclause headings can be given like this:
+
+[source,asciidoc]
+--
+=== {blank}
+--
+
+These are used when you want to give a subclause number for a new subclause,
+but without an associated header text. For example, 
+
+[source,asciidoc]
+--
+=== Physical and chemical characteristics 
+
+==== {blank}
+
+The mass fraction of moisture, determined in accordance with...
+--
+
+renders as
+
+____
+*4.2. Physical and chemical characteristics*
+
+*4.2.1.*  The mass fraction of moisture, determined in accordance with...
+____
+
+[NOTE]
+====
+This notation should not be used to implement paragraph numbering as required for e.g. UNECE.
+The link:/flavors/unece/[UNECE Metanorma flavor] treats each paragraph
+as a distinct clause and automatically numbers it.
+====
+
 == Obligations
 
 The obligation of a section—whether it is normative or informative—is indicated
-via attribute “obligation” (see example below).
+via the attribute “obligation” (see example below).
 
 For most sections, this is fixed; for annexes and clauses,
 the default value of the obligation is "normative" and users need to set the obligation
@@ -53,12 +90,12 @@ to "informative" as a section attribute if needed. For example:
 == Determination of defects
 --
 
-== The Foreword
+== Foreword
 
 The Foreword of a standard is detected as any text between the document header
 and the first section header.
 
-In the example below, AsciiISO Rice document specifies the `.Foreword` title
+The example below specifies the `.Foreword` title
 to the foreword in the source. (Strictly speaking, this is the caption of the
 first paragraph in the foreword, but it is used as the foreword header since
 the Foreword must precede any Asciidoctor section headers.)
@@ -79,7 +116,7 @@ Symbols and Abbreviations sections are expected to be simple definition lists
 in Asciidoctor nomenclature).
 
 Metanorma takes care of sorting the symbol entries in the order prescribed by ISO/IEC DIR 2,
-provided the symbols are in AsciiMath; sorting MathML entries is not currently supported.
+provided the symbols are in AsciiMath; sorting MathML and LaTeX entries is not currently supported.
 
 == Annexes
 
