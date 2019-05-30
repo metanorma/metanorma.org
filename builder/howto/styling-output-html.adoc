@@ -10,7 +10,7 @@ layout: builder-docs
 * Clone the metanorma-sample gem: https://github.com/riboseinc/metanorma-sample.
 * Edit the `html_sample_titlepage.html` and `html_sample_intro.html` pages to match your organization's branding.
 ** Leave the Liquid Template instructions alone (`{{`, `{%`) unless you know what you're doing with them: they are how the pages are populated with metadata.
-* Edit the `default_fonts()` method in your `IsoDoc::...::HtmlConvert` class, to match your desired fonts.
+* Edit the `default_fonts()` and `googlefonts` method in your `IsoDoc::...::HtmlConvert` class, to match your desired fonts.
 * Edit the `default_file_locations()` method in your `IsoDoc::...::HtmlConvert` class, to match your desired stylesheets and HTML templates.
 * Edit the `htmlstyle.scss` stylesheet to match your organization's branding. The classes already in place there are used to style existing blocks of text; refer to the sample documents included in the gem (`spec/examples`) for their use.
 ====
@@ -38,5 +38,5 @@ An HTML document is populated as follows:
 * HTML Body
 ** `@htmlcoverpage` HTML template (optional, corresponds to `html_..._titlepage.html`)
 ** `@htmlintropage` HTML template (optional, corresponds to `html_..._intro.html`)
-** Document proper (converted from Standoc XML)
+** Document proper (converted from Metanorma XML)
 ** `@scripts` Javascript Scripts (optional, corresponds to `scripts.html`)

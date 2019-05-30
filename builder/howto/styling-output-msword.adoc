@@ -36,13 +36,13 @@ The process for generating Word output is fairly similar to that for generating 
 * As with HTML output, the HTML templates are populated through Liquid Templates: variables in `{{` correspond to the hash keys for metadata extracted in `IsoDoc::...::Metadata`, and its superclass `IsoDoc::Metadata` in the isodoc gem.
 * As with HTML, the SCSS stylesheets treat fonts as variables, and are set in the `default_fonts()` method of `IsoDoc::...::WordConvert`.
 * Document headers and footers are set in the `header.html` file. This is also an HTML template, which is populated with metadata attributes through Liquid Template. The structure of `header.html` is determined by Word, and elements of `header.html` need to be crossreferenced from the Word stylesheet. To inspect Word `header.html` files, save a Word document as HTML, and look inside the `{document_name}.fld` folder generated alongside the HTML output.
-* The classes in the SCSS stylesheet correspond to static HTML content in the HTML templates, and dynamic HTML content in the `IsoDoc::...::WordConvert` class, and its superclasses `IsoDoc::WordConvert` and `IsoDoc::Common` in the isodoc gem.
 
 A Word HTML document is populated as follows:
 * HTML Head wrapper (in `IsoDoc::WordConvert`)
 ** `@wordstylesheet` CSS stylesheet (generated from SCSS through the `generate_css()` method of `Isodoc::WordConvert`); corresponds to `wordstyle.scss`.
 ** `@standstylesheet` CSS stylesheet (generated from SCSS through the `generate_css()` method of `Isodoc::WordConvert`); intended to override any generic CSS in `@wordstylesheet`. Optional, corresponds to `{name_of_standard}.scss`.
 * HTML Body
-** `@wordcoverpage` HTML template (optional, corresponds to `word_..._titlepage.html`). Included in `<div class=WordSection1>`.
-** `@htmlintropage` HTML template (optional, corresponds to `word_..._intro.html`). Included in `<div class=WordSection2>`. In the existing gems, WordSection2 is paginated with roman numerals. 
-** Document proper (converted from Standoc XML). Included in `<div class=WordSection2>` (prefatory material) and `<div class=WordSection3>` (main document). In the existing gems, WordSection3 is paginated with roman numerals.
+** `@wordcoverpage` HTML template (optional, corresponds to `word_..._titlepage.html`). Included in `<div class="WordSection1">`.
+** `@htmlintropage` HTML template (optional, corresponds to `word_..._intro.html`). Included in `<div class="WordSection2">`. In the existing gems, WordSection2 is paginated with roman numerals. 
+** Document proper (converted from Metanorma XML). Included in `<div class="WordSection2">` (prefatory material) and `<div class="WordSection3">` (main document). In the existing gems, WordSection3 is paginated with roman numerals.
+
