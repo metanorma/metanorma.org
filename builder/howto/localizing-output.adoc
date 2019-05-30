@@ -21,8 +21,8 @@ Localization is mostly used for translation purposes, but they can also be used 
 The YAML files are read into the `IsoDoc` classes through the `i18n_init()` method of `IsoDoc::...::HtmlConvert` and `Isodoc::...::WordConvert`. The localization equivalents for the nominated language are read from the corresponding YAML file into the `@labels` hash. The base Isodoc instance of `i18n_init()` also assigns an instance variable for each label (e.g. `@annex_lbl` for English "Annex"). These instance variables are used to generate all automated text in the Isodoc classes.
 
 All current gems inherit their localization files from the base isodoc gem.
-The local `i18n_init()` instance can overwrite individual labels in code (metanorma-csd),
-or they can read in a local additional YAML file for the same language (metanorma-gb).
+The local `i18n_init()` instance can overwrite individual labels in code,
+or they can read in a local additional YAML file for the same language.
 If you are implementing a completely new language, you will need to replace the base `i18n_init()`
 method rather than inheriting from it, to ensure that the local YAML files are read in.
 

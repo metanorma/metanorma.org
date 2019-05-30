@@ -55,14 +55,21 @@ and some advice on authoring for Asciidoctor.
 
 === Differences from Asciidoctor
 
-While Metanorma uses AsciiDoc markup, there are some specifics in how it is interpreted.
-Additionally, Asciidoctor has some formatting constraints because of its own document model.
+While Metanorma uses AsciiDoc markup, there are some specifics in how it is interpreted,
+as is documented here.
+In addition, Metanorma imposes a much more strict and hierarchical document model than
+Asciidoctor does. In particular, it has a strict hierarchy of sections, then blocks,
+then inline markup, which cannot be mixed. A table for example cannot occur inside a list,
+and a section cannot occur inside a table. Asciidoctor allows some flexibility in
+table markup (though its `a` table cell format taking arbitrary Asciidoctor markup);
+Metanorma will not process arbitrary formatting properly.
 
 Asciidoctor has some formatting constraints because of its own document model
 that users need to be aware. For example, Asciidoctor disallows
 multiple paragraphs in footnotes
-http://discuss.asciidoctor.org/footnotes-with-paragraph-breaks-td4130.html[by design], 
-and it has a strict hierarchy about how elements can be embedded within other elements
+http://discuss.asciidoctor.org/footnotes-with-paragraph-breaks-td4130.html[by design]; 
+and it has a strict hierarchy about how elements can be embedded within other elements,
+though still less strict than in Metanorma
 (so for example a list cannot be nested within a paragraph, it can only be used as a separate paragraph.)
 
 TIP: See link:/author/topics/document-format/[Document format] section of author’s documentation
