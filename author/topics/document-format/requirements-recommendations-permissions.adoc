@@ -5,13 +5,13 @@ layout: author-docs
 = Requirement, Recommendation, and Permission blocks
 
 Requirements, Recommendations, and Permissions are encoded using AsciiDoc markup
-for example blocks, prepended with an attribute list containing the type of the block
+for example blocks, prepended with an role attribute containing the type of the block
 (i.e., its obligation)—one of “requirement”, “recommendation”, or “permission”. For example:
 
 [source,asciidoctor]
 .Most basic example
 -----
-[permission]
+[.permission]
 ====
 I recommend this
 ====
@@ -44,7 +44,7 @@ presupposed by this requirement.
 [source,asciidoctor]
 .An exhaustive attribute example
 -----
-[recommendation,label="/ogc/recommendation/wfs/2",subject="user",inherit="/ss/584/2015/level/1",classification="control-class:Technical;priority:P0;family:System and Communications Protection,System and Communications Protocols",obligation="permission,recommendation"]
+[.recommendation,label="/ogc/recommendation/wfs/2",subject="user",inherit="/ss/584/2015/level/1",classification="control-class:Technical;priority:P0;family:System and Communications Protection,System and Communications Protocols",obligation="permission,recommendation"]
 ====
 I recommend this
 ====
@@ -59,13 +59,13 @@ nested requirements are marked up as nested examples.
 [source,asciidoctor]
 .Nesting example
 -----
-[permission]
+[.permission]
 ====
 I permit this
 =====
 Example 2
 =====
-[permission]
+[.permission]
 =====
 I also permit this
 =====
@@ -79,8 +79,8 @@ although this is not expected to be reflected in rendering.
 
 The internal structure of requirements is marked up with open blocks,
 which are marked up with a succession of two or more hyphens, rather than equals signs.
-Each open block needs to be named with the kind of component it contains;
-the recognised values for Metanorma are:
+Each open block needs to be named with the kind of component it contains
+as a role attribute; the recognised values for Metanorma are:
 
 * specification (a formal statement, which may be considered
 the object of the requirement)
@@ -93,24 +93,24 @@ For example:
 [source,asciidoctor]
 .An example of a requirement with four components
 -----
-[requirement]
+[.requirement]
 ====
-[specification]
+[.specification]
 --
 This is a formal specification
 --
 
-[measurement-target]
+[.measurement-target]
 --
 This is a measurement target
 --
 
-[verification]
+[.verification]
 --
 This is a verification step
 --
 
-[import]
+[.import]
 --
 This is a code stub
 --
@@ -124,23 +124,23 @@ nested requirements with internal structure for the nested requirements:
 [source,asciidoctor]
 .An example of nested requirements with components
 -----
-[requirement,label="requirement A"]
+[.requirement,label="requirement A"]
 ====
 
-[requirement,label="requirement A1"]
+[.requirement,label="requirement A1"]
 =====
 
-[specification]
+[.specification]
 --
 This is a formal specification
 --
 
 =====
 
-[requirement,label="requirement A2"]
+[.requirement,label="requirement A2"]
 =====
 
-[measurement-target]
+[.measurement-target]
 --
 This is a measurement target
 --
@@ -160,12 +160,12 @@ on the open block:
 [source,asciidoctor]
 .An example of mixed descriptions and typed open blocks
 -----
-[requirement,label="requirement A"]
+[.requirement,label="requirement A"]
 ====
 
 This is some descriptive text.
 
-[specification,type=EBNF]
+[.specification,type=EBNF]
 --
 This is a formal specification in EBNF
 --
@@ -188,12 +188,12 @@ it is contained in.
 [source,asciidoctor]
 .An example of machine readable code in a specification
 -----
-[requirement,label="requirement A"]
+[.requirement,label="requirement A"]
 ====
 
 This is some descriptive text.
 
-[verification,type=heuristic]
+[.verification,type=heuristic]
 --
 [source,ruby]
 ----
@@ -215,10 +215,10 @@ description. That is signalled through the options attribute `exclude` on the na
 [source,asciidoctor]
 .An example of a complex recommendation with named blocks
 -----
-[recommendation,label="/ogc/recommendation/wfs/2",subject="user"]
+[.recommendation,label="/ogc/recommendation/wfs/2",subject="user"]
 ====
 I recommend _this_.
-[specification,type="tabular"]
+[.specification,type="tabular"]
 --
 This is the object of the recommendation:
 |===
@@ -227,7 +227,7 @@ This is the object of the recommendation:
 |===
 --
 As for the measurement targets,
-[measurement-target]
+[.measurement-target]
 --
 The measurement target shall be measured as:
 [stem]
@@ -235,7 +235,7 @@ The measurement target shall be measured as:
 r/1 = 0
 ++++
 --
-[verification,type="comprehensive"]
+[.verification,type="comprehensive"]
 --
 The following code will be run for verification:
 [source,CoreRoot]
@@ -247,7 +247,7 @@ end
 ----
 --
 
-[import%exclude]
+[.import%exclude]
 --
 [source,CoreRoot]
 ----

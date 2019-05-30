@@ -1,0 +1,222 @@
+---
+layout: post
+title:  "Announcing Metanorma support for TeX math"
+date:   2019-05-29
+categories: about
+author:
+  name: Nick Nicholas
+  email: opoudjis@optusnet.com.au
+  social_links:
+    - https://www.linkedin.com/in/opoudjis/
+    - https://github.com/opoudjis
+excerpt: >-
+    Announcing Metanorma support for TeX math!
+---
+= Announcing Metanorma support for TeX math
+
+Until recently, Metanorma has only processed AsciiMath and MathML, but
+Metanorma now accepts the following methods for writing mathematical formulas that are
+
+These are generally the https://en.wikipedia.org/wiki/WYSIWYM[WYSIWYM]
+methods for writing mathematical formulas:
+
+* http://asciimath.org[AsciiMath];
+
+* https://www.w3.org/Math/[MathML]; and
+
+* https://www.latex-project.org[TeX/LaTeX math]
+
+
+== Metanorma uses AsciiMath by default
+
+AsciiMath, that most elegant, parsimonious, human-readable and human-pleasing format (why yes, your humble wizard is biased), is recognised by default. anything inside of a `stem` macro or `stem` block is assumed by default to be in AsciiMath:
+
+[source,adoc]
+----
+This is an inline formula in AsciiMath: stem:[sum_(i=1)^n i^3=((n(n+1))/2)^2]
+
+This is a formula block in AsciiMath:
+
+[stem]
+++++
+sum_(i=1)^n i^3=((n(n+1))/2)^2
+++++
+----
+
+== MathML is the canonical math format used in Metanorma
+
+MathML (https://www.iso.org/standard/58439.html[ISO 40314:2016]) is not
+parsimonious or human-readable, but it is widespread, well-supported,
+and a very complete math language.
+
+In fact, by default Metanorma converts all math into in MathML
+inside Metanorma XML.
+But notice how verbose (and less readable) it is compared with AsciiMath.
+
+Metanorma will also recognize MathML injected into a `stem` macro or block, provided the root element is `<math>`.
+
+[source,adoc]
+----
+The is a formula block in MathML:
+
+[stem]
+++++
+<?xml version="1.0"?>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <munderover>
+    <mo>∑</mo>
+    <mrow>
+      <mi>i</mi><mo>=</mo><mn>1</mn>
+    </mrow>
+    <mi>n</mi>
+  </munderover>
+  <msup><mi>i</mi><mn>3</mn></msup>
+  <mo>=</mo>
+  <msup>
+    <mfenced open="(" close=")">
+      <mfrac>
+        <mrow>
+          <mi>n</mi>
+          <mfenced open="(" close=")">
+            <mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow>
+          </mfenced>
+        </mrow>
+        <mn>2</mn>
+      </mfrac>
+    </mfenced>
+    <mn>2</mn>
+  </msup>
+</math>
+++++
+----
+
+NOTE: You can keep AsciiMath (prevent its conversion to MathML)
+through the document attribute `:mn-keep-asciimath:`,
+or the metanorma option `metanorma --asciimath`.
+
+
+== Enter TeX math!
+
+.TeX math is processed by Metanorma as MathML
+image::/assets/blog/2019-05-29.png[TeX math is processed by Metanorma into MathML,width=100%]
+
+TeX math is now fully supported by Metanorma.
+Metanorma AsciiDoc allows you to mix AsciiMath and TeX math in the same document.
+By default, it converts both to MathML.
+
+Following the convention set in AsciiDoc,
+you can indicate that a mathematical expression is TeX math or AsciiMath,
+in these two ways.
+
+
+=== Using TeX math with AsciiMath
+
+You can enter TeX math using the `[latexmath]` style attribute,
+instead of `[stem]` with AsciiMath.
+
+[source,adoc]
+----
+// `latexmath:[...]` must be kept on a single line
+The is an inline TeX formula
+latexmath:[\displaystyle{\sum_{{{i}={1}}}^{{n}}}{i}^{3}={\left(\frac{{{n}{\left({n}+{1}\right)}}}{{2}}\right)}^{2}]
+
+This is a TeX math block:
+
+[latexmath]
+++++
+\displaystyle{\sum_{{{i}={1}}}^{{n}}}{i}^{3}={\left(\frac{{{n}{\left({n}+{1}\right)}}}{{2}}\right)}^{2}
+++++
+----
+
+=== Using TeX math everywhere
+
+By setting the document attribute `:stem: latexmath`,
+all `[stem]` expressions are taken as being TeX math
+instead of AsciiMath.
+
+In this case, you need to use `[asciimath]` to
+indicate that a mathematical expression is in AsciiMath.
+
+[source,adoc]
+----
+// again, `stem:[...]` must be kept on a single line
+This is an inline TeX formula:
+stem:[\displaystyle{\sum_{{{i}={1}}}^{{n}}}{i}^{3}={\left(\frac{{{n}{\left({n}+{1}\right)}}}{{2}}\right)}^{2}]
+
+This is a TeX math block:
+
+[stem]
+++++
+\displaystyle{\sum_{{{i}={1}}}^{{n}}}{i}^{3}={\left(\frac{{{n}{\left({n}+{1}\right)}}}{{2}}\right)}^{2}
+++++
+
+And this is an inline AsciiMath formula:
+asciimath:[sum_(i=1)^n i^3=((n(n+1))/2)^2]
+----
+
+NOTE: Read more about
+link:/author/topics/document-format/text/#mathematical-expressions[mathematical expressions]
+in AsciiDoc.
+
+
+== Under the hood: TeX math in Metanorma
+
+Now, to convert TeX math to MathML, and make it usable downstream,
+your system needs to be able to process TeX math.
+
+Under the hood, Metanorma uses https://dlmf.nist.gov/LaTeXML/[LaTeXML],
+developed at the
+https://www.nist.gov[National Institute for Science and Technology]
+by Dr. Bruce Miller. Best tool that outputs XML representation
+of TeX documents.
+
+NOTE: The specific command Metanorma uses for LaTeXML is
+`latexmlmath --preload=amsmath -- -`.
+
+
+== Caveats on Windows
+
+As usual, there is something extra that Windows users
+need to be aware of.
+
+On Windows, it is important to use UTF-8 encoding in the `cmd` shell,
+otherwise TeX math will not be processed correctly.
+
+To ensure that `cmd` is using UTF-8 encoding, make sure you
+execute this command before processing any documents
+with TeX math in them under Metanorma:
+
+[source,sh]
+----
+chcp 65001
+----
+
+== Conclusion
+
+The Metanorma installation automatically installs LaTeXML
+for you and allows TeX math to be used immediately.
+
+Most TeX math packages are already supported by LaTeXML,
+there is no TeX distribution necessary at all.
+
+Feel free to TeX your math away in Metanorma!
+
+NOTE: Pssst... we also helped https://dlmf.nist.gov/LaTeXML[LaTeXML]
+create the
+https://dlmf.nist.gov/LaTeXML/get.html[LaTeXML Chocolatey package]
+to reciprocate their team's kindness in working with us!
+
+////
+Most LaTeX packages are supported in the LaTeXML installation,
+without you needing to install a TeX distribution at all; only the following packages are not supported by LaTeXML,
+and none of them deal directly with the typesetting of formulae, or the generation of MathML:
+
+* color.sty
+* colordvi.sty
+* ntheorem.sty
+* pgfkeys.code
+* pgfmath.code
+* siunitx.sty
+* tikz.sty
+* xcolor.sty
+////
