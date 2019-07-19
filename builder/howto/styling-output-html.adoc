@@ -25,9 +25,11 @@ That means you can change the styling of output documents readily, so long as yo
 * The styling files to be loaded in are set in the `default_file_locations()` method of `IsoDoc::...::HtmlConvert`. The files can be overridden through document variables in the Asciidoc document.
 * Additional files (e.g. logos) can be loaded in the `initialize()` method of `IsoDoc::...::HtmlConvert`; for them to be access during document generation, they need to be copied to the working directory. (They can be removed subsequently by adding them to the `@files_to_delete` array. All image files are copied into an `_html` subdirectory.)
 * The HTML templates are populated through Liquid Templates: variables in `{{` correspond to the hash keys for metadata extracted in `IsoDoc::...::Metadata`, and its superclass `IsoDoc::Metadata` in the isodoc gem.
-* The SCSS stylesheets treat fonts as variables. Those variables are set in `default_fonts()`, which generates variable assignments for SCSS. Stylesheets normally recognize three fonts: `$bodyfont` for body text, `$headerfont` for headers and captions (which may be the same font as `$bodyfont`), and `$monospacefont` for monospace text. Note that `default_fonts()` takes the options passed to initialise `HtmlConvert` as a paremeter; the document language and script can be used to make different font choices for different document scripts. (The existing gems refer to `Latn`, Latin script, and `Hans`, Simplified Chinese script.)
-* Javascript scripts are populated in `scripts.html`; the scripts already in place in any gem you modify are in live use, and you should work out what they do before removing them. The AnchorJS script, for example, is used to generate navigable anchors in the document.
-* Additional scripts and fonts may be loaded in the document head through the `html_head()` method of  `IsoDoc::...::HtmlConvert`. The existing gems use the document head to load Jquery, the Table of Contents generation script, Google Fonts, and Font Awesome.
+* The SCSS stylesheets treat fonts as variables. Those variables are set in `default_fonts()`, which generates variable assignments for SCSS. Stylesheets normally recognize three fonts: `$bodyfont` for body text, `$headerfont` for headers and captions (which may be the same font as `$bodyfont`), and `$monospacefont` for monospace text. Note that `default_fonts()` takes the options passed to initialise `HtmlConvert` as a parameter; the document language and script can be used to make different font choices for different document scripts. (The existing gems refer to `Latn`, Latin script, and `Hans`, Simplified Chinese script.)
+* Usually for HTML the fonts used are Web fonts. The HTML specifying the Web fonts used is set in `googlefonts`.
+* Javascript scripts are populated in `scripts.html`; the scripts already in place in any gem you modify are in live use, and you should work out what they do before removing them. The AnchorJS script, for example, is used to generate navigable anchors in the document. (PDF is generated from HTML in Metanorma, but a distinct PDF-specific set of Javascript scripts can be specified as `scripts-pdf.html`.)
+* The Javascript defining which headings to include in the HTML Table of Contents is defined in `toclevel`.
+* Additional scripts and fonts may be loaded in the document head through the `html_head()` method of  `IsoDoc::...::HtmlConvert`. The existing gems use the document head to load Jquery, the Table of Contents generation script, any web fonts, and Font Awesome.
 * The classes in the SCSS stylesheet correspond to static HTML content in the HTML templates, and dynamic HTML content in the `IsoDoc::...::HtmlConvert` class, and its superclasses `IsoDoc::HtmlConvert` and `IsoDoc::Common` in the isodoc gem.
 
 An HTML document is populated as follows:
@@ -39,4 +41,6 @@ An HTML document is populated as follows:
 ** `@htmlcoverpage` HTML template (optional, corresponds to `html_..._titlepage.html`)
 ** `@htmlintropage` HTML template (optional, corresponds to `html_..._intro.html`)
 ** Document proper (converted from Metanorma XML)
+** https://www.mathjax.org[MathJax] script, for rendering MathML and AsciiMath, 
+and https://github.com/google/code-prettify[Google Code Prettify], for highlighting sourcecode.
 ** `@scripts` Javascript Scripts (optional, corresponds to `scripts.html`)
