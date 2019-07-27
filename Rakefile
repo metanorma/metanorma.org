@@ -1,6 +1,6 @@
 require 'html-proofer'
 
-$outputDir = "./output"
+$outputDir = "./_site"
 $testOpts = {
   # Ignore errors "linking to internal hash # that does not exist"
   :url_ignore => ["#"],
