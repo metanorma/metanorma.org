@@ -89,3 +89,23 @@ b)  |-------|------ |
 c)  Definition Term   Definition
     Definition Term   Definition
 ....
+
+== Asciidoctor escaping
+
+There are some characters that constitute markup in Asciidoctor, and need to be escaped
+if they will be used in text (usually by putting a backslash before them). That
+applies in particular to:
+
+* period at the start of a line, which will be interpeted as a block title;
+* open bracket at the start of a line, which will be interpreted as a style attribute;
+* close bracket inside of a macro (such as footnotes), which are themselves delimited by a close bracket;
+* a number followed by period at the start of a line, which will be interpreted as a numbered
+list. (This does not happen inside of blocks like examples.)
+
+Sometimes, a backslash will not be enough to make the character make sense to Asciidoctor
+markup. The "break in case of emergency solution" is to make the troublesome span of text
+a document attribute, since document attributes are skipped over when processing Asciidoctor
+markup, and processed only at the very end. See for example 
+https://asciidoctor.org/docs/user-manual/#url[the Asciidoctor User Manual] on using
+document attributes to deal with complex URLs.
+
