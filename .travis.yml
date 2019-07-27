@@ -1,14 +1,24 @@
 language: ruby
-sudo: required
+dist: xenial
 cache: bundler
 rvm:
-- 2.5.1
+  - 2.5
+addons:
+  apt:
+    update: true
+  snaps:
+    - jq
+    - yq
+    - name: aws-cli
+      confinement: classic
+    - name: node
+      confinement: classic # or devmode
+      channel: 10/stable
 before_script:
-- bundle
+  - gem install bundler
+  - bundle
 script:
-- bundle exec rake test:production && rake build:production
-install:
-- pip install --user awscli
+  - make clean all
 deploy:
 - provider: s3
   access_key_id: $AWS_ACCESS_KEY_ID
@@ -32,7 +42,6 @@ env:
   global:
   - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
 after_deploy:
-  - aws configure set preview.cloudfront true
   - test $TRAVIS_BRANCH = "master" && aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
   - test $TRAVIS_BRANCH = "staging" && aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_STAGING_DISTRIBUTION_ID --paths "/*"
   - >
