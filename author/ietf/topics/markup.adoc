@@ -54,6 +54,7 @@ First paragraph of subsection <8>
 ==== Subsubsection title <9>
 Content content content <10>
 ----
+
 <1> `middle/section@numbered=true` (attribute only available in v3)
 <2> `middle/section@anchor`
 <3> v3 only: `middle/section@removeInRFC`, `middle/section@toc` (attributes only available in v3)
@@ -372,7 +373,7 @@ Quotation <3>
 --
 <1> `blockquote@anchor`
 <2> `blockquote@quotedFrom`, `blockquote@cite`. In v3, `citation info` is limited to a URL.
-<3> `<blockquote>Quotation</blockquote>` 
+<3> `<blockquote>Quotation</blockquote>`
 
 
 === Comments
@@ -513,7 +514,7 @@ _Italic_ <2>
 ^superscript^ <6>
 [bcp14]#MUST NOT# <7>
 *MUST NOT* <8>
-stem:[sqrt(4) = 2]
+stem:[sqrt(4) = 2] <9>
 --
 <1> That is, "+ " at the end of a line. v3: `<br/>`; v2: `<vspace/>`.
 <2> v3: `<em>Italic</em>`; v2: `<spanx style="emph">Italic</spanx>`
@@ -521,11 +522,11 @@ stem:[sqrt(4) = 2]
 <4> v3: `<tt>Monospace</tt>`; v2: `<spanx style="verb">Monospace</spanx>`
 <5> v3 only: `<sub>subscript</sub>`. Not supported in v2; rendered as `\_subscript_`
 <6> v3 only: `<sup>superscript</sup>`. Not supported in v2; rendered as `\^superscript^`
-<7> v3 only: `<bcp14>MUST NOT</bcp14>`. Not supported in v2; rendered as `<spanx style="strong">MUST NOT</spanx>`. 
+<7> v3 only: `<bcp14>MUST NOT</bcp14>`. Not supported in v2; rendered as `<spanx style="strong">MUST NOT</spanx>`.
 <8> v3: if document flag `:no-rfc-bold-bcp14:` is present, then `<strong>MUST NOT</strong>`, else (by default) any BCP14/RFC2119 phrase in boldface and capitals is assumed to be intended to be tagged in `<bcp14>`. v2: `<spanx style="strong">MUST NOT</spanx>`.
 <9> Stem expressions are treated identically to monospace expressions; they are not currently rendered as MathML or any other notation.
 
-NOTE: The delimiters must occur within the one line; the following is invalid in Asciidoctor:
+NOTE: The delimiters must occur within the one line; the following is invalid in Metanorma Asciidoctor:
 [source,asciidoc]
 --
 *WOULD

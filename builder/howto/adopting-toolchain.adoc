@@ -2,7 +2,7 @@
 layout: builder-docs
 ---
 
-= How can I adapt the StanDoc toolchain for my own publications?
+== How can I adapt the StanDoc toolchain for my own publications?
 
 [TIP]
 ====
@@ -17,17 +17,17 @@ If you wish to create a custom gem, in order to customise behaviour further:
 * Change the styling of the document outputs (`.../lib/isodoc/XXX/html`).
 ====
 
-The tool chains currently available proceed in two steps: map an input markup language (currently Asciidoctor only) into Standoc XML, and map Standoc XML into various output formats (currently Word doc, HTML, PDF via HTML). Running the metanorma tool involves a third step, of exposing the capabilities available in the first two in a consistent format. These two steps are represented as three separate modules, which are included in the same gem; for the Sample gem, they are `Asciidoctor::Sample`, `Isodoc::Sample`, and `Metanorma::Sample`. 
+The tool chains currently available proceed in two steps: map an input markup language (currently Asciidoctor only) into Standoc XML, and map Standoc XML into various output formats (currently Word doc, HTML, PDF via HTML). Running the metanorma tool involves a third step, of exposing the capabilities available in the first two in a consistent format. These two steps are represented as three separate modules, which are included in the same gem; for the Sample gem, they are `Asciidoctor::Sample`, `Isodoc::Sample`, and `Metanorma::Sample`.
 
 Your adaptation of the toolchain will need to instantiate these three modules. The connection between the two first steps is taken care of in the toolchain, and metanorma explicitly invokes the two steps, feeding the XML output of the first step as input into the second. The metanorma-sample gem outputs both Word and HTML; you can choose to output only Word, or only HTML, and you can choose to generate PDF from HTML as well.
 
 The modules involve classes which rely on inheritance from other classes; the current gems use `Asciidoctor::{Standoc, ISO}::Converter`, `Isodoc::{Metadata, HtmlConvert, WordConvert}`, and `Metanorma::Processor` as their base classes. This allows the standards-specific classes to be quite succinct, as most of their behaviour is inherited from other classes; but it also means that you need to be familiar with the underlying gems, in order to do most customization.
 
-In the case of `Asciidoctor::X` classes, the changes you will need to make involve the intermediate XML representation of your document, which is built up through Nokogiri Builder; e.g. adding different enums, or adding new elements. The adaptations in `Asciidoctor::Sample::Converter` are limited, and most projects can take them across as is. 
+In the case of `Asciidoctor::X` classes, the changes you will need to make involve the intermediate XML representation of your document, which is built up through Nokogiri Builder; e.g. adding different enums, or adding new elements. The adaptations in `Asciidoctor::Sample::Converter` are limited, and most projects can take them across as is.
 
 The customizations needed for `Metanorma::Sample::Processor` are minor, and involve invoking methods specific to the gem for document generation.
 
-The customizations needed for `Isodoc::Sample` are more extensive. Three base classes are involved: 
+The customizations needed for `Isodoc::Sample` are more extensive. Three base classes are involved:
 
 * `Isodoc::Metadata` processes the metadata about the document stored in `//bibdata`. This information typically ends up in the document title page, as opposed to the document body. For that reason, metadata is extracted into a hash, which is passed to document output (title page, Word header) via the https://shopify.github.io/liquid/[Liquid template language].
 * `Isodoc::HtmlConvert` converts Standoc XML to HTML.
@@ -129,8 +129,8 @@ and the document year.
 --
       def doctype(node)
         d = node.attr("doctype")
-        unless %w{policy-and-procedures best-practices 
-          supporting-document report legal directives proposal 
+        unless %w{policy-and-procedures best-practices
+          supporting-document report legal directives proposal
           standard}.include? d
           warn "#{d} is not a legal document type: reverting to 'standard'"
           d = "standard"
@@ -331,7 +331,7 @@ applicable whether or no the terms and definitions section is empty:
 
 
 
-Initialise the HTML Converter: 
+Initialise the HTML Converter:
 
 ** Set `@libdir`, the current directory of the HTML converter, and the basis of the `html_doc_path()` method for accessing HTML assets (the `html` subdirectory of the current directory).
 
