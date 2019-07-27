@@ -2,23 +2,30 @@
 layout: author-docs
 ---
 
-= Asciidoctor tips
+= Metanorma AsciiDoc tips
 
-As noted, the http://asciidoctor.org/docs/user-manual/[Asciidoctor User Manual] should be your companion
-when authoring any AsciiDoc documents, including AsciiDoc documents under Metanorma.
+Metanorma AsciiDoc adopts Asciidoctor syntax for AsciiDoc, and the
+http://asciidoctor.org/docs/user-manual/[Asciidoctor User Manual] is an
+excellent companion when authoring Metanorma AsciiDoc documents.
 
-There are some more specialised aspects of Asciidoctor markup,
+There are some more specialized aspects of Asciidoctor markup,
 which you might need to dig deeper to find in the manual; we list some of them here.
+
 
 == Multi-paragraph footnotes
 
-Asciidoctor supports only single-paragraph footnotes through its footnote macro (which can only contain a single line of text).
-This reflects a stylistic bias against digressive text by the Asciidoc creator, and probably will not change.
+Metanorma AsciiDoc (and Asciidoctor) supports only single-paragraph
+footnotes through its footnote macro
+(which can only contain a single line of text).
+
+This is due to a stylistic bias against digressive text by the
+Asciidoctor project, and probably will not change.
 
 This can be worked around by introducing line breaks into the macro. See:
 
 - https://github.com/asciidoctor/asciidoctor.org/issues/599
 - http://discuss.asciidoctor.org/footnotes-with-paragraph-breaks-td4130.html
+
 
 == Complex notes and admonitions
 
@@ -36,7 +43,7 @@ It includes:
 * A list
 
 |===
-| And 
+| And
 
 | a table
 |===
@@ -49,7 +56,7 @@ https://asciidoctor.org/docs/user-manual/#using-attributes-set-assign-and-refere
 can be used as template variables in a document:
 if your document contains the text `{foo}`,
 you can assign the value to be populated in `{foo}`
-by setting it as a document attribute in the Asciidoctor header:
+by setting it as a document attribute in the Metanorma AsciiDoc header:
 `:foo: this is the text to replace "foo"`.
 
 In the AsciiISO Rice model sample document, document attributes are used
@@ -60,7 +67,8 @@ See also: link:/author/topics/document-format/meta-attributes/[Document attribut
 
 == List items with complex contents
 
-List items can contain other blocks in Asciidoctor through concatenating blocks; for example:
+List items can contain other blocks in Metanorma AsciiDoc through
+concatenating blocks; for example:
 
 [source.asciidoc]
 --
@@ -75,11 +83,11 @@ List items can contain other blocks in Asciidoctor through concatenating blocks;
 However, output formatters (such as MS Word) may not be able to cope with embedding blocks
 within list items.
 
-In particular, MS Word will force a carriage return between a list item,
+In particular, Microsoft Word will force a carriage return between a list item,
 and a list or table contained in the item.
 
 This means the output like follows, with the list number flush with the embedded block,
-is not possible in MS Word (though it is in HTML):
+is not possible in Microsoft Word (though it is in HTML):
 
 ....
 a)  1. Text
@@ -90,22 +98,28 @@ c)  Definition Term   Definition
     Definition Term   Definition
 ....
 
-== Asciidoctor escaping
 
-There are some characters that constitute markup in Asciidoctor, and need to be escaped
-if they will be used in text (usually by putting a backslash before them). That
-applies in particular to:
+== AsciiDoc escaping
 
-* period at the start of a line, which will be interpeted as a block title;
+There are some characters that constitute markup in Metanorma AsciiDoc (and Asciidoctor),
+and need to be escaped if they will be used in text (usually by putting a backslash before them).
+
+That applies in particular to:
+
+* period at the start of a line, which will be interpreted as a block title;
+
 * open bracket at the start of a line, which will be interpreted as a style attribute;
+
 * close bracket inside of a macro (such as footnotes), which are themselves delimited by a close bracket;
+
 * a number followed by period at the start of a line, which will be interpreted as a numbered
 list. (This does not happen inside of blocks like examples.)
 
-Sometimes, a backslash will not be enough to make the character make sense to Asciidoctor
-markup. The "break in case of emergency solution" is to make the troublesome span of text
-a document attribute, since document attributes are skipped over when processing Asciidoctor
-markup, and processed only at the very end. See for example 
-https://asciidoctor.org/docs/user-manual/#url[the Asciidoctor User Manual] on using
-document attributes to deal with complex URLs.
+Sometimes, a backslash will not be enough to make the character make sense to
+Metanorma AsciiDoc markup.
+The "`break in case of emergency solution`" is to make the troublesome span of text
+a document attribute, since document attributes are skipped over when processing
+Metanorma AsciiDoc markup, and processed only at the very end.
 
+See for example https://asciidoctor.org/docs/user-manual/#url[the Asciidoctor User Manual]
+on using document attributes to deal with complex URLs.
