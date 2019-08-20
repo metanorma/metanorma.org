@@ -20,18 +20,24 @@ identifier as the item label. References to well-defined standards codes use the
 * [[[ref1,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
 --
 
-Generic references in bibliographies use numbers, which are rendered bracketed, like `[1]`.
+Generic references in bibliographies, as opposed to standards references, use numbers, which are rendered bracketed, like `[1]`.
 
 [source,asciidoctor]
 --
 * [[[ref1,1]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
 --
 
+All entries in a Bibliography, whether standards or generic, are renumbered incrementally in the XML; if the number for
+generic references is updated, all citations of that reference will be updated as well.
+
+By default, Metanorma does not change the ordering of references in the Bibliography from what has been entered
+by the authors. Metanorma flavours may reorder references.
+
 [TIP]
 ====
-Currently the gem only supports formatted citations, which are given as such in the AsciiDoc source.
-In the future, we expect to integrate the documents with rendering of Relaton-model bibliographies,
-so that the text of the citation itself doesn’t have to be entered by hand.
+For generic references by default, Metanorma only supports formatted citations, 
+which are given as such in the AsciiDoc source.
+The NIST flavour of Metanorma currently supports rendering of generic references, on an experimental basis.
 
 See link:/author/topics/building/reference-lookup[Automatic reference lookup] topic.
 ====
