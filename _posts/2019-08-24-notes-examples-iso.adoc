@@ -1,0 +1,103 @@
+---
+layout: post
+title:  "Announcing Metanorma support for TeX math"
+date:   2019-08-25
+categories: about
+author:
+  name: Nick Nicholas
+  email: opoudjis@optusnet.com.au
+  social_links:
+    - https://www.linkedin.com/in/opoudjis/
+    - https://github.com/opoudjis
+card_image: /assets/blog/2019-05-29-c.png
+excerpt: >-
+    Until recently, Metanorma has only processed AsciiMath and MathML.
+    Now Metanorma also accepts some WYSIWYM methods for writing mathematical formulas.
+redirect_from:
+  - /blog/05-29-2019/latex-math-stem/
+extra_scripts:
+  - src: /assets/js/hoverable-illustrations.js
+---
+= Notes and examples in ISO
+
+The styling of notes and examples under ISO is not explicitly described in 
+https://www.iso.org/sites/directives/current/part2/index.xhtml[ISO/IEC DIR 2].
+The styling of ISO Word documents (which is reflected in their PDF and print
+output) is determined by the ISO editors, although example styling is also not
+made explicit in the Word stylesheet issued by ISO.
+
+Both notes and examples in ISO appear in a font size one point smaller than
+the main body text; in our output, the main body text is 11pt, and notes and
+examples are 10pt.
+
+Notes are styled with a _Note_ style in Word. Asciidoctor allows multiple
+block types to be contained within a note, consistent with its treatment of
+other admonitions; a note can contain tables, lists, and so on. However,
+the Metanorma grammar assumes that notes only consist of paragraphs, and
+the examples given in ISO/IEC DIR 2 are consistent with that: they are 
+consistently single paragraphs:
+
+[source,asciidoctor]
+--
+NOTE: This is a single paragraph.
+
+[NOTE]
+====
+This is a multiple paragraph note, as is permitted by Asciidoctor
+and Metanorma. 
+
+However, there are no such instances in ISO/IEC DIR 2, and they
+should probably be avoided in ISO documents, which rely on a prefixed
+"NOTE" indication to be identified.
+====
+--
+
+image::/assets/blog/2019-08-25-1.png[]
+
+Examples are styled with an _Example_ style in Word. Example paragraphs, too,
+are 10pt. Both Metanorma and ISO/IEC DIR 2 permit multiple blocks in an example,
+and they can be heterogeneous, including blockquotes, source code, lists, 
+formulas, and notes. (There is no provision in the Metanorma grammar at this time
+for tables nested in examples, and labelling them would be problematic.)
+
+Unlike ISO/IEC DIR 2 (25.6, Example 2), Metanorma does not support nested examples.
+
+ISO will respect the indentation of examples in submissions. In Metanorma,
+we have implemented both table-based and div-based rendering of examples;
+we are using div-based rendering, meaning that examples are not indented
+currently, and are identified only through smaller font.
+
+[source,asciidoctor]
+--
+[example]
+This is a single paragraph example
+
+====
+This is a multiple paragraph example. It can contain blocks
+of different types:
+
+[quote,ISO/IEC DIR 2]
+____
+Examples illustrate concepts presented in the document. The document shall be usable without the examples.
+____
+
+[stem]
+++++
+[[[a,b\],[c,d\]\]((n),(k))]
+++++
+
+[source]
+----
+m[0][0] = a
+m[0][1] = b
+----
+
+* List 1
+.. List 2
+
+NOTE: ... and notes.
+--
+
+image::/assets/blog/2019-08-25-2.png[]
+
+
