@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Notes and examples in ISO"
+title:  "Guidance on NOTEs and EXAMPLEs in ISO deliverables"
 date:   2019-08-25
 categories: about
 author:
@@ -17,33 +17,83 @@ redirect_from:
 extra_scripts:
   - src: /assets/js/hoverable-illustrations.js
 ---
-= Notes and examples in ISO
+= Guidance on NOTEs and EXAMPLEs in ISO deliverables
 
-The styling of notes and examples under ISO is not explicitly described in 
+== Purpose
+
+Some authors of ISO deliverables recently asked us about the correct
+styling for NOTEs and EXAMPLEs in Word document submissions to
+ISO editors. So here's a post to answer that!
+
+== Are there formal guidelines?
+
+Styling guidance of NOTEs and EXAMPLEs in ISO deliverables are not
+explicitly described in
 https://www.iso.org/sites/directives/current/part2/index.xhtml[ISO/IEC DIR 2].
-The styling of ISO Word documents (which is reflected in their PDF and print
-output) is determined by the ISO editors, although example styling is also not
+
+The styling requirements of these data elements therefore falls into the responsibility of our beloved ISO Editors.
+
+"`Wait, the ISO Editors determine requirements for submission documents?`" You say.
+
+Indeed. And there are plenty of reasons why *not* to burden your ISO Editor for accurately applying the styles.
+
+Today, each ISO Editorial Programme Manager (EPM, or "`ISO Editor`" for short) covers nearly 30 TCs/SCs. This presents them with a crazy workload, yet, for those who have experienced the pre-publication edits, they manage to deliver impeccable work. Most of them appreciate your gesture in helping reduce their workload.
+
+I digress on the ISO Editing process. The point is, whatever is not stated
+in ISO/IEC DIR 2, the requirements will be loosely based on current accepted
+practices of ISO Editors.
+
+
+== What are the guidelines?
+
+Today's styling of ISO Word documents (reflected in their PDF and print
+output) is determined by the ISO editors, although EXAMPLE styling is also not
 made explicit in the Word stylesheet issued by ISO.
 
-Both notes and examples in ISO appear in a font size one point smaller than
-the main body text; in our output, the main body text is 11pt, and notes and
-examples are 10pt.
+There are only two hard requirements that apply identically to
+NOTEs and EXAMPLEs, as stated by our favourite ISO Editor are:
 
-Notes are styled with a _Note_ style in Word. Asciidoctor allows multiple
-block types to be contained within a note, consistent with its treatment of
-other admonitions; a note can contain tables, lists, and so on. However,
-the Metanorma grammar assumes that notes only consist of paragraphs, and
-the examples given in ISO/IEC DIR 2 are consistent with that: they are 
-consistently single paragraphs:
+. Appear in a font size one point smaller than the main body text;
+. An indent exists between the element label ("`NOTE`"; "`Note X to entry`; "`EXAMPLE`"; "`EXAMPLE X`") and content text.
 
-[source,asciidoctor]
+In Metanorma ISO output, the main body text is 11pt, NOTEs and
+EXAMPLEs are 10pt.
+
+Our favorite ISO Editor has confirmed that NOTEs and EXAMPLEs
+can contain:
+
+* paragraphs
+* formulas
+* tables (without borders)
+* numbered/unnumbered bullet lists and sub-lists
+* indented text
+* graphics
+
+
+
+== NOTEs are typically single paragraphs
+
+NOTEs are styled with a _Note_ style in Word.
+
+While NOTEs could technically contain complex block content,
+they have to be readable and understandable.
+To this end, we refer to ISO/IEC DIR 2, arguably one of the
+most complex ISO deliverables in terms of structure.
+
+In ISO/IEC DIR 2, NOTEs are only available in single paragraphs.
+
+Therefore Metanorma ISO NOTEs assumes that they only consist of
+paragraphs. While multiple paragraphs are technically allowed in
+Metanorma grammar, it is probably to be avoided.
+
+[source,adic]
 --
 NOTE: This is a single paragraph.
 
 [NOTE]
 ====
-This is a multiple paragraph note, as is permitted by Asciidoctor
-and Metanorma. 
+This is a multiple paragraph note, as is permitted by Metanorma
+AsciiDoc.
 
 However, there are no such instances in ISO/IEC DIR 2, and they
 should probably be avoided in ISO documents, which rely on a prefixed
@@ -53,9 +103,20 @@ should probably be avoided in ISO documents, which rely on a prefixed
 
 image::/assets/blog/2019-08-25-1.png[]
 
+NOTE: Typical AsciiDoc input allows multiple block types to be contained
+within a note, consistent with its treatment of
+other admonitions; a note can contain tables, lists, and so on.
+
+
+== EXAMPLEs accepts heterogeneous input
+
 Examples are styled with an _Example_ style in Word. Example paragraphs, too,
-are 10pt. Both Metanorma and ISO/IEC DIR 2 permit multiple blocks in an example,
-and they can be heterogeneous, including blockquotes, source code, lists, 
+are 10pt.
+
+Unlike NOTEs, there is no perceived limitation for EXAMPLE content.
+
+Both Metanorma and ISO/IEC DIR 2 permit multiple blocks in an example,
+and they can be heterogeneous, including blockquotes, source code, lists,
 formulas, and notes. (There is no provision in the Metanorma grammar at this time
 for tables nested in examples, and labelling them would be problematic.)
 
@@ -66,7 +127,7 @@ we have implemented both table-based and div-based rendering of examples;
 we are using div-based rendering, meaning that examples are not indented
 currently, and are identified only through smaller font.
 
-[source,asciidoctor]
+[source,adoc]
 --
 [example]
 This is a single paragraph example
@@ -98,5 +159,9 @@ NOTE: ... and notes.
 --
 
 image::/assets/blog/2019-08-25-2.png[]
+
+== Conclusion
+
+Remember, whatever you do, keep your ISO Editor / EPM happy!
 
 
