@@ -40,7 +40,7 @@ that you may wish to setup the components directly on your machine.
 +
 [source,sh]
 ----
-docker pull ribose/metanorma
+docker pull metanorma/metanorma
 ----
 . Specify the `:local-cache-only:` AsciiDoc attribute
 in document header to speed up rendering (optional)
@@ -50,7 +50,7 @@ execute from within the directory containing the Metanorma document
 +
 [source,sh]
 ----
-docker run -v "$(pwd)":/metanorma/ -w /metanorma ribose/metanorma metanorma -t iso -x html,doc,xml {my-document-file}
+docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma -t iso -x html,doc,xml {my-document-file}
 ----
 
 [TIP]
