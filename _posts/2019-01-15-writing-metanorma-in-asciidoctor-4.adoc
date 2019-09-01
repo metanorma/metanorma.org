@@ -76,7 +76,7 @@ of the document.
 
 === Relaton
 
-The https://github.com/riboseinc/relaton/[`relaton` family of gems] is used to fetch references where available from online bibliographies;
+The https://github.com/relaton/relaton/[`relaton` family of gems] is used to fetch references where available from online bibliographies;
 it is used within Metanorma to update any bibliographic references with the current correct title.
 It is currently implemented for https://www.iso.org[ISO], https://www.iec.ch[IEC], https://www.ietf.org[IETF],
 and the GB family of standards. The bibliographic
@@ -95,7 +95,7 @@ By default two caches are created by `relaton`:
 The caches contain one file for each accessed document,
 encoded in an XML schema specific to Relaton; you can edit the files, and reuse them between
 documents. The
-https://github.com/riboseinc/metanorma-standoc/blob/master/README.adoc#document-attributes[metanorma-standoc document attributes]
+https://github.com/metanorma/metanorma-standoc/blob/master/README.adoc#document-attributes[metanorma-standoc document attributes]
 document how to override this behaviour, including not permitting `relaton` to resolve references
 at all.
 
@@ -107,7 +107,7 @@ with other document prefixes, the code provided can be wrapped in a prefix speci
 `IETF(I-D.ribose-asciirfc-08)` identifies `I-D.ribose-asciirfc-08` as an IETF standard (an
 Internet Draft), while `CN(GM/T 0009-2012)` is the Chinese sector standard GM/T 0009-2012.
 
-The https://github.com/riboseinc/relaton-cli[relaton-cli] tool exposes various functions of
+The https://github.com/relaton/relaton-cli[relaton-cli] tool exposes various functions of
 `relaton` to the command line.
 
 Specifically, this command fetches a document with document code _CODE_ as Relaton XML.:
@@ -119,10 +119,10 @@ relaton fetch CODE -t TYPE -y YEAR
 
 The accepted _TYPE_'s are one of:
 
-* `iso`, through the https://github.com/riboseinc/isobib[`isobib` gem],
-* `ietf`, through the https://github.com/riboseinc/isobib[`ietfbib` gem],
-* `iec`, through the https://github.com/riboseinc/isobib[`iecbib` gem],
-* `gb`, through the https://github.com/riboseinc/isobib[`gbbib` gem]
+* `iso`, through the https://github.com/metanorma/isobib[`isobib` gem],
+* `ietf`, through the https://github.com/metanorma/isobib[`ietfbib` gem],
+* `iec`, through the https://github.com/metanorma/isobib[`iecbib` gem],
+* `gb`, through the https://github.com/metanorma/isobib[`gbbib` gem]
 
 The tool can also extract Relaton XML references from Metanorma documents, and it can convert
 Relaton XML to HTML, which allows a set of references (including a set of references to Metanorma
