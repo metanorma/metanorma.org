@@ -50,21 +50,21 @@ It is implemented as a https://jekyllrb.com[Jekyll] site.
 
 . **Settle on flavor and markup abbreviations.**
 +
-- *Flavor abbreviation* is *not* typically the same as organization abbreviation;
+- _Flavor abbreviation_ is _not_ typically the same as organization abbreviation;
   usually it ends with “D”—e.g., M3D is M3AAWG’s flavor abbreviation.
   Lowercase flavor abbreviation is typically the one referenced by `--type` flag
   in a Metanorma-CLI call.
-- *Markup abbreviation* usually takes the form of `Ascii<uppercase flavor abbreviation>`.
+- _Markup abbreviation_ usually takes the form of `Ascii<uppercase flavor abbreviation>`.
 
 . **Settle on flavor authoring docs structure.**
   Metanorma flavor documentation is usually split into following sections:
 +
 - Getting started (markup mostly auto-generated)
 - Sample document play guide
-- One or more pages offering *topic guides*:
+- One or more pages offering _topic guides_:
   how sections are formatted, how references are formatted,
   any specifics about build, etc.
-- One or more pages offering *reference guides*: a complete list of custom document attributes
+- One or more pages offering _reference guides_: a complete list of custom document attributes
   (either new attributes or attributes which behave differently compared to “base” Metanorma),
   a list of unsupported AsciiDoc features, etc.
 +
@@ -98,14 +98,14 @@ title: The <uppercase flavor abbreviation> flavor of Metanorma
 . **Create flavor authoring docs.**
   Create a directory `author/<lowercase flavor abbreviation>/` (flavor docs root)
   and place .adoc files inside according to desired documentation structure.
-  *All files* should specify frontmatter with the same layout as flavor docs entry page.
+  _All files_ should specify frontmatter with the same layout as flavor docs entry page.
 +
 - If topic and reference guides will be provided, index pages `topics.adoc` and `ref.adoc`
   should be provided under flavor docs root (can omit content).
   Topic and reference guide documents must live under correspondingly named sibling directories,
   `topics/` and `ref/`.
 - Sample document guide should be placed in `sample.adoc`.
-  It’s suggested to ensure that your *sample document build process* is consistent with other 
+  It’s suggested to ensure that your _sample document build process_ is consistent with other 
   flavors, and that you use includes to avoid repetition, though you can provide custom
   instructions if needed.
   See `author/m3d/sample.adoc` for an example with default basic build instructions (via include),
