@@ -1,0 +1,55 @@
+---
+layout: post
+title:  "New IEC flavour of Metanorma"
+date:   2019-09-02
+categories: about
+author:
+  name: Nick Nicholas
+  email: opoudjis@optusnet.com.au
+  social_links:
+    - https://www.linkedin.com/in/opoudjis/
+    - https://github.com/opoudjis
+card_image: /assets/blog/2019-09-02.png
+excerpt: >-
+    Metanorma has added a new flavour specific to IEC.
+redirect_from:
+  - /blog/09-92-2019/iec-flavour/
+extra_scripts:
+  - src: /assets/js/hoverable-illustrations.js
+---
+= New IEC flavour of Metanorma
+
+Metanorma has released a new flavour of standards document specific to the 
+https://www.iec.ch[International Electrotechnical Commission (IEC)]. It is
+available as the gem `metanorma-iec`, and is invoked in the metanorma command
+as `metanorma -t iec document.adoc`.
+
+IEC documents are governed by the same format specification as ISO documents,
+namely https://www.iso.org/sites/directives/current/part2/index.xhtml[ISO/IEC DIR 2].
+Accordingly, the IEC gem is derived from the ISO gem, and uses substantially
+the same code. 
+
+.The author, conjuring forth the metanorma-iec gem
+image::/assets/blog/2019-09-02.png[The author, conjuring forth the metanorma-iec gem,width=100%]
+
+The noteworthy differences are:
+
+* The IEC flavour uses the stage codes specific to the IEC, as listed in
+https://www.iec.ch/standardsdev/resources/processes/stage_codes.htm[IEC Processes & Procedures -- Stage Codes]
+and 
+https://www.iec.ch/standardsdev/resources/processes/workflows.htm[IEC Processes & Procedures -- Workflow].
+The IEC also recognises https://www.iso.org/stage-codes.html[ISO International Harmonized Stage Codes],
+which are mapped to IEC stage codes.
+
+* The IEC flavour processes part and subpart numbers for documents, entered in the
+`:partnumber:` attribute as `{nnn}-{mmm}`.
+
+* The IEC flavour uses the IEC template for Word documents, including equivalent
+Word paragraph styles where applicable. (The names used for paragraph styles
+are named consistently with the rest of Metanorma.)
+
+* The IEC flavour injects IEC-specific boilerplate language into the XML source
+(in English or French),
+and displays it at the appropriate location in Word and HTML output.
+
+
