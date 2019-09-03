@@ -1,6 +1,6 @@
 ---
 layout: iec-flavor
-title: The IEC flavor of Metanorma
+title: Writing IEC documents in Metanorma
 ---
 :page-liquid:
 
@@ -14,157 +14,12 @@ with Metanorma-IEC:
 * Guide (https://www.iec.ch/members_experts/refdocs/[ISO/IEC DIR 1:2019 + IEC SUP:2019, Annex A])
 * Interpretation sheet (https://www.iec.ch/members_experts/refdocs/[ISO/IEC DIR 1:2019 + IEC SUP:2019, 2.10.5])
 
-{% include flavor-quickstart-steps.adoc
-    flavor=layout.iso_flavor %}
-
 The syntax of ISO and IEC documents is identical, as defined in
 ISO/IEC Directives, Part 2:2018
 (https://www.iec.ch/members_experts/refdocs/iec/isoiecdir2%7Bed8.0.RLV%7Den.pdf[IEC version (PDF link)],
 https://www.iso.org/sites/directives/current/part2/index.xhtml[ISO version (HTML link)]);
 please refer to https://www.metanorma.com/author/iso/[Metanorma-ISO documentation].
 
-
-== Document attributes
-
-=== Parts and subparts
-
-`:partnumber:`:: `{part}` or `{part}-{subpart}`
-
-IEC documents can have both parts and subparts, unlike ISO documents
-which only supports parts.
-
-Both `{part}` and `{subpart}` only accept numerals.
-
-
-=== Translated from
-
-`translated-from`:: document identifier that the current document is a translation of.
-
-IEC documents can be translated by IEC-CO and tagged with the
-`translated-from` attribute. This is used to derive the correct status code.
-
-This attribute takes a document identifier, in Relaton format.
-If the document can be found via Relaton auto-fetch (e.g. a published IEC standard), the actual bibliographic item will be used.
-Otherwise, a dummy bibliographic item with an empty title and the nominated document identifier will be used.
-
-This is aligned with the usage of the `part-of` attributes used in general Metanorma (`metanorma-standoc`).
-
-
-
-=== Document type
-
-`:doctype:`:: type of document.
-
-The permitted types are:
-
-* `international-standard`
-* `technical-specification`
-* `technical-report`,
-* `publicly-available-specification`
-* `guide`
-* `interpretation-sheet`.
-
-Unlike ISO, IEC does not have `international-workshop-agreement`,
-and does have `interpretation-sheet`.
-
-=== Project stage and substage of document
-
-==== General
-
-The project stage and substage can be entered in two ways shown below.
-
-Not all IEC codes are represented -- those that are not are set by the IEC-CO (IEC Central Office)
-rather than authors, or do not correspond to standards documents but to other
-parts of the process (compilation of comments, reports on votes, translation, etc.),
-are not represented here.
-
-The following codes are ignored:
-
-* PCC, PRVC, PRVDISH, PRVD, PRVDPAS, PRVDTR, PRVDTS, PRVN
-* preDISH, prePNW, preCDPAS, preCD, preDTR
-* DECDISH, DECFDIS, DECPUB
-* TCDV, TDISH, TDTR, TDTS, TFDIS, TPUB
-* RPUB
-* DEL
-* MERGED, DREJ
-* ADISSB, APUBSB
-
-
-==== Via ISO International Harmonized Stage Codes
-
-`:docstage:`:: project stage code of document
-`:docsubstage:`:: project substage code of document
-
-The codes in the first entry form are drawn from the
-https://www.iso.org/stage-codes.html[ISO International Harmonized Stage Codes].
-
-The mapping to IEC stage codes is taken from
-https://www.iec.ch/members_experts/refdocs/iec/isoiecdir1-consolidatediecsup%7Bed15.0.RLV%7Den.pdf[ISO/IEC DIR 1:2019 + IEC SUP:2019, Annex SH],
-updated against the current discussion of stage codes in
-https://www.iec.ch/standardsdev/resources/processes/stage_codes.htm[IEC Processes & Procedures -- Stage Codes] and
-https://www.iec.ch/standardsdev/resources/processes/workflows.htm[IEC Processes & Procedures -- Workflow].
-
-
-The following codes are supported:
-
-[cols="a,a,a,3a,2a",options="header"]
-|===
-| ISO Stage | ISO Substage | IEC code | Definition| Document Types
-
-|00|00 | PWI | Preliminary work item | IS, TS, TR
-|10|00 | PNW | New work item proposal | IS, TS
-|20|00 | ANW | Registration of new project |
-|20|98 | CAN | Draft cancelled | IS, TS, TR, PAS, ISH
-|20|99 | ACD | Approved for CD | IS, TS, TR
-|30|20 | CD | Draft circulated as CD | IS, TS, TR
-|30|92 | BWG | Return to drafting phase or redefine project |
-|30|99 | A2CD | Register for next applicable phase |
-|35|20 | 2CD ... 9CD | Circulation for comment |
-|35|91 | CDM | CD to be discussed at meeting | IS, TS, TR
-|35|92 | A3CD ... A9CD | Return to drafting phase |
-|35|99 | ACDV | Approved for CDV | IS, TS, TR
-|40|20 | CCDV | Draft circulated as CDV | IS
-|40|91 | CDVM | Rejected CDV to be discussed at a meeting | IS
-|40|92 | NCDV | CDV rejected | IS
-|40|93 | NADIS | Repeat enquiry |
-|40|99 | ADIS | Register for next applicable phase |
-|40|99 | ADTR | Approved for DTR | TR
-|40|99 | ADTS | Approved for DTS | TS
-|50|00 | RDISH | DISH received and registered | ISH
-|50|00 | RFDIS | Registration for formal approval |
-|50|20 | CDISH | Draft circulated as DISH | ISH
-|50|20 | CDPAS | Draft circulated as DPAS | PAS
-|50|20 | CDTR | Draft circulated as DTR | TR
-|50|20 | CDTS | Draft circulated as DTS | TS
-|50|20 | CFDIS | Circulation for formal approval | IS
-|50|92 | DTRM | Rejected DTR to be discussed at meeting | TR
-|50|92 | DTSM | Rejected DTS to be discussed at meeting | TS
-|50|92 | NDTR | DTR rejected | TR: Displayed as DTRM
-|50|92 | NDTS | DTS rejected | TS: Displayed as DTSM
-|50|92 | NFDIS | Return to drafting phase |
-|50|99 | APUB | Approved for publication | IS, TS, TR, PAS, ISH
-|60|00 | BPUB | Being published | IS, TS, TR, PAS, ISH
-|60|60 | PPUB | Publication issued | IS, TS, TR, PAS, ISH
-|90|92 | RR | Review report |
-|92|20 | AMW | Document under revision |
-|95|99 | WPUB | Publication withdrawn | IS, TS, TR, PAS, ISH
-|99|60 | DELPUB | Deleted publication | IS, TS, TR, PAS, ISH
-
-|===
-
-
-==== Via project stage abbreviation
-
-`:stage`:: project stage abbreviation
-
-An IEC project stage abbreviation code entered under `:stage:` will be recognised,
-and broken down into the corresponding ISO harmonized stage and substage codes
-shown in the table automatically.
-
-For example, `:stage: ACD` is equivalent to setting `:docstage: 20` and `:docsubstage: 99`.
-
-In the case of A2CD... A9CD and 2CD... 9CD, the numeral value of the `:iteration:` attribute
-will also be set accordingly.
-
-For example, `:stage: 8CD` is equivalent to setting `:docstage: 35`, `:docsubstage: 20` and `:iteration: 8`.
+{% include flavor-quickstart-steps.adoc
+    flavor=layout.iso_flavor %}
 
