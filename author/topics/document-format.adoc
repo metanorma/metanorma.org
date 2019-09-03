@@ -2,14 +2,14 @@
 layout: author-docs
 description: >-
   <p>
-  This is a general guidance for authoring Metanorma documents.
+  This is a general guidance for authoring Metanorma documents using Metanorma AsciiDoc.
 
   <p>
   Since Metanorma uses AsciiDoc markup
   (see <a href="/author/approach/">Approach</a> for technical background),
   this section details the specific ways in which Metanorma interprets AsciiDoc markup,
   as well as custom markup directives.
-  
+
   <p>
   This section applies across most of the
   <a href="/flavors/">officially supported flavors of Metanorma</a>.
@@ -17,18 +17,27 @@ description: >-
   be sure to also check out guidelines for your flavor.
 ---
 
-= Document format
+= Metanorma AsciiDoc
+
+== Basic AsciiDoc syntax
+
+Metanorma AsciiDoc is based on the AsciiDoc syntax used by Asciidoctor.
+Please refer to the https://asciidoctor.org/docs/user-manual/[Asciidoctor manual]
+for general markup mechanisms offered in AsciiDoc.
+
 
 == Unsupported AsciiDoc features
 
-* Sidebars (`aside`s) are not supported: they have been repurposed for link:./reviewer-notes/[reviewer comments].
+* Sidebars (``aside``s) are not supported. Instead, they are used for link:./reviewer-notes/[reviewer comments].
 * Page breaks (`thematic break`) are not supported.
 * ASCII art/preformatted text (`literal`) are not supported in most Metanorma flavors.
 
-== Autonumbering
 
-In addition to the blocks that Asciidoctor already supports autonumbering for (such as tables
+== Auto-numbering
+
+In addition to the blocks that Asciidoctor already supports auto-numbering for (such as tables
 and figures),
-autonumbering in Metanorma extends to formulas (which are encoded as "stem" blocks) and notes.
-Autonumbering is applied in the conversion from Metanorma XML to output formats (`isodoc`);
+auto-numbering in Metanorma extends to formulas (which are encoded as "stem" blocks) and notes.
+
+Auto-numbering is applied in the conversion from Metanorma XML to output formats (`isodoc`);
 by default it restarts for each annex, but is continuous within the main body of text.

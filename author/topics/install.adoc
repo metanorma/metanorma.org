@@ -2,19 +2,22 @@
 layout: author-docs
 ---
 
-= How to install Metanorma
+= Setting up Metanorma
 
-To be able to build Metanorma documents of any flavor, you need to have the
-`metanorma-cli` Ruby gem installed.
-To simplify installation of the gem and its dependencies,
-following installation methods are currently supported.
+Metanorma has to be first setup on your computer to build Metanorma documents
+of any flavor.
 
+To simplify installation and its dependencies,
+following setup methods are supported.
+
+NOTE: Basically, you need to have the `metanorma-cli` Ruby gem and its dependencies
+runnable from your command-line interface.
 
 [TIP]
 ====
 .Full manual
 
-Assuming you know what you’re doing, you can install Metanorma CLI gem by hand.
+Assuming you know what you’re doing, you can manually install the `metanorma-cli` gem.
 You will have to take care of dependencies: an appropriate Ruby version,
 plus other software depending on the end documents you’re building.
 
@@ -42,16 +45,25 @@ that you may wish to setup the components directly on your machine.
 ----
 docker pull metanorma/metanorma
 ----
+
 . Specify the `:local-cache-only:` AsciiDoc attribute
 in document header to speed up rendering (optional)
-. To render the document into HTML, Word and XML,
+
+To render the document into HTML, Word and XML,
 execute from within the directory containing the Metanorma document
-(replacing `{my-document-file}` with your actual document's filename):
-+
-[source,sh]
-----
-docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma -t iso -x html,doc,xml {my-document-file}
-----
+(replacing `{my-document-path}` with your actual document's filename):
+
+.Running the Metanorma container on macOS and Linux
+[source,console]
+--
+docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t {flavor} -x {output-formats} {my-document-path}
+--
+
+.Running the Metanorma container on Windows
+[source,console]
+--
+docker run -v "%cd%":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t {flavor} -x {output-formats} {my-document-path}
+--
 
 [TIP]
 ====
@@ -71,6 +83,7 @@ brew install metanorma
 ----
 
 This uses Metanorma’s link:/software/homebrew-metanorma[Homebrew formula].
+
 To install using the HEAD development version of the formula, run:
 
 [source,sh]
@@ -117,6 +130,7 @@ sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linu
 curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/install-gems.sh | bash
 ----
 
+
 == Windows
 
 === Using https://chocolatey.org/[Chocolatey]
@@ -153,6 +167,7 @@ the Metanorma Docker container and all prerequisites (see <<docker-setup>>):
 ----
 bitsadmin /transfer get https://raw.githubusercontent.com/metanorma/metanorma-windows-setup/master/install.bat %cd%\install.bat & .\install.bat
 ----
+
 
 == Installing gems separately
 

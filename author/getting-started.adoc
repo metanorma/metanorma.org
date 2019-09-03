@@ -28,20 +28,18 @@ see link:/flavors/[Metanorma’s officially supported document flavors]
 [[install-metanorma]]
 == Quick install guide
 
-Here is the simplest way to install Metanorma on any OS.
-This uses a Docker container, wrapping the Ruby gem
-and all dependencies such as Node, Puppeteer, and PlantUML.
+The simplest way to install Metanorma on any OS is using Docker.
 
 [TIP]
 ====
-If you would rather avoid using the Docker distribution, for performance reasons or otherwise,
-refer to a link:/author/topics/install/[complete installation guide] that covers
-different ways of getting Metanorma up and running.
+If you would rather avoid using Docker, such as for performance / access reasons,
+refer to the link:/author/topics/install/[complete installation guide] that covers
+different ways of setting up Metanorma.
 ====
 
 Steps:
 
-. Install Docker. Get the latest version for your operating system at https://docker.com/.
+. Install Docker. Get the latest version for your operating system at the https://www.docker.com[Docker website].
 
 . Pull the container:
 +
@@ -52,15 +50,22 @@ docker pull metanorma/metanorma
 
 Now you should be able to run Metanorma executable like this:
 
+.Running the Metanorma container on macOS and Linux
 [source,console]
 --
-docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma -t {Metanorma flavor} -x {output formats} {my document filename}
+docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t {flavor} -x {output-formats} {my-document-path}
+--
+
+.Running the Metanorma container on Windows
+[source,console]
+--
+docker run -v "%cd%":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t {flavor} -x {output-formats} {my-document-path}
 --
 
 [NOTE]
 ====
 To speed up document generation when using Metanorma in Docker,
-it is recommended to specify `local-cache-only` document attribute.
+it is recommended to specify the `:local-cache-only:` document attribute.
 ====
 
-== [tbd]#Write your first standard#
+// == [tbd]#Write your first standard#

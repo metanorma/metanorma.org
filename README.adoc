@@ -72,7 +72,7 @@ Metanorma-M3D shows an example of more basic flavor docs.
 --
 ---
 layout: <lowercase flavor abbreviation>-flavor <1>
-title: The <uppercase flavor abbreviation> flavor of Metanorma
+title: Metanorma for <uppercase flavor abbreviation>
 ---
 :page-liquid:
 
@@ -90,7 +90,7 @@ title: The <uppercase flavor abbreviation> flavor of Metanorma
   Topic and reference guide documents must live under correspondingly named sibling directories,
   `topics/` and `ref/`.
 - Sample document guide should be placed in `sample.adoc`.
-  It’s suggested to ensure that your _sample document build process_ is consistent with other 
+  It’s suggested to ensure that your _sample document build process_ is consistent with other
   flavors, and that you use includes to avoid repetition, though you can provide custom
   instructions if needed.
   See `author/m3d/sample.adoc` for an example with default basic build instructions (via include),
@@ -119,8 +119,8 @@ square brackets denote optional elements:
 [source,yaml]
 ----
 layout: flavor
-docs_title: <uppercase flavor abbreviation> flavor of Metanorma
-title: Author <organization abbreviation> <documents|standards> using Metanorma
+docs_title: Metanorma for <uppercase flavor abbreviation>
+title: Write <organization abbreviation> <documents|standards> with Metanorma
 
 <lowercase flavor abbreviation>_flavor:
   base_url: /author/<lowercase flavor abbreviation>
@@ -135,7 +135,7 @@ title: Author <organization abbreviation> <documents|standards> using Metanorma
 
   build:
     # (self-explanatory)
-    cli_flags: "--type <lowercase flavor abbreviation>" 
+    cli_flags: "--type <lowercase flavor abbreviation>"
 
   # Sample document, recommended as a quick-start for new authors
   sample:
@@ -186,7 +186,7 @@ title: Author <organization abbreviation> <documents|standards> using Metanorma
   data_models: <specs entry>
 
   # (optional)
-  # Use for “beta” flavors not ready for production.
+  # Use for “experimental” flavors not ready for production.
   experimental: yes
 
 ----

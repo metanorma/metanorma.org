@@ -1,24 +1,24 @@
 {% if include.flavor.experimental %}
 [WARNING]
 ====
-.Beta flavor
-The {{ include.flavor.title }} flavor of Metanorma is currently
-experimental and under active development.
+.Experimental flavor
+Metanorma for {{ include.flavor.title }} is currently under heavy development.
 
-While you could use it in production, some glitches are possible.
-We would greatly appreciate any such issues filed against the GitHub repository of
-link:/software/{{ include.flavor.implemented_by }}[{{ include.flavor.implemented_by }}]
-gem.
+While it could be used for document submission to {{ include.flavor.title }},
+some glitches are possible.
+
+We would greatly appreciate any such issues filed to its GitHub repository here
+link:/software/{{ include.flavor.implemented_by }}[{{ include.flavor.implemented_by }}].
 ====
 {% endif %}
 
 == Quick start
 
 {% if include.flavor.sample %}
-- Play with a link:./sample/[sample Metanorma-{{ include.flavor.title }} project]
+- Play with a link:./sample/[sample Metanorma {{ include.flavor.title }} project]
 {% endif %}
 
-- Build Metanorma-{{ include.flavor.title }} documents with a command like this:
+- Build Metanorma for {{ include.flavor.title }} documents with a command like this:
 +
 [source,console]
 --
@@ -36,18 +36,18 @@ metanorma {{ include.flavor.build.cli_flags }} {my-document-filename.adoc}
 
 [IMPORTANT]
 ====
-.If you’re new to Metanorma or AsciiDoc
-Metanorma-{{ include.flavor.title }} flavor documentation
-should be treated in addition to general Metanorma documentation,
-and in addition to AsciiDoc format reference.
+.New to Metanorma?
+Documentation for Metanorma-{{ include.flavor.title }} is meant to
+supplement the general Metanorma documentation.
 
-- link:/author/getting-started/[Get started authoring with Metanorma]
+Please first familiarize yourself with the general Metanorma documentation
+as well as the AsciiDoc syntax reference.
 
-- Get familiar with link:/author/approach/[Metanorma’s approach to creating standards documents]
+- link:/author/getting-started/[Start authoring with Metanorma]
 
-- Learn about link:/author/topics/document-format/[document file format]
+- Understand link:/author/approach/[Metanorma's approach to creating standardization documents]
 
-- Read https://asciidoctor.org/docs/user-manual/[the Asciidoctor manual]
+- Learn about link:/author/topics/document-format/[Metanorma AsciiDoc]
 ====
 
 {% if include.flavor.implemented_by or include.flavor.data_models or include.flavor.markup_spec %}
