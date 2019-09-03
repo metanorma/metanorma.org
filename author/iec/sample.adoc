@@ -1,0 +1,27 @@
+---
+layout: iec-flavor
+title: "Metanorma IEC sample: the Rice model"
+---
+:page-liquid:
+
+{% include flavor-sample-summary.html
+  flavor=layout.iec_flavor
+  markup_link="../topics/markup/" %}
+
+== Building the sample
+
+Make sure you have link:https://mikefarah.github.io/yq/[yq] installed.
+
+To build the document via the provided Makefile, simply run `make` from within
+the sample directory.
+
+[NOTE]
+====
+By default, `make` expects that  `metanorma` binary is available somewhere on your path.
+
+If you are using Docker-based distribution of Metanorma,
+run `export METANORMA_DOCKER=1`, then `make` will invoke Metanorma through Docker container.
+
+- See link:/author/getting-started/#install-metanorma[Getting started]
+  for the different ways of getting the Metanorma toolchain set up.
+====
