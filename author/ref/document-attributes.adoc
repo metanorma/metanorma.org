@@ -5,15 +5,16 @@ layout: author-docs
 = Document attributes
 
 This is the list of link:/author/topics/document-format/meta-attributes[document attributes]
-supported by most flavors of Metanorma.
+supported by all flavors of Metanorma.
 
 [TIP]
 ====
-If you’re using one of the link:/flavors/[officially supported flavors of Metanorma],
-see also flavor-specific guidance for any additional supported or required headers.
+If you're using one of the link:/flavors/[officially supported flavors of Metanorma],
+please also see flavor-specific guidance for any additional supported or
+required document attributes.
 ====
 
-== Build & validation
+== Build and validation
 
 `:nodoc:`::
 Instructs Metanorma to not generate Word and HTML output, means only XML output will be generated.
@@ -21,7 +22,8 @@ Instructs Metanorma to not generate Word and HTML output, means only XML output 
 `:novalid:`::
 Suppress document validation.
 
-=== Reference lookup
+
+== Reference lookup
 
 For bibliographic lookup, see link:/author/topics/building/reference-lookup[automatic reference lookup].
 
@@ -29,7 +31,7 @@ For bibliographic lookup, see link:/author/topics/building/reference-lookup[auto
 If set, do not use the `relaton` or `iev` gem functionality to look up
 ISO and IEV references online, nor the cache of `relaton` and `iev` searches.
 
-=== Caches
+== Caches
 
 For bibliographic caches, see link:/author/topics/building/reference-lookup/#lookup-result-caching[lookup result caching].
 
@@ -50,7 +52,8 @@ If a directory name is given for the attribute, that name overrides `relaton` as
 `:flush-caches:`::
 If set, delete and reinitialise the cache of `https://www.relaton.com/[relaton]` searches.
 
-=== Math
+
+== Math
 
 [[stem]] `:stem:`::
 This attribute is required if you have any AsciiMath, MathML, or LaTeX
@@ -61,7 +64,8 @@ use `:stem: latexmath`.
 Read more about
 link:/author/topics/document-format/text/#mathematical-expressions[mathematical expressions].
 
-== Languages & localization
+
+== Languages and localization
 
 See also the link:/author/topics/languages[Languages] topic.
 
@@ -78,10 +82,11 @@ Two-letter code (ISO 639-1) of the language the document is written in. Defaults
 The script of the document (ISO 15924). Defaults to `Latn`. Must be supplied as
 `Hans` for Simplified Chinese.
 
+
 == Document info
 
 `:publisher:`:: The standards agency publishing the standard; can be multiple
-(comma-delimited). 
+(comma-delimited).
 
 [[docnumber]] `:docnumber:`::
 The numeric component of the document identifier.
@@ -123,7 +128,6 @@ Synonym: `:docstage:`.
 Comma-delimited list of keywords associated with the document.
 
 
-
 [[draft]] `:draft:`::
 The document draft.
 Used in addition to document stage.
@@ -132,7 +136,30 @@ The value must provide the exact draft iteration in _X.Y_ format
 If present, link:/author/topics/document-format/reviewer-notes[reviewer notes]
 will be rendered (otherwise those are suppressed).
 
-=== URIs
+
+== Document relations
+
+=== General
+
+These attributes takes a document identifier in the Relaton format:
+
+* If the document can be found via Relaton auto-fetch (e.g. a published IEC standard), the actual bibliographic item will be used.
+* Otherwise, a dummy bibliographic item with an empty title and the nominated document identifier will be used.
+
+=== Part of
+
+`part-of`:: document identifier that the current document is a part of.
+
+This document attribute applies to a document part in order to point to the parent document.
+
+=== Translated from
+
+`translated-from`:: document identifier that the current document is a translation of.
+
+This document attribute applies to a translated document, pointing to the original (untranslated) document.
+
+
+== URIs
 
 `:uri:`:: The URI to which this standard is published.
 `:xml-uri:`:: The URI to which the (Metanorma) XML representation of this standard is published.
@@ -141,7 +168,7 @@ will be rendered (otherwise those are suppressed).
 `:doc-uri:`:: The URI to which the DOC representation of this standard is published.
 `:relaton-uri:`:: The URI to which the Relaton XML representation of this standard is published.
 
-=== Timestamps
+== Timestamps
 
 [[copyright-year]] `:copyright-year:`::
 The year which will be claimed as when the copyright for the document was issued.
@@ -212,6 +239,8 @@ The URI of a person who is a contributor to the document.
 `:email{_i}:`::
 The email of a person who is a contributor to the document.
 
+
+
 == Visual appearance
 
 `:body-font:`::
@@ -224,7 +253,7 @@ the particular Metanorma flavour.
 
 `:monospace-font:`::
 Font for monospace; will be inserted into CSS, overriding the default set for
-the particular Metanorma flavour. 
+the particular Metanorma flavour.
 
 `:htmlstylesheet:`::
 SCSS stylesheet to use for HTML output. Defaults to built-in template
@@ -236,42 +265,42 @@ Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:htmlintropage:`::
-HTML template for introductory section. 
+HTML template for introductory section.
 Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:scripts:`::
-Javascript scripts for HTML output. 
+Javascript scripts for HTML output.
 Defaults to built-in scripts for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:scripts-pdf:`::
-Javascript scripts for HTML to PDF output. 
+Javascript scripts for HTML to PDF output.
 Defaults to built-in scripts for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:wordstylesheet:`::
-Primary SCSS stylesheet to use for Word output. 
+Primary SCSS stylesheet to use for Word output.
 Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:standardstylesheet:`::
-Secondary SCSS stylesheet use for Word output. 
+Secondary SCSS stylesheet use for Word output.
 Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:header:`::
-Header and footer file for Word output. 
+Header and footer file for Word output.
 Defaults to built-in template the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:wordcoverpage:`::
-Word template for cover page. 
+Word template for cover page.
 Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
 `:wordintropage:`::
-Word template for introductory section. 
+Word template for introductory section.
 Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
