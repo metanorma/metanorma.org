@@ -1,0 +1,126 @@
+---
+layout: post
+title:  "Metanorma now supports IEC standardization deliverables"
+date:   2019-09-02
+categories: about
+author:
+  name: Ronald Tse
+  email: tse@ribose.com
+  use_picture: assets
+  social_links:
+    - https://www.linkedin.com/in/rhtse/
+    - https://github.com/ronaldtse
+card_image: /assets/blog/2019-09-02.png
+excerpt: >-
+    Metanorma now supports authoring IEC International Standards.
+redirect_from:
+  - /blog/09-02-2019/metanorma-for-iec/
+extra_scripts:
+  - src: /assets/js/hoverable-illustrations.js
+---
+= Metanorma now supports IEC standardization deliverables
+
+////
+  - name: Ronald Tse
+    email: tse@ribose.com
+    use_picture: assets
+    social_links:
+      - https://www.linkedin.com/in/rhtse/
+      - https://github.com/ronaldtse
+  - name: Nick Nicholas
+    email: opoudjis@optusnet.com.au
+    social_links:
+      - https://www.linkedin.com/in/opoudjis/
+      - https://github.com/opoudjis
+////
+
+IEC authors rejoice! From today onwards, you can write IEC content
+using Metanorma.
+
+Metanorma now fully supports authoring of
+https://www.iec.ch[International Electrotechnical Commission (IEC)]
+standardization deliverables, via the Metanorma-IEC processor.
+
+With the addition of IEC, Metanorma now supports all of
+the three largest international standards bodies, namely
+ITU, ISO and IEC.
+
+
+== IEC document types covered
+
+Metanorma-IEC covers the following document types:
+
+* International Standard (https://www.iec.ch/members_experts/refdocs/[ISO/IEC DIR 1:2019 + IEC SUP:2019, Clause 2])
+* Technical Specification (https://www.iec.ch/members_experts/refdocs/[ISO/IEC DIR 1:2019 + IEC SUP:2019, 3.1])
+* Technical Report (https://www.iec.ch/members_experts/refdocs/[ISO/IEC DIR 1:2019 + IEC SUP:2019, 3.3])
+* Publicly Available Specification (https://www.iec.ch/members_experts/refdocs/[ISO/IEC DIR 1:2019 + IEC SUP:2019, 3.2])
+* Guide (https://www.iec.ch/members_experts/refdocs/[ISO/IEC DIR 1:2019 + IEC SUP:2019, Annex A])
+* Interpretation sheet (https://www.iec.ch/members_experts/refdocs/[ISO/IEC DIR 1:2019 + IEC SUP:2019, 2.10.5])
+
+.The wizard conjuring forth the IEC processor
+image::/assets/blog/2019-09-02.png[The wizard conjuring forth the IEC processor,width=100%]
+
+== Differences between Metanorma-IEC and Metanorma-ISO
+
+The noteworthy differences are:
+
+* The IEC flavour uses the stage codes specific to the IEC, as listed in
+https://www.iec.ch/standardsdev/resources/processes/stage_codes.htm[IEC Processes & Procedures -- Stage Codes]
+and
+https://www.iec.ch/standardsdev/resources/processes/workflows.htm[IEC Processes & Procedures -- Workflow].
+The IEC also recognizes https://www.iso.org/stage-codes.html[ISO International Harmonized Stage Codes],
+which are mapped to IEC stage codes.
+
+* The IEC flavour processes part and subpart numbers for documents, entered in the
+`:partnumber:` attribute as `{nnn}-{mmm}`.
+
+* The IEC flavour uses the
+https://www.iec.ch/standardsdev/resources/draftingpublications/writing_formatting/IEC_template/iec_template.htm[IEC template for Word]
+documents, including equivalent
+Word paragraph styles where applicable. (The names used for paragraph styles
+are named consistently with the rest of Metanorma.)
+
+* The IEC flavour injects IEC-specific boilerplate language into the XML source
+(in English or French),
+and displays it at the appropriate location in Word and HTML output.
+
+
+== Usage of Metanorma-IEC
+
+Metanorma-IEC support has been released in form
+of a Ruby gem `metanorma-iec`.
+
+You can run it in the Metanorma command-line interface as simple as:
+
+[source,sh]
+----
+$ metanorma -t iec document.adoc
+----
+
+
+== Origin
+
+Actually, core IEC support has always been around -- the
+syntaxes of ISO and IEC documents are identical
+(ISO/IEC Directives, Part 2:2018
+https://www.iec.ch/members_experts/refdocs/iec/isoiecdir2%7Bed8.0.RLV%7Den.pdf[IEC version (PDF link)]).
+But since most of our users were not concerned with
+IEC, the need wasn't there.
+
+Thanks to the strong encouragement from Hiroshi Murayama
+and support of Gernot Rossi, both hailing from the
+link:https://www.iec.ch/dyn/www/f?p=103:7:10908302587401[IEC SC3D],
+we have completed IEC support.
+
+IEC SC3D is the committee who created and responsible for the
+https://cdd.iec.ch[IEC 61360 Common Data Dictionary (CDD)],
+a concept database used in all sorts of industrial and manufacturing
+industries, from circuit breakers to aerospace.
+
+
+
+== Conclusion
+
+Make life easier for your IEC Editor!
+
+
