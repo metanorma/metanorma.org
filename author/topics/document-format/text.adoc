@@ -35,8 +35,8 @@ This paragraph is justified, which is the default
 
 == Block quotes
 
-As in normal Asciidoctor, block quotes are preceded with an author and a citation;
-but the citation is expected to be in the same format as all other citations, 
+As in normal AsciiDoc, block quotes are preceded with an author and a citation;
+but the citation is expected to be in the same format as all other citations,
 a cross-reference optionally followed by text, which may include the bibliographic
 sections referenced:
 
@@ -44,9 +44,9 @@ sections referenced:
 --
 [quote, ISO, "ISO7301,section 1"]
 _____
-This International Standard gives the minimum specifications for rice (_Oryza sativa_ L.) 
-which is subject to international trade. It is applicable to the following types: husked rice 
-and milled rice, parboiled or not, intended for direct human consumption. It is neither 
+This International Standard gives the minimum specifications for rice (_Oryza sativa_ L.)
+which is subject to international trade. It is applicable to the following types: husked rice
+and milled rice, parboiled or not, intended for direct human consumption. It is neither
 applicable to other products derived from rice, nor to waxy rice (glutinous rice).
 _____
 --
@@ -100,11 +100,11 @@ In HTML output, all the paragraphs within a list item will be aligned.
 
 == Tables
 
-While Asciidoctor tables are quite powerful for a non-XML markup language,
+While AsciiDoc tables are quite powerful for a non-XML markup language,
 they still have not dealt with the full range of complexity required in Metanorma.
 
-Unlike Asciidoctor, Metanorma adds the option of multiple header rows 
-via attribute “headerrows” to deal with the complexity of ISO tables
+Unlike normal AsciiDoc, Metanorma adds the option of multiple header rows
+via attribute `headerrows` to deal with the complexity of ISO tables
 requiring labels, variables, and units to lining up in the header.
 Tables can also have alternate text, to be rendered as a summary of the table
 for accessibility:
@@ -121,7 +121,7 @@ stem:[w_max]
 |===
 --
 
-Asciidoc allows table cells to have footnotes (which Metanorma renders inside the table)
+AsciiDoc allows table cells to have footnotes (which Metanorma renders inside the table)
 and notes following the table (which Metanorma moves inside the table footer).
 
 [TIP]
@@ -132,9 +132,8 @@ a large range of table formatting options.
 
 == Mathematical expressions
 
-Like Asciidoctor proper, Metanorma Asciidoctor accepts mathematical input
-in either LaTeX or AsciiMath, following the conventions of Asciidoctor:
-
+Metanorma AsciiDoc accepts mathematical input in either
+LaTeX math or AsciiMath, with the following conventions:
 
 * The document attribute `:stem:` means any markup tagged as `[stem]`
 (`stem:[...]`, or `[stem]` before a block delimited with `++++`)
@@ -149,28 +148,28 @@ is interpreted as AsciiMath.
 (`latexmath:[...]`, or `[latexmath]` before a block delimited with `++++`)
 is interpreted as LaTeX.
 
-Any Unicode characters in the LaTeX source are translated into LaTeX escapes, 
+Any Unicode characters in the LaTeX source are translated into LaTeX escapes,
 through the https://github.com/metanorma/unicode2latex[unicode2latex] gem.
 
 In addition, stem markup that contains MathML markup (as detected by an initial
 `<math ... >`) is interpreted as MathML.
 
 MathML is used as the internal representation of STEM expressions in Metanorma:
-AsciiMath and LaTeX in Metanorma Asciidoctor are converted into MathML,
+AsciiMath and LaTeX math in Metanorma AsciiDoc are converted into MathML,
 using the https://github.com/asciidoctor/asciimath[asciimath] gem and the
 https://dlmf.nist.gov/LaTeXML/manual/commands/latexmlmath.html[latexmath]
-processor of LaTeXML, respectively. 
+processor of LaTeXML, respectively.
 
-NOTE: latexmath is much slower than other available LaTeX to MathML converters,
-but is also more accurate.
+NOTE: While `latexmath` can be slower than other available LaTeX to MathML
+converters, it is deterministically accurate.
 
-NOTE: The syntax of AsciiMath recognised by the asciimath gem is more strict
-than the common MathJax processor of AsciiMath. (We have found that asciimath insists on numerators being bracketed.)
+NOTE: The syntax of AsciiMath recognised by the `asciimath` gem is more strict
+than the common MathJax processor of AsciiMath. (We have found that `asciimath` insists on numerators being bracketed.)
 
 == Formulae
 
 Formulae are marked up as `[stem]` blocks.
-Any explanation of symbols in the formula is given as a "where" paragraph,
+Any explanation of symbols in the formula is given as a "`where`" paragraph,
 followed by a definition list.
 
 For example:
@@ -186,8 +185,8 @@ w = (m_D) / (m_s)
 where
 
 stem:[w]:: is the mass fraction of grains with a particular defect in the test sample;
-stem:[m_D]:: is the mass, in grams, of grains with that defect; 
-stem:[m_S]:: is the mass, in grams, of the test sample. 
+stem:[m_D]:: is the mass, in grams, of grains with that defect;
+stem:[m_S]:: is the mass, in grams, of the test sample.
 --
 
 == Figures
@@ -212,7 +211,7 @@ P:: point of the curve corresponding to a cooking time of stem:[t_90]
 NOTE: These results are based on a study carried out on three different types of kernel.
 --
 
-As an extension to Asciidoctor syntax, Metanorma will allow Data URLs as the URL for an image:
+As an extension to AsciiDoc syntax, Metanorma allows Data URLs as the URL for an image:
 
 [source,asciidoc]
 --
@@ -222,7 +221,7 @@ image::data:image/png;base64,ivBO[alt text]
 === Subfigures
 
 Subfigures (which appear in ISO formats, for example)
-are entered by including images in Asciidoctor examples.
+are entered by including images in AsciiDoc examples.
 
 [source,asciidoc]
 --
@@ -257,12 +256,13 @@ image::logo.jpg
 
 Images, source code, and requirements can all be extracted out of the
 generated Metanorma XML downstream, by the `metanorma -e` command.
+
 By default, the filename for each extracted snippet is automatically
 generated. (Extraction only applies to data-uri encoded images,
 which no longer preserve their filename.)
 
 The attribute `filename` on images, source code, and requirements
-gives the filename that any inline-encoded 
+gives the filename that any inline-encoded
 images, source code, and requirements should be
 exported to, if that is requested by downstream tools.
 
@@ -272,7 +272,7 @@ exported to, if that is requested by downstream tools.
 image::logo.gif
 --
 
-In this instance, the image is read in from logo.gif, but is converted in the 
+In this instance, the image is read in from logo.gif, but is converted in the
 XML output to a data-uri encoding. The encoding will have the filename attribute
 of "image1.gif"; that instructs any downstream processing that extracts images
 out of the file (such as `metanorma -e`) to extract this image to the file image1.gif,
@@ -323,20 +323,21 @@ validation—which is what you would want of a computer-based tool.
 
 The label of the item cross-referenced, the use of brackets, and the containing reference
 are all taken care of by Metanorma; the document author needs only give the item identifier
-in the Asciidoctor source
-(e.g. `<<``formulaB-1``>>` generates either "Formula (B.1)" or "B.6, Formula (B.1)",
+in the AsciiDoc source
+(e.g. `<<``formulaB-1``>>` generates either "`Formula (B.1)`" or "`B.6, Formula (B.1)`",
 depending on where in the document it occurs.)
 
 === Localities
 
-Normally in Asciidoctor, any text in a cross-reference that follows a comma
+Normally in AsciiDoc, any text in a cross-reference that follows a comma
 constitutes custom text for the cross-reference.
+
 So a cross-reference `<<ISO7301,the foregoing reference>>`
 would be rendered as "the foregoing reference", and hyperlinked to the ISO7301 reference.
 
-In Metanorma Asciidoctor cross-references, bibliographic localities
+In Metanorma AsciiDoc cross-references, bibliographic localities
 (e.g. page numbers, clause numbers) can be added directly after the comma,
-as part of the cross-reference text. This overrides the normal Asciidoctor treatment of custom text.
+as part of the cross-reference text. This overrides the normal AsciiDoc treatment of custom text.
 
 === List items
 
@@ -353,7 +354,7 @@ List items can be cross-referenced by inserting a bookmark at the very start of 
 
 Hyperlinks to URIs can have alt text, which is used in accessibility (corresponding to the HTML
 `a@title` attribute). This is specified by appending ",title=..." after the text in the
-URL macro in Asciidoctor:
+URL macro in AsciiDoc:
 
 [source,asciidoc]
 --
@@ -365,7 +366,7 @@ http://www.example2.com[text to go into the second hyperlink,title=This is a too
 === Cross-references to external documents
 
 Metanorma will process cross-references to anchors within external documents
-just like Asciidoctor would normally. For example,
+just like AsciiDoc would normally. For example,
 
 [source,asciidoc]
 --
