@@ -73,14 +73,16 @@ to align with ISO/IEC DIR 2:
 - then _A), B), C)_,
 - then _I), II), III)_.
 
-The `type` attribute for ordered lists in Asciidoctor,
-which allows the user to specify the label of an ordered list, is ignored.
+NOTE: Metanorma AsciiDoc ignores the `type` attribute for ordered lists
+used in Asciidoctor AsciiDoc, which allows the user to specify the label
+of an ordered list.
 
 === List items with more than one paragraph
 
-Asciidoctor and HTML support multiple paragraphs within a single list item
+Metanorma XML and HTML support multiple paragraphs within a single list item
 (see https://asciidoctor.org/docs/user-manual/#list-continuation[list continuation]).
-In HTML output, all the paragraphs within a list item will be aligned.
+
+NOTE: In HTML output, all the paragraphs within a list item will be aligned.
 
 [NOTE]
 ====
@@ -92,7 +94,7 @@ In HTML output, all the paragraphs within a list item will be aligned.
   and may need to manually intervene.
 
 - In MS Word, each list entry must be a single paragraph.
-  if the Asciidoctor contains more than one paragraph for a list item,
+  if the AsciiDoc contains more than one paragraph for a list item,
   the subsequent paragraphs will not be preceded by a bullet in Word,
   but they will also not be indented under the first paragraph of the list item.
 ====
@@ -100,8 +102,10 @@ In HTML output, all the paragraphs within a list item will be aligned.
 
 == Tables
 
-While AsciiDoc tables are quite powerful for a non-XML markup language,
-they still have not dealt with the full range of complexity required in Metanorma.
+Metanorma AsciiDoc tables are required to handle the full range of complexity
+of standardization documents, and is therefore significantly more
+powerful than typical AsciiDoc tables, even when typical AsciiDoc already
+handles tables very well for a non-XML markup language.
 
 Unlike normal AsciiDoc, Metanorma adds the option of multiple header rows
 via attribute `headerrows` to deal with the complexity of ISO tables

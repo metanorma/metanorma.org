@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Writing Metanorma in Asciidoctor"
+title:  "Writing Metanorma in AsciiDoc"
 date:   2018-12-11
 categories: about
 extra_scripts:
@@ -12,35 +12,35 @@ author:
     - https://www.linkedin.com/in/opoudjis/
     - https://github.com/opoudjis
 excerpt: >-
-    Asciidoctor documents are text; so if you already have a document
+    AsciiDoc documents are text; so if you already have a document
     in a PDF file, or a Word file, or an HTML file, the simplest
     thing to do is to copy its text into a text document, and then to
     mark it up.
 redirect_from:
-  - /blog/12-11-2018/writing-metanorma-in-asciidoctor/
+  - /blog/12-11-2018/writing-metanorma-in-asciidoc/
 ---
-= Writing in Asciidoctor
+= Writing in AsciiDoc
 
-== Asciidoctor
+== Metanorma AsciiDoc
 
-If you want to write a document in Metanorma, you will be using the Asciidoctor
+If you want to write a document in Metanorma, you will be using the AsciiDoc
 markup language to write text.
 
 The http://asciidoctor.org/docs/user-manual/[Asciidoctor User Manual] gives the
-formatting commands and structures that Asciidoctor can encode; almost all of
+formatting commands and structures that AsciiDoc can encode; almost all of
 them will result in something meaningful in Metanorma -- although the way they
 are rendered in Metanorma may not always be the same as how they are rendered
-by the Asciidoctor tool itself.
+by the AsciiDoc tool itself.
 
-NOTE: There are a few capabilities in Asciidoctor which are not rendered in Metanorma,
+NOTE: There are a few capabilities in Asciidoctor AsciiDoc which are not rendered in Metanorma AsciiDoc,
 such as embedded video, indexes, and verse quotations. But you are unlikely to run
 into them, because they are not required by the kinds of document Metanorma has modelled
 to date.
 
-There are some areas in which the behaviour of Asciidoctor has been enhanced for Metanorma,
-so that it can do things which Asciidoctor on its own cannot, for example:
+Metanorma AsciiDoc allows you to do things which AsciiDoc on its
+own cannot, for example:
 
-* The structure around Terms and Definitions, is somewhat elaborate and quite domain-specific; so we have
+* The structure around Terms and Definitions, can be elaborate and quite domain-specific; so we have
 defined markup specific to Terms and Definitions, including markup for term domains,
 alternative terms, deprecated terms, and term sources.
 
@@ -67,7 +67,7 @@ with a simple document.
 
 == Getting started: A text document
 
-Asciidoctor documents are text; so if you already have a document in a PDF file, or a Word file,
+Metanorma AsciiDoc documents are text; so if you already have a document in a PDF file, or a Word file,
 or an HTML file, the simplest thing to do is to copy its text into a text document,
 and then to mark it up. Yes, you will lose all your formatting that way; but remember,
 part of the point of using Metanorma is that much of the formatting will be automated;
@@ -81,11 +81,11 @@ wax polishing, instead of leaving it to the attendant.
 [.hoverable]
 .Manual MS Word to AsciiDoc document conversion as car wash.
 [link="/assets/blog/2018-12-11.png"]
-image::/assets/blog/2018-12-11-c.png[Asciidoctor document generation as car wash,width=100%]
+image::/assets/blog/2018-12-11-c.png[Metanorma AsciiDoc document generation as car wash,width=100%]
 
 NOTE: If you are feeling adventurous, https://github.com/metanorma/reverse_asciidoctor
-is a tool we have created that maps HTML to Asciidoctor, and can even be used to
-convert Word documents to Asciidoctor. If you've got a lot of "`essential`" formatting,
+is a tool we have created that maps HTML to Metanorma AsciiDoc, and can even be used to
+convert Word documents to Metanorma AsciiDoc. If you've got a lot of "`essential`" formatting,
 particularly mathematics, it might make sense to use it. Most of the time, though,
 it is simpler just to mark up text from scratch.
 
@@ -93,37 +93,37 @@ So, go ahead. Open up a text editor, and cut and paste all the text you need int
 (Or, if you don't already have any text to convert, just start typing.)
 
 The next thing you are going to have to do is make sure there are paragraphs in your
-text. In Asciidoctor, a paragraph is not indicated by a single carriage return, but by two:
+text. In Metanorma AsciiDoc, a paragraph is not indicated by a single carriage return, but by two:
 you need to be able to see space between the paragraphs on the screen.
 
 [source,asciidoctor]
 ----
 There is a parargaph break here.
-But Asciidoctor will still treat these two lines as a single paragraph, and will join this line
+But Metanorma AsciiDoc will still treat these two lines as a single paragraph, and will join this line
 up with the previous line.
 
 This, on the other hand, is a new paragraph.
 ----
 
-Markup in Asciidoctor uses non-alphabetic characters. If you want to italicize a word
+Markup in Metanorma AsciiDoc uses non-alphabetic characters. If you want to italicize a word
 within a paragraph, for example, you put `_` around it. (If you're italicizing a whole
 paragraph, on the other hand, because it is a subheading, you probably shouldn't:
 formatting titles is likely to be taken care of by your standard's stylesheet.
 
 [source,asciidoctor]
 ----
-Asciidoctor knows about _italics_, *boldface*, `monospace`,
-and a few others. We have added in macros to deal with
+Typical AsciiDoc knows about _italics_, *boldface*, `monospace`,
+and a few others. Metanorma AsciiDoc provides additional macros to deal with
 [strike]#strikethrough text# and [smallcap]#text in small capitals#.
 ----
 
 Notice that formatting commands involve non-alphabetic text: `_`, `*`, `\``.
-Because strikethrough and small-caps are not built in to Asciidoctor, we had
-to make up new formatting commands, which are also indicated with
+Strikethrough and small-caps are not built in to typical AsciiDoc,
+they are specific to Metanorma AsciiDoc, which are also indicated with
 non-alphabetic text: brackets and hashes.
 
 NOTE: Because non-alphabetic characters are used to indicate formatting commands,
-that means they can be misinterpreted in Asciidoctor text. Most of the time they
+that means they can be misinterpreted in typical AsciiDoc text. Most of the time they
 won't; but full stops [periods] and square brackets at the start of a line are
 already used to indicate formatting, as will formatting like `*` on either side of a
 group of characters. If you want those characters not to be treated like formatting,
@@ -153,7 +153,7 @@ taken care of by the Metanorma flavor stylesheets.
 
 === Document header
 
-To make the text work as an Asciidoctor document, it needs to be introduced by
+To make the text work as an Metanorma AsciiDoc document, it needs to be introduced by
 a document header, which contains metadata about the document, expressed as
 document attributes: key-value pairs, with the key surrounded by colons.
 
@@ -170,7 +170,7 @@ The textual structure goes in this order:
 with an equals sign and a space;
 
 * A line which gives the authors of the document
-(which is ignored in Metanorma, but is still required by Asciidoctor processors);
+(which is ignored in Metanorma, but is still required by typical AsciiDoc processors);
 
 * The list of document attributes, one per line. There can be no blank lines
 within the document preface, and there has to be a blank line between the document
@@ -204,7 +204,7 @@ All those cryptic wax polishing illustrations we showed before should now make a
 sense:
 
 [.hoverable]
-.Asciidoctor document generation as car wash, re-contextualized.
+.Metanorma AsciiDoc document generation as car wash, re-contextualized.
 [link="/assets/blog/2018-12-11.png"]
-image::/assets/blog/2018-12-11-c.png[Asciidoctor document generation as car wash,width=100%]
+image::/assets/blog/2018-12-11-c.png[Metanorma AsciiDoc document generation as car wash,width=100%]
 

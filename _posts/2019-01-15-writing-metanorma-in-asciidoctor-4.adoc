@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Writing Metanorma in Asciidoctor, Part 4"
+title:  "Writing Metanorma in AsciiDoc, Part 4"
 date:   2019-01-15
 categories: about
 author:
@@ -13,12 +13,12 @@ excerpt: >-
     Two types of section have specialized
     content, which requires additional markup: Terms & Definitions, and Bibliographies.
 redirect_from:
-  - /blog/01-15-2019/writing-metanorma-in-asciidoctor-4/
+  - /blog/01-15-2019/writing-metanorma-in-asciidoc-4/
 ---
-= Writing in Asciidoctor, Part&nbsp;4
+= Writing in AsciiDoc, Part&nbsp;4
 
 In our foregoing discussion, we have presented how to mark up standards documents
-for Metanorma using Asciidoctor markup. Two types of section have specialized
+for Metanorma using AsciiDoc markup. Two types of section have specialized
 content, which requires additional markup: _Terms & Definitions_, and _Bibliographies_.
 
 == Bibliographies
@@ -26,7 +26,7 @@ content, which requires additional markup: _Terms & Definitions_, and _Bibliogra
 === Bibliographies
 
 We have already seen an example of how bibliographies are marked up in
-link:/blog/12-15-2018/writing-metanorma-in-asciidoctor-2/[Part 2 of this series]:
+link:/blog/12-15-2018/writing-metanorma-in-asciidoc-2/[Part 2 of this series]:
 
 [source,asciidoctor]
 --
@@ -43,10 +43,10 @@ References are provided as a list of bibliographic anchors (in triple brackets, 
 them from normal internal crossreference anchors, which are in double brackets). The bibliographic
 anchor is followed by a comma, and then the title of the reference. As we have noted,
 the section containing such bibliographic anchors must have the style attribute `bibliography`,
-to be processed by Asciidoctor correctly.
+to be processed by Metanorma AsciiDoc correctly.
 
 Any bibliographic anchor must consist of a cross-reference token (without spaces), which
-is how the reference will be cited within Asciidoctor, and the official code used to refer to the
+is how the reference will be cited within Metanorma AsciiDoc, and the official code used to refer to the
 document as a standard, separated by a comma. The cross-reference token is arbitrary, and does
 not need to correspond to the document code at all: `+[[[ref33,ISO 3696]]]+` would work just as well.
 
@@ -130,13 +130,13 @@ documents) to be displayed as an HTML file.
 
 === Citations
 
-A citation to a reference is marked up in Asciidoctor the same way as an internal crossreference,
+A citation to a reference is marked up in Metanorma AsciiDoc the same way as an internal crossreference,
 in `+<< >>+`; so if you have a reference defined as `+[[[ref33,ISO 3696]]]+`, the element
 `+<<ref33>>+` is a reference to https://www.iso.org/standard/9169.html[ISO 3696].
 If you provide a crossreference without a corresponding
 reference, Metanorma will issue a warning.
 
-In Asciidoctor, you can provide display text within a crossreference, after a comma; so
+In Metanorma AsciiDoc, you can provide display text within a crossreference, after a comma; so
 `+<<ref33,the aforementioned standard>>+` would be rendered as "the aforementioned standard".
 Metanorma AsciiDoc uses the display text to convey references to a specific location
 within a document, by using pairs of defined location names (_clause, table, figure_ etc.)

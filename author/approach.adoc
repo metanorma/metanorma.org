@@ -38,28 +38,26 @@ more abstract formal model also permit enhanced functionality such as
 cross-reference link checking and auto-numbering of sections, figures, tables and formulas.
 Outputting a document in different languages also becomes straightforward.
 
-== Input syntax: AsciiDoc and Asciidoctor
+== Input syntax: Metanorma AsciiDoc
+
+=== Introduction
 
 Metanorma supports input using Metanorma AsciiDoc, based on the AsciiDoc syntax.
-Specifically, the Asciidoctor version of AsciiDoc is adopted as the basis of Metanorma AsciiDoc.
+Specifically, Metanorma AsciiDoc is built on the syntax of the Asciidoctor version of AsciiDoc.
 
-AsciiDoc is somewhat similar to both https://daringfireball.net/projects/markdown/[Markdown]
+AsciiDoc is similar to both https://daringfireball.net/projects/markdown/[Markdown]
 and https://docbook.org/[DocBook]: it combines the relative ease of use of the former
 (using relatively lightweight markup), and the rigour and expressively of the
 latter (it has a well-defined syntax, and was in fact initially developed as a
 DocBook document authoring tool).
 
-NOTE: Since Metanorma uses the Asciidoctor parser, and Asciidoctor can output text and HTML,
-the Asciidoctor toolchain could be used to preview a Metanorma document, with the caveat
-that Metanorma AsciiDoc features and flavor-specific markup may not be rendered by Asciidoctor.
-Metanorma also renders HTML and Microsoft Word output, which greatly differs from that of Asciidoctor.
-
 TIP: See link:/author/topics/writing-asciidoc[Writing AsciiDoc] for an introduction
-and advice on authoring with AsciiDoc.
+and advice on authoring with Metanorma AsciiDoc.
 
 === Differences from typical AsciiDoc syntax
 
-While Metanorma uses AsciiDoc markup, there are some specifics in how it is interpreted.
+Metanorma AsciiDoc differs from typical AsciiDoc markup, especially for its interpretation
+of directives.
 This is especially important to know for those coming from an
 AsciiDoc / Asciidoctor-AsciiDoc background.
 
@@ -70,25 +68,37 @@ In particular, it has a strict hierarchy of sections, then blocks,
 then inline markup, which cannot be mixed. A table for example cannot occur inside a list,
 and a section cannot occur inside a table.
 
-For example, while Asciidoctor allows some flexibility in
-table markup (though its `a` table cell format taking arbitrary Asciidoctor markup),
+For example, while Asciidoctor AsciiDoc allows some flexibility in
+table markup (through its `a` table cell format taking arbitrary AsciiDoc markup),
 Metanorma will not process arbitrary formatting.
 
-Asciidoctor has some formatting constraints because of its own document model
-that users need to be aware. For example, Asciidoctor disallows
+Asciidoctor AsciiDoc has some formatting constraints because of its own document model
+that users need to be aware. For example, Asciidoctor AsciiDoc disallows
 multiple paragraphs in footnotes
 http://discuss.asciidoctor.org/footnotes-with-paragraph-breaks-td4130.html[by design];
 and it has a strict hierarchy about how elements can be embedded within other elements,
 though still less strict than in Metanorma
 (so for example a list cannot be nested within a paragraph, it can only be used as a separate paragraph.)
 
-TIP: See link:/author/topics/document-format/[Document format] section of author’s documentation
-for some differences of how Metanorma’s interpretation of basic AsciiDoc features differs
-from that of Asciidoctor, and for custom macros Metanorma has added.
+TIP: For Metanorma AsciiDoc features and interpretation differences between
+Metanorma AsciiDoc with typical AsciiDoc,
+see link:/author/topics/document-format/[Document format] section of author’s documentation.
 
 [NOTE]
 ====
-Metanorma document model does not impose AsciiDoc/Asciidoctor constraints,
+Metanorma document model does not impose AsciiDoc constraints,
 so if desired you can edit the generated XML presentation (say, to break up paragraphs
 within a footnote) and subsequently regenerate final deliverables from that edited XML.
 ====
+
+=== Previewing with typical AsciiDoc tools
+
+Existing AsciiDoc tools, such as Asciidoctor plugins, could be used to preview
+a Metanorma document as a generic AsciiDoc document.
+
+However, beware that Metanorma AsciiDoc features and flavor-specific cannot be
+understood by such plugins and the output will not fully match actual
+Metanorma output.
+
+Moreover, Metanorma also renders HTML and Microsoft Word output, which
+greatly differs from that of non-Metanorma tools.

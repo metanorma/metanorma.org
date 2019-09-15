@@ -89,7 +89,7 @@ Content <3>
 
 === Examples
 
-RFC XML does not recognise examples as a distinct element. Under v2, any Asciidoctor
+RFC XML does not recognize examples as a distinct element. Under v2, any Metanorma AsciiDoc
 example blocks are treated by default as `figure`; if they do not contain source code,
 code listing, mathematical formatting or Ascii art, they are treated as a block of text.
 
@@ -266,7 +266,7 @@ to monospace expressions in the RFC XML output; they are not currently rendered 
 <6> v2: `list/counter`,  `list@hangIndent`, `list@style = format List #%d`, `list@style` (for arabic|loweralpha|upperralpha|lowerroman|upperroman) (`spacing`, `start`, `empty` and `group` not available) v3: `ol@spacing`, `ol@empty`, `ol@start`, `ol@group`, `ol@type = "#%d", `ol@type` (for arabic|loweralpha|upperralpha|lowerroman|upperroman) (`counter`, `hangIndent` not available)
 <7> v2: `list/t`; v3: `ol/li`
 
-Asciidoctor does not permit anchors on list items: the anchors in the following are ignored.
+Metanorma AsciiDoc does not permit anchors on list items: the anchors in the following are ignored.
 
 [source,asciidoc]
 --
@@ -275,7 +275,7 @@ Asciidoctor does not permit anchors on list items: the anchors in the following 
 . [[id2]] A
 --
 
-RFC XML v2 does not support multiparagraph list items. Following the specification recommendation,
+RFC XML v2 does not support multi-paragraph list items. Following the specification recommendation,
 paragraphs within v2 list items are replaced with `vspace` tages.
 
 === Definition Lists
@@ -290,10 +290,10 @@ A:: B <3>
 <2> v3 only: `dl@hanging`, `dl@spacing` (attributes only available in v3); v2 only: `list@hangIndent` (attribute only available in v2). Note that the `compact` and `horizontal` attributes are mutually exclusive in AsciiDoc.
 <3> v3: `dl/dt`, `dl/dd`; v2: `list[@style="hanging"]/t@hangText`, `list[@style="hanging"]/t`
 
-Asciidoctor does not permit anchors on either definition list terms,
+Metanorma AsciiDoc does not permit anchors on either definition list terms,
 or definition list definitions: the anchors in the following are ignored.
 
-In RFC XML v2, `idnits` considers inline definition lists invalid; the gem
+In RFC XML v2, `idnits` considers inline definition lists invalid; Metanorma
 renders them as paragraphed definition lists. The gem option `:inline-definition-lists`
 disables this behaviour.
 
@@ -302,7 +302,7 @@ disables this behaviour.
 [[id1]] A:: [[id2]]B
 --
 
-RFC XML v2 does not support multiparagraph list items. Following the specification recommendation,
+RFC XML v2 does not support multi-paragraph list items. Following the specification recommendation,
 paragraphs within v2 list items are replaced with `vspace` tages.
 
 === Sidebar (RFC v3 only)
@@ -323,7 +323,7 @@ The converter respects the AsciiDoc (horizontal) align attributes of cells (v2,
 v3), column widths (v2), and `colspan`, `rowspan` attributes (v3).
 
 (Exceptionally,
-column widths specified for v2 as `"1,1,1,1,1,1...."` will be ignored, since Asciidoctor
+column widths specified for v2 as `"1,1,1,1,1,1...."` will be ignored, since AsciiDoc
 internally treats them identically to unspecified column widths on a table.)
 
 [source,asciidoc]
@@ -341,14 +341,14 @@ h|header cell | body cell <5>
 |===
 --
 <1> v3: `table@anchor`; v2: `texttable@anchor`
-<2> v2: `texttable@suppress-title`, `texttable@align`, `texttable@style` (attributes only available in v2). Mapping of Asciidoc grid attribute to RFC XML style attribute is: `all` > `all`, `cols` > `full`, `none` > `none`, `rows` > `headers` (although the two are not strictly equivalent).
+<2> v2: `texttable@suppress-title`, `texttable@align`, `texttable@style` (attributes only available in v2). Mapping of AsciiDoc grid attribute to RFC XML style attribute is: `all` > `all`, `cols` > `full`, `none` > `none`, `rows` > `headers` (although the two are not strictly equivalent).
 <3> v3: `table/name`; v2: `texttable@title`
 <4> v3: `table/thead/tr/td`; v2: `texttable/ttcol@id` (attribute only available in v2), `texttable/ttcol`
 <5> v3: `table/tbody/tr/th`, `table/tbody/tr/td`; v2: `texttable/c`, `texttable/c`
 <6> v3: `table/tbody/tr/td@anchor` (attribute only available in v3)
 <7> v3: `table/tfoot/tr/td`; v2: `texttable/c`
 
-NOTE: v3 permits table cells to contain block elements, such as paragraphs and lists. (This is done in Asciidoc by prefixing
+NOTE: v3 permits table cells to contain block elements, such as paragraphs and lists. (This is done in AsciiDoc by prefixing
 the table cell with `a|`.) However v2 only permits inline tagging. Paragraph tags (`<t>`) are stripped by the gem.
 
 === Paragraphs
@@ -378,28 +378,27 @@ Quotation <3>
 
 === Comments
 
-==== Asciidoctor comments
+==== AsciiDoc comments
 
-Asciidoctor implements both inline comments (prefixed with `\\`)
-and block comments (prefixed with `\\\\`). Both are ignored by
-the Asciidoctor processor, and are not rendered in any output,
-including RFC XML.
+Metanorma AsciiDoc implements both inline comments (prefixed with `\\`)
+and block comments (prefixed with `\\\\`). Both are ignored
+and are not rendered in any output, including RFC XML.
 
-Asciidoctor also permits paragraphs and open blocks (which can contain
-multiple paragraphs) to be treated as Asciidoctor comments, if
+AsciiDoc also permits paragraphs and open blocks (which can contain
+multiple paragraphs) to be treated as AsciiDoc comments, if
 they have the style attribute `[comment]`:
 
 [source,asciidoc]
 ----
 
-// This is an inline Asciidoctor comment, which will not be output to XML.
+// This is an inline AsciiDoc comment, which will not be output to XML.
 
 [comment]
-This is a single paragraph Asciidoctor comment,
+This is a single paragraph AsciiDoc comment,
 which will not be output to XML.
 
 ////
-This is a block Asciidoctor comment,
+This is a block AsciiDoc comment,
 
 which will not be output to XML.
 ////
@@ -410,7 +409,7 @@ This is a
 
 multiple paragraph
 
-Asciidoctor comment, which will not be output to XML.
+AsciiDoc comment, which will not be output to XML.
 --
 ----
 
@@ -432,7 +431,7 @@ The foregoing will be rendered in RFC XML as:
 --
 
 XML block comments are introduced through the role attribute
-`[.comment]`, which can be prefied to a paragraph or an open
+`[.comment]`, which can be prefixed to a paragraph or an open
 block (which can contain multiple paragraphs):
 
 [source,asciidoc]
@@ -457,12 +456,13 @@ in the published text (subject to either the v3 `cref@display`
 attribute, or the `comments` processing instruction).
 
 AsciiRFC marks text comments up as admonitions.
-cref is NOT supported in metanorma-ietf for v2 RFC XML. This is to make
+
+NOTE: `cref` is NOT supported in Metanorma IETF for v2 RFC XML. This is to make
 the treatment of admonitions consistent between this gem and the
 rest of metanorma. If v2 RFC XML cref is required, use the
-unchanged asciidoctor-rfc gem instead.
+deprecated `asciidoctor-rfc` gem instead.
 
-In this gem for v2 RFC XML, admonitions are rendered as the capitalised
+In Metanorma IETF for v2 RFC XML, admonitions are rendered as the capitalized
 admonition type (e.g. NOTE, TIP), followed by the text of the admonition.
 
 [source,asciidoc]
@@ -480,7 +480,7 @@ Any admonition inside the body of the text is a comment.
 <1> `<cref>Any admonition inside the body of the text is a comment.</cref>`
 <2> `cref@anchor`
 <3> v3 only: `cref@display` (not supported in v2); v2: `cref@source`
-<4> v3 only: `cref/name` (not suppported in v2)
+<4> v3 only: `cref/name` (not supported in v2)
 
 
 
@@ -559,7 +559,7 @@ The following represent the v3 relref element
 <7> v3 only: `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>` (element only available in v3)
 <8> v3 only: `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>` (element only available in v3)
 
-In v2, the relref style crossreferences are rendered as equivalent `xref` crossreferences,
+In v2, the `relref` style crossreferences are rendered as equivalent `xref` crossreferences,
 inserting section numbers as appropriate.
 
 Note that fragments (e.g. `crossreference#fragment`) are not supported on the `xref@target` attribute,
@@ -567,16 +567,16 @@ in either v2 or v3: the RFC XML specification requires that the `xref@target` at
 the value of an anchor attribute elsewhere in the document.
 
 Internal crossreferences and bibliographic references are marked up in the same way; but
-bibliographic references are marked up separately from the main flow of Asciidoctor, and are
+bibliographic references are marked up separately from the main flow of Metanorma IETF AsciiDoc, and are
 processed later.
 
-NOTE: Normally, Asciidoctor attempts to match a crossreference to a section title, if it does not find
-a matching anchor ID. This behaviour has become optional as of Asciidoctor 1.5.7, and is suppressed in
-this gem. If you have a citation of a bibliographic item which is identical to a section title (e.g. you have a
-bibliographic citation with the anchor "WHIRLPOOL", and a section with the title "WHIRLPOOL"),
-this gem will correctly pick the former as the target of the reference, so long as that section
+NOTE: Typical Asciidoctor-AsciiDoc attempts to match a crossreference to a section title, if it does not find
+a matching anchor ID -- Metanorma does not do that (and in newer Asciidoctor-AsciiDoc versions > `1.5.7`).
+If you have a citation of a bibliographic item which is identical to a section title (e.g. you have a
+bibliographic citation with the anchor "`WHIRLPOOL`", and a section with the title "`WHIRLPOOL`"),
+Metanorma will correctly pick the former as the target of the reference, so long as that section
 has a different anchor ID:
-
+--
 [source,asciidoc]
 ----
 [[hash_whirlpool]]
@@ -594,6 +594,6 @@ This section should actually be referenced as <<hash_whirlpool>>.
 ...
 ++++
 ----
-
+--
 
 

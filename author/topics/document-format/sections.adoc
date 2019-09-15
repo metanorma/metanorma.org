@@ -48,11 +48,11 @@ Blank subclause headings can be given like this:
 --
 
 These are used when you want to give a subclause number for a new subclause,
-but without an associated header text. For example, 
+but without an associated header text. For example,
 
 [source,asciidoc]
 --
-=== Physical and chemical characteristics 
+=== Physical and chemical characteristics
 
 ==== {blank}
 
@@ -112,8 +112,8 @@ and the first section header.
 The example below specifies the `.Foreword` title
 to the foreword in the source. (Strictly speaking, this is the caption of the
 first paragraph in the foreword, but it is used as the foreword header since
-the Foreword must precede any Asciidoctor section headers.)
-Metanorma will supply the "Foreword" title if no such title is given.
+the Foreword must precede any AsciiDoc section headers.)
+Metanorma will supply the "`Foreword`" title if no such title is given.
 
 ----
 [[foreword]]
@@ -126,8 +126,8 @@ user-centric systems and applications...
 == Symbols and Abbreviations
 
 Symbols and Abbreviations sections are expected to be simple definition lists
-(http://asciidoctor.org/docs/user-manual/#labeled-list[“labelled lists”]
-in Asciidoctor nomenclature).
+(http://asciidoctor.org/docs/user-manual/#labeled-list["`labelled lists`"]
+in AsciiDoc nomenclature).
 
 Metanorma takes care of sorting the symbol entries in the order prescribed by ISO/IEC DIR 2,
 provided the symbols are in AsciiMath; sorting MathML and LaTeX entries is not currently supported.
@@ -152,7 +152,7 @@ with the `[%inline-header]` option attribute. So in the Rice Model document,
 [source,asciidoc]
 --
 [%inline-header]
-==== Sieve, 
+==== Sieve,
 
 with round perforations of diameter 1,4 mm.
 --
@@ -165,10 +165,15 @@ ____
 
 == Sections deeper than 5 levels
 
-Asciidoctor permits only five levels of section embedding (not counting the document title).
-Standards do contain more levels of embedding; ISO/IEC DIR 2 only considers it a problem
-if there are more than 7 levels of embedding. To realise higher levels of embedding,
+Standards can contain many levels of embedding: ISO/IEC DIR 2 only considers
+it a problem if there are more than 7 levels of embedding.
+
+To realise higher levels of embedding,
 prefix a 5-level section title with the attribute `level=`:
+
+NOTE: Asciidoctor AsciiDoc permits only five levels of section embedding
+(not counting the document title).
+
 
 [source,asciidoctor]
 --
@@ -195,32 +200,32 @@ This generates the following ISO XML:
 --
 <clause id="_" inline-header="false" obligation="normative">
 	<title>
-		Clause 5 
+		Clause 5
 	</title>
 	<clause id="_" inline-header="false" obligation="normative">
 		<title>
-			Clause 6 
+			Clause 6
 		</title>
 		<clause id="_" inline-header="false" obligation="normative">
 			<title>
-				Clause 7A 
+				Clause 7A
 			</title>
 		</clause>
 		<clause id="_" inline-header="false" obligation="normative">
 			<title>
-				Clause 7B 
+				Clause 7B
 			</title>
 		</clause>
 	</clause>
 	<clause id="_" inline-header="false" obligation="normative">
 		<title>
-			Clause 6B 
+			Clause 6B
 		</title>
 	</clause>
 </clause>
 <clause id="_" inline-header="false" obligation="normative">
 	<title>
-		Clause 5B 
+		Clause 5B
 	</title>
 </clause>
 --

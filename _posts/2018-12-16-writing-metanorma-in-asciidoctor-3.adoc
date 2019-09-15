@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Writing Metanorma in Asciidoctor, Part 3"
+title:  "Writing Metanorma in AsciiDoc, Part 3"
 date:   2018-12-16
 categories: about
 author:
@@ -10,14 +10,14 @@ author:
     - https://www.linkedin.com/in/opoudjis/
     - https://github.com/opoudjis
 excerpt: >-
-    Asciidoctor documents are text; so if you already have a document
+    AsciiDoc documents are text; so if you already have a document
     in a PDF file, or a Word file, or an HTML file, the simplest
     thing to do is to copy its text into a text document, and then to
     mark it up.
 redirect_from:
-  - /blog/12-16-2018/writing-metanorma-in-asciidoctor-3/
+  - /blog/12-16-2018/writing-metanorma-in-asciidoc-3/
 ---
-= Writing in Asciidoctor, Part&nbsp;3
+= Writing in AsciiDoc, Part&nbsp;3
 
 == Marking up sections
 
@@ -203,7 +203,7 @@ end
 --
 
 Go back over the document and insert markup for each block that isn't a simple paragraph.
-The details of how each different block type works in Asciidoctor are
+The details of how each different block type works in Metanorma AsciiDoc are
 given in the http://asciidoctor.org/docs/user-manual/[Asciidoctor user manual]
 (as we do not tire from telling), and any Metanorma extensions and
 adjustments are documented in the Metanorma documentation:
@@ -217,7 +217,7 @@ https://github.com/metanorma/metanorma-iso, https://github.com/metanorma/metanor
 
 == Marking up inline
 
-The final stage of refining Asciidoctor markup is to focus on inline markup,
+The final stage of refining AsciiDoc markup is to focus on inline markup,
 within the bounds of the block. We have already seen formatting marks such as
 bold, italics, and monospace.
 
@@ -239,14 +239,14 @@ http://www.iso.org/[International Organization for Standardization].
 ----
 
 Footnotes are also a macro, consisting of the text `footnote:[]`, with the text
-of the footnote contained within the brackets. Asciidoctor does not permit footnotes
+of the footnote contained within the brackets. Metanorma AsciiDoc does not permit footnotes
 spanning more than one paragraph, so the contents of the footnote are expected to be a
 single line contained within the brackets. The footnote macro is also expected
 to be preceded by punctuation, although it is recognized as is, and can also be delimited
-by a preceding `\{blank}` (which in Asciidoctor is simply empty text; blank headers
+by a preceding `\{blank}` (which in Asciidoctor AsciiDoc is simply empty text; blank headers
 are also indicated by equals signs followed by `\{blank}`).
 
-Mathematical formatting, finally, is called STEM formatting in Asciidoctor, and
+Mathematical formatting, finally, is called STEM formatting in Metanorma AsciiDoc, and
 are entered using http://asciimath.org[AsciiMath]. Mathematical formatting can be
 either a block (which constitutes a formula for standards documents), or inline:
 
@@ -265,11 +265,11 @@ In either case, the document attribute `:stem:` must be present in the document
 header, for such AsciiMath expressions to be recognized at all. The input AsciiMath
 will be converted to MathML and Open Office XML (for Word) downstream.
 
-That is enough to get you started with marking up Asciidoctor for Metanorma.
+That is enough to get you started with marking up Metanorma AsciiDoc.
 You're best placed to build up from simple structures to more complex, reading
 the available documentation, and looking at other existing samples of Metanorma;
 all Metanorma gems include sample documents, as well as snippets of Metanorma
-Asciidoctor used in internal tests (under the `spec/asciidoctor` directory of each
+AsciiDoc used in internal tests (under the `spec/asciidoctor` directory of each
 gem.)
 
 And if you get stuck, you can also ask your friendly neighborhood wizard,

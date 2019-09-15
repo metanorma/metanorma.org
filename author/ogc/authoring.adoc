@@ -84,14 +84,14 @@ Identifier embedded into a document type-specific external URL.
 `:previous-uri:`::
 URI of previous version of the document.
 
-=== Mapping to OGC Asciidoctor
+=== Mapping to OGC legacy AsciiDoc
 
 Where these preexisting metanorma attributes correspond to attributes already used
-by OGC in their Asciidoctor template, Metanorma-OGC permits those attributes, and they are
+by OGC in their AsciiDoc template, Metanorma-OGC permits those attributes, and they are
 treated as synonyms of the Metanorma attributes:
 
 |===
-| OGC Asciidoctor | Metanorma-OGC
+| OGC legacy AsciiDoc | OGC Metanorma AsciiDoc
 
 | `:copyrightYear` | `:copyright-year:`
 | `:workingGroup:` | `:workgroup:`
@@ -99,14 +99,14 @@ treated as synonyms of the Metanorma attributes:
 | `:approvalDate:` | `:issued-date:`
 | `:submissionDate:` | `:received-date:`
 | `docReference` | `:docnumber:`
-| `editor` | `:fullname:`, with `:role:` = "editor"
+| `editor` | `:fullname:`, with `:role:` = `editor`
 |===
 
 == Markup
 
 === Sections
 
-The Normative References section may be named just "References", reflecting OGC practice.
+The Normative References section may be named just "`References`", reflecting OGC practice.
 
 === Preliminary elements
 
@@ -129,8 +129,8 @@ The abstract is recognized as the first clause with an `abstract` style attribut
 xxx
 ----
 
-The preface is recognized as the text between the Asciidoctor document attributes and
-the first Asciidoctor section title; it must not be given a section title of its own.
+The preface is recognized as the text between the AsciiDoc document attributes and
+the first AsciiDoc section title; it must not be given a section title of its own.
 
 [source,asciidoc]
 ----
@@ -175,10 +175,12 @@ Text
 
 === Recommendations, requirements, and permissions
 
-For legacy reasons, a second Asciidoctor syntax is permitted for
-recommendations, requirements and permissions. These may also be recognized in Metanorma
-Asciidoctor as tables whose first cell contains the text _Recommendation_, _Requirement_, _Permission_,
-optionally followed by a number (which is ignored in parsing; the elements are renumberd
+For legacy reasons, a second Metanorma AsciiDoc syntax is permitted for
+recommendations, requirements and permissions.
+
+These may also be recognized in Metanorma
+AsciiDoc as tables whose first cell contains the text _Recommendation_, _Requirement_, _Permission_,
+optionally followed by a number (which is ignored in parsing; the elements are renumbered
 automatically in rendering.) These are currently constituted of two elements: an internal
 label, which is parsed as the first paragraph of the second table cell, and the body of
 the recommendation etc., which is parsed as the remainder of the second table cell.

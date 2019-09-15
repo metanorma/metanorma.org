@@ -17,7 +17,14 @@ If you wish to create a custom gem, in order to customise behaviour further:
 * Change the styling of the document outputs (`.../lib/isodoc/XXX/html`).
 ====
 
-The tool chains currently available proceed in two steps: map an input markup language (currently Asciidoctor only) into Standoc XML, and map Standoc XML into various output formats (currently Word doc, HTML, PDF via HTML). Running the metanorma tool involves a third step, of exposing the capabilities available in the first two in a consistent format. These two steps are represented as three separate modules, which are included in the same gem; for the Sample gem, they are `Asciidoctor::Sample`, `Isodoc::Sample`, and `Metanorma::Sample`.
+The toolchains currently available proceed in two steps:
+
+. map an input markup language (currently AsciiDoc only) into Standoc XML; and
+. map Standoc XML into various output formats (currently Word doc, HTML, PDF via HTML).
+
+Running the metanorma tool involves a third step, of exposing the capabilities available in the first two in a consistent format.
+
+These two steps are represented as three separate modules, which are included in the same gem; for the Sample gem, they are `Asciidoctor::Sample`, `Isodoc::Sample`, and `Metanorma::Sample`.
 
 Your adaptation of the toolchain will need to instantiate these three modules. The connection between the two first steps is taken care of in the toolchain, and metanorma explicitly invokes the two steps, feeding the XML output of the first step as input into the second. The metanorma-sample gem outputs both Word and HTML; you can choose to output only Word, or only HTML, and you can choose to generate PDF from HTML as well.
 
@@ -38,32 +45,32 @@ The `Isodoc::HtmlConvert` and `Isodoc::WordConvert` are expected to be near-iden
 
 === Asciidoctor::Standoc customization in metanorma-sample
 
-Examples from `Asciidoctor::Sample` in metanorma-sample. In the following snippets, the parameter `node` represents the current node of the Asciidoctor document, and `xml` represents the Nokogiri Builder node of the XML output.
+Examples from `Asciidoctor::Sample` in metanorma-sample. In the following snippets, the parameter `node` represents the current node of the AsciiDoc document, and `xml` represents the Nokogiri Builder node of the XML output.
 
 * The boilerplate representation of the document's author, publisher and copyright holder names Acme instead of ISO as the responsible organization.
 
 [source,ruby]
 --
-      def metadata_author(node, xml)
-        xml.contributor do |c|
-          c.role **{ type: "author" }
-          c.organization do |a|
-            a.name "Acme"
-          end
-        end
-      end
+def metadata_author(node, xml)
+  xml.contributor do |c|
+    c.role **{ type: "author" }
+    c.organization do |a|
+      a.name "Acme"
+    end
+  end
+end
 --
 
 * The editorial committees are represented as a single element, as opposed to ISO's name plus number. (`node.attr()` recovers Asciidoctor document attribute values.)
 
 [source,ruby]
 --
-      def metadata_committee(node, xml)
-        xml.editorialgroup do |a|
-          a.committee node.attr("committee"),
-            **attr_code(type: node.attr("committee-type"))
-        end
-      end
+def metadata_committee(node, xml)
+  xml.editorialgroup do |a|
+    a.committee node.attr("committee"),
+      **attr_code(type: node.attr("committee-type"))
+  end
+end
 --
 
 * The document identifier concatenates the document number, the abbreviation of the document status (retrieved via `IsoDoc::Sample::Metadata`),
@@ -71,84 +78,84 @@ and the document year.
 
 [source,ruby]
 --
-      def metadata_id(node, xml)
-        docstatus = node.attr("status")
-        dn = node.attr("docnumber")
-        if docstatus
-          abbr = IsoDoc::Sample::Metadata.new("en", "Latn", {}).
-            status_abbr(docstatus)
-          dn = "#{dn}(#{abbr})" unless abbr.empty?
-        end
-        node.attr("copyright-year") and dn += ":#{node.attr("copyright-year")}"
-        xml.docidentifier dn, **{type: "acme"}
-        xml.docnumber { |i| i << node.attr("docnumber") }
-      end
+def metadata_id(node, xml)
+  docstatus = node.attr("status")
+  dn = node.attr("docnumber")
+  if docstatus
+    abbr = IsoDoc::Sample::Metadata.new("en", "Latn", {}).
+      status_abbr(docstatus)
+    dn = "#{dn}(#{abbr})" unless abbr.empty?
+  end
+  node.attr("copyright-year") and dn += ":#{node.attr("copyright-year")}"
+  xml.docidentifier dn, **{type: "acme"}
+  xml.docnumber { |i| i << node.attr("docnumber") }
+end
 --
 
 * A security element is added to the document metadata, at the metadata extension point (where flavour-specific metadata is entered).
 
 [source,ruby]
 --
-      def metadata_security(node, xml)
-        security = node.attr("security") || return
-        xml.security security
-      end
+def metadata_security(node, xml)
+  security = node.attr("security") || return
+  xml.security security
+end
 
-      def metadata_ext(node, xml)
-        super
-        metadata_security(node, xml)
-      end
+def metadata_ext(node, xml)
+  super
+  metadata_security(node, xml)
+end
 --
 
 * Title validation and style validation is disabled.
 
 [source,ruby]
 --
-      def title_validate(root)
-        nil
-      end
+def title_validate(root)
+  nil
+end
 --
 
 * The root element of the document is changed from `iso-standard` to `sample-standard`.
 
 [source,ruby]
 --
-      def makexml(node)
-        result = ["<?xml version='1.0' encoding='UTF-8'?>\n<sample-standard>"]
-        @draft = node.attributes.has_key?("draft")
-        result << noko { |ixml| front node, ixml }
-        result << noko { |ixml| middle node, ixml }
-        result << "</sample-standard>"
-        ....
-      end
+def makexml(node)
+  result = ["<?xml version='1.0' encoding='UTF-8'?>\n<sample-standard>"]
+  @draft = node.attributes.has_key?("draft")
+  result << noko { |ixml| front node, ixml }
+  result << noko { |ixml| middle node, ixml }
+  result << "</sample-standard>"
+  ....
+end
 --
 
 * The document type attribute is restricted to a prescribed set of options.
 
 [source,ruby]
 --
-      def doctype(node)
-        d = node.attr("doctype")
-        unless %w{policy-and-procedures best-practices
-          supporting-document report legal directives proposal
-          standard}.include? d
-          warn "#{d} is not a legal document type: reverting to 'standard'"
-          d = "standard"
-        end
-        d
-      end
+def doctype(node)
+  d = node.attr("doctype")
+  unless %w{policy-and-procedures best-practices
+    supporting-document report legal directives proposal
+    standard}.include? d
+    warn "#{d} is not a legal document type: reverting to 'standard'"
+    d = "standard"
+  end
+  d
+end
 --
 
 * Inline headers are ignored.
 
 [source,ruby]
 --
-      def sections_cleanup(x)
-        super
-        x.xpath("//*[@inline-header]").each do |h|
-          h.delete("inline-header")
-        end
-      end
+def sections_cleanup(x)
+  super
+  x.xpath("//*[@inline-header]").each do |h|
+    h.delete("inline-header")
+  end
+end
 --
 
 === Metanorma::Processor customization in metanorma-sample
@@ -157,60 +164,60 @@ and the document year.
 
 [source,ruby]
 --
-      def initialize
-        @short = :sample
-        @input_format = :asciidoc
-        @asciidoctor_backend = :sample
-      end
+def initialize
+  @short = :sample
+  @input_format = :asciidoc
+  @asciidoctor_backend = :sample
+end
 --
 
 * `output_formats` names the available output formats (including XML, which is inherited from the parent class)
 
 [source,ruby]
 --
-      def output_formats
-        super.merge(
-          html: "html",
-          doc: "doc",
-          pdf: "pdf"
-        )
-      end
+def output_formats
+  super.merge(
+    html: "html",
+    doc: "doc",
+    pdf: "pdf"
+  )
+end
 --
 
 * `version` gives the current version string for the gem
 
 [source,ruby]
 --
-     def version
-        "Asciidoctor::Sample #{Asciidoctor::Sample::VERSION}"
-      end
+def version
+  "Asciidoctor::Sample #{Asciidoctor::Sample::VERSION}"
+end
 --
 
 * `input_to_isodoc` is the call which converts Asciidoctor input into IsoDoc XML
 
 [source,ruby]
 --
-      def input_to_isodoc(file, filename)
-        Metanorma::Input::Asciidoc.new.process(file, filename, @asciidoctor_backend)
-      end
+def input_to_isodoc(file, filename)
+  Metanorma::Input::Asciidoc.new.process(file, filename, @asciidoctor_backend)
+end
 --
 
 * `output` is the call which converts IsoDoc XML into various nominated output formats
 
 [source,ruby]
 --
-      def output(isodoc_node, outname, format, options={})
-        case format
-        when :html
-          IsoDoc::Sample::HtmlConvert.new(options).convert(outname, isodoc_node)
-        when :doc
-          IsoDoc::Sample::WordConvert.new(options).convert(outname, isodoc_node)
-        when :pdf
-          IsoDoc::Sample::PdfConvert.new(options).convert(outname, isodoc_node)
-        else
-          super
-        end
-      end
+def output(isodoc_node, outname, format, options={})
+  case format
+  when :html
+    IsoDoc::Sample::HtmlConvert.new(options).convert(outname, isodoc_node)
+  when :doc
+    IsoDoc::Sample::WordConvert.new(options).convert(outname, isodoc_node)
+  when :pdf
+    IsoDoc::Sample::PdfConvert.new(options).convert(outname, isodoc_node)
+  else
+    super
+  end
+end
 --
 
 === Isodoc::Standoc customization in metanorma-sample
@@ -222,46 +229,46 @@ including persons as authors:
 
 [source,ruby]
 --
-      def author(isoxml, _out)
-        tc = isoxml.at(ns("//bibdata/ext/editorialgroup/committee"))
-        set(:tc, tc.text) if tc
-      end
+def author(isoxml, _out)
+  tc = isoxml.at(ns("//bibdata/ext/editorialgroup/committee"))
+  set(:tc, tc.text) if tc
+end
 --
 
 * Create abbreviations for the recognises statuses of documents:
 
 [source,ruby]
 --
-      def status_abbr(status)
-        case status
-        when "working-draft" then "wd"
-        when "committee-draft" then "cd"
-        when "draft-standard" then "d"
-        else
-          ""
-        end
-      end
+def status_abbr(status)
+  case status
+  when "working-draft" then "wd"
+  when "committee-draft" then "cd"
+  when "draft-standard" then "d"
+  else
+    ""
+  end
+end
 --
 
 * Add the month/year revision date to the metadata associated with the document version:
 
 [source,ruby]
 --
-      def version(isoxml, _out)
-        super
-        revdate = get[:revdate]
-        set(:revdate_monthyear, monthyr(revdate))
-      end
+def version(isoxml, _out)
+  super
+  revdate = get[:revdate]
+  set(:revdate_monthyear, monthyr(revdate))
+end
 --
 
 * Add a security element to metadata:
 
 [source,ruby]
 --
-      def security(isoxml, _out)
-        security = isoxml.at(ns("//bibdata/ext/security")) || return
-        set(:security, security.text)
-      end
+def security(isoxml, _out)
+  security = isoxml.at(ns("//bibdata/ext/security")) || return
+  set(:security, security.text)
+end
 --
 
 In code common to all of HTML, PDF and Word (`BaseConvert` module):
@@ -270,35 +277,35 @@ In code common to all of HTML, PDF and Word (`BaseConvert` module):
 
 [source,ruby]
 --
-      def info(isoxml, out)
-        @meta.security isoxml, out
-        super
-      end
+def info(isoxml, out)
+  @meta.security isoxml, out
+  super
+end
 --
 
 * Add two line breaks between the annex label and the annex title:
 
 [source,ruby]
 --
-      def annex_name(annex, name, div)
-        div.h1 **{ class: "Annex" } do |t|
-          t << "#{get_anchors[annex['id']][:label]} "
-          t.br
-          t.b do |b|
-            name&.children&.each { |c2| parse(c2, b) }
-          end
-        end
-      end
+def annex_name(annex, name, div)
+  div.h1 **{ class: "Annex" } do |t|
+    t << "#{get_anchors[annex['id']][:label]} "
+    t.br
+    t.b do |b|
+      name&.children&.each { |c2| parse(c2, b) }
+    end
+  end
+end
 --
 
 * Change the default label for annexes from "Annex" to "Appendix".
 
 [source,ruby]
 --
-      def i18n_init(lang, script)
-        super
-        @annex_lbl = "Appendix"
-      end
+def i18n_init(lang, script)
+  super
+  @annex_lbl = "Appendix"
+end
 --
 
 * Simplify the processing of boilerplate for terms and definitions: do not add a trailing boilerplate section.
@@ -306,27 +313,27 @@ applicable whether or no the terms and definitions section is empty:
 
 [source,ruby]
 --
-      def term_defs_boilerplate(div, source, term, preface)
-        if source.empty? && term.nil?
-          div << @no_terms_boilerplate
-        else
-          div << term_defs_boilerplate_cont(source, term)
-        end
-      end
+def term_defs_boilerplate(div, source, term, preface)
+  if source.empty? && term.nil?
+    div << @no_terms_boilerplate
+  else
+    div << term_defs_boilerplate_cont(source, term)
+  end
+end
 --
 
 * Render term headings in the same paragraph as the term heading number
 
 [source,ruby]
 --
-      def term_cleanup(docxml)
-        docxml.xpath("//p[@class = 'Terms']").each do |d|
-          h2 = d.at("./preceding-sibling::*[@class = 'TermNum'][1]")
-          h2.add_child("&nbsp;")
-          h2.add_child(d.remove)
-        end
-        docxml
-      end
+def term_cleanup(docxml)
+  docxml.xpath("//p[@class = 'Terms']").each do |d|
+    h2 = d.at("./preceding-sibling::*[@class = 'TermNum'][1]")
+    h2.add_child("&nbsp;")
+    h2.add_child(d.remove)
+  end
+  docxml
+end
 --
 
 
@@ -337,75 +344,76 @@ Initialise the HTML Converter:
 
 [source,ruby]
 --
-      def initialize(options)
-        @libdir = File.dirname(__FILE__)
-        super
-      end
+def initialize(options)
+  @libdir = File.dirname(__FILE__)
+  super
+end
 --
 
 * Set the default fonts for the HTML rendering, which will be used to populate the HTML CSS stylesheet.
 
 [source,ruby]
 --
-      def default_fonts(options)
-        {
-          bodyfont: (options[:script] == "Hans" ? '"SimSun",serif' : '"Overpass",sans-serif'),
-          headerfont: (options[:script] == "Hans" ? '"SimHei",sans-serif' : '"Overpass",sans-serif'),
-          monospacefont: '"Space Mono",monospace'
-        }
-      end
+def default_fonts(options)
+  {
+    bodyfont: (options[:script] == "Hans" ? '"SimSun",serif' : '"Overpass",sans-serif'),
+    headerfont: (options[:script] == "Hans" ? '"SimHei",sans-serif' : '"Overpass",sans-serif'),
+    monospacefont: '"Space Mono",monospace'
+  }
+end
 --
 
 * Set the default HTML assets for the HTML rendering.
 
 [source,ruby]
 --
-      def default_file_locations(_options)
-        {
-          htmlstylesheet: html_doc_path("htmlstyle.scss"),
-          htmlcoverpage: html_doc_path("html_sample_titlepage.html"),
-          htmlintropage: html_doc_path("html_sample_intro.html"),
-          scripts: html_doc_path("scripts.html"),
-        }
-      end
+def default_file_locations(_options)
+  {
+    htmlstylesheet: html_doc_path("htmlstyle.scss"),
+    htmlcoverpage: html_doc_path("html_sample_titlepage.html"),
+    htmlintropage: html_doc_path("html_sample_intro.html"),
+    scripts: html_doc_path("scripts.html"),
+  }
+end
 --
 
 * Access Google Fonts for the HTML rendering.
 
 [source,ruby]
 --
-      def googlefonts
-        <<~HEAD.freeze
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i|Space+Mono:400,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Overpass:300,300i,600,900" rel="stylesheet">
-        HEAD
-      end
+def googlefonts
+  <<~HEAD.freeze
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i|Space+Mono:400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Overpass:300,300i,600,900" rel="stylesheet">
+  HEAD
+end
 --
 
 * Set distinct default fonts and HTML assets for the Word rendering.
 
 [source,ruby]
 --
-    class WordConvert < IsoDoc::WordConvert
-      def default_fonts(options)
-        {
-          bodyfont: (options[:script] == "Hans" ? '"SimSun",serif' : '"Arial",sans-serif'),
-          headerfont: (options[:script] == "Hans" ? '"SimHei",sans-serif' : '"Arial",sans-serif'),
-          monospacefont: '"Courier New",monospace'
-        }
-      end
+class WordConvert < IsoDoc::WordConvert
+  def default_fonts(options)
+    {
+      bodyfont: (options[:script] == "Hans" ? '"SimSun",serif' : '"Arial",sans-serif'),
+      headerfont: (options[:script] == "Hans" ? '"SimHei",sans-serif' : '"Arial",sans-serif'),
+      monospacefont: '"Courier New",monospace'
+    }
+  end
 
-      def default_file_locations(_options)
-        {
-          wordstylesheet: html_doc_path("wordstyle.scss"),
-          standardstylesheet: html_doc_path("sample.scss"),
-          header: html_doc_path("header.html"),
-          wordcoverpage: html_doc_path("word_sample_titlepage.html"),
-          wordintropage: html_doc_path("word_sample_intro.html"),
-          ulstyle: "l3",
-          olstyle: "l2",
-        }
-      end
+  def default_file_locations(_options)
+    {
+      wordstylesheet: html_doc_path("wordstyle.scss"),
+      standardstylesheet: html_doc_path("sample.scss"),
+      header: html_doc_path("header.html"),
+      wordcoverpage: html_doc_path("word_sample_titlepage.html"),
+      wordintropage: html_doc_path("word_sample_intro.html"),
+      ulstyle: "l3",
+      olstyle: "l2",
+    }
+  end
+end
 --
 
 
