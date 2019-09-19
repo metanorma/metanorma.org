@@ -57,6 +57,12 @@ document identifier (`:docnumber:`) is not yet known.
 protected by patents, which may be required to implement this Recommendation.
 (default: `false`)
 
+`:title-(en, fr, es, ar, ru, zh):`:: The title to use, in each of the official languages of the ITU.
+`:annexid:`:: The ID to use for the annex, if this document is an annex.
+`:annextitle:`:: The title to use for the annex, if this document is an annex.
+`:annextitle-(en, fr, es, ar, ru, zh):`:: The title to use for the annex, if this document is an annex,
+in each of the official languages of the ITU.
+
 === Author Info
 
 `:bureau_{i}:`::
@@ -138,3 +144,47 @@ Approval status code for recommendation status. Legal values are:
 === Summaries
 
 The summary sections of recommendations are marked up with the style attribute `[abstract]`.
+
+=== Formulae
+
+By default, formulae are labelled "Equation". Inequalities are indicated through the
+option attribute `%inequality`:
+
+[source,asciidoc]
+--
+[stem%inequality]
+++++
+A < B
+++++
+--
+
+=== Annexes
+
+Appendixes are annexes marked as informative instead of normative, which is the default. 
+Appendixes are numbered
+with roman numerals rather than letters, as a separate sequence from normative Annexes.
+
+[source,asciidoc]
+--
+[appendix,obligation=normative]
+== First Annex
+
+[appendix,obligation=informative]
+== First Appendix
+--
+
+renders as
+
+____
+*Annex A*
+
+*First Annex*
+
+(This annex forms an integral part of this Recommendation)
+
+*Appendix I*
+
+*First Appendix*
+
+(This appendix does not form an integral part of this Recommendation)
+____
