@@ -193,6 +193,20 @@ stem:[m_D]:: is the mass, in grams, of grains with that defect;
 stem:[m_S]:: is the mass, in grams, of the test sample.
 --
 
+Inequalities are indicated through the option attribute `%inequality`:
+
+[source,asciidoc]
+--
+[stem%inequality]
+++++
+A < B
+++++
+--
+
+In most flavours, equations and inequalities are both referenced in the same way, as formulae.
+In some flavours (e.g. ITU), they are differentiated as Equations and Inequalities.
+
+
 == Figures
 
 Like formulae, figures can be followed by a definition list for the variables used in the figure;
@@ -290,7 +304,51 @@ source documents. The conventions for numbering vary by Metanorma flavour, but t
 default is to number all assets consecutively in the main body of a document, and
 separately in each Annex/Appendix, prefixed bt the Annex/Appendix number.
 
-Rarely an asset needs to be excluded from autonumbering. This is indicated by giving
+Autonumbering numbers assets consecutively. Some times, more than one level of numbering
+is required for a sequence of assets; e.g. _17a_, _17b_. To indicate that, all assets
+in the subsequence are assigned the same `subsequence` attribute:
+
+[source,asciidoctor]
+--
+[stem,subsequence=A]
+++++
+A
+++++
+
+[stem,subsequence=A]
+++++
+B
+++++
+
+[stem,subsequence=A]
+++++
+C
+++++
+
+[stem,subsequence=A]
+++++
+D
+++++
+
+[stem]
+++++
+E
+++++
+--
+
+____
+A (1a)
+
+B (1b)
+
+C (2a)
+
+D (2b)
+
+E (3)
+____
+
+Rarely, an asset needs to be excluded from autonumbering. This is indicated by giving
 it the option attribute `%unnumbered`:
 
 [source,asciidoctor]
