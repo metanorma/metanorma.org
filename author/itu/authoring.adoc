@@ -41,11 +41,11 @@ _H: Audiovisual and Multimedia Systems_
 
 `:series1:`::
 First level subseries, for example: _IPTV multimedia services and applications for IPTV_
-(= H.700&ndash;H.789)
+(= H.700–H.789)
 
 `:series2:`::
 Second level subseries, for example: _Digital Signage_
-(= H.780&ndash;H.789)
+(= H.780–H.789)
 
 `:language:` :: The language of the document (only `en` for now; will eventually support
 `ar`, `zh`, `en`, `fr`, `ru`, `es`)  (default: `en`)
@@ -58,10 +58,15 @@ protected by patents, which may be required to implement this Recommendation.
 (default: `false`)
 
 `:title-(en, fr, es, ar, ru, zh):`:: The title to use, in each of the official languages of the ITU.
+
 `:annexid:`:: The ID to use for the annex, if this document is an annex.
+
 `:annextitle:`:: The title to use for the annex, if this document is an annex.
+
 `:annextitle-(en, fr, es, ar, ru, zh):`:: The title to use for the annex, if this document is an annex,
+
 in each of the official languages of the ITU.
+
 
 === Author Info
 
@@ -143,12 +148,24 @@ Approval status code for recommendation status. Legal values are:
 
 === Summaries
 
-The summary sections of recommendations are marked up with the style attribute `[abstract]`.
+The summary sections of recommendations are marked up with the
+style attribute `[abstract]`.
+
 
 === Formulae
 
-By default, formulae are labelled "Equation". Inequalities are indicated through the
-option attribute `%inequality`:
+By default, formulae are labelled "`Equation`" with a formula sequence number, such as "`Equation 18`".
+
+[source,asciidoc]
+--
+[stem]
+++++
+A = B + 100
+++++
+--
+
+Inequalities are indicated through the option attribute `%inequality`.
+They will be shown with a label such as "`Inequality 19`".
 
 [source,asciidoc]
 --
@@ -158,9 +175,12 @@ A < B
 ++++
 --
 
+
+
 === Annexes
 
-Appendixes are annexes marked as informative instead of normative, which is the default. 
+Appendixes are annexes marked as informative instead of normative, which is the default.
+
 Appendixes are numbered
 with roman numerals rather than letters, as a separate sequence from normative Annexes.
 
