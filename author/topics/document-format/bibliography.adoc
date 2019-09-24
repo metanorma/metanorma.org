@@ -42,6 +42,28 @@ The NIST flavour of Metanorma currently supports rendering of generic references
 See link:/author/topics/building/reference-lookup[Automatic reference lookup] topic.
 ====
 
+[TIP]
+====
+Bibliographic entries can also be given as raw https://www.relaton.com[Relaton XML],
+in an Asciidoctor passthrough block. Of course, any Relaton XML bibitem entries
+need to be valid, and using correct `id` attributes:
+
+[source,asciidoctor]
+--
+[bibliography]
+== Normative References
+
+++++
+<bibitem id="doc1">
+<docidentifier>ISO 1</docidentifier>
+<title>Geometrical product specifications (GPS) -- Standard reference temperature for the specification of geometrical and dimensional properties</title>
+</bibitem>
+++++
+
+--
+====
+
+
 == Citations
 
 Citations of references in Metanora are formulated as cross-references; the id cross-referenced is the
