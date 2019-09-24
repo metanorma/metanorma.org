@@ -4,12 +4,24 @@ layout: author-docs
 
 = References & Bibliography
 
+== General
+
 The Normative References and the Bibliography must be preceded by the style attribute
 `[bibliography]`, so that the references they contain may be recognized as such.
 
-All bibliographic entries must be given as unordered lists. The entry must be preceded by a
+All entries in a Bibliography, whether standards or generic, are renumbered incrementally in the XML; if the number for
+generic references is updated, all citations of that reference will be updated as well.
+
+By default, Metanorma does not change the ordering of references in the Bibliography from what has been entered
+by the authors. Metanorma flavours may reorder references.
+
+== Entering typical references
+
+Typical bibliographic entries are given as unordered lists.
+
+A single bibliographic entry must be preceded by a
 bibliographic anchor, in triple brackets: this consists of an internal identifier (used within
-Asciidoc for crossreferences), followed by a document identifier
+Metanorma AsciiDoc for crossreferences), followed by a document identifier.
 
 Bibliographic entries for standards are expected to have the standard document
 identifier as the item label. References to well-defined standards codes use the document identifiers for citations
@@ -27,25 +39,21 @@ Generic references in bibliographies, as opposed to standards references, use nu
 * [[[ref1,1]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
 --
 
-All entries in a Bibliography, whether standards or generic, are renumbered incrementally in the XML; if the number for
-generic references is updated, all citations of that reference will be updated as well.
 
-By default, Metanorma does not change the ordering of references in the Bibliography from what has been entered
-by the authors. Metanorma flavours may reorder references.
+== Entering formatted citations
 
-[TIP]
-====
 For generic references by default, Metanorma only supports formatted citations,
 which are given as such in the AsciiDoc source.
+
 The NIST flavour of Metanorma currently supports rendering of generic references, on an experimental basis.
 
 See link:/author/topics/building/reference-lookup[Automatic reference lookup] topic.
-====
 
-[TIP]
-====
+
+== Entering Relaton XML
+
 Bibliographic entries can also be given as raw https://www.relaton.com[Relaton XML],
-in an Asciidoctor passthrough block. Of course, any Relaton XML bibitem entries
+in an AsciiDoc passthrough block. Of course, any Relaton XML bibitem entries
 need to be valid, and using correct `id` attributes:
 
 [source,asciidoctor]
@@ -61,7 +69,6 @@ need to be valid, and using correct `id` attributes:
 ++++
 
 --
-====
 
 
 == Citations
@@ -128,7 +135,7 @@ for example:
 <<ISO7301,clause=5,table=1,the foregoing reference>>
 --
 
-=== Automatic reference fetching
+== Automatic reference fetching
 
 https://www.relaton.com/[Relaton] can fetch bibliographic entries
 for any standards known to have online bibliographic databases (ISO, IEC, IETF, GB, NIST).
