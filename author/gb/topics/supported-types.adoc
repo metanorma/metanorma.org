@@ -2,17 +2,52 @@
 layout: gb-flavor
 ---
 
-= Guobiao standard types supported by Metanorma-GB
+= Chinese standard types supported by Metanorma-GB
 
-Metanorma-GB supports these document types:
+There are 6 major types of standards in China, namely:
+
+* National standards
+* Local standards
+* Sector standards
+* Social standards
+* Enterprise standards
+* Professional standards
+
 
 == National standards
+
+National standards are standards authorized and published by SAC
+(Standards Administration of China).
+
+These are standards with the document identifier prefix of "`GB`"
+standing for "`guobiao`", the abbreviation of "`guoji biaozhun`"
+("`national standard`" in Mandarin).
+
+Prefixes:
+
 * `GB` (national e.g. `GB/T`, `GB/Z`)
 * `GBn` (confidential)
 * `GJB` (military)
 * `GSB` (physical)
 
+See the https://github.com/metanorma/metanorma-model-gb/blob/master/models/gb-standard-national-prefix.adoc[GB National Standard Prefixes list] for all prefixes.
+
+
 == Sector standards
+
+Sector standards are standards developed by the sector standardization body
+as authorized by SAC.
+
+These are standards with a two-character document identifier prefix of
+various sorts. Each of these prefixes, clearly, stand for some abbreviation.
+
+For example, cryptographic standards are prefixed as "`GM`" for "`guo'mi`",
+the abbreviation of "`guojia mima`" ("`national cryptography`" in Mandarin).
+Agricultural standards are prefixed as "`NY`" for "`nong'ye`"
+("`agricultural sector`" in Mandarin).
+
+Prefixes:
+
 * `NY` Agriculture
 * `SC` Aquatic
 * `SL` Water Resources
@@ -77,15 +112,79 @@ Metanorma-GB supports these document types:
 * `ZY` Chinese Medicine
 * `LY` Forestry
 
+See the https://github.com/metanorma/metanorma-model-gb/blob/master/models/gb-standard-sector-prefix.adoc[GB Sector Standard Prefixes list] for all prefixes.
 
-== Professional standards
-* `ZB` prefix with supplied category code
 
 == Local standards
+
+Regional standards are standards developed by the regional
+standardization body, at the provincial or city level.
+
+These are standards with the document identifier prefix of "`DBnn`"
+standing for "`dibiao`", the abbreviation of "`difang biaozhun`"
+("`regional standard`" in Mandarin).
+
+The "`nn`" prefix is the location code of the region, these codes
+are defined in ISO 3166-2 as subdivision codes of China.
+
+Prefixes:
+
 * `DB` prefix with locality code
 
+See the https://github.com/metanorma/metanorma-model-gb/blob/master/models/gb-standard-local-prefix.adoc[GB Local Standard Prefixes list] for all prefixes.
+
+
+== Societal standards
+
+Societal standards are standards developed by societal organizations.
+These organizations are government-affiliated organizations carrying
+a specific designation.
+
+These are standards with a 4-character document identifier prefix. The
+prefix starts with "`T`", with a 3-character "`group code`" identifying
+the societal organization. "`T`" is an abbreviation of "`tuanbiao`",
+itself an abbreviation of "`tuanti biaozhun`" ("`group standard`" in Mandarin).
+
+Prefixes:
+
+* `T` prefix with three-character group code
+
+See the https://github.com/metanorma/metanorma-gb/issues/54[GB Social and Enterprise Standard Prefixes] for more information.
+
+
 == Enterprise standards
+
+Enterprise standards are standards developed by enterprises.
+There is no restriction on publication of enterprise standards, but
+the SAC offers a voluntary website for the registration of them.
+
+These are standards with a document identifier prefix that starts with "`Q`",
+followed by an enterprise identification code. There is no specific scheme
+for the enterprise identification code, there are digits, letters and
+even a mix of them. (Technically there is a requirement, but perhaps not enforced).
+
+The prefix "`Q`" is an abbreviation of "`qibiao`",
+itself an abbreviation of "`qiye biaozhun`" ("`enterprise standard`" in Mandarin).
+
+See the https://github.com/metanorma/metanorma-gb/issues/54[GB Social and Enterprise Standard Prefixes] for more information.
+
+Prefixes:
+
 * `Q` prefix with enterprise identifier code
 
-== Societal/Group standards
-* `T` prefix with three-character group code
+
+== Professional standards
+
+Professional standards are standards developed by professional organizations.
+There is no restriction on publication of professional standards.
+
+These standards have a document identifier prefix that starts with "`ZB`",
+followed by a professional sector categorization code.
+
+The prefix "`ZB`" is an abbreviation of "`zhuanbiao`",
+itself an abbreviation of "`zhuanye biaozhun`"
+("`professional standard`" in Mandarin).
+
+Prefixes:
+
+* `ZB` prefix with supplied category code
