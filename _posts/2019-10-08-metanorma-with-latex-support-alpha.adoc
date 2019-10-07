@@ -1,20 +1,22 @@
 ---
 layout: post
 title:  "Metanorma now supports LaTeX input (`tex2mn` in alpha!)"
-date:   2019-10-08
+date: 2019-10-08
 categories: about
-author:
-  name: Paolo Brasolin
-  email: paolo.brasolin@ribose.com
-  use_picture: assets
-  social_links:
-    - https://github.com/paolobrasolin
-  name: Ronald Tse
-  email: tse@ribose.com
-  use_picture: assets
-  social_links:
-    - https://www.linkedin.com/in/rhtse/
-    - https://github.com/ronaldtse
+authors:
+  -
+    name: Paolo Brasolin
+    email: paolo.brasolin@ribose.com
+    use_picture: assets
+    social_links:
+      - https://github.com/paolobrasolin
+  -
+    name: Ronald Tse
+    email: tse@ribose.com
+    use_picture: assets
+    social_links:
+      - https://www.linkedin.com/in/rhtse/
+      - https://github.com/ronaldtse
 # card_image: /assets/blog/2019-09-02.png
 excerpt: >-
     Metanorma now supports LaTeX input, in alpha!
@@ -30,19 +32,31 @@ in LaTeX/TeX in their lives (you know who you are, cryptographers),
 have long requested for the ability to create Metanorma output using LaTeX
 syntax instead of our beloved AsciiDoc.
 
-This has been particular challenging for us since they have been constant
+This has been particularly challenging for us since they have been constant
 in their feedback: comments, suggestions, recommendations, and eventually the
 very strongly worded demands...
 
 Today we finally acknowledge their request with actions and finally free
 ourselves from TeXtual abuse (just kidding).
 
-== Introducing tex2mn
+== Introducing `tex2mn`
 
-What is tex2mn?
+`tex2mn` stands for _LaTeX to Metanorma_.
 
+With this new tool we will help LaTeX authors write Metanorma documents
+without abandoning the comforts of their beloved language.
 
-== Screencast
+The function of `tex2mn` is twofold:
+
+* mapping the semantics of the Metanorma standard onto a LaTeX document class, and
+* providing a simple command to convert LaTeX documents to Metanorma-flavoured AsciiDoc.
+
+Effectively, this means that *LaTeX will become a first-class citizen among
+Metanorma input formats* -- on par with AsciiDoc!
+
+We just released version `0.1.0`.
+It's an alpha but you can already compile simple documents.
+Watch the screencast below to take a quick peek before we delve into the details.
 
 [.hoverable]
 .Generating a Metanorma document using `tex2mn`
@@ -51,16 +65,138 @@ image::/assets/blog/2019-10-08-tex2mn_screencast.gif[Generating a Metanorma docu
 
 == Usage of LaTeX Metanorma
 
-How do we use it?
+To start, get the Metanorma LaTeX document class `Metanorma.cls` from
+https://github.com/metanorma/tex2mn/tree/v0.1.0[the repository].
+One it's in your work folder, you can start writing your document:
 
-
-[source,sh]
+[source,latex]
 ----
-$ metanorma -t iec document.adoc
+\documentclass{Metanorma}
+
+\title{Sample document}
+\set{author}{John Doe}
+\set{author-phonetic}{jän dō}
+
+\begin{document}
+  \maketitle
+  \tableofcontents
+  \bigskip
+
+  This is the beginning of our sample document.
+  The author is \get{author}, which is pronounced \get{author-phonetic}.
+
+  % ...
+
+\end{document}
+----
+
+There are only two surprising macros:
+
+* `\set{<attribute>}{<value>}` sets the value for a
+  https://www.metanorma.com/author/ref/document-attributes/[document attribute]
+  which will get passed to Metanorma.
+* Using `\get{<attribute>}` you can read the value of an attribute and use it in the document.
+
+To write the document contents, many customary macros and environments are available:
+
+* all sectioning macros from `\section` downwards,
+* `\label` and `\ref` to place anchor and reference them,
+* `\footnote` to render footnotes,
+* `quote` environment to render quotes,
+* `\textbf`, `\textit`, `\textsc` and `\textst` (strikethrough) macros for text formatting,
+* `flushleft`, `center` and `flushright` environments for paragraph alignment,
+* `itemize`, `enumerate` and `description` environments for lists,
+* `equation`, `gather` and `align` environments for display math,
+* `\ref`, `\hyperref`, `\url` and `\hyperref` for cross referencing.
+
+Figures and tables can be also be captioned, labelled and `\ref`erred to as usual:
+
+[source,latex]
+----
+\begin{figure}
+  \label{fig:example}
+  \caption{This is an example figure}
+  \includegraphics{example-figure}
+\end{figure}
+----
+
+[source,latex]
+----
+\begin{table}
+  \label{tab:example}
+  \caption{This is an example table}
+  \begin{tabular}{ll} A & B \\ C & D \end{tabular}
+\end{table}
+----
+
+New environments introduced by Metanorma LaTeX include:
+* `tip`, `note`, `important`, `warning` and `caution` environments
+  to render color coded admonition boxes
+* `requirement`, `recommendation`, `permission`, `specification`,
+  `measurement-target`, `verification` and `import` environments
+  to render boxes with the relative meaning (note that all of
+  them can be nested in the first three)
+
+Bibliographies are currently supported only in the embedded form:
+
+[source,latex]
+----
+\cite{latexcompanion} is an essential book about \LaTeX,
+while \cite{ISO7301} gives the minimum specifications
+for rice subject to international trade.
+
+\begin{thebibliography}{2}
+  \bibitem{latexcompanion} Michel Goossens, Frank Mittelbach,
+    and Alexander Samarin. \textit{The \LaTeX\ Companion}.
+    Addison-Wesley, Reading, Massachusetts, 1993.
+  \bibitem[ISO 7301]{ISO7301} Rice -- Specification
+\end{thebibliography}
+----
+
+Note that the optional label provided to `\bibitem[<label>]{<key>}` will be
+used by Metanorma to automatically fetch the citation from online databases
+if it references any standard known to have one.
+
+Most of what's listed above is either standard LaTeX or very simple extensions.
+Metanorma LaTeX is designed to be as close as possible to standard LaTeX while
+being faithful to the structures the Metanorma standard needs to represent.
+
+== Document compilation
+
+Your Metanorma LaTeX document can be compiled directly to PDF just like any other
+LaTeX document (we recommend `latexmk -pdf input.tex` if your distribution includes it).
+
+To run `tex2mn` and use your document as an input for `metanorma`, you
+first need to install `latexml`footnote:[The `@9a0e7dc5` tag just pinpoints the installation to the earliest compatible version, so you can simply omit it and install the latest verion.]:
+
+[source,bash]
+----
+sudo cpanm git://github.com/brucemiller/LaTeXML.git@9a0e7dc5
+----
+
+After that, get `Metanorma.cls.ltxml` and `Metanorma.xsl` from
+https://github.com/metanorma/tex2mn/tree/v0.1.0[the repository]
+and put them into your project folder.
+
+You're now ready to convert `input.tex` to `output.adoc` with this one liner
+representing  the core function of `tex2mn`:
+
+[source,bash]
+----
+latexml input.tex  --nocomments | latexmlpost - --stylesheet=Metanorma.xsl --nocrossref --nodefaultresources --destination=output.adoc
+----
+
+Finally, you can use Metanorma to target any output type and file format you want:
+
+[source,bash]
+----
+$ metanorma -t iec output.adoc
 ----
 
 == Conclusion and next steps
 
-...
+`tex2mn` is still in alpha but we're confident it's a solid approach to the problem.
+We have a clear roadmap to maximize the value this tool will bring to the community:
 
-
+* extend Metanorma LaTeX until it's feature-complete with respect to Metanorma AsciiDoc
+* seamlessly integrate `tex2mn` into `metanorma-cli` so you can run it with a single, simple command.
