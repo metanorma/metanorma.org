@@ -27,7 +27,7 @@ extra_scripts:
 ---
 = Metanorma now supports LaTeX input (`tex2mn` in alpha!)
 
-Standards authors, especially those who have been writing exclusively 
+Standards authors, especially those who have been writing exclusively
 in LaTeX/TeX in their lives (you know who you are, cryptographers),
 have long requested for the ability to create Metanorma output using LaTeX
 syntax instead of our beloved AsciiDoc.
@@ -39,17 +39,17 @@ very strongly worded demands...
 Today we finally acknowledge their request with actions and finally free
 ourselves from TeXtual abuse (just kidding).
 
-== Introducing `tex2mn`
+== Introducing tex2mn
 
-`tex2mn` stands for _LaTeX to Metanorma_.
+`tex2mn`, as you would have guessed, stands for _LaTeX to Metanorma_.
 
 With this new tool we will help LaTeX authors write Metanorma documents
 without abandoning the comforts of their beloved language.
 
 The function of `tex2mn` is twofold:
 
-* mapping the semantics of the Metanorma standard onto a LaTeX document class, and
-* providing a simple command to convert LaTeX documents to Metanorma-flavoured AsciiDoc.
+. mapping the semantics of the Metanorma standard onto a LaTeX document class, and
+. providing a simple command to convert LaTeX documents to Metanorma-flavoured AsciiDoc.
 
 Effectively, this means that *LaTeX will become a first-class citizen among
 Metanorma input formats* -- on par with AsciiDoc!
@@ -109,7 +109,7 @@ To write the document contents, many customary macros and environments are avail
 * `equation`, `gather` and `align` environments for display math,
 * `\ref`, `\hyperref`, `\url` and `\hyperref` for cross referencing.
 
-Figures and tables can be also be captioned, labelled and `\ref`erred to as usual:
+Figures and tables can be also be captioned, labelled and ``\ref``erred to as usual:
 
 [source,latex]
 ----
@@ -130,8 +130,10 @@ Figures and tables can be also be captioned, labelled and `\ref`erred to as usua
 ----
 
 New environments introduced by Metanorma LaTeX include:
+
 * `tip`, `note`, `important`, `warning` and `caution` environments
   to render color coded admonition boxes
+
 * `requirement`, `recommendation`, `permission`, `specification`,
   `measurement-target`, `verification` and `import` environments
   to render boxes with the relative meaning (note that all of
@@ -161,18 +163,29 @@ Most of what's listed above is either standard LaTeX or very simple extensions.
 Metanorma LaTeX is designed to be as close as possible to standard LaTeX while
 being faithful to the structures the Metanorma standard needs to represent.
 
+
 == Document compilation
 
 Your Metanorma LaTeX document can be compiled directly to PDF just like any other
 LaTeX document (we recommend `latexmk -pdf input.tex` if your distribution includes it).
 
 To run `tex2mn` and use your document as an input for `metanorma`, you
-first need to install `latexml`footnote:[The `@9a0e7dc5` tag just pinpoints the installation to the earliest compatible version, so you can simply omit it and install the latest verion.]:
+first need to install ``latexml``:
+
+[source,bash]
+----
+sudo cpanm git://github.com/brucemiller/LaTeXML.git
+----
+
+[NOTE]
+====
+Or if you want to pinpoint the earliest compatible version, do this:
 
 [source,bash]
 ----
 sudo cpanm git://github.com/brucemiller/LaTeXML.git@9a0e7dc5
 ----
+====
 
 After that, get `Metanorma.cls.ltxml` and `Metanorma.xsl` from
 https://github.com/metanorma/tex2mn/tree/v0.1.0[the repository]
@@ -183,7 +196,8 @@ representing  the core function of `tex2mn`:
 
 [source,bash]
 ----
-latexml input.tex  --nocomments | latexmlpost - --stylesheet=Metanorma.xsl --nocrossref --nodefaultresources --destination=output.adoc
+latexml input.tex  --nocomments | \
+  latexmlpost - --stylesheet=Metanorma.xsl --nocrossref --nodefaultresources --destination=output.adoc
 ----
 
 Finally, you can use Metanorma to target any output type and file format you want:
@@ -198,5 +212,8 @@ $ metanorma -t iec output.adoc
 `tex2mn` is still in alpha but we're confident it's a solid approach to the problem.
 We have a clear roadmap to maximize the value this tool will bring to the community:
 
-* extend Metanorma LaTeX until it's feature-complete with respect to Metanorma AsciiDoc
+* extend Metanorma LaTeX until it is feature-complete with respect to Metanorma AsciiDoc
 * seamlessly integrate `tex2mn` into `metanorma-cli` so you can run it with a single, simple command.
+
+Ciao, for now!
+
