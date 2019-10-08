@@ -28,13 +28,18 @@ extra_scripts:
 ---
 = Metanorma more accessible than ever with WCAG compliance
 
-To much fanfare, Metanorma now supports WCAG 2.0 (ISO/IEC 40500:2012)
+To much fanfare, Metanorma now supports https://www.w3.org/TR/WCAG20/[WCAG 2.0]
+(ISO/IEC 40500:2012)
 accessibility features fitting right in the WYSIWYM mantra.
 
 Accessibility directives in Metanorma can be encoded directly in either
 AsciiDoc (or LaTeX, did we
 https://www.metanorma.com/blog/2019-10-08-metanorma-with-latex-support-alpha/[announce]
 that already?).
+
+STRONGLY URGE YOU DO NOT MENTION LATEX IN THIS POST, UNLESS YOU CAN PROVIDE
+LATEX MARKUP TO DO IT. EVEN THEN, WITHOUT PROPER DOCUMENTATION OF THE INPUT
+FORMAT ON METANORMA.COM, I BELIEVE IT IS A BAD IDEA: TOO EARLY TO PUBLICISE.
 
 Accessibility is an absolute necessity in today's world, and
 especially so for standardization documents in order to have
@@ -54,7 +59,7 @@ regardless of disability type or severity of impairment`".
 
 Metanorma provides multi-format output for standardization documents.
 These documents, due to their nature of containing widely applicable
-requirements or guidance, are obliged to provide their readers with
+requirements or guidance, are required to provide their readers with
 means of understanding without obstruction.
 
 Accessibility is crucial to Metanorma users, which include
@@ -89,33 +94,46 @@ Images can only be understood in words without visual interpretation.
 Authors should attempt their best in providing alt text for images,
 which describe what an image is about.
 
-Here's how you do it:
+Alt text is natively supported in Asciidoc, as the first argument inside
+the square brackets of the `images` macro.
 
 [source,adoc]
 ----
 image::images/rice-husk-purity.png[Color image demonstrating rice purity]
 ----
 
+If the alt text includes a comma, the entire alt text span should be in quotes:
+
+[source,adoc]
+----
+image::images/rice-husk-purity.png["Color image demonstrating rice purity"]
+----
+
 In HTML, the alt text will be rendered in the `alt` attribute (as expected!).
+
+[source,html]
+----
+<img src="images/rice-husk-purity.png" height="776" width="922" alt="Color image demonstrating rice purity" />
+----
 
 In Word, the alt text will be rendered in the image as Word "`Alt Text`".
 
-To verify, you could:
+To verify, you can:
 
-1. Right click the image
-2. Select "`Edit Alt Text`" in the context menu
-3. Verify that the alt text is shown inside the text box.
+. Right click the image
+. Select "`Edit Alt Text`" in the context menu
+. Verify that the alt text is shown inside the text box.
 
-// TODO: HTML screenshot
+image::/assets/blog/2019-10-09a.png[HTML alt text on images,width=100%]
 
-// TODO: Word screenshot
+image::/assets/blog/2019-10-09b.png[Word alt text on images,width=100%]
 
 
 === Hyperlink alt text
 
-These are relativey common but arguably one of the most important
-accessibility features. Alt text for hyperlinks explain what the hyperlink
-represents and can be read out by screen readers.
+Hyperlinks, are relatively common, but this is arguably one of the most important
+accessibility features. Alt text for hyperlinks explains what the hyperlink
+represents, and can be read out by screen readers.
 
 Here's the syntax to provide alt text for a hyperlink:
 
@@ -125,25 +143,26 @@ http://www.example.com[text,title="alttext"]
 ----
 
 In HTML, this alt text is rendered as the `title` attribute of the `<a>`
-tag.
+tag:
+
+[source,html]
+----
+<img src="images/rice-husk-purity.png" height="776" width="922" alt="Color image demonstrating rice purity" />
+----
+
 
 In Word, this alt text will be included as a "`ScreenTip`". This ScreenTip
 will be added for links as well as for links to references (the bibliography).
 
-To verify, you could:
+To verify, you can:
 
-1. Right click the link
-2. Select "`ScreenTip`" in the context menu
-3. Verify that the alt text shows in the ScreenTip.
+. Right click the link
+. Select "`ScreenTip`" in the context menu
+. Verify that the alt text shows in the ScreenTip.
 
-// TODO: HTML screenshot
+image::/assets/blog/2019-10-09c.png[HTML alt text on hyperlinks,width=100%]
 
-// TODO: Word screenshot
-
-
-
-//NOTE: Implemented https://github.com/metanorma/metanorma-nist/issues/108
-
+image::/assets/blog/2019-10-09d.png[Word alt text on hyperlinks,width=100%]
 
 === Table alt text
 
@@ -151,14 +170,30 @@ Alt text is supported for Tables, for both HTML and Word outputs.
 
 [source,adoc]
 ----
-[alt=Text]
+[alt=Table of numbers]
 |===
-...
+| a | b
+
+| 1 | 2
+| 3 | 4
 |===
 ----
 
 In HTML output, the alt text will be set as a `title` attribute
 for the table.
+
+[source,html]
+----
+<table id="_b4264982-3a38-4cf6-a7f9-ae8d371448aa" class="MsoISOTable" 
+ style="border-width:1px;border-spacing:0;" title="Table of numbers">
+  <thead>
+    <tr>
+      <th scope="col">a</th>
+....
+----
+
+Note that the HTML output also includes the `scope` attribute on `<th>`
+cells, indicating what part of the table they apply to.
 
 In Word, you can verify that alt text is set for a table by:
 
@@ -167,31 +202,27 @@ In Word, you can verify that alt text is set for a table by:
 . Choose the "`Alt Text`" tab
 . The entered alt text should be provided in the "`Title`" field.
 
+image::/assets/blog/2019-10-09e.png[HTML alt text on tables,width=100%]
 
-// TODO: HTML screenshot
-
-// TODO: Word screenshot
-
-//NOTE: Implemented https://github.com/metanorma/metanorma-nist/issues/109
+image::/assets/blog/2019-10-09f.png[Word alt text on tables,width=100%]
 
 
-=== Table title and summary
+=== Table summary
 
 Tables with data can be hard to understand without visual assistance,
-and in Metanorma the "`title`" and "`summary`" attributes are used
+and the alt text attribute just described is only intended to be brief.
+Metanorma also supports the "`summary`" attribute 
 to include such information in the accessible outputs.
-
 The `summary` attribute is intended to provide an extensive description
 of the table's content.
 
-The `title` attribute is used to provide a caption for the table.
-
-
-Here's how to add "`title`" and "`summary`" to a Metanorma table.
+Here's how to add alt text ("`title`" in HTML), the "`summary`" attribute, and
+a caption to a Metanorma table.
 
 [source,adoc]
 ----
 [headerrows=2,alt=Table of maximum mass fraction of defects in husked rice,summary=Table enumerating the permissible mass fraction of defects in husked and various classes of milled rice]
+.Table about rice
 |===
 .2+|Defect
 4+^| Maximum permissible mass fraction of defects in husked rice + stem:[w_max]
@@ -200,15 +231,8 @@ Here's how to add "`title`" and "`summary`" to a Metanorma table.
 | in milled rice (non-glutinous) 
 | in husked parboiled rice 
 | in milled parboiled rice
-
 |===
 ----
-
-The `title` attribute is supported by both HTML and Word outputs.
-
-// TODO: HTML screenshot
-
-// TODO: Word screenshot
 
 [NOTE]
 ====
@@ -221,9 +245,28 @@ this https://www.davidmacd.com/test/details.html[article from CanAdapt].
 In Metanorma-generated HTML 5, the `summary` is encoded inside the table
 caption, made invisible in HTML output, while keeping it readable for screen
 readers.
+
+In Word, the `summary` attribute is supported natively.
 ====
 
-//NOTE: Implemented https://github.com/metanorma/metanorma-nist/issues/143
+[source,html]
+----
+<p class="TableTitle" style="text-align:center;">Table 1&#xA0;&#x2014; Table about rice</p>
+  <table id="_3e858a99-8462-4c83-9edd-f551b3f5a68e" class="MsoISOTable" 
+   style="border-width:1px;border-spacing:0;" 
+   title="Table of maximum mass fraction of defects in husked rice">
+    <caption>
+      <span style="display:none">Table enumerating the permissible mass fraction 
+        of defects in husked and various classes of milled rice</span>
+    </caption>
+....
+----
+
+image::/assets/blog/2019-10-09g.png[HTML summary text on tables,width=100%]
+
+(We have made the summary text visible in gray for the screenshot.)
+
+image::/assets/blog/2019-10-09h.png[Word summary text on tables,width=100%]
 
 == Conclusion
 
