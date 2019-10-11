@@ -1,0 +1,371 @@
+---
+layout: post
+title:  "Metanorma datamodel directive"
+date:   2019-10-09
+categories: about
+author:
+  name: Peter Tam
+  email: peter.tam@ribose.com
+  use_picture: assets
+  social_links:
+    #- https://www.linkedin.com/in/rhtse/
+    #- https://github.com/ronaldtse
+#card_image: /assets/blog/2019-09-02.png
+#excerpt: >-
+    #Metanorma now supports authoring IEC International Standards.
+redirect_from:
+  - /blog/10-09-2019/metanorma-datamodel-directive/
+extra_scripts:
+  - src: /assets/js/hoverable-illustrations.js
+---
+= Metanorma datamodel directive
+
+////
+  - name: Ronald Tse
+    email: tse@ribose.com
+    use_picture: assets
+    social_links:
+      - https://www.linkedin.com/in/rhtse/
+      - https://github.com/ronaldtse
+////
+
+As a standard author, we may have to define and describe relationships among
+data within systems in our scope. Usually we would draw some diagrams to
+visualize such relationships and add definitions and descriptions to the
+elements in those diagrams.
+
+It works for the process but it is tedious because we have to identify all the
+elements within the diagrams that need to be documented. Sometimes we may also
+have to include an overview of all the diagrams, e.g. a top-down diagram, in
+the standard. It makes elements between the actual diagram and the overview
+repetitive. The manual process of the identification of all the elements to be
+documented and management of the repetitive elements among diagrams will
+gradually become unmanageable, especially if we have to update or review a
+single element within the standard, we will have to search for each occurrences
+within the diagrams and definitions. Errata will appear if we miss any one of
+the occurrence.
+
+The datamodel directive of Metanorma is a tool to ease the situation. It is a
+tool to unify the creation of datamodel diagrams and the rendering of elements'
+description and definitions. Its purpose is to reduce the manual process
+involving the management of datamodels.
+
+== Build our datamodel
+
+For the ease of elaboration, let's assume we are going to document a datamodel
+of forests that is planted with apple trees and orange trees. We build the
+datamodel such that:
+
+. A forest has many trees
+. Trees can only be apple or orange trees
+. Trees can have fruits
+
+=== Define the required models
+
+To build Metanorma's datamodels, we have to build two major things, models
+and views. Let's build our models first to start things over. We have the
+following models for forests:
+
+. Forest
+. Tree
+.. AppleTree
+.. OrangeTree
+. Fruit
+
+And each model will have its attributes:
+
+. Forest(id, name)
+. Tree(id, fruitKind, position)
+. AppleTree
+. OrangeTree
+. Fruit(kind)
+
+We know that apples are only on apple trees and oranges are only on orange
+trees. We have to define such constraints for the corresponding models:
+
+. AppleTree's constraints:
+.. fruitKind="apple"
+. OrangeTree's constraints:
+.. fruitKind="orange"
+
+Finally, we can actually start defining our models. In Metanorma, the file
+path of our models is
+`<project_root>/sources/models/models/**(<model_path>)/<model_name>.yml`.
+
+sources/models/models/Forest.yml
+
+```
+name: Forest
+modelType: class
+definition: An area planted with many trees.
+attributes:
+  id:
+    definition: The unique identifier of the Forest.
+    type: String
+  name:
+    definition: The name of the Forest.
+    type: String
+relations:
+  - target: Tree
+    relationship:
+      source:
+        type: aggregation
+        attribute:
+          forest:
+      target:
+        attribute:
+          tree:
+            cardinality:
+              min: 0
+              max: "*"
+```
+
+In this model of a Forest, we can see some important attributes of a model.
+
+`modelType` of the model here is a class. We define it as a class because we
+want to define the structure of a Forest instance by its attributes and
+relations.
+
+`definition` of the model will become the text to define it in Metanorma. The
+definition can be written as Metanorma format while we only wrote it as simple
+text here.
+
+`attributes` is the place to define the attributes of a model. In every
+attribute, we define its `definition` to be rendered in our Metanorma document.
+Similar to the `definition` of the model, it can be written as Metanorma
+format. `type` is the data type of the attribute.
+
+We know that a forest can have many trees in our requirements. `relations` is
+where we place associations. In the association between a forest and its trees,
+`source` is the Forest model (the model we are defining in the YAML file) and
+`target` is the Tree model. The relationship between the source and target
+model can be specified through the `relationship` attribute.
+
+We can specify the type of association by the `type` attribute, and here we
+specify it to be `aggregation`. Besides the type of association, we specify
+also the `attribute` of the `source` model. Here the attribute of the source
+model is `forest`. It is to indicate the additional attribute given from the
+source model in this association.
+
+In the `target` of the `relationship`, we specify the `cardinality` for the
+`tree` attribute. It is to represent the one-to-many relationship given by
+the requirement of the datamodel.
+
+sources/models/models/Tree.yml
+
+```
+name: Tree
+modelType: class
+definition: A woody plant that regularly renews its growth.
+attributes:
+  id:
+    definition: The unique identifier of the Tree.
+    type: String
+  fruitKind:
+    definition: The kind of Fruit fruited by the Tree.
+    type: FruitKind
+  position:
+    definition: The 2D geographic coordinates relative to the Forest.
+    type: Position
+relations:
+  - target: Fruit
+    action:
+      verb: produces
+      direction: target
+```
+
+The attributes of the Tree model is quite similar to that of the Forest model.
+The only new thing we are seeing is the `action` attribute under `relations`
+attribute. The `action` attribute is to specify the label of the association in
+the UML diagram. We know that a tree produces fruits, so `produces` is the
+`verb`, and `target` is the `direction` to specify the action is from the
+source model to the target model.
+
+sources/models/models/AppleTree.yml
+
+```
+name: AppleTree
+modelType: class
+definition: A tree that produces apples.
+constraints:
+  - fruitKind="apple"
+relations:
+  - target: Tree
+    relationship:
+      target:
+        type: inheritance
+```
+
+Here we can see a new attribute `constraints` of the `AppleTree` model. We know
+that an apple tree only produces apples but not orange or any other fruits, so
+we set an addition constraint of `fruitKind` that is must be `apple`. The
+`constraints` set will be rendered in the UML diagram.
+
+We can also see a new association type `inheritance` here. It is to express the
+`AppleTree` model is inherited from the `Tree` model. Other than `aggregation`
+and `inheritance`, we can also specify association type as `composition` or
+`direct`.
+
+sources/models/models/OrangeTree.yml
+
+```
+name: OrangeTree
+modelType: class
+definition: A tree that produces oranges.
+constraints:
+  - fruitKind="orange"
+relations:
+  - target: Tree
+    relationship:
+      target:
+        type: inheritance
+```
+
+sources/models/models/Fruit.yml
+
+```
+name: Fruit
+modelType: class
+definition: A product grown by tree and consumable by animals.
+attributes:
+  kind:
+    definition: The kind of Fruit grown by a tree.
+    type: FruitKind
+```
+
+sources/models/models/Position.yml
+
+```
+name: Position
+modelType: class
+definition: The relative position to a Forest.
+attributes:
+  x:
+    definition: The horizontal coordinate of the Position.
+    type: Float
+  y:
+    definition: The vertical coordinate of the Position.
+    type: Float
+```
+
+sources/models/models/FruitKind.yml
+
+```
+name: FruitKind
+modelType: enum
+definition: The enumeration value of a kind of Fruit.
+values:
+  apple:
+    definition: A fruit produces by an AppleTree.
+  orange:
+    definition: A fruit grown by an OrangeTree.
+```
+
+The models we have seen are all classes (`modelType` is `class`). Actually we
+can specify model as enumeration as well by setting the `modelType` as `enum`.
+The value options of an enumeration can be defined through the `values`
+attribute.
+
+=== Coordinate and render models with views
+
+Now we have models with their defined attributes and associations but we
+haven't defined how they are rendered in our document. To get models rendered
+in our documents, we have to create views as the coordinator.
+
+In Metanorma, the file path of our views is
+`<project_root>/sources/models/views/<view_name>.yml`.
+
+sources/models/views/Overview.yml
+
+```
+name: Overview
+title: Overview of Forest datamodel
+caption: Forest datamodel overview in UML
+imports:
+  Forest:
+  Tree:
+  Fruit:
+fidelity:
+  hideMembers: true
+  hideOtherClasses: true
+```
+
+sources/models/views/Forest.yml
+
+```
+name: Forest
+title: Forest datamodel
+caption: Forest datamodel
+imports:
+  Forest:
+  Tree:
+    skipDefinition: true
+fidelity:
+  hideOtherClasses: true
+```
+
+sources/models/views/Tree.yml
+
+```
+name: Tree
+title: Tree datamodel
+caption: Forest datamodel
+imports:
+  Tree:
+  AppleTree:
+  OrangeTree:
+  Fruit:
+  Position:
+  FruitKind:
+fidelity:
+  hideOtherClasses: true
+```
+
+=== Include views in our document
+
+At this point we have defined the complete datamodel of forests. The final step
+is to include it in our document. As usual, we define our Metanorma sections
+under `<project_root>/sources/sections`. But this time we include also the
+corresponding views in them.
+
+sources/sections/01-overview.adoc
+
+```
+== Forest datamodel overview
+
+Some introduction of the Forest overview...
+
+[datamodel]
+....
+include::../models/views/Overview.yml[]
+....
+```
+
+sources/sections/02-forest.adoc
+
+```
+== Forest datamodel
+
+Some introduction of the Forest datamodel...
+
+[datamodel]
+....
+include::../models/views/Forest.yml[]
+....
+```
+
+sources/sections/03-tree.adoc
+
+```
+== Tree datamodel
+
+Some introduction of the Tree datamodel...
+
+[datamodel]
+....
+include::../models/views/Tree.yml[]
+....
+```
+
+== Conclusion
+
