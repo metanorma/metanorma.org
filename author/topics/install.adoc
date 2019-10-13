@@ -4,14 +4,10 @@ layout: author-docs
 
 = Setting up Metanorma
 
-Metanorma has to be first setup on your computer to build Metanorma documents
-of any flavor.
+To build documents with Metanorma, you need to have the Metanorma
+command-line toolchain installed.
 
-To simplify installation and its dependencies,
-following setup methods are supported.
-
-NOTE: Basically, you need to have the `metanorma-cli` Ruby gem and its dependencies
-runnable from your command-line interface.
+The toolchain consists of `metanorma-cli` Ruby gem and its dependencies.
 
 [TIP]
 ====
@@ -34,9 +30,14 @@ framework.
 
 [TIP]
 ====
-This method is the recommended way of getting Metanorma installed, although
-for certain reasons (such as performance)
-that you may wish to setup the components directly on your machine.
+This method is the recommended way of getting Metanorma installed.
+
+Possible reasons to _avoid_ this method:
+
+* Performance. Using Metanorma inside Docker container may be a bit slower.
+* Building PDF deliverables.
+Due to a pending bug (https://github.com/metanorma/metanorma-docker/issues/42[see metanorma-docker#42]),
+building in PDF doesn’t currently work with Metanorma in Docker.
 ====
 
 . Pull the container:
