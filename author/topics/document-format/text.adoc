@@ -274,6 +274,32 @@ from the image.
 image::logo.jpg
 --
 
+=== Captions and titles
+
+As elsewhere in Metanorma, the caption of an image (in Metanorma, of the figure containing the image)
+is given with a line prefixed with dot. In Asciidoctor, the title attribute is treated as identical
+to the dot-prefixed caption:
+
+[source,asciidoctor]
+--
+.Caption
+image::logo.jpg
+--
+
+[source,asciidoctor]
+--
+image::logo.jpg[title=Caption]
+--
+
+Metanorma supports a title attribute on images for accessibility, which is distinct from the figure
+caption. This is entered in Metanorma as a `titleattr` attribute:
+
+[source,asciidoctor]
+--
+[titleattr=Title Attribute]
+image::logo.jpg
+--
+
 == Filenames for extraction
 
 Images, source code, and requirements can all be extracted out of the
