@@ -8,26 +8,15 @@ author:
   email: peter.tam@ribose.com
   use_picture: assets
   social_links:
-    #- https://www.linkedin.com/in/rhtse/
-    #- https://github.com/ronaldtse
-#card_image: /assets/blog/2019-09-02.png
-#excerpt: >-
-    #Metanorma now supports authoring IEC International Standards.
+    - https://github.com/PeterTKY
+excerpt: >-
+    Metanorma now supports directive for building datamodels.
 redirect_from:
   - /blog/10-09-2019/metanorma-datamodel-directive/
 extra_scripts:
   - src: /assets/js/hoverable-illustrations.js
 ---
 = Metanorma datamodel directive
-
-////
-  - name: Ronald Tse
-    email: tse@ribose.com
-    use_picture: assets
-    social_links:
-      - https://www.linkedin.com/in/rhtse/
-      - https://github.com/ronaldtse
-////
 
 As a standard author, we may have to define and describe relationships among
 data within systems in our scope. Usually we would draw some diagrams to
@@ -92,9 +81,10 @@ Finally, we can actually start defining our models. In Metanorma, the file
 path of our models is
 `<project_root>/sources/models/models/**(<model_path>)/<model_name>.yml`.
 
-sources/models/models/Forest.yml
+.sources/models/models/Forest.yml
 
-```
+[source,yaml]
+----
 name: Forest
 modelType: class
 definition: An area planted with many trees.
@@ -118,7 +108,7 @@ relations:
             cardinality:
               min: 0
               max: "*"
-```
+----
 
 In this model of a Forest, we can see some important attributes of a model.
 
@@ -151,9 +141,10 @@ In the `target` of the `relationship`, we specify the `cardinality` for the
 `tree` attribute. It is to represent the one-to-many relationship given by
 the requirement of the datamodel.
 
-sources/models/models/Tree.yml
+.sources/models/models/Tree.yml
 
-```
+[source,yaml]
+----
 name: Tree
 modelType: class
 definition: A woody plant that regularly renews its growth.
@@ -172,7 +163,7 @@ relations:
     action:
       verb: produces
       direction: target
-```
+----
 
 The attributes of the Tree model is quite similar to that of the Forest model.
 The only new thing we are seeing is the `action` attribute under `relations`
@@ -181,9 +172,10 @@ the UML diagram. We know that a tree produces fruits, so `produces` is the
 `verb`, and `target` is the `direction` to specify the action is from the
 source model to the target model.
 
-sources/models/models/AppleTree.yml
+.sources/models/models/AppleTree.yml
 
-```
+[source,yaml]
+----
 name: AppleTree
 modelType: class
 definition: A tree that produces apples.
@@ -194,7 +186,7 @@ relations:
     relationship:
       target:
         type: inheritance
-```
+----
 
 Here we can see a new attribute `constraints` of the `AppleTree` model. We know
 that an apple tree only produces apples but not orange or any other fruits, so
@@ -206,9 +198,10 @@ We can also see a new association type `inheritance` here. It is to express the
 and `inheritance`, we can also specify association type as `composition` or
 `direct`.
 
-sources/models/models/OrangeTree.yml
+.sources/models/models/OrangeTree.yml
 
-```
+[source,yaml]
+----
 name: OrangeTree
 modelType: class
 definition: A tree that produces oranges.
@@ -219,11 +212,12 @@ relations:
     relationship:
       target:
         type: inheritance
-```
+----
 
-sources/models/models/Fruit.yml
+.sources/models/models/Fruit.yml
 
-```
+[source,yaml]
+----
 name: Fruit
 modelType: class
 definition: A product grown by tree and consumable by animals.
@@ -231,11 +225,12 @@ attributes:
   kind:
     definition: The kind of Fruit grown by a tree.
     type: FruitKind
-```
+----
 
-sources/models/models/Position.yml
+.sources/models/models/Position.yml
 
-```
+[source,yaml]
+----
 name: Position
 modelType: class
 definition: The relative position to a Forest.
@@ -246,11 +241,12 @@ attributes:
   y:
     definition: The vertical coordinate of the Position.
     type: Float
-```
+----
 
-sources/models/models/FruitKind.yml
+.sources/models/models/FruitKind.yml
 
-```
+[source,yaml]
+----
 name: FruitKind
 modelType: enum
 definition: The enumeration value of a kind of Fruit.
@@ -259,7 +255,7 @@ values:
     definition: A fruit produces by an AppleTree.
   orange:
     definition: A fruit grown by an OrangeTree.
-```
+----
 
 The models we have seen are all classes (`modelType` is `class`). Actually we
 can specify model as enumeration as well by setting the `modelType` as `enum`.
@@ -275,9 +271,10 @@ in our documents, we have to create views as the coordinator.
 In Metanorma, the file path of our views is
 `<project_root>/sources/models/views/<view_name>.yml`.
 
-sources/models/views/Overview.yml
+.sources/models/views/Overview.yml
 
-```
+[source,yaml]
+----
 name: Overview
 title: Overview of Forest datamodel
 caption: Forest datamodel overview in UML
@@ -288,11 +285,36 @@ imports:
 fidelity:
   hideMembers: true
   hideOtherClasses: true
-```
+----
 
-sources/models/views/Forest.yml
+We have defined the models we need to build the datamodel of forests, but we
+haven't specified how they are organized into UML diagrams and sections in our
+document. For our datamodel to be easily understood by readers, it's beneficial
+to include an overview of it. In the UML diagram for the overview, we don't
+want to include all the details, e.g. attributes of the models and models other
+than the core ones. We want to express only the core models `Forest`, `Tree`
+and `Fruit` and their associations in the overview.
 
-```
+The `imports` attribute for a view is the place where we import the necessary
+models. Let's recall the file path of our models
+`<project_root>/sources/models/models/**(<model_path>)/<model_name>.yml`. The
+keys `Forest`, `Tree` and `Fruit` we see in the `imports` attribute  actually
+come from the partial (<model_path>/<model_name>) of the file path.
+
+The `fidelity` attribute for a view controls how much details to be seen in the
+UML diagram and whether the definitions of models to be rendered in the
+document. The `hideMembers` boolean attribute means not to include the
+model attributes in the UML diagram and not to render the definitions of models
+in the document. The reason not to include them here because we want to include
+an overview of the datamodel only but not to define them in details. The
+`hideOtherClasses` boolean attribute means not to include the associated models
+from the imported ones because we aim to focus only to the core models in the
+overview.
+
+.sources/models/views/Forest.yml
+
+[source,yaml]
+----
 name: Forest
 title: Forest datamodel
 caption: Forest datamodel
@@ -302,11 +324,17 @@ imports:
     skipDefinition: true
 fidelity:
   hideOtherClasses: true
-```
+----
 
-sources/models/views/Tree.yml
+In the `Forest` view of the datamodel, we want to describe the attributes
+of the Forest model but not the Tree model. The `skipDefinition` boolean
+attribute serves this purpose by not rendering the definitions of Tree's
+attributes in our Metanorma document.
 
-```
+.sources/models/views/Tree.yml
+
+[source,yaml]
+----
 name: Tree
 title: Tree datamodel
 caption: Forest datamodel
@@ -319,7 +347,7 @@ imports:
   FruitKind:
 fidelity:
   hideOtherClasses: true
-```
+----
 
 === Include views in our document
 
@@ -328,9 +356,10 @@ is to include it in our document. As usual, we define our Metanorma sections
 under `<project_root>/sources/sections`. But this time we include also the
 corresponding views in them.
 
-sources/sections/01-overview.adoc
+.sources/sections/01-overview.adoc
 
-```
+[source,adoc]
+----
 == Forest datamodel overview
 
 Some introduction of the Forest overview...
@@ -339,11 +368,15 @@ Some introduction of the Forest overview...
 ....
 include::../models/views/Overview.yml[]
 ....
-```
+----
 
-sources/sections/02-forest.adoc
+Here we can see how to include a view of the datamodel in our Metanorma
+document by using the `[datamodel]` directive.
 
-```
+.sources/sections/02-forest.adoc
+
+[source,adoc]
+----
 == Forest datamodel
 
 Some introduction of the Forest datamodel...
@@ -352,11 +385,12 @@ Some introduction of the Forest datamodel...
 ....
 include::../models/views/Forest.yml[]
 ....
-```
+----
 
-sources/sections/03-tree.adoc
+.sources/sections/03-tree.adoc
 
-```
+[source,adoc]
+----
 == Tree datamodel
 
 Some introduction of the Tree datamodel...
@@ -365,7 +399,22 @@ Some introduction of the Tree datamodel...
 ....
 include::../models/views/Tree.yml[]
 ....
-```
+----
 
 == Conclusion
+
+After compiling our document, we should see the UML diagrams and sections of
+models being rendered properly. By using the datamodel directive, we can ensure
+missing definitions of models and their attributes to be easily searchable (by
+grepping definition). Also, the models can be maintained and updated easily.
+Without the datamodel directive, we had to somehow draw the diagrams of the
+datamodels and describe them in the document. In case we want to update or
+review some of the definitions, we would have to update our drawings of the
+diagrams and the description of them separately, not to mention some models and
+their definitions may occur multiple times. It made it easy to miss the update
+of some of the occurences.
+
+I hope the new syntax of the datamodel directive of Metanorma can help define
+datamodel more easily in a maintainable way, and readers will be happy to read
+our document with a logical presentation of datamodels.
 
