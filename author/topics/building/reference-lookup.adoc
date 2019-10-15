@@ -23,6 +23,8 @@ the standard document identifier needs to be encoded in a format recognized by R
 
 ISO deliverables:: `ISO(identifier)`, or any identifier prefixed with `ISO`
 
+ISO/IEC Directives:: `ISO/IEC DIR {n}`, `ISO/IEC DIR {n} + {flavor} SUP`, or `ISO/IEC DIR {flavor} SUP`. `n` - is a number of directive, `flavor` - is `ISO` or `IEC`.
+
 IEC deliverables:: `IEC(identifier)`, or any identifier prefixed with `IEC`
 
 ITU deliverables:: `ITU(identifier)` (e.g. `ITU(H.265)`), or any identifier prefixed with `ITU`
@@ -125,6 +127,9 @@ into version control systems (e.g. Git) for faster (and more reproducible)
 continuous integration build times. It also prevents CI build failures
 caused by bibliographic sources being temporarily unavailable.
 
+=== Static cache
+
+The static cache is distributed with the `relaton` gem and always enabled. It contains some documents, like ISO/IEC Directives, which can't be fetched form websites.
 
 === Disabling caching
 
