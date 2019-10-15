@@ -32,7 +32,7 @@ wording complies with what is expected.
 the first heading of the document. You can optionally use a caption like `.Foreword`
 instead of a heading, but the title to the foreword will be given automatically anyway.
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [[foreword]]
 .Foreword
@@ -45,7 +45,7 @@ flavors of Metanorma (like ISO), although it will still be added to document met
 in the XML file (the `bibdata` element). In flavors where it is rendered, it may
 appear on the title page (e.g. UN documents), or before the Foreword.
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [abstract]
 == Summary
@@ -58,7 +58,7 @@ or (as more advanced markup) with an attribute `heading=introduction`. (The
 `heading=` attribute can be used for all sections whose headings are meant to
 give their particular type.)
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [heading=introduction]
 == Enkonduko
@@ -95,7 +95,7 @@ The following are the types of block supported in Metanorma:
 
 * Unordered lists, which are bulleted, and can be nested. (The style of bullet varies by flavor.)
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 The main changes compared to the previous edition are:
 
@@ -108,7 +108,7 @@ The main changes compared to the previous edition are:
 * Ordered lists, which can be nested. The label of each list item is normally set
 by the Metanorma flavor; this is so that ordered list items can be referenced consistently.
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 . the sampling method used;
 . the test method used;
@@ -118,7 +118,7 @@ by the Metanorma flavor; this is so that ordered list items can be referenced co
 
 * Definition lists.
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 stem:[w]:: is the mass fraction of grains with a particular defect in the test sample;
 stem:[m_D]:: is the mass, in grams, of grains with that defect;
@@ -127,7 +127,7 @@ stem:[m_S]:: is the mass, in grams, of the test sample.
 
 * Tables.
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [[tableD-1]]
 [cols="<,^,^,^,^",headerrows=2]
@@ -143,7 +143,7 @@ stem:[m_S]:: is the mass, in grams, of the test sample.
 
 * Images.
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [[figureC-1]]
 .Typical gelatinization curve
@@ -152,14 +152,14 @@ image::images/rice_image2.png[]
 
 * Admonitions (including Notes, and Warnings/Cautions).
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 CAUTION: Only use paddy or parboiled rice for the determination of husked rice yield.
 --
 
 * Block quotes.
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [quote, ISO, "ISO7301,clause 1"]
 _____
@@ -169,7 +169,7 @@ _____
 
 * Examples.
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [example]
 Foreign seeds, husks, bran, sand, dust.
@@ -177,7 +177,7 @@ Foreign seeds, husks, bran, sand, dust.
 
 * Source code.
 
-[source,asciidoctor]
+[source,asciidoc]
 ----
 .Sample Code
 ====
@@ -233,7 +233,7 @@ all such instances.
 URLs are handled by a macro, consisting of a recognizable URL, followed optionally
 (without space) by square brackets containing the text to be hyperlinked;
 e.g.:
-[source,asciidoctor]
+[source,asciidoc]
 ----
 http://www.iso.org/[International Organization for Standardization].
 ----
@@ -250,7 +250,7 @@ Mathematical formatting, finally, is called STEM formatting in Metanorma AsciiDo
 are entered using http://asciimath.org[AsciiMath]. Mathematical formatting can be
 either a block (which constitutes a formula for standards documents), or inline:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [[formulaA-1,A.1]]
 [stem]

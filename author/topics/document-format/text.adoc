@@ -8,7 +8,7 @@ layout: author-docs
 
 The following formatting macros are used for strikethrough and small caps text:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [strike]#strike through text#
 [smallcap]#small caps text#
@@ -18,7 +18,7 @@ The following formatting macros are used for strikethrough and small caps text:
 
 Paragraph alignment is defined as an attribute for paragraphs:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [align=left]
 This paragraph is aligned left
@@ -40,7 +40,7 @@ but the citation is expected to be in the same format as all other citations,
 a cross-reference optionally followed by text, which may include the bibliographic
 sections referenced:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [quote, ISO, "ISO7301,section 1"]
 _____
@@ -116,7 +116,7 @@ Tables can also have alternate text as a title, `alt`, and summary text,
 `summary`, both of which are to be rendered as a summary of the table
 for accessibility:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [headerrows=2,alt=Table of maximum mass fraction of defects in husked rice,summary=Table enumerating the permissible mass fraction of defects in husked and various classes of milled rice]
 |===
@@ -268,7 +268,7 @@ The value `auto` is accepted for image width and height attributes. It is only p
 to HTML output; if the output is to Word, both the width and height attributes are stripped
 from the image.
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [height=90,width=auto]
 image::logo.jpg
@@ -280,13 +280,13 @@ As elsewhere in Metanorma, the caption of an image (in Metanorma, of the figure 
 is given with a line prefixed with dot. In Asciidoctor, the title attribute is treated as identical
 to the dot-prefixed caption:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 .Caption
 image::logo.jpg
 --
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 image::logo.jpg[title=Caption]
 --
@@ -294,7 +294,7 @@ image::logo.jpg[title=Caption]
 Metanorma supports a title attribute on images for accessibility, which is distinct from the figure
 caption. This is entered in Metanorma as a `titleattr` attribute:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [titleattr=Title Attribute]
 image::logo.jpg
@@ -314,7 +314,7 @@ gives the filename that any inline-encoded
 images, source code, and requirements should be
 exported to, if that is requested by downstream tools.
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [filename="image1.gif"]
 image::logo.gif
@@ -338,7 +338,7 @@ Autonumbering numbers assets consecutively. Some times, more than one level of n
 is required for a sequence of assets; e.g. _17a_, _17b_. To indicate that, all assets
 in the subsequence are assigned the same `subsequence` attribute:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [stem,subsequence=A]
 ++++
@@ -381,7 +381,7 @@ ____
 Rarely, an asset needs to be excluded from autonumbering. This is indicated by giving
 it the option attribute `%unnumbered`:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [[figureC-1]]
 [%unnumbered]
