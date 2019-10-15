@@ -27,14 +27,14 @@ Bibliographic entries for standards are expected to have the standard document
 identifier as the item label. References to well-defined standards codes use the document identifiers for citations
 (e.g. `ISO 20483:2013`)
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 * [[[ref1,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
 --
 
 Generic references in bibliographies, as opposed to standards references, use numbers, which are rendered bracketed, like `[1]`.
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 * [[[ref1,1]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
 --
@@ -56,7 +56,7 @@ Bibliographic entries can also be given as raw https://www.relaton.com[Relaton X
 in an AsciiDoc passthrough block. Of course, any Relaton XML bibitem entries
 need to be valid, and using correct `id` attributes:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 [bibliography]
 == Normative References
@@ -95,7 +95,7 @@ typical AsciiDoc cross-reference.
 The locality can appear in quotations if it contains special characters (like dashes or commas).
 For example:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 <<ISO7301,clause=3.1-3.4>>
 
@@ -106,7 +106,7 @@ Sampling shall be carried out in accordance with <<xxx,section="5-3-1,bis">>
 
 More examples:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 <<ISO712,the foregoing reference>>     # renders as: the foregoing reference
 <<ISO712,section=5, page 8-10>>         # renders as: ISO 712, Section 5, Page 8-10
@@ -119,7 +119,7 @@ will be displayed instead of the localities.
 
 A custom locality can be entered by prefixing it with `locality:`:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 <<ISO712,locality:frontispiece=5, page=8-10>>         # renders as: ISO 712, Frontispiece 5, Page 8-10
 --
@@ -130,7 +130,7 @@ prefix are recognized in internationalization configuration files.
 Any text after the bibliographic localities is still treated as custom cross-reference text;
 for example:
 
-[source,asciidoctor]
+[source,asciidoc]
 --
 <<ISO7301,clause=5,table=1,the foregoing reference>>
 --

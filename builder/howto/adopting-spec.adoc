@@ -40,7 +40,7 @@ To adapt the schema for your publication set,
 For example, the `rsd.rnc` schema, expressed in RelaxNG Compact, is specific to Ribose Standard documents: it inherits from the ISO Standards model, modifying 10 elements, and adding five. As an example of modifying elements, RSD permits preformatted text (Ascii art) in figures, which ISO does not:
 
 .ISO
-[source,asciidoctor]
+[source,asciidoc]
 ----
 figure =
   element figure {
@@ -52,7 +52,7 @@ figure =
 ----
 
 .RSD
-[source,asciidoctor]
+[source,asciidoc]
 ----
 figure =
   element figure {
@@ -66,7 +66,7 @@ figure =
 The preformatted text tag `pre` is an addition to the RSD specification, which is why it lies outside the `include "isostandard.rnc {}"` container:
 
 .RSD
-[source,asciidoctor]
+[source,asciidoc]
 ----
 pre = element pre { text }
 ----
@@ -74,7 +74,7 @@ pre = element pre { text }
 As another instance of customization, the `BibItemType` enumeration of permissible bibliographical item types is extended in RSD to include the document types specific to RSD:
 
 .RSD
-[source,asciidoctor]
+[source,asciidoc]
 ----
 BibItemType |=
 "policy-and-procedures" | "best-practices" | "supporting-document" | "report" | "legal" | "directives" | "proposal" |

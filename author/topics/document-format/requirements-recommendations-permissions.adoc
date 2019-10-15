@@ -8,7 +8,7 @@ Requirements, Recommendations, and Permissions are encoded using AsciiDoc markup
 for example blocks, prepended with an role attribute containing the type of the block
 (i.e., its obligation)—one of “requirement”, “recommendation”, or “permission”. For example:
 
-[source,asciidoctor]
+[source,asciidoc]
 .Most basic example
 -----
 [.permission]
@@ -41,7 +41,7 @@ comma-delimited. Using this attribute will override the obligation of the blog.
 `inherit`:: May be used to reference the label of a requirement that is imported or
 presupposed by this requirement.
 
-[source,asciidoctor]
+[source,asciidoc]
 .An exhaustive attribute example
 -----
 [.recommendation,label="/ogc/recommendation/wfs/2",subject="user",inherit="/ss/584/2015/level/1",classification="control-class:Technical;priority:P0;family:System and Communications Protection,System and Communications Protocols",obligation="permission,recommendation"]
@@ -56,7 +56,7 @@ Requirements can be nested (as is the case with any delimited block AsciiDoc),
 by adding one more delimiter symbol than its containing block; that means that
 nested requirements are marked up as nested examples.
 
-[source,asciidoctor]
+[source,asciidoc]
 .Nesting example
 -----
 [.permission]
@@ -90,7 +90,7 @@ the object of the requirement)
 
 For example:
 
-[source,asciidoctor]
+[source,asciidoc]
 .An example of a requirement with four components
 -----
 [.requirement]
@@ -121,7 +121,7 @@ This is a code stub
 The combination of example markup and open block markup  allows us to combine
 nested requirements with internal structure for the nested requirements:
 
-[source,asciidoctor]
+[source,asciidoc]
 .An example of nested requirements with components
 -----
 [.requirement,label="requirement A"]
@@ -157,7 +157,7 @@ subpart of the requirement. These blocks can have types, referring to the conven
 or computer frameworks that they follow. They are given by setting the `type` attribute
 on the open block:
 
-[source,asciidoctor]
+[source,asciidoc]
 .An example of mixed descriptions and typed open blocks
 -----
 [.requirement,label="requirement A"]
@@ -185,7 +185,7 @@ that the code is to be run under.)
 The language of a source code block is likely to be distinct from the type of named block
 it is contained in.
 
-[source,asciidoctor]
+[source,asciidoc]
 .An example of machine readable code in a specification
 -----
 [.requirement,label="requirement A"]
@@ -212,7 +212,7 @@ Often, though not always, named blocks contain machine-readable code which is no
 intended to be included in the output, but is supplemental to the human-readable
 description. That is signalled through the options attribute `exclude` on the named block.
 
-[source,asciidoctor]
+[source,asciidoc]
 .An example of a complex recommendation with named blocks
 -----
 [.recommendation,label="/ogc/recommendation/wfs/2",subject="user"]
