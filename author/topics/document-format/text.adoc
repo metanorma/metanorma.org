@@ -276,14 +276,13 @@ image::logo.jpg
 
 === Captions and titles
 
-As elsewhere in Metanorma, the caption of an image (in Metanorma, of the figure containing the image)
-is given with a line prefixed with dot. In Asciidoctor, the title attribute is treated as identical
-to the dot-prefixed caption:
+As elsewhere in Metanorma, the caption of an image (of the figure containing the image)
+is set with a line prefixed with dot above the image.
 
 [source,asciidoc]
 --
 .Caption
-image::logo.jpg
+image::logo.jpg[]
 --
 
 [source,asciidoc]
@@ -291,14 +290,41 @@ image::logo.jpg
 image::logo.jpg[title=Caption]
 --
 
-Metanorma supports a title attribute on images for accessibility, which is distinct from the figure
-caption. This is entered in Metanorma as a `titleattr` attribute:
+NOTE: Similar to Asciidoctor AsciiDoc, the `title` attribute is treated as
+identical to the dot-prefixed caption.
+
+
+Metanorma supports a `title` attribute on images for accessibility, which is
+distinct from the figure caption.
+This is entered in Metanorma as the `titleattr` attribute:
 
 [source,asciidoc]
 --
 [titleattr=Title Attribute]
 image::logo.jpg
 --
+
+Or
+
+[source,asciidoc]
+--
+image::logo.jpg[titleattr=Title Attribute]
+--
+
+Both captions and titles could be used together.
+
+[source,asciidoc]
+--
+.Rice husk separation in rice farm at Breton near Dinan
+image::logo.jpg[titleattr=Photo of rice husks being separated]
+--
+
+NOTE: The `titleattr` attribute does not get rendered in Word output due to Word
+limitations. Word only supports a single image "`Alt Text`", which would be set
+by the caption.
+Word's description of "`Alt Text`" is:
+"`How would you describe this object and its context to someone who is blind?`".
+
 
 == Filenames for extraction
 
