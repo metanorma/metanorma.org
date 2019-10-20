@@ -9,53 +9,70 @@ layout: itu-flavor
 [[note_general_doc_ref_doc_attrib_itu]]
 [NOTE]
 ====
-Below are listed only document attributes that are unique to Metanorma’s processing of ITU documents.
+Document attributes listed below are unique to the processing of ITU documents in Metanorma.
 
 For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author’s documentation. That page describes attributes that apply to all Metanorma flavors, not just ITU.
 
 For an _introduction to AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
 ====
 
-=== Document Info
+=== Document Information
 
 `doctype`::
 Document type. Choices:
 +
 --
-* `recommendation` (default)
-* `recommendation-supplement`
-* `recommendation-amendment`
-* `recommendation-corrigendum`
-* `recommendation-errata`
-* `recommendation-annex`
-* `focus-group`
-* `implementers-guide`
-* `technical-paper`
-* `technical-report`
-* `joint-itu-iso-iec`
+* `recommendation` (default): This document is an ITU Recommendation.
+* `recommendation-supplement`: This document is a Supplement of an ITU Recommendation.
+* `recommendation-amendment`: This document is an Amendment of an ITU Recommendation.
+* `recommendation-corrigendum`: This document is a Corrigendum of an ITU Recommendation.
+* `recommendation-errata`: This document is an Errata of an ITU Recommendation.
+* `recommendation-annex`: This document is an Annex of an ITU Recommendation.
+* `focus-group`: This document is the output of a Focus Group.
+* `implementers-guide`: This document is an ITU Implementers Guide.
+* `technical-paper`: This document is a ITU Technical Paper.
+* `technical-report`: This document is a ITU Technical Report.
+* `joint-itu-iso-iec`: This document is a "`Common Text`" Recommendation between ITU and ISO/IEC JTC 1.
 --
 
 `:status:`::
 Document status. Synonym: `:docstage:`.  Choices:
 +
 --
-* `in-force`
-* `superseded`
-* `in-force-prepublished`
-* `withdrawn`
+* `in-force`: This document is In-force.
+* `in-force-prepublished`: This document is In-force but the text is not final.
+* `superseded`: This document has been superseded.
+* `withdrawn`: This document has been withdrawn.
+
+NOTE: If the document is a draft, use the general `:draft:` document attribute instead of `:status:` to indicate so (see link:/author/ref/document-attributes/[Document attributes reference]).
+
+In general, the document stages are:
+
+* Draft Recommendation (the text of the Recommendation is being developed and may be quite mature, but it has not yet been approved)
+* Once the text is mature, the SG may decide to "`Consent it`" (APP) or "`Determine it`" (TAP). The draft Recommendation is then in "`Consented`" (AAP) or "`Determined`" (TAP) state.
+* As soon as it has been approved, the Recommendation is no longer a draft Recommendation, but an in-force Recommendation.
+* TSB then prepublishes the Recommendation. Prepublished Recommendations are in-force texts that are not yet in their final form.
+  Because they are not final, they are made available only to the Membership.
+* TSB copy-edits and publishes the Recommendation. This final in-force version is made available to all for free download.
+* If the Recommendation is revised, it will be superseded by the revision as soon as the revision is approved.
+* Recommendations are seldom withdrawn, but it may happen when the SG decides to do so.
+
+Please refer to the Traditional Approval Process (TAP) (https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1])
+and the Alternative Approval Process (AAP) (https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8])
+for further details.
 --
 
 `:series:`::
 Series that the recommendation belongs to. Use full title, for example:
-_H: Audiovisual and Multimedia Systems_
+"`H: Audiovisual and Multimedia Systems`"
 
 `:series1:`::
-First level subseries, for example: _IPTV multimedia services and applications for IPTV_
-(= H.700–H.789)
+First level subseries, for example: "`IPTV multimedia services and applications for IPTV`"
+(= "`H.700–H.789`")
 
 `:series2:`::
-Second level subseries, for example: _Digital Signage_
-(= H.780–H.789)
+Second level subseries, for example: "`Digital Signage`"
+(= "`H.780–H.789`")
 
 `:language:` :: The language of the document (only `en` for now; will eventually support
 `ar`, `zh`, `en`, `fr`, `ru`, `es`)  (default: `en`)
@@ -78,14 +95,20 @@ protected by patents, which may be required to implement this Recommendation.
 in each of the official languages of the ITU.
 
 
-=== Author Info
+=== Author Information
 
 `:bureau_{i}:`::
-Mandatory. Bureau that the document belongs to. Choices: `R` (Radiocommunication),
-`T` (Telecommunication Standardization), `D` (Development).
-_Defaults to `T`_. `bureau`, `group`, `subgroup`, and `workgroup` together form
+Mandatory. Bureau that the document belongs to. Choices:
++
+--
+* `T` (Telecommunication Standardization Bureau, ITU-T) (default)
+* `R` (Radiocommunication Bureau, ITU-R)
+* `D` (Development Bureau, ITU-D)
+
+`bureau`, `group`, `subgroup`, and `workgroup` together form
 a project group, and there may be multiple project groups associated with a document;
 each group after the first is indicated by a trailing number, e.g. `bureau_2`, `group_2`.
+--
 
 `:group_{i}:`::
 Mandatory. Project group that the document belongs to.
@@ -108,7 +131,12 @@ Project subgroup that the document belongs to.
 
 `:subgrouptype_{i}:`::
 Type of Project subgroup that the document belongs to. Permitted values:
-`tsag`, `study-group`, `work-group`
++
+--
+* `tsag`: TSAG
+* `study-group`: Study Group
+* `work-group`: Working Group of a Study Group
+--
 
 `:subgroupacronym_{i}:`::
 Acronym of Project subgroup that the document belongs to.
@@ -124,7 +152,12 @@ Project workgroup that the document belongs to.
 
 `:workgrouptype_{i}:`::
 Type of Project workgroup that the document belongs to. Permitted values:
-`tsag`, `study-group`, `work-group`
++
+--
+* `tsag`: TSAG
+* `study-group`: Study Group
+* `work-group`: Working Group of a Study Group
+--
 
 `:workgroupacronym_{i}:`::
 Acronym of Project workgroup that the document belongs to.
@@ -144,14 +177,34 @@ Date from which recommendation status applies
 Date to which recommendation status applies
 
 `:approval-process:`::
-Approval Process for recommendation status. Legal values: `tap`, `aap`
+Approval Process for recommendation status. Legal values are:
++
+--
+* `tap`: Traditional Approval Process (TAP), as described in https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1, Section 9].
+* `aap`: Alternative Approval Process (AAP), as described in https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8].
+--
 
 `:approval-status:`::
 Approval status code for recommendation status. Legal values are:
 +
 --
-* For Approval Process `tap`: `determined`, `in-force`
-* For Approval Process `aap`: `a`, `lc`, `ac`, `lj`, `aj`, `na`, `ar`, `ri`, `at`, `sg`, `c`, `tap`
+* If `:approval-process:` is set to `tap`: (refer to https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1], Figure 9.1 "`Approval of new and revised Recommendations using TAP -- Sequence of events`")
+** `determined`: Determined
+** `in-force`: In-force
+
+* If `:approval-process:` is set to `aap`: (refer to https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8], Figure 1 "`Sequence of Events`")
+** `a`: Approved
+** `ac`: Approved with Substantial Changes
+** `aj`: Additional Review Judgement
+** `ar`: Additional Review
+** `at`: Approved with Typographical Corrections
+** `lc`: Last Call
+** `c`: Consented
+** `lj`: Last Call Judgment (includes Last Call Comment resolution)
+** `na`: Not Approved
+** `ri`: Re-Initiate Last Call
+** `sg`: Referred to Study Group Approval
+** `tap`: Moved to TAP (ITU-T A.8 / §5.2)
 --
 
 == Markup
@@ -221,7 +274,7 @@ ____
 
 === References & Bibliography
 
-There is one references section in ITU documents, which is titled `References`. All documents
+There is one references section in ITU documents, which is titled "`References`". All documents
 have the same references boilerplate inserted at the start of the section, which overwrites
 any text already supplied before the individual references.
 
@@ -232,11 +285,15 @@ any text already supplied before the individual references.
 If no text appears at the start of the clauses and subclauses in the Definitions section,
 standard boilerplate is provided automatically:
 
-* If there is a terms subclause "Terms defined elsewhere", we must inject the text "This Recommendation uses the following terms defined elsewhere:" 
-or "None", depending on whether any terms are present.
-* If there is a terms subclause "Terms defined in this Recommendation", we must inject the text "This Recommendation defines the following terms:" 
-or "None", depending on whether any terms are present.
-* If neither subclause appears (as is the case in G 650 but not in the documents first sighted), we must inject at the top clause the text 
-"This Recommendation defines the following terms:".
+* If there is a terms subclause "`Terms defined elsewhere`", we must inject the text
+  "`This Recommendation uses the following terms defined elsewhere:`"
+  or "`None`", depending on whether any terms are present.
 
+* If there is a terms subclause "`Terms defined in this Recommendation`", we must
+  inject the text "`This Recommendation defines the following terms:`"
+  or "`None`", depending on whether any terms are present.
+
+* If neither subclause appears (as is the case in https://www.itu.int/rec/T-REC-G.650.1/en[ITU G.650.1]
+  but not in the documents first sighted), we must inject at the top clause the text
+  "`This Recommendation defines the following terms:`".
 
