@@ -7,38 +7,51 @@ layout: ogc-flavor
 == Document attributes
 
 [[note_general_doc_ref_doc_attrib_ogc]]
-NOTE: The list of document attributes supported by all flavors of Metanorma can be seen in link:/author/ref/document-attributes[Document attributes] section in general Metanorma documentation.
+[NOTE]
+====
+Document attributes listed below are unique to the processing of OGC documents in Metanorma.
+
+For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author’s documentation. That page describes attributes that apply to all Metanorma flavors, not just OGC.
+
+For an _introduction to AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
+====
 
 `:doctype:`::
 *Mandatory.*
 Document type. Choices:
++
+--
 * Standards
-** `standard` — Implementation Standard
-** `standard-with-suite` — Implementation Standard with Compliance Suite
-** `abstract-specification` — Abstract Specification
-** `community-standard` — Community Standard
-** `profile` — Profile / Application Profile
-** `best-practice` — Best Practices Document
+** `standard`: Implementation Standard
+** `standard-with-suite`: Implementation Standard with Compliance Suite
+** `abstract-specification`: Abstract Specification
+** `community-standard`: Community Standard
+** `profile`: Profile / Application Profile
+** `best-practice`: Best Practices Document
+
 * Other
-** `engineering-report` — Engineering Report
-** `discussion-paper` — Discussion Paper
-** `reference-model` — OGC Reference Model
-** `user-guide` — User Guide
-** `policy` — OGC Policy Document
-** `guide` — Guide
-** `amendment` — Technical Amendment
-** `technical-corrigendum` — Corrigendum (errata) Changes to OGC Standards
-** `administrative` — Internal administrative documents
+** `engineering-report`: Engineering Report
+** `discussion-paper`: Discussion Paper
+** `reference-model`: OGC Reference Model
+** `user-guide`: User Guide
+** `policy`: OGC Policy Document
+** `guide`: Guide
+** `amendment`: Technical Amendment
+** `technical-corrigendum`: Corrigendum (errata) Changes to OGC Standards
+** `administrative`: Internal administrative documents
+--
 
 `:status:`::
 Document status/stage. Synonym: `:docstage:`.
 Choices:
 +
-* `rfc` — OGC RFC (proposal)
-* `candidate` — Candidate Standard
-* `published` — Published
-* `deprecated` — Deprecated
-* `retired` — Retired
+--
+* `rfc`: OGC RFC (proposal)
+* `candidate`: Candidate Standard
+* `published`: Published
+* `deprecated`: Deprecated
+* `retired`: Retired
+--
 
 `:keywords:`::
 Comma-delimited list of the keywords associated with the document.
@@ -48,13 +61,18 @@ Comma-delimited list of the keywords associated with the document.
 `:committee:`::
 *Mandatory.*
 Name of relevant committee producing the document. Use one of:
-`technical`, `planning`, `strategic-member-advisory`
++
+--
+* `technical`: Technical Committee
+* `planning`: Planning Committee
+* `strategic-member-advisory`: Strategic Member Advisory Committee
+--
 
 `:subcommittee-type:`::
-The type of the relevant subcommittee producing the document
+The type of the relevant subcommittee producing the document.
 
 `:subcommittee-number:`::
-The number of the relevant subcommittee producing the document
+The number of the relevant subcommittee producing the document.
 
 `:workingGroup:`::
 *Mandatory.*
@@ -68,12 +86,16 @@ Number of the relevant workgroup producing the document.
 
 `:submitting-organizations:`::
 Semicolon-delimited list of the submitting organizations
-for this document. The organization names themselves may contain commas. For example:
-_University of Calgary, Canada; National Central University, Taiwan_
+for this document. The organization names themselves may contain commas.
++
+[example]
+--
+EXAMPLE: _University of Calgary, Canada; National Central University, Taiwan_
+--
 
 `:editor:`::
 Same as `link:/author/ref/document-attributes/#fullname[:fullname:]`
-alongside `link:/author/ref/document-attributes/#role[:role:]` specified as “editor”.
+alongside `link:/author/ref/document-attributes/#role[:role:]` specified as `editor`.
 
 
 === URIs and IDs
@@ -89,20 +111,20 @@ URI of previous version of the document.
 
 === Mapping to OGC legacy AsciiDoc
 
-Where these preexisting metanorma attributes correspond to attributes already used
-by OGC in their AsciiDoc template, Metanorma-OGC permits those attributes, and they are
-treated as synonyms of the Metanorma attributes:
+Metanorma-OGC permits legacy OGC AsciiDoc template attributes,
+and are treated as synonyms of the corresponding Metanorma attributes:
 
 |===
-| OGC legacy AsciiDoc | OGC Metanorma AsciiDoc
+| OGC Metanorma AsciiDoc                    | OGC legacy AsciiDoc
 
-| `:copyrightYear` | `:copyright-year:`
-| `:workingGroup:` | `:workgroup:`
-| `:publicationDate:` | `:published-date:`
-| `:approvalDate:` | `:issued-date:`
-| `:submissionDate:` | `:received-date:`
-| `docReference` | `:docnumber:`
-| `editor` | `:fullname:`, with `:role:` = `editor`
+| `:copyright-year:`                        | `:copyrightYear`
+| `:workgroup:`                             | `:workingGroup:`
+| `:published-date:`                        | `:publicationDate:`
+| `:issued-date:`                           | `:approvalDate:`
+| `:received-date:`                         | `:submissionDate:`
+| `:docnumber:`                             | `docReference`
+| `:fullname:`, with `:role:` = `editor`    | `editor`
+
 |===
 
 == Markup
@@ -129,7 +151,7 @@ The abstract is recognized as the first clause with an `abstract` style attribut
 [abstract]
 == Abstract
 
-xxx
+My abstract...
 ----
 
 The preface is recognized as the text between the AsciiDoc document attributes and
@@ -146,11 +168,12 @@ preface text
 === Submitters
 ----
 
-Keywords and Submitting Organizations consist of lists. They are treated as document metadata,
+"`Keywords`" and "`Submitting Organizations`" consist of lists.
+They are treated as document metadata,
 and are entered as a document attribute.
 The prefatory text introducing them is added automatically.
 
-Submitters are treated as a table, contained in a section with the title `Submitters`:
+"`Submitters`" are treated as a table, contained in a section with the title `Submitters`:
 
 [source,asciidoc]
 ----
