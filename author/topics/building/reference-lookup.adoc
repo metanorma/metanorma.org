@@ -23,21 +23,6 @@ the standard document identifier needs to be encoded in a format recognized by R
 
 ISO deliverables:: `ISO(identifier)`, or any identifier prefixed with `ISO`
 
-[[iso-iec-directives]]ISO/IEC Directives::
-`ISO/IEC DIR {n}`, `ISO/IEC DIR {n} + {flavor} SUP`, or `ISO/IEC DIR {flavor} SUP`. `n` - is a number of directive, `flavor` - is `ISO` or `IEC`.
-+
-Following referenses are supported at this time:
-+
-- `ISO/IEC DIR 1 IEC SUP` Procedures for the technical work – Procedures specific to IEC
-- `ISO/IEC DIR 1 ISO SUP` Consolidated ISO Supplement -- Procedures specific to ISO
-- `ISO/IEC DIR 1` Procedures for the technical work
-- `ISO/IEC DIR 2 IEC` Principles and rules for the structure and drafting of ISO and IEC documents
-- `ISO/IEC DIR 2 ISO` Principes et règles de structure et de rédaction des documents
-- `ISO/IEC DIR IEC SUP` Procedures specific to IEC
-- `ISO/IEC DIR JTC 1 SUP` Procedures specific to JTC 1
-+
-NOTE: This function depends on the <<Static cache>>. Documents in the <<Static cache>> could have differences from the online version.
-
 IEC deliverables:: `IEC(identifier)`, or any identifier prefixed with `IEC`
 
 ITU deliverables:: `ITU(identifier)` (e.g. `ITU(H.265)`), or any identifier prefixed with `ITU`
@@ -48,12 +33,32 @@ NIST documents:: `NIST(identifier)` (e.g. `NIST(SP 800-116r1)`, `NIST FIPS 202`)
 
 Chinese standards:: `CN(identifier)` (e.g. `CN(JB/T 13368-2018)`)
 
+[[iso-iec-dir-syntax]] ISO/IEC Directives::
+`ISO/IEC DIR {n}`, `ISO/IEC DIR {n} + {flavor} SUP`, or `ISO/IEC DIR {flavor} SUP`.
+`n`::: is the number of directive
+`flavor`::: is either `ISO` or `IEC`.
++
+The following references are supported at this time:
++
+* `ISO/IEC DIR 1 IEC SUP`: "`Procedures for the technical work -- Procedures specific to IEC`"
+* `ISO/IEC DIR 1 ISO SUP`: "`Consolidated ISO Supplement -- Procedures specific to ISO`"
+* `ISO/IEC DIR 1`: "`Procedures for the technical work`"
+* `ISO/IEC DIR 2 IEC`: "`Principles and rules for the structure and drafting of ISO and IEC documents`"
+* `ISO/IEC DIR 2 ISO`: "`Principles and rules for the structure and drafting of ISO and IEC documents`"
+* `ISO/IEC DIR IEC SUP`: "`Procedures specific to IEC`"
+* `ISO/IEC DIR JTC 1 SUP`: "`Procedures specific to JTC 1`"
++
+NOTE: These bibliographic entries are provided via the <<static-entry-cache>> as their
+metadata are not available in machine-readable format online.
+Documents in the <<static-entry-cache>> may differ from the latest online version.
+
 The full bibliographic details of the item are automatically fetched from
 the authoritative online bibliography source, and inserted into a Relaton XML
 file stored locally.
 
-NOTE: Only parts of the bibliographic details are used to render the reference,
-namely: document identifier, title, publication date.
+NOTE: Only parts of the bibliographic details are used to render the reference
+in Metanorma, namely: document identifier, title, publication date.
+
 
 == Disabling automatic lookup
 
@@ -140,11 +145,17 @@ into version control systems (e.g. Git) for faster (and more reproducible)
 continuous integration build times. It also prevents CI build failures
 caused by bibliographic sources being temporarily unavailable.
 
-=== Static cache
+[[static-entry-cache]]
+=== Static entry cache
 
-The Static cache is distributed with the `relaton` gem and always enabled. It contains some documents, like <<ISO/IEC Directives>>, which can't be fetched from websites.
+The static entry cache is distributed with the `relaton` gem and always enabled.
+It contains bibliographic entries that are often used but cannot be obtained
+in machine-readable formats online. See <<iso-iec-dir-syntax>> for entries
+of this type.
 
-To add a new document to the Static cache please make an issue on https://github.com/relaton/relaton/issues.
+To add a new document to the static entry cache, please create an issue
+on https://github.com/relaton/relaton/issues.
+
 
 === Disabling caching
 
