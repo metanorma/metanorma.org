@@ -301,17 +301,19 @@ standard boilerplate is provided automatically:
 
 The ITU editorial rules specifies the following formatting rules for authors:
 
-. "`text`" in tables should be left-aligned; and
+. table header row content must be center-aligned;
+. "`text`" in tables should be left-aligned;
 . "`values`" in tables should be center-aligned.
 
-In Metanorma, this is conveyed by setting the horizontal alignment on the corresponding
-columns; e.g.
+In Metanorma, this is conveyed by setting the horizontal alignment on the
+corresponding columns and ensuring that the header cells are centered;
+e.g.
 
 [source,asciidoc]
 ----
-[<,^,^,<]
+[cols="<,^,^,<", options="header"]
 |===
-| Text | Value | Value | Text
+^| Text ^| Value ^| Value ^| Text
 
 | Table | 121 | 0.1 | Other table
 |===
