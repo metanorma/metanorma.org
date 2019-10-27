@@ -1,0 +1,54 @@
+---
+layout: author-docs
+---
+
+= Asciimath support
+
+Metanorma uses the https://github.com/asciidoctor/asciimath[Asciidoctor Asciimath parser]
+to process Asciimath, converting it to MathML for Metanorma processing. For rendering in
+HTML, the MathML generated is processed by https://www.mathjax.org[MathJax]. For rendering
+in Word, the MathML is converted to https://en.wikipedia.org/wiki/Office_Open_XML[Office Open XML].
+
+== Asciidoctor Asciimath
+
+The version of Asciimath supported by the Asciidoctor Asciimath parser is slightly different 
+to other variants of Asciimath. The following are differences between the version of Asciimath
+documented on http://asciimath.org[asciimath.org]:
+
+...
+
+== Conversion to Word OOXML
+
+AsciiMath and MathJax processors are tolerant of loose syntax in mathematical expressions.
+Currently the conversion of MathML to OOXML is not as tolerant: if a mathematical operator
+takes a single argument, the OOXML expects to find that argument brackets as a single entity.
+If that does not happen, Word displays a dotted square where it would expect the single
+argument to appear. To remedy this, you will need to bracket the argument of the operator
+in invisible brackets (`{:`, `:}`).
+
+For example, the following Asciimath displays correctly in HTML under MathJax:
+
+[source,asciidoc]
+--
+[stem]
+++++
+bar X' = (1)/(v) sum_(i = 1)^v t_i
+++++
+--
+
+However, it displays incorrectly in Word:
+
+image::../../site/sum_error.png[]
+
+That is because the `sum` operator expects to find a single expression as its argument,
+but `t_i` is processed as two tokens. To get this expression processed correctly for
+Word, you will need to bracket `t_i`:
+
+[source,asciidoc]
+--
+[stem]
+++++
+bar X' = (1)/(v) sum_(i = 1)^v {:t_i:}
+++++
+--
+
