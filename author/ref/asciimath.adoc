@@ -15,6 +15,104 @@ The version of Asciimath supported by the Asciidoctor Asciimath parser is slight
 to other variants of Asciimath. The following are differences between the version of Asciimath
 documented on http://asciimath.org[asciimath.org]:
 
+=== Operation Symbols
+parser.rb:
+
+\\\\ :: \\ operator. Prevents punctuation beginning with two characters from being interpreted as formatting markup.
+
+asciimath.org:
+
+Uses \\  instead of \\\\ for the above described operator.
+
+=== Miscellaneous symbols:
+
+Missing from asciimath.org:
+
+dx:: dx identifier
+
+dy:: dy identifier
+
+dz :: dz identifier
+
+dt :: dt identifier
+
+... :: ... operator
+
+\\  {:value => "\u00A0", :type => :operator},
+
+'qquad' => {:value => '\u00A0\u00A0\u00A0\u00A0', :type => :operator},
+
+lim :: lim  operator 
+Lim :: Lim operator 
+
+=== Relation symbols
+
+Missing from asciimath.org:
+
+ :=  :: := operator
+
+=== Logical symbols
+
+All are the same.
+
+=== Grouping brackets
+Present in asciimath.org but not in parser.rb:
+
+abs(x)		|x|
+
+floor(x)		⌊x⌋
+
+ceil(x)		⌈x⌉
+ 
+norm(vecx)	 ||\vec{x}|| 
+
+=== Arrows
+
+All the same
+
+=== Accents 
+
+Missing from parser.rb:
+
+* overset(x)(=)
+* underset(x)(=)
+* color(red)(x)
+* cancel(x)
+
+=== Greek letters
+
+Many capital greek letters missing from asciimath.org:
+
+Alpha:: Alpha
+
+Beta:: Beta
+Epsilon::Epsilon
+Zeta :: Zeta
+Eta :: Eta
+Iota::Iota
+Kappa::Kappa
+Mu::Mu
+Nu::Nu
+Rho::Rho
+Tau::Tau
+Upsilon::Upsilon
+Chi::Chi
+
+===  Standard functions
+
+All the same
+
+=== Font commands
+
+Missing from asciimath.org
+ii :: italic font
+bii :: bold italic font
+bcc :: bold script font
+bfr :: bold fraktur font
+bsf :: bold sans serif font
+sfi :: italic sans serif font
+sfbi :: sans serif bold italic font
+
 ...
 
 == Conversion to Word OOXML
