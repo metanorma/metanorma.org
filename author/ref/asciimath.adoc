@@ -12,21 +12,13 @@ in Word, the MathML is converted to https://en.wikipedia.org/wiki/Office_Open_XM
 == Asciidoctor Asciimath
 
 The version of Asciimath supported by the Asciidoctor Asciimath parser is slightly different 
-to other variants of Asciimath. The following are differences between the version of Asciimath
+to other variants of Asciimath. The following are differences between Asciidoctor Asciimath
+and the version of Asciimath
 documented on http://asciimath.org[asciimath.org]:
-
-=== Operation Symbols
-parser.rb:
-
-\\\\ :: \\ operator. Prevents punctuation beginning with two characters from being interpreted as formatting markup.
-
-asciimath.org:
-
-Uses \\  instead of \\\\ for the above described operator.
 
 === Miscellaneous symbols:
 
-Missing from asciimath.org:
+Asciidoctor Asciimath adds the following as distinct symbols:
 
 dx:: dx identifier
 
@@ -38,50 +30,64 @@ dt :: dt identifier
 
 ... :: ... operator
 
-\\  {:value => "\u00A0", :type => :operator},
+"\\ " :: non-breaking space
 
-'qquad' => {:value => '\u00A0\u00A0\u00A0\u00A0', :type => :operator},
+qquad :: four non-breaking spaces (just as `quad` is processed as two non-breaking spaces)
 
-lim :: lim  operator 
+lim :: lim operator 
 Lim :: Lim operator 
+
+' : prime operator, &#x2032
+
+:' :: &#x2235;
+
+/_\\ :: &#x25b3;
+
+frown :: &#x2322;
 
 === Relation symbols
 
-Missing from asciimath.org:
+Asciidoctor Asciimath adds the following as distinct symbols:
 
- :=  :: := operator
+:=  :: := operator
+
+=== Operation symbols
+
+setminus :: \\
+divide :: &#xf7;
+:|: :: | as operator
 
 === Logical symbols
 
-All are the same.
+No difference.
 
 === Grouping brackets
-Present in asciimath.org but not in parser.rb:
+Asciidoctor Asciimath adds the following as distinct brackets:
 
-abs(x)		|x|
+|: :: | as left bracket
+:| :: | as right bracket
 
-floor(x)		⌊x⌋
-
-ceil(x)		⌈x⌉
- 
-norm(vecx)	 ||\vec{x}|| 
 
 === Arrows
 
-All the same
+No difference.
 
 === Accents 
 
-Missing from parser.rb:
+The following operators are currently missing from Asciidoctor Asciimath:
 
-* overset(x)(=)
-* underset(x)(=)
 * color(red)(x)
 * cancel(x)
 
+Asciidoctor Asciimath adds the following as distinct accents
+
+tilde :: ~
+overarc :: &#x23dc;
+
 === Greek letters
 
-Many capital greek letters missing from asciimath.org:
+The Asciidoctor Asciimath gem supports several capital letter symbols, which are not named
+in asciimath.org:
 
 Alpha:: Alpha
 
@@ -115,7 +121,9 @@ All the same
 
 === Font commands
 
-Missing from asciimath.org
+The following are font commands supported by the Asciidoctor Asciimath gem, in addition
+to those named in asciimath.org:
+
 ii :: italic font
 bii :: bold italic font
 bcc :: bold script font
@@ -123,8 +131,6 @@ bfr :: bold fraktur font
 bsf :: bold sans serif font
 sfi :: italic sans serif font
 sfbi :: sans serif bold italic font
-
-...
 
 == Conversion to Word OOXML
 
