@@ -327,9 +327,7 @@ Word's description of "`Alt Text`" is:
 
 == Source code
 
-=== Pseudocode
-
-Source code is marked up as elsewhere in Asciidoc, as a preformatted source snippet to
+Source code is marked up as elsewhere in AsciiDoc, as a preformatted source snippet to
 be rendered in monospace font, and with spaces preserved:
 
 [source,asciidoc]
@@ -345,18 +343,27 @@ be rendered in monospace font, and with spaces preserved:
 Source code highlighting can be used automatically to highlight keywords specific
 to the nominated computer language.
 
-In several standards, pseudocode is required to be entered. Unlike sourcecode,
-pseudocode is typically in a proportional font, but it still needs to be indented
-to reflect code structure. Moreover, pseudocode typically requires source code highlighting
+
+== Pseudocode
+
+Pseudocode is a mix between formal math with code like properties commonly
+used in computer science and related fields.
+
+Unlike source code, pseudocode is typically in a proportional font, but it
+still needs to be indented to reflect code structure. 
+Moreover, pseudocode typically requires source code highlighting
 such as boldface; but unlike well-defined computer languages, there is no guaranteed way
 of automating such highlighting.
 
 Pseudocode is supported in Metanorma as a special class of example, marked up
-with a pseudocode block macro. Text within a pseudocode block is treated as normal
-text, including respect for inline formatting; lines need to separated by line breaks
-(`+`). However, indentation spaces at the start of each line are preserved, by converting
-them into non-breaking spaces. Initial tabs are converted into four non-breaking spaces.
+with a pseudocode block macro with these differences:
 
+* text within a pseudocode block is treated as normal text, including
+respect for inline formatting;
+* lines need to separated by line breaks (`+`);
+
+* indentation spaces at the start of each line are preserved, by converting
+them into non-breaking spaces; initial tabs are converted into four non-breaking spaces.
 
 [source,asciidoc]
 --
