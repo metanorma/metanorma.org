@@ -2,70 +2,72 @@
 layout: author-docs
 ---
 
-= Asciimath support
+= AsciiMath support
 
-Metanorma uses the https://github.com/asciidoctor/asciimath[Asciidoctor Asciimath parser]
-to process Asciimath, converting it to MathML for Metanorma processing. For rendering in
+Metanorma uses the https://github.com/asciidoctor/AsciiMath[Ruby AsciiMath parser]
+to process AsciiMath, converting it to MathML for Metanorma processing. For rendering in
 HTML, the MathML generated is processed by https://www.mathjax.org[MathJax]. For rendering
-in Word, the MathML is converted to https://en.wikipedia.org/wiki/Office_Open_XML[Office Open XML].
+in Word, the MathML is converted to https://en.wikipedia.org/wiki/Office_Open_XML[Office Open XML (OOXML)].
 
-== Asciidoctor Asciimath
+== Ruby AsciiMath
 
-The version of Asciimath supported by the Asciidoctor Asciimath parser is slightly different 
-to other variants of Asciimath. The following are differences between Asciidoctor Asciimath
-and the version of Asciimath
+The version of AsciiMath supported by the Ruby AsciiMath parser is slightly different 
+to other variants of AsciiMath. The following are differences between Ruby AsciiMath
+and the version of AsciiMath
 documented on http://asciimath.org[asciimath.org]:
 
 === Miscellaneous symbols:
 
-Asciidoctor Asciimath adds the following as distinct symbols:
+Ruby AsciiMath adds the following as distinct symbols:
 
-dx:: dx identifier
+`dx`:: dx identifier
 
-dy:: dy identifier
+`dy`:: dy identifier
 
-dz :: dz identifier
+`dz`:: dz identifier
 
-dt :: dt identifier
+`dt`:: dt identifier
 
-... :: ... operator
+`...`:: ... operator
 
-"\ " :: non-breaking space
+`"\ "`:: non-breaking space
 
-qquad :: four non-breaking spaces (just as `quad` is processed as two non-breaking spaces)
+`qquad`:: four non-breaking spaces (just as `quad` is processed as two non-breaking spaces)
 
-lim :: lim operator 
-Lim :: Lim operator 
+`lim`:: lim operator 
+`Lim`:: Lim operator 
 
-' : prime operator, &#x2032;
+`'`:: prime operator, &#x2032;
 
-:' :: &#x2235;
+`:'`:: &#x2235;
 
-/_\ :: &#x25b3;
+`/_\`:: &#x25b3;
 
-frown :: &#x2322;
+`frown`:: &#x2322;
 
 === Relation symbols
 
-Asciidoctor Asciimath adds the following as distinct symbols:
+Ruby AsciiMath adds the following as distinct symbols:
 
-:=  :: := operator
+`:=`:: := operator
 
 === Operation symbols
 
-setminus :: \
-divide :: &#xf7;
-:|: :: | as operator
+`setminus`:: \
+`divide`:: &#xf7;
+`:|:`:: | as operator
+
 
 === Logical symbols
 
 No difference.
 
-=== Grouping brackets
-Asciidoctor Asciimath adds the following as distinct brackets:
 
-|: :: | as left bracket
-:| :: | as right bracket
+=== Grouping brackets
+Ruby AsciiMath adds the following as distinct brackets:
+
+`|:`:: | as left bracket
+`:|`:: | as right bracket
 
 
 === Arrows
@@ -74,63 +76,63 @@ No difference.
 
 === Accents 
 
-The following operators are currently missing from Asciidoctor Asciimath:
+The following operators are currently missing from Ruby AsciiMath:
 
-* color(red)(x)
-* cancel(x)
+* `color(red)(x)`
+* `cancel(x)`
 
-Asciidoctor Asciimath adds the following as distinct accents
+Ruby AsciiMath adds the following as distinct accents
 
-tilde :: ~
-overarc :: &#x23dc;
+`tilde`:: ~
+`overarc`:: &#x23dc;
 
 === Greek letters
 
-The Asciidoctor Asciimath gem supports several capital letter symbols, which are not named
+The Ruby AsciiMath gem supports several capital letter symbols, which are not named
 in asciimath.org:
 
-Alpha:: Alpha
+`Alpha`:: Alpha
 
-Beta:: Beta
+`Beta`:: Beta
 
-Epsilon:: Epsilon
+`Epsilon`:: Epsilon
 
-Zeta :: Zeta
+`Zeta`:: Zeta
 
-Eta :: Eta
+`Eta`:: Eta
 
-Iota:: Iota
+`Iota`:: Iota
 
-Kappa:: Kappa
+`Kappa`:: Kappa
 
-Mu:: Mu
+`Mu`:: Mu
 
-Nu:: Nu
+`Nu`:: Nu
 
-Rho:: Rho
+`Rho`:: Rho
 
-Tau:: Tau
+`Tau`:: Tau
 
-Upsilon:: Upsilon
+`Upsilon`:: Upsilon
 
-Chi:: Chi
+`Chi`:: Chi
 
-===  Standard functions
+=== Standard functions
 
 No difference.
 
 === Font commands
 
-The following are font commands supported by the Asciidoctor Asciimath gem, in addition
+The following are font commands supported by the Ruby AsciiMath gem, in addition
 to those named in asciimath.org:
 
-ii :: italic font
-bii :: bold italic font
-bcc :: bold script font
-bfr :: bold fraktur font
-bsf :: bold sans serif font
-sfi :: italic sans serif font
-sfbi :: sans serif bold italic font
+`ii`:: italic font
+`bii`:: bold italic font
+`bcc`:: bold script font
+`bfr`:: bold fraktur font
+`bsf`:: bold sans serif font
+`sfi`:: italic sans serif font
+`sfbi`:: sans serif bold italic font
 
 == Conversion to Word OOXML
 
@@ -141,7 +143,7 @@ If that does not happen, Word displays a dotted square where it would expect the
 argument to appear. To remedy this, you will need to bracket the argument of the operator
 in invisible brackets (`{:`, `:}`).
 
-For example, the following Asciimath displays correctly in HTML under MathJax:
+For example, the following AsciiMath displays correctly in HTML under MathJax:
 
 [source,asciidoc]
 --
@@ -151,9 +153,9 @@ bar X' = (1)/(v) sum_(i = 1)^v t_i
 ++++
 --
 
-However, it displays incorrectly in Word:
+However, it displays incorrectly in Word with an extraneous "`square`":
 
-image::../../assets/site/sum_error.png[]
+image::/assets/site/sum_error.png[]
 
 That is because the `sum` operator expects to find a single expression as its argument,
 but `t_i` is processed as two tokens. To get this expression processed correctly for
