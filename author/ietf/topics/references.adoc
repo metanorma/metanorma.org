@@ -113,7 +113,7 @@ See biblio
 
 In order to speed the lookup of references on the http://xml.resource.org/public/rfc website for external
 references, a cache of references is built the first time the gem is run, in the user's home directory:
-`~/.asciidoc-rfc-biblio-cache.json`. This maps all the canonical anchors for external references as defined
+`~/.metanorma-ietf-biblio-cache.json`. This maps all the canonical anchors for external references as defined
 by the IETF, such as `RFC2119` or `CCITT.E163.1988`, to the URLs that their RFC reference is stored on.
 References are detected for replacement in the Asciidoc document by matching the `references@anchor`
 attribute to one of those canonical anchors; the content of the local RFC XML reference is not checked.
@@ -179,7 +179,7 @@ The caches are not rebuilt daily, as the bibliographic cache is with `xml2rfc`.
 If you want to refresh the caches,
 
 * delete
-your `~/.asciidoc-rfc-biblio-cache.json` and `~/.asciidoc-rfc-workgroup-cache.json` files;
+your `~/.metanorma-ietf-biblio-cache.json` and `~/.metanorma-ietf-workgroup-cache.json` files;
 * insert the document attribute `:flush-caches: true` into
 the header of the document being processed; or
 * run the asciidoctor executable with option `-a flush-caches=true`
