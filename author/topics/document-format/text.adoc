@@ -473,6 +473,20 @@ image::rice_images/rice_image2.png[]
 
 == Cross-references
 
+Cross-references are realised in Asciidoctor by assigning an anchor to the block to be referenced,
+and writing a cross-reference containing that anchor ID:
+
+[source,asciidoc]
+--
+[[id]]
+== TItle
+
+As seen in <<id>>...
+--
+
+The anchor ID follows the https://www.w3.org/TR/xml-id/#processing[NCName constraints of xml:id]:
+it must start with with a letter, an underscore, or a colon.
+
 The guidance given in ISO/IEC DIR 2 for internal cross-references
 guarantees unambiguous referencing and is followed rigorously by Metanorma.
 
