@@ -164,14 +164,14 @@ In addition, stem markup that contains MathML markup (as detected by an initial
 MathML is used as the internal representation of STEM expressions in Metanorma:
 AsciiMath and LaTeX math in Metanorma AsciiDoc are converted into MathML,
 using the https://github.com/asciidoctor/asciimath[asciimath] gem and the
-https://dlmf.nist.gov/LaTeXML/manual/commands/latexmlmath.html[latexmath]
+https://dlmf.nist.gov/LaTeXML/manual/commands/latexmlmath.html[LaTeXML]
 processor of LaTeXML, respectively.
 
 NOTE: While `latexmath` can be slower than other available LaTeX to MathML
 converters, it is deterministically accurate.
 
 NOTE: The syntax of AsciiMath recognised by the `asciimath` gem is more strict
-than the common MathJax processor of AsciiMath. (We have found that `asciimath` insists on numerators being bracketed.)
+than the common MathJax processor of AsciiMath. For example, `asciimath` insists on numerators being bracketed.
 
 == Formulae
 
@@ -473,6 +473,27 @@ image::rice_images/rice_image2.png[]
 
 == Cross-references
 
+Cross-references are realised in Metanorma AsciiDoc by assigning an anchor
+to the block to be referenced, and writing a cross-reference containing
+that anchor ID:
+
+[source,asciidoc]
+--
+[[anchor-id]]
+== Target clause
+
+The requirements are...
+
+== Reference clause
+
+As seen in <<anchor-id>>...
+--
+
+The anchor ID must follow the https://www.w3.org/TR/xml-id/#processing[NCName constraints of xml:id]:
+
+* it must start with with a letter, an underscore, or a colon.
+
+// TODO: ISO-specific, move or make a NOTE?
 The guidance given in ISO/IEC DIR 2 for internal cross-references
 guarantees unambiguous referencing and is followed rigorously by Metanorma.
 
