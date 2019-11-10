@@ -65,6 +65,17 @@ in Metanorma, namely: document identifier, title, publication date.
 If the document attribute link:/author/ref/document-attributes/#reference-lookup[`:no-isobib:`] is set, the reference details for
 items are not automatically looked up via `isobib`, and the `isobib` caches are not used.
 
+If an individual reference identifier is wrapped in `nofetch()`, the reference details for that
+item are not looked up, though other items still will be:
+
+[source,asciidoc]
+--
+[bibliography]
+== Bibliography
+
+* [[[ref1,nofetch(ISO 639-1)]]], ISO 639-1.
+* [[[ref1,ISO 639-2]]], ISO 639-2.
+--
 
 == Citing from termbanks
 
