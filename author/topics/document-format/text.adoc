@@ -77,6 +77,8 @@ rendered at the bottom of the table or figure, and they are numbered separately.
 
 == Lists
 
+=== Ordered Lists
+
 Ordered lists in both HTML and Word have their labels pre-configured
 to align with ISO/IEC DIR 2:
 
@@ -103,15 +105,25 @@ NOTE: In HTML output, all the paragraphs within a list item will be aligned.
 
 - For list items containing multiple paragraphs,
   Metanorma attempts to format them appropriately by using custom list continuation styles
-  (`ListContLevel1` etc.); however, you should check the output document
+  (`ListContLevel1` etc.) applied to groups of paragraphs;
+  however, you should check the output document
   and may need to manually intervene.
 
 - In MS Word, each list entry must be a single paragraph.
-  if the AsciiDoc contains more than one paragraph for a list item,
-  the subsequent paragraphs will not be preceded by a bullet in Word,
-  but they will also not be indented under the first paragraph of the list item.
+  Metanorma is employing a workaround through list continuation styles,
+  and results may be unexpected if the list is edited.
 ====
 
+=== Definition Lists
+
+Definition lists are rendered by default horizontally, with the definition
+in the same line as the term. In Word, definition lists are rendered as true
+tables, and the width of the term column is determined by the Word autowidth
+algorithm; if you need to ensure that terms are rendered in a single line in Word,
+you may need to use non-breaking spaces and non-breaking hyphens
+(which can be entered in AsciiDoc as HTML escapes: &nbsp; or &#xa0;, and &#x2011;,
+respectively;, e.g. `This&nbsp;is&nsbp;a&nbsp;non&#x2011;breaking&nbsp;term`
+instead of `This is a non-breaking term`.)
 
 == Tables
 
