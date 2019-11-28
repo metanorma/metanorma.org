@@ -17,27 +17,81 @@ by the authors. Metanorma flavours may reorder references.
 
 == Entering typical references
 
+=== General
+
 Typical bibliographic entries are given as unordered lists.
 
 A single bibliographic entry must be preceded by a
-bibliographic anchor, in triple brackets: this consists of an internal identifier (used within
+bibliographic anchor, in triple brackets:
+this consists of an internal identifier (used within
 Metanorma AsciiDoc for crossreferences), followed by a document identifier.
 
-Bibliographic entries for standards are expected to have the standard document
-identifier as the item label. References to well-defined standards codes use the document identifiers for citations
-(e.g. `ISO 20483:2013`)
+This is illustrated as:
 
 [source,asciidoc]
 --
-* [[[ref1,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[{anchor},{document identifier or reference tag}]]], _{reference list text}_
 --
+
+=== Implied reference tags
+
+Bibliographic entries for standards are expected to have the standard document
+identifier as the item label. References to well-defined standards codes use the document identifiers for citations
+(e.g. `ISO 20483:2013`).
+
+[source,asciidoc]
+--
+* [[[ISO20483,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,ISO 6540:1980]]]. _Maize -- Determination of moisture content (on milled grains and on whole grains)_
+--
+
+gets rendered as:
+
+____
+* ISO 20483:2013. _Cereals and cereal products -- Determination of moisture content -- Reference method_
+* ISO 6540:1980. _Maize -- Determination of moisture content (on milled grains and on whole grains)_
+____
+
+
+=== Numeric reference tags
 
 Generic references in bibliographies, as opposed to standards references, use numbers, which are rendered bracketed, like `[1]`.
 
 [source,asciidoc]
 --
-* [[[ref1,1]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO20483,1]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,1]]]. _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
 --
+
+gets rendered as:
+
+____
+* [1] _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [2] _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
+____
+
+NOTE: To indicate usage of the numeric reference system, any number
+can be entered into the reference tag field. All references are
+automatically re-sorted and auto-incremented during compilation.
+
+
+=== Named reference tags
+
+Instead of numbers or standard document identifiers, user can supply their own alphanumeric labels for references.
+These are indicated by wrapping the label within the bibliographic anchor in brackets.
+
+[source,asciidoc]
+--
+* [[[ISO20483,(CerMoist)]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,(MaiMoist)]]]. _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
+--
+
+gets rendered as:
+
+____
+* [CerMoist] _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [MaiMoist] _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
+____
 
 
 == Entering formatted citations
@@ -67,7 +121,6 @@ need to be valid, and using correct `id` attributes:
 <title>Geometrical product specifications (GPS) -- Standard reference temperature for the specification of geometrical and dimensional properties</title>
 </bibitem>
 ++++
-
 --
 
 
@@ -83,7 +136,7 @@ So a cross-reference `<<ISO7301,the foregoing reference>>` will be rendered as
 
 == Localities
 
-Citations can include details of where in the document the citation is located (or the word “whole”);
+Citations can include details of where in the document the citation is located (or the word "`whole`");
 these are entered by suffixing the lowercase type of locality, then an equals sign,
 then the locality value or range of values.
 
@@ -138,11 +191,25 @@ for example:
 == Automatic reference fetching
 
 https://www.relaton.com/[Relaton] can fetch bibliographic entries
-for any standards known to have online bibliographic databases (ISO, IEC, IETF, GB, NIST).
+for any standards known to have online bibliographic databases (ISO, IEC, IETF, GB, NIST, OGC, CalConnect).
 
 Any bibliographic entry recognized through its document identifier prefix
 will by default have its bibliographic entry fetched by that gem.
 The fetched data overrides any content about the item provided in the document,
 since the online bibliography is treated as the source of truth for that standards document.
 
+The format of the standard identifier required for automatic lookup is documeted at
+link:/author/topics/building/reference-lookup/[Automatic reference lookup].
 
+For example, the following will trigger auto-fetching:
+
+[source,asciidoc]
+--
+* [[[ref1,ISO 20483]]]
+--
+
+and gets rendered as:
+
+____
+* ISO 20483:2013. _Cereals and cereal products -- Determination of moisture content -- Reference method_
+____
