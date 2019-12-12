@@ -1,0 +1,136 @@
+---
+layout: post
+title: Compiling IETF RFCs with Metanorma and LaTeX
+date: 2019-12-11
+categories: about
+authors:
+  -
+    name: Paolo Brasolin
+    email: paolo.brasolin@ribose.com
+    use_picture: assets
+    social_links:
+      - https://github.com/paolobrasolin
+# card_image: /assets/blog/2019-09-02.png
+excerpt: >-
+    Metanorma 
+extra_scripts:
+  - src: /assets/js/hoverable-illustrations.js
+---
+= Compiling IETF RFCs with Metanorma and LaTeX
+
+We have made great progress with the LaTeX backend of Metanorma
+link:/blog/2019-10-08-metanorma-with-latex-support-alpha[since we announced
+alpha support]. Most features of the AsciiDoc backend are now supported by
+Metanorma-flavoured LaTeX!
+
+The time is ripe to for a tutorial to get you up and running.
+
+TODO: @ronaldtse -- what would be a good nod to IETF here?
+
+
+
+
+== Setup
+
+First of all, you need to install the *Metanorma toolchain*.
+Our https://www.metanorma.com/author/topics/install/[installation guide]
+covers in detail all supported environments so we won't dwell on that here.
+
+The second step is setting up a *LaTeX distribution*.
+Since you're reading this you probably have one already, but if that's not the case
+you can find one at https://www.latex-project.org/get/[getting LaTeX].
+
+A required dependency for our toolchain is `*LaTeXML*`.
+Most LaTeX distributions include it, but we need a very recent version.
+Many ways to install it are described in https://dlmf.nist.gov/LaTeXML/get.html[its documentation],
+but we suggest to simply use Perl's `cpanm` package manager:
+
+[source,bash]
+----
+# to get the latest _bleeding edge_ version
+cpanm git://github.com/brucemiller/LaTeXML.git
+
+# to get the earliest compatible version
+cpanm git://github.com/brucemiller/LaTeXML.git@9a0e7dc5
+----
+
+The final step is getting `*tex2mn*`, the tool we built as a bridge from LaTeX to Metanorma.
+This is as simple as cloning a `git` repository, which will also get you the sample we'll compile:
+
+[source,bash]
+----
+git clone git@github.com:metanorma/tex2mn.git
+----
+
+
+
+
+== Usage
+
+Take a look inside `tex2mn`'s folder. You will find these files:
+
+`Metanorma.cls`::
+This is the LaTeX class implementing the Metanorma LaTeX flavour;
+it allows you to compile Metanorma LaTeX directly to PDF.
+`Metanorma.cls.ltxml` and `Metanorma.xsl`::
+These are the beating heart of `tex2mn` and encode how
+Metanorma LaTeX is translated to Metanorma AsciiDoc.
+
+Just copy these three files into the working folder of your projects and you're ready to go.
+
+Let's compile a sample file!
+
+TODO: asciicast
+
+[.hoverable]
+.Generating a Metanorma document using `tex2mn`
+[link="/assets/blog/2019-10-08-tex2mn_screencast.gif"]
+image::/assets/blog/2019-10-08-tex2mn_screencast.gif[Generating a Metanorma document using `tex2mn`,width=100%]
+
+
+
+As you see, there are a few commands to run so let's run over the crucial ones.
+
+First of all, you can compile Metanorma LaTeX directly to PDF.
+You can use `pdflatex` or go fully automatic with `latexmk`:
+
+[source,bash]
+----
+latexmk -pdf showcase.tex
+----
+
+Then you can translate Metanorma LaTeX into Metanorma AsciiDoc:
+
+[source,bash]
+----
+latexml showcase.tex | latexmlpost - --stylesheet=Metanorma.xsl --nocrossref --nodefaultresources --destination=showcase.adoc
+----
+
+Finally, you can use the Metanorma toolchain to compile the Metanorma Asciidoc to the desired output.
+E.g., to target IETF's RFC2 XML you can run
+
+[source,bash]
+----
+metanorma compile -t ietf -x xmlrfc2 showcase.adoc
+----
+
+That's it! This is all you need to know to get started.
+
+
+
+
+== Conclusion and next steps
+
+As outlined in our
+link:/blog/2019-10-08-metanorma-with-latex-support-alpha#conclusion-and-next-steps[early roadmap]
+we reached very good feature coverage of Metanorma LaTeX with respect to Metanorma AsciiDoc.
+
+It is now time for _battle-testing_ `tex2mn` and integrating it seamlessly into the Metanorma toolchain.
+On our next announcement running your LaTeX-based document production pipeline will be as easy as
+
+[source,bash]
+----
+metanorma -t ietf -x xmlrfc2 input.tex
+----
+
+Ciao, for now!
