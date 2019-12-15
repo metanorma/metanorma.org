@@ -456,7 +456,8 @@ instead of using an automatically generated filename.
 
 == Auto-numbering
 
-All figures, tables, examples, formulas, permissions, recommendations and requirements
+All figures, tables, examples, formulas, sourcecode snippets,
+permissions, recommendations and requirements
 ("assets") are autonumbered by Metanorma, so users do not need to specify any numbering in their
 source documents. The conventions for numbering vary by Metanorma flavour, but the
 default is to number all assets consecutively in the main body of a document, and
@@ -516,6 +517,24 @@ it the option attribute `%unnumbered`:
 .Typical gelatinization curve
 image::rice_images/rice_image2.png[]
 --
+
+Sourcecode and pseudocode snippets are numbered as figures
+[added in https://github.com/metanorma/isodoc/releases/tag/v1.0.10]. If they
+are not to be numbered, they need to be given the `%unnumbered` option attribute.
+
+[source,asciidoc]
+--
+[sourcecode%unnumbered]
+----
+Unnumbered sourcecode
+----
+--
+
+Tables, sourcecode and pseudocode, and figures are also excluded from autonumbering
+if they are included in a block type that is already subject to numbering,
+including examples, requirements, recommendations, permissions, tables, figures,
+sourcecode and pseudocode. [added in https://github.com/metanorma/isodoc/releases/tag/v1.0.11]
+
 
 == Cross-references
 
