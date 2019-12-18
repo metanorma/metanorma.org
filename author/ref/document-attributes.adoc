@@ -329,12 +329,17 @@ Encode all images in HTML output as inline data-URIs. Defaults to true.
 
 `:smartquotes:`::
 Apply "`smartquotes`" and other autoformatting to the XML output (and hence the downstream outputs)
-(default true). Smart quotes are not applied to sourcecode, to pseudocode, or to text in monospace.
-The rules for smart formatting follow the
+(default: `true`).
++
+** Smart quotes are not applied to the following type of text:
+*** text in sourcecode
+*** text in pseudocode
+*** text in monospace.
+** If this attribute is set to `false`, the AsciiDoc default is used to generate smart quotes:
+`"&#x060; &#x060;"`, `'&#x060; &#x060;'`.
+** The rules for smart formatting follow the
 https://github.com/pbhogan/sterile[sterile] gem, and are given in
 https://github.com/pbhogan/sterile/blob/master/lib/sterile/data/smart_format_rules.rb[smart_format_rules.rb].
-If this attribute is set to `false`, the AsciiDoc default is used to generate smart quotes:
-`"&#x060; &#x060;"`, `'&#x060; &#x060;'`.
 
 `:toclevels`::
 Number of table of contents levels to render (default: 2).
