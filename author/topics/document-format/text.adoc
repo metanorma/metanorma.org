@@ -448,21 +448,34 @@ exported to, if that is requested by downstream tools.
 image::logo.gif
 --
 
-In this instance, the image is read in from logo.gif, but is converted in the
+In this instance, the image is read in from `logo.gif`, but is converted in the
 XML output to a data-uri encoding. The encoding will have the filename attribute
-of "image1.gif"; that instructs any downstream processing that extracts images
-out of the file (such as `metanorma -e`) to extract this image to the file image1.gif,
+of `image1.gif`; that instructs any downstream processing that extracts images
+out of the file (such as `metanorma -e`) to extract this image to the file `image1.gif`,
 instead of using an automatically generated filename.
 
 == Auto-numbering
 
-All figures, tables, examples, formulas, permissions, recommendations and requirements
-("assets") are autonumbered by Metanorma, so users do not need to specify any numbering in their
-source documents. The conventions for numbering vary by Metanorma flavour, but the
+=== General
+
+The following document elements ("`assets`") are auto-numbered
+by Metanorma, so users do not need to specify any numbering in
+their source documents:
+
+* figures
+* tables
+* examples
+* formulas
+* sourcecode, pseudocode
+* permissions, recommendations and requirements.
+
+The conventions for numbering vary by Metanorma flavour, but the
 default is to number all assets consecutively in the main body of a document, and
 separately in each Annex/Appendix, prefixed bt the Annex/Appendix number.
 
-Autonumbering numbers assets consecutively. Some times, more than one level of numbering
+=== Multi-level numbering
+
+Auto-numbering numbers assets consecutively. Some times, more than one level of numbering
 is required for a sequence of assets; e.g. _17a_, _17b_. To indicate that, all assets
 in the subsequence are assigned the same `subsequence` attribute:
 
@@ -494,6 +507,8 @@ E
 ++++
 --
 
+Gets rendered as:
+
 ____
 A (1a)
 
@@ -506,8 +521,11 @@ D (2b)
 E (3)
 ____
 
-Rarely, an asset needs to be excluded from autonumbering. This is indicated by giving
-it the option attribute `%unnumbered`:
+
+=== Unnumbered elements
+
+Sometimes an asset needs to be excluded from auto-numbering. 
+This is achieved by giving it the option attribute `%unnumbered`:
 
 [source,asciidoc]
 --
@@ -516,6 +534,37 @@ it the option attribute `%unnumbered`:
 .Typical gelatinization curve
 image::rice_images/rice_image2.png[]
 --
+
+Sourcecode and pseudocode snippets are by default numbered as figures
+[added in https://github.com/metanorma/isodoc/releases/tag/v1.0.10]. If they
+are not to be numbered, they need to be given the `%unnumbered` option attribute.
+
+[source,asciidoc]
+--
+[sourcecode%unnumbered]
+----
+for (i = 0; i < n; i++) { bounce(v[i], wall) }
+----
+
+// This is also unnumbered
+[%unnumbered]
+[pseudocode]
+----
+stem:[forall v_{i}] *bounce* stem:[v_{i}] off the wall
+----
+--
+
+=== Prevention of double-numbering
+
+If an asset is included in a block type that is already subject to numbering,
+it will be excluded from auto-numbering.
+
+This means that tables, sourcecode and pseudocode, and figures are 
+excluded from auto-numbering within
+examples, requirements, recommendations, permissions, tables, figures,
+sourcecode and pseudocode. 
+[added in https://github.com/metanorma/isodoc/releases/tag/v1.0.11]
+
 
 == Cross-references
 
@@ -574,7 +623,7 @@ Normally in AsciiDoc, any text in a cross-reference that follows a comma
 constitutes custom text for the cross-reference.
 
 So a cross-reference `<<ISO7301,the foregoing reference>>`
-would be rendered as "the foregoing reference", and hyperlinked to the ISO7301 reference.
+would be rendered as "the foregoing reference", and hyperlinked to the `ISO7301` reference.
 
 In Metanorma AsciiDoc cross-references, bibliographic localities
 (e.g. page numbers, clause numbers) can be added directly after the comma,
@@ -587,14 +636,14 @@ List items can be cross-referenced by inserting a bookmark at the very start of 
 [source,asciidoc]
 --
 . Ordered list
-.. [[id]] This is the first list item
-... [[id]] This is a list sub-item
+.. [[id1]] This is the first list item
+... [[id2]] This is a list sub-item
 --
 
 === Hyperlinks
 
 Hyperlinks to URIs can have alt text, which is used in accessibility (corresponding to the HTML
-`a@title` attribute). This is specified by appending ",title=..." after the text in the
+`a@title` attribute). This is specified by appending `,title=...` after the text in the
 URL macro in AsciiDoc:
 
 [source,asciidoc]
