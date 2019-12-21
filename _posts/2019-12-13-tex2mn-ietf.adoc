@@ -12,8 +12,8 @@ authors:
       - https://github.com/paolobrasolin
 # card_image: /assets/blog/2019-09-02.png
 excerpt: >-
-  We have made great progress with the LaTeX backend of
-  Metanorma since we announced alpha support.
+  We've had great progress with the LaTeX backend of
+  Metanorma since alpha support was announced!
 ---
 = Compiling IETF RFCs with Metanorma and LaTeX
 
@@ -24,25 +24,41 @@ Metanorma-flavoured LaTeX!
 
 The time is ripe to for a tutorial to get you up and running.
 
-TODO: *@ronaldtse -- what would be a good nod to IETF here?*
-
+In fact, we dedicate this post to celebrate the recent official adoption
+at IETF of RFC XML v3 (https://www.tools.ietf.org/html/rfc7991[RFC 7991])
+-- writing an IETF RFC using LaTeX!
 
 
 
 == Setup
 
+=== Metanorma
+
 First of all, you need to install the *Metanorma toolchain*.
 Our https://www.metanorma.com/author/topics/install/[installation guide]
 covers in detail all supported environments so we won't dwell on that here.
+
+=== LaTeX
 
 The second step is setting up a *LaTeX distribution*.
 Since you're reading this you probably have one already, but if that's not the case
 you can find one at https://www.latex-project.org/get/[getting LaTeX].
 
+
+=== Glue 1: LaTeXML
+
 A required dependency for our toolchain is `*LaTeXML*`.
 Most LaTeX distributions include it, but we need a very recent version.
-Many ways to install it are described in https://dlmf.nist.gov/LaTeXML/get.html[its documentation],
-but we suggest to simply use Perl's `cpanm` package manager:
+Many ways to install it are described in https://dlmf.nist.gov/LaTeXML/get.html[its documentation].
+
+If you are on a recent version of Linux, try `snap` which is a snap-pier way to install LaTeXML!
+
+----
+# the latexml `edge` channel provides the earliest compatible version
+snap install latexml --edge
+----
+
+Otherwise, simply use Perl's `cpanm` package manager:
 
 [source,bash]
 ----
@@ -52,6 +68,9 @@ cpanm git://github.com/brucemiller/LaTeXML.git
 # to get the earliest compatible version
 cpanm git://github.com/brucemiller/LaTeXML.git@9a0e7dc5
 ----
+
+
+=== Glue 2: tex2mn
 
 The final step is getting `*tex2mn*`, the tool we built as a bridge from LaTeX to Metanorma.
 This is as simple as cloning a `git` repository, which will also get you the sample we'll compile:
@@ -66,16 +85,22 @@ git clone git@github.com:metanorma/tex2mn.git
 
 == Usage
 
+=== General
+
 Take a look inside `tex2mn`'s folder. You will find these files:
 
 `Metanorma.cls`::
 This is the LaTeX class implementing the Metanorma LaTeX flavour;
 it allows you to compile Metanorma LaTeX directly to PDF.
+
 `Metanorma.cls.ltxml` and `Metanorma.xsl`::
 These are the beating heart of `tex2mn` and encode how
 Metanorma LaTeX is translated to Metanorma AsciiDoc.
 
 Just copy these three files into the working folder of your projects and you're ready to go.
+
+
+=== Compiling a sample file
 
 Let's compile a sample file!
 
@@ -84,6 +109,10 @@ Let's compile a sample file!
 ++++
 
 As you see, there are a few commands to run so let's run over the crucial ones.
+
+We are going to use the file `showcase.tex` located at `examples/showcase.tex`
+within the `tex2mn` directory.
+
 
 First of all, you can compile Metanorma LaTeX directly to PDF.
 You can use `pdflatex` or go fully automatic with `latexmk`:
@@ -97,11 +126,14 @@ Then you can translate Metanorma LaTeX into Metanorma AsciiDoc:
 
 [source,bash]
 ----
-latexml showcase.tex | latexmlpost - --stylesheet=Metanorma.xsl --nocrossref --nodefaultresources --destination=showcase.adoc
+latexml showcase.tex | latexmlpost - --stylesheet=Metanorma.xsl \
+  --nocrossref --nodefaultresources --destination=showcase.adoc
 ----
 
-Finally, you can use the Metanorma toolchain to compile the Metanorma Asciidoc to the desired output.
-E.g., to target IETF's RFC2 XML you can run
+Finally, you can use the Metanorma toolchain to compile the Metanorma
+AsciiDoc to the desired output.
+
+E.g., to target IETF's RFC 2 XML you can run:
 
 [source,bash]
 ----
@@ -109,7 +141,6 @@ metanorma compile -t ietf -x xmlrfc2 showcase.adoc
 ----
 
 That's it! This is all you need to know to get started.
-
 
 
 
