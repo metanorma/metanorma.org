@@ -2,23 +2,46 @@
 layout: ietf-flavor
 ---
 
-= AsciiRFC markup
+= Metanorma Asciidoc markup
+
+This document documents the version of Metanorma Asciidoc aligned with
+v3 RFC XML [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.0.0].
+This version of Asciidoc is much closer aligned to the rest of Metanorma than the
+version used in previous versions; this has the added benefit that the same Asciidoc
+source can be used to generate output for both IETF and other Standards bodies,
+which was not previously possible. 
+
+The version of Asciidoc that supported v2 RFC XML
+in previous versions is link:markup-v2.adoc[documented separately]. 
+link:markup-v2tov3.adoc[A comparison of the two markups] is also provided, and can be
+used to convert documents marked up for v2 RFC XML to documents for v3 RFC XML.
 
 == Sections
 
+[[abstract]]
 === Abstract
 
 Any paragraphs following the document header are treated as the abstract
-(`front/abstract`), whether or not they are in abstract style. The abstract is
+(`front/abstract`), whether they are notated as an Asciidoc preamble or as an
+Asciidoc abstract; if both are present, the abstract takes priority. The abstract is
 terminated by either the first section header (which ends the document
-preamble), or an admonition (e.g. `note`).
+preamble), or a note.
 
-Any admonitions before the first section header are treated as notes (`front/note`).
+Any notes immediately following the abstract are treated as RFC notes (`front/note`).
+
+[source,asciidoc]
+----
+[[abstract-id]] <1>
+Abstract text without an explicit title and abstract style. <2>
+----
+<1> `front/abstract/@anchor` 
+<2> `front/abstract`
 
 [source,asciidoc]
 ----
 [[abstract-id]] <1>
 [abstract]
+== Abstract
 This is an abstract <2>
 
 NOTE: This is a note <3>
@@ -29,42 +52,38 @@ NOTE: This is a note <3>
 This is another note <3>
 ===
 ----
-<1> v3 only: `front/abstract@anchor` (attribute only available in v3)
+<1> `front/abstract/@anchor` 
 <2> `front/abstract`
 <3> `front/note`
-<4> v3 only: `front/note@removeInRFC` (attribute only available in v3)
-<5> v3: `front/note/name`; v2: `front/note@title` (mandatory attribute; if not provided, `NOTE` is supplied)
+<4> `front/note/@removeInRFC` 
+<5> `front/note/name`
 
 === Sections and Subsections
 
 [source,asciidoc]
 ----
-:sectnums: <1>
-[[id]] <2>
-[remove-in-rfc=true,toc=include|exclude|default] <3>
-== Section title <4>
-First paragraph of section <5>
+[[id]] <1>
+[removeInRFC=true,toc=include|exclude|default,numbered=true] <2>
+== Section title <3>
+First paragraph of section <4>
 
-Second paragraph of section <5>
+Second paragraph of section <4>
 
-:sectnums!: <6>
-=== Subsection title <7>
-First paragraph of subsection <8>
+=== Subsection title <5>
+First paragraph of subsection <6>
 
-==== Subsubsection title <9>
-Content content content <10>
+==== Subsubsection title <7>
+Content content content <8>
 ----
 
-<1> `middle/section@numbered=true` (attribute only available in v3)
-<2> `middle/section@anchor`
-<3> v3 only: `middle/section@removeInRFC`, `middle/section@toc` (attributes only available in v3)
-<4> v3: `middle/section/name`; v2: `middle/section@title`
-<5> `middle/section/t`
-<6> `middle/section@numbered=false` (attribute only available in v3) (toggle)
-<7> v3: `middle/section/section/name`; v2: `middle/section/section@title`
-<8> `middle/section/section/t`
-<9> v3: `middle/section/section/section/name`; v2: `middle/section/section/section@title`
-<10> `middle/section/section/section/t`
+<1> `middle/section/@anchor`
+<2> `middle/section/@removeInRFC`, `middle/section/@toc`, `middle/section/@numbered`
+<3> `middle/section/name`
+<4> `middle/section/t`
+<5> `middle/section/section/name`
+<6> `middle/section/section/t`
+<7> `middle/section/section/section/name`
+<8> `middle/section/section/section/t`
 
 
 === Appendices
@@ -72,13 +91,14 @@ Content content content <10>
 [source,asciidoc]
 --
 [[id]] <1>
-[appendix]
-== Appendix 1 <2>
-Content <3>
+[appendix,removeInRFC=true,toc=include|exclude|default,numbered=true] <2>
+== Appendix 1 <3>
+Content <4>
 --
-<1> `back/section@anchor`
-<2> v3: `back/section/name`; v2: `back/section@title`
-<3> `back/section/t`
+<1> `back/section/@anchor`
+<2> `back/section/@removeInRFC`, `back/section/@toc`, `back/section/@numbered`
+<3> `back/section/name`
+<4> `back/section/t`
 
 
 
@@ -89,63 +109,80 @@ Content <3>
 
 === Examples
 
-RFC XML does not recognize examples as a distinct element. Under v2, any Metanorma AsciiDoc
-example blocks are treated by default as `figure`; if they do not contain source code,
-code listing, mathematical formatting or Ascii art, they are treated as a block of text.
+RFC XML does not recognize examples as a distinct element. The example label and
+example contents are rendered without a containing element; the example label
+appears on a paragraph of its own.
+
+The example label (if any) is prefixed with the standard Metanorma prefix, "EXAMPLE: ",
+or "EXAMPLE nnn: " if there are more than one examples in the clause.
+
+=== Figures
+
+Figures are rendered as RFC XML `figure`, and are treated as wrappers for
+ASCII art, sourecode and images; they are redundant for v3 RFC XML, since
+the processing of those blocks already inserts the `figure` wrapper.
+Any text in an example block that precedes or follows sourcecode, an image, or preformatted text
+is moved outside the figure.
+
+=== Requirements, Recommendations, Permissions
+
+RFC XML does not recognize recommendations as a distinct element. The recommendation label and
+example contents are rendered without a containing element; the recommendation label
+appears on a paragraph of its own. Recommendation components that are not meant
+to be human readable (those set to `exclude` attribute) are left out of RFC XML.
+
+
 
 === Source code listings
 
-In RFC XML, `sourcecode` (v3) and `artwork` (v2) elements only occur within a
+In RFC XML, `sourcecode` elements only occur within a
 `figure` wrapper; Metanorma-IETF supplies that wrapper if it is not provided
 explicitly.
+
+Any label supplied for sourcecode will be rendered before the `figure` wrapper.
+
+Metanorma pseudocode is marked up in RFC as sourcecode; any formatting is
+removed from the pseudocode body.
 
 [source,asciidoc]
 .Without Figure Wrapper
 --
 [[id]] <1>
 .Source code listing title <2>
-[source,type,src=uri,align,alt] <3>
+[source,type,src=uri,markers=true,filename=a.rb] <3>
 ----
 begin() {
   source code listing <4>
 }
 ----
 --
-<1> v3: `figure/sourcecode@anchor`; v2: `figure@anchor` (moved into supplied wrapper: anchors not supported on `artwork`)
-<2> v3: `figure/sourcecode@name`; v2: `figure/artwork@name`
-<3> v3: `figure/sourcecode@type`; `figure/sourcecode@src` (`align` and `alt` not supported). If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute. v2: `figure/artwork@type`, `figure/artwork@src`, `figure/artwork@align`, `figure/artwork@alt`.
-<4> v3: `figure/sourcecode`; v2: `figure/artwork`
+<1> `figure/@anchor`
+<2> `figure/name` 
+<3> `figure/sourcecode/@type`, `figure/sourcecode/@src`, `figure/sourcecode/@markers`, `figure/sourcecode/@name`. If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute. 
+<4> `figure/sourcecode`
 
 [source,asciidoc]
 .With Figure Wrapper
 --
 [[id]] <1>
-[align,alt,suppress-title] <2>
 .Figure 1 <3>
 ====
-Preamble text <4>
-
 [[id1]] <5>
 .Source code listing title <6>
-[source,type,src=uri,align,alt] <7>
+[source,type,src=uri,markers=true] <7>
 ----
 begin() {
   source code listing <8>
 }
 ----
-
-Postamble text <9>
 ====
 --
-<1> `figure@anchor`
-<2> v2 only: `figure/artwork@align`, `figure/artwork@alt`, `figure@suppress-title` (attributes only available in v2)
+<1> `figure/@anchor`
 <3> `figure/name`
-<4> v2 only: `figure/preamble` (only available in v2)
-<5> v3: `figure/sourcecode@anchor`; v2: Not supported: use `figure@anchor`
-<6> v3: `figure/sourcecode@name`; v2: `figure/artwork@name`
-<7> v3: `figure/sourcecode@type`; `figure/sourcecode@src` (`align` and `alt` not supported). If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute. v2: `figure/artwork@type`, `figure/artwork@src`, `figure/artwork@align`, `figure/artwork@alt`.
-<8> v3: `figure/sourcecode`; v2: `figure/artwork`
-<9> v2 only: `figure/postamble` (only available in v2)
+<5> `figure/sourcecode/@anchor`
+<6> `figure/sourcecode/@name`
+<3> `figure/sourcecode/@type`, `figure/sourcecode/@src`, `figure/sourcecode/@markers`, `figure/sourcecode/@name`. If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute. 
+<8> `figure/sourcecode`
 
 
 === ASCII Art and Images
@@ -154,22 +191,28 @@ In RFC XML, `artwork` elements only occur within a
 `figure` wrapper; Metanorma-IETF supplies that wrapper if it is not provided
 explicitly.
 
+All ASCII art is assigned the type "ascii-art".
+Only SVG images are supported in `xml2rfc`; metanorma will issue a warning for any other image type.
+
+Metanorma supports inline images; RFC XML does not. Any instances of inline
+images in a paragraph are replaced by a placeholder counter ("[IMAGE nnn]");
+the images are moved after the paragraph.
 
 [source,asciidoc]
 .Ascii-Art Without Figure Wrapper
 --
 [[id]] <1>
 .Figure2.jpg <2>
-[align=left|center|right,alt=Ascii Art,type=text/plain] <3>
+[align=left|center|right,alt=Ascii Art] <3>
 ....
 ------------------------
 |        Ascii Art     |
 ------------------------ <4>
 ....
 --
-<1> v3 only: `figure/artwork@anchor`; v2: `figure@anchor` (moved into supplied wrapper: anchors not supported on `artwork`)
-<2> `figure/artwork@name`
-<3> `figure/artwork@align`, `figure/artwork@alt`; `figure@type` (attribute only available in v2)
+<1> `figure/artwork/@anchor`
+<2> `figure/name`
+<3> `figure/artwork/@align`, `figure/artwork/@alt`
 <4> `figure/artwork`
 
 [source,asciidoc]
@@ -177,23 +220,21 @@ explicitly.
 --
 [[id]] <1>
 .Figure2.jpg <2>
-[align=left|center|right,alt=alt_text,type=img/jpeg] <3>
-image::filename.jpg[alt_text,700,200] <4>
+[align=left|center|right,alt=alt_text] <3>
+image::filename.jpg[alt_text] <4>
 --
-<1> v3 only: `figure/artwork@anchor`; v2: `figure@anchor` (moved into supplied wrapper: anchors not supported on `artwork`)
-<2> `figure/artwork@name`
-<3> `figure/artwork@align`, `figure/artwork@alt`; `figure/artwork@type` (only available in v2, intended to be a MIME type; v3: populated as either `svg` or `binary-art` depending on file suffix)
-<4> `figure/artwork@src`, `figure/artwork@alt`, `figure/artwork@width` (deprecated in v3), `figure/artwork@height` (deprecated in v3)
+<1> `figure/artwork/@anchor`
+<2> `figure/name`
+<3> `figure/artwork/@align`, `figure/artwork/@alt`
+<4> `figure/artwork/@src`, `figure/artwork/@alt`
 
 
 [source,asciidoc]
 .With Figure Wrapper
 --
 [[id]] <1>
-[align,alt,suppress-title] <2>
 .Figure 1 <3>
 ====
-Preamble text <4>
 
 [[id]] <5>
 .Figure2.jpg <8>
@@ -206,28 +247,35 @@ or literal (artwork) <7>
 ....
 [[id]] <5>
 .Figure2.jpg <8>
-[align=left|center|right,alt=alt_text,type=img/jpeg] <9>
-image::filename.jpg[alt_text,700,200] <10>
+[align=left|center|right,alt=alt_text] <9>
+image::filename.jpg[alt_text] <10>
 
-Postamble text <11>
 ====
 --
-<1> `figure@anchor`
-<2> v2 only: `figure/artwork@align`, `figure/artwork@alt`, `figure@suppress-title` (attributes only available in v2)
+<1> `figure/@anchor`
 <3> `figure/name`
-<4> v2 only: `figure/preamble` (only available in v2)
-<5> v3: `figure/artwork@anchor`; v2: Not supported: use `figure@anchor`
-<6> `figure/artwork@align`, `figure/artwork@alt`; `figure@type` (attribute only available in v2)
+<5> `figure/artwork/@anchor`
+<6> `figure/artwork/@align`, `figure/artwork/@alt`
 <7> `figure/artwork`
-<8> `figure/artwork@name`
-<9> `figure/artwork@align`, `figure/artwork@alt`; `figure/artwork@type` (only available in v2, intended to be a MIME type; v3: populated as either `svg` or `binary-art` depending on file suffix)
-<10> `figure/artwork@src`, `figure/artwork@alt`, `figure/artwork@width` (deprecated in v3), `figure/artwork@height` (deprecated in v3)
-<11> v2 only: `figure/postamble` (only available in v2)
+<8> `figure/artwork/@name`
+<9> `figure/artwork/@align`, `figure/artwork/@alt` (type populated as either `svg` or `binary-art` depending on file suffix)
+<10> `figure/artwork/@src`, `figure/artwork/@alt`
 
+=== Formulae
 
-=== Mathematical examples
+Formulae are rendered consistent with the rest of Metanorma, as paragraphs of mathematical
+expressions followed by a counter in parentheses; the counter is separated from the expression
+by four spaces.
 
-In order for mathematical formatting to be recognised in Asciidoc, the document attribute `:stem:` needs to be set.
+=== Mathematical expressions
+
+In order for mathematical formatting to be recognised in Asciidoc, 
+the document attribute `:stem:` needs to be set.
+
+Unlike previous versions of this gem, 
+mathematical expressions, whether in formulae or inline, are rendered as
+AsciiMath delimited by `$$`; if a sequence of `$` already occurs in the text,
+that delimiter has more `$` added to it until it is unique.
 
 [source,asciidoc]
 --
@@ -239,131 +287,132 @@ sqrt(4) = 2
 ++++
 --
 
-Mathematical examples are treated identically to literals, and are rendered as `artwork` in both v2 and v3;
-however their default alignment is set as `center`. As with inline stem expressions, they are treated identically
-to monospace expressions in the RFC XML output; they are not currently rendered as MathML or any other notation.
-
 === Lists
 
 [source,asciidoc]
 --
 [[id]] <1>
-[empty=true,spacing=normal|compact,hang-indent=n] <2>
+[nobullet=true,spacing=normal|compact] <2>
 * Unordered list 1 <3>
 * Unordered list 2 <3>
 ** Nested list <4>
 
 [[id]] <5>
-[spacing=compact,empty=true,start=n,group=n,counter=token,hang-indent=n,format=List #%d,arabic|loweralpha|upperralpha|lowerroman|upperroman] <6>
+[spacing=compact,start=n,group=n,format=List #%d,arabic|loweralpha|upperralpha|lowerroman|upperroman] <6>
 . A <7>
 . B <7>
 --
-<1> v3: `ul@anchor`; attribute only available in v3
-<2> v3: `ul@empty`, `ul@spacing` (`hangIndent` not available); v2: `ul@style = empty`, `ul@hangIndent` (`spacing` not available)
-<3> v2: `list[@style="symbols"]/t`; v3: ul/li
-<4> v2: `list[@style="symbols"]/t/list[@style="symbols"]/t`; v3: `ul/li/ul/li`
-<5> v3: `ol@anchor`; attribute only available in v3
-<6> v2: `list/counter`,  `list@hangIndent`, `list@style = format List #%d`, `list@style` (for arabic|loweralpha|upperralpha|lowerroman|upperroman) (`spacing`, `start`, `empty` and `group` not available) v3: `ol@spacing`, `ol@empty`, `ol@start`, `ol@group`, `ol@type = "#%d", `ol@type` (for arabic|loweralpha|upperralpha|lowerroman|upperroman) (`counter`, `hangIndent` not available)
-<7> v2: `list/t`; v3: `ol/li`
-
-Metanorma AsciiDoc does not permit anchors on list items: the anchors in the following are ignored.
-
-[source,asciidoc]
---
-* [[id1]] A
-
-. [[id2]] A
---
-
-RFC XML v2 does not support multi-paragraph list items. Following the specification recommendation,
-paragraphs within v2 list items are replaced with `vspace` tages.
+<1> `ul/@anchor`
+<2> `ul/@empty`, `ul/@spacing`
+<3> `ul/li`
+<4> `ul/li/ul/li`
+<5> `ol/@anchor`
+<6> `ol/@spacing`, `ol/@start`, `ol/@group`, `ol/@type = "#%d", `ol/@type` (for arabic|loweralpha|upperralpha|lowerroman|upperroman) 
+<7> `ol/li`
 
 === Definition Lists
 
 [source,asciidoc]
 --
 [[id]] <1>
-[horizontal,compact,hang-indent=n] <2>
+[newline=true,spacing=compact,indent=5] <2>
 A:: B <3>
 --
-<1> v3 only: `dl@anchor` (attribute only available in v3)
-<2> v3 only: `dl@hanging`, `dl@spacing` (attributes only available in v3); v2 only: `list@hangIndent` (attribute only available in v2). Note that the `compact` and `horizontal` attributes are mutually exclusive in AsciiDoc.
-<3> v3: `dl/dt`, `dl/dd`; v2: `list[@style="hanging"]/t@hangText`, `list[@style="hanging"]/t`
+<1> `dl/@anchor` 
+<2> `dl/@newline`, `dl/@spacing`, `dl/@indent`
+<3> `dl/dt`, `dl/dd`
 
-Metanorma AsciiDoc does not permit anchors on either definition list terms,
-or definition list definitions: the anchors in the following are ignored.
-
-In RFC XML v2, `idnits` considers inline definition lists invalid; Metanorma
-renders them as paragraphed definition lists. The gem option `:inline-definition-lists`
-disables this behaviour.
+metanorma-ietf permits anchors on definition list terms and definition list definitions,
+whereas other flavours treat them as bookmarks (which are otherwise ignored in metanorma-ietf):
 
 [source,asciidoc]
 --
 [[id1]] A:: [[id2]]B
 --
 
-RFC XML v2 does not support multi-paragraph list items. Following the specification recommendation,
-paragraphs within v2 list items are replaced with `vspace` tages.
-
-=== Sidebar (RFC v3 only)
+=== Note
 
 [source,asciidoc]
 --
 [[id]] <1>
-****
+NOTE
+====
 Sidebar <2>
-****
+====
+
+[[id]] <1>
+NOTE: Sidebar <2>
 --
-<1> `aside@anchor`
+<1> `aside/@anchor`
 <2> `<aside>Sidebar</aside>`
+
+Notes are prefixed with the standard Metanorma prefix, "NOTE: ".
+
+Exceptionally, notes after abstracts are encoded in v3 RFC XML as `note` (<<abstract>>).
+
+=== Admonitions
+
+Admonitions are rendered like notes as XML RFC `aside`, with the admonition label and title
+as an initial paragraph:
+
+[source,asciidoc]
+--
+[[id]] <1>
+[CAUTION] <2>
+.Here be dragons </2>
+====
+Sidebar <3>
+====
+
+[[id]] <1>
+NOTE: Sidebar <2>
+--
+<1> `aside/@anchor`
+<2> `aside/t
+<3> `<aside>Sidebar</aside>`
+
 
 === Tables
 
-The converter respects the AsciiDoc (horizontal) align attributes of cells (v2,
-v3), column widths (v2), and `colspan`, `rowspan` attributes (v3).
-
-(Exceptionally,
-column widths specified for v2 as `"1,1,1,1,1,1...."` will be ignored, since AsciiDoc
-internally treats them identically to unspecified column widths on a table.)
+The converter respects the `colspan` and `rowspan` attributes of cells,
+as set in Asciidoc (`3|`, .3|`).
 
 [source,asciidoc]
 --
 [[id]] <1>
-[suppress-title=true|false,align=left|center|right,grid=all|cols|none|rows] <2>
-.Table Title <3>
+.Table Title <2>
 |===
-|[[id]] head | head <4>
+|[[id]] head | head <3>
 
-h|header cell | body cell <5>
-| | [[id]] body cell <6>
+h|header cell | body cell <4>
+| | [[id]] body cell <5>
 
-|foot | foot <7>
+|foot | foot <6>
 |===
 --
-<1> v3: `table@anchor`; v2: `texttable@anchor`
-<2> v2: `texttable@suppress-title`, `texttable@align`, `texttable@style` (attributes only available in v2). Mapping of AsciiDoc grid attribute to RFC XML style attribute is: `all` > `all`, `cols` > `full`, `none` > `none`, `rows` > `headers` (although the two are not strictly equivalent).
-<3> v3: `table/name`; v2: `texttable@title`
-<4> v3: `table/thead/tr/td`; v2: `texttable/ttcol@id` (attribute only available in v2), `texttable/ttcol`
-<5> v3: `table/tbody/tr/th`, `table/tbody/tr/td`; v2: `texttable/c`, `texttable/c`
-<6> v3: `table/tbody/tr/td@anchor` (attribute only available in v3)
-<7> v3: `table/tfoot/tr/td`; v2: `texttable/c`
+<1> `table/@anchor`
+<2> `table/name`
+<3> `table/thead/tr/td`
+<4> `table/tbody/tr/th`, `table/tbody/tr/td`
+<5> `table/tbody/tr/td/@anchor` 
+<6> `table/tfoot/tr/td`
 
-NOTE: v3 permits table cells to contain block elements, such as paragraphs and lists. (This is done in AsciiDoc by prefixing
-the table cell with `a|`.) However v2 only permits inline tagging. Paragraph tags (`<t>`) are stripped by the gem.
+NOTE: v3 RFC XML permits table cells to contain block elements, such as paragraphs and lists. 
+This is done in AsciiDoc by prefixing the table cell with `a|`.
 
 === Paragraphs
 
 [source,asciidoc]
 --
 [[id]] <1>
-[keep-with-next=true,keep-with-previous=true] <2>
+[keepWithNext=true,keepWithPrevious=true] <2>
 Paragraph text <3>
 --
-<1> `t@anchor`
-<2> v3 only: `t@keepWithNext`, `t@keepWithPrevious` (attributes only available in v3)
+<1> `t/@anchor`
+<2> `t/@keepWithNext`, `t/@keepWithPrevious` 
 <3> `<t>Paragraph text</t>`
 
-=== Quotes (v3 only)
+=== Quotes 
 
 [source,asciidoc]
 --
@@ -371,121 +420,39 @@ Paragraph text <3>
 [quote, attribution, citation info] <2>
 Quotation <3>
 --
-<1> `blockquote@anchor`
-<2> `blockquote@quotedFrom`, `blockquote@cite`. In v3, `citation info` is limited to a URL.
+<1> `blockquote/@anchor`
+<2> `blockquote/@quotedFrom`, `blockquote/@cite`. In v3 RFC XML, `citation info` is limited to a URL, and is not otherwise populated.
 <3> `<blockquote>Quotation</blockquote>`
 
 
 === Comments
 
-==== AsciiDoc comments
+Unlike previous versions of this gem working with v3 RFC XML, this version
+of the gem does not currently provide a means of populating XML comments
+in RFC XML.
 
-Metanorma AsciiDoc implements both inline comments (prefixed with `\\`)
-and block comments (prefixed with `\\\\`). Both are ignored
-and are not rendered in any output, including RFC XML.
-
-AsciiDoc also permits paragraphs and open blocks (which can contain
-multiple paragraphs) to be treated as AsciiDoc comments, if
-they have the style attribute `[comment]`:
-
-[source,asciidoc]
-----
-
-// This is an inline AsciiDoc comment, which will not be output to XML.
-
-[comment]
-This is a single paragraph AsciiDoc comment,
-which will not be output to XML.
-
-////
-This is a block AsciiDoc comment,
-
-which will not be output to XML.
-////
-
-[comment]
---
-This is a
-
-multiple paragraph
-
-AsciiDoc comment, which will not be output to XML.
---
-----
-
-==== XML comments
-
-XML inline comments may be introduced into XML through the `[comment]`
-formatting macro: any such comments may not span more than one line.
-
-[source,asciidoc]
---
-Text [comment]#This is a comment# Text
---
-
-The foregoing will be rendered in RFC XML as:
-
-[source,xml]
---
-<t>Text <!-- This is a comment --> Text</t>
---
-
-XML block comments are introduced through the role attribute
-`[.comment]`, which can be prefixed to a paragraph or an open
-block (which can contain multiple paragraphs):
-
-[source,asciidoc]
-----
-[.comment]
-This is a single paragraph XML comment.
-
-[.comment]
---
-This is a
-
-multiple paragraph
-
-XML comment.
---
-----
-
-==== Text Comments
+==== Editorial Notes
 
 RFC XML provides for editorial comments which may optionally appear
-in the published text (subject to either the v3 `cref@display`
-attribute, or the `comments` processing instruction).
-
-AsciiRFC marks text comments up as admonitions.
-
-NOTE: `cref` is NOT supported in Metanorma IETF for v2 RFC XML. This is to make
-the treatment of admonitions consistent between this gem and the
-rest of metanorma. If v2 RFC XML cref is required, use the
-deprecated `asciidoctor-rfc` gem instead.
-
-In Metanorma IETF for v2 RFC XML, admonitions are rendered as the capitalized
-admonition type (e.g. NOTE, TIP), followed by the text of the admonition.
+in the published text (subject to either the `cref/@display`
+attribute, or the `comments` processing instruction). As with the rest
+of Metanorma, such editorial comments will only be included in the Metanorma
+XML output, let alone the RFC XML output, if the Asciidoctor `:draft:`
+document attribute is present. Unlike in v2 RFC XML,
+editorial notes are marked up as Asciidoc sidebars.
 
 [source,asciidoc]
 --
-NOTE: Any admonition inside the body of the text is a comment. <1>
-// Note that actual AsciiDoc comments are ignored by the converter.
-
-[[id]] <2>
-[NOTE,display=true|false,source=name] <3>
-.Note Title <4>
-====
-Any admonition inside the body of the text is a comment.
-====
+[[id]] <1>
+[reviewer="Nick Nicholas",display=true]
+.Note Title <3>
+****
+Profile?!
+****
 --
-<1> `<cref>Any admonition inside the body of the text is a comment.</cref>`
-<2> `cref@anchor`
-<3> v3 only: `cref@display` (not supported in v2); v2: `cref@source`
-<4> v3 only: `cref/name` (not supported in v2)
-
-
-
-
-
+<1> `cref/@anchor`
+<2> `cref/@source`, `cref/@display` 
+<3> `cref/name` 
 
 
 === Inline markup
@@ -514,17 +481,15 @@ _Italic_ <2>
 ^superscript^ <6>
 [bcp14]#MUST NOT# <7>
 *MUST NOT* <8>
-stem:[sqrt(4) = 2] <9>
 --
-<1> That is, "+ " at the end of a line. v3: `<br/>`; v2: `<vspace/>`.
-<2> v3: `<em>Italic</em>`; v2: `<spanx style="emph">Italic</spanx>`
-<3> v3: `<strong>Bold</strong>`; v2: `<spanx style="strong">Bold</spanx>`
-<4> v3: `<tt>Monospace</tt>`; v2: `<spanx style="verb">Monospace</spanx>`
-<5> v3 only: `<sub>subscript</sub>`. Not supported in v2; rendered as `\_subscript_`
-<6> v3 only: `<sup>superscript</sup>`. Not supported in v2; rendered as `\^superscript^`
-<7> v3 only: `<bcp14>MUST NOT</bcp14>`. Not supported in v2; rendered as `<spanx style="strong">MUST NOT</spanx>`.
-<8> v3: if document flag `:no-rfc-bold-bcp14:` is present, then `<strong>MUST NOT</strong>`, else (by default) any BCP14/RFC2119 phrase in boldface and capitals is assumed to be intended to be tagged in `<bcp14>`. v2: `<spanx style="strong">MUST NOT</spanx>`.
-<9> Stem expressions are treated identically to monospace expressions; they are not currently rendered as MathML or any other notation.
+<1> Ignored, as documented in Levkowetz' implementation notes
+<2> `<em>Italic</em>`
+<3> `<strong>Bold</strong>`
+<4> `<tt>Monospace</tt>`
+<5> `<sub>subscript</sub>`
+<6> `<sup>superscript</sup>`
+<7> `<bcp14>MUST NOT</bcp14>`
+<8> if document flag `:no-rfc-bold-bcp14:` is present, then `<strong>MUST NOT</strong>`, else (by default) any BCP14/RFC2119 phrase in boldface and capitals is assumed to be intended to be tagged in `<bcp14>`.
 
 NOTE: The delimiters must occur within the one line; the following is invalid in Metanorma AsciiDoc:
 [source,asciidoc]
@@ -532,8 +497,6 @@ NOTE: The delimiters must occur within the one line; the following is invalid in
 *WOULD
 PROBABLY*
 --
-
-Any formatting XML spans within `spanx` elements are stripped in postprocessing.
 
 === Cross-References
 
@@ -544,56 +507,41 @@ Content content content
 <<crossreference,text>> <2>
 <<crossreference,format=(counter|title|none|default): text>> <3>
 http://example.com/[linktext] <4>
-The following represent the v3 relref element
-<<crossreference,section_number (of|comma|parens|bare)>> <5>
-<<crossreference,section_number (of|comma|parens|bare): text>> <6>
-<<crossreference#fragment,section_number (of|comma|parens|bare)>> <7>
-<<crossreference#fragment,section_number (of|comma|parens|bare): text>> <8>
 ----
 <1> `<xref target="crossreference"/>`
 <2> `<xref target="crossreference">text</xref>`
 <3> `<xref format="counter|title|none|default" target="crossreference">text</xref>`
 <4> `<eref href="http://example.com/">linktext</eref>`
-<5> v3 only: `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>` (element only available in v3)
-<6> v3 only: `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>` (element only available in v3)
-<7> v3 only: `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>` (element only available in v3)
-<8> v3 only: `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>` (element only available in v3)
 
-In v2, the `relref` style crossreferences are rendered as equivalent `xref` crossreferences,
-inserting section numbers as appropriate.
-
-Note that fragments (e.g. `crossreference#fragment`) are not supported on the `xref@target` attribute,
-in either v2 or v3: the RFC XML specification requires that the `xref@target` attribute equals
+Note that fragments (e.g. `crossreference#fragment`) are not supported on the `xref/@target` attribute:
+the RFC XML specification requires that the `xref/@target` attribute equals
 the value of an anchor attribute elsewhere in the document.
 
-Internal crossreferences and bibliographic references are marked up in the same way; but
-bibliographic references are marked up separately from the main flow of Metanorma IETF AsciiDoc, and are
-processed later.
+If cross-reference text is not supplied, it is populated with
+the Metanorma default, naming and numbering the referenced object.
 
-NOTE: Typical Asciidoctor-AsciiDoc attempts to match a crossreference to a section title, if it does not find
-a matching anchor ID -- Metanorma does not do that (and in newer Asciidoctor-AsciiDoc versions > `1.5.7`).
-If you have a citation of a bibliographic item which is identical to a section title (e.g. you have a
-bibliographic citation with the anchor "`WHIRLPOOL`", and a section with the title "`WHIRLPOOL`"),
-Metanorma will correctly pick the former as the target of the reference, so long as that section
-has a different anchor ID:
---
-[source,asciidoc]
+=== Citations
+
+<<crossreference,(of|comma|parens|bare)>> <1>
+<<crossreference,(of|comma|parens|bare),section=4.3>> <2>
+<<crossreference,(of|comma|parens|bare),section-4.3: text>> <3>
+<<crossreference#fragment,section_number (of|comma|parens|bare)>> <4>
+<<crossreference#fragment,section_number (of|comma|parens|bare): text>> <5>
 ----
-[[hash_whirlpool]]
-=== WHIRLPOOL
+<1> `<relref displayFormat="of|comma|parens|bare" target="crossreference"/>` 
+<2> `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>` 
+<3> `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>` 
+<4> `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>` 
+<5> `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>` 
 
-The WHIRLPOOL hash function is defined in <<WHIRLPOOL>>.
+Localities other than "clause" and "section" are ignored in the generated v3 RFC XML.
 
-This section should actually be referenced as <<hash_whirlpool>>.
-...
+=== Footnotes
 
-[bibliography]
-== Informative References
-++++
-<reference anchor='WHIRLPOOL' target='http://www.larc.usp.br/~pbarreto/WhirlpoolPage.html'>
-...
-++++
-----
---
+Footnotes in text are rendered as a separate "Endnotes" appendix,
+with each endnote rendered as a paragraph prefixed by an incrementing numeric counter in brackets.
+The footnote reference in the main text is replaced by the same counter in brackets.
 
+Footnotes in tables and figures, similar to the rest of Metanorma, are rendered as `aside`
+elements, with an incrementing alphabetic counter in brackets.
 

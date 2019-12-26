@@ -4,19 +4,47 @@ layout: ietf-flavor
 
 = RFC element support in Metanorma-IETF
 
-The following **RFC XML v3/v2** elements are not (yet) supported through
-AsciiDoc markup:
+== v3 RFC XML elements
+
+v2 RFC XML elements and attributes that have been deprecated in v3 are not supported in the current gem.
+
+The following **RFC XML v3** elements are not currently supported through AsciiDoc markup:
 
 |===
-| RFC XML element                  | RFC XML v2 | RFC XML v3
+| RFC XML element                  | RFC XML v3 
 
-| `front/boilerplate`              | N/A | Not added
-| `iref/@primary`                  | Not supported | Not supported
-| `reference` (and all children) 2+| Supported only as pass-through or through asciidoc-bibliography gem
-| `table/preamble`                 | Not supported | Deprecated 
-| `table/postamble`                | Not supported | Deprecated 
-| `artwork/@width`                 | Only on images | Only on images
-| `artwork/@height`                | Only on images | Only on images
-| (any element)``/@xml:lang``      | N/A | Not supported
-| `cref`                           | Not supported (still supported in asciidoctor-rfc) | Supported
+| `front/boilerplate`              | Not supported
+| `iref/@primary`                  | Not supported
+| (any element)``/@xml:lang``      | Not supported
+|  `svg`                           | Not supported: SVG images are only included as data URI or as external files.
+| `address/postal/city`            | Not supported
+| `address/postal/street`          | Not supported
+| `address/postal/region`          | Not supported
+| `address/postal/country`         | Not supported
+| `address/postal/code`            | Not supported
+| `displayreference`               | Not supported
+| `refcontent`                     | Not supported
+| `referencegroup`                 | Not supported
+| `reference/@quoteTitle`          | Not supported
+| `artset`                         | Not supported (added in Levkowetz' implementation notes)
+| `u`                              | Not supported (added in Levkowetz' implementation notes)
 |===
+
+
+== v2 RFC XML elements
+
+The following **RFC XML v2** elements are not supported through AsciiDoc markup:
+
+|===
+| RFC XML element                  | RFC XML v2 
+
+| `iref/@primary`                  | Not supported 
+| `reference` (and all children)   | Supported only as pass-through or through asciidoc-bibliography gem
+| `table/preamble`                 | Not supported 
+| `table/postamble`                | Not supported 
+| `artwork/@width`                 | Only on images 
+| `artwork/@height`                | Only on images 
+| `cref`                           | Not supported (still supported in asciidoctor-rfc) 
+|===
+
+
