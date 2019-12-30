@@ -21,37 +21,45 @@ For an _introduction to AsciiDoc document attributes_ and how Metanorma uses the
 Document type. Choices:
 +
 --
-* abstract-specification:: Abstract Specification (AS)
-* best-practice:: Best Practice (BP)
-* candidate-standard:: Candidate Standard (CAN)
-* conformance-class:: Conformance Class (CC)
-* change-request:: Change Request (CR)
-* community-standard:: Community Standard (CS)
-* community-practice:: Community Practice (CP)
-* discussion-paper:: Discussion Paper (DP)
-* draft-discussion-paper:: Draft Discussion Paper (DP-Draft)
-* interoperability-program-report:: Interoperability Program Report-Engineering Specification (IPR)
-* implementation-standard:: Implementation Standard (IS)
-* implementation-standard-corrigendum:: Implementation Standard Corrigendum (ISC)
-* extension-package-standard:: Extension Package Standard (ISx)
-* notes:: Notes (Notes)
-* ogc-reference-model:: OGC Reference Model (ORM)
-* profile-corrigendum:: Profile Corrigendum (PC)
-* public-engineering-report:: Public Engineering Report (PER)
-* policy:: Policy (POL)
-* policy-name-type-specification:: Policy - Name Type Specification (POL-NTS)
-* primer:: Primer (Primer)
-* profile:: Profile (Profile)
-* request-for-comment:: Request for Comment (RFC)
-* retired:: Retired document (Retired)
-* standard-application-profile:: Standard Application Profile (SAP)
-* test-suite:: Test Suite (TS)
-* whitepaper:: Whitepaper (WhitePaper)
-* approved-technical-baseline:: Approved Technical Baseline
-* recommendation-paper:: Recommendation Paper
+* abstract-specification-topic
+* best-practice
+* change-request-supporting-document
+* community-practice
+* community-standard
+* discussion-paper
+* engineering-report
+* other
+* policy
+* reference-model
+* release-notes
+* standard
+* user-guide
+* white-paper
 --
 
-The default is `implementation-standard`.
+The default is `standard`.
+
+`:docsubtype:` Document subtype.
+Choices:
++
+--
+* For doctype `standard`:
+** conceptual model
+** conceptual model and encoding
+** conceptual model and implementation
+** encoding
+** extension
+** implementation (_default_)
+** profile
+** profile with extension
+* For doctype `best-practice`:
+** general (_default_)
+** encoding
+** extension
+** profile
+** profile with extension
+
+--
 
 `:status:`::
 Document status/stage. Synonym: `:docstage:`.
