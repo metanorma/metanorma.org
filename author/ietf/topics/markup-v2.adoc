@@ -2,20 +2,20 @@
 layout: ietf-flavor
 ---
 
-= Metanorma Asciidoc markup
+= Metanorma AsciiDoc markup (AsciiRFC v2)
 
-This documents the previous version of Metanorma Asciidoc aligned with
-v2 RFC XML [deprecated in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.0.0].
-The link:markup.adoc[current version of Asciidoc for IETF], which is aligned with v3 RFC XML,
+This documents the previous version of Metanorma AsciiDoc aligned with
+RFC XML v2 [deprecated in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.0.0].
+The link:../markup[current version of AsciiDoc for IETF], which is aligned with RFC XML v3,
 is much closer aligned to the rest of Metanorma than this version.
 
-Previous versions of this gem also supported a version of Asciidoc aligned to v3 RFC XML.
+Previous versions of this gem also supported a version of AsciiDoc aligned to RFC XML v3.
 However the schema they supported was purely the version documented in RFC 7991, which
 has never been supported by IETF unmodified, and which will not compile under v3 tools;
 so we no longer document that version of markup.
 
-link:markup-v2tov3.adoc[A comparison of the two markups] is also provided, and can be
-used to convert documents marked up for v2 RFC XML to documents for v3 RFC XML.
+link:../markup-v2tov3[A comparison of the two markups] is also provided, and can be
+used to convert documents marked up for RFC XML v2 to documents for RFC XML v3.
 
 == Sections
 
@@ -143,11 +143,11 @@ Postamble text <8>
 <1> `figure@anchor`
 <2> `figure/artwork@align`, `figure/artwork@alt`, `figure@suppress-title` (attributes only available in v2)
 <3> `figure/name`
-<4> `figure/preamble` 
+<4> `figure/preamble`
 <5> `figure/artwork@name`
 <6> `figure/artwork@type`, `figure/artwork@src`, `figure/artwork@align`, `figure/artwork@alt`.
 <7> `figure/artwork`
-<8> `figure/postamble` 
+<8> `figure/postamble`
 
 
 === ASCII Art and Images
@@ -171,7 +171,7 @@ explicitly.
 --
 <1> `figure@anchor` (moved into supplied wrapper: anchors not supported on `artwork`)
 <2> `figure/artwork@name`
-<3> `figure/artwork@align`, `figure/artwork@alt`; `figure@type` 
+<3> `figure/artwork@align`, `figure/artwork@alt`; `figure@type`
 <4> `figure/artwork`
 
 [source,asciidoc]
@@ -185,7 +185,7 @@ image::filename.jpg[alt_text,700,200] <4>
 <1> `figure@anchor` (moved into supplied wrapper: anchors not supported on `artwork`)
 <2> `figure/artwork@name`
 <3> `figure/artwork@align`, `figure/artwork@alt`; `figure/artwork@type` (intended to be a MIME type)
-<4> `figure/artwork@src`, `figure/artwork@alt`, `figure/artwork@width`, `figure/artwork@height` 
+<4> `figure/artwork@src`, `figure/artwork@alt`, `figure/artwork@width`, `figure/artwork@height`
 
 
 [source,asciidoc]
@@ -213,15 +213,15 @@ Postamble text <10>
 ====
 --
 <1> `figure@anchor`
-<2> `figure/artwork@align`, `figure/artwork@alt`, `figure@suppress-title` 
+<2> `figure/artwork@align`, `figure/artwork@alt`, `figure@suppress-title`
 <3> `figure/name`
-<4> `figure/preamble` 
+<4> `figure/preamble`
 <5> `figure/artwork@align`, `figure/artwork@alt`; `figure@type` (attribute only available in v2)
 <6> `figure/artwork`
 <7> `figure/artwork@name`
 <8> `figure/artwork@align`, `figure/artwork@alt`; `figure/artwork@type` (intended to be a MIME type)
-<9> `figure/artwork@src`, `figure/artwork@alt`, `figure/artwork@width`, `figure/artwork@height` 
-<19> `figure/postamble` 
+<9> `figure/artwork@src`, `figure/artwork@alt`, `figure/artwork@width`, `figure/artwork@height`
+<10> `figure/postamble`
 
 
 === Mathematical examples
@@ -255,13 +255,13 @@ to monospace expressions in the RFC XML output; they are not currently rendered 
 . A <5>
 . B <5>
 --
-<1> `ul@style = empty`, `ul@hangIndent` 
+<1> `ul@style = empty`, `ul@hangIndent`
 <2> `list[@style="symbols"]/t`
 <3> `list[@style="symbols"]/t/list[@style="symbols"]/t`
-<4> `list/counter`,  `list@hangIndent`, `list@style = format List #%d`, `list@style` (for arabic|loweralpha|upperralpha|lowerroman|upperroman) 
+<4> `list/counter`,  `list@hangIndent`, `list@style = format List #%d`, `list@style` (for arabic|loweralpha|upperralpha|lowerroman|upperroman)
 <5> `list/t`
 
-Unlike Metanorma AsciiDoc, v2 RFC Asciidoc does not permit anchors on list items: the anchors in the following are ignored.
+Unlike Metanorma AsciiDoc, v2 RFC AsciiDoc does not permit anchors on list items: the anchors in the following are ignored.
 
 [source,asciidoc]
 --
@@ -280,7 +280,7 @@ paragraphs within v2 list items are replaced with `vspace` tages.
 [hang-indent=n] <1>
 A:: B <2>
 --
-<1> `list@hangIndent` 
+<1> `list@hangIndent`
 <2> `list[@style="hanging"]/t@hangText`, `list[@style="hanging"]/t`
 
 In RFC XML v2, `idnits` considers inline definition lists invalid; Metanorma
@@ -348,7 +348,7 @@ Metanorma AsciiDoc implements both inline comments (prefixed with `\\`)
 and block comments (prefixed with `\\\\`). Both are ignored
 and are not rendered in any output, including RFC XML.
 
-AsciiDoc for v2 RFC XML also permits paragraphs and open blocks (which can contain
+AsciiDoc for RFC XML v2 also permits paragraphs and open blocks (which can contain
 multiple paragraphs) to be treated as AsciiDoc comments, if
 they have the style attribute `[comment]`:
 
@@ -420,12 +420,12 @@ in the published text (subject to the `comments` processing instruction).
 
 AsciiRFC marks text comments up as admonitions.
 
-NOTE: `cref` is NOT supported in Metanorma IETF for v2 RFC XML. This is to make
+NOTE: `cref` is NOT supported in Metanorma IETF for RFC XML v2. This is to make
 the treatment of admonitions consistent between this gem and the
-rest of metanorma. If v2 RFC XML cref is required, use the
+rest of metanorma. If RFC XML v2 cref is required, use the
 deprecated `asciidoctor-rfc` gem instead.
 
-In Metanorma IETF for v2 RFC XML, admonitions are rendered as the capitalized
+In Metanorma IETF for RFC XML v2, admonitions are rendered as the capitalized
 admonition type (e.g. NOTE, TIP), followed by the text of the admonition.
 
 [source,asciidoc]
@@ -442,11 +442,6 @@ Any admonition inside the body of the text is a comment.
 <1> `<cref>Any admonition inside the body of the text is a comment.</cref>`
 <2> `cref@anchor`
 <3> `cref@source`
-
-
-
-
-
 
 
 === Inline markup

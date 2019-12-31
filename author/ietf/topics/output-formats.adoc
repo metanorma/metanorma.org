@@ -20,30 +20,30 @@ and https://tools.ietf.org/html/rfc7322[RFCs (RFC7322)].
 
 Metanorma-IETF allows you to author these types of documents in AsciiDoc, and outputs
 RFC XML output in the RFC XML format, which is consumed by IETF software like `xml2rfc`
-link:output-formats.adoc[IETF software discussion]) to generate
+link:../output-formats[IETF software discussion]) to generate
 formatted IETF specifications:
 
-* v3 RFC XML is defined in
+* RFC XML v3 is defined in
 https://tools.ietf.org/html/rfc7991[RFC 7991], supplemented by
 https://tools.ietf.org/html/draft-levkowetz-xml2rfc-v3-implementation-notes-10[Levkowetz' implementation notes]
 
-Previous versions of this gem supported v3 RFC XML as it was defined in RFC 7991 in 2016, but
+Previous versions of this gem supported RFC XML v3 as it was defined in RFC 7991 in 2016, but
 without the additions and modifications documented in Levkowetz' implementation notes. The
 v3 output of those versions will not compile under the `xml2rfc` releases that actually support v3.
 
-Previous versions of this gem supported v2 RFC XML (https://tools.ietf.org/html/rfc7749[RFC 7749]):
+Previous versions of this gem supported RFC XML v2 (https://tools.ietf.org/html/rfc7749[RFC 7749]):
 
 * RFC XML v2
 ** Metanorma `doctype`: `rfc2`
 ** Metanorma file extension: `xmlrfc` (not `xml`!)
 
-IETF is moving to v3 RFC XML as its main format, and Metanorma will only be supporting v3 RFC XML
+IETF is moving to RFC XML v3 as its main format, and Metanorma will only be supporting RFC XML v3
 from now on:
 
 
-NOTE: IETF support of v3 RFC XML is quite new, and v3 should be used with some caution. The
-IETF processing tools that consume v3 RFC XML are still under development; Metanorma will be
-endeavouring to keep metanorma-ietf up to date with changes to Levkowetz' implementation notes.
+NOTE: IETF support of RFC XML v3 is quite new, and v3 should be used with some caution. The
+IETF processing tools that consume RFC XML v3 are still under development; Metanorma will be
+endeavouring to keep Metanorma-IETF up to date with changes to Levkowetz' implementation notes.
 
 NOTE: Metanorma-IETF validates all RFC XML generated through the RELAXNG schema definitions
 of RFC XML. While Metanorma attempts to generate valid RFC XML, some AsciiDoc

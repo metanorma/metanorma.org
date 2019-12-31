@@ -2,21 +2,21 @@
 layout: ietf-flavor
 ---
 
-= References
+= References (AsciiRFC v2)
 
-This documents the handling of references in the previous version of Metanorma Asciidoc aligned with
-v2 RFC XML [deprecated in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.0.0].
-The link:references-v2.adoc[previous version of Asciidoc for IETF], which is aligned with v3 RFC XML,
+This documents the handling of references in the previous version of Metanorma AsciiDoc aligned with
+RFC XML v2 [deprecated in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.0.0].
+The link:../references[current version of Metanorma AsciiDoc for IETF (aka AsciiRFC v3)], which is aligned with RFC XML v3,
 is much closer aligned to the rest of Metanorma than this version. In particular, the current
 version uses native Metanorma representation of references, as auto-fetched via Relaton identifier,
 or notated as Relaton definition lists.
 
 [[note_general_doc_ref_bib-ietf]]
-NOTE: This section supplements link:/author/topics/document-format/bibliography[References & Bibliography] in general Metanorma documentation. 
+NOTE: This section supplements link:/author/topics/document-format/bibliography[References & Bibliography] in general Metanorma documentation.
 
 == Embedded in Document
 
-References are expected to be provided in raw RFC XML v2 format. 
+References are expected to be provided in raw RFC XML v2 format.
 
 RFC requires two separate bibliographies, one for normative and one for informative references;
 either can be omitted. All bibliography sections in the must be styled with the prefix `[bibliography]`,
@@ -49,8 +49,8 @@ Metanorma-IETF will have difficulty processing them.
 [[external-directory-refs]]
 == External Directory
 
-As an alternative, the document attribute `:biblio-dir:` can nominate a directory 
-in which separate XML files can be placed, one for each reference to be included. 
+As an alternative, the document attribute `:biblio-dir:` can nominate a directory
+in which separate XML files can be placed, one for each reference to be included.
 Metanorma-IETF will read in from that directory only the files that have actually been cited,
 and insert them into the appropriate bibliography,
 without the references needing to be given under the bibliographies as above.

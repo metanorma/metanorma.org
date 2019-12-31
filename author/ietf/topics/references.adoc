@@ -2,24 +2,24 @@
 layout: ietf-flavor
 ---
 
-= References
+= References (AsciiRFC v3)
 
 This document documents the handling of references in the
-version of Metanorma Asciidoc aligned with
-v3 RFC XML [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.0.0].
-This version of Asciidoc is much closer aligned to the rest of Metanorma than the 
+version of Metanorma AsciiDoc aligned with
+RFC XML v3 [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.0.0].
+This version of AsciiDoc is much closer aligned to the rest of Metanorma than the
 version used in previous versions; in particular, the processing of references is consistent
 with that in the rest of Metanorma.
 
 [[note_general_doc_ref_bib-ietf]]
-NOTE: This section supplements link:/author/topics/document-format/bibliography[References & Bibliography] in general Metanorma documentation. 
+NOTE: This section supplements link:/author/topics/document-format/bibliography[References & Bibliography] in general Metanorma documentation.
 
 == Embedded in Document
 
-References in IETF Asciidoc are processed as they are in the rest of Metanorma. References are defined with
+References in IETF AsciiDoc are processed as they are in the rest of Metanorma. References are defined with
 anchors and identifiers in a bibliographic entry list. If the identifier is recognised as a standard
 with online data (including IETF standards), the bibliographic data for that identifier is fetched,
-cached locally, and inserted into the Metanorma XML. 
+cached locally, and inserted into the Metanorma XML.
 
 So for example `* [[[RFC7152,RFC 7152]]]` will be
 recognised as a citation of RFC 7152, and the corresponding bibliographic data will be fetched from the
@@ -29,26 +29,26 @@ differently.
 
 That said, any references recognised as being to IETF standards will include the URI for their RFC XML source,
 and they will be replaced with an `xi:include` link to that URI as an external reference, as is recommended
-by default for IETF references. That means that the generated v3 RFC XML will still end up referencing
+by default for IETF references. That means that the generated RFC XML v3 will still end up referencing
 native RFC XML references.
 
 Other Relaton XML references are converted to RFC XML `reference` elements: in practice, such `reference` elements
-are limited to containing author names, title, URI, document identifier, keywords, abstract, and publication date. 
+are limited to containing author names, title, URI, document identifier, keywords, abstract, and publication date.
 If no personal authors or editors are supplied, organisations are named again; if no authors or editors are
 named at all (as is usual for standards), the publishing standards organisation is named as the author instead.
 The document identifier is prefixed to the document title, as there is no separate provision for an identifier
 in RFC XML.
 
-A reference not autofetched from online sources is either a preformatted citation treated as a block,
+A reference not auto-fetched from online sources is either a preformatted citation treated as a block,
 or else a full citation, entered through AsciiBib. if the citation is preformatted, it is converted
 to a standalone `reference/title`, with no authors or dates. If the citation is broken down into elements,
-it is processed as with autofetched references:
+it is processed as with auto-fetched references:
 
 [source,asciidoc]
 --
 [bibliography]
 == Normative References
-* [[[ref1,1]]] MacDonald, Ian. 1991. _The New Shostakovich._ Boston: Norteastern University Press. <1>
+* [[[ref1,1]]] MacDonald, Ian. 1991. _The New Shostakovich._ Boston: Northeastern University Press.
 
 [%bibitem]
 === The New Shostakovich <1>
@@ -58,7 +58,6 @@ contributor.role:: author
 contributor.person.name.initial:: I. <3>
 contributor.person.name.surname:: MacDonald <4>
 link:: https://www.amazon.co.uk/New-Shostakovich-Ian-MacDonald/dp/184595064X <5>
-link:: 
 type::: googlebooks <6>
 content::: https://books.google.com.au/books/about/The_new_Shostakovich.html?id=Arm7AAAAIAAJ <7>
 date::  <8>
@@ -69,8 +68,8 @@ keyword:: Soviet Union <9>
 abstract:: <10>
 +
 ---
-Who was Dmitri Shostakovich? The USSR's official figurehead composer and son of the revolution that brought the Soviet state into being, or a secret dissident whose contempt for the totalitarian regime was scathing? Perhaps both? 
----  
+Who was Dmitri Shostakovich? The USSR's official figurehead composer and son of the revolution that brought the Soviet state into being, or a secret dissident whose contempt for the totalitarian regime was scathing? Perhaps both?
+---
 
 --
 <1> `back/references/reference/front/title`
@@ -84,17 +83,17 @@ Who was Dmitri Shostakovich? The USSR's official figurehead composer and son of 
 <9> `back/references/reference/front/keyword`
 <10> `back/references/reference/front/abstract`
 
-As of this writing, the following features of v3 RFC XML referencing are not supported:
+As of this writing, the following features of RFC XML v3 referencing are not supported:
 
 * `displayreference`
 * `referencegroup`
-* Raw RFC XML included in document source, or referenced directly from document source
+* Raw RFC XML included in document source, or referenced directly from document source.
 * Citations of specific versions of Internet Draft documents.
 
 [[caches]]
 === Caches
 
-The cache of current IETF and IRTF workgroups is built from screenscraping the contents of:
+The cache of current IETF and IRTF workgroups is built from screen-scraping the contents of:
 
 * https://tools.ietf.org/wg/
 * https://irtf.org/groups
@@ -103,5 +102,5 @@ The caches are fetched on launch. If you want to refresh the caches,
 
 * delete your `~/.metanorma-ietf-workgroup-cache.json` file;
 * insert the document attribute `:flush-caches: true` into
-the header of the document being processed
+the header of the document being processed.
 

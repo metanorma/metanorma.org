@@ -2,14 +2,14 @@
 layout: ietf-flavor
 ---
 
-= Document attributes
+= Document attributes (AsciiRFC v2)
 
 [[note_general_doc_ref_doc_attrib_ietf]]
 [NOTE]
 ====
-Below are listed only document attributes that are unique to Metanorma’s processing of v2 RFC XML
-IETF documents. The document attributes particular to v3 RFC XML, and used in the current version of
-this gem, link:document-attributes.adoc[are given separately].
+Below are listed only document attributes that are unique to Metanorma’s processing of RFC XML v2
+IETF documents. The document attributes particular to RFC XML v3, and used in the current version of
+this gem, link:../document-attributes[are given separately].
 
 For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author’s documentation. That page describes attributes that apply to all Metanorma flavors, not just IETF.
 
@@ -21,12 +21,12 @@ For an _introduction to AsciiDoc document attributes_ and how Metanorma uses the
 `:doctype:`::
 Specifies document status. Choices:
 +
-- `:doctype: internet-draft` sets the document as an Internet-Draft (default value):
-    * `rfc@docName` will be set to the `:name:` attribute 
-- `:doctype: rfc` sets the document as an RFC:
-    * `rfc@number` will be set to the `:name:` attribute 
+* `:doctype: internet-draft` sets the document as an Internet-Draft (default value):
+** `rfc@docName` will be set to the `:name:` attribute
+* `:doctype: rfc` sets the document as an RFC:
+** `rfc@number` will be set to the `:name:` attribute
 +
-Defaults to _internet-draft_.
+Defaults to `internet-draft`.
 
 == Global Options
 
@@ -36,7 +36,7 @@ Override default assumption that boldface uppercase BCP14 word is to be rendered
 
 `:smart-quotes:`::
 Optional. Default value `true`. Allowed values: `true`, `false`.
-Permit smart quotes, when they are specified explicitly in Asciidoc (as `"`...`"`, `'`...`'`.)
+Permit smart quotes, when they are specified explicitly in AsciiDoc (as `pass:["`...`"]`, `pass:['`...`']`).
 When disabled, smart quotes are rendered as straight quotes, and Asciidoc's default conversion
 of straight apostrophes to smart is undone.
 
@@ -52,14 +52,15 @@ on, the additional `vspace` element is not added, and inline definition lists ar
 Optional. Default value `false`. Allowed values: `true`, `false`.
 Delete and reload the caches of references to be included externally, and of workgroups,
 during processing of this document.
-The caches are stored in `~/.metanorma-ietf-biblio-cache.json` and `~/.metanorma-ietf-workgroup-cache.json`.
+The caches are stored in `~/.metanorma-ietf-biblio-cache.json` and
+`~/.metanorma-ietf-workgroup-cache.json`.
 
 `:biblio-dir:`::
 Optional. Name of directory. If present, gives the name of a directory from which RFC XML references are to be read into the document, rather than assuming the references are already present in the document.
 
 `:normative:`::
 Optional. Comma-delimited list of reference anchors. Used in conjunction with `:biblio-dir:`, which uses a single directory for all references: this attribute
-lists those references which are to be considered normative, and listed under the _Normative References_ heading.
+lists those references which are to be considered normative, and listed under the "`Normative References`" heading.
 
 == Basic Document Attributes
 
@@ -155,23 +156,23 @@ When `doctype` is set to:
 ** RFC XML: `rfc@docName`
 * `rfc`: the value should be a number like `7991` as described
 in  https://tools.ietf.org/html/rfc7991#section-2.47.6[here]
-RFC XML: `rfc@number` 
+RFC XML: `rfc@number`
 
 `:status`::
 Set the current status of this document. Synonym: `:docstage:`.
-The following values are allowed: 
+The following values are allowed:
 +
 * `standard` (mapped in v2 to: `std`)
 * `informational` (mapped in v2 to: `info`)
 * `experimental` (mapped in v2 to: `exp`)
 * `bcp`
-* `historic` 
+* `historic`
 +
 RFC XML `rfc@category`
 
 `:intended-series`::
 Mandatory. Set the intended series of this
-document. For Internet Drafts, this indicates the intended series once the document is published as an RFC. For RFCs, this indicates the current status of the document. The following values are allowed: 
+document. For Internet Drafts, this indicates the intended series once the document is published as an RFC. For RFCs, this indicates the current status of the document. The following values are allowed:
 +
 * `standard` (I.-D. only) (mapped in v2 to: `std`)
 * `informational` (mapped in v2 to: `info`)
@@ -208,22 +209,22 @@ _std_ ("STD" series), and _bcp_ ("BCP" series). RFC XML v3 counterpart: `rfc@ser
 The `xml2rfc` tool accepts processing instructions of the form `<?rfc keyword='value'?>`:
 see https://xml2rfc.tools.ietf.org/authoring/README.html#processing.instructions .
 (Of these, `sort-refs`, `sym-refs` and `toc-include`  are also present in the
-v3 RFC XML specifcation, as attributes of the
+RFC XML v3 specifcation, as attributes of the
 root `rfc` element: <<v3documentattributes,v3-specific document attributes>>.)
 Those processing instructions which apply to the entire document can also be
 specified in Metanorma-IETF as document options.
 
-`:artworkdelimiter:`::      when producing txt or nroff files, use this string to delimit artwork
+`:artworkdelimiter:`::      when producing `txt` or `nroff` files, use this string to delimit artwork
 `:artworklines:`::  when producing txt or nroff files, add this many blank lines around artwork
 `:authorship:`::    render author information
 `:autobreaks:`::    automatically force page breaks to avoid widows and orphans (not perfect)
-`:background:`::    when producing a html file, use this image
-`:colonspace:`::    put two spaces instead of one after each colon (":") in txt or nroff files
-`:comments:`::      render <cref> information
-`:compact:`::       when producing a txt/nroff file, try to conserve vertical whitespace (the default value is the current value of the rfcedstyle PI)
-`:docmapping:`::    use hierarchical tags (e.g., <h1>, <h2>, etc.) for (sub)section titles
+`:background:`::    when producing a HTML file, use this image
+`:colonspace:`::    put two spaces instead of one after each colon ("`:`") in txt or nroff files
+`:comments:`::      render `<cref>` information
+`:compact:`::       when producing a txt/nroff file, try to conserve vertical whitespace (the default value is the current value of the `rfcedstyle` PI)
+`:docmapping:`::    use hierarchical tags (e.g., `<h1>`, `<h2>`, etc.) for (sub)section titles
 `:editing:`::       insert editing marks for ease of discussing draft versions
-`:emoticonic:`::    automatically replaces input sequences such as \|*text\| by, e.g., <strong>text</strong> in html output
+`:emoticonic:`::    automatically replaces input sequences such as `|*text|` by, e.g., `<strong>text</strong>` in html output
 `:footer:`::        override the center footer string
 `:header:`::        override the leftmost header string
 `:inline:`::        if comments is "yes", then render comments inline; otherwise render them in an "Editorial Comments" section
@@ -243,10 +244,10 @@ specified in Metanorma-IETF as document options.
 `:text-list-symbols:`::     modify the list of symbols used (when generated text) for list type="symbols". For example, specifying "abcde" will cause "a" to be used for 1st level, "b" for the 2nd level, etc, cycling back to the first character "a" at the 6th level. Specifying "o*" will cause the characters "o" and "*" to be alternated for each successive level.
 `:toc-include:`::   (`toc`) generate a table-of-contents
 `:tocappendix:`::   control whether the word "Appendix" appears in the table-of-content
-`:toc-depth:`::     if toc is "yes", then this determines the depth of the table-of-contents
-`:tocindent:`::     if toc is "yes", then setting this to "yes" will indent subsections in the table-of-contents
+`:toc-depth:`::     if `:toc-include:` is "yes", then this determines the depth of the table-of-contents
+`:tocindent:`::     if `:toc-include:` is "yes", then setting this to "yes" will indent subsections in the table-of-contents
 `:tocnarrow:`::     affects horizontal spacing in the table-of-content
-`:tocompact:`::     if toc is "yes", then setting this to "no" will make it a little less compact
+`:tocompact:`::     if `:toc-include:` is "yes", then setting this to "no" will make it a little less compact
 `:topblock:`::      put the famous header block on the first page
 `:useobject:`::     when producing a html file, use the <object> html element with inner replacement content instead of the <img> html element, when a source xml element includes an src attribute
 
