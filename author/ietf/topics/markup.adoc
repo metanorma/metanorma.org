@@ -2,19 +2,19 @@
 layout: ietf-flavor
 ---
 
-= Metanorma Asciidoc markup
+= Metanorma AsciiDoc markup (AsciiRFC v3)
 
-This document documents the version of Metanorma Asciidoc aligned with
-v3 RFC XML [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.0.0].
-This version of Asciidoc is much closer aligned to the rest of Metanorma than the
-version used in previous versions; this has the added benefit that the same Asciidoc
-source can be used to generate output for both IETF and other Standards bodies,
-which was not previously possible. 
+This document documents the version of Metanorma AsciiDoc aligned with
+RFC XML v3 [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.0.0].
+This version of AsciiDoc is much closer aligned to the rest of Metanorma than the
+version used in previous versions; this has the added benefit that the same AsciiDoc
+source can be used to generate output for both IETF and other standards bodies,
+which was not previously possible.
 
-The version of Asciidoc that supported v2 RFC XML
-in previous versions is link:markup-v2.adoc[documented separately]. 
-link:markup-v2tov3.adoc[A comparison of the two markups] is also provided, and can be
-used to convert documents marked up for v2 RFC XML to documents for v3 RFC XML.
+The version of AsciiDoc that supported RFC XML v2
+in previous versions is link:../markup-v2[documented separately].
+link:../markup-v2tov3[A comparison of the two markups] is also provided, and can be
+used to convert documents marked up for RFC XML v2 to documents for RFC XML v3.
 
 == Sections
 
@@ -22,8 +22,8 @@ used to convert documents marked up for v2 RFC XML to documents for v3 RFC XML.
 === Abstract
 
 Any paragraphs following the document header are treated as the abstract
-(`front/abstract`), whether they are notated as an Asciidoc preamble or as an
-Asciidoc abstract; if both are present, the abstract takes priority. The abstract is
+(`front/abstract`), whether they are notated as an AsciiDoc preamble or as an
+AsciiDoc abstract; if both are present, the abstract takes priority. The abstract is
 terminated by either the first section header (which ends the document
 preamble), or a note.
 
@@ -34,7 +34,7 @@ Any notes immediately following the abstract are treated as RFC notes (`front/no
 [[abstract-id]] <1>
 Abstract text without an explicit title and abstract style. <2>
 ----
-<1> `front/abstract/@anchor` 
+<1> `front/abstract/@anchor`
 <2> `front/abstract`
 
 [source,asciidoc]
@@ -52,10 +52,10 @@ NOTE: This is a note <3>
 This is another note <3>
 ===
 ----
-<1> `front/abstract/@anchor` 
+<1> `front/abstract/@anchor`
 <2> `front/abstract`
 <3> `front/note`
-<4> `front/note/@removeInRFC` 
+<4> `front/note/@removeInRFC`
 <5> `front/note/name`
 
 === Sections and Subsections
@@ -102,9 +102,6 @@ Content <4>
 
 
 
-
-
-
 == Blocks
 
 === Examples
@@ -113,13 +110,13 @@ RFC XML does not recognize examples as a distinct element. The example label and
 example contents are rendered without a containing element; the example label
 appears on a paragraph of its own.
 
-The example label (if any) is prefixed with the standard Metanorma prefix, "EXAMPLE: ",
-or "EXAMPLE nnn: " if there are more than one examples in the clause.
+The example label (if any) is prefixed with the standard Metanorma prefix, "`EXAMPLE: `",
+or "`EXAMPLE nnn: `" if there are more than one examples in the clause.
 
 === Figures
 
 Figures are rendered as RFC XML `figure`, and are treated as wrappers for
-ASCII art, sourecode and images; they are redundant for v3 RFC XML, since
+ASCII art, source code and images; they are redundant for RFC XML v3, since
 the processing of those blocks already inserts the `figure` wrapper.
 Any text in an example block that precedes or follows sourcecode, an image, or preformatted text
 is moved outside the figure.
@@ -157,32 +154,32 @@ begin() {
 ----
 --
 <1> `figure/@anchor`
-<2> `figure/name` 
-<3> `figure/sourcecode/@type`, `figure/sourcecode/@src`, `figure/sourcecode/@markers`, `figure/sourcecode/@name`. If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute. 
+<2> `figure/name`
+<3> `figure/sourcecode/@type`, `figure/sourcecode/@src`, `figure/sourcecode/@markers`, `figure/sourcecode/@name`. If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute.
 <4> `figure/sourcecode`
 
 [source,asciidoc]
 .With Figure Wrapper
 --
 [[id]] <1>
-.Figure 1 <3>
+.Figure 1 <2>
 ====
-[[id1]] <5>
-.Source code listing title <6>
-[source,type,src=uri,markers=true] <7>
+[[id1]] <3>
+.Source code listing title <4>
+[source,type,src=uri,markers=true] <5>
 ----
 begin() {
-  source code listing <8>
+  source code listing <6>
 }
 ----
 ====
 --
 <1> `figure/@anchor`
-<3> `figure/name`
-<5> `figure/sourcecode/@anchor`
-<6> `figure/sourcecode/@name`
-<3> `figure/sourcecode/@type`, `figure/sourcecode/@src`, `figure/sourcecode/@markers`, `figure/sourcecode/@name`. If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute. 
-<8> `figure/sourcecode`
+<2> `figure/name`
+<3> `figure/sourcecode/@anchor`
+<4> `figure/sourcecode/@name`
+<5> `figure/sourcecode/@type`, `figure/sourcecode/@src`, `figure/sourcecode/@markers`, `figure/sourcecode/@name`. If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute.
+<6> `figure/sourcecode`
 
 
 === ASCII Art and Images
@@ -191,22 +188,22 @@ In RFC XML, `artwork` elements only occur within a
 `figure` wrapper; Metanorma-IETF supplies that wrapper if it is not provided
 explicitly.
 
-All ASCII art is assigned the type "ascii-art".
+All ASCII art is assigned the type `ascii-art`.
 Only SVG images are supported in `xml2rfc`; metanorma will issue a warning for any other image type.
 
 Metanorma supports inline images; RFC XML does not. Any instances of inline
-images in a paragraph are replaced by a placeholder counter ("[IMAGE nnn]");
+images in a paragraph are replaced by a placeholder counter ("`[IMAGE nnn]`");
 the images are moved after the paragraph.
 
 [source,asciidoc]
-.Ascii-Art Without Figure Wrapper
+.ASCII-Art Without Figure Wrapper
 --
 [[id]] <1>
 .Figure2.jpg <2>
-[align=left|center|right,alt=Ascii Art] <3>
+[align=left|center|right,alt=ASCII Art] <3>
 ....
 ------------------------
-|        Ascii Art     |
+|        ASCII Art     |
 ------------------------ <4>
 ....
 --
@@ -233,33 +230,33 @@ image::filename.jpg[alt_text] <4>
 .With Figure Wrapper
 --
 [[id]] <1>
-.Figure 1 <3>
+.Figure 1 <2>
 ====
 
-[[id]] <5>
-.Figure2.jpg <8>
-[align=left|center|right,alt=alt_text,type=text/plain] <6>
+[[subid1]] <3>
+[align=left|center|right,alt=alt_text,type=text/plain] <4>
 ....
 Figures are
       only permitted to contain listings (sourcecode),
            images (artwork),
-or literal (artwork) <7>
+or literal (artwork) <5>
 ....
-[[id]] <5>
-.Figure2.jpg <8>
-[align=left|center|right,alt=alt_text] <9>
-image::filename.jpg[alt_text] <10>
+
+[[subid2]] <3>
+.Figure3.jpg <6>
+[align=left|center|right,alt=alt_text] <7>
+image::filename.jpg[alt_text] <8>
 
 ====
 --
 <1> `figure/@anchor`
-<3> `figure/name`
-<5> `figure/artwork/@anchor`
-<6> `figure/artwork/@align`, `figure/artwork/@alt`
-<7> `figure/artwork`
-<8> `figure/artwork/@name`
-<9> `figure/artwork/@align`, `figure/artwork/@alt` (type populated as either `svg` or `binary-art` depending on file suffix)
-<10> `figure/artwork/@src`, `figure/artwork/@alt`
+<2> `figure/name`
+<3> `figure/artwork/@anchor`
+<4> `figure/artwork/@align`, `figure/artwork/@alt`
+<5> `figure/artwork`
+<6> `figure/artwork/@name`
+<7> `figure/artwork/@align`, `figure/artwork/@alt` (type populated as either `svg` or `binary-art` depending on file suffix)
+<8> `figure/artwork/@src`, `figure/artwork/@alt`
 
 === Formulae
 
@@ -269,10 +266,10 @@ by four spaces.
 
 === Mathematical expressions
 
-In order for mathematical formatting to be recognised in Asciidoc, 
+In order for mathematical formatting to be recognised in AsciiDoc,
 the document attribute `:stem:` needs to be set.
 
-Unlike previous versions of this gem, 
+Unlike previous versions of this gem,
 mathematical expressions, whether in formulae or inline, are rendered as
 AsciiMath delimited by `$$`; if a sequence of `$` already occurs in the text,
 that delimiter has more `$` added to it until it is unique.
@@ -307,7 +304,7 @@ sqrt(4) = 2
 <3> `ul/li`
 <4> `ul/li/ul/li`
 <5> `ol/@anchor`
-<6> `ol/@spacing`, `ol/@start`, `ol/@group`, `ol/@type = "#%d", `ol/@type` (for arabic|loweralpha|upperralpha|lowerroman|upperroman) 
+<6> `ol/@spacing`, `ol/@start`, `ol/@group`, `ol/@type = "#%d", `ol/@type` (for arabic|loweralpha|upperralpha|lowerroman|upperroman)
 <7> `ol/li`
 
 === Definition Lists
@@ -318,12 +315,12 @@ sqrt(4) = 2
 [newline=true,spacing=compact,indent=5] <2>
 A:: B <3>
 --
-<1> `dl/@anchor` 
+<1> `dl/@anchor`
 <2> `dl/@newline`, `dl/@spacing`, `dl/@indent`
 <3> `dl/dt`, `dl/dd`
 
-metanorma-ietf permits anchors on definition list terms and definition list definitions,
-whereas other flavours treat them as bookmarks (which are otherwise ignored in metanorma-ietf):
+Metanorma-IETF permits anchors on definition list terms and definition list definitions,
+whereas other flavours treat them as bookmarks (which are otherwise ignored in Metanorma-IETF):
 
 [source,asciidoc]
 --
@@ -346,9 +343,9 @@ NOTE: Sidebar <2>
 <1> `aside/@anchor`
 <2> `<aside>Sidebar</aside>`
 
-Notes are prefixed with the standard Metanorma prefix, "NOTE: ".
+Notes are prefixed with the standard Metanorma prefix, "`NOTE: `".
 
-Exceptionally, notes after abstracts are encoded in v3 RFC XML as `note` (<<abstract>>).
+Exceptionally, notes after abstracts are encoded in RFC XML v3 as `note` (<<abstract>>).
 
 === Admonitions
 
@@ -375,7 +372,7 @@ NOTE: Sidebar <2>
 === Tables
 
 The converter respects the `colspan` and `rowspan` attributes of cells,
-as set in Asciidoc (`3|`, .3|`).
+as set in AsciiDoc (`3|`, `.3|`).
 
 [source,asciidoc]
 --
@@ -394,10 +391,10 @@ h|header cell | body cell <4>
 <2> `table/name`
 <3> `table/thead/tr/td`
 <4> `table/tbody/tr/th`, `table/tbody/tr/td`
-<5> `table/tbody/tr/td/@anchor` 
+<5> `table/tbody/tr/td/@anchor`
 <6> `table/tfoot/tr/td`
 
-NOTE: v3 RFC XML permits table cells to contain block elements, such as paragraphs and lists. 
+NOTE: RFC XML v3 permits table cells to contain block elements, such as paragraphs and lists.
 This is done in AsciiDoc by prefixing the table cell with `a|`.
 
 === Paragraphs
@@ -409,10 +406,10 @@ This is done in AsciiDoc by prefixing the table cell with `a|`.
 Paragraph text <3>
 --
 <1> `t/@anchor`
-<2> `t/@keepWithNext`, `t/@keepWithPrevious` 
+<2> `t/@keepWithNext`, `t/@keepWithPrevious`
 <3> `<t>Paragraph text</t>`
 
-=== Quotes 
+=== Quotes
 
 [source,asciidoc]
 --
@@ -421,13 +418,13 @@ Paragraph text <3>
 Quotation <3>
 --
 <1> `blockquote/@anchor`
-<2> `blockquote/@quotedFrom`, `blockquote/@cite`. In v3 RFC XML, `citation info` is limited to a URL, and is not otherwise populated.
+<2> `blockquote/@quotedFrom`, `blockquote/@cite`. In RFC XML v3, `citation info` is limited to a URL, and is not otherwise populated.
 <3> `<blockquote>Quotation</blockquote>`
 
 
 === Comments
 
-Unlike previous versions of this gem working with v3 RFC XML, this version
+Unlike previous versions of this gem working with RFC XML v3, this version
 of the gem does not currently provide a means of populating XML comments
 in RFC XML.
 
@@ -437,22 +434,22 @@ RFC XML provides for editorial comments which may optionally appear
 in the published text (subject to either the `cref/@display`
 attribute, or the `comments` processing instruction). As with the rest
 of Metanorma, such editorial comments will only be included in the Metanorma
-XML output, let alone the RFC XML output, if the Asciidoctor `:draft:`
-document attribute is present. Unlike in v2 RFC XML,
-editorial notes are marked up as Asciidoc sidebars.
+XML output, let alone the RFC XML output, if the AsciiDoc `:draft:`
+document attribute is present. Unlike in RFC XML v2,
+editorial notes are marked up as AsciiDoc sidebars.
 
 [source,asciidoc]
 --
 [[id]] <1>
-[reviewer="Nick Nicholas",display=true]
+[reviewer="Nick Nicholas",display=true] <2>
 .Note Title <3>
 ****
 Profile?!
 ****
 --
 <1> `cref/@anchor`
-<2> `cref/@source`, `cref/@display` 
-<3> `cref/name` 
+<2> `cref/@source`, `cref/@display`
+<3> `cref/name`
 
 
 === Inline markup
@@ -522,23 +519,25 @@ the Metanorma default, naming and numbering the referenced object.
 
 === Citations
 
+[source,asciidoc]
+----
 <<crossreference,(of|comma|parens|bare)>> <1>
 <<crossreference,(of|comma|parens|bare),section=4.3>> <2>
 <<crossreference,(of|comma|parens|bare),section-4.3: text>> <3>
 <<crossreference#fragment,section_number (of|comma|parens|bare)>> <4>
 <<crossreference#fragment,section_number (of|comma|parens|bare): text>> <5>
 ----
-<1> `<relref displayFormat="of|comma|parens|bare" target="crossreference"/>` 
-<2> `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>` 
-<3> `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>` 
-<4> `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>` 
-<5> `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>` 
+<1> `<relref displayFormat="of|comma|parens|bare" target="crossreference"/>`
+<2> `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>`
+<3> `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>`
+<4> `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>`
+<5> `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>`
 
-Localities other than "clause" and "section" are ignored in the generated v3 RFC XML.
+Localities other than `clause` and `section` are ignored in the generated RFC XML v3.
 
 === Footnotes
 
-Footnotes in text are rendered as a separate "Endnotes" appendix,
+Footnotes in text are rendered as a separate "`Endnotes`" appendix,
 with each endnote rendered as a paragraph prefixed by an incrementing numeric counter in brackets.
 The footnote reference in the main text is replaced by the same counter in brackets.
 
