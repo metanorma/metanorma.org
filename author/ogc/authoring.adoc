@@ -2,9 +2,9 @@
 layout: ogc-flavor
 ---
 
-= Syntax for writing OGC documents using Metanorma
+= Writing OGC documents using Metanorma
 
-== Document attributes
+== Document type and stage
 
 [[note_general_doc_ref_doc_attrib_ogc]]
 [NOTE]
@@ -21,44 +21,43 @@ For an _introduction to AsciiDoc document attributes_ and how Metanorma uses the
 Document type. Choices:
 +
 --
-* abstract-specification-topic
-* best-practice
-* change-request-supporting-document
-* community-practice
-* community-standard
-* discussion-paper
-* engineering-report
-* other
-* policy
-* reference-model
-* release-notes
-* standard
-* user-guide
-* white-paper
+* `standard`: Standard (a document subtype is necessary, see <<ogc-docsubtype>>) (_default_)
+* `abstract-specification-topic`: Abstract Specification
+* `best-practice`: Best Practice (a document subtype is necessary, see <<ogc-docsubtype>>)
+* `change-request-supporting-document`: Change Request Supporting Document
+* `community-practice`: Community Practice
+* `community-standard`: Community Standard
+* `discussion-paper`: Discussion Paper
+* `engineering-report`: Engineering Report
+* `other`: Note, Primer, etc.
+* `policy`: Policy, Policy -- Name Type Specification
+* `reference-model`: Reference Model
+* `release-notes`: Release Notes
+* `user-guide`: User Guide
+* `white-paper`: White Paper
 --
 
-The default is `standard`.
-
-`:docsubtype:` Document subtype.
+[[ogc-docsubtype]]
+`:docsubtype:`:: Document subtype.
 Choices:
 +
 --
-* For doctype `standard`:
-** conceptual-model
-** conceptual-model-and-encoding
-** conceptual-model-and-implementation
-** encoding
-** extension
-** implementation (_default_)
-** profile
-** profile-with-extension
-* For doctype `best-practice`:
-** general (_default_)
-** encoding
-** extension
-** profile
-** profile-with extension
+* For `doctype` set to `standard`:
+** `implementation`: Implementation (_default_)
+** `conceptual-model`: Conceptual model
+** `conceptual-model-and-encoding`: Conceptual model and encoding
+** `conceptual-model-and-implementation`: Conceptual model and implementation
+** `encoding`: Encoding
+** `extension`: Extension
+** `profile`: Profile
+** `profile-with-extension`: Profile with extension
 
+* For `doctype` set to `best-practice`:
+** `general`: General (_default_)
+** `encoding`: Encoding
+** `extension`: Extension
+** `profile`: Profile
+** `profile-with-extension`: Profile with extension
 --
 
 `:status:`::
@@ -66,18 +65,53 @@ Document status/stage. Synonym: `:docstage:`.
 Choices:
 +
 --
-* `swg-draft`: SWG Draft
-* `oab-review`: OAB Review
-* `public-rfc`: Public RFC
-* `tc-vote`: TC Vote
-* `published`: Published
-* `deprecated`: Deprecated
-* `retired`: Retired
+* `swg-draft`: SWG Draft. This is the draft created after the TC approval and PC approval votes.
+* `oab-review`: OAB Review. This is the intended draft for the "`OAB + OGC-NA Review`".
+* `public-rfc`: Public RFC. This is the draft for the (30 days) public comment period.
+* `tc-vote`: TC Vote. This is the intended draft for the TC adoption and PC adoptioin votes.
+* `published`: Published. This is the document intended to be published, after comments are handled with the TC chair (after `tc-vote`).
+* `deprecated`: Deprecated. This document has been deprecated.
+* `retired`: Retired. This document has been retired and no longer considered normative.
 --
 
 
 `:keywords:`::
 Comma-delimited list of the keywords associated with the document.
+
+[NOTE]
+--
+Abbreviations are sometimes used to designate that a document has a
+certain document type, document subtype and document stage.
+This is a mapping from legacy OGC document values to the current normalized
+list:
+
+"`AS`" Abstract Specification:: Now `:doctype: abstract-specification-topic`.
+"`BP`" Best Practice:: Now `:doctype: best-practice`.
+"`CAN`" Candidate Standard:: Now `:doctype: standard` and `:docstage: swg-draft`.
+"`CC`" Conformance Class:: Not a standalone document, but a part of a document with `:doctype: standard`. No longer exists.
+"`CR`" Change Request:: Now `:doctype: change-request-supporting-document`; the actual Change Request is a database entry.
+"`CS`" Community Standard:: Now `:doctype: community-standard`.
+"`CP`" Community Practice:: Now `:doctype: community-practice`.
+"`DP`" Discussion Paper:: Now `:doctype: discussion-paper`.
+"`DP-Draft`" Draft Discussion Paper:: Now `:doctype: discussion-paper` with `:docstage: swg-draft`.
+"`IPR`" Interoperability Program Report -- Engineering Specification:: Now `:doctype: engineering-report`.
+"`IS`" Implementation Standard:: Now `:doctype: standard`, `:docsubtype: implementation`.
+"`ISC`" Implementation Standard Corrigendum:: Now `:doctype: standard`, `:docsubtype: implementation` (TBD to indicate `corrigendum`).
+"`ISx`" Extension Package Standard:: Now `:doctype: standard`, `:docsubtype: extension`.
+"`Notes`" Notes:: Now `:doctype: other`, there is no specific type for "`Notes`".
+"`ORM`" OGC Reference Model:: Now `:doctype: reference-model`.
+"`PC`" Profile Corrigendum:: Now `:doctype: standard`, `:docsubtype: profile` (TBD to indicate `corrigendum`).
+"`PER`" Public Engineering Report:: Now `:doctype: engineering-report`.
+"`POL`" Policy:: Now `:doctype: policy`.
+"`POL-NTS`" Policy -- Name Type Specification:: Now `:doctype: engineering-report`, there is no specific indication for "`NTS`".
+"`Primer`" Primer:: Now `:doctype: other`, there is no specific type for "`Primer`".
+"`Profile`" Profile:: Now `:doctype: standard`, `:docsubtype: profile`.
+"`RFC`" Request for Comment:: Now `:doctype: standard` and `:docstage: public-rfc`.
+"`Retired`" Retired document:: This is a document stage indicated `:docstage: retired`.
+"`SAP`" Standard Application Profile:: Now `:doctype: standard`, `:docsubtype: profile`.
+"`TS`":: Test Suite (TBD)
+"`WhitePaper`" Whitepaper:: Now `:doctype: white-paper`.
+--
 
 === Author info
 
