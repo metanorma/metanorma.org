@@ -1,0 +1,80 @@
+---
+layout: post
+title: "metanorma-ietf v2.0.0 released"
+date: 2020-01-06
+categories: about
+authors:
+  -
+    name: Nick Nicholas
+    email: opoudjis@optusnet.com.au
+    social_links:
+      - https://www.linkedin.com/in/opoudjis/
+      - https://github.com/opoudjis
+excerpt: >-
+    Learn about newly available accessibility features in Metanorma,
+    including on how to make your documents compliant to Section 508.
+---
+= metanorma-ietf v2.0.0 released 
+
+The Metanorma journey started in November 2017, with the v0.2.0 release
+of the https://github.com/metanorma/asciidoctor-rfc[asciidoctor-rfc] gem,
+created to allow users to author the RFC XML for
+IETF Internet Drafts and Requests for Comments using Asciidoc markup,
+catering for automated fetching of references and validation. The
+gem as originally released generated output in both RFC XML v2
+(https://tools.ietf.org/html/rfc7749[RFC 7749]) and 
+RFC XML v3 (https://tools.ietf.org/html/rfc7991[RFC 7991]).
+
+A few things have changed since then:
+
+* The Metanorma effort consolidated around generating standards for
+various standards bodies, with broadly consistent inputs and outputs,
+and using an intermediate XML markup language. This effort started 
+after the asciidoctor-rfc gem was written, and initially centered on
+ISO documents and documents resembling it. It has since grown to encompass
+10 standards flavours.
++
+Although asciidoctor-rfc
+was integrated into the `metanorma` tool 
+(as the https://github.com/metanorma/metanorma-ietf[metanorma-ietf] gem),
+the input format of metanorma-ietf remained distinct from the rest of
+Metanorma; Asciidoctor written for metanorma-ietf could not readily
+be repurposed for other Metanorma flavours. Likewise, Metanorma came
+to use the https://github.com/relaton/relaton[Relaton] suite of gems and
+encoding language to manage bibliographies; metanorma-ietf remained cut off
+from that toolset.
+
+* After several years, IETF has recently implemented RFC XML v3 in its own toolset
+for processing standards documents (with `xml2rfc` the most important of these,
+taking RFC XML input and generating HTML and TXT output.) 
+However, the version of RFC XML v3 it
+has implemented is at variance with that originally defined in RFC 7991;
+the differences are detailed in the
+https://tools.ietf.org/html/draft-levkowetz-xml2rfc-v3-implementation-notes-10[RFC 7991 Implementation Notes].
+Using the RFC 7991 format as originally defined will cause the IETF `xml2rfc`
+tool to crash.
+
+Rather than patch the existing metanorma-ietf tool to deal with the updated RFC XML v3,
+we have decided to take the opportunity to bring metanorma-ietf back into the fold, 
+and have its input format be consistent with the rest of Metanorma. We already have
+content authors who need to submit the same content to both the IETF and their own
+Standards Developing Organisation. As a result, we have published a version of
+metanorma-ietf which complies with the RFC 7991 Implementation Notes, and
+which uses the same markup and conventions as the rest of Metanorma, at the cost
+of losing some backward compatibility with previous versions of metanorma-ietf markup.
+We are also now only supporting RFC XML v3 going forward; if you wish to author RFC XML v2
+documents, you will need to use an earlier version of metanorma-ietf.
+
+metanorma-ietf v2.0.0 has just been released, and the new version of metanorma-ietf
+is documented on link:/author/ietf/topics.adoc[]. In contrast to previous versions
+of metanorma-ietf, it is invoked as `metanorma -t ietf` instead of `metanorma -t rfc3`.
+The changes in markup between metanorma-ietf v1 and metanorma-ietf v2 are documented
+at link:/author/ietf/topics/markup-v2tov3.adoc[], and the RFC XML v3 elements not
+currently supported are given in link:/author/ietf/ref/unsupported-rfc-elements.adoc[].
+Sample documents working with the new format are uploaded to the 
+https://github.com/metnorma/mn-samples/ietf[mn-samples-ietf] repository.
+
+Both metanorma-ietf v2 and the updated xml2rfc tool are new, and you may encounter
+some teething problems as you start using the two together; do get in touch with us
+if you encounter any difficulties!
+
