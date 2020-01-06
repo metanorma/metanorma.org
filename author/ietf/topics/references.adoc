@@ -40,18 +40,20 @@ The document identifier is prefixed to the document title, as there is no separa
 in RFC XML.
 
 A reference not auto-fetched from online sources is either a preformatted citation treated as a block,
-or else a full citation, entered through AsciiBib. If the citation is preformatted, it is converted
-to a standalone `reference/title`, with no authors or dates. (Because authors are mandatory in XML RFC
-references, a dummy author "Unknown Unknown" will be provided; so if at all possible, preformatted
-citations should be avoided.) 
-If the citation is broken down into elements,
+or else a full citation, entered through AsciiBib. if the citation is preformatted, it is converted
+to a standalone `reference/title`, with no authors or dates. If the citation is broken down into elements,
 it is processed as with auto-fetched references:
 
 [source,asciidoc]
 --
 [bibliography]
 == Normative References
+
+// dispreferred encoding!
+
 * [[[ref1,1]]] MacDonald, Ian. 1991. _The New Shostakovich._ Boston: Northeastern University Press.
+
+// preferred encoding!
 
 [%bibitem]
 === The New Shostakovich <1>
