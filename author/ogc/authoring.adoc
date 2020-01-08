@@ -258,7 +258,9 @@ Text
 
 === Recommendations, requirements, and permissions
 
-NOTE: This subsection supplements link:/author/topics/document-format/requirements-recommendations-permissions[Requirement, Recommendation, and Permission blocks] in general Metanorma documentation.
+NOTE: This subsection supplements 
+link:/author/topics/document-format/requirements-recommendations-permissions[Requirement, Recommendation, and Permission blocks] 
+in general Metanorma documentation.
 
 For legacy reasons, a second Metanorma AsciiDoc syntax is permitted for
 recommendations, requirements and permissions.
@@ -287,3 +289,45 @@ Recommendation Tests (Permission Tests, Requirement Tests), and are styled diffe
 from recommendations proper. They are also excluded from the Table of Requirements in
 Word output [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.10].
 
+Reccomendations etc. with `type=class` are crossreferenced and captioned as
+Recommendation Classes (Permission Classes, Requirement Classes), and are styled differently
+from recommendations proper [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.11]. 
+Recommendation Classes must use the following Metanorma requirement attributes:
+
+* Target Type shall be the "subject" attribute
+* Name shall be the requirement title
+* Dependency shall be the "inherit" attribute (which can take multiple semicolon-delimited values)
+* The requirements contained in a class are presented as nested requirements:
+
+[source,asciidoc]
+--
+[requirement,type="class",label="http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules\[*req/core*\]",obligation="requirement",subject="Encoding of logical models",inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used"]
+.GWML2 core logical model
+====
+
+[requirement,type="general",label="/req/core/encoding"]
+======
+======
+
+[requirement,type="general",label="/req/core/quantities-uom"]
+======
+======
+
+[recommendation,type="general",label="/req/core/codelist"]
+======
+======
+
+[requirement,type="general",label="/req/core/codelistURI"]
+======
+======
+
+[requirement,type="general",label="/req/core/identifier"]
+======
+======
+
+[requirement,type="general",label="/req/core/feature"]
+======
+======
+
+====
+--
