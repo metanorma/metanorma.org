@@ -38,8 +38,8 @@ Both key and value are expected to be tokens containing no punctuation.
 `obligation`:: Can contain one or more of "requirement", "permission", "recommendation",
 comma-delimited. Using this attribute will override the obligation of the requirement.
 
-`inherit`:: May be used to reference the label of a requirement that is imported or
-presupposed by this requirement.
+`inherit`:: May be used to reference the label of a requirement or definition
+that is imported or presupposed by this requirement. Multiple labels are delimited by semicolon.
 
 `:model`:: The specific data model followed by the requirement.
 
@@ -48,7 +48,7 @@ presupposed by this requirement.
 [source,asciidoc]
 .An exhaustive attribute example
 -----
-[.recommendation,label="/ogc/recommendation/wfs/2",subject="user",inherit="/ss/584/2015/level/1",classification="control-class:Technical;priority:P0;family:System and Communications Protection,System and Communications Protocols",obligation="permission,recommendation",model=ogc,type=verification]
+[.recommendation,label="/ogc/recommendation/wfs/2",subject="user",inherit="/ss/584/2015/level/1;ISO 693-2 Clause 4.1",classification="control-class:Technical;priority:P0;family:System and Communications Protection,System and Communications Protocols",obligation="permission,recommendation",model=ogc,type=verification]
 ====
 I recommend this
 ====
