@@ -98,7 +98,7 @@ c)  Definition Term   Definition
     Definition Term   Definition
 ....
 
-
+[[asciidoc_escaping]]
 == AsciiDoc escaping
 
 There are some characters that constitute markup in Metanorma AsciiDoc
@@ -124,3 +124,18 @@ Metanorma AsciiDoc markup, and processed only at the very end.
 
 See for example https://asciidoctor.org/docs/user-manual/#url[the Asciidoctor User Manual]
 on using document attributes to deal with complex URLs.
+
+== Document attributes
+As just noted (<<asciidoc_escaping>>), document attributes are skipped over
+when processing Metanorma AsciiDoc markup. That means that markup you would
+normally expect to be processed is ignored if present in a document attribute.
+That includes not only inline markup such as boldface and italics, but also
+mathematical formatting, and footnotes. It also includes text substitutions such
+as smart quotes and `--` for em-dash, although Metanorma does go back separately
+and reimpose smart quotes and `--` as em-dash on all text in the document, including
+document attribute text. (It ignores source code, pseudocode, and monospace text).
+
+Note that this lack of markup includes document titles and subtitles, which are
+populated via document attributes.
+
+
