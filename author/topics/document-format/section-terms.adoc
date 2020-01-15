@@ -2,9 +2,11 @@
 layout: author-docs
 ---
 
-= The “Terms and Definitions” section
+= Terms
 
-== Grammar summary
+== Defining Terms: the “Terms and Definitions” section
+
+=== Grammar summary
 
 Terms and Definitions sections follow a strict grammar, which is reflected in their AsciiDoc markup:
 
@@ -79,7 +81,7 @@ is stripped in the intermediate XML format.
 ====
 
 
-== Grouping IEV references
+=== Grouping IEV references
 
 For convenience, Metanorma requires all IEV references to be to a single reference,
 named `IEV` in the normative references. During the rendering of AsciiDoc into Metanorma XML,
@@ -103,14 +105,14 @@ Note that, for IEV entries to be validated, the IEV reference must be given as a
 and in quotes (otherwise the locality syntax would be interpreted as a range);
 so `<<ievtermbank,clause="103-01-02">>` for IEV 103-01-02.
 
-== Title
+=== Title
 
 A Terms and Definitions clause will be recognized if either _Terms, definitions, symbols and abbreviated terms_
 or _Terms and definitions_ is given as the title,
 regardless of case.
 
 
-== Source
+=== Source
 
 If the Terms and Definitions of a standard are partly or fully sourced from
 another standard, that standard is cited in a “source” attribute to the section:
@@ -136,7 +138,7 @@ Multiple sources are allowed, and need to be quoted and comma-delimited:
 --
 
 
-== Markup within term macros
+=== Markup within term macros
 
 The macros `+alt:[...]+`, `+deprecated:[...]+` and `+domain:[...]+` 
 can contain their own markup.
@@ -151,7 +153,7 @@ domain:[rice]
 _paddy_ (<<paddy>>) from which the husk only has been removed
 --
 
-=== Stem expressions
+==== Stem expressions
 
 AsciiDoc does not permit macros to be nested inside other macros;
 so the following markup, introducing a stem expression as an admitted term, is illegal.
@@ -180,7 +182,7 @@ stem:[t_A]
 Time to launch.
 --
 
-== Subclauses
+=== Subclauses
 
 Any clause within a Terms & Definitions section which is a nonterminal subclause (has
 child nodes) is automatically itself a terms (or definitions) section. On the other hand,
@@ -189,7 +191,7 @@ any descendant of a nonterm clause is also a nonterm clause.
 Informative clauses are indicated with the attribute `[obligation=informative]`;
 clauses are normative by default.
 
-=== Introductory non-clause section
+==== Introductory non-clause section
 
 As defined above, all terminal subclauses of a term section (i.e. clauses that have no subclauses
 of their own) are treated as term definitions.
@@ -207,5 +209,83 @@ The following terms have non-normative effect, and should be ignored by the amet
 === Anapaest
 
 metrical foot consisting of a short, a long, and a short
+--
+
+== Citing terms
+
+Instances of terms in the body of the document can be marked up as such, using the `concept` 
+macro [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14].
+This can be done whether the term is defined in the current document, in a cited document,
+or in an external termbase. Marking up term instances does not currently have any impact
+on how they are rendered: this markup is intended for semantic processing of standards
+documents.
+
+If the term is defined within the current document, the concept macro gives the
+anchor of the term definition in the document, the text to be rendered, and optionally
+the canonical term name. The anchor is converted into a document crossreference in the
+Metanorma XML.
+
+[source,asciidoc]
+--
+== Terms and definitions
+
+[[immatk]]
+=== immature kernel
+alt:[unripe kernel]
+
+kernel, whole or broken, which is unripe and/or underdeveloped
+
+== Discussion
+The source of the concept:[immatk,immature kernel] has not yet been identified.
+Allusions to concept:[immatk,unripe kernels,immature kernel] are plentiful in
+the literature.
+--
+
+If the term is defined in an external document, which has a corresponding bibliographic
+anchor, the concept macro gives the bibliographic
+anchor of the term definition in that document, the text to be rendered, and optionally
+the canonical term name. In other words, the same arguments are used as for the internal
+crossreference, except that a bibliographic anchor substitutes the interal anchor.
+The bibliographic anchor is converted into a citation in the Metanorma XML.
+
+[source,asciidoc]
+--
+[bibliography]
+== Normative References
+* [[[iso17301,ISO 17301]]] Cereals and pulses -- Specifications and test methods -- Rice
+
+== Discussion 
+The source of the concept:[iso17301,immature kernel] has not yet been identified.
+Allusions to concept:[iso17301,unripe kernels,immature kernel] are plentiful in
+the literature.
+--
+
+As with citation markup, the text to be rendered can be preceded by a comma-delimited list
+of (link:bibliography.html#localities[localities and locality values]):
+
+[source,asciidoc]
+--
+[bibliography]
+== Normative References
+* [[[iso17301,ISO 17301]]] Cereals and pulses -- Specifications and test methods -- Rice
+
+== Discussion 
+The source of the concept:[iso17301,clause=3.9,immature kernel] has not yet been identified.
+Allusions to concept:[iso17301,clause=3.9,unripe kernels,immature kernel] are plentiful in
+the literature.
+--
+
+If the term is defined in an external termbase, the termbase identifier is given as the
+macro target, between the colon and the opening bracket. The identifier within the termbase
+is given as the equivalent of the term anchor, as the first argument of the macro. The other
+two arguments of the macro are as above, the text to be rendered, and optionally
+the canonical term name. There is no expectation that the termbase be included in the bibliography.
+
+[source,asciidoc]
+--
+== Discussion 
+The source of the concept:IEV[171-05-02,immature kernel] has not yet been identified.
+Allusions to concept:IEV[171-05-02,unripe kernels,immature kernel] are plentiful in
+the literature.
 --
 
