@@ -52,6 +52,9 @@ ____
 * ISO 6540:1980. _Maize -- Determination of moisture content (on milled grains and on whole grains)_
 ____
 
+A well-defined standards code as the item label will by default result in the reference details for the
+bibliographic entry being auto-fetched, provided that auto-fetching has been defined for that class of
+standard (<<autofetch>>).
 
 === Numeric reference tags
 
@@ -92,6 +95,18 @@ ____
 * [CerMoist] _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
 * [MaiMoist] _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
 ____
+
+These alphanumeric labels will not result in the bibliographic entry being auto-fetched.
+Users can provide both their own alphanumeric label, and the well-defined standards code
+for the standards document, by prefixing the former (in brackets) to the latter. That
+will result in the bibliographic entry being auto-fetched, so long as that auto-fetch is 
+supported for that class of references [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.15]:
+
+[source,asciidoc]
+--
+* [[[ISO20483,(CerMoist)ISO 20483]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,(MaiMoist)ISO 6540]]]. _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
+--
 
 
 == Entering formatted citations
@@ -188,6 +203,7 @@ for example:
 <<ISO7301,clause=5,table=1,the foregoing reference>>
 --
 
+[[autofetch]]
 == Automatic reference fetching
 
 https://www.relaton.com/[Relaton] can fetch bibliographic entries
