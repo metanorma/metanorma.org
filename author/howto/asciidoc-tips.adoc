@@ -126,16 +126,26 @@ See for example https://asciidoctor.org/docs/user-manual/#url[the Asciidoctor Us
 on using document attributes to deal with complex URLs.
 
 == Document attributes
-As just noted (<<asciidoc_escaping>>), document attributes are skipped over
-when processing Metanorma AsciiDoc markup. That means that markup you would
-normally expect to be processed is ignored if present in a document attribute.
-That includes not only inline markup such as boldface and italics, but also
-mathematical formatting, and footnotes. It also includes text substitutions such
-as smart quotes and `--` for em-dash, although Metanorma does go back separately
-and reimpose smart quotes and `--` as em-dash on all text in the document, including
-document attribute text. (It ignores source code, pseudocode, and monospace text).
 
-Note that this lack of markup includes document titles and subtitles, which are
-populated via document attributes.
+Metanorma AsciiDoc body content is interpolated and processed, such as:
 
+* inline markup such as boldface and italics;
+* mathematical formatting;
+* footnotes;
+* text substitutions such as smart quotes and `--` for em-dash;
+* etc.
 
+Within document attributes, however, the behavior is different.
+
+Typically, all text entered are treated as plain text without
+processing, as described in <<asciidoc_escaping>>.
+This means that markup you would normally expect to be processed
+will be ignored if present in a document attribute.
+
+Metanorma does process smart quotes and `--` as em-dash in
+document attribute text (and in all text except those within
+source code, pseudocode, and monospace text).
+
+NOTE: Document titles, subtitles and authorship information are
+populated via document attributes and are therefore subject to
+the same restrictions listed above.
