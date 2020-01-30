@@ -4,11 +4,183 @@ layout: builder-docs
 
 == How can I adapt the StanDoc toolchain for my own publications?
 
-THE FOLLOWING IS OBSOLETE, MIKL TO UPDATE
-
 [TIP]
 ====
 .Summary
-The easiest way to adopt StanDoc is to use the metanorma-acme gem: https://github.com/metanorma/metanorma-acme, supplying your own stylesheets and HTML files for styling. This gem includes a YAML file where you can customise behaviour of the flavour without needing to write any code. It will only deal with fairly simple standards flavours.
+The easiest way to adopt StanDoc is to use the metanorma-acme gem: https://github.com/metanorma/metanorma-acme, supplying your own stylesheets and HTML files for styling. This gem can work with YAML file where you can customize the behaviour of the flavour without needing to write any code. It will only deal with fairly simple standards flavours.
 ====
 
+=== Metanorma-acme yaml configuration file
+
+You can create simple metanorma flavour by using metanorma-acme ability to use `metanorma.yml` config file. Create file called `metanorma.yml` in the root of your new project and populate it with attributes(supplied here values are the default values when there is no such attribute):
+
+[source,yaml]
+--
+# metanorma.yml
+organization_name_short: Acme
+organization_name_long: Acme Corp.
+document_namespace: https://open.ribose.com/standards/acme
+xml_root_tag: 'acme-standard'
+logo_path: /metanorma-acme/lib/isodoc/acme/html/logo.jpg
+validate_rng_file: /metanorma-acme/lib/asciidoctor/acme/acme.rng
+htmlcoverpage: /metanorma-acme/lib/isodoc/acme/html/html_acme_titlepage.html
+htmlintropage: /metanorma-acme/lib/isodoc/acme/html/html_acme_intro.html
+htmlstylesheet: /metanorma-acme/lib/isodoc/acme/html/htmlstyle.scss
+scripts: /metanorma-acme/lib/isodoc/acme/html/scripts.html
+standardstylesheet: /metanorma-acme/lib/isodoc/acme/html/
+header: /metanorma-acme/lib/isodoc/acme/html/header.html
+wordcoverpage: /metanorma-acme/lib/isodoc/acme/html/word_acme_titlepage.html
+wordintropage: /metanorma-acme/lib/isodoc/acme/html/word_acme_intro.html
+wordstylesheet: /metanorma-acme/lib/isodoc/acme/html/wordstyle.scss
+--
+
+* `organization_name_short`/`organization_name_long` - Name of you organization
+* `document_namespace` - attribute for creating Standoc XML, will be used for as namespace name for xml tags generated
+* `xml_root_tag` - attribute for creating Standoc XML, will be used as tag name for root tag
+* `logo_path` - path to the logo file, used for metanorma metadata
+* `validate_rng_file` - validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-acme/blob/master/lib/asciidoctor/acme/acme.rng for example
+* `htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts` - paths used for styling html output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
+* `wordcoverpage`/`wordintropage`/`wordstylesheet`/`header` - paths used for styling word output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
+
+=== Use metanorma-acme to create new flavour gem
+
+Metanorma-acme also supports plain ruby configuration, with it you can create your own metanorma flavour gem. All examples are borrowed from https://github.com/metanorma/metanorma-vsd repository.
+
+* Initialize blank gem with bundle init, then add `metanorma-acme` as a dependency in your gemspec file
+* Create entry point for your gem in lib directory:
+
+[source,ruby]
+--
+require 'metanorma'
+require 'metanorma/acme'
+
+Metanorma::Acme.configure do |config|
+  config.organization_name_long = config.organization_name_short = 'Vita Green'
+  config.document_namespace = 'https://open.ribose.com/standards/vsd'
+  html_configs = File.join(File.expand_path('config', __dir__), 'vsd_html.yml')
+  isodoc_vsd_html_folder = File.join(File.expand_path('isodoc', __dir__),
+                                     'vsd',
+                                     'html')
+  config.wordstylesheet = File.join(isodoc_vsd_html_folder, 'wordstyle.scss')
+  config.standardstylesheet = File.join(isodoc_vsd_html_folder, 'vsd.scss')
+  config.header = File.join(isodoc_vsd_html_folder, 'header.html')
+  config.wordcoverpage = File.join(isodoc_vsd_html_folder,
+                                   'word_vsd_titlepage.html')
+  config.wordintropage = File.join(isodoc_vsd_html_folder,
+                                   'word_vsd_intro.html')
+  config.htmlstylesheet = File.join(isodoc_vsd_html_folder,
+                                    'htmlstyle.scss')
+  config.htmlcoverpage = File.join(isodoc_vsd_html_folder,
+                                   'html_vsd_titlepage.html')
+  config.htmlintropage = File.join(isodoc_vsd_html_folder,
+                                   'html_vsd_intro.html')
+  config.scripts = File.join(isodoc_vsd_html_folder, 'scripts.html')
+  config.logo_path = File.join(isodoc_vsd_html_folder, 'logo.png')
+  config.xml_root_tag = 'vsd-standard'
+  vsd_rng_folder = File.join(File.expand_path('asciidoctor', __dir__), 'vsd')
+  config.validate_rng_file = File.join(vsd_rng_folder, 'vsd.rng')
+end
+require 'metanorma/vsd'
+require 'isodoc/acme'
+
+require 'asciidoctor' unless defined? Asciidoctor::Converter
+require 'asciidoctor/vsd'
+--
+
+* Supply path to you styling documents(doc and html) using `config.word*`,`config.html*`, refer to `Metanorma-acme yaml configuration file` section of this page for a detailed explanation of what each config options mean
+* In `lib` directory create a folder with name `metanorma` and create main file in it(Change `Vsd` name for your own):
+
+[source,ruby]
+--
+require "metanorma"
+require "metanorma/vsd/processor"
+
+module Metanorma
+  module Vsd
+  end
+end
+
+Metanorma::Registry.instance.register(Metanorma::Vsd::Processor)
+--
+
+* In new `metanorma` folder also create a folder with your gem` name(`vsd` in this example) and create files `processor.rb` and `version.rb`. This file will be used as an entry point for processing
+
+[source,ruby]
+--
+require "metanorma/processor"
+
+module Metanorma
+  module Vsd
+    class Processor < Metanorma::Processor
+
+      def initialize
+        @short = :vsd
+        @input_format = :asciidoc
+        @asciidoctor_backend = :vsd
+      end
+
+      def output_formats
+        super.merge(
+          html: "html",
+          doc: "doc",
+          pdf: "pdf"
+        )
+      end
+
+      def version
+        "Metanorma::Vsd #{Metanorma::Vsd::VERSION}"
+      end
+
+      def input_to_isodoc(file, filename)
+        Metanorma::Input::Asciidoc.new.process(file, filename, @asciidoctor_backend)
+      end
+
+      def output(isodoc_node, outname, format, options={})
+        case format
+        when :html
+          IsoDoc::Acme::HtmlConvert.new(options).convert(outname, isodoc_node)
+        when :doc
+          IsoDoc::Acme::WordConvert.new(options).convert(outname, isodoc_node)
+        when :pdf
+          IsoDoc::Acme::PdfConvert.new(options).convert(outname, isodoc_node)
+        else
+          super
+        end
+      end
+    end
+  end
+end
+--
+
+* Create a folder `asciidoctor` with file name equal to your gem(vsd in this example):
+
+[source,ruby]
+--
+require "metanorma/vsd/version"
+require_relative "vsd/converter"
+
+module Asciidoctor
+  module Vsd
+
+  end
+end
+--
+
+* Create a folder  with file name equal to your gem(vsd in this example) in `asciidoctor` folder and create `converter.rb` file that will be used to register your new flavour to be used in metanorma cli:
+
+[source,ruby]
+--
+require "asciidoctor/standoc/converter"
+require 'asciidoctor/acme/converter'
+
+module Asciidoctor
+  module Vsd
+    # A {Converter} implementation that generates RSD output, and a document
+    # schema encapsulation of the document for validation
+    #
+    class Converter < Asciidoctor::Acme::Converter
+      register_for "vsd"
+    end
+  end
+end
+--
