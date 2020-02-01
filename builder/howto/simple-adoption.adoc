@@ -103,6 +103,46 @@ end
 Metanorma::Registry.instance.register(Metanorma::Vsd::Processor)
 --
 
+* Inherit IsoDoc::Acme::Metadata file:
+
+[source,ruby]
+--
+require "isodoc"
+
+module IsoDoc
+  module Vsd
+    class Metadata < IsoDoc::Acme::Metadata
+      def configuration
+        Metanorma::Vsd.configuration
+      end
+    end
+  end
+end
+--
+
+* Inherit IsoDoc::Acme convertors depending on types of conversions your flavour is supporting and use previously created Metadata file:
+
+[source,ruby]
+--
+require "isodoc"
+require "isodoc/acme/html_convert"
+require "isodoc/vsd/metadata"
+
+module IsoDoc
+  module Vsd
+    class HtmlConvert < IsoDoc::Acme::HtmlConvert
+      def configuration
+        Metanorma::Vsd.configuration
+      end
+
+      def metadata_init(lang, script, labels)
+        @meta = Metadata.new(lang, script, labels)
+      end
+    end
+  end
+end
+--
+
 * In new `metanorma` folder also create a folder with your gem` name(`vsd` in this example) and create files `processor.rb` and `version.rb`. This file will be used as an entry point for processing
 
 [source,ruby]
@@ -138,11 +178,11 @@ module Metanorma
       def output(isodoc_node, outname, format, options={})
         case format
         when :html
-          IsoDoc::Acme::HtmlConvert.new(options).convert(outname, isodoc_node)
+          IsoDoc::Vsd::HtmlConvert.new(options).convert(outname, isodoc_node)
         when :doc
-          IsoDoc::Acme::WordConvert.new(options).convert(outname, isodoc_node)
+          IsoDoc::Vsd::WordConvert.new(options).convert(outname, isodoc_node)
         when :pdf
-          IsoDoc::Acme::PdfConvert.new(options).convert(outname, isodoc_node)
+          IsoDoc::Vsd::PdfConvert.new(options).convert(outname, isodoc_node)
         else
           super
         end
