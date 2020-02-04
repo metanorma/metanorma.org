@@ -46,6 +46,31 @@ World +
 gehf@vacheequipment.fic
 --
 
+== Page breaks
+
+Page breaks can be given a page orientation, which applies from that point forward
+until the next page break with a page 
+orientation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.17].
+Page orientation only appears in Word output.
+
+[source,asciidoc]
+--
+[%landscape]
+<<<
+
+...
+
+[%portrait]
+<<<
+--
+
+If no orientation option is given, the text after the page break remains in the same orientation
+as that before. In Word, page breaks changing orientation are realised as distinct sections.
+
+In Metanorma, documents are split into three sections by default: a cover page, a preface, 
+and the main document body (including annexes and bibliography); some documents also have
+a colophon. The page orientation is reset at the start of the main document body to portrait.
+
 == Block quotes
 
 As in normal AsciiDoc, block quotes are preceded with an author and a citation;
