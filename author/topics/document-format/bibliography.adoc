@@ -7,7 +7,41 @@ layout: author-docs
 == General
 
 The Normative References and the Bibliography must be preceded by the style attribute
-`[bibliography]`, so that the references they contain may be recognized as such.
+`[bibliography]`, so that the references they contain may be recognized as such:
+
+[source,asciidoc]
+--
+[bibliography]
+=== Bibliography 1
+
+* [[[id1,1]]] _First reference_
+* [[[id1,2]]] _Second reference_
+* [[[id3,3]]] _Third reference_
+--
+
+Either bibliography can be split into subsections. Asciidoctor requires each subsection
+containing references to be styled with `[bibliography]`, and raises an (ignorable)
+warning if the subsections are contained in a section itself styled with `[bibliography]`
+(e.g. if `== Bibliography` in the following were preceded by `[bibliography]`.:
+
+[source,asciidoc]
+--
+== Bibliography
+
+[bibliography]
+=== Paet 1
+
+* [[[id1,1]]] _First reference_
+* [[[id1,2]]] _Second reference_
+* [[[id3,3]]] _Third reference_
+
+[bibliography]
+=== Paet 2
+
+* [[[id4,4]]] _Fourth reference_
+* [[[id5,5]]] _Fifth reference_
+* [[[id6,6]]] _Sixth reference_
+--
 
 All entries in a Bibliography, whether standards or generic, are renumbered incrementally in the XML; if the number for
 generic references is updated, all citations of that reference will be updated as well.
@@ -199,7 +233,7 @@ need to be valid, and using correct `id` attributes:
 
 == Citations
 
-Citations of references in Metanora are formulated as cross-references; the ID cross-referenced is the
+Citations of references in Metanorma are formulated as cross-references; the ID cross-referenced is the
 internal identifier given for the bibliographic entry (`ref1` in the examples above).
 
 In typical AsciiDoc, any text in a cross-reference that follows a comma constitutes custom text for the cross-reference.
