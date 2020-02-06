@@ -22,9 +22,10 @@ by the authors. Metanorma flavours may reorder references.
 Typical bibliographic entries are given as unordered lists.
 
 A single bibliographic entry must be preceded by a
-bibliographic anchor, in triple brackets:
-this consists of an internal identifier (used within
-Metanorma AsciiDoc for crossreferences), followed by a document identifier.
+bibliographic anchor, in triple brackets, consisting of:
+
+* an internal identifier (used within Metanorma AsciiDoc for crossreferences); and
+* a document identifier.
 
 This is illustrated as:
 
@@ -35,9 +36,19 @@ This is illustrated as:
 
 === Implied reference tags
 
-Bibliographic entries for standards are expected to have the standard document
-identifier as the item label. References to well-defined standards codes use the document identifiers for citations
+Bibliographic entries for standards are expected to have the standard
+document identifier as the item label. References to well-defined
+standards codes use the document identifiers for citations
 (e.g. `ISO 20483:2013`).
+
+This is entered as:
+
+[source,asciidoc]
+--
+* [[[{anchor},{document identifier as reference tag}]]], _{reference list text}_
+--
+
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -56,9 +67,20 @@ A well-defined standards code as the item label will by default result in the re
 bibliographic entry being auto-fetched, provided that auto-fetching has been defined for that class of
 standard (<<autofetch>>).
 
+
 === Numeric reference tags
 
-Generic references in bibliographies, as opposed to standards references, use numbers, which are rendered bracketed, like `[1]`.
+Generic references in bibliographies, as opposed to standards
+references, use numbers, which are rendered bracketed, like `[1]`.
+
+This is entered as:
+
+[source,asciidoc]
+--
+* [[[{anchor},{number}]]], _{reference list text}_
+--
+
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -80,8 +102,29 @@ automatically re-sorted and auto-incremented during compilation.
 
 === Named reference tags
 
-Instead of numbers or standard document identifiers, user can supply their own alphanumeric labels for references.
-These are indicated by wrapping the label within the bibliographic anchor in brackets.
+==== General
+
+References can be tagged with user-supplied alphanumeric labels,
+in addition to numbers or standard document identifiers.
+
+These are indicated by wrapping the label within the bibliographic
+anchor in brackets.
+
+==== Named reference tag with fully specified bibliographic entry
+
+If the reference text is fully specified, and where no auto-fetching of
+the bibliographic entry is necessary, a user-supplied label is entered
+using the following syntax:
+
+[source,asciidoc]
+--
+* [[[{anchor},({reference tag})]]], _{reference list text}_
+--
+
+NOTE: These alphanumeric labels will not result in the bibliographic
+entry being auto-fetched.
+
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -96,11 +139,26 @@ ____
 * [MaiMoist] _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
 ____
 
-These alphanumeric labels will not result in the bibliographic entry being auto-fetched.
-Users can provide both their own alphanumeric label, and the well-defined standards code
-for the standards document, by prefixing the former (in brackets) to the latter. That
-will result in the bibliographic entry being auto-fetched, so long as that auto-fetch is 
-supported for that class of references [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.15]:
+
+
+==== Named reference tag with automatic reference fetching
+
+Users can provide both their own alphanumeric label, and the
+well-defined reference identification code for the standards document.
+
+This will result in the bibliographic entry being auto-fetched, so long
+as that auto-fetch is supported for that class of references
+[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.15]:
+
+If a named reference is to be auto-fetched, it is entered by prefixing
+the named reference tag (in parentheses) to the document identifier:
+
+[source,asciidoc]
+--
+* [[[{anchor},({reference tag}){reference identification code}]]], _{reference list text}_
+--
+
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -111,7 +169,7 @@ supported for that class of references [added in https://github.com/metanorma/me
 
 == Entering formatted citations
 
-For generic references by default, Metanorma only supports formatted citations,
+For generic references, by default, Metanorma only supports formatted citations,
 which are given as such in the AsciiDoc source.
 
 The NIST flavour of Metanorma currently supports rendering of generic references, on an experimental basis.
@@ -122,7 +180,7 @@ See link:/author/topics/building/reference-lookup[Automatic reference lookup] to
 == Entering Relaton XML
 
 Bibliographic entries can also be given as raw https://www.relaton.com[Relaton XML],
-in an AsciiDoc passthrough block. Of course, any Relaton XML bibitem entries
+in an AsciiDoc passthrough block. Of course, any Relaton XML BibItem entries
 need to be valid, and using correct `id` attributes:
 
 [source,asciidoc]
@@ -141,7 +199,7 @@ need to be valid, and using correct `id` attributes:
 
 == Citations
 
-Citations of references in Metanora are formulated as cross-references; the id cross-referenced is the
+Citations of references in Metanora are formulated as cross-references; the ID cross-referenced is the
 internal identifier given for the bibliographic entry (`ref1` in the examples above).
 
 In typical AsciiDoc, any text in a cross-reference that follows a comma constitutes custom text for the cross-reference.
@@ -156,7 +214,7 @@ these are entered by suffixing the lowercase type of locality, then an equals si
 then the locality value or range of values.
 
 Multiple instances of locality and reference can be provided, delimited by comma or colon.
-Any trailing text after the sequence of _locality=reference_ (or _locality{space}reference_)
+Any trailing text after the sequence of `locality=reference` (or `locality{space}reference`)
 is treated as custom text for the cross-reference, as would occur normally in a
 typical AsciiDoc cross-reference.
 
@@ -176,10 +234,18 @@ More examples:
 
 [source,asciidoc]
 --
-<<ISO712,the foregoing reference>>     # renders as: the foregoing reference
-<<ISO712,section=5, page 8-10>>         # renders as: ISO 712, Section 5, Page 8-10
-<<ISO712,section=5, page=8-10: 5:8-10>> # renders as ISO 712, 5:8-10 ("5:8-10" treated as replacement text for all the foregoing)
-<<ISO712,whole>>                        # renders as: ISO 712, Whole of text
+# renders as: the foregoing reference
+<<ISO712,the foregoing reference>>
+
+# renders as: ISO 712, Section 5, Page 8-10
+<<ISO712,section=5, page 8-10>>
+
+# renders as ISO 712, 5:8-10
+# ("5:8-10" treated as replacement text for all the foregoing)
+<<ISO712,section=5, page=8-10: 5:8-10>>
+
+# renders as: ISO 712, Whole of text
+<<ISO712,whole>>
 --
 
 The references cannot contain spaces. Any text following the sequence of localities
@@ -189,7 +255,8 @@ A custom locality can be entered by prefixing it with `locality:`:
 
 [source,asciidoc]
 --
-<<ISO712,locality:frontispiece=5, page=8-10>>         # renders as: ISO 712, Frontispiece 5, Page 8-10
+# renders as: ISO 712, Frontispiece 5, Page 8-10
+<<ISO712,locality:frontispiece=5, page=8-10>>
 --
 
 Custom localities may not contain commas, colons, or space. Localities with the `locality:`
@@ -204,18 +271,22 @@ for example:
 --
 
 [[autofetch]]
-== Automatic reference fetching
+== Automatic reference fetching ("auto-fetch")
 
 https://www.relaton.com/[Relaton] can fetch bibliographic entries
-for any standards known to have online bibliographic databases (ISO, IEC, IETF, GB, NIST, OGC, CalConnect).
+for any standards known to have online bibliographic databases.
 
 Any bibliographic entry recognized through its document identifier prefix
 will by default have its bibliographic entry fetched by that gem.
 The fetched data overrides any content about the item provided in the document,
 since the online bibliography is treated as the source of truth for that standards document.
 
-The format of the standard identifier required for automatic lookup is documeted at
+The format of the standard identifier required for automatic lookup is documented at
 link:/author/topics/building/reference-lookup/[Automatic reference lookup].
+
+NOTE: Currently Metanorma supports auto-fetching document identifiers
+from: ISO, IEC, IETF, GB, NIST, OGC, CalConnect.
+
 
 For example, the following will trigger auto-fetching:
 
