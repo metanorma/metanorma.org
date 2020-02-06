@@ -33,7 +33,7 @@ For example:
 [source,asciidoc]
 --
 [[paddy]]
-=== paddy 
+=== paddy
 alt:[paddy rice]
 alt:[rough rice]
 deprecated:[cargo rice]
@@ -44,7 +44,7 @@ rice retaining its husk after threshing
 [example]
 Foreign seeds, husks, bran, sand, dust.
 
-NOTE: The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking. 
+NOTE: The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.
 
 [.source]
 <<ISO7301,section 3.2>>, The term "cargo rice" is shown as deprecated,
@@ -56,7 +56,7 @@ Alternatively, the following will just show the source as "modified", with no fu
 [source,asciidoc]
 --
 [.source]
-<<ISO7301,section 3.2>>, 
+<<ISO7301,section 3.2>>,
 --
 
 [NOTE]
@@ -140,12 +140,12 @@ Multiple sources are allowed, and need to be quoted and comma-delimited:
 
 === Markup within term macros
 
-The macros `+alt:[...]+`, `+deprecated:[...]+` and `+domain:[...]+` 
+The macros `+alt:[...]+`, `+deprecated:[...]+` and `+domain:[...]+`
 can contain their own markup.
 
 [source,asciidoc]
 --
-=== paddy 
+=== paddy
 alt:[_paddy_ rice]
 deprecated:[#[smallcap]#cargo# rice]
 domain:[rice]
@@ -163,7 +163,7 @@ because the macro appears as a header.)
 [source,asciidoc]
 .Bad example
 --
-=== stem:[t_90] 
+=== stem:[t_90]
 alt:[stem:[t_A]]
 
 Time to launch.
@@ -175,7 +175,7 @@ consisting of just a stem macro, as an admitted term:
 [source,asciidoc]
 .Good example
 --
-=== stem:[t_90] 
+=== stem:[t_90]
 
 stem:[t_A]
 
@@ -213,24 +213,59 @@ metrical foot consisting of a short, a long, and a short
 
 == Citing terms
 
-Instances of terms in the body of the document can be marked up as such, using the markup
-`{{...}}` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14].
-This can be done whether the term is defined in the current document, in a cited document,
-or in an external termbase. Marking up term instances does not currently have any impact
-on how they are rendered: this markup is intended for semantic processing of standards
-documents.
+=== General
 
-The `{{identifier,term,text}}` markup is analogous to the markup of crossreferences in
-Asciidoc, `<<anchor,text>>`, and consists of:
+Instances of terms in the body of the document can be marked up to
+indicate where the term is defined.
+[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14].
 
-* An identifier for the term being cited
-* The term cited
-* The text to be displayed, if it is distinct from the cited term
+This can be done whether the term is defined:
 
-If the term is defined within the current document, the term citation gives the
-anchor of the term definition in the document, the canonical term name, and optionally
-the text to be displayed. The anchor is converted into a document crossreference in the
-Metanorma XML.
+* in the current document;
+* in a cited document; or
+* in an external termbase.
+
+Marking up term instances does not currently have any impact on how
+they are rendered: this markup is intended for semantic processing of
+standards documents.
+
+The following syntax is used:
+
+[source,adoc]
+----
+{{identifier,term}}
+
+// if the display text differs from the cited term
+{{identifier,term,text}}
+----
+
+The `{{identifier,term,text}}` markup is analogous to the markup of
+cross-references in AsciiDoc, `<<anchor,text>>`, and consists of:
+
+* An identifier for the term being cited;
+* The term cited;
+* The text to be displayed, if it is distinct from the cited term.
+
+
+=== Term defined within current document
+
+If the term is defined within the current document, the term citation
+gives the anchor of the term definition in the document, the canonical
+term name, and optionally the text to be displayed.
+
+The anchor is converted into a document crossreference in the Metanorma XML.
+
+The syntax is:
+
+[source,adoc]
+----
+{{local-anchor,term}}
+
+// if the display text differs from the cited term
+{{local-anchor,term,text}}
+----
+
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -248,12 +283,29 @@ Allusions to {{immatk,immature kernel,unripe kernels}} are plentiful in
 the literature.
 --
 
-If the term is defined in an external document, which has a corresponding bibliographic
-anchor, the term citation gives the bibliographic
-anchor of the term definition in that document, the canonical term name, and optionally
-the text to be displayed.  In other words, the same arguments are used as for the internal
-crossreference, except that a bibliographic anchor substitutes the interal anchor.
-The bibliographic anchor is converted into a citation in the Metanorma XML.
+=== Term defined in external document
+
+If the term is defined in an external document, which has a
+corresponding bibliographic anchor, the term citation gives the
+bibliographic anchor of the term definition in that document, the
+canonical term name, and optionally the text to be displayed.
+
+In other words, the same arguments are used as for the internal
+crossreference, except that a bibliographic anchor substitutes the
+internal anchor. The bibliographic anchor is converted into a citation
+in the Metanorma XML.
+
+The syntax is:
+
+[source,adoc]
+----
+{{bibliographic-anchor,term}}
+
+// if the display text differs from the cited term
+{{bibliographic-anchor,term,text}}
+----
+
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -261,14 +313,17 @@ The bibliographic anchor is converted into a citation in the Metanorma XML.
 == Normative References
 * [[[iso17301,ISO 17301]]] Cereals and pulses -- Specifications and test methods -- Rice
 
-== Discussion 
+== Discussion
 The source of the {{iso17301,immature kernel}} has not yet been identified.
 Allusions to {{iso17301,immature kernel,unripe kernels}} are plentiful in
 the literature.
 --
 
-As with citation markup, the text to be rendered can be preceded by a comma-delimited list
-of (link:bibliography.html#localities[localities and locality values]):
+As with citation markup, the `bibliographic-anchor` element can be supplemented by
+by a comma-delimited list of
+(link:bibliography#localities[localities and locality values]).
+
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -276,22 +331,51 @@ of (link:bibliography.html#localities[localities and locality values]):
 == Normative References
 * [[[iso17301,ISO 17301]]] Cereals and pulses -- Specifications and test methods -- Rice
 
-== Discussion 
+== Discussion
 The source of the {{iso17301,clause=3.9,immature kernel}} has not yet been identified.
 Allusions to {{iso17301,clause=3.9,immature kernel,unripe kernels}} are plentiful in
 the literature.
 --
 
-If the term is defined in an external termbase, the term is identified as the termbase
-identifier, then colon, then the identifier for the term within the termbase. Because
-colons are not permitted in crossreferences or bibliographic anchors, the presence of a colon
-identifies the first argument in a term citation as identifying an external termbase term.
-The other two arguments of the macro are as above, the canonical term name, and optionally
-the text to be displayed. There is no expectation that the termbase be included in the bibliography.
+
+=== Term defined in external termbase
+
+If the term is defined in an external termbase, the term is identified
+as the termbase identifier, then colon, then the identifier for the
+term within the termbase.
+
+Because colons are not permitted in crossreferences or bibliographic
+anchors, the presence of a colon identifies the first argument in a
+term citation as identifying an external termbase term. The other two
+arguments of the macro are as above, the canonical term name, and
+optionally the text to be displayed. There is no expectation that the
+termbase be included in the bibliography.
+
+[source,adoc]
+----
+{{termbase-anchor,term}}
+
+// if the display text differs from the cited term
+{{termbase-anchor,term,text}}
+----
+
+The `termbase-anchor` is implementation-specific.
+Currently, only the IEC's Electropedia (IEV) is supported, where the
+reference syntax is `IEV:{IEV term ID}`.
+
+[source,adoc]
+----
+{{IEV:IEV-term-ID,term}}
+
+// if the display text differs from the cited term
+{{IEV:IEV-term-ID,term,text}}
+----
+
+EXAMPLE:
 
 [source,asciidoc]
 --
-== Discussion 
+== Discussion
 The source of the {{IEV:171-05-02,immature kernel}} has not yet been identified.
 Allusions to {{IEV:171-05-02,unripe kernels,immature kernel}} are plentiful in
 the literature.
