@@ -258,47 +258,47 @@ Text
 
 === Recommendations, requirements, and permissions
 
-NOTE: This subsection supplements 
-link:/author/topics/document-format/requirements-recommendations-permissions[Requirement, Recommendation, and Permission blocks] 
+In this clause we will use the term "`requirement`" to refer to the
+generic class of recommendations, requirements and permissions.
+
+NOTE: This subsection supplements
+link:/author/topics/document-format/requirements-recommendations-permissions[Requirement, Recommendation, and Permission blocks]
 in general Metanorma documentation.
 
-For legacy reasons, a second Metanorma AsciiDoc syntax is permitted for
-recommendations, requirements and permissions.
+==== Requirement verifications (tests)
 
-These may also be recognized in Metanorma
-AsciiDoc as tables whose first cell contains the text _Recommendation_, _Requirement_, _Permission_,
-optionally followed by a number (which is ignored in parsing; the elements are renumbered
-automatically in rendering.) These are currently constituted of two elements: an internal
-label, which is parsed as the first paragraph of the second table cell, and the body of
-the recommendation etc., which is parsed as the remainder of the second table cell.
+A requirement with `type=verification` are cross-referenced and captioned as
+a "`{Requirement} Test`", and are rendered differently from the
+actual requirement itself.
 
-[source,asciidoc]
-----
-[[recommendation1]]
-|===
-|Recommendation |/ogc/recommendation/wfs/2 +
+NOTE: Verifications for Recommendations will be captioned as
+Recommendation Tests, similarly for Requirement Tests and
+Permission Tests.
 
-If the API definition document uses the OpenAPI Specification 3.0,
-the document SHOULD conform to the
-<<rc_oas30,OpenAPI Specification 3.0 requirements class>>.
-|===
-----
+Requirement verifications are excluded from the
+"`Table of Requirements`" in Word output
+[added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.10].
 
-Reccomendations etc. with `type=verification` are crossreferenced and captioned as
-Recommendation Tests (Permission Tests, Requirement Tests), and are styled differently
-from recommendations proper. They are also excluded from the Table of Requirements in
-Word output [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.10].
+==== Requirement classes
 
-Reccomendations etc. with `type=class` are crossreferenced and captioned as
-Recommendation Classes (Permission Classes, Requirement Classes), and are styled differently
-from recommendations proper [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.11]. 
-Recommendation Classes must use the following Metanorma requirement attributes:
+A requirement with `type=class` are cross-referenced and captioned as
+a "`{Requirement} Class`", and are rendered differently the actual
+requirement itself
+[added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.11].
 
-* Target Type shall be the "subject" attribute
-* Name shall be the requirement title
-* Dependency shall be the "inherit" attribute (which can take multiple semicolon-delimited values)
-* The requirements contained in a class are presented as nested requirements:
+NOTE: Classes for Recommendations will be captioned as
+Recommendation Classes, similarly for Requirement Classes and
+Permission Classes.
 
+Requirement Classes must use the following Metanorma Requirement attributes:
+
+* Target Type. Specified in the `subject` attribute.
+* Name. Specified as the requirement's title.
+* Dependencies (optional). Specified with the `inherit` attribute (which can take multiple semicolon-delimited values).
+* Nesting (optional). Requirements contained in a class are presented as nested requirements.
+
+[example]
+========
 [source,asciidoc]
 --
 [requirement,type="class",label="http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]",obligation="requirement",subject="Encoding of logical models",inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used"]
@@ -331,3 +331,36 @@ Recommendation Classes must use the following Metanorma requirement attributes:
 
 ====
 --
+========
+
+==== Legacy Metanorma AsciiDoc syntax
+
+For legacy reasons, a second Metanorma AsciiDoc syntax is permitted for
+recommendations, requirements and permissions.
+
+In this syntax, Metanorma AsciiDoc tables are used to express the
+data needed for requirements:
+
+* Type of requirement. Specified in the first table cell,
+  one of `Recommendation`, `Requirement` or `Permission`.
+  Optionally followed by a number
+  (which is ignored in parsing; the elements are renumbered
+  automatically in rendering.)
+* Internal label. First paragraph of the second table cell.
+* Body of requirement. Second and subsequent paragraphs of the second table cell.
+
+[example]
+====
+[source,asciidoc]
+----
+[[recommendation1]]
+|===
+|Recommendation |/ogc/recommendation/wfs/2 +
+
+If the API definition document uses the OpenAPI Specification 3.0,
+the document SHOULD conform to the
+<<rc_oas30,OpenAPI Specification 3.0 requirements class>>.
+|===
+----
+====
+
