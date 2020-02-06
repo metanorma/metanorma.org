@@ -36,9 +36,18 @@ The customizations needed for `Metanorma::Sample::Processor` are minor, and invo
 
 The customizations needed for `Isodoc::Sample` are more extensive. Three base classes are involved:
 
-* `Isodoc::Metadata` processes the metadata about the document stored in `//bibdata`. This information typically ends up in the document title page, as opposed to the document body. For that reason, metadata is extracted into a hash, which is passed to document output (title page, Word header) via the https://shopify.github.io/liquid/[Liquid template language]. See link:/builder/howto/metadata-and-boilerplate/[Metadata and Boilerplate] for more information.
+* `Isodoc::Metadata` processes the metadata about the document stored
+in `//bibdata`. This information typically ends up in the document
+title page, as opposed to the document body. For that reason, metadata
+is extracted into a `Hash`, which is passed to document output (title
+page, Word header) via the
+https://shopify.github.io/liquid/[Liquid template language].
+See link:/builder/howto/metadata-and-boilerplate/[Metadata and Boilerplate] for more information.
+
 * `Isodoc::HtmlConvert` converts Standoc XML to HTML.
+
 * `Isodoc::PDFConvert` converts Standoc XML to HTML.
+
 * `Isodoc::WordConvert` converts Standoc XML to Word HTML; the https://github.com/metanorma/html2doc[html2doc] gem then converts this to a .doc document.
 
 The `Isodoc::HtmlConvert` and `Isodoc::WordConvert` are expected to be near-identical, since any rendering differences between the two are addressed in the HTML CSS stylesheet. The `Isodoc::HtmlConvert` and `Isodoc::WordConvert` overlap substantially, as both use variants of HTML. However there is no reason not to make substantially different rendering choices in the HTML and Word branches of the code.
