@@ -2,7 +2,7 @@
 layout: builder-docs
 ---
 
-= How can I style the resulting Microsoft Word output?
+= Styling Microsoft Word output
 
 [TIP]
 ====
@@ -31,9 +31,9 @@ The process for generating Word output is fairly similar to that for generating 
 ** Any standalone tags must be closed; e.g. `<br>` becomes `<br/>`
 ** Any attributes must be quoted; e.g. `<p class=MsoNormal>` becomes `<p class="MsoNormal">`
 ** Idiosyncratic Word HTML comments, used for fallback HTML if the HTML is not rendered in Word, are not well-formed XML and  must be removed (e.g. `<![if !mso]>`, `<![endif]>`)
-* The styling files to be loaded in are set in the `default_file_locations()` method of `IsoDoc::...::WordConvert`. 
-* As with HTML generation, additional files (e.g. logos) can be loaded in the `initialize()` method of `IsoDoc::...::WordConvert`. The `initialize()` method also sets the `@` styles in the stylesheet to be used for unordered and ordered lists; a single such style is intended to capture the behaviour of all levels of indentation. 
-* As with HTML output, the HTML templates are populated through Liquid Templates: variables in `{{` correspond to the hash keys for metadata extracted in `IsoDoc::...::Metadata`, and its superclass `IsoDoc::Metadata` in the isodoc gem. See link:/builder/howto/metadata-and-boilerplate/[Metadata and Boilerplate] for more information.
+* The styling files to be loaded in are set in the `default_file_locations()` method of `IsoDoc::...::WordConvert`.
+* As with HTML generation, additional files (e.g. logos) can be loaded in the `initialize()` method of `IsoDoc::...::WordConvert`. The `initialize()` method also sets the `@` styles in the stylesheet to be used for unordered and ordered lists; a single such style is intended to capture the behaviour of all levels of indentation.
+* As with HTML output, the HTML templates are populated through Liquid Templates: variables in `{{` correspond to the hash keys for metadata extracted in `IsoDoc::...::Metadata`, and its superclass `IsoDoc::Metadata` in the isodoc gem. See link:/builder/topics/metadata-and-boilerplate/[Metadata and Boilerplate] for more information.
 * As with HTML, the SCSS stylesheets treat fonts as variables, and are set in the `default_fonts()` method of `IsoDoc::...::WordConvert`.
 * Document headers and footers are set in the `header.html` file. This is also an HTML template, which is populated with metadata attributes through Liquid Template. The structure of `header.html` is determined by Word, and elements of `header.html` need to be cross-referenced from the Word stylesheet. To inspect Word `header.html` files, save a Word document as HTML, and look inside the `{document_name}.fld` folder generated alongside the HTML output.
 
@@ -43,6 +43,6 @@ A Word HTML document is populated as follows:
 ** `@standstylesheet` CSS stylesheet (generated from SCSS through the `generate_css()` method of `Isodoc::WordConvert`); intended to override any generic CSS in `@wordstylesheet`. Optional, corresponds to `{name_of_standard}.scss`.
 * HTML Body
 ** `@wordcoverpage` HTML template (optional, corresponds to `word_..._titlepage.html`). Included in `<div class="WordSection1">`.
-** `@htmlintropage` HTML template (optional, corresponds to `word_..._intro.html`). Included in `<div class="WordSection2">`. In the existing gems, WordSection2 is paginated with roman numerals. 
+** `@htmlintropage` HTML template (optional, corresponds to `word_..._intro.html`). Included in `<div class="WordSection2">`. In the existing gems, WordSection2 is paginated with roman numerals.
 ** Document proper (converted from Metanorma XML). Included in `<div class="WordSection2">` (prefatory material) and `<div class="WordSection3">` (main document). In the existing gems, WordSection3 is paginated with roman numerals.
 
