@@ -6,8 +6,9 @@ layout: author-docs
 
 == General
 
-The Normative References and the Bibliography must be preceded by the style attribute
-`[bibliography]`, so that the references they contain may be recognized as such:
+The "`Normative References`" and the "`Bibliography`" sections must be
+preceded by the style attribute `[bibliography]`, so that the references
+they contain may be recognized as such:
 
 [source,asciidoc]
 --
@@ -19,35 +20,45 @@ The Normative References and the Bibliography must be preceded by the style attr
 * [[[id3,3]]] _Third reference_
 --
 
-Either bibliography can be split into subsections. Asciidoctor requires each subsection
-containing references to be styled with `[bibliography]`, and raises an (ignorable)
-warning if the subsections are contained in a section itself styled with `[bibliography]`
-(e.g. if `== Bibliography` in the following were preceded by `[bibliography]`.:
+Both of these bibliography sections can be split into subsections.
+
+Metanorma AsciiDoc requires each subsection containing references
+to be styled with `[bibliography]`, and raises an (ignorable)
+warning if the subsections are contained in a section itself
+styled with `[bibliography]`.
 
 [source,asciidoc]
 --
 == Bibliography
 
 [bibliography]
-=== Paet 1
+=== Part 1
 
 * [[[id1,1]]] _First reference_
 * [[[id1,2]]] _Second reference_
 * [[[id3,3]]] _Third reference_
 
 [bibliography]
-=== Paet 2
+=== Part 2
 
 * [[[id4,4]]] _Fourth reference_
 * [[[id5,5]]] _Fifth reference_
 * [[[id6,6]]] _Sixth reference_
 --
 
-All entries in a Bibliography, whether standards or generic, are renumbered incrementally in the XML; if the number for
-generic references is updated, all citations of that reference will be updated as well.
+NOTE: A warning will be raised if `== Bibliography` in the above EXAMPLE was
+preceded by `[bibliography]`.
 
-By default, Metanorma does not change the ordering of references in the Bibliography from what has been entered
-by the authors. Metanorma flavours may reorder references.
+All entries in a bibliography section, whether standards or generic,
+are renumbered incrementally in the Metanorma XML. If the number for
+generic references is updated, all citations of that reference will
+be updated as well.
+
+By default, Metanorma does not change the ordering of references in the
+bibliography sections from what has been entered by the authors.
+Some Metanorma flavours *will* reorder references to suit document
+requirements.
+
 
 == Entering typical references
 
