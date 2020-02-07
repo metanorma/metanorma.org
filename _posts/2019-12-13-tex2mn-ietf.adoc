@@ -29,7 +29,6 @@ at IETF of RFC XML v3 (https://www.tools.ietf.org/html/rfc7991[RFC 7991])
 -- writing an IETF RFC using LaTeX!
 
 
-
 == Setup
 
 === Metanorma
@@ -82,7 +81,6 @@ git clone git@github.com:metanorma/tex2mn.git
 
 
 
-
 == Usage
 
 === General
@@ -102,6 +100,8 @@ Just copy these three files into the working folder of your projects and you're 
 
 === Compiling a sample file
 
+==== The conclusive ASCII-cast
+
 Let's compile a sample file!
 
 ++++
@@ -114,7 +114,13 @@ We are going to use the file `showcase.tex` located at `examples/showcase.tex`
 within the `tex2mn` directory.
 
 
-First of all, you can compile Metanorma LaTeX directly to PDF.
+==== (Optional) Using LaTeX tools with Metanorma LaTeX
+
+For those who can't stand getting outside of the TeX toolchain,
+Metanorma LaTeX files are natively LaTeX and are compatible with all
+the usual tools you use.
+
+For example, you can compile Metanorma LaTeX directly to PDF.
 You can use `pdflatex` or go fully automatic with `latexmk`:
 
 [source,bash]
@@ -122,7 +128,10 @@ You can use `pdflatex` or go fully automatic with `latexmk`:
 latexmk -pdf showcase.tex
 ----
 
-Then you can translate Metanorma LaTeX into Metanorma AsciiDoc:
+
+==== Compiling Metanorma LaTeX into Metanorma AsciiDoc
+
+You can translate Metanorma LaTeX into Metanorma AsciiDoc:
 
 [source,bash]
 ----
@@ -130,18 +139,20 @@ latexml showcase.tex | latexmlpost - --stylesheet=Metanorma.xsl \
   --nocrossref --nodefaultresources --destination=showcase.adoc
 ----
 
+
+==== Compiling into XML RFC v3
+
 Finally, you can use the Metanorma toolchain to compile the Metanorma
 AsciiDoc to the desired output.
 
-E.g., to target IETF's RFC 2 XML you can run:
+To target IETF's RFC XML v3 you can run:
 
 [source,bash]
 ----
-metanorma compile -t ietf -x xmlrfc2 showcase.adoc
+metanorma compile -t ietf showcase.adoc
 ----
 
 That's it! This is all you need to know to get started.
-
 
 
 == Conclusion and next steps
@@ -151,11 +162,12 @@ link:/blog/2019-10-08-metanorma-with-latex-support-alpha#conclusion-and-next-ste
 we reached very good feature coverage of Metanorma LaTeX with respect to Metanorma AsciiDoc.
 
 It is now time for _battle-testing_ `tex2mn` and integrating it seamlessly into the Metanorma toolchain.
-On our next announcement running your LaTeX-based document production pipeline will be as easy as
+
+On our next announcement running your LaTeX-based document production pipeline will be as easy as:
 
 [source,bash]
 ----
-metanorma -t ietf -x xmlrfc2 input.tex
+metanorma -t ietf input.tex
 ----
 
 Ciao, for now!
