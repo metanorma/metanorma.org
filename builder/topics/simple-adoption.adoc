@@ -1,0 +1,370 @@
+---
+layout: builder-docs
+---
+= Creating your own Metanorma flavor
+
+== How do I adapt Metanorma for my own publications?
+
+[TIP]
+====
+.Summary
+The easiest way to adopt StanDoc is to use the
+https://github.com/metanorma/metanorma-acme[metanorma-acme gem],
+supplying your own stylesheets and HTML files for styling,
+which is described on this page.
+
+This gem can work with YAML file where you can customize the behaviour of the
+flavour without needing to write any code. It will only deal with
+fairly simple standards flavours.
+====
+
+== General
+
+Metanorma Acme is a base implementation that facilitates easy creation
+of your own Metanorma flavor without programming.
+
+Specifically, Metanorma Acme allows you to specify configuration options
+to customize presentation attributes without needing to create a
+packaged Ruby Gem.
+
+Customizations of the document workflow, however, will require
+programming. In this case, Metanorma Acme provides a solid base
+for building your very own Metanorma flavour in a Ruby Gem.
+
+
+[[yaml-config]]
+=== Customization via YAML
+
+A simple Metanorma flavour can be created using Metanorma Acme's
+ability to use a `metanorma.yml` config file.
+
+Place a `metanorma.yml` file in the same directory as your Metanorma
+AsciiDoc file, and populate it with any necessary attributes.
+
+The following shows the default values that you can override with if
+necessary.
+
+[source,yaml]
+--
+# Content of `metanorma.yml`
+organization_name_short: Acme
+organization_name_long: Acme Corp.
+document_namespace: https://open.ribose.com/standards/acme
+xml_root_tag: 'acme-standard'
+logo_path: /metanorma-acme/lib/isodoc/acme/html/logo.jpg
+validate_rng_file: /metanorma-acme/lib/asciidoctor/acme/acme.rng
+htmlcoverpage: /metanorma-acme/lib/isodoc/acme/html/html_acme_titlepage.html
+htmlintropage: /metanorma-acme/lib/isodoc/acme/html/html_acme_intro.html
+htmlstylesheet: /metanorma-acme/lib/isodoc/acme/html/htmlstyle.scss
+scripts: /metanorma-acme/lib/isodoc/acme/html/scripts.html
+standardstylesheet: /metanorma-acme/lib/isodoc/acme/html/
+header: /metanorma-acme/lib/isodoc/acme/html/header.html
+wordcoverpage: /metanorma-acme/lib/isodoc/acme/html/word_acme_titlepage.html
+wordintropage: /metanorma-acme/lib/isodoc/acme/html/word_acme_intro.html
+wordstylesheet: /metanorma-acme/lib/isodoc/acme/html/wordstyle.scss
+--
+
+*Key*
+
+* `organization_name_short`/`organization_name_long`: Name of your organization
+* `document_namespace`: attribute for creating Metanorma Standoc XML, will be used for as namespace name for XML tags generated
+* `xml_root_tag`: attribute for creating Metanorma Standoc XML, will be used as tag name for root tag
+* `logo_path`: path to the logo file, used for metanorma metadata
+* `validate_rng_file`: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-acme/blob/master/lib/asciidoctor/acme/acme.rng for example
+* `htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts`: paths used for styling html output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
+* `wordcoverpage`/`wordintropage`/`wordstylesheet`/`header`: paths used for styling word output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
+
+
+=== Customization via Ruby Gem
+
+==== General
+
+Metanorma Acme also supports configuration via Ruby code.
+By following the steps below you can create your own Ruby Gem for your Metanorma flavour.
+
+NOTE: Examples are borrowed from https://github.com/metanorma/metanorma-rsd repository.
+
+
+==== Step 1: Create an empty Gem
+
+Initialize an empty Ruby Gem:
+
+[source,adoc]
+----
+bundle init
+----
+
+Then add `metanorma-acme` as a dependency in your `{gem-name}.gemspec` file.
+
+`{gem-name}` is typically `metanorma-{your-flavor-name}`.
+For example, for Metanorma RSD, it is `metanorma-rsd`.
+
+
+==== Step 2: Create your Metanorma configuration in Ruby
+
+In this step you will create:
+
+* `lib/metanorma-{your-flavor-name}.rb`
+
+`lib/metanorma-{your-flavor-name}.rb` is the entry point for your gem.
+
+For example, this is `lib/metanorma-rsd.rb`:
+
+[source,ruby]
+--
+Metanorma::Acme.configure do |config|
+  config.organization_name_long = 'Ribose Inc.'
+  config.organization_name_short = 'Ribose'
+  config.document_namespace = 'https://open.ribose.com/standards/rsd'
+
+  html_configs = File.join(
+    File.expand_path('config', __dir__), 'rsd_html.yml'
+  )
+  isodoc_rsd_html_folder = File.join(
+    File.expand_path('isodoc', __dir__), 'rsd', 'html'
+  )
+
+  config.wordstylesheet = File.join(
+    isodoc_rsd_html_folder, 'wordstyle.scss'
+  )
+  config.standardstylesheet = File.join(isodoc_rsd_html_folder, 'rsd.scss')
+  config.header = File.join(isodoc_rsd_html_folder, 'header.html')
+  config.wordcoverpage = File.join(
+    isodoc_rsd_html_folder, 'word_rsd_titlepage.html'
+  )
+  config.wordintropage = File.join(isodoc_rsd_html_folder,
+                                   'word_rsd_intro.html')
+  config.htmlstylesheet = File.join(isodoc_rsd_html_folder,
+                                    'htmlstyle.scss')
+  config.htmlcoverpage = File.join(isodoc_rsd_html_folder,
+                                   'html_rsd_titlepage.html')
+  config.htmlintropage = File.join(isodoc_rsd_html_folder,
+                                   'html_rsd_intro.html')
+  config.scripts = File.join(isodoc_rsd_html_folder, 'scripts.html')
+  config.logo_path = File.join(isodoc_rsd_html_folder, 'logo.png')
+  config.xml_root_tag = 'rsd-standard'
+
+  rsd_rng_folder = File.join(File.expand_path('asciidoctor', __dir__), 'rsd')
+  config.validate_rng_file = File.join(rsd_rng_folder, 'rsd.rng')
+end
+
+require 'metanorma/rsd'
+require 'isodoc/acme'
+
+require 'asciidoctor' unless defined? Asciidoctor::Converter
+require 'asciidoctor/rsd'
+--
+
+In this configuration, you have to provide paths to your style definitions:
+* Word Doc: using `config.word*`
+* HTML: using `config.html*`
+
+Please refer to <<yaml-config>> for a detailed explanation for each configuration option.
+
+
+==== Step 3: Define your flavor in the Metanorma framework
+
+In this step you will create these folders:
+
+* `lib/metanorma/{your-flavor-name}/`
+* `lib/isodoc/{your-flavor-name}/`
+* `lib/asciidoctor/{your-flavor-name}/`
+
+And these files:
+
+* `lib/metanorma/{your-flavor-name}.rb`
+* `lib/metanorma/{your-flavor-name}/processor.rb`
+* `lib/metanorma/{your-flavor-name}/version.rb`
+* `lib/isodoc/{your-flavor-name}.rb`
+* `lib/isodoc/{your-flavor-name}/metadata.rb`
+* `lib/isodoc/{your-flavor-name}/{converter-type}.rb` (one converter per output format)
+* `lib/asciidoctor/{your-flavor-name}.rb`
+* `lib/asciidoctor/{your-flavor-name}/converter.rb`
+
+For example, in `metanorma-rsd`, you would have these files:
+
+* `lib/metanorma/rsd.rb`
+* `lib/metanorma/rsd/processor.rb`
+* `lib/metanorma/rsd/version.rb`
+* `lib/isodoc/rsd.rb`
+* `lib/isodoc/rsd/metadata.rb`
+* `lib/isodoc/rsd/html_converter.rb`
+* `lib/isodoc/rsd/word_converter.rb`
+* `lib/asciidoctor/rsd.rb`
+* `lib/asciidoctor/rsd/converter.rb`
+
+
+The first file `lib/metanorma/{your-flavor-name}.rb` defines your module,
+and links your flavor's processor to the Metanorma processor framework.
+
+[source,ruby]
+--
+# lib/metanorma/rsd.rb
+require "metanorma"
+require "metanorma/rsd/processor"
+
+module Metanorma
+  module Rsd
+  end
+end
+
+# This line registers your Metanorma Processor to the Metanorma Registry
+Metanorma::Registry.instance.register(Metanorma::Rsd::Processor)
+--
+
+
+`lib/isodoc/{your-flavor-name}/metadata.rb` links your configuration
+to IsoDoc by inheriting the `IsoDoc::Acme::Metadata` class:
+
+[source,ruby]
+--
+# lib/isodoc/rsd/metadata.rb
+require "isodoc"
+
+module IsoDoc
+  module Rsd
+    class Metadata < IsoDoc::Acme::Metadata
+      def configuration
+        Metanorma::Rsd.configuration
+      end
+    end
+  end
+end
+--
+
+
+Inherit `IsoDoc::Acme` convertors depending on the types of outputs
+your flavour wishes to support, using the previously created `Metadata`
+file.
+
+The following code from `lib/isodoc/rsd/html_convert.rb` shows an example
+where the HTML convertor is inherited to provide HTML output for RSD,
+and to read in `IsoDoc::Acme::Metadata`.
+
+[source,ruby]
+--
+# lib/isodoc/rsd/html_convert.rb
+require "isodoc"
+require "isodoc/acme/html_convert"
+require "isodoc/rsd/metadata"
+
+module IsoDoc
+  module Rsd
+    class HtmlConvert < IsoDoc::Acme::HtmlConvert
+      def configuration
+        Metanorma::Rsd.configuration
+      end
+
+      def metadata_init(lang, script, labels)
+        @meta = Metadata.new(lang, script, labels)
+      end
+    end
+  end
+end
+--
+
+`lib/metanorma/{your-flavor-name}/processor.rb` defines your flavor's
+Processor by inheriting from `Metanorma::Processor`.
+This is the entry point for content processing.
+
+[source,ruby]
+--
+# lib/metanorma/rsd/processor.rb
+require "metanorma/processor"
+
+module Metanorma
+  module Rsd
+    class Processor < Metanorma::Processor
+
+      def initialize
+        @short = :rsd
+        @input_format = :asciidoc
+        @asciidoctor_backend = :rsd
+      end
+
+      def output_formats
+        super.merge(
+          html: "html",
+          doc: "doc",
+          pdf: "pdf"
+        )
+      end
+
+      def version
+        "Metanorma::Rsd #{Metanorma::Rsd::VERSION}"
+      end
+
+      def input_to_isodoc(file, filename)
+        Metanorma::Input::Asciidoc.new.process(file, filename, @asciidoctor_backend)
+      end
+
+      def output(isodoc_node, outname, format, options={})
+        case format
+        when :html
+          IsoDoc::Rsd::HtmlConvert.new(options).convert(outname, isodoc_node)
+        when :doc
+          IsoDoc::Rsd::WordConvert.new(options).convert(outname, isodoc_node)
+        when :pdf
+          IsoDoc::Rsd::PdfConvert.new(options).convert(outname, isodoc_node)
+        else
+          super
+        end
+      end
+    end
+  end
+end
+--
+
+Create the version file indicating your flavor's gem version at
+`lib/metanorma/{your-flavor-name}/version.rb`
+
+[source,ruby]
+--
+# lib/metanorma/rsd/version.rb
+require "metanorma/rsd"
+
+module Metanorma
+  module Rsd
+    VERSION = "0.0.1".freeze
+  end
+end
+--
+
+
+Create `lib/asciidoctor/{your-flavor-name}.rb` to house your
+input converters.
+
+[source,ruby]
+--
+# lib/asciidoctor/rsd.rb
+require "metanorma/rsd/version"
+require_relative "rsd/converter"
+
+module Asciidoctor
+  module Rsd
+
+  end
+end
+--
+
+
+`lib/asciidoctor/{your-flavor-name}/converter.rb`
+registers your new flavour to be used in `Metanorma::Cli`.
+
+[source,ruby]
+--
+# lib/asciidoctor/rsd/converter.rb
+require "asciidoctor/standoc/converter"
+require 'asciidoctor/acme/converter'
+
+module Asciidoctor
+  module Rsd
+    # A {Converter} implementation that generates RSD output, and a document
+    # schema encapsulation of the document for validation
+    #
+    class Converter < Asciidoctor::Acme::Converter
+      register_for "rsd"
+    end
+  end
+end
+--
