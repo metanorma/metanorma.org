@@ -48,28 +48,60 @@ gehf@vacheequipment.fic
 
 == Page breaks
 
-Page breaks can be given a page orientation, which applies from that point forward
-until the next page break with a page 
+Page breaks can be given a page orientation, which applies from that
+point forward until the next page break with a page
 orientation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.17].
-Page orientation only appears in Word output.
+
+Page orientation only appears in paged output, such as in Word.
+
+To set content to landscape mode, the syntax is:
 
 [source,asciidoc]
 --
 [%landscape]
 <<<
+--
 
-...
+To set content to portrait mode, the syntax is:
 
+[source,asciidoc]
+--
 [%portrait]
 <<<
 --
 
-If no orientation option is given, the text after the page break remains in the same orientation
-as that before. In Word, page breaks changing orientation are realised as distinct sections.
+If no orientation option is given, the text after the page break
+remains in the same orientation as that before. In Word, page breaks
+changing orientation are realised as distinct sections.
 
-In Metanorma, documents are split into three sections by default: a cover page, a preface, 
-and the main document body (including annexes and bibliography); some documents also have
-a colophon. The page orientation is reset at the start of the main document body to portrait.
+In Metanorma, documents are split into three sections by default:
+
+* a cover page,
+* a preface, and
+* the main document body (including annexes and bibliography)
+* (some documents also have a colophon)
+
+The page orientation is reset at the start of the main document body to `portrait`.
+
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+// Content following this directive will be shown in landscape mode
+[%landscape]
+<<<
+
+...
+
+// Content following this directive will return to portrait mode
+[%portrait]
+<<<
+
+...
+
+--
+
 
 == Block quotes
 
