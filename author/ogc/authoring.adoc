@@ -193,6 +193,8 @@ The Normative References section may be named just "`References`", reflecting OG
 
 === Preliminary elements
 
+==== General
+
 The following clauses are preliminary elements, and are moved into the frontispiece
 of the document (in Metanorma, the document preface):
 
@@ -202,6 +204,11 @@ of the document (in Metanorma, the document preface):
 * Submitting Organizations
 * Submitters
 
+Note that in OGC documents, all these elements are *MANDATORY*.
+
+
+==== Abstract
+
 The abstract is recognized as the first clause with an `abstract` style attribute:
 
 [source,asciidoc]
@@ -209,11 +216,15 @@ The abstract is recognized as the first clause with an `abstract` style attribut
 [abstract]
 == Abstract
 
-My abstract...
+This standard describes a conceptual and logical model for the exchange
+of groundwater data, as well as a GML/XML encoding with examples.
 ----
 
-The preface is recognized as the text between the AsciiDoc document attributes and
-the first AsciiDoc section title; it must not be given a section title of its own.
+==== Preface
+
+The "`Preface`" is recognized as the text after the `.Preface` label, placed
+between the AsciiDoc document attributes and
+the first AsciiDoc section title; it should not be given a section title of its own.
 
 [source,asciidoc]
 ----
@@ -222,27 +233,72 @@ the first AsciiDoc section title; it must not be given a section title of its ow
 .Preface
 
 preface text
-
-=== Submitters
 ----
 
-"`Keywords`" and "`Submitting Organizations`" consist of lists.
-They are treated as document metadata,
-and are entered as a document attribute.
-The prefatory text introducing them is added automatically.
 
-"`Submitters`" are treated as a table, contained in a section with the title `Submitters`:
+==== Keywords
 
-[source,asciidoc]
+"`Keywords`" are entered as document attributes as `:keywords:`, with the
+value as a comma-delimited list.
+
+Prefatory text is generated automatically.
+
+EXAMPLE:
+
+[source,adoc]
 ----
-=== Submitters
+:keywords: ogcdoc, OGC document, groundwater, hydrogeology, GWML2
+----
+
+
+==== Submitting Organizations
+
+"`Submitting Organizations`" are entered using the `:submitting-organizations:` document attribute.
+The values are entered using a semi-colon delimited list.
+
+Prefatory text is generated automatically.
+
+EXAMPLE:
+
+[source,adoc]
+----
+:submitting-organizations: Geological Survey of Canada (GSC), Canada; U.S. Geological Survey (USGS), United States of America
+----
+
+
+==== Submitters
+
+"`Submitters`" are entered using a table, contained in a section with the title `Submitters`.
+
+EXAMPLE:
+
+[source,adoc]
+----
+== Submitters
 
 |===
-|Name |Representing |OGC member
+|Name |Affiliation |OGC member
 
 |Steve Liang | University of Calgary, Canada / SensorUp Inc. | Yes
 |===
 ----
+
+EXAMPLE:
+
+[source,adoc]
+----
+== Submitters
+
+All questions regarding this submission should be directed to the editor or the submitters:
+
+|===
+|Name |Affiliation
+
+|Boyan Brodaric |GSC
+|Alexander Kmoch |U Salzburg
+|===
+----
+
 
 === Examples
 
