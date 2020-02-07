@@ -2,27 +2,32 @@
 layout: builder-docs
 ---
 
-== How can I adapt the StanDoc toolchain for my own publications?
+= Adopting the Metanorma toolchain for publications
+
+== Summary
 
 [TIP]
 ====
 .Summary
-The easiest way to adopt StanDoc is to use the metanorma-acme gem: https://github.com/metanorma/metanorma-acme, supplying your own stylesheets and HTML files for styling. See link:/builder/howto/simple-adoption/[Simple Adoption] for more information.
+The easiest way to adopt Metanorma is via link:/builder/topics/simple-adoption/[Simple Adoption], which
+allows you to supply stylesheets and HTML files for styling.
 
 If you wish to create a custom gem, in order to customise behaviour further:
 
-* Clone the metanorma-sample gem: https://github.com/metanorma/metanorma-sample.
+* Clone the `metanorma-sample` gem: https://github.com/metanorma/metanorma-sample.
 * Change the namespace for RSD documents (`RSD_NAMESPACE = "https://open.ribose.com/standards/rsd"`) to a namespace specific to your organization's document standard.
 * Change any references to `sample` or `Sample` in the gem to your organization's document standard.
 * Change the styling of the document outputs (`.../lib/isodoc/XXX/html`).
 ====
 
+== General
+
 The toolchains currently available proceed in two steps:
 
-. map an input markup language (currently AsciiDoc only) into Standoc XML; and
-. map Standoc XML into various output formats (currently Word doc, HTML, PDF via HTML).
+. map an input markup language (currently AsciiDoc only) into Metanorma Standoc XML; and
+. map Metanorma Standoc XML into various output formats (currently Word doc, HTML, PDF via HTML).
 
-Running the metanorma tool involves a third step, of exposing the capabilities available in the first two in a consistent format.
+Running the `metanorma` CLI tool involves a third step, of exposing the capabilities available in the first two in a consistent format.
 
 These two steps are represented as three separate modules, which are included in the same gem; for the Sample gem, they are `Asciidoctor::Sample`, `Isodoc::Sample`, and `Metanorma::Sample`.
 
@@ -42,13 +47,13 @@ title page, as opposed to the document body. For that reason, metadata
 is extracted into a `Hash`, which is passed to document output (title
 page, Word header) via the
 https://shopify.github.io/liquid/[Liquid template language].
-See link:/builder/howto/metadata-and-boilerplate/[Metadata and Boilerplate] for more information.
+See link:/builder/topics/metadata-and-boilerplate/[Metadata and Boilerplate] for more information.
 
-* `Isodoc::HtmlConvert` converts Standoc XML to HTML.
+* `Isodoc::HtmlConvert` converts Metanorma Standoc XML to HTML.
 
-* `Isodoc::PDFConvert` converts Standoc XML to HTML.
+* `Isodoc::PDFConvert` converts Metanorma Standoc XML to HTML.
 
-* `Isodoc::WordConvert` converts Standoc XML to Word HTML; the https://github.com/metanorma/html2doc[html2doc] gem then converts this to a .doc document.
+* `Isodoc::WordConvert` converts Metanorma Standoc XML to Word HTML; the https://github.com/metanorma/html2doc[html2doc] gem then converts this to a .doc document.
 
 The `Isodoc::HtmlConvert` and `Isodoc::WordConvert` are expected to be near-identical, since any rendering differences between the two are addressed in the HTML CSS stylesheet. The `Isodoc::HtmlConvert` and `Isodoc::WordConvert` overlap substantially, as both use variants of HTML. However there is no reason not to make substantially different rendering choices in the HTML and Word branches of the code.
 
@@ -202,7 +207,7 @@ def version
 end
 --
 
-* `input_to_isodoc` is the call which converts Asciidoctor input into IsoDoc XML
+* `input_to_isodoc` is the call which converts Metanorma AsciiDoc input into Metanorma XML
 
 [source,ruby]
 --
@@ -211,7 +216,7 @@ def input_to_isodoc(file, filename)
 end
 --
 
-* `output` is the call which converts IsoDoc XML into various nominated output formats
+* `output` is the call which converts Metanorma XML into various nominated output formats
 
 [source,ruby]
 --
