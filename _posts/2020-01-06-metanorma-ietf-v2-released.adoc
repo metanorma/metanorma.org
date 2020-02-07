@@ -1,0 +1,158 @@
+---
+layout: post
+title: "Metanorma IETF v2 released with native RFC XML v3 support"
+date: 2020-01-06
+categories: about
+authors:
+  -
+    name: Nick Nicholas
+    email: opoudjis@optusnet.com.au
+    social_links:
+      - https://www.linkedin.com/in/opoudjis/
+      - https://github.com/opoudjis
+excerpt: >-
+    Metanorma IETF at 2.0 now fully supports RFC XML v3 input.
+---
+= Metanorma IETF v2 released with native RFC XML v3 support
+
+== A brief origin story
+
+The Metanorma journey started in November 2017, with the v0.2.0 release
+of our https://github.com/metanorma/asciidoctor-rfc[asciidoctor-rfc] gem,
+created to allow users to author the RFC XML for
+IETF Internet Drafts and Requests for Comments using AsciiRFC markup
+(AsciiDoc for RFCs),
+catering for automated fetching of references and validation.
+
+The gem as originally released generated output in both RFC XML v2
+(https://tools.ietf.org/html/rfc7749[RFC 7749]) and
+RFC XML v3 (https://tools.ietf.org/html/rfc7991[RFC 7991]).
+
+The context has changed since then, for the better!
+
+
+== Times change, Metanorma has metamorphosed
+
+Metanorma now generates standards for various standards bodies,
+with broadly consistent inputs and outputs, centered on the usage
+of Metanorma XML. This effort started after the development of
+AsciiRFC and the `asciidoctor-rfc` gem, and was initially centered on
+ISO documents and documents resembling it.
+It has since grown to encompass over 10 standards flavours.
+
+While `asciidoctor-rfc` was integrated into the `metanorma`
+command-line interface
+(as the https://github.com/metanorma/metanorma-ietf[metanorma-ietf] gem),
+the input format of `metanorma-ietf` remained distinct from the rest of
+Metanorma; AsciiDoctor written for `metanorma-ietf` could not readily
+be repurposed for other Metanorma flavours. Likewise, Metanorma came
+to use the https://github.com/relaton/relaton[Relaton] suite of gems and
+encoding language to manage bibliographies; `metanorma-ietf` remained cut off
+from that toolset.
+
+
+== RFC XML v3 has been maturing (with less resemblance to the original v3)
+
+After several years, IETF has recently implemented RFC XML v3 in its own toolset
+for processing standards documents (with `xml2rfc` the most important of these,
+taking RFC XML input and generating HTML and TXT output.)
+
+However, the version of RFC XML v3 it
+has implemented is at variance with that originally defined in RFC 7991;
+the differences are detailed in the
+https://tools.ietf.org/html/draft-levkowetz-xml2rfc-v3-implementation-notes-10[RFC 7991 Implementation Notes].
+Using the RFC 7991 format as originally defined will cause the IETF `xml2rfc`
+tool to crash.
+
+
+== Rewriting Metanorma IETF in native Metanorma
+
+Rather than patch the existing `metanorma-ietf` gem to deal with the updated RFC XML v3,
+we have decided to take the opportunity to bring `metanorma-ietf` back into the fold,
+and have its input format be consistent with the rest of Metanorma.
+
+There are a number of Metanorma users who need to submit the same content to both the IETF and their own
+Standards Developing Organisation. As a result, we have published a version of
+`metanorma-ietf` which complies with the "`RFC 7991 Implementation Notes`", and
+which uses the same markup and conventions as the rest of Metanorma, at the cost
+of losing some backward compatibility with previous versions of `metanorma-ietf` markup.
+
+We are also now only supporting RFC XML v3 going forward; if you wish to author RFC XML v2
+documents, you will need to use an earlier version of `metanorma-ietf`.
+
+`metanorma-ietf` v2.0.0 has just been released, and the new version of `metanorma-ietf`
+is documented link:/author/ietf/topics/[here].
+
+In contrast to previous versions of `metanorma-ietf`, it is invoked as
+`metanorma -t ietf` instead of `metanorma -t rfc3`.
+
+Some helpful links:
+
+* Changes in markup between `metanorma-ietf` v1 and `metanorma-ietf` v2 are documented
+at https://www.metanorma.com/author/ietf/topics/markup-v2tov3/[Metanorma IETF: v2/v3 syntax differences];
+* RFC XML v3 elements not currently supported are documented at https://www.metanorma.com/author/ietf/ref/unsupported-rfc-elements/[Metanorma IETF: Unsupported elements];
+* Sample documents working with the new format are uploaded to the
+https://github.com/metnorma/mn-samples/ietf[mn-samples-ietf] repository.
+
+
+== Benefits being native Metanorma
+
+Metanorma IETF v2, being a native citizen of Metanorma, now
+fully takes advantage of Metanorma features:
+
+* link:/author/topics/document-format/bibliography[Bibliographic auto-fetching] now works with Metanorma IETF documents.
+  This means that if you cite any document from a Relaton-supported bibliographic data source,
+  such as IETF, ISO, ITU, IEC, NIST, OGC, just provide the proper document identifier, and all necessary metadata will
+  be automatically fetched and rendered in the IETF RFC or Internet-Draft. In Metanorma IETF v1 manual fetching from the XMLRFC database was necessary for IETF documents, and any other types of references would require manual authoring of the XMLRFC bibliographic element (bleh!).
+
+* Metanorma AsciiDoc syntax is fully supported. This means you can easily transition an IETF document to another SDO's format with minimal (or no) changes, vice versa. For those who need to keep standards in sync between SDOs will know how time-consuming (and unproductive) this process can become. Now it's free, and automatic.
+
+* Content validation. Since Metanorma IETF v2 now uses Metanorma XML as the intermediary format, it takes advantage of Metanorma XML's stringent validation processes and will produce warnings on content that run afoul of IETF rules before the document goes into the `xmlrfc` tool.
+
+* Upcoming Metanorma features, such as LaTeX support. Metanorma is designed to accept multiple input formats, including LaTeX input via `tex2mn` which is now in alpha. Since Metanorma IETF v2 is a first-class citizen in the Metanorma framework, this means that when Metanorma LaTeX input is supported, you can write IETF documents via a LaTeX syntax!
+
+
+== Upgrading your document to Metanorma IETF v2
+
+In order to upgrade a document from Metanorma IETF v1 markup to
+Metanorma IETF v2, you can usefully compare the
+RFC XML v2 and RFC XML v3 documents at `mn-samples-ietf`:
+
+* "`Holy Hand Grenade of Antioch`": https://github.com/metanorma/mn-samples-ietf/blob/master/sources_v2/antioch-v2.adoc[v2] and https://github.com/metanorma/mn-samples-ietf/blob/master/sources/antioch.adoc[v3]
+
+* RFC 1149: https://github.com/metanorma/mn-samples-ietf/blob/master/sources_v2/example-v2.adoc[v2] and https://github.com/metanorma/mn-samples-ietf/blob/master/sources/example-v3.adoc[v3]
+
+In particular:
+
+* The document attributes for author attributes have changed, to make them consistent with the rest of Metanorma. Breakdowns of addresses into their components are no longer available.
+
+* the `obsoletes` and `updates` document attributes take full Relaton identifiers as values, and not just RFC document numbers
+
+* There is no support for cached RFC XML, embedded RFC XML, or the `:normative:` split between normative and informative identifiers. All references must be entered as Relaton citations, either dynamically fetched given the document identifier from online sources, or as AsciiBib definition lists.
+
+* The `intended-series` document attribute is now expected to be supplied.
+
+* The `docnumber` document attribute is mandatory: it contains either the RFC number, or the Internet Draft identifier (including version number).
+
+* The abstract must either be marked up with `[abstract]` and a title, or left as a document preamble without a title: it cannot appear as `[abstract]` without a title.
+
+* Sourcecode, ASCII art, and images should not be embedded within example (= figure) markup: RFC XML v2 preamble/postamble text, which wraps around the sourcecode/artwork content of figures, is deprecated in RFC XML v3.
+
+* Notes are supported, but are rendered as the new `aside` element.
+
+* XML comments are no longer supported.
+
+* Reviewer comments are new supported, and rendered as the `cref` element.
+
+* Several attributes of blocks have been changed between RFC XML v2 and RFC XML v3. See the documentation of the flavour here, and https://tools.ietf.org/html/rfc7991[RFC 7991] and the https://tools.ietf.org/html/draft-levkowetz-xml2rfc-v3-implementation-notes-10[RFC 7991 Implementation Notes], for more information.
+
+* There is a slight change in the syntax of formatted external references, to accommodate the rest of Metanorma; e.g. `<<RFC8140,4.1 of>>` becomes `<<RFC8140,of,section=4.1>>`.
+
+
+== Let's get started!
+
+Both `metanorma-ietf` v2 and the updated `xml2rfc` tool are new; you may encounter
+some teething problems as you start using the two together.
+
+Do get in touch with us if you encounter any difficulties!
+
