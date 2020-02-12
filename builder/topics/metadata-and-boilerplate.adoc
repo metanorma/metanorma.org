@@ -140,6 +140,78 @@ the hash are intended for display; dates, for example, are often
 resolved from the ISO 8601-1 and ISO 8601-2 formats to formats with the
 month spelled out.
 
+[[default-metadata]]
+=== Default metadata values
+
+Each gem customises its own metadata values; these are the default metadata values
+extracted by the base `Isodoc::Metadata` class, and the corresponding Metanorma XML locations
+they are populated from.
+
+authors:: an array of personal author names, each name extracted from
+`//bibdata/contributor[role/@type = 'author' or xmlns:role/@type = 'editor']/person`,
+and being either `./name/completename` or `./name/forename` + " " `./name/surname`.
+
+authors_affiliations:: a hash of affiliations that personal authors have, each
+personal affiliation mapping to the array of personal names of authors working there.
+The affiliations are extracted from the personal author names (see above) as
+`./affiliation/organization/name` plus `./affiliation/organization/address/formattedAddress`,
+comma-delimited, or else either the name or the address. So for example,
+`{ "CSIRO" => ["Fred Nerk", "Joe Bloggs"], "University of Auckland" => ["John Doe"] }`.
+
+{type}date:: The date at which the `{type}` event occurred. The `{type}` is the name
+of the lifecycle event modelled by Relaton, including 
+`published accessed created implemented obsoleted confirmed updated issued received transmitted copied unchanged circulated`.
+The date is extracted from `//bidata/date[@type = {type}]`.
+
+doctype:: Flavour-specific document type, from `//bibdata/ext/doctype`.
+
+agency:: A concatenation of all the agency abbreviations (or, if that is unavailable)
+agency names responsible for publishing the document. Extracted from
+`//bibdata/contributor[xmlns:role/@type = 'publisher']/organization`,
+using either `./abbreviation` or `./name`. E.g. "ISO/IEC".
+
+unpublished:: Boolean value of whether the document is considered to be an unpublished
+draft or published, based on the status of the document.
+
+stage:: The stage of the document, extracted from `//bibdata/status/stage`.
+
+substage:: The substage of the document, extracted from `//bibdata/status/substage`.
+
+iteration:: The iteration of the document stage, extracted from `//bibdata/status/iteration`.
+
+docnumber:: The first document identifier given in the XML for the document,
+extracted from `//bibdata/docidentifier`.
+
+docnumeric:: The numeric identifier for the document, extracted from `//bibdata/docnumber`.
+The canonical document identifier in `docnumber` is typically the  `docnumeric` value,
+preceded by an agency abbreviation and/or a document type.
+
+edition:: The document edition, extracted from `//bibdata/edition`.
+
+docyear:: The document copyright year, extracted from `//bibdata/copyright/from`.
+
+draft:: The document draft number, extracted from `//bibdata/version/draft`.
+revdate:: The document revision date, extracted from `//bibdata/version/revision-date`.
+draftinfo:: The draft number and revision date, preceded with the local label for DRAFT.
+title:: The document title, extracted from the first `//bibdata/title[@language='en']` found in the document.
+partof:: The identifier of the document this document is part of, extracted from
+`//bibdata/relation[@type = 'partOf']//docidentifier`.
+
+obsoletes:: The identifier of the document this document obsoletes, extracted from
+`//bibdata/relation[@type = 'obsoletes']//docidentifier`.
+
+obsoletes_part:: The part of this document that has been obsoleted, extracted from
+`//bibdata/relation[@type = 'obsoletes']//locality`.
+
+html:: The URL for an HTML version of this document, extracted from `//bibdata/uri[@type = 'html']`.
+
+xml:: The URL for an XML version of this document, extracted from `//bibdata/uri[@type = 'xml']`.
+
+pdf:: The URL for an PDF version of this document, extracted from `//bibdata/uri[@type = 'pdf']`.
+
+doc:: The URL for a DOC version of this document, extracted from `//bibdata/uri[@type = 'doc']`.
+
+url:: The URL for an unspecified version of this document, extracted from `//bibdata/uri[not(@type)]`.
 
 == Boilerplate processing
 

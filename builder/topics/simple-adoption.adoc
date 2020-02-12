@@ -62,6 +62,7 @@ header: /metanorma-acme/lib/isodoc/acme/html/header.html
 wordcoverpage: /metanorma-acme/lib/isodoc/acme/html/word_acme_titlepage.html
 wordintropage: /metanorma-acme/lib/isodoc/acme/html/word_acme_intro.html
 wordstylesheet: /metanorma-acme/lib/isodoc/acme/html/wordstyle.scss
+docid_template: "{{ organization_name_short }} {{ docnumeric }}"
 --
 
 *Key*
@@ -73,6 +74,10 @@ wordstylesheet: /metanorma-acme/lib/isodoc/acme/html/wordstyle.scss
 * `validate_rng_file`: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-acme/blob/master/lib/asciidoctor/acme/acme.rng for example
 * `htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts`: paths used for styling html output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
 * `wordcoverpage`/`wordintropage`/`wordstylesheet`/`header`: paths used for styling word output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
+* `docid_template`: template to generate a document identifer, using 
+https://shopify.github.io/liquid/[Liquid template language], and metadata values
+(see link:/builder/topics/metadata-and-boilerplate/#default-metadata[Default metadata values]);
+the config file values can also be used in the Liquid template.
 
 
 === Customization via Ruby Gem
