@@ -52,16 +52,16 @@ organization_name_long: Acme Corp.
 document_namespace: https://open.ribose.com/standards/acme
 xml_root_tag: 'acme-standard'
 logo_path: /metanorma-acme/lib/isodoc/acme/html/logo.jpg
-validate_rng_file: /metanorma-acme/lib/asciidoctor/acme/acme.rng
-htmlcoverpage: /metanorma-acme/lib/isodoc/acme/html/html_acme_titlepage.html
-htmlintropage: /metanorma-acme/lib/isodoc/acme/html/html_acme_intro.html
-htmlstylesheet: /metanorma-acme/lib/isodoc/acme/html/htmlstyle.scss
-scripts: /metanorma-acme/lib/isodoc/acme/html/scripts.html
-standardstylesheet: /metanorma-acme/lib/isodoc/acme/html/
-header: /metanorma-acme/lib/isodoc/acme/html/header.html
-wordcoverpage: /metanorma-acme/lib/isodoc/acme/html/word_acme_titlepage.html
-wordintropage: /metanorma-acme/lib/isodoc/acme/html/word_acme_intro.html
-wordstylesheet: /metanorma-acme/lib/isodoc/acme/html/wordstyle.scss
+validate_rng_file: lib/asciidoctor/acme/acme.rng
+htmlcoverpage: lib/isodoc/acme/html/html_acme_titlepage.html
+htmlintropage: lib/isodoc/acme/html/html_acme_intro.html
+htmlstylesheet: lib/isodoc/acme/html/htmlstyle.scss
+scripts: lib/isodoc/acme/html/scripts.html
+standardstylesheet: lib/isodoc/acme/html/acme.scss
+header: lib/isodoc/acme/html/header.html
+wordcoverpage: lib/isodoc/acme/html/word_acme_titlepage.html
+wordintropage: lib/isodoc/acme/html/word_acme_intro.html
+wordstylesheet: lib/isodoc/acme/html/wordstyle.scss
 docid_template: "{{ organization_name_short }} {{ docnumeric }}"
 published_stages: ["published"]
 stage_abbreviations: (initials of stage)
@@ -73,7 +73,7 @@ stage_abbreviations: (initials of stage)
 * `document_namespace`: attribute for creating Metanorma Standoc XML, will be used for as namespace name for XML tags generated
 * `xml_root_tag`: attribute for creating Metanorma Standoc XML, will be used as tag name for root tag
 * `logo_path`: path to the logo file, used for metanorma metadata
-* `validate_rng_file`: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-acme/blob/master/lib/asciidoctor/acme/acme.rng for example
+* `validate_rng_file`: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-acme/blob/master/lib/asciidoctor/acme/acme.rng for example. This and all other file directory paths are relative to the gem root.
 * `htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts`: paths used for styling html output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
 * `wordcoverpage`/`wordintropage`/`wordstylesheet`/`header`: paths used for styling word output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
 * `docid_template`: template to generate a document identifer, using 
