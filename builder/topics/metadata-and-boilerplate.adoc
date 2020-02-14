@@ -107,6 +107,7 @@ In turn, that generates the following metadata Hash:
   :authors => [],
   :authors_affiliations => {},
   :docnumber => "ISO/NWIP 1000",
+  :docnumeric => "1000",
   :docsubtitle => "",
   :docsubtitlemain => "",
   :docsubtitlepartlabel => "Partie&nbsp;",
@@ -127,7 +128,7 @@ In turn, that generates the following metadata Hash:
   :secretariat => "XXXX",
   :stage => "10",
   :stage_int => 10,
-  :stageabbr => "NWIP",
+  :statusabbr => "NWIP",
   :tc => "A 1",
   :tc_docnumber => [],
   :unpublished => true,
@@ -174,6 +175,9 @@ unpublished:: Boolean value of whether the document is considered to be an unpub
 draft or published, based on the status of the document.
 
 stage:: The stage of the document, extracted from `//bibdata/status/stage`.
+stageabbr:: The abbreviation of the stage of the document, as extracted from `//bibdata/status/stage`.
+By default, this is the initials of the stage if the document is unpublished,
+and nil if the document is published.
 
 substage:: The substage of the document, extracted from `//bibdata/status/substage`.
 
