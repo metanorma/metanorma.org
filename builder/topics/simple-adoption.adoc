@@ -63,6 +63,8 @@ wordcoverpage: /metanorma-acme/lib/isodoc/acme/html/word_acme_titlepage.html
 wordintropage: /metanorma-acme/lib/isodoc/acme/html/word_acme_intro.html
 wordstylesheet: /metanorma-acme/lib/isodoc/acme/html/wordstyle.scss
 docid_template: "{{ organization_name_short }} {{ docnumeric }}"
+published_stages: ["published"]
+stage_abbreviations: (initials of stage)
 --
 
 *Key*
@@ -78,7 +80,8 @@ docid_template: "{{ organization_name_short }} {{ docnumeric }}"
 https://shopify.github.io/liquid/[Liquid template language], and metadata values
 (see link:/builder/topics/metadata-and-boilerplate/#default-metadata[Default metadata values]);
 the config file values can also be used in the Liquid template [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.1].
-
+* `published_stages`: list of stages considered published
+* `stage_abbreviations`: hash of stages and their corresponding abbreviations. If not supplied, the initials of the stage are used, as is the default for Metanorma.
 
 === Customization via Ruby Gem
 
