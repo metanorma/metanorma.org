@@ -1,28 +1,28 @@
 ---
-layout: unece-flavor
+layout: un-flavor
 ---
 
-= Syntax for writing UNECE documents using Metanorma
+= Syntax for writing UN documents using Metanorma
 
 == Document header attributes
 
 [[note_general_doc_ref_doc_attrib_unece]]
 [NOTE]
 ====
-Below are listed only document attributes that are unique to Metanorma’s processing of UNECE documents.
+Below are listed only document attributes that are unique to Metanorma’s processing of UN documents.
 
-For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author’s documentation. That page describes attributes that apply to all Metanorma flavors, not just UNECE.
+For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author’s documentation. That page describes attributes that apply to all Metanorma flavors, not just UN.
 
 For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
 ====
 
-`:doctype:`:: The document type (see _UNECE deliverables: The different types of
-UNECE publications_) (mandatory). Note that the document types are reflected in the
-document identifier. The permitted types for UNECE are:
+`:doctype:`:: The document type (see _UN deliverables: The different types of
+UN publications_) (mandatory). Note that the document types are reflected in the
+document identifier. The permitted types for UN are:
 +
 --
-recommendation:: UNECE Recommendation
-plenary:: UNECE Plenary document
+recommendation:: UN Recommendation
+plenary:: UN Plenary document
 addendum:: Addendum
 communication:: Communication
 corrigendum:: Corrigendum
@@ -39,7 +39,7 @@ The permitted types are: `proposal`,
 `working-draft`, `committee-draft`, `draft-standard`, `final-draft`,
 `published`, `withdrawn`.
 
-`:committee:`:: The name of the relevant UNECE committee, for example,
+`:committee:`:: The name of the relevant UN committee, for example,
   `United Nations Centre for Trade Facilitation and Electronic Business (UN/CEFACT)` (mandatory)
 
 `:language:` :: The language(s) of the document. This is the language in which the document
@@ -108,19 +108,19 @@ before the foreword and introduction.
 
 === Paragraph numbering
 
-Paragraphs are automatically numbered in Metanorma-UNECE,
+Paragraphs are automatically numbered in metanorma-un,
 and paragraph numbers should not be entered in the AsciiDoc source.
 
 Paragraphs are numbered by treating each paragraph in the Metanorma XML as a separate clause;
-all terminal clauses in UNECE Metanorma XML are rendered as a numbered paragraph.
+all terminal clauses in UN Metanorma XML are rendered as a numbered paragraph.
 
 Non-paragraph blocks (tables, figures, admonitions,  lists) are not numbered;
 nor are paragraphs in prefatory material (introduction, foreword, abstract).
 
 === Admonitions
 
-The admonition container "IMPORTANT" is used to render UNECE document boxes.
-Unlike normal Metanorma admonitions, UNECE admonitions can have titles, and
+The admonition container "IMPORTANT" is used to render UN document boxes.
+Unlike normal Metanorma admonitions, UN admonitions can have titles, and
 can be numbered in output. As with other assets in Metanorma, the option
 attribute `unnumbered` can be applied to prevent an admonition being numbered.
 (So `[IMPORTANT%unnumbered]` or `[IMPORTANT,options="unnumbered"]`.)

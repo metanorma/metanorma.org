@@ -1,10 +1,10 @@
 ---
-layout: unece-flavor
-title: "Metanorma UNECE samples"
+layout: un-flavor
+title: "Metanorma UN samples"
 ---
 :page-liquid:
 
-{% include flavor-sample-summary.html flavor=layout.unece_flavor
+{% include flavor-sample-summary.html flavor=layout.un_flavor
   markup_link="../authoring/" %}
 
 == Building the sample
@@ -13,14 +13,14 @@ Clone the repository:
 
 [source,console]
 --
-git clone https://github.com/metanorma/mn-samples-unece/
+git clone https://github.com/metanorma/mn-samples-un/
 --
 
 Build the documents via the provided Makefile from within repository root:
 
 [source,console]
 --
-cd mn-samples-unece
+cd mn-samples-un
 make clean all
 --
 
@@ -37,9 +37,10 @@ run `export METANORMA_DOCKER=1`, then `make` will invoke Metanorma through Docke
 
 The following outputs will be built:
 
-* UNECE XML (link:/specs/metanorma-model-unece/UnDocument/[UnDocument model spec]) (`[filename].xml`)
+* UN Metanorma XML (link:/specs/metanorma-model-un/UnDocument/[UnDocument model spec]) (`[filename].xml`)
 * HTML (`[filename].html`)
 * Word DOC (`[filename].doc`)
+* PDF (`[filename].pdf`) [added in https://github.com/metanorma/metanorma-un/releases/tag/v0.3.0]
 
 [TIP]
 ====
