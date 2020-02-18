@@ -7,13 +7,16 @@ layout: author-docs
 Sections are marked off in Asciidoc with titles prefixed by at least two equal signs, `==`.
 `===` indicates a first level subsection; `====` a second level subsection; and so on.
 
-== Fixed section names
+== Clause headings
+
+=== Fixed section names
 
 Metanorma relies on certain pre-defined section titles
 to identify the different kinds of sections in the document, namely these:
 
 - `Abstract`
 - `Introduction`
+- `Acknowledgements` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
 - `Scope`
 - `Normative References`
 - `Terms and Definitions`
@@ -38,7 +41,7 @@ that provides the English canonical form of the section name. For example:
 == Terms, definitions and abbreviations
 --
 
-=== Blank subclases
+=== Blank subclause headings
 
 Blank subclause headings can be given like this:
 
@@ -74,7 +77,28 @@ The link:/flavors/un/[UN Metanorma flavor] treats each paragraph
 as a distinct clause and automatically numbers it.
 ====
 
-== Language & script
+=== Inline headings
+
+Inline subclause headings (e.g. for test methods) are indicated by preceding the heading
+with the `[%inline-header]` option attribute. So in the Rice Model document, 
+
+[source,asciidoc]
+--
+[%inline-header]
+==== Sieve,
+
+with round perforations of diameter 1,4 mm.
+--
+
+renders as
+
+____
+*A.2.1.1. Sieve,* with round perforations of diameter 1,4 mm.
+____
+
+== Clause attributes
+
+=== Language & script
 
 The language and script of a section is indicated via the optional attributes
 `language` and `script`:
@@ -88,7 +112,7 @@ The language and script of a section is indicated via the optional attributes
 == Math Appendix
 --
 
-== Obligations
+=== Obligations
 
 The obligation of a section—whether it is normative or informative—is indicated
 via the attribute “obligation” (see example below).
@@ -104,7 +128,9 @@ to "informative" as a section attribute if needed. For example:
 == Determination of defects
 --
 
-== Foreword
+== Prefatory clauses
+
+=== Foreword
 
 The Foreword of a standard is detected as any text between the document header
 and the first section header.
@@ -115,13 +141,38 @@ first paragraph in the foreword, but it is used as the foreword header since
 the Foreword must precede any AsciiDoc section headers.)
 Metanorma will supply the "`Foreword`" title if no such title is given.
 
-----
+[source,asciidoc]
+--
 [[foreword]]
 .Foreword
-The Calendaring and Scheduling Consortium ("`CalConnect`") is global non-profit
+The Calendaring and Scheduling Consortium ("`CalConnect`") is a global non-profit
 organization with the aim to facilitate interoperability of technologies across
 user-centric systems and applications...
-----
+--
+
+=== Arbitrary prefatory clauses
+
+Any section detected as the Foreword, or labelled as Introduction,
+Acknowledgements [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19], or
+Abstract, will be inserted into the document preface. Any other first-level
+clauses tagged with the role attribute `[.preface]` are also moved into the
+document preface [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]. 
+The default ordering is:
+
+* Abstract
+* Foreword
+* Introduction
+* Preface clauses
+* Acknowledgmenets
+
+[source,asciidoc]
+--
+[.preface]
+== Executive Summary
+
+Widget manufacture has proven profitable until recent times, when increased
+competition has forced a reevaluation...
+--
 
 == Symbols and Abbreviations
 
@@ -143,25 +194,6 @@ The **numbering** of annexes and appendices is automatic:
 do not insert "Annex A" or "Appendix 1" as part of the title.
 
 Annex and Appendix **titles** can be left blank, as with Clauses.
-
-=== Inline headings
-
-Inline subclause headings (e.g. for test methods) are indicated by preceding the heading
-with the `[%inline-header]` option attribute. So in the Rice Model document,
-
-[source,asciidoc]
---
-[%inline-header]
-==== Sieve,
-
-with round perforations of diameter 1,4 mm.
---
-
-renders as
-
-____
-*A.2.1.1. Sieve,* with round perforations of diameter 1,4 mm.
-____
 
 == Sections deeper than 5 levels
 
