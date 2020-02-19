@@ -80,7 +80,7 @@ as a distinct clause and automatically numbers it.
 === Inline headings
 
 Inline subclause headings (e.g. for test methods) are indicated by preceding the heading
-with the `[%inline-header]` option attribute. So in the Rice Model document, 
+with the `[%inline-header]` option attribute. So in the Rice Model document,
 
 [source,asciidoc]
 --
@@ -152,27 +152,69 @@ user-centric systems and applications...
 
 === Arbitrary prefatory clauses
 
-Any section detected as the Foreword, or labelled as Introduction,
-Acknowledgements [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19], or
-Abstract, will be inserted into the document preface. Any other first-level
-clauses tagged with the role attribute `[.preface]` are also moved into the
-document preface [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]. 
-The default ordering is:
+Arbitrary prefatory clauses are allowed in some flavors, and are disallowed
+but "`accepted`" for encoding in certain flavors for backwards compatibility reasons.
 
-* Abstract
-* Foreword
-* Introduction
-* Preface clauses
-* Acknowledgmenets
+NOTE: Most flavors specify requirements on preface sections. Most flavors specify
+mandatory and optional preface sections, while some completely disallow arbitrary
+preface sections.
+
+[example]
+In ISO only the "`Foreword`" is allowed -- arbitrarily named
+preface sections are prohibited, in accordance with ISO Directives Part 2.
+
+
+Any section detected as the "`Foreword`", or labelled as "`Introduction`",
+"`Acknowledgements`" [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19], or
+"`Abstract`", will be inserted into the document preface.
+
+Any other first-level clauses tagged with the role attribute
+`[.preface]` are also moved into the document preface
+\[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19].
+
+If these prefatory sections are provided, they will be displayed in the following default ordering:
+
+* "`Abstract`"
+* "`Foreword`"
+* "`Introduction`"
+* Preface clauses. Any prefatory clauses that don't fit the other specially "`named`" sections will be placed here.
+* "`Acknowledgments`"
+
+EXAMPLE: +
+====
+This source:
 
 [source,asciidoc]
 --
-[.preface]
-== Executive Summary
+// tagged as the "`abstract`"
+[.preface,heading=abstract]
+== Executive summary
 
 Widget manufacture has proven profitable until recent times, when increased
 competition has forced a reevaluation...
+
+// tagged as the "`acknowledgements`"
+[.preface,heading=acknowledgements]
+== Organizational contributors
+
+The following organizations have contributed valuable resources and expertise
+for the completion of this standard...
+
+// tagged as normal
+[.preface]
+== Note for draft
+
+This is not an international standard, please be aware of the responsibilities
+that come with application of this document...
 --
+
+Will be rendered in this order:
+
+* "`Executive summary`"
+* "`Note for draft`"
+* "`Acknowledgments`"
+====
+
 
 == Symbols and Abbreviations
 
