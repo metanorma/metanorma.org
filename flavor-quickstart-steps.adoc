@@ -26,12 +26,12 @@ metanorma {{ include.flavor.build.cli_flags }} {my-document-filename.adoc}
 --
 
 {% if include.flavor.docs_entry_points %}
-- Check out
+- Check out the
   {%- for p in include.flavor.docs_entry_points %}
   link:{{ p.path }}[{{ p.title }}]{%- unless forloop.last -%},{%- endunless -%}
   {%- endfor %}
   for authoring {{ include.flavor.title_org | default: include.flavor.title }} documents
-  with Metanorma and {{ include.flavor.markup_name }} markup language
+  using {{ include.flavor.markup_name }} markup
 {% endif %}
 
 [IMPORTANT]
