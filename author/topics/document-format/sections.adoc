@@ -15,6 +15,7 @@ Metanorma relies on certain pre-defined section titles
 to identify the different kinds of sections in the document, namely these:
 
 - `Abstract`
+- `Foreword`
 - `Introduction`
 - `Acknowledgements` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
 - `Scope`
@@ -27,6 +28,8 @@ to identify the different kinds of sections in the document, namely these:
 ====
 A dedicated topic link:../section-terms/[expands on Terms and Definitions section grammar], specifically.
 ====
+
+Flavours may overrule these pre-defined section titles with titles of their own.
 
 As an alternative
 (if the document deviates from that naming structure, or is in a language other than English),
@@ -149,6 +152,22 @@ The Calendaring and Scheduling Consortium ("`CalConnect`") is a global non-profi
 organization with the aim to facilitate interoperability of technologies across
 user-centric systems and applications...
 --
+
+Alternatively, the Foreword of a standard is detected as any clause
+with the title "Foreword"; this can be overruled in different flavours.
+This markup permits the Foreword to have subclauses.
+
+[source,asciidoc]
+--
+[[foreword]]
+== Foreword
+The Calendaring and Scheduling Consortium ("`CalConnect`") is a global non-profit
+organization with the aim to facilitate interoperability of technologies across
+user-centric systems and applications...
+
+=== Subclause
+--
+
 
 === Arbitrary prefatory clauses
 
