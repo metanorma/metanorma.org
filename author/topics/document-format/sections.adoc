@@ -4,8 +4,11 @@ layout: author-docs
 
 = Document sections
 
-Sections are marked off in Asciidoc with titles prefixed by at least two equal signs, `==`.
-`===` indicates a first level subsection; `====` a second level subsection; and so on.
+Sections are marked off in AsciiDoc with titles prefixed by at least two equal signs, `==`.
+
+* `===` indicates a first level subsection;
+* `====` a second level subsection;
+* and so on.
 
 == Clause headings
 
@@ -14,19 +17,28 @@ Sections are marked off in Asciidoc with titles prefixed by at least two equal s
 Metanorma relies on certain pre-defined section titles
 to identify the different kinds of sections in the document, namely these:
 
-- `Abstract`
-- `Foreword` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
-- `Introduction`
-- `Acknowledgements` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
-- `Scope`
-- `Normative References`
-- `Terms and Definitions`
-- `Symbols and Abbreviations`
-- `Bibliography`
+* `Abstract`
+* `Foreword` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
+* `Introduction`
+* `Acknowledgements` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
+* `Scope`
+* `Normative references`
+* `Terms and definitions`
+* `Symbols and abbreviations`
+* `Bibliography`
 
 [NOTE]
 ====
-A dedicated topic link:../section-terms/[expands on Terms and Definitions section grammar], specifically.
+The above section titles as detected by Metanorma are case-insensitive.
+While ISO Directives Part 2 demands clause titles to be in
+https://en.wikipedia.org/wiki/Letter_case#Sentence_case[sentence case],
+some organizations utilize
+https://en.wikipedia.org/wiki/Letter_case#Title_case[title case].
+====
+
+[NOTE]
+====
+A dedicated topic link:../section-terms/[expands on "`Terms and definitions`" section grammar], specifically.
 ====
 
 Flavours may overrule these pre-defined section titles with titles of their own.
@@ -38,7 +50,7 @@ that provides the English canonical form of the section name. For example:
 
 [source,asciidoc]
 --
-== Normative References
+== Normative references
 
 [heading=terms and definitions]
 == Terms, definitions and abbreviations
@@ -135,6 +147,16 @@ to "informative" as a section attribute if needed. For example:
 
 === Foreword
 
+==== General
+
+The "`Foreword`" can be specified in two ways, depending on whether
+it is a "`simple clause`", or a "`full clause`".
+
+==== Simple foreword clause
+
+If the "`Foreword`" does not contain subclauses, it is considered
+a simple foreword clause.
+
 The Foreword of a standard is detected as any text between the document header
 and the first section header.
 
@@ -142,20 +164,30 @@ The example below specifies the `.Foreword` title
 to the foreword in the source. (Strictly speaking, this is the caption of the
 first paragraph in the foreword, but it is used as the foreword header since
 the Foreword must precede any AsciiDoc section headers.)
+
 Metanorma will supply the "`Foreword`" title if no such title is given.
 
 [source,asciidoc]
 --
 [[foreword]]
 .Foreword
+
 The Calendaring and Scheduling Consortium ("`CalConnect`") is a global non-profit
 organization with the aim to facilitate interoperability of technologies across
 user-centric systems and applications...
 --
 
-Alternatively, the Foreword of a standard is detected as any clause
-with the title "Foreword"; this can be overruled in different flavours.
-This markup permits the Foreword to have subclauses. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
+
+===== Full foreword clause
+
+If the "`Foreword`" contains subclauses, it needs to be encoded as
+a full foreword clause.
+
+A full foreword clause is recognized as a full Metanorma AsciiDoc section, with the
+title "`Foreword`"; this can be overruled in different flavours.
+Simple foreword content can also be encoded this way.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
+
 
 [source,asciidoc]
 --
@@ -165,7 +197,9 @@ The Calendaring and Scheduling Consortium ("`CalConnect`") is a global non-profi
 organization with the aim to facilitate interoperability of technologies across
 user-centric systems and applications...
 
-=== Subclause
+=== Foreword subclause
+
+More foreword...
 --
 
 
@@ -189,7 +223,7 @@ Any section detected as the "`Foreword`", or labelled as "`Introduction`",
 
 Any other first-level clauses tagged with the role attribute
 `[.preface]` are also moved into the document preface
-\[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19].
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19].
 
 If these prefatory sections are provided, they will be displayed in the following default ordering:
 

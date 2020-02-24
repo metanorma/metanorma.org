@@ -222,9 +222,19 @@ of groundwater data, as well as a GML/XML encoding with examples.
 
 ==== Preface
 
-The "`Preface`" is recognized as the text after the `.Preface` label, placed
-between the AsciiDoc document attributes and
-the first AsciiDoc section title; it should not be given a section title of its own.
+===== General
+
+The "`Preface`" can be specified in two ways, depending on whether
+it is a "`simple clause`", or a "`full clause`".
+
+===== Simple preface clause
+
+If the "`Preface`" does not contain subclauses, it is considered
+a simple preface clause.
+
+A simple preface clause is entered as text after the `.Preface` label,
+placed between the AsciiDoc document attributes and the first AsciiDoc
+section title. It should not be given a section title of its own.
 
 [source,asciidoc]
 ----
@@ -232,11 +242,19 @@ the first AsciiDoc section title; it should not be given a section title of its 
 
 .Preface
 
-preface text
+Your preface text...
+
+More preface text...
 ----
 
-Alternatively, the "`Preface`" is recognised as a clause with the title
-"Preface". [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.1]
+===== Full preface clause
+
+If the "`Preface`" contains subclauses, it needs to be encoded as
+a full preface clause.
+
+A full preface clause is recognized as a full Metanorma AsciiDoc section, with the
+title "`Preface`". Simple preface content can also be encoded this way.
+\[added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.1]
 
 [source,asciidoc]
 ----
@@ -244,7 +262,11 @@ Alternatively, the "`Preface`" is recognised as a clause with the title
 
 == Preface
 
-preface text
+Your preface text...
+
+=== Preface sub-clause
+
+More preface text...
 ----
 
 
