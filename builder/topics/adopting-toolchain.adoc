@@ -12,12 +12,29 @@ layout: builder-docs
 The easiest way to adopt Metanorma is via link:/builder/topics/simple-adoption/[Simple Adoption], which
 allows you to supply stylesheets and HTML files for styling.
 
-If you wish to create a custom gem, in order to customise behaviour further:
+To customise behaviour further than Simple Adoption, you need to create a custom gem:
 
-* Clone the `metanorma-acme` gem: https://github.com/metanorma/metanorma-acme (if you will override the use of config files for metadata), or `metanorma-rsd`: https://github.com/metanorma/metanorma-rsd (if you are happy to keep using a config file).
-* Change the root tag and namespace (`XML_ROOT_TAG, XML_NAMESPACE` in `.../lib/asciidoctor/{flavour}/converter.rb`) to a namespace specific to your organization's document standard (or use the configuration YAML file as documented for Simple Adoption, channging `metanorma.yml.example` to `metanorma.yml`).
-* Change any references to `acme` or `Acme` (or `rsd` or `RSD`) in the gem to your organization's document standard.
-* Change the styling of the document outputs (`.../lib/isodoc/{flavour}/html`).
+* Clone the correct base gem:
+** if you will override the use of config files for metadata, clone the
+   https://github.com/metanorma/metanorma-acme[`metanorma-acme` gem]
+** if you are happy to keep using a config file, clone the
+   https://github.com/metanorma/metanorma-rsd[`metanorma-rsd` gem]
+
+* Either:
+
+** Directly use the configuration YAML file as documented for
+  Simple Adoption, changing `metanorma.yml.example` to `metanorma.yml`; or
+
+** Change the root tag and namespace to a namespace specific to
+  your organization's document standard
+  (`XML_ROOT_TAG` and `XML_NAMESPACE` located in `.../lib/asciidoctor/{flavour}/converter.rb`)
+
+* Change any references to `acme` or `Acme` (or `rsd` or `RSD`)
+  in the gem to your organization's document standard.
+
+* Change the styling of the document outputs
+  (located in `.../lib/isodoc/{flavour}/html`).
+
 * Customise any code you need to inherited from the gem's parents.
 ====
 
