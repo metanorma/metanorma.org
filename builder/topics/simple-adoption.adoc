@@ -83,6 +83,15 @@ the config file values can also be used in the Liquid template [added in https:/
 * `published_stages`: list of stages considered published
 * `stage_abbreviations`: hash of stages and their corresponding abbreviations. If not supplied, the initials of the stage are used, as is the default for Metanorma.
 
+A document may specify its own `metanorma.yml` instance, to override that of the
+gem configuration. That is done using a `:customize:` document attribute. [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.2]
+
+[source,adoc]
+----
+= Title
+:customize: config/my_metanorma.yml
+----
+
 === Customization via Ruby Gem
 
 ==== General
