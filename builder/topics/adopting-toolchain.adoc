@@ -14,22 +14,20 @@ allows you to supply stylesheets and HTML files for styling.
 
 To customise behaviour further than Simple Adoption, you need to create a custom gem:
 
-* Clone the correct base gem:
-** if you will override the use of config files for metadata, clone the
-   https://github.com/metanorma/metanorma-acme[`metanorma-acme` gem]
-** if you are happy to keep using a config file, clone the
-   https://github.com/metanorma/metanorma-rsd[`metanorma-rsd` gem]
+* Clone the correct base gem: we recommend using the
+   https://github.com/metanorma/metanorma-rsd[`metanorma-rsd` gem],
+   which has the added advantage of allowing you to use the config file.
 
 * Either:
 
 ** Directly use the configuration YAML file as documented for
-  Simple Adoption, changing `metanorma.yml.example` to `metanorma.yml`; or
+  Simple Adoption; metanorma-rsd  has already renamed `metanorma.yml.example` to `metanorma.yml`; or
 
 ** Change the root tag and namespace to a namespace specific to
   your organization's document standard
   (`XML_ROOT_TAG` and `XML_NAMESPACE` located in `.../lib/asciidoctor/{flavour}/converter.rb`)
 
-* Change any references to `acme` or `Acme` (or `rsd` or `RSD`)
+* Change any references to `rsd` or `RSD`
   in the gem to your organization's document standard.
 
 * Change the styling of the document outputs
