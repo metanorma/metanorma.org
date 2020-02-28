@@ -211,8 +211,9 @@ EXAMPLE:
 * [[[ISO6540,(MaiMoist)ISO 6540]]]. _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
 --
 
+== Alternate bibliography formats
 
-== Entering formatted citations
+=== Entering formatted citations
 
 For generic references, by default, Metanorma only supports formatted citations,
 which are given as such in the AsciiDoc source.
@@ -222,7 +223,7 @@ The NIST flavour of Metanorma currently supports rendering of generic references
 See link:/author/topics/building/reference-lookup[Automatic reference lookup] topic.
 
 
-== Entering Relaton XML
+=== Entering Relaton XML
 
 Bibliographic entries can also be given as raw https://www.relaton.com[Relaton XML],
 in an AsciiDoc passthrough block. Of course, any Relaton XML BibItem entries
@@ -241,6 +242,27 @@ need to be valid, and using correct `id` attributes:
 ++++
 --
 
+=== AsciiBib
+
+Finally, bibliographic entries can be entered as AsciiDoc definition lists, capturing the structure
+of Relaton XML. This approach is documented in https://www.relaton.com/specs/asciibib/[relaton.com].
+
+[source,asciidoc]
+--
+[bibliography]
+== Normative References
+
+[%bibitem]
+=== Rubber latex -- Sampling
+id:: iso123
+docid:: 
+  type::: ISO
+  id::: ISO 123
+docid::
+  type::: ABC
+  id::: 32784
+type:: standard
+--
 
 == Citations
 
