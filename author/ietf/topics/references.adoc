@@ -93,10 +93,57 @@ As of this writing, the following features of RFC XML v3 referencing are not sup
 * `displayreference`
 * `referencegroup`
 * Raw RFC XML included in document source, or referenced directly from document source.
-* Citations of specific versions of Internet Draft documents.
+
+== Internet draft versions
+
+An IETF Internet Draft version by default is cited exactly as it is given in the online repository of Internet Drafts
+hosted by the IETF in https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/, including 
+the version given there:
+
+[source,asciidoc]
+--
+[bibliography]
+== References
+* [[[abarth,IETF(I-D.abarth-cake)]]], _Title_
+--
+
+[source,xml]
+--
+<bibliography>
+  <references id="_references" obligation="informative">
+    <title>Bibliography</title>
+    <bibitem id="I-D.abarth-cake" type="standard"> 
+      ...
+      <uri type="TXT">http://www.ietf.org/internet-drafts/draft-abarth-cake-01.txt</uri>
+      <docidentifier type='IETF'>I-D.abarth-cake</docidentifier>
+      <docidentifier type="Internet-Draft">draft-abarth-cake-01</docidentifier>
+--
+
+If the Internet Draft is given with a version number `-nn`, the URI in the reference
+and the documennt identifier is updated to cite that version:
+
+[source,asciidoc]
+--
+[bibliography]
+== References
+* [[[abarth,IETF(I-D.abarth-cake-02)]]], _Title_
+--
+
+[source,xml]
+--
+<bibliography>
+  <references id="_references" obligation="informative">
+    <title>Bibliography</title>
+    <bibitem id="I-D.abarth-cake" type="standard">
+      ...
+      <uri type="TXT">http://www.ietf.org/internet-drafts/draft-abarth-cake-02.txt</uri>
+      <docidentifier type='IETF'>I-D.abarth-cake</docidentifier>
+      <docidentifier type="Internet-Draft">draft-abarth-cake-02</docidentifier>
+--
+
 
 [[caches]]
-=== Caches
+== Caches
 
 The cache of current IETF and IRTF workgroups is built from screen-scraping the contents of:
 
