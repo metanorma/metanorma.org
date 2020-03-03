@@ -16,6 +16,9 @@ For _common document attributes_, see link:/author/ref/document-attributes/[Docu
 For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
 ====
 
+`:abbrev:`::
+The standard abbreviation of the document, used e.g. in URIs
+
 `:doctype:`::
 *Mandatory.*
 Document type. Choices:
@@ -75,6 +78,9 @@ Choices:
 * `retired`: Retired. This document has been retired and no longer considered normative.
 --
 
+`:edition:`::
+The version number of the document. Dot-delimited, consists of a major version number, a minor version number,
+and an optional patch version number; e.g. `2.3.1`: major version 2, minor version 3, patch version 1.
 
 `:keywords:`::
 Comma-delimited list of the keywords associated with the document.
@@ -159,7 +165,10 @@ alongside `link:/author/ref/document-attributes/#role[:role:]` specified as `edi
 === URIs and IDs
 
 `:external-id:`::
-External identifier referring to this document.
+External identifier referring to this document. If not supplied, a default value is
+generated: `http://www.opengis.net/doc/{abbrevation of doctype}/{abbrev}/{version}`.
+(Version is omitted if not provided. If `:abbrev:` and `:doctype:` are not provided,
+the default value is not generated.
 
 `:referenceURLID:`::
 Identifier embedded into a document type-specific external URL.
@@ -180,8 +189,8 @@ and are treated as synonyms of the corresponding Metanorma attributes:
 | `:published-date:`                        | `:publicationDate:`
 | `:issued-date:`                           | `:approvalDate:`
 | `:received-date:`                         | `:submissionDate:`
-| `:docnumber:`                             | `docReference`
-| `:fullname:`, with `:role:` = `editor`    | `editor`
+| `:docnumber:`                             | `:docReference:`
+| `:fullname:`, with `:role:` = `editor`    | `:editor:`
 
 |===
 
