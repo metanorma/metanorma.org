@@ -24,7 +24,6 @@ The permitted types for UN are: +
 --
 `recommendation`:: UN Recommendation
 `plenary`:: UN Plenary document
-`plenary-attachment`:: Attachment to UN Plenary document (used to select plenary cover page)
 `addendum`:: Addendum
 `communication`:: Communication
 `corrigendum`:: Corrigendum
@@ -38,6 +37,11 @@ The permitted types for UN are: +
 
 Paragraph numbering is enabled for all docuument types but `plenary`, `agenda`,
 `budgetary` [added in https://github.com/metanorma/metanorma-un/releases/tag/v0.3.4].
+
+The "plenary" cover page is used if the document type is  `plenary`, `agenda`,
+`budgetary`, or if any of the <<plenary document,plenary_metadata>>
+metadata attributes are given
+[added in https://github.com/metanorma/metanorma-un/releases/tag/v0.3.4].
 
 `:status:``:: The document status. Synonym: `:docstage:`.
 The permitted types are: `proposal`,
@@ -69,6 +73,7 @@ For example, specify `42` for Recommendation 42.
 The language(s) in which the document was originally submitted.
 ISO-639-1 codes are used for languages. Multiple languages can be comma-delimited.
 
+[[plenary_metadata]]
 === Plenary documents
 
 `:session-date:`::
