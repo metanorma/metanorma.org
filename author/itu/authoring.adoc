@@ -62,6 +62,10 @@ and the Alternative Approval Process (AAP) (https://www.itu.int/rec/T-REC-A.8/en
 for further details.
 --
 
+`:docnumber:`::
+The identifier for the document, including the series, the document number, and any suffix,
+but excluding the bureau. For instance, `H.781`, `G.108.2`, `G.709/Y.1331`.
+
 `:series:`::
 Series that the recommendation belongs to. Use full title, for example:
 "`H: Audiovisual and Multimedia Systems`"
@@ -213,6 +217,9 @@ Approval status code for recommendation status. Legal values are:
 In the rest of Metanorma, if this attribute is not supplied, quotes and apostrophes default to smart.
 In ITU, quotes and apostrophes default to straight.
 
+`:legacy-do-not-insert-missing-sections:`::
+If set, do not insert the sections Scope, References, Definitions, Abbreviations and acronyms, Conventions if missing.
+
 == Markup
 
 === Summaries
@@ -317,9 +324,23 @@ ____
 
 === References & Bibliography
 
-There is one references section in ITU documents, which is titled "`References`". All documents
+The normative references section in ITU documents is titled "`References`". All documents
 have the same references boilerplate inserted at the start of the section, which overwrites
 any text already supplied before the individual references.
+
+Any references given in the bibliography section are expected to have user-supplied
+identifiers prefixed with `b-`:
+
+[source,asciidoc]
+--
+* [[[b-CMake,b-CMake]]], Kitware (2018), _CMake_. https://cmake.org/.
+* [[[ISO20483,(b-ISO 20483)ISO 20483]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+--
+
+ITU Supplements must be cited with the exact same abbreviation they appear as on the ITU
+web site, so that their reference deatils can be looked up online. That abbreviation
+can vary from the abbreviation used in documents: e.g. `ITU-T G Suppl. 41`,
+not (as in the Editing Guidelines) `ITU-T G-Sup.41`.
 
 === Definitions
 
@@ -364,3 +385,8 @@ e.g.
 
 NOTE: This editorial rule is mandated by the ITU Editorial Team,
 but is not described in the ITU-T Author's Guide.
+
+=== Index
+
+Indexes are not currently supported in Metanorma.
+
