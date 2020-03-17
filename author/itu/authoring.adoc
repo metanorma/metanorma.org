@@ -220,10 +220,18 @@ In ITU, quotes and apostrophes default to straight.
 `:legacy-do-not-insert-missing-sections:`::
 If set, do not insert the sections Scope, References, Definitions, Abbreviations and acronyms, 
 Conventions if missing [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.11]. 
+Use this if you have a legacy recommendation document with clauses with names preceding this requirement
+(e.g. "Prerequisites", "Process", "General"), and you do not want the compulsory new sections
+to be added in at the start of the document.
 
-`:legacy-sequential-object-numbering:`::
-If set, do not restart numbering objects (equations, tables, figures etc.) each clause, but number
-them consecutively throughout the body of the document [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.11].
+`:hierarchical-object-numbering:`::
+If set, do not numbering objects (tables, figures etc.) consecutively throughout the body of the
+document, but restart numbering with each clause 
+(hierarchically) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.11].
+Use in complex documents, with multiple tables or figures, that need to be tracked against
+clauses for ease of lookup (so _Figure 6-3, 6-4_, instead of _Figure 21, 22_.) 
+Note that equations in ITU are always numbered hierarchically.
+
 
 == Markup
 
