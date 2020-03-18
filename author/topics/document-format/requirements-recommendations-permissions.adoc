@@ -42,6 +42,9 @@ comma-delimited. Using this attribute will override the obligation of the requir
 that is imported or presupposed by this requirement.
 Can contain multiple semicolon-delimited labels.
 [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14].
+Multple instances of `inherit` can also be expressed with the `inherit` macro,
+which can contain markup including crossreferences, 
+e.g. inherit:[<<ref1>>] [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21].
 
 
 `:model`:: The specific data model followed by the requirement.
@@ -53,6 +56,8 @@ Can contain multiple semicolon-delimited labels.
 -----
 [requirement,model=ogc,type="class",label="http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]",subject="Encoding of logical models",inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used",classification="priority:P0;domain:Hydrology,Groundwater;control-class:Technical",obligation="recommendation,requirement"]
 ====
+inherit:[<<ref2>>]
+inherit:[<<ref3>>]
 I recommend this
 ====
 -----
