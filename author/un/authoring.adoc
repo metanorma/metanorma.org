@@ -48,20 +48,20 @@ The permitted types are: `proposal`,
 `working-draft`, `committee-draft`, `draft-standard`, `final-draft`,
 `published`, `withdrawn`.
 
-`:committee:`:: The name of the relevant UN committee, for example,
-  `United Nations Centre for Trade Facilitation and Electronic Business (UN/CEFACT)` (mandatory)
+`:committee:`:: The name of the relevant UN committee (mandatory). For example,
+  `United Nations Centre for Trade Facilitation and Electronic Business (UN/CEFACT)`
 
 `:language:` :: The language(s) of the document. This is the language in which the document
-has been issued, not the language(s) in which it has been submitted. ISO-639-1 codes are used
+has been issued, not the language(s) in which it has been submitted. ISO 639-1 codes are used
 for languages, and they are comma-delimited. If not specified, the six official languages of the
 UN are assumed: Arabic, Chinese, English, French, Russian and Spanish (`ar,zh,en,fr,ru,es`).
 
-`:toc:` :: Include table of contents in Word output. (Table of contents is always included in
-HTML output.)
-
+`:toc:` :: Include table of contents in Word output.
+(The "`Table of contents`" is always included in HTML output.)
 
 `:distribution:`::
-Extent of distribution allowed. For example: _General_
+Extent of distribution allowed.
+For example: `General`.
 
 === Recommendations
 
@@ -108,25 +108,23 @@ If there are multiple agenda items or subitems, given them comma-delimited.
 `:item-footnote:`::
 Footnoted reference to item, if item is on the preliminary list or the provisional agenda.
 
-== Markup
-
 == Preface
 
-==== General
+=== General
 
 The Foreword and Introduction are not recognised as part of the document preface
 by default [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.3.4].
 
-==== Abstract
+=== Abstract
 
 Abstracts are moved to the front page in Plenary documents.
 In Recommendation documents, they appear in the document preface,
 before the foreword and introduction.
 
-=== Paragraph numbering
+== Paragraph numbering
 
-Paragraphs are automatically numbered in metanorma-un,
-and paragraph numbers should not be entered in the AsciiDoc source.
+Paragraphs are automatically numbered -- paragraph numbers should not
+be entered in the Metanorma AsciiDoc source.
 
 Paragraphs are numbered by treating each paragraph in the Metanorma XML as a separate clause;
 all terminal clauses in UN Metanorma XML are rendered as a numbered paragraph.
@@ -134,9 +132,10 @@ all terminal clauses in UN Metanorma XML are rendered as a numbered paragraph.
 Non-paragraph blocks (tables, figures, admonitions,  lists) are not numbered;
 nor are paragraphs in prefatory material (introduction, foreword, abstract).
 
-=== Admonitions
+== Admonitions
 
-The admonition container "IMPORTANT" is used to render UN document boxes.
+The admonition container "`IMPORTANT`" is used to render UN document boxes.
+
 Unlike normal Metanorma admonitions, UN admonitions can have titles, and
 can be numbered in output. As with other assets in Metanorma, the option
 attribute `unnumbered` can be applied to prevent an admonition being numbered.
@@ -149,6 +148,11 @@ For example:
 [IMPORTANT%unnumbered]
 .Business Process Analysis Plus (BPA+)   (<==== This is the box title)
 ====
-Business Process Analysis was initially designed to document and evaluate an import/export process at a given point time and its relative simplicity. It also specifically includes a measurement of the time and cost of the complete range of procedures as one of the main outputs of the analysis. This combination makes it suitable as the basis/core of a trade facilitation monitoring and improvement system.
+Business Process Analysis was initially designed to document and
+evaluate an import/export process at a given point time and its
+relative simplicity. It also specifically includes a measurement of the
+time and cost of the complete range of procedures as one of the main
+outputs of the analysis. This combination makes it suitable as the
+basis/core of a trade facilitation monitoring and improvement system.
 ====
 --
