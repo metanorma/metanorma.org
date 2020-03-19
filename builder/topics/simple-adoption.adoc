@@ -49,7 +49,7 @@ necessary.
 # Content of `metanorma.yml`
 organization_name_short: Acme
 organization_name_long: Acme Corp.
-document_namespace: https://open.ribose.com/standards/acme
+document_namespace: https://www.metanorma.org/standards/acme
 xml_root_tag: 'acme-standard'
 logo_path: /metanorma-acme/lib/isodoc/acme/html/logo.jpg
 validate_rng_file: lib/asciidoctor/acme/acme.rng
@@ -69,31 +69,31 @@ html_bodyfont:  "Overpass",sans-serif
 html_headerfont: "Overpass",sans-serif
 html_monospacefont: "Space Mono",monospace
 word_bodyfont: "Arial",sans-serif
-word_headerfont: "Arial",sans-serif 
+word_headerfont: "Arial",sans-serif
 word_monospacefont: "Courier New",monospace
 --
 
-*Key*
+*Key*:
 
-* `organization_name_short`/`organization_name_long`: Name of your organization
-* `document_namespace`: attribute for creating Metanorma Standoc XML, will be used for as namespace name for XML tags generated
-* `xml_root_tag`: attribute for creating Metanorma Standoc XML, will be used as tag name for root tag
-* `logo_path`: path to the logo file, used for metanorma metadata
-* `validate_rng_file`: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-acme/blob/master/lib/asciidoctor/acme/acme.rng for example. This and all other file directory paths are relative to the gem root.
-* `htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts`: paths used for styling html output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
-* `wordcoverpage`/`wordintropage`/`wordstylesheet`/`header`: paths used for styling word output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
-* `docid_template`: template to generate a document identifer, using 
+`organization_name_short`/`organization_name_long`:: Name of your organization
+`document_namespace`:: attribute for creating Metanorma Standoc XML, will be used for as namespace name for XML tags generated
+`xml_root_tag`:: attribute for creating Metanorma Standoc XML, will be used as tag name for root tag
+`logo_path`:: path to the logo file, used for metanorma metadata
+`validate_rng_file`:: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-acme/blob/master/lib/asciidoctor/acme/acme.rng for example. This and all other file directory paths are relative to the gem root.
+`htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts`:: paths used for styling html output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
+`wordcoverpage`/`wordintropage`/`wordstylesheet`/`header`:: paths used for styling word output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
+`docid_template`:: template to generate a document identifer, using
 https://shopify.github.io/liquid/[Liquid template language], and metadata values
 (see link:/builder/topics/metadata-and-boilerplate/#default-metadata[Default metadata values]);
 the config file values can also be used in the Liquid template [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.1].
-* `published_stages`: list of stages considered published
-* `stage_abbreviations`: hash of stages and their corresponding abbreviations. If not supplied, the initials of the stage are used, as is the default for Metanorma.
-* `html_bodyfont`: The default font to use in HTML output for body text [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
-* `html_headerfont`: The default font to use in HTML output for headers [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
-* `html_monospacefont`: The default font to use in HTML output for monospace text [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
-* `word_bodyfont`: The default font to use in DOC output for body text [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
-* `word_headerfont`: The default font to use in DOC output for headers [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
-* `word_monospacefont`: The default font to use in DOC output for monospace text [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
+`published_stages`:: list of stages considered published
+`stage_abbreviations`:: hash of stages and their corresponding abbreviations. If not supplied, the initials of the stage are used, as is the default for Metanorma.
+`html_bodyfont`:: The default font to use in HTML output for body text [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
+`html_headerfont`:: The default font to use in HTML output for headers [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
+`html_monospacefont`:: The default font to use in HTML output for monospace text [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
+`word_bodyfont`:: The default font to use in DOC output for body text [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
+`word_headerfont`:: The default font to use in DOC output for headers [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
+`word_monospacefont`:: The default font to use in DOC output for monospace text [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
 
 
 A document may specify its own `metanorma.yml` instance, to override that of the
