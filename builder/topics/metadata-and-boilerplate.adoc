@@ -170,10 +170,15 @@ The date is extracted from `//bidata/date[@type = {type}]`.
 
 `doctype`:: Flavour-specific document type, from `//bibdata/ext/doctype`.
 
-`agency`:: A concatenation of all the agency abbreviations (or, if that is unavailable)
-agency names responsible for publishing the document. Extracted from
+`agency`:: A concatenation of all the agency abbreviations (or, if that is unavailable,
+agency names) responsible for publishing the document. Extracted from
 `//bibdata/contributor[xmlns:role/@type = 'publisher']/organization`,
 using either `./abbreviation` or `./name`. E.g. "ISO/IEC".
+
+`publisher`:: A concatenation of all the agency names responsible for publishing the document.
+Extracted from
+`//bibdata/contributor[xmlns:role/@type = 'publisher']/organization/name`
+{blank}[added in https://github.com/metanorma/isodoc/releases/tag/v1.0.23].
 
 `unpublished`:: Boolean value of whether the document is considered to be an unpublished
 draft or published, based on the status of the document.
@@ -200,6 +205,8 @@ preceded by an agency abbreviation and/or a document type.
 
 `draft`:: The document draft number, extracted from `//bibdata/version/draft`.
 `revdate`:: The document revision date, extracted from `//bibdata/version/revision-date`.
+`revdate_monthyear`:: The document revision date, extracted from `//bibdata/version/revision-date`, given 
+as month name and year (internationalised where defined).
 `draftinfo`:: The draft number and revision date, preceded with the local label for DRAFT.
 `title`:: The document title, extracted from the first `//bibdata/title[@language='en']` found in the document.
 `partof`:: The identifier of the document this document is part of, extracted from

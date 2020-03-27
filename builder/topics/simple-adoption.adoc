@@ -9,9 +9,10 @@ layout: builder-docs
 ====
 .Summary
 The easiest way to adopt StanDoc is to use the
-https://github.com/metanorma/metanorma-acme[metanorma-acme gem],
+https://github.com/metanorma/metanorma-generic[metanorma-generic gem],
 supplying your own stylesheets and HTML files for styling,
-which is described on this page.
+which is described on this page. 
+{blank}[Renamed from `metanorma-acme` as of https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.5]
 
 This gem can work with YAML file where you can customize the behaviour of the
 flavour without needing to write any code. It will only deal with
@@ -20,22 +21,22 @@ fairly simple standards flavours.
 
 == General
 
-Metanorma Acme is a base implementation that facilitates easy creation
+Metanorma Generic is a base implementation that facilitates easy creation
 of your own Metanorma flavor without programming.
 
-Specifically, Metanorma Acme allows you to specify configuration options
+Specifically, Metanorma Generic allows you to specify configuration options
 to customize presentation attributes without needing to create a
 packaged Ruby Gem.
 
 Customizations of the document workflow, however, will require
-programming. In this case, Metanorma Acme provides a solid base
+programming. In this case, Metanorma Generic provides a solid base
 for building your very own Metanorma flavour in a Ruby Gem.
 
 
 [[yaml-config]]
 === Customization via YAML
 
-A simple Metanorma flavour can be created using Metanorma Acme's
+A simple Metanorma flavour can be created using Metanorma Generic's
 ability to use a `metanorma.yml` config file.
 
 Place a `metanorma.yml` file in the same directory as your Metanorma
@@ -49,19 +50,19 @@ necessary.
 # Content of `metanorma.yml`
 organization_name_short: Acme
 organization_name_long: Acme Corp.
-document_namespace: https://www.metanorma.org/standards/acme
-xml_root_tag: 'acme-standard'
-logo_path: /metanorma-acme/lib/isodoc/acme/html/logo.jpg
-validate_rng_file: lib/asciidoctor/acme/acme.rng
-htmlcoverpage: lib/isodoc/acme/html/html_acme_titlepage.html
-htmlintropage: lib/isodoc/acme/html/html_acme_intro.html
-htmlstylesheet: lib/isodoc/acme/html/htmlstyle.scss
-scripts: lib/isodoc/acme/html/scripts.html
-standardstylesheet: lib/isodoc/acme/html/acme.scss
-header: lib/isodoc/acme/html/header.html
-wordcoverpage: lib/isodoc/acme/html/word_acme_titlepage.html
-wordintropage: lib/isodoc/acme/html/word_acme_intro.html
-wordstylesheet: lib/isodoc/acme/html/wordstyle.scss
+document_namespace: https://www.metanorma.org/standards/generic
+xml_root_tag: 'generic-standard'
+logo_path: /metanorma-generic/lib/isodoc/generic/html/logo.jpg
+validate_rng_file: lib/asciidoctor/generic/generic.rng
+htmlcoverpage: lib/isodoc/generic/html/html_generic_titlepage.html
+htmlintropage: lib/isodoc/generic/html/html_generic_intro.html
+htmlstylesheet: lib/isodoc/generic/html/htmlstyle.scss
+scripts: lib/isodoc/generic/html/scripts.html
+standardstylesheet: lib/isodoc/generic/html/generic.scss
+header: lib/isodoc/generic/html/header.html
+wordcoverpage: lib/isodoc/generic/html/word_generic_titlepage.html
+wordintropage: lib/isodoc/generic/html/word_generic_intro.html
+wordstylesheet: lib/isodoc/generic/html/wordstyle.scss
 docid_template: "{{ organization_name_short }} {{ docnumeric }}"
 published_stages: ["published"]
 stage_abbreviations: (initials of stage)
@@ -79,25 +80,25 @@ word_monospacefont: "Courier New",monospace
 `document_namespace`:: attribute for creating Metanorma Standoc XML, will be used for as namespace name for XML tags generated
 `xml_root_tag`:: attribute for creating Metanorma Standoc XML, will be used as tag name for root tag
 `logo_path`:: path to the logo file, used for metanorma metadata
-`validate_rng_file`:: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-acme/blob/master/lib/asciidoctor/acme/acme.rng for example. This and all other file directory paths are relative to the gem root.
-`htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts`:: paths used for styling html output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
-`wordcoverpage`/`wordintropage`/`wordstylesheet`/`header`:: paths used for styling word output files, for examples see https://github.com/metanorma/metanorma-acme/tree/master/lib/isodoc/acme/html
+`validate_rng_file`:: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-generic/blob/master/lib/asciidoctor/generic/generic.rng for example. This and all other file directory paths are relative to the gem root.
+`htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts`:: paths used for styling html output files, for examples see https://github.com/metanorma/metanorma-generic/tree/master/lib/isodoc/generic/html
+`wordcoverpage`/`wordintropage`/`wordstylesheet`/`header`:: paths used for styling word output files, for examples see https://github.com/metanorma/metanorma-generic/tree/master/lib/isodoc/generic/html
 `docid_template`:: template to generate a document identifer, using
 https://shopify.github.io/liquid/[Liquid template language], and metadata values
 (see link:/builder/topics/metadata-and-boilerplate/#default-metadata[Default metadata values]);
-the config file values can also be used in the Liquid template [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.1].
+the config file values can also be used in the Liquid template [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.1].
 `published_stages`:: list of stages considered published
 `stage_abbreviations`:: hash of stages and their corresponding abbreviations. If not supplied, the initials of the stage are used, as is the default for Metanorma.
-`html_bodyfont`:: The default font to use in HTML output for body text [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
-`html_headerfont`:: The default font to use in HTML output for headers [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
-`html_monospacefont`:: The default font to use in HTML output for monospace text [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
-`word_bodyfont`:: The default font to use in DOC output for body text [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
-`word_headerfont`:: The default font to use in DOC output for headers [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
-`word_monospacefont`:: The default font to use in DOC output for monospace text [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.4].
+`html_bodyfont`:: The default font to use in HTML output for body text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+`html_headerfont`:: The default font to use in HTML output for headers [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+`html_monospacefont`:: The default font to use in HTML output for monospace text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+`word_bodyfont`:: The default font to use in DOC output for body text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+`word_headerfont`:: The default font to use in DOC output for headers [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+`word_monospacefont`:: The default font to use in DOC output for monospace text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
 
 
 A document may specify its own `metanorma.yml` instance, to override that of the
-gem configuration. That is done using a `:customize:` document attribute. [added in https://github.com/metanorma/metanorma-acme/releases/tag/v1.4.2]
+gem configuration. That is done using a `:customize:` document attribute. [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.2]
 
 [source,adoc]
 ----
@@ -109,7 +110,7 @@ gem configuration. That is done using a `:customize:` document attribute. [added
 
 ==== General
 
-Metanorma Acme also supports configuration via Ruby code.
+Metanorma Generic also supports configuration via Ruby code.
 By following the steps below you can create your own Ruby Gem for your Metanorma flavour.
 
 NOTE: Examples are borrowed from https://github.com/metanorma/metanorma-rsd repository.
@@ -124,7 +125,7 @@ Initialize an empty Ruby Gem:
 bundle init
 ----
 
-Then add `metanorma-acme` as a dependency in your `{gem-name}.gemspec` file.
+Then add `metanorma-generic` as a dependency in your `{gem-name}.gemspec` file.
 
 `{gem-name}` is typically `metanorma-{your-flavor-name}`.
 For example, for Metanorma RSD, it is `metanorma-rsd`.
@@ -142,7 +143,7 @@ For example, this is `lib/metanorma-rsd.rb`:
 
 [source,ruby]
 --
-Metanorma::Acme.configure do |config|
+Metanorma::Generic.configure do |config|
   config.organization_name_long = 'Ribose Inc.'
   config.organization_name_short = 'Ribose'
   config.document_namespace = 'https://open.ribose.com/standards/rsd'
@@ -176,7 +177,7 @@ Metanorma::Acme.configure do |config|
 end
 
 require 'metanorma/rsd'
-require 'isodoc/acme'
+require 'isodoc/generic'
 
 require 'asciidoctor' unless defined? Asciidoctor::Converter
 require 'asciidoctor/rsd'
@@ -241,7 +242,7 @@ Metanorma::Registry.instance.register(Metanorma::Rsd::Processor)
 
 
 `lib/isodoc/{your-flavor-name}/metadata.rb` links your configuration
-to IsoDoc by inheriting the `IsoDoc::Acme::Metadata` class:
+to IsoDoc by inheriting the `IsoDoc::Generic::Metadata` class:
 
 [source,ruby]
 --
@@ -250,7 +251,7 @@ require "isodoc"
 
 module IsoDoc
   module Rsd
-    class Metadata < IsoDoc::Acme::Metadata
+    class Metadata < IsoDoc::Generic::Metadata
       def configuration
         Metanorma::Rsd.configuration
       end
@@ -260,24 +261,24 @@ end
 --
 
 
-Inherit `IsoDoc::Acme` convertors depending on the types of outputs
+Inherit `IsoDoc::Generic` convertors depending on the types of outputs
 your flavour wishes to support, using the previously created `Metadata`
 file.
 
 The following code from `lib/isodoc/rsd/html_convert.rb` shows an example
 where the HTML convertor is inherited to provide HTML output for RSD,
-and to read in `IsoDoc::Acme::Metadata`.
+and to read in `IsoDoc::Generic::Metadata`.
 
 [source,ruby]
 --
 # lib/isodoc/rsd/html_convert.rb
 require "isodoc"
-require "isodoc/acme/html_convert"
+require "isodoc/generic/html_convert"
 require "isodoc/rsd/metadata"
 
 module IsoDoc
   module Rsd
-    class HtmlConvert < IsoDoc::Acme::HtmlConvert
+    class HtmlConvert < IsoDoc::Generic::HtmlConvert
       def configuration
         Metanorma::Rsd.configuration
       end
@@ -382,14 +383,14 @@ registers your new flavour to be used in `Metanorma::Cli`.
 --
 # lib/asciidoctor/rsd/converter.rb
 require "asciidoctor/standoc/converter"
-require 'asciidoctor/acme/converter'
+require 'asciidoctor/generic/converter'
 
 module Asciidoctor
   module Rsd
     # A {Converter} implementation that generates RSD output, and a document
     # schema encapsulation of the document for validation
     #
-    class Converter < Asciidoctor::Acme::Converter
+    class Converter < Asciidoctor::Generic::Converter
       register_for "rsd"
     end
   end
