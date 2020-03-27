@@ -9,12 +9,12 @@ layout: builder-docs
 .Summary
 * There is no quick way of doing this.
 * Everything you can do in Word, you can do in Word HTML. Save Word documents as Word HTML to see how.
-* Clone the metanorma-acme gem: https://github.com/metanorma/metanorma-acme.
-* Edit the `word_acme_titlepage.html` and `word_acme_intro.html` pages to match your organization's branding. With lots of iterations of saving Word documents as HTML, for trial and error.
+* Clone the metanorma-generic gem: https://github.com/metanorma/metanorma-generic.
+* Edit the `word_generic_titlepage.html` and `word_generic_intro.html` pages to match your organization's branding. With lots of iterations of saving Word documents as HTML, for trial and error.
 ** Leave the Liquid Template instructions alone (`{{`, `{%`) unless you know what you're doing with them: they are how the pages are populated with metadata.
 * Edit the `default_fonts()` method in your `IsoDoc::...::WordConvert` class, to match your desired fonts.
 * Edit the `default_file_locations()` method in your `IsoDoc::...::WordConvert` class, to match your desired stylesheets and file templates.
-* Edit the `wordstyle.scss` and `acme.scss` stylesheets to match your organization's branding. With lots of iterations of saving Word documents as HTML, for trial and error.
+* Edit the `wordstyle.scss` and `generic.scss` stylesheets to match your organization's branding. With lots of iterations of saving Word documents as HTML, for trial and error.
 ====
 
 Word output in the document toolset is generated through Word HTML, the variant of HTML that you get when you save a Word document as HTML. (That is why documents are saved in `.doc`, not `.docx`.) This has the advantage over https://en.wikipedia.org/wiki/Office_Open_XML[OOXML], the native markup of DOCX, of using a well-known markup language, with a low barrier to entry: if you want to work out how to do something in Word HTML, do it in Word, save the document as HTML, and open up the HTML in a text editor. (For more on the choice of using Word HTML, see https://github.com/metanorma/html2doc/wiki/Why-not-docx%3F.)

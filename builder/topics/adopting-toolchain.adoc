@@ -46,13 +46,13 @@ The toolchains currently available proceed in two steps:
 
 Running the `metanorma` CLI tool involves a third step, of exposing the capabilities available in the first two in a consistent format.
 
-These two steps are represented as three separate modules, which are included in the same gem; for the Acme gem, they are `Asciidoctor::Acme`, `Isodoc::Acme`, and `Metanorma::Acme`.
+These two steps are represented as three separate modules, which are included in the same gem; for the Generic gem, they are `Asciidoctor::Generic`, `Isodoc::Generic`, and `Metanorma::Generic`.
 
 Your adaptation of the toolchain will need to instantiate these three modules. The connection between the two first steps is taken care of in the toolchain, and metanorma explicitly invokes the two steps, feeding the XML output of the first step as input into the second. The metanorma-sample gem outputs both Word and HTML; you can choose to output only Word, or only HTML, and you can choose to generate PDF as well.
 
-The modules involve classes which rely on inheritance from other classes; the current gems use `Asciidoctor::{Standoc, ISO, Acme}::Converter`, `Isodoc::{Metadata, HtmlConvert, WordConvert}`, and `Metanorma::Processor` as their base classes. This allows the standards-specific classes to be quite succinct, as most of their behaviour is inherited from other classes; but it also means that you need to be familiar with the underlying gems, in order to do most customization.
+The modules involve classes which rely on inheritance from other classes; the current gems use `Asciidoctor::{Standoc, ISO, Generic}::Converter`, `Isodoc::{Metadata, HtmlConvert, WordConvert}`, and `Metanorma::Processor` as their base classes. This allows the standards-specific classes to be quite succinct, as most of their behaviour is inherited from other classes; but it also means that you need to be familiar with the underlying gems, in order to do most customization.
 
-In the case of `Asciidoctor::X` classes, the changes you will need to make involve the intermediate XML representation of your document, which is built up through Nokogiri Builder; e.g. adding different enums, or adding new elements. The adaptations in `Asciidoctor::Acme::Converter` are limited (and are almost all to do with reading in properties from a config file), and most projects can take them across as is.
+In the case of `Asciidoctor::X` classes, the changes you will need to make involve the intermediate XML representation of your document, which is built up through Nokogiri Builder; e.g. adding different enums, or adding new elements. The adaptations in `Asciidoctor::Generic::Converter` are limited (and are almost all to do with reading in properties from a config file), and most projects can take them across as is.
 
 The customizations needed for `Metanorma::Sample::Processor` are minor, and involve invoking methods specific to the gem for document generation.
 
@@ -104,7 +104,7 @@ def metadata_committee(node, xml)
 end
 --
 
-* The document identifier concatenates the document number, the abbreviation of the document status (retrieved via `IsoDoc::Acme::Metadata`),
+* The document identifier concatenates the document number, the abbreviation of the document status (retrieved via `IsoDoc::Generic::Metadata`),
 and the document year.
 
 [source,ruby]
@@ -113,7 +113,7 @@ def metadata_id(node, xml)
   docstatus = node.attr("status")
   dn = node.attr("docnumber")
   if docstatus
-    abbr = IsoDoc::Acme::Metadata.new("en", "Latn", {}).
+    abbr = IsoDoc::Generic::Metadata.new("en", "Latn", {}).
       status_abbr(docstatus)
     dn = "#{dn}(#{abbr})" unless abbr.empty?
   end
