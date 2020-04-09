@@ -292,6 +292,16 @@ these are entered by suffixing the lowercase type of locality, then an equals si
 then the locality value or range of values.
 
 Multiple instances of locality and reference can be provided, delimited by comma or colon.
+By default, these are interpreted as hierarchically refinining a single location in a text,
+through consecutive narrower localities (e.g. "Part IV, Chapter 3, paragraph 12": 
+`<<ref1,part=IV,chapter=3,paragraph=12>>`); discontinuous
+localities can be named by repeating the same locality type (e.g. "page 4, page 7":
+`<<ref1,page=4,page=7>>`).
+
+Discontinuous references can also be be specified by delimiting sequences of localities 
+with semicolon [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.24];
+(e.g. "Part IV, Chapter 3; Part VI, Chapter 9": `<<ref1,part=IV,chapter=3;part=VI,chapter=9>>`).
+
 Any trailing text after the sequence of `locality=reference` (or `locality{space}reference`)
 is treated as custom text for the cross-reference, as would occur normally in a
 typical AsciiDoc cross-reference.
@@ -378,3 +388,4 @@ and gets rendered as:
 ____
 * ISO 20483:2013. _Cereals and cereal products -- Determination of moisture content -- Reference method_
 ____
+
