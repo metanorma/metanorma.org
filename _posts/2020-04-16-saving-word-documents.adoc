@@ -1,9 +1,16 @@
 ---
 layout: post
-title: "Saving Word Documents"
+title: "Saving Metanorma Word Documents"
 date: 2020-04-16
 categories: about
 authors:
+  -
+    name: Ronald Tse
+    email: tse@ribose.com
+    use_picture: assets
+    social_links:
+      - https://www.linkedin.com/in/rhtse/
+      - https://github.com/ronaldtse
   -
     name: Nick Nicholas
     email: opoudjis@optusnet.com.au
@@ -11,35 +18,221 @@ authors:
       - https://www.linkedin.com/in/opoudjis/
       - https://github.com/opoudjis
 excerpt: >-
-    We present a simple method to save DOC files as DOCX with MS Word.
+    Post-processing of Metanorma Microsoft Word output
 ---
 
 == Saving Word Documents
 
-Metanorma generates .doc not .docx files (for rationale see https://github.com/metanorma/html2doc/wiki/Why-not-docx%3F ). So, you will need to save any .doc files as .docx if you can't deal with .doc format. Below we present a procedure for saving DOCX files in both Windows and macOS.
+Metanorma encourages management of document content in a declarative,
+single-truth, manner -- yet in many cases, it is important to produce
+Microsoft Word output:
 
-=== For Windows
+* to solicit feedback, from people who do are unfamiliar with Metanorma and Git
+** e.g., for standards balloting and review, via Word's "`Track Changes`" features
 
-* Use Metanorma to generate .doc file.
+* to generate a "`redline`" document from two document revisions
+** e.g., for review compared across document stages
 
-image::/assets/blog/2020-04-16-a.png[]
+* to submit to legacy publication workflows
+** e.g., to ISO Central Secretariat at DIS stage and beyond
 
-* Open the doc in Word. Do "Save As", change the file type to "docx", and save.
+Metanorma generates `.doc` not `.docx` files
+(see https://github.com/metanorma/html2doc/wiki/Why-not-docx%3F[rationale]).
 
-image::/assets/blog/2020-04-16-b.png[]
+Since the `.doc` format used by Metanorma is only readable by Microsoft Word
+and not other Word-compatible software (such as OpenOffice), it is necessary
+to convert the output to the Microsoft Word OpenXML `.docx` format
+for distribution.
 
-* Check all images and resize them if necessary. 
+This post describes steps for saving DOCX files in both Windows and macOS
+using a real document example!
 
-image::/assets/blog/2020-04-16-c.png[]
 
-If there are any further changes or touch-ups you'd want to apply to the Word output, go ahead!
+=== Post-processing Metanorma Word files in Windows
 
-* Regenerate all indexes in Table of Contents (List of Tables/Images if exists). Just right click over the indexes and "Update Field". 
+==== Generate the `.doc` file using Metanorma
 
-image::/assets/blog/2020-04-16-d.png[]
+Use Metanorma to generate the `.doc` file.
 
-For more information, visit: https://support.office.com/en-us/article/update-fields-7339a049-cb0d-4d5a-8679-97c20c643d4e
+.A Metanorma generated Word file on Windows
+image::/assets/blog/2020-04-16-a-win.png[A Metanorma generated Word file on Windows,width=100%]
 
-* Save the docx file. (Optionally save as PDF.)
 
+==== Convert `.doc` file into `.docx`
+
+First of all you will want to re-save the `.doc` into `.docx` to
+ensure any further changes are retained.
+
+NOTE: If you directly save as the original `.doc` format, Word may
+switch to "`Web Layout`" instead of "`Page Layout`", which you can
+change back to "`Page Layout`" under the "`View`" menu.
+
+Open the generated Word `.doc` file.
+
+Click on the top bar menu "`File`" then "`Save As...`".
+
+In the "`Save As...`" dialog, change the file type to "`Word Document (*.docx)`".
+
+Then click "`Save`".
+
+.Use Word to "`Save As`" a DOCX file
+image::/assets/blog/2020-04-16-b-win.png[Windows: Use Word to "`Save As`" a DOCX file,width=100%]
+
+==== Content fixes: resizing images
+
+By default, images in the Metanorma generated Word file are
+stretched to full width of the page.
+
+This is usually fine for wide images, but for narrower images
+you may want to shrink them to more readable sizes.
+
+If there are any of such images you would have to shrink them
+manually, like this:
+
+.Resize images that are too wide
+image::/assets/blog/2020-04-16-c-win.png[Windows: Resize images that are too wide,width=100%]
+
+NOTE: You can set image widths inside Metanorma input!
+
+
+==== Content fixes: further touch-ups
+
+It's now a good time to double check the Word content to
+ensure the results match your expectations.
+
+If there are any further changes or touch-ups you'd want to
+apply to the Word output, go ahead!
+
+
+==== Updating the Table of Contents
+
+After post-processing, we will need to update the Word indexes
+as per typical Word workflow.
+
+You will need to trigger an update of the Table of Contents
+manually.
+
+Find the "`Table of Contents`",
+right-click over its contents and click "`Update Field`".
+
+.Regenerate the Table of Contents
+image::/assets/blog/2020-04-16-d-win.png[Windows: Regenerate the Table of Contents,width=100%]
+
+NOTE: Don't forget to regenerate the "`List of Tables`" and
+"`Lists of Figures`" if they exist!
+
+NOTE: For more information on how to regenerate Word indexes, see  https://support.office.com/en-us/article/update-fields-7339a049-cb0d-4d5a-8679-97c20c643d4e["`Update fields`"].
+
+
+Here's a screenshot of the updated Table of Contents:
+
+.Table of Contents fully updated!
+image::/assets/blog/2020-04-16-e-win.png[Windows: Table of Contents fully updated!,width=100%]
+
+
+==== Final save!
+
+Finally we can save the `.docx` file and distribute it!
+
+NOTE: Optionally save as PDF if you need PDF output.
+
+
+
+
+=== Post-processing Metanorma Word files in macOS
+
+==== Generate the `.doc` file using Metanorma
+
+Use Metanorma to generate the `.doc` file.
+
+image::/assets/blog/2020-04-16-a-mac.png[A Metanorma generated Word file on macOS,width=100%]
+
+
+==== Convert `.doc` file into `.docx`
+
+First of all, re-save the `.doc` into `.docx` to
+ensure any further changes are retained.
+
+NOTE: If you directly save as the original `.doc` format, Word may
+switch to "`Web Layout`" instead of "`Page Layout`", which you can
+change back to "`Page Layout`" under the "`View`" menu.
+
+Open the generated Word `.doc` file.
+
+Click on the top bar menu "`File`" then "`Save As...`".
+
+In the "`Save As...`" dialog, change the file type to "`Word Document (.docx)`".
+
+Change the filename extension to `.docx`.
+
+Then click "`Save`". If Word prompts you to change the extension to `.docx`, accept it.
+
+.Use Word to "`Save As`" a DOCX file
+image::/assets/blog/2020-04-16-b-mac.png[macOS: Use Word to "`Save As`" a DOCX file,width=100%]
+
+
+==== Content fixes: resizing images
+
+By default, images in the Metanorma generated Word file are
+stretched to full width of the page.
+
+This is usually fine for wide images, but for narrower images
+you may want to shrink them to more readable sizes.
+
+If there are any of such images you would have to shrink them
+manually, like this:
+
+.Resize images that are too wide
+image::/assets/blog/2020-04-16-c-mac.png[macOS: Resize images that are too wide,width=100%]
+
+NOTE: You can set image widths inside Metanorma input!
+
+
+==== Content fixes: further touch-ups
+
+It's now a good time to double check the Word content to
+ensure the results match your expectations.
+
+If there are any further changes or touch-ups you'd want to
+apply to the Word output, go ahead!
+
+
+==== Updating the Table of Contents
+
+After post-processing, we will need to update the Word indexes
+as per typical Word workflow.
+
+You will need to trigger an update of the Table of Contents
+manually.
+
+Find the "`Table of Contents`",
+right-click over its contents and click "`Update Field`".
+
+.Regenerate the Table of Contents
+image::/assets/blog/2020-04-16-d-mac-1.png[macOS: Regenerate the Table of Contents,width=100%]
+
+Sometimes Word shows you a dialog of "`Select one of the following options:`",
+"`Update page numbers only`" or "`Update entire table`", select "`Update entire table`"
+for a full refresh.
+
+.Update entire table when prompted
+image::/assets/blog/2020-04-16-d-mac-2.png[macOS: Update entire table when prompted,width=100%]
+
+NOTE: Don't forget to regenerate the "`List of Tables`" and
+"`Lists of Figures`" if they exist!
+
+NOTE: For more information on how to regenerate Word indexes, see  https://support.office.com/en-us/article/update-fields-7339a049-cb0d-4d5a-8679-97c20c643d4e["`Update fields`"].
+
+
+Here's a screenshot of the updated Table of Contents:
+
+.Table of Contents fully updated!
+image::/assets/blog/2020-04-16-e-mac.png[macOS: Table of Contents fully updated!,width=100%]
+
+
+==== Final save!
+
+Finally we can save the `.docx` file and distribute it!
+
+NOTE: Optionally save as PDF if you need PDF output.
 
