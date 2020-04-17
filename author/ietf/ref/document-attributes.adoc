@@ -58,8 +58,12 @@ The caches are stored in `~/.metanorma-ietf-biblio-cache.json` and
 
 `:use-xinclude:`::
 Optional. Default value `true`. Allowed values: `true`, `false`.
-If present, references to IETF documents are handled as XIncludes. Otherwise, 
-they are left as embedded XML. [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.0.8]
+If present, references to IETF documents are handled as XIncludes as
+recommended by IETF's https://www.rfc-editor.org/materials/FAQ-xml2rfcv3.html["xml2rfc Frequently Asked Questions, 3.1"]. Otherwise, they are left as embedded XML. +
++
+Setting this to `false` allows you to compile final output using `xmlrfc`
+with cached reference content without triggering its Internet-fetching
+functionality (https://www.rfc-editor.org/materials/FAQ-xml2rfcv3.html["xml2rfc Frequently Asked Questions, 3.2"]) [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.0.8]
 
 == Basic Document Attributes
 
