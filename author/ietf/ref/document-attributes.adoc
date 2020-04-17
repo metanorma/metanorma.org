@@ -56,6 +56,11 @@ during processing of this document.
 The caches are stored in `~/.metanorma-ietf-biblio-cache.json` and
 `~/.metanorma-ietf-workgroup-cache.json`.
 
+`:use-xinclude:`::
+Optional. Default value `true`. Allowed values: `true`, `false`.
+If present, references to IETF documents are handled as XIncludes. Otherwise, 
+they are left as embedded XML. [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.0.8]
+
 == Basic Document Attributes
 
 `metanorma-ietf` allows setting the RFC XML document header using the following
@@ -121,9 +126,11 @@ with the URL of the Internet Draft on the IETF-controlled web site that retains
 copies of Internet-Drafts.
 RFC XML: `front/link[@rel = 'convertedFrom']/@href`
 
-`:equivalent:`::
+`:instance:`::
 (Any status) URL for any alternate representation of this document.
 RFC XML: `front/link[@rel = 'alternate']/@href`
+\[added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.0.8]
+(formerly: `:equivalent:`)
 
 `:submission-type:`::
 Optional. Document stream of document described in
