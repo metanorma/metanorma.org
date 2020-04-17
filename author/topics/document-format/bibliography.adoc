@@ -266,7 +266,7 @@ of Relaton XML. This approach is documented in https://www.relaton.com/specs/asc
 [%bibitem]
 === Rubber latex -- Sampling
 id:: iso123
-docid:: 
+docid::
   type::: ISO
   id::: ISO 123
 docid::
@@ -292,15 +292,20 @@ these are entered by suffixing the lowercase type of locality, then an equals si
 then the locality value or range of values.
 
 Multiple instances of locality and reference can be provided, delimited by comma or colon.
-By default, these are interpreted as hierarchically refinining a single location in a text,
-through consecutive narrower localities (e.g. "Part IV, Chapter 3, paragraph 12": 
-`<<ref1,part=IV,chapter=3,paragraph=12>>`); discontinuous
-localities can be named by repeating the same locality type (e.g. "page 4, page 7":
-`<<ref1,page=4,page=7>>`).
 
-Discontinuous references can also be be specified by delimiting sequences of localities 
-with semicolon [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.24];
-(e.g. "Part IV, Chapter 3; Part VI, Chapter 9": `<<ref1,part=IV,chapter=3;part=VI,chapter=9>>`).
+* By default, these are interpreted as hierarchically refining a single location in a text,
+through consecutive narrower localities +
++
+EXAMPLE: "`Part IV, Chapter 3, paragraph 12`": `\<<ref1,part=IV,chapter=3,paragraph=12>>`
+
+* Discontinuous localities can be named by repeating the same locality type +
++
+EXAMPLE: "`page 4, page 7`": `\<<ref1,page=4,page=7>>`
+
+* Discontinuous references can also be be specified by delimiting sequences of localities
+with semicolon [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.24] +
++
+EXAMPLE: "`Part IV, Chapter 3; Part VI, Chapter 9`": `\<<ref1,part=IV,chapter=3;part=VI,chapter=9>>`
 
 Any trailing text after the sequence of `locality=reference` (or `locality{space}reference`)
 is treated as custom text for the cross-reference, as would occur normally in a
@@ -322,17 +327,17 @@ More examples:
 
 [source,asciidoc]
 --
-# renders as: the foregoing reference
+// renders as: "the foregoing reference"
 <<ISO712,the foregoing reference>>
 
-# renders as: ISO 712, Section 5, Page 8-10
+// renders as: "ISO 712, Section 5, Page 8-10"
 <<ISO712,section=5, page 8-10>>
 
-# renders as ISO 712, 5:8-10
-# ("5:8-10" treated as replacement text for all the foregoing)
+// renders as "ISO 712, 5:8-10"
+// ("5:8-10" treated as replacement text for all the foregoing)
 <<ISO712,section=5, page=8-10: 5:8-10>>
 
-# renders as: ISO 712, Whole of text
+// renders as: "ISO 712, Whole of text"
 <<ISO712,whole>>
 --
 
@@ -343,7 +348,7 @@ A custom locality can be entered by prefixing it with `locality:`:
 
 [source,asciidoc]
 --
-# renders as: ISO 712, Frontispiece 5, Page 8-10
+// renders as: "ISO 712, Frontispiece 5, Page 8-10"
 <<ISO712,locality:frontispiece=5, page=8-10>>
 --
 
@@ -366,6 +371,8 @@ for any standards known to have online bibliographic databases.
 
 Any bibliographic entry recognized through its document identifier prefix
 will by default have its bibliographic entry fetched by that gem.
+
+
 The fetched data overrides any content about the item provided in the document,
 since the online bibliography is treated as the source of truth for that standards document.
 
@@ -386,6 +393,6 @@ For example, the following will trigger auto-fetching:
 and gets rendered as:
 
 ____
-* ISO 20483:2013. _Cereals and cereal products -- Determination of moisture content -- Reference method_
+ISO 20483:2013. _Cereals and cereal products -- Determination of moisture content -- Reference method_
 ____
 
