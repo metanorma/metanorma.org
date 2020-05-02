@@ -61,7 +61,9 @@ this is content within the yaml2text block!
 Where:
 
 * content within the block is called the "`template`";
-* `{YAML file path}` is the location of the YAML file that contains data to be used. Location of yaml file is computed relative to adoc file passed for metanorma, eg when using this command: `metanorma /path/to/my.adoc` from `/path/` directory with `YAML file path` equal to `data/example.yaml`, the script will expand it to `/path/to/data/example.yaml`;
+
+* `{YAML file path}` is the location of the YAML file that contains data to be loaded. Location of the YAML file is computed relative to the source directory that `[yaml2text]` is used (e.g., if `[yaml2text,data.yaml,data]` is invoked in an `.adoc` file located at `/foo/bar/doc.adoc`, the data file is expected to be found at `/foo/bar/data.yaml`);
+
 * `{self-defined context name}` is the name where the YAML data read from the YAML file can be accessed with.
 
 === Interpolation
