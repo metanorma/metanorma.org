@@ -11,7 +11,7 @@ layout: builder-docs
 The easiest way to adopt StanDoc is to use the
 https://github.com/metanorma/metanorma-generic[metanorma-generic gem],
 supplying your own stylesheets and HTML files for styling,
-which is described on this page. 
+which is described on this page.
 {blank}[Renamed from `metanorma-acme` as of https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.5]
 
 This gem can work with YAML file where you can customize the behaviour of the
@@ -73,7 +73,9 @@ html_monospacefont: "Space Mono",monospace
 word_bodyfont: "Arial",sans-serif
 word_headerfont: "Arial",sans-serif
 word_monospacefont: "Courier New",monospace
-webfont: []
+webfont:
+  - https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,600,600i&display=swap
+  - https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,300;0,600;1,300;1,600&display=swap
 --
 
 *Key*:
@@ -98,7 +100,7 @@ the config file values can also be used in the Liquid template [added in https:/
 `word_headerfont`:: The default font to use in DOC output for headers [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
 `word_monospacefont`:: The default font to use in DOC output for monospace text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
 `metadata_extensions`:: A list of single-value fields to add to `bibdata/ext` for the document, as metadata; they will be populated through document attributes with the same name [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.7].
-`webfont`:: A list of URLs of web fonts, to be loaded into HTML output [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8]. For example, 
+`webfont`:: A list of URLs of web fonts, to be loaded into HTML output [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8]. For example,
 +
 --
 * https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,600,600i&display=swap
