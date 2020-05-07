@@ -1,0 +1,506 @@
+---
+layout: post
+title: "Using YAML as data source"
+date: 2020-05-07
+categories: about
+authors:
+  -
+    name: Jeffrey Lau
+    email: jeffrey.lau@ribose.com
+    social_links:
+      - https://www.linkedin.com/in/jtklau/
+      - https://github.com/ribose-jeffreylau
+
+excerpt: >-
+    Import YAML data into Metanorma has never been so easy
+---
+
+== Introduction
+
+When authoring technical documents, there is often a need to represent
+structured data one way or the other.
+If the data happens to be stored in one of the many machine-readable formats,
+one may be compelled to write a helper script that turns them into document
+elements like tables and bullet points
+(if your document format allows you to do so 😉).
+
+Metanorma now supports using https://yaml.org/[YAML^] files as a data source.
+In English, that means you can now bust out YAML data as AsciiDoc elements with
+the newly implemented template mini-language.
+
+In this blog post, we'll see how this is done.
+
+== Meet the yaml2text block
+
+The `yaml2text` block defines a template, and the template gets its data from
+the specified YAML file.
+
+[source,asciidoc]
+-----
+[yaml2text,my_data.yaml,my_yaml_context] <1>
+----
+This template will be rendered as AsciiDoc content. <2>
+
+{... my_yaml_context ...} <3>
+----
+-----
+
+<1> Define a `yaml2text` block.  Data is sourced from `my_data.yaml`, which is
+represented by the context name `my_yaml_context`. Note that the YAML file path
+is relative to the directory of the AsciiDoc file defining the block.
+
+<2> The template is whatever that goes inside the block.
+
+<3> Content from the YAML file is interpolated via the context name, surrounded
+by curly braces.
+
+That's the gist of it.
+
+Next, we'll see how various YAML data structures can be represented:
+
+* <<simple-object,accessing object properties>>
+* <<array-length,array length>>
+* <<enumerate-array,enumerating array items>>
+* <<object-size,object size>>
+* <<enumerate-object,enumerating object keys>>
+* <<keys-values-attributes,enumerating object items using `.keys` and `.values`>>
+* <<array-of-objects,array of objects>>
+* <<array-of-interpolated-files,interpolate file names for AsciiDoc `include`>>
+
+
+[[simple-object]]
+== Accessing object properties
+
+EXAMPLE:
+--
+Given:
+
+[source,yaml]
+----
+# strings.yaml
+---
+foo: bar
+dead: beef
+----
+
+The following block...
+[source,asciidoc]
+------
+[yaml2text,strings.yaml,data]
+----
+I'm heading to the {data.foo} for {data.dead}.
+----
+------
+
+\... will render as:
+[source,asciidoc]
+----
+I'm heading to the bar for beef.
+----
+
+Data from `strings.yaml` are being accessed via the context name `data`.
+The `foo` attribute is accessed via `data.foo`, which is interpolated in the
+template with curly braces.
+
+--
+
+
+[[array-length]]
+=== Array length
+
+EXAMPLE:
+--
+Given:
+
+[source,yaml]
+----
+# array.yml
+---
+- lorem
+- ipsum
+- dolor
+----
+
+The following block...
+[source,asciidoc]
+------
+[yaml2text,array.yml,data]
+----
+The length of the YAML array is {data.*}.
+----
+------
+
+\... will render as:
+[source,asciidoc]
+----
+The length of the YAML array is 3.
+----
+
+`{data.*}` evaluates to the length of the array.
+
+--
+
+[[enumerate-array]]
+=== Enumerating items in an array
+
+
+EXAMPLE:
+--
+Given:
+
+[source,yaml]
+----
+# strings.yaml
+---
+- lorem
+- ipsum
+- dolor
+----
+
+The following block...
+[source,asciidoc]
+------
+[yaml2text,strings.yaml,arr]
+----
+{arr.*,item,EOS}
+=== {item.#} {item}
+
+This section is about {item}.
+
+{EOS}
+----
+------
+
+\... will render as:
+[source,asciidoc]
+----
+=== 0 lorem
+
+This section is about lorem.
+
+=== 1 ipsum
+
+This section is about ipsum.
+
+=== 2 dolor
+
+This section is about dolor.
+----
+
+
+Here, the expression `{arr.*,item,EOS}` tells the template engine to define a
+new context, `item`, to represent each individual item from the array `arr`.
+The context `item` is accessible (=== is under scope) within the lines between this
+expression and the first occurrence of `{EOS}`.
+
+`EOS` is just an example --- it can be anything (any alphanum) --- as long as
+it is unique for each intended scope for the context `item`.
+
+This template is then concatenated for each array item, in the original order
+of the array, as one might reasonably expect.
+
+`{item.#}` gives the zero-based position of item `item` in the parent array
+`arr`.
+
+
+Generally, given an array `array_name`, `array_name[i]` returns the value at
+index `i` (zero-based: starts with `0`);
+negative indices count from the end:
+index `-1` refers to the last item,
+`-2` the second last, _etc._, _etc_.
+
+--
+
+
+[[object-size]]
+=== Object size
+
+
+EXAMPLE:
+--
+Given:
+
+[source,yaml]
+----
+# object.yaml
+---
+name: Lorem ipsum
+desc: dolor sit amet
+----
+
+The following block...
+[source,asciidoc]
+------
+[yaml2text,object.yaml,data]
+----
+=== {data.name}
+
+{data.desc} {data.*}
+----
+------
+
+\... will render as:
+[source,asciidoc]
+----
+=== Lorem ipsum
+
+dolor sit amet 2
+----
+
+If `data` represents a YAML object, then `{data.*}` gives you the number of
+key-value pairs in that object.
+
+
+--
+
+[[enumerate-object]]
+=== Enumerating keys in an object
+
+
+EXAMPLE:
+--
+Given:
+
+[source,yaml]
+----
+# object.yaml
+---
+name: Lorem ipsum
+desc: dolor sit amet
+----
+
+The following block...
+[source,asciidoc]
+------
+[yaml2text,object.yaml,my_item]
+----
+{my_item.*,key,EOI}
+=== {key}
+
+{my_item[key]}
+
+{EOI}
+----
+------
+
+\... will render as:
+[source,asciidoc]
+----
+=== name
+
+Lorem ipsum
+
+=== desc
+
+dolor sit amet
+----
+
+`key` gives the key of each key-value pair of the object `my_item`.
+
+Like in common programming languages, `my_item[key]` gives the value corresponding to the key `key`.
+
+--
+
+[[keys-values-attributes]]
+=== Enumerating using attributes `.keys` and `.values`
+
+EXAMPLE:
+--
+Given:
+
+[source,yaml]
+----
+# object.yaml
+---
+name: Lorem ipsum
+desc: dolor sit amet
+----
+
+The following block...
+[source,asciidoc]
+------
+[yaml2text,object.yaml,item]
+----
+.{item.values[1]}
+[%noheader,cols="h,1"]
+|===
+{item.*,key,EOK}
+| {key} | {item[key]}
+
+{EOK}
+|===
+----
+------
+
+\... will render as:
+[source,text]
+----
+.dolor sit amet
+
+[%noheader,cols="h,1"]
+|===
+| name | Lorem ipsum
+| desc | dolor sit amet
+|===
+----
+
+`item.values` gives an array of all values in the object `item`.
+It follows that `item.values[1]` gives you the second value.
+
+--
+
+== Putting it altogether
+
+[[array-of-objects]]
+=== Array of objects
+
+
+EXAMPLE:
+--
+Given:
+
+[source,yaml]
+----
+# array_of_objects.yaml
+---
+- name: Lorem
+  desc: ipsum
+  nums: [2]
+- name: dolor
+  desc: sit
+  nums: []
+- name: amet
+  desc: lorem
+  nums: [2, 4, 6]
+----
+
+The following block...
+[source,asciidoc]
+------
+[yaml2text,array_of_objects.yaml,ar]
+----
+{ar.*,item,EOF}
+
+{item.name}:: {item.desc}
+
+{item.nums.*,num,EON}
+- {item.name}: {num}
+{EON}
+
+{EOF}
+----
+------
+
+\... will render as:
+[source,asciidoc]
+----
+Lorem:: ipsum
+
+- Lorem: 2
+
+dolor:: sit
+
+amet:: lorem
+
+- amet: 2
+- amet: 4
+- amet: 6
+----
+
+Notice the various contexts and their corresponding scope delimiters (`EOF` for
+`item`, `EON` for `num`).
+
+
+--
+
+[[array-of-interpolated-files]]
+=== An array with interpolated file names (for AsciiDoc consumption)
+
+`yaml2text` blocks can be used for pre-processing document elements for AsciiDoc consumption.
+
+EXAMPLE:
+--
+Given:
+
+[source,yaml]
+----
+# strings.yaml
+---
+prefix: doc-
+items:
+- lorem
+- ipsum
+- dolor
+----
+
+The following block...
+[source,asciidoc]
+--------
+[yaml2text,strings.yaml,yaml]
+------
+First item is {yaml.items[0]}.
+Last item is {yaml.items[-1]}.
+
+{yaml.items.*,s,EOS}
+=== {s.#} -> {s.# + 1} {s} == {yaml.items[s.#]}
+
+[source,ruby]
+----
+\include::{yaml.prefix}{s.#}.rb[]
+----
+
+{EOS}
+------
+--------
+
+\... will render as:
+[source,asciidoc]
+------
+First item is lorem.
+Last item is dolor.
+
+=== 0 -> 1 lorem == lorem
+
+[source,ruby]
+----
+\include::doc-0.rb[]
+----
+
+=== 1 -> 2 ipsum == ipsum
+
+[source,ruby]
+----
+\include::doc-1.rb[]
+----
+
+=== 2 -> 3 dolor == dolor
+
+[source,ruby]
+----
+\include::doc-2.rb[]
+----
+
+------
+
+You might have noticed that one can do simple arithmetics in interpolations,
+like `{s.# + 1}` in the example above.
+
+
+--
+
+== Ending notes
+
+In this blog post, we covered the most common use cases for including YAML data
+in a Metanorma document using the `yaml2text` block.
+
+With the simple techniques shown in this article, you should be well equipped
+to handle any data structures YAML throws at you.
+
+Happy authoring!
+
+
+== References
+
+* https://www.metanorma.com/author/topics/automation/yaml_to_text/[Generating
+  text from YAML data^]
+* https://yaml.org/[The Official YAML Web Site^]
