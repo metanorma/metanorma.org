@@ -1,0 +1,104 @@
+---
+layout: iho-flavor
+---
+
+= Using Metanorma-IHO
+
+== Document attributes
+
+[[note_general_doc_ref_doc_attrib_iho]]
+[NOTE]
+====
+The document attributes listed below are unique to Metanorma’s processing of IHO documents.
+
+For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author’s documentation. That page describes attributes that apply to all Metanorma flavors, not just IHO.
+
+For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
+====
+
+`:doctype:`::
+*Mandatory.* Document type (see RSD deliverables: The different types of
+RSD publications). Permitted types:
++
+--
+* standard
+* specification
+* resolution
+* regulation
+--
+
+`:status:``::
+Document status. Synonym: `:docstage:`.
+Permitted types: `draft-proposal`, `draft-development`, `draft-testing`, `draft-implementation`, `in-force`, `retired`
+
+`:committee:`::
+*Mandatory.* Name of relevant IHO committee. Permitted values: `hssc`, `ircc`. A second, third etc. committee is named as `:committee_2:`, `:committee_3:`, etc.
+`:workgroup:`::
+*Mandatory.* Name of relevant IHO working group. All working groups have an associated committee. A second, third etc. committee is named as
+`:workgroup_2:`, `:workgroup_3:`, etc.
+
+`:comment-from:`:: The beginning of the period during which comments may be submitted to the 
+document draft. ISO-8601 date.
+
+`:comment-to:`:: The end of the period during which comments may be submitted to the document
+draft. The end of the period may change, and may be left open-ended (omitted). ISO-8601 date.
+
+`:series:`:: Series that the document belongs to. Legal values: `B` (Bathymetric), `C` (Capacity Building), `M` (Miscellaneous), `P` (Period), `S` (Standards and Specifications)
+
+
+`:implemented-date:`:: The date a document becomes effective. YYYY-MM-DD.
+`:obsoleted-date:`:: The date a document becomes no longer effective. YYYY-MM-DD.
+
+
+
+== Markup
+
+=== Annexes
+
+Appendixes are annexes marked as informative instead of normative, which is the default.
+
+Appendixes are numbered
+with Arabic numerals rather than letters, as a separate sequence from normative Annexes.
+
+[source,asciidoc]
+--
+[appendix,obligation=normative]
+== First Annex
+
+[appendix,obligation=informative]
+== First Appendix
+--
+
+renders as
+
+____
+*Annex A*
+
+*First Annex*
+
+(This annex forms an integral part of this Recommendation)
+
+*Appendix 1*
+
+*First Appendix*
+
+(This appendix does not form an integral part of this Recommendation)
+____
+
+In addition, Annexes can have their own appendixes; this means supplementary clauses
+to the annex, rather than informative clauses within the annex. Appendices to annexes
+are marked up with an option attribute of "appendix":
+
+[source,asciidoc]
+--
+[appendix]
+== Annex A
+Text
+
+[%appendix]
+=== Appendix 1
+Text
+--
+
+
+
