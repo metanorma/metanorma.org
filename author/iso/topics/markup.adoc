@@ -33,7 +33,7 @@ but `<``<ISO7301,clause=3.1>``>` will be rendered as _ISO 7301, 3.1_.
 == Bibliographies
 
 [[note_general_doc_ref_bib]]
-NOTE: This subsection supplements link:/author/topics/document-format/bibliography[References & Bibliography] in general Metanorma documentation. 
+NOTE: This subsection supplements link:/author/topics/document-format/bibliography[References & Bibliography] in general Metanorma documentation.
 
 All references under Normative References are expected to have such a standard document identifier. For example:
 
@@ -168,6 +168,21 @@ otherwise it is titled _Terms and definitions_.
 Symbols and Abbreviated Terms subclauses are also automatically titled;
 other subclauses of Terms and Definitions clauses are not.
 
+=== Intelligent terms referencing
+
+Defined previously terms can be referenced throughout the document with macro `term:[X,Y]` - where `X` is the name of link element and `Y`(optional) - is the name of the term to reference, if `Y` omitted then `X` will be used instead:
+
+[source,asciidoc]
+--
+== Terms and Definitions
+
+=== name2
+
+== Main
+
+term:[custom_name,name2]
+term:[name2]
+--
 
 == Lists
 
