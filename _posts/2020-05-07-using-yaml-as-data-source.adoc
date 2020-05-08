@@ -64,8 +64,8 @@ Next, we'll see how various YAML data structures can be represented:
 * <<object-size,object size>>
 * <<enumerate-object,enumerating object keys>>
 * <<keys-values-attributes,enumerating object items using `.keys` and `.values`>>
-* <<array-of-objects,array of objects>>
 * <<array-of-interpolated-files,interpolate file names for AsciiDoc `include`>>
+* <<array-of-objects,array of objects>>
 
 
 [[simple-object]]
@@ -106,7 +106,7 @@ template with curly braces.
 
 
 [[array-length]]
-=== Array length
+== Array length
 
 EXAMPLE:
 --
@@ -141,7 +141,7 @@ The length of the YAML array is 3.
 --
 
 [[enumerate-array]]
-=== Enumerating items in an array
+== Enumerating items in an array
 
 
 EXAMPLE:
@@ -213,7 +213,7 @@ index `-1` refers to the last item,
 
 
 [[object-size]]
-=== Object size
+== Object size
 
 
 EXAMPLE:
@@ -254,7 +254,7 @@ key-value pairs in that object.
 --
 
 [[enumerate-object]]
-=== Enumerating keys in an object
+== Enumerating keys in an object
 
 
 EXAMPLE:
@@ -302,7 +302,7 @@ Like in common programming languages, `my_item[key]` gives the value correspondi
 --
 
 [[keys-values-attributes]]
-=== Enumerating using attributes `.keys` and `.values`
+== Enumerating using attributes `.keys` and `.values`
 
 EXAMPLE:
 --
@@ -349,72 +349,8 @@ It follows that `item.values[1]` gives you the second value.
 
 --
 
-== Putting it altogether
-
-[[array-of-objects]]
-=== Array of objects
-
-
-EXAMPLE:
---
-Given:
-
-[source,yaml]
-----
-# array_of_objects.yaml
----
-- name: Lorem
-  desc: ipsum
-  nums: [2]
-- name: dolor
-  desc: sit
-  nums: []
-- name: amet
-  desc: lorem
-  nums: [2, 4, 6]
-----
-
-The following block...
-[source,asciidoc]
-------
-[yaml2text,array_of_objects.yaml,ar]
-----
-{ar.*,item,EOF}
-
-{item.name}:: {item.desc}
-
-{item.nums.*,num,EON}
-- {item.name}: {num}
-{EON}
-
-{EOF}
-----
-------
-
-\... will render as:
-[source,asciidoc]
-----
-Lorem:: ipsum
-
-- Lorem: 2
-
-dolor:: sit
-
-amet:: lorem
-
-- amet: 2
-- amet: 4
-- amet: 6
-----
-
-Notice the various contexts and their corresponding scope delimiters (`EOF` for
-`item`, `EON` for `num`).
-
-
---
-
 [[array-of-interpolated-files]]
-=== An array with interpolated file names (for AsciiDoc consumption)
+== An array with interpolated file names (for AsciiDoc consumption)
 
 `yaml2text` blocks can be used for pre-processing document elements for AsciiDoc consumption.
 
@@ -438,12 +374,6 @@ The following block...
 --------
 [yaml2text,strings.yaml,yaml]
 ------
-First item is {yaml.items[0]}.
-Last item is {yaml.items[-1]}.
-
-{yaml.items.*,s,EOS}
-=== {s.#} -> {s.# + 1} {s} == {yaml.items[s.#]}
-
 [source,ruby]
 ----
 \include::{yaml.prefix}{s.#}.rb[]
@@ -456,24 +386,15 @@ Last item is {yaml.items[-1]}.
 \... will render as:
 [source,asciidoc]
 ------
-First item is lorem.
-Last item is dolor.
-
-=== 0 -> 1 lorem == lorem
-
 [source,ruby]
 ----
 \include::doc-0.rb[]
 ----
 
-=== 1 -> 2 ipsum == ipsum
-
 [source,ruby]
 ----
 \include::doc-1.rb[]
 ----
-
-=== 2 -> 3 dolor == dolor
 
 [source,ruby]
 ----
@@ -482,8 +403,83 @@ Last item is dolor.
 
 ------
 
-You might have noticed that one can do simple arithmetics in interpolations,
-like `{s.# + 1}` in the example above.
+--
+
+[[array-of-objects]]
+== Putting it altogether -- Array of objects
+
+
+EXAMPLE:
+--
+Given:
+
+[source,yaml]
+----
+# array_of_objects.yaml
+---
+- name: Lorem
+  desc: ipsum
+  nums: [3, 5]
+- name: dolor
+  desc: sit
+  nums: []
+- name: amet
+  desc: lorem
+  nums: [2, 4, 6]
+----
+
+The following block...
+[source,asciidoc]
+------
+[yaml2text,array_of_objects.yaml,ar]
+----
+First array item of last array item is {ar[-1].nums[0]}.
+Last array item of first array item is {ar[0].nums[-1]}.
+
+{ar.*,item,EOF}
+
+{item.name}:: {item.desc}
+
+{item.nums.*,num,EON}
+- {item.name}: index = {num.#}, index+1 = {num.# + 1},
+  {num} === {ar[num.#]}, prev = {ar[num.# - 1]}
+{EON}
+{EOF}
+----
+------
+
+\... will render as:
+[source,asciidoc]
+----
+First array item of last array item is 2.
+Last array item of first array item is 5.
+
+Lorem:: ipsum
+
+- Lorem: index = 0, index+1 = 1,
+  3 === 3, prev = 5
+- Lorem: index = 1, index+1 = 2,
+  5 === 5, prev = 3
+
+dolor:: sit
+
+
+amet:: lorem
+
+- amet: index = 0, index+1 = 1,
+  2 === 2, prev = 6
+- amet: index = 1, index+1 = 2,
+  4 === 4, prev = 4
+- amet: index = 2, index+1 = 3,
+  6 === 6, prev = 2
+----
+
+Notice the various contexts and their corresponding scope delimiters (`EOF` for
+`item`, `EON` for `num`).
+
+You might also have noticed that one can do simple arithmetics in
+interpolations and array indexing, like `{num.# + 1}` and `{ar[num.# - 1]}` in
+the example above.
 
 
 --
