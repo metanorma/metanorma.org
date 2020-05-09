@@ -2,7 +2,7 @@
 layout: iso-flavor
 ---
 
-= AsciiISO markup
+= Metanorma-ISO markup
 
 == Cross-references
 
@@ -104,9 +104,9 @@ The entries in the Bibliography are reordered (and, for numerical references, re
 The bracketed reference numbers are expected to be correct and in order (accounting for the fact that references to standards will end up numbered): they are not overriden in rendering.
 
 
-== Annexes & appendices
+== Annexes and appendices
 
-In ISO, Appendixes to annexes can occur, although they are not mentioned in ISO/IEC DIR 2; ISO/IEC DIR 1 features them. They are marked up as immediate subsections of annexes, and must be tagged with an option attribute of "appendix":
+In ISO, Appendixes to annexes can occur, although they are not mentioned in ISO/IEC DIR 2; ISO/IEC DIR 1 features them. They are marked up as immediate subsections of annexes, and must be tagged with an option attribute of `appendix`:
 
 [source,asciidoc]
 --
@@ -153,38 +153,90 @@ multiple-block warning
 ====
 --
 
-== Terms and Definitions
+== Terms and definitions
 
 [[note_general_doc_ref_terms_defs]]
 NOTE: This subsection supplements link:/author/topics/document-format/section-terms[Terms and definitions] in general Metanorma documentation.
 
-=== Title
 
-The title of a top-level Terms and Definitions clause is populated automatically,
-overriding the title provided by the user: if it contains a Symbols and Abbreviated Terms subclause,
-it is titled _Terms, definitions, symbols and abbreviated terms_,
-otherwise it is titled _Terms and definitions_.
+=== Grouped terms and definitions
 
-Symbols and Abbreviated Terms subclauses are also automatically titled;
-other subclauses of Terms and Definitions clauses are not.
+The title of a top-level "`Terms and definitions`" clause is populated automatically,
+overriding the title provided by the user.
+
+If it contains a "`Symbols`" and "`Abbreviated terms`" subclause,
+it is titled _"`Terms, definitions, symbols and abbreviated terms`"_,
+otherwise it is titled _"`Terms and definitions`"_.
+
+The "`Symbols`" and "`Abbreviated terms`" subclauses are also titled;
+other subclauses of "`Terms and definitions`" clauses are not.
+
 
 === Intelligent terms referencing
 
-Defined previously terms can be referenced throughout the document with macro `term:[X,Y]` - where `X` is the name of link element and `Y`(optional) - is the name of the term to reference, if `Y` omitted then `X` will be used instead:
+In ISO deliverables, if a term definition contains a term that is defined in the current document,
+this term needs to be put in italics with a cross-reference for that term supplied between parenthesis immediately after.
 
-[source,asciidoc]
---
-== Terms and Definitions
+EXAMPLE (ISO/IEC Directives Part 2 (2020), 16.5.10):
+____
+part of a terminological data collection which contains the _terminological data_ (3.1.3) related to one _concept_ (3.2.1)
+____
 
-=== name2
+Metanorma provides a shortcut syntax that makes this easy and fool-proof.
 
-== Main
+Defined previously terms can be referenced throughout the document by:
 
-term:[custom_name,name2]
-term:[name2]
---
+[source,adoc]
+----
+term:[{referenced term}]
+----
+
+or if the displayed term differs from the referenced term:
+
+[source,adoc]
+----
+term:[{displayed term},{referenced term}]
+----
+
+Where,
+
+* `{displayed term}` is the term displayed;
+* `{referenced term}` is the term referenced that exists in the document, which will be used generate the cross-reference.
+
+
+This example demonstrates usage of this syntax using the previous example:
+====
+[source,adoc]
+----
+part of a terminological data collection which contains the term:[terminological data] related to one term:[concept]
+----
+====
+
+In some cases, the displayed term is a variant of the referenced term, such as its plural form.
+
+EXAMPLE (ISO 8601:2019, 3.1.1.5):
+
+[source,adoc]
+----
+===== time scale
+
+system of ordered marks which can be attributed to _instants_ (<<term-instant>>) on the _time axis_ (<<term-time-axis>>), one instant being chosen as the origin
+----
+
+This can be entered as:
+
+EXAMPLE:
+
+[source,adoc]
+----
+===== time scale
+
+system of ordered marks which can be attributed to term:[instants, instant] on the term:[time axis], one instant being chosen as the origin
+----
+
+
 
 == Lists
 
-Unordered lists in Word are rendered with em-dashes instead of bullets, as preferred by ISO.
+Unordered lists in Word are rendered with em-dashes instead of bullets, as preferred by ISO/CS.
 
