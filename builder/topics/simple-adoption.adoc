@@ -53,6 +53,7 @@ organization_name_long: Acme Corp.
 document_namespace: https://www.metanorma.org/standards/generic
 xml_root_tag: 'generic-standard'
 logo_path: /metanorma-generic/lib/isodoc/generic/html/logo.jpg
+logo_paths: []
 validate_rng_file: lib/asciidoctor/generic/generic.rng
 htmlcoverpage: lib/isodoc/generic/html/html_generic_titlepage.html
 htmlintropage: lib/isodoc/generic/html/html_generic_intro.html
@@ -102,7 +103,8 @@ webfont:
 `organization_name_short`/`organization_name_long`:: Name of your organization
 `document_namespace`:: attribute for creating Metanorma Standoc XML, will be used for as namespace name for XML tags generated
 `xml_root_tag`:: attribute for creating Metanorma Standoc XML, will be used as tag name for root tag
-`logo_path`:: path to the logo file, used for metanorma metadata
+`logo_path`:: path to a single logo file, used for metanorma metadata
+`logo_paths`:: list of paths of multiple logo files, used for metanorma metadata, and treated as an array (e.g. `{{ logo_paths[1] }}` [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
 `validate_rng_file`:: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-generic/blob/master/lib/asciidoctor/generic/generic.rng for example. This and all other file directory paths are relative to the gem root.
 `htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts`:: paths used for styling html output files, for examples see https://github.com/metanorma/metanorma-generic/tree/master/lib/isodoc/generic/html
 `wordcoverpage`/`wordintropage`/`wordstylesheet`/`header`:: paths used for styling word output files, for examples see https://github.com/metanorma/metanorma-generic/tree/master/lib/isodoc/generic/html
