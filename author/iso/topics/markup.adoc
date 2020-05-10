@@ -174,6 +174,8 @@ other subclauses of "`Terms and definitions`" clauses are not.
 
 === Intelligent terms referencing
 
+==== Basic usage
+
 In ISO deliverables, if a term definition contains a term that is defined in the current document,
 this term needs to be put in italics with a cross-reference for that term supplied between parenthesis immediately after.
 
@@ -232,6 +234,61 @@ EXAMPLE:
 ===== time scale
 
 system of ordered marks which can be attributed to term:[instants, instant] on the term:[time axis], one instant being chosen as the origin
+----
+
+
+
+==== Advanced usage
+
+The terms reference capability relies on automatically created anchor references for every term defined.
+
+For example, in the following text,
+
+[source,adoc]
+----
+== Terms and definitions
+=== Foo
+
+bar
+
+=== Lor
+
+special kind of term:[foo]
+----
+
+the anchors of `\[[term-foo]]` and `\[[term-lor]]` are automatically created.
+
+These anchors are generated from the terms themselves according to these rules:
+
+* the terms are lowercased;
+* non-ASCII characters are stripped;
+* whitespaces are replaced by `-`.
+
+This means if you wanted to refer to a particular term from body text, you could either:
+
+* directly refer to the term: e.g., `see definition of term:[foo]`
+* refer to the anchor of the term: e.g., `the topic is further explained in \<<term-foo>>`
+
+In case you have created manual anchors that conflict with `[[term-{X}]]`, the term reference mechanism is smart enough to rename the generated anchor as `[[term-{X}-{n}]]`, where `n` is a number from 1, and so forth.
+
+Therefore this will still work as expected:
+
+[source,adoc]
+----
+== Terms and definitions
+=== Foo
+
+bar
+
+=== Lor
+
+special kind of term:[foo]
+
+
+[[term-foo]]
+== My section
+
+lorem
 ----
 
 
