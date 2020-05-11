@@ -11,7 +11,7 @@ authors:
       - https://stackoverflow.com/story/camobap
 
 excerpt: >-
-    There is many ways to install LaTeXML depending on your needs
+    There are many ways to install LaTeXML depending on your needs
 redirect_from:
   - /blog/05-11-2020/latexml-installation/
 ---
@@ -21,7 +21,7 @@ redirect_from:
 Metarnorma's processor for StanDoc (aka metanorma-standoc) depends on `LaTeXML` 
 to process `MathML` fragments.
 
-Depending on your situation, you can use stable version of `LaTeXML` or you may need an unreleased features of LaTeXML, this post will explain how to install development version of `LaTeXML`
+Depending on your situation, you can use a stable version of `LaTeXML` or you may need unreleased features of LaTeXML, this post will explain how to install dev version of `LaTeXML`
 
 == Installing stable version
 
@@ -54,7 +54,7 @@ brew install latexml
 
 === CPANM
 
-In case if specific version don't available in the package manager you can always install it with `cpanm`
+In case if the specific version doesn't available in the package manager you can always install it with `cpanm`
 
 [source,bash]
 -----
@@ -66,7 +66,7 @@ cpanm LaTeXML
 
 == Installing development version (from source)
 
-In case if you need to install some unreleased features you may need install development version of `LaTeXML` which can be accomplished with commands below
+In case if you need to install some unreleased features you may need to install dev version of `LaTeXML` which can be accomplished with commands below
 
 === Windows
 
@@ -88,7 +88,7 @@ There is no way to install development version via `brew` package manager check 
 
 === CPANM
 
-If you have to use specific development version of `LaTeXML` it can be installed with `cpanm`
+If you have to use the specific dev version of `LaTeXML` it can be installed with `cpanm`
 
 [source,bash]
 -----
@@ -103,12 +103,12 @@ cpanm git://github.com/brucemiller/LaTeXML.git@9a0e7dc5
 
 == Troubleshooting
 
-In the most cases problems happens with installation dependencies which depends on native libraries like:
+In most cases problems happens with installation dependencies which depend on native libraries like:
 
 * XML::LibXSLT
 * XML::LibXML
 
-You can fix this by installing specific version of the dependncy which correlate with version of native lib which installed on your machine
+You can fix this by installing a specific version of the dependency which correlate with a version of native lib which installed on your machine
 
 Example for MacOS
 
@@ -121,4 +121,3 @@ env PATH=$(brew --prefix libxml2)/bin:$PATH cpanm --notest XML::LibXSLT@1.96 git
 == References
 
 * https://dlmf.nist.gov/LaTeXML/get.html[More options to install LaTeXML]
-
