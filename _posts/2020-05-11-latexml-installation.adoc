@@ -1,0 +1,124 @@
+---
+layout: post
+title: "LaTeXML Installation"
+date: 2020-05-11
+categories: about
+authors:
+  -
+    name: Alex Bobrikovich
+    email: abobrikovich@gmail.com
+    social_links:
+      - https://stackoverflow.com/story/camobap
+
+excerpt: >-
+    There is many ways to install LaTeXML depending on your needs
+redirect_from:
+  - /blog/05-11-2020/latexml-installation/
+---
+
+== Introduction
+
+Metarnorma's processor for StanDoc (aka metanorma-standoc) depends on `LaTeXML` 
+to process `MathML` fragments.
+
+Depending on your situation, you can use stable version of `LaTeXML` or you may need an unreleased features of LaTeXML, this post will explain how to install development version of `LaTeXML`
+
+== Installing stable version
+
+=== Windows
+
+https://chocolatey.org/packages/latexml[LaTeXML package] is available on https://chocolatey.org and can be easily installed via chocolatey package manager:
+
+[source,cmd]
+-----
+choco install -y latexml
+----
+
+=== Linux
+
+https://snapcraft.io/latexml[LaTeXML snap] is available on https://snapcraft.io and can be installed:
+
+[source,bash]
+-----
+sudo snap install latexml
+----
+
+=== MacOS
+
+https://formulae.brew.sh/formula/latexml[LaTeXML formula] is available for brew package manager
+
+[source,bash]
+-----
+brew install latexml
+----
+
+=== CPANM
+
+In case if specific version don't available in the package manager you can always install it with `cpanm`
+
+[source,bash]
+-----
+# Download and install cpanminus
+curl -L http://cpanmin.us | perl - App::cpanminus
+
+cpanm LaTeXML
+----
+
+== Installing development version (from source)
+
+In case if you need to install some unreleased features you may need install development version of `LaTeXML` which can be accomplished with commands below
+
+=== Windows
+
+[source,cmd]
+-----
+choco install -y latexml.beta
+----
+
+=== Linux
+
+[source,cmd]
+-----
+sudo snap install latexml --edge
+----
+
+=== MacOS
+
+There is no way to install development version via `brew` package manager check CPANM section bellow
+
+=== CPANM
+
+If you have to use specific development version of `LaTeXML` it can be installed with `cpanm`
+
+[source,bash]
+-----
+curl -L http://cpanmin.us | perl - App::cpanminus # on *nix
+# or
+choco install -y strawberryperl imagemagick.tool  # on windows
+# or 
+brew install cpanminus                            # on macos
+
+cpanm git://github.com/brucemiller/LaTeXML.git@9a0e7dc5
+----
+
+== Troubleshooting
+
+In the most cases problems happens with installation dependencies which depends on native libraries like:
+
+* XML::LibXSLT
+* XML::LibXML
+
+You can fix this by installing specific version of the dependncy which correlate with version of native lib which installed on your machine
+
+Example for MacOS
+
+[source,bash]
+-----
+brew install libxml2 cpanminus
+env PATH=$(brew --prefix libxml2)/bin:$PATH cpanm --notest XML::LibXSLT@1.96 git://github.com/brucemiller/LaTeXML.git@9a0e7dc5
+----
+
+== References
+
+* https://dlmf.nist.gov/LaTeXML/get.html[More options to install LaTeXML]
+
