@@ -213,10 +213,13 @@ The Normative References section may be named just "`References`", reflecting OG
 
 === Preliminary elements
 
+
 ==== General
 
 The following clauses are preliminary elements, and are moved into the frontispiece
-of the document (in Metanorma, the document preface):
+of the document (in Metanorma, the document preface).
+
+The OGC DocTeam has specified that all these elements are *MANDATORY* in OGC documents:
 
 * Abstract
 * Keywords
@@ -224,11 +227,17 @@ of the document (in Metanorma, the document preface):
 * Submitting Organizations
 * Submitters
 
-Note that in OGC documents, all these elements are *MANDATORY*.
-
 The Foreword and Introduction are not recognised as part of the document preface
 by default [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.2].
 
+[NOTE]
+--
+Additional preliminary sections are *allowed* but not encouraged.
+There are two mechanisms for adding additional content as preliminary elements:
+
+. Add their content in the <<ogc-full-preface,Full Preface>> as additional sub-sections
+. Add them as <<ogc-additional-prelim,additional preliminary elements>>
+--
 
 ==== Abstract
 
@@ -270,6 +279,7 @@ Your preface text...
 More preface text...
 ----
 
+[[ogc-full-preface]]
 ===== Full preface clause
 
 If the "`Preface`" contains subclauses, it needs to be encoded as
@@ -357,6 +367,34 @@ All questions regarding this submission should be directed to the editor or the 
 ----
 
 
+[[ogc-additional-prelim]]
+==== Additional preliminary elements
+
+The OGC DocTeam has specified that additional preliminary elements are *allowed*
+but not *encouraged*. This is useful for document backwards-compatibility and
+cross-published standards at other SDOs.
+
+Additional preliminary elements should be encoded under the `[.preface]` element,
+and they will be rendered *after* the five mandatory preliminary elements.
+
+Functionality implemented in https://github.com/metanorma/metanorma-ogc/issues/83.
+
+EXAMPLE:
+
+[source,adoc]
+----
+.Preface
+
+...
+
+[.preface]
+== Intended audience
+
+...
+
+----
+
+
 === Examples
 
 Unlike the normal case in Metanorma, examples can have captions:
@@ -394,7 +432,7 @@ Requirement verifications are excluded from the
 [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.10].
 
 A requirement with `type=abstracttest` is cross-referenced and captioned as
-an "Abstract Test", and is otherwise rendered identically to a 
+an "Abstract Test", and is otherwise rendered identically to a
 Requirement Verification [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.4].
 
 ==== Requirement classes
