@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "LaTeXML Installation"
+title: "Installing LaTeXML for Metanorma (and tex2mn)"
 date: 2020-05-11
 categories: about
 authors:
@@ -9,6 +9,14 @@ authors:
     email: abobrikovich@gmail.com
     social_links:
       - https://stackoverflow.com/story/camobap
+      - https://github.com/camobap
+  -
+    name: Ronald Tse
+    email: tse@ribose.com
+    use_picture: assets
+    social_links:
+      - https://www.linkedin.com/in/rhtse/
+      - https://github.com/ronaldtse
 
 excerpt: >-
     There are many ways to install LaTeXML depending on your needs
@@ -18,105 +26,163 @@ redirect_from:
 
 == Introduction
 
-Metarnorma's processor for StanDoc (aka metanorma-standoc) depends on `LaTeXML` 
-to process `MathML` fragments.
+Metanorma's processor for the StandardDocument model
+(aka https://github.com/metanorma/metanorma-standoc[`metanorma-standoc`])
+depends on the excellent https://dlmf.nist.gov/LaTeXML/[LaTeXML] package from
+NIST to process MathML fragments.
 
-Depending on your situation, you can use a stable version of `LaTeXML` or you may need unreleased features of LaTeXML, this post will explain how to install dev version of `LaTeXML`
+Typically, you will only need the latest stable version of LaTeXML to use
+Metanorma: version 0.8.4 as of today.
 
-== Installing stable version
+However, if you are using or plan on using TeX syntax input for Metanorma
+(i.e. https://github.com/metanorma/tex2mn[`tex2mn`], see our previous post,
+link:../2019-10-08-metanorma-with-latex-support-alpha[Metanorma now supports LaTeX input]),
+you will need the currently unreleased version of LaTeXML 0.8.5 for
+its additional features.
+
+This post explains how to install the "`edge`" version of LaTeXML.
+
+NOTE: Special thanks to https://github.com/brucemiller/[Bruce Miller] and
+https://github.com/dginev[Deyan Ginev] for their unwavering support!
+
+
+== Installing the latest stable LaTeXML
 
 === Windows
 
-https://chocolatey.org/packages/latexml[LaTeXML package] is available on https://chocolatey.org and can be easily installed via chocolatey package manager:
+The https://chocolatey.org/packages/latexml[LaTeXML package] is available on
+https://chocolatey.org[Chocolatey package manager] and can be easily installed
+via the Chocolatey command-line interface.
 
 [source,cmd]
------
+----
 choco install -y latexml
 ----
 
 === Linux
 
-https://snapcraft.io/latexml[LaTeXML snap] is available on https://snapcraft.io and can be installed:
+The https://snapcraft.io/latexml[LaTeXML snap] is available on
+the https://snapcraft.io[Snap store] and can be installed on Ubuntu
+and Linux platforms that are Snap-enabled.
 
 [source,bash]
------
+----
 sudo snap install latexml
 ----
 
 === MacOS
 
-https://formulae.brew.sh/formula/latexml[LaTeXML formula] is available for brew package manager
+The https://formulae.brew.sh/formula/latexml[LaTeXML formula] is available
+from the https://brew.sh[Homebrew package manager].
 
 [source,bash]
------
+----
 brew install latexml
 ----
 
 === CPANM
 
-In case if the specific version doesn't available in the package manager you can always install it with `cpanm`
+If the latest stable LaTeXML version isn't available from the
+package manager of your choice, you can always install it with `cpanm`:
 
 [source,bash]
------
+----
 # Download and install cpanminus
 curl -L http://cpanmin.us | perl - App::cpanminus
 
 cpanm LaTeXML
 ----
 
-== Installing development version (from source)
 
-In case if you need to install some unreleased features you may need to install dev version of `LaTeXML` which can be accomplished with commands below
+== Installing pre-release LaTeXML
+
+In order to utilize unreleased features, you may follow the instructions
+below to install pre-release versions of LaTeXML.
+
 
 === Windows
 
+The following command installs the latest beta release of LaTeXML
+via Chocolatey.
+
 [source,cmd]
------
+----
 choco install -y latexml.beta
 ----
 
+
 === Linux
 
+The following command installs the latest "`edge channel`" release of LaTeXML
+via the Snap store.
+
 [source,cmd]
------
+----
 sudo snap install latexml --edge
 ----
 
+
 === MacOS
 
-There is no way to install development version via `brew` package manager check CPANM section bellow
+There is currently no easy to install a pre-release version via Homebrew --
+use the CPANM method instead.
+
 
 === CPANM
 
-If you have to use the specific dev version of `LaTeXML` it can be installed with `cpanm`
+If you have to use the specific dev version of `LaTeXML` it can be installed with `cpanm`.
+
+Notice that CPAN is a prerequisite, and its installation methods
+differ per platform:
+
+macOS:
+[source,bash]
+----
+brew install cpanminus
+----
+
+Windows:
+[source,bash]
+----
+choco install -y strawberryperl imagemagick.tool
+----
+
+Linux/Unix:
+[source,bash]
+----
+curl -L http://cpanmin.us | perl - App::cpanminus
+----
+
+Once CPAN is installed, the remaining command is to install LaTeXML via `cpanm`:
 
 [source,bash]
------
-curl -L http://cpanmin.us | perl - App::cpanminus # on *nix
-# or
-choco install -y strawberryperl imagemagick.tool  # on windows
-# or 
-brew install cpanminus                            # on macos
-
+----
 cpanm git://github.com/brucemiller/LaTeXML.git@9a0e7dc5
 ----
 
+
+
 == Troubleshooting
 
-In most cases problems happens with installation dependencies which depend on native libraries like:
+In most cases, problems occur with installation dependencies that
+depend on native libraries, such as:
 
 * XML::LibXSLT
 * XML::LibXML
 
-You can fix this by installing a specific version of the dependency which correlate with a version of native lib which installed on your machine
+The fix is to install the specific version of the dependency that correlates with the version of the native library installed on your machine.
 
-Example for MacOS
+This command on macOS, for example, ensures that XML::LibXSLT matches
+the version of `libxml2` installed:
 
 [source,bash]
------
-brew install libxml2 cpanminus
-env PATH=$(brew --prefix libxml2)/bin:$PATH cpanm --notest XML::LibXSLT@1.96 git://github.com/brucemiller/LaTeXML.git@9a0e7dc5
 ----
+brew install libxml2 cpanminus
+env PATH=$(brew --prefix libxml2)/bin:$PATH \
+  cpanm --notest XML::LibXSLT@1.96 \
+  git://github.com/brucemiller/LaTeXML.git@9a0e7dc5
+----
+
 
 == References
 
