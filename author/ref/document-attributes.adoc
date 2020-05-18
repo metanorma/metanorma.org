@@ -364,16 +364,21 @@ https://github.com/pbhogan/sterile[sterile] gem, and are given in
 https://github.com/pbhogan/sterile/blob/master/lib/sterile/data/smart_format_rules.rb[smart_format_rules.rb].
 
 `:toclevels`::
-Number of table of contents levels to render (default: 2).
+Number of table of contents levels to render (default: `2`).
 
 `:htmltoclevels`::
-Number of table of contents levels to render in HTML/PDF output; used to override `:toclevels:` (default: 2).
+Number of table of contents levels to render in HTML/PDF output; used to override `:toclevels:` (default: `2`).
 
 `:doctoclevels`::
-Number of table of contents levels to render in DOC output; used to override `:toclevels:` (default: 2).
+Number of table of contents levels to render in DOC output; used to override `:toclevels:` (default: `2`).
 
 `:imagesdir`::
 Directory in which images are located: all local image file locations are prefixed with this directory. (Optional.)
 
 `:break-up-urls-in-tables:`::
-If present, long strings in table cells (longer than 30 characters) are broken up on rendering, to help tables fit within the page width [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.25].
+(Word output only) If present, long strings in table cells (longer than 30 characters) are broken up on rendering, to help tables fit within the page width [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.25] +
++
+--
+NOTE: Due to limitations of Microsoft Word tables with long string wrapping, this functionality
+is only applied to Word output [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.29].
+--
