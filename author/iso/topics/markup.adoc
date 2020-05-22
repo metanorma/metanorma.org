@@ -297,3 +297,52 @@ lorem
 
 Unordered lists in Word are rendered with em-dashes instead of bullets, as preferred by ISO/CS.
 
+== Amendments and technical corrigenda
+
+Amendments and technical corrigenda [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
+have the following particularities in their markup:
+
+=== Dates
+
+Amendments and technical corrigenda bear two dates in their identifiers: the date of the source document,
+and the date of the update. The latter date is given as the `:copyright-year:` attribute (and may be given
+in more detail as the `:updated-date:` attribute. The former date is given as the `:created-date:` attribute;
+if it is missing, the `:copyright-year:` is used instead.
+
+=== Related documents
+
+The `:edition:` attribute applies to the source document, not to the amendment.
+
+The `:updates:` attribute must be used, to give the identifier of the source document, including the date.
+If this is a corrigendum to an addendum, the source identifier must be that of the Addendum.
+
+=== Clauses
+
+There are no special clauses: clauses describe the location at which changes are applied. So
+`== Terms and definitions` does not introduce a Terms section: it describes the changes to be applied
+to the Terms section of the existing document. For the same reason, there are no annexes or
+distinct bibliographies.
+
+Clauses are only expected to be one level deep.
+
+Clauses can have an additional two attributes, which summarise  the semantics of the changes being outlined.
+The attribute `change` can take the values "add", "delete", or "modify". The attribute `locality` takes the
+values used to specify locality or localities for a crossreference in AsciiDoc input.
+
+[source,adoc]
+----
+[change=delete,locality="clause=introduction,paragraph=4-7"]
+== Introduction
+----
+
+=== Form
+
+The document takes the form of clauses describing what is to be amended; the amendments themselves are quoted.
+
+Because the quoted material are snippets with little context, autonumbering will not yield sensible results, 
+and neither will cross-referencing autonumbered blocks or clauses. For that reason, amendments and technical corrigenda
+must not use cross-referencing, and any auto-numbering is suppressed. Users will have to include explicit
+numbering in any snippets of text (as they already do), and mock up clause titles by using boldface
+(since clause titles will be quoted, and thus not recognised as such).
+
+
