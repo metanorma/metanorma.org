@@ -125,7 +125,26 @@ _____
 
 Notes that are not at the end of a clause are folded into the preceding block,
 if that block is not delimited (so that the user could not choose to include or exclude a note).
-That is, notes are folded into a preceding paragraph, list, formula, or figure.
+That is, notes are folded into a preceding list, formula, or figure.
+
+To prevent that behaviour, add the attribute `keep-separate` 
+to the note [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.29].
+
+[source,asciidoc]
+--
+* A
+* B 
+* C
+
+[NOTE,keep-separate=true]
+====
+Note not folded into its preceding block
+====
+--
+
+Without the `keep-separate=true` markup, the note would be attached to the list,
+and numbered accordingly.
+
 
 == Footnotes
 
