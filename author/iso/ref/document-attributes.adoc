@@ -109,6 +109,22 @@ ISO document stages in document identifiers are mapped as follows.
 * `60.00` "`ISO/PRF`"
 * `60.60` Final stage, empty designation "`ISO/{TR,TS}`"
 
+The document identifier is assembled out of the component metadata pieces, as follows:
+
+* Each identifier is prefixed by ISO, and optionally the abbreviations of other publishing SDOs, delimited by `/`
+* For *International Standard*: Unpublished: _(Publisher) (/ Status Abbreviation)? (Document Number) (- Part Number)? ( Language Letter )?_; Published: _(Publisher) (Document Number) (- Part Number)? (: Year) ( Language Letter )?_
+** e.g. ISO/IEEE/FDIS 1-2, ISO/IEEE 1-2:2030(E)
+* The status abbreviation consists of: _( Pre )? (Iteration Number)? (Stage Abbreviation)_; "Pre" indicates this is a pre-release draft, Iteration Number applies to those stages which can be iterated more than once
+** The stage abbreviations by default are: 00 PWI, 10 NWIP, 20 WD, 30 CD, 40 DIS, 50 FDIS, 60 (substage 00) PRF. Once the document is published (stage 60 substage 60), no status abbreviation is given.
+* For *Technical Report* and *Technical Specification*: Unpublished: _(Publisher) (/ Status Abbreviation)? (Doctype abbreviation) (Document Number) (- Part Number)? ( Language Letter )?_; Published: _(Publisher) (/ Doctype abbreviation) (Document Number) (- Part Number)? ( Language Letter )?_
+** e.g. ISO/IEEE/FDIS TR 1-2, ISO/IEEE/TR 1-2:2030(E)
+** The Doctype abbreviations are TR and TS
+** The stage abbreviations DIS and FDIS change to DTS and FDTS
+* For *Amendments*: Unpublished: _(Source document ID)/(Status Abbreviation + Amd) (Amendment number) (Language Letter)?_; Published: _(Source document ID)/Amd (Amendment number) (: Year) (Language Letter)?_
+** For amendments the stage abbreviations underlying the status abbreviations are: 00 PWI Amd, 10 NP Amd, 10.99 AWI Amd, 20 WD Amd, 30 CD Amd, 40 DAmd, 50 FDAmd, 60.00 PRF Amd
+* For *Technical Corrigenda*: Unpublished: _(Source document ID)/(Status Abbreviation + Cor) (. Corrigendum number) (Language Letter)?_; Published: _(Source document ID)/Cor (. Corrigendum number) (: Year) (Language Letter)?_
+
+
 === Title
 
 NOTE: This document template presupposes authoring in English; a different
