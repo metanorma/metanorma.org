@@ -297,7 +297,7 @@ converters, it is deterministically accurate.
 NOTE: The syntax of AsciiMath recognised by the `asciimath` gem is more strict
 than the common MathJax processor of AsciiMath. For example, `asciimath` insists on numerators being bracketed.
 
-== Formulae
+=== Formulae
 
 Formulae are marked up as `[stem]` blocks.
 Any explanation of symbols in the formula is given as a "`where`" paragraph,
@@ -489,7 +489,7 @@ Source code highlighting can be used automatically to highlight keywords specifi
 to the nominated computer language.
 
 
-== Pseudocode
+=== Pseudocode
 
 Pseudocode is a mix between formal math with code like properties commonly
 used in computer science and related fields.
@@ -773,4 +773,20 @@ and substituted with the extension of the current document type during document 
 
 The above example is rendered in Metanorma XML as `<xref target="document1#b">`,
 in HTML as `<a href="document1.html#b">`, and in PDF as `<a href="document1.pdf#b">`.
+
+== Admonitions
+
+Admonitions (Note, Important, Warning etc.) can exceptionally be moved to the start of the document
+body, before the main sequence of clauses, by giving them the option attribute 
+`%beforeclauses` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.30].
+That means that the admonition(s) are considered to apply to the entire document.
+
+[source,asciidoc]
+----
+[%beforeclauses]
+[IMPORANT]
+====
+This important notice applies to the entire document
+====
+----
 
