@@ -403,3 +403,23 @@ but is not described in the ITU-T Author's Guide.
 
 Indexes are not currently supported in Metanorma.
 
+=== Cross-references
+
+Cross-references to clauses are in lowercase: "see clause 4.1". Metanorma will attempt to
+impose correct capitalisation for instances at the start of blocks and sentences, but it
+may well get it wrong; to override such capitalisation, you can use the
+the flags `capital%` or `lowercase%` as the content of the crossreference,
+to force that casing on the 
+cross-reference [added in https://github.com/metanorma/isodoc/releases/tag/v1.0.28]:
+
+[source,asciidoc]
+----
+[[cl3]]
+== Clause 3
+
+== Clause 4
+
+See e.g. <<cl3,lowercase%>> +
+<<cl3,capital%>>.
+----
+
