@@ -59,84 +59,118 @@ stage "`60`" (published), where a substage of "`60`" is assumed.
 ("`60.00`" is the final proof "`PRF stage`", "`60.60`" the published document "`published`".)
 
 
+=== Document identifier
+
+==== General
+
+The ISO document identifier is assembled out of these metadata elements:
+
+publisher:: publisher of the document
+document stage:: stage of development of document, according to the Harmonized Stage Codes
+document number:: numeric identifier of document
+update number:: serial number of update (for amendments and technical corrigenda)
+document type:: type of ISO deliverable
+copyright year:: year of publication of document
+language:: language of document
+
+==== Publisher
+
+This is the abbreviation of the publishing organization, typically `ISO`. If the document is published under co-publishing agreements, it can contain the abbreviations of other publishing SDOs, delimited by `/` after `ISO`. An `IWA` document has publisher abbreviation of `IWA`.
+
+EXAMPLE: `ISO`, `ISO/IEC`, `ISO/IEC/IEEE`, `ISO/IEEE`, `ISO/SAE`, `IWA`
+
+==== Document type and stage
+
 ISO document stages in document identifiers are mapped as follows.
 
-`international-standard`:
+International Standard::
 
-* `00.00` to `00.99` "`ISO/PWI`"
-* `10.00` to `10.98` "`ISO/NP`"
-* `10.99` to `10.98` "`ISO/AWI`"
-* `20.00` to `20.99` "`ISO/WD`"
-* `30.00` to `30.99` "`ISO/CD`"
-* `40.00` to `40.99` "`ISO/DIS`"
-* `50.00` to `50.99` "`ISO/FDIS`"
-* `60.00` "`ISO/PRF`"
-* `60.60` Final stage, empty designation "`ISO`"
+`00.00` to `00.99`::: "`PWI`"
+`10.00` to `10.98`::: "`NP`"
+`10.99` to `10.98`::: "`AWI`"
+`20.00` to `20.99`::: "`WD`"
+`30.00` to `30.99`::: "`CD`"
+`40.00` to `40.99`::: "`DIS`"
+`50.00` to `50.99`::: "`FDIS`"
+`60.00`::: "`PRF`"
+`60.60`::: empty designation
 
-`amendment`:
+Technical Specification, Technical Report::
 
-* `00.00` to `00.99` "`{base-document-id}/PWI Amd {num}`"
-* `10.00` to `10.98` "`{base-document-id}/NP Amd {num}`"
-* `10.99` to `10.98` "`{base-document-id}/AWI Amd {num}`"
-* `20.00` to `20.99` "`{base-document-id}/WD Amd {num}`"
-* `30.00` to `30.99` "`{base-document-id}/CD Amd {num}`"
-* `40.00` to `40.99` "`{base-document-id}/DAmd {num}`"
-* `50.00` to `50.99` "`{base-document-id}/FDAmd {num}`"
-* `60.00` "`{base-document-id}/PRF Amd {num}`"
-* `60.60` Final stage, empty designation "`{base-document-id}/Amd {num}`"
+`00.00` to `00.99`::: "`PWI {TR,TS}`"
+`10.00` to `10.98`::: "`NP {TR,TS}`"
+`10.99` to `10.98`::: "`AWI {TR,TS}`"
+`20.00` to `20.99`::: "`WD {TR,TS}`"
+`30.00` to `30.99`::: "`CD {TR,TS}`"
+`40.00` to `40.99`::: "`{DTR,DTS}`"
+`50.00` to `50.99`::: TS/TRs do not have FDIS stage because they are not international standards.
+`60.00`::: "`PRF`"
+`60.60`::: "`{TR,TS}`"
 
-`technical-corrigendum`:
+//The stage abbreviations DIS and FDIS change to DTS and FDTS
 
-* `00.00` to `00.99` "`{base-document-id}/PWI Cor {num}`"
-* `10.00` to `10.98` "`{base-document-id}/NP Cor {num}`"
-* `10.99` to `10.98` "`{base-document-id}/AWI Cor {num}`"
-* `20.00` to `20.99` "`{base-document-id}/WD Cor {num}`"
-* `30.00` to `30.99` "`{base-document-id}/CD Cor {num}`"
-* `40.00` to `40.99` "`{base-document-id}/DIS Cor {num}`"
-* `50.00` to `50.99` "`{base-document-id}/FDCor {num}`"
-* `60.00` "`{base-document-id}/PRF Cor {num}`"
-* `60.60` Final stage, empty designation "`{base-document-id}/Cor {num}`"
+Amendment::
 
-`technical-specification`, `technical-report`:
+`00.00` to `00.99`::: "`{base-document-id}/PWI Amd {num}`"
+`10.00` to `10.98`::: "`{base-document-id}/NP Amd {num}`"
+`10.99` to `10.98`::: "`{base-document-id}/AWI Amd {num}`"
+`20.00` to `20.99`::: "`{base-document-id}/WD Amd {num}`"
+`30.00` to `30.99`::: "`{base-document-id}/CD Amd {num}`"
+`40.00` to `40.99`::: "`{base-document-id}/DAmd {num}`"
+`50.00` to `50.99`::: "`{base-document-id}/FDAmd {num}`"
+`60.00`::: "`{base-document-id}/PRF Amd {num}`"
+`60.60`::: "`{base-document-id}/Amd {num}`"
 
-* `00.00` to `00.99` "`ISO/PWI {TR,TS}`"
-* `10.00` to `10.98` "`ISO/NP {TR,TS}`"
-* `10.99` to `10.98` "`ISO/AWI {TR,TS}`"
-* `20.00` to `20.99` "`ISO/WD {TR,TS}`"
-* `30.00` to `30.99` "`ISO/CD {TR,TS}`"
-* `40.00` to `40.99` "`ISO/{DTR,DTS}`"
-* `50.00` to `50.99`: TS/TRs do not have FDIS stage because they are not standards.
-* `60.00` "`ISO/PRF`"
-* `60.60` Final stage, empty designation "`ISO/{TR,TS}`"
+Technical Corrigendum::
 
-The document identifier is assembled out of the component metadata pieces, as follows:
+`00.00` to `00.99`::: "`{base-document-id}/PWI Cor {num}`"
+`10.00` to `10.98`::: "`{base-document-id}/NP Cor {num}`"
+`10.99` to `10.98`::: "`{base-document-id}/AWI Cor {num}`"
+`20.00` to `20.99`::: "`{base-document-id}/WD Cor {num}`"
+`30.00` to `30.99`::: "`{base-document-id}/CD Cor {num}`"
+`40.00` to `40.99`::: "`{base-document-id}/DIS Cor {num}`"
+`50.00` to `50.99`::: "`{base-document-id}/FDCor {num}`"
+`60.00`::: "`{base-document-id}/PRF Cor {num}`"
+`60.60`::: "`{base-document-id}/Cor {num}`"
 
-* Each identifier is prefixed by ISO, and optionally the abbreviations of other publishing SDOs, delimited by `/`
-* For *International Standard*: Unpublished: _(Publisher) (/ Status Abbreviation)? (Document Number) (- Part Number)? ( Language Letter )?_; Published: _(Publisher) (Document Number) (- Part Number)? (: Year) ( Language Letter )?_
-** e.g. ISO/IEEE/FDIS 1-2, ISO/IEEE 1-2:2030(E)
-* The status abbreviation consists of: _( Pre )? (Iteration Number)? (Stage Abbreviation)_; "Pre" indicates this is a pre-release draft, Iteration Number applies to those stages which can be iterated more than once
-** The stage abbreviations by default are: 00 PWI, 10 NWIP, 20 WD, 30 CD, 40 DIS, 50 FDIS, 60 (substage 00) PRF. Once the document is published (stage 60 substage 60), no status abbreviation is given.
-* For *Technical Report* and *Technical Specification*: Unpublished: _(Publisher) (/ Status Abbreviation)? (Doctype abbreviation) (Document Number) (- Part Number)? ( Language Letter )?_; Published: _(Publisher) (/ Doctype abbreviation) (Document Number) (- Part Number)? ( Language Letter )?_
-** e.g. ISO/IEEE/FDIS TR 1-2, ISO/IEEE/TR 1-2:2030(E)
-** The Doctype abbreviations are TR and TS
-** For technical reports and technical specifications the stage abbreviations underlying the status abbreviations are: 00 PWI TR, 10 NP TR, 10.99 AWI TR, 20 WD TR, 30 CD TR, 40 DTR, 50 DTR (skipped for reports and specifications), 60.00 PRF 
-** The stage abbreviations DIS and FDIS change to DTS and FDTS
-* For *Amendments*: Unpublished: _(Source document ID)/(Status Abbreviation + Amd) (Amendment number) (Language Letter)?_; Published: _(Source document ID)/Amd (Amendment number) (: Year) (Language Letter)?_
-** For amendments the stage abbreviations underlying the status abbreviations are: 00 PWI Amd, 10 NP Amd, 10.99 AWI Amd, 20 WD Amd, 30 CD Amd, 40 DAmd, 50 FDAmd, 60.00 PRF Amd
-* For *Technical Corrigenda*: Unpublished: _(Source document ID)/(Status Abbreviation + Cor) (. Corrigendum number) (Language Letter)?_; Published: _(Source document ID)/Cor (. Corrigendum number) (: Year) (Language Letter)?_
-** For amendments the stage abbreviations underlying the status abbreviations are: 00 PWI Cor, 10 NP Cor, 10.99 AWI Cor, 20 WD Cor, 30 CD Cor, *40 DIS Cor*, 50 FDCor, 60.00 PRF Cor
+
+When the Publisher element contains a "`slash`" ("`/`"), the separation in front of the document stage will be converted into an empty space.
+
+EXAMPLE: `ISO/NP 33333` but `ISO/IEC NP 33333`; `ISO/NP TR 33333` but `ISO/IEC NP TR 33333`.
+
+
+According to ISO Directives Part 1 (11ed), SE.2 "`Working drafts (WD), committee drafts (CD), draft International Standards (DIS), final draft International Standards (FDIS) and International Standards`", "`Successive DIS on the same subject will carry the same number but will be distinguished by a numerical suffix (.2, .3, etc.).`"
+
+Metanorma names the stage iteration number accordingly for all stages, which is patterned as:
+`{document stage}` (no suffix if iteration is 1), `{document stage}.{iteration number}` (suffix including iteration number after 1).
+
+Once the document is published (stage 60 substage 60), no status abbreviation is given.
+
+
+==== Full document identifier patterns
+
+The patterns are as follows:
+
+*International Standard*::
+`{publisher} (/{document type and stage})? ({document number}) (- {part number})? (: {copyright year}) ({ISO 639 language code})?` +
++
+EXAMPLE: `ISO/IEEE/FDIS 33333-2`, `ISO/IEEE 33333-2:2030(E)`
+
+*Technical Report*, *Technical Specification*::
+`{publisher} (/{document type and stage}) ({document number}) (- {part number})? (: {copyright year}) ({ISO 639 language code})?` +
++
+EXAMPLE: `ISO/IEC/FDIS TS 33333-2`, `ISO/TR 33333-2:2030(E)`, `ISO/IEC TR 33333-2:2030(E)`
+
+*Amendments*, *Technical Corrigendum*::
+`{source document ID}/{document type and stage} {update number} (: {copyright year}) ({ISO 639 language code})?` +
++
+EXAMPLE: `ISO 33333-2:2030/DIS Cor 2:2031`, `ISO 33333-2:2030/Cor 2:2032`, `ISO/IEC 33333-2:2030/Cor 2:2032`
 
 
 === Title
 
-NOTE: This document template presupposes authoring in English; a different
-template will be needed for French, including French titles of document
-components such as annexes.
-
 `:title-intro-{en,fr}:`:: The introductory component of the English or French title of the
-document. This and the other `:title-*` document attributes are used instead
-of the `metanorma-standoc` `:title:` attribute and the default AsciiDoc title
-(the first line of the document header, prefixed with `=`).
+document.
 
 `:title-main-{en,fr}:`:: The main component of the English or French title
 of the document (mandatory).
@@ -152,34 +186,48 @@ The number of the amendment [added in https://github.com/metanorma/isodoc/releas
 `:corrigendum-number:`:: (only when `doctype` is set to `technical-corrigendum`)
 The number of the technical corrigendum [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
 
+NOTE: These `:title-*` document attributes are used instead
+of the `metanorma-standoc` `:title:` attribute and the default AsciiDoc title
+(the first line of the document header, prefixed with `=`),
+due to the complexity of ISO deliverable titles.
+
+NOTE: This document template presupposes authoring in English; a different
+template will be needed for French, including French titles of document
+components such as annexes.
+
 
 == Author info
 
 `:secretariat:`:: The national body acting as the secretariat for the document
-in the deafting stage
+in the drafting stage.
 
 `:technical-committee-number:`:: The number of the relevant ISO technical
-committee (also `:technical-committee-number_2:`, `:technical-committee-number_3:`...;
-the same applies for all `technical-committee`, `subcommittee` and `workgroup` attributes)
+committee.
 
 `:technical-committee-type:``:: The type of the relevant technical committee. Defaults
-to `TC` if not supplied. Values: `TC`, `PC`, `JTC`, `JPC`.
+to `TC` if not supplied. Typical values: `TC`, `PC`, `JTC`, `JPC`.
 
 `:technical-committee:`:: The name of the relevant ISO technical committee
 (mandatory)
 
-`:subcommittee-number:`:: The number of the relevant ISO subcommittee
+`:subcommittee-number:`:: The number of the relevant ISO subcommittee.
 
 `:subcommittee-type:`:: The type of the relevant ISO subcommittee. Defaults to
-`SC` if not supplied. Values: `SC`, `JSC`.
+`SC` if not supplied. Typical values: `SC`, `JSC`.
 
 `:subcommittee:`:: The name of the relevant ISO subcommittee
 
-`:workgroup-number:`:: The number of the relevant ISO workgroup
+`:workgroup-number:`:: The number of the relevant ISO working group
 
-`:workgroup-type:`:: The type of the relevant ISO workgroup. Defaults to `WG` if
-not supplied. Example values: `JWG`, `JAG`, `AG` (advisory group), `AHG`, `SWG`,
+`:workgroup-type:`:: The type of the relevant ISO working group. Defaults to `WG` if
+not supplied. +
++
+EXAMPLE: `JWG`, `JAG`, `AG` (advisory group), `AHG`, `SWG`,
 `SG`, `MA` (maintenance agency), `CORG`, `JCG`, `CAG`
 
-`:workgroup:`:: The name of the relevant ISO workgroup
+`:workgroup:`:: The name of the relevant ISO working group
 
+In the case of multiple responsible groups (technical committees, subcommittees, working groups),
+the `:technical-committee:`, `:subcommittee:` and `:workgroup:` attributes can be used to encode multiple groups by suffixing `_n` to the attribute where `n` is a sequential number after 1.
+
+EXAMPLE: `:technical-committee_2:` and `:technical-committee-number_2:`; `:subcommittee:` and `:subcommittee-number_2:`.
