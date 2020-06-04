@@ -146,6 +146,15 @@ Without the `keep-separate=true` markup, the note would be attached to the list,
 and numbered accordingly.
 
 
+[source,asciidoc]
+--
+[NOTE]
+This note will be folded in the preceding block.
+
+NOTE: This one too.
+--
+
+
 == Footnotes
 
 Table and figure footnotes are treated differently from all other footnotes: they are
@@ -237,7 +246,7 @@ Tables can also have alternate text as a title, `alt`, and summary text,
 for accessibility.
 
 Tables can finally have a `width` attribute, which following HTML CSS and HTML 4
-can set the width of a table to either a percentage (e.g. `70%`) or a pixel count 
+can set the width of a table to either a percentage (e.g. `70%`) or a pixel count
 (e.g. `500px`) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21].
 
 [source,asciidoc]
@@ -507,7 +516,7 @@ with a pseudocode role with these differences:
   respect for inline formatting;
 
 * lines do not need to be separated by line breaks, although two carriage returns
-  in a row are still interpreted as a new 
+  in a row are still interpreted as a new
   paragraph [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10]
 
 * indentation spaces at the start of each line are preserved, by converting
@@ -774,18 +783,21 @@ and substituted with the extension of the current document type during document 
 The above example is rendered in Metanorma XML as `<xref target="document1#b">`,
 in HTML as `<a href="document1.html#b">`, and in PDF as `<a href="document1.pdf#b">`.
 
+
 == Admonitions
 
-Admonitions (Note, Important, Warning etc.) can exceptionally be moved to the start of the document
-body, before the main sequence of clauses, by giving them the attribute 
-`beforeclauses=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.30].
-That means that the admonition(s) are considered to apply to the entire document.
+Admonitions (NOTE, IMPORTANT, WARNING, CAUTION etc.) can be
+stated to apply to the entire document by moving them to the
+start of the document body (before the main sequence of clauses).
+
+This can be done by giving them the attribute `beforeclauses=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.30].
+
+This attribute will encode the admonition(s) as applicable to the entire document.
 
 [source,asciidoc]
 ----
 [IMPORTANT,beforeclauses=true]
 ====
-This important notice applies to the entire document
+This important notice applies to the entire document.
 ====
 ----
-
