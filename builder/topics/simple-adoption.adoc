@@ -101,11 +101,18 @@ webfont:
 
 *Key*:
 
-`metanorma_name`:: Short name of the Metanorma flavour, for use in invoking the gem as software [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8]
+`metanorma_name`:: Short name of the Metanorma flavour,
+for use in invoking the gem as software [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
+For example, `metanorma -t {short name} document.adoc` or `:mn-document-class: {short name}`.
+
 `organization_name_short`/`organization_name_long`:: Name of your organization
+
 `document_namespace`:: attribute for creating Metanorma Standoc XML, will be used for as namespace name for XML tags generated
+
 `xml_root_tag`:: attribute for creating Metanorma Standoc XML, will be used as tag name for root tag
+
 `logo_path`:: path to a single logo file, used for metanorma metadata. As with *all file locations in the configuration*, these are relative paths from the gem root
+
 `logo_paths`:: list of paths of multiple logo files, used for metanorma metadata, and treated as an array (e.g. `{{ logo_paths[0] }}` [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8]. For example,
 +
 --
@@ -116,24 +123,40 @@ webfont:
   - lib/isodoc/generic/html/logo3.jpg
 ----
 --
+
 `validate_rng_file`:: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-generic/blob/master/lib/asciidoctor/generic/generic.rng for example. This and all other file directory paths are relative to the gem root.
+
 `htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts`:: paths used for styling html output files, for examples see https://github.com/metanorma/metanorma-generic/tree/master/lib/isodoc/generic/html
+
 `wordcoverpage`/`wordintropage`/`wordstylesheet`/`header`:: paths used for styling word output files, for examples see https://github.com/metanorma/metanorma-generic/tree/master/lib/isodoc/generic/html
+
 `docid_template`:: template to generate a document identifer, using
 https://shopify.github.io/liquid/[Liquid template language], and metadata values
 (see link:/builder/topics/metadata-and-boilerplate/#default-metadata[Default metadata values]);
 the config file values can also be used in the Liquid template [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.1].
+
 `published_stages`:: list of stages considered published
+
 `stage_abbreviations`:: hash of stages and their corresponding abbreviations. If not supplied, the initials of the stage are used, as is the default for Metanorma. This structure is used to configure stages.
+
 `doctypes`:: array of legal document types [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
+
 `default_doctype`:: default doctype [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8]. if not supplied, the first element of doctypes is used; if that is not supplied either, "standard" is used.
+
 `html_bodyfont`:: The default font to use in HTML output for body text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+
 `html_headerfont`:: The default font to use in HTML output for headers [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+
 `html_monospacefont`:: The default font to use in HTML output for monospace text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+
 `word_bodyfont`:: The default font to use in DOC output for body text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+
 `word_headerfont`:: The default font to use in DOC output for headers [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+
 `word_monospacefont`:: The default font to use in DOC output for monospace text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+
 `metadata_extensions`:: A list of single-value fields to add to `bibdata/ext` for the document, as metadata; they will be populated through document attributes with the same name [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.7].
+
 `webfont`:: A list of URLs of web fonts, to be loaded into HTML output [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8]. For example,
 +
 --
@@ -143,9 +166,13 @@ the config file values can also be used in the Liquid template [added in https:/
   - https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,300;0,600;1,300;1,600&display=swap
 ----
 --
+
 `termsdefs_titles`:: Titles which will be automatically recognised as introducing Terms sections [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
+
 `symbols_titles`:: Titles which will be automatically recognised as introducing Symbols/Abbreviations sections [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
+
 `normref_titles`:: Titles which will be automatically recognised as introducing Normative References sections [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
+
 `bibliography_titles`:: Titles which will be automatically recognised as introducing Bibliography sections [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
 
 
@@ -172,7 +199,7 @@ NOTE: Examples are borrowed from https://github.com/metanorma/metanorma-rsd repo
 
 Initialize an empty Ruby Gem:
 
-[source,adoc]
+[source,sh]
 ----
 bundle init
 ----
