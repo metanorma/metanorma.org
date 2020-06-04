@@ -4,31 +4,59 @@ layout: author-docs
 
 = Terms
 
-== Defining Terms: the “Terms and Definitions” section
+== Defining Terms: the "`Terms and definitions`" section
 
 === Grammar summary
 
-Terms and Definitions sections follow a strict grammar, which is reflected in their AsciiDoc markup:
+"`Terms and definitions`" sections follow a strict grammar
+reflected in their Metanorma AsciiDoc markup:
 
 * The term is given as a *subheading* at the appropriate level
   (three equal signs, unless there are subsections in the Terms and Definition section).
   The term may be cross-referenced from other terms, in which case it should have an *anchor*.
+
 * The term is optionally followed by *alternative/admitted terms*,
   which must be marked up in an `+alt:[...]+` macro;
   *deprecated terms*, which must be marked up in a `+deprecated:[...]+` macro;
   and a term *domain*, which must be marked up in a `+domain:[...]+` macro.
+
 * The *definition* of the term is given in a separate paragraph.
+
 * The definition is optionally followed by *examples*
   (paragraphs with an `[example]` style attribute).
+
 * The definition is then optionally followed by *notes* (denoted with a `NOTE:` prefix).
+
 * The definition is then followed by a *citation* for the term
   (marked with a `[.source]` role attribute).
+
 * The citation is a cross-reference to a normative reference,
   optionally followed by a comma and a modification if applicable.
   If the comma is used on its own, then the term will be shown as modified,
   with no specific modification.
 
-For example:
+EXAMPLE:
+
+[source,adoc]
+----
+=== instant
+
+point on the term:[time axis]
+
+NOTE: An instantaneous event occurs at a specific instant.
+
+[.source]
+<<IEV,clause "113-01-08">>
+----
+
+NOTE: An unmodified term and definition does not require any text after
+the source reference.
+
+More complex concepts can also be specified, with alternative terms,
+deprecated terms, domain, examples and a definition modified
+from its original source.
+
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -44,14 +72,16 @@ rice retaining its husk after threshing
 [example]
 Foreign seeds, husks, bran, sand, dust.
 
-NOTE: The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.
+NOTE: The starch of waxy rice consists almost entirely of amylopectin.
+The kernels have a tendency to stick together after cooking.
 
 [.source]
 <<ISO7301,section 3.2>>, The term "cargo rice" is shown as deprecated,
-and Note 1 to entry is not included here
+and Note 1 to entry is not included here.
 --
 
-Alternatively, the following will just show the source as "modified", with no further detail:
+A trailing comma after the source reference can indicate that the
+term or definition was "`modified`", but with no further detail:
 
 [source,asciidoc]
 --
@@ -59,17 +89,10 @@ Alternatively, the following will just show the source as "modified", with no fu
 <<ISO7301,section 3.2>>,
 --
 
-[NOTE]
-====
-The requirement that the source of a term be given in a citation also applies when the source
-is a term bank,
-such as the http://www.electropedia.org[International Electrotechnical Vocabulary (IEV)].
-Formally, IEV references should be cited as `IEC 60050-nnn:20xx`,
-where `n` is the top-level clause, and `20xx` is the year when that particular specification
-was published; e.g. `IEC 60050-113:2011, 113-01-07`.
-====
+A term and definition can be sourced from multiple sources (in accordance with ISO 10241-1).
+In this case each source should be entered in a separate `[.source]` paragraph.
 
-NOTE: If there are multiple sources, each should be entered in a separate `[.source]` paragraph:
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -79,6 +102,16 @@ NOTE: If there are multiple sources, each should be entered in a separate `[.sou
 [.source]
 <<ISO7302,section 3.10>,
 --
+
+
+The requirement that the source of a term be given in a citation also applies when the source
+is a termbase,
+such as the http://www.electropedia.org[International Electrotechnical Vocabulary (IEV)].
+Formally, IEV references should be cited as `IEC 60050-nnn:20xx`,
+where `n` is the top-level clause, and `20xx` is the year when that particular specification
+was published.
+
+EXAMPLE: "`IEC 60050-113:2011, 113-01-07`".
 
 
 [NOTE]
@@ -96,8 +129,8 @@ is stripped in the intermediate XML format.
 === Grouping IEV references
 
 For convenience, Metanorma requires all IEV references to be to a single reference,
-named `IEV` in the normative references. During the rendering of AsciiDoc into Metanorma XML,
-this reference will be replaced by the various required IEC 60050-nnn:20xx references.
+named `IEV` in the normative references. During the rendering of Metanorma AsciiDoc into Metanorma XML,
+this reference will be replaced by the various required "`IEC 60050-nnn:20xx`" references.
 (That means that you should not insert your own instances of IEC 60050 references
 for IEV citations: they will be duplicated by the automatically generated references.)
 
