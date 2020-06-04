@@ -88,17 +88,17 @@ document identifier (`:docnumber:`) is not yet known.
 protected by patents, which may be required to implement this Recommendation.
 (default: `false`)
 
-`:title-(en, fr, es, ar, ru, zh):`:: The title to use, in each of the official languages of the ITU.
+`:title-{en, fr, es, ar, ru, zh}:`:: The title to use, in each of the official languages of the ITU.
 
 `:annexid:`:: The ID to use for the annex, if this document is an annex.
 
-`:annextitle:`:: The title to use for the annex, if this document is an annex.
+// `:annextitle:`:: Shorthand for `:annextitle-en:`, the English title to use for the annex.
 
-`:annextitle-(en, fr, es, ar, ru, zh):`:: The title to use for the annex, if this document is an annex,
-
+`:annextitle-{en, fr, es, ar, ru, zh}:`::
+The title to use for the annex, if this document is an annex,
 in each of the official languages of the ITU.
 
-`:subtitle-(en, fr, es, ar, ru, zh):`:: The subtitle to use, in each of the official languages of the ITU; 
+`:subtitle-{en, fr, es, ar, ru, zh}:`:: The subtitle to use, in each of the official languages of the ITU;
 appears only at the start of the document body, not in the front cover [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
 
 === Author Information
@@ -220,18 +220,18 @@ In the rest of Metanorma, if this attribute is not supplied, quotes and apostrop
 In ITU, quotes and apostrophes default to straight.
 
 `:legacy-do-not-insert-missing-sections:`::
-If set, do not insert the sections Scope, References, Definitions, Abbreviations and acronyms, 
-Conventions if missing [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.11]. 
+If set, do not insert the sections Scope, References, Definitions, Abbreviations and acronyms,
+Conventions if missing [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.11].
 Use this if you have a legacy recommendation document with clauses with names preceding this requirement
 (e.g. "Prerequisites", "Process", "General"), and you do not want the compulsory new sections
 to be added in at the start of the document.
 
 `:hierarchical-object-numbering:`::
 If set, do not numbering objects (tables, figures etc.) consecutively throughout the body of the
-document, but restart numbering with each clause 
+document, but restart numbering with each clause
 (hierarchically) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.11].
 Use in complex documents, with multiple tables or figures, that need to be tracked against
-clauses for ease of lookup (so _Figure 6-3, 6-4_, instead of _Figure 21, 22_.) 
+clauses for ease of lookup (so _Figure 6-3, 6-4_, instead of _Figure 21, 22_.)
 Note that equations in ITU are always numbered hierarchically.
 
 
@@ -242,8 +242,8 @@ Note that equations in ITU are always numbered hierarchically.
 The summary sections of recommendations are marked up with the
 style attribute `[abstract]`.
 
-The prefatory sections Summary, 
-History,  [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16] Source, 
+The prefatory sections Summary,
+History,  [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16] Source,
 and the Keywords appear in the Word frontispiece.
 
 === Lists
