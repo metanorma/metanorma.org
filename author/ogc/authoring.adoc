@@ -493,6 +493,44 @@ Requirement Class [added in https://github.com/metanorma/metanorma-ogc/releases/
 --
 ========
 
+Embedded requirements (such as are found within Requirement Classes) will automatically
+insert cross-references to the non-embedded requirements with the same 
+label [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.8]:
+
+[source,asciidoc]
+--
+[requirement,type="class",label="/req/conceptual"]
+.GWML2 core logical model
+====
+
+[requirement,type="general",label="/req/core/encoding"]
+======
+======
+
+====
+
+[requirement,type="general",label="/req/core/encoding"]
+====
+Encoding requirement
+====
+--
+
+renders as:
+
+____
+*Requirement Class 3: GWML2 core logical model* +
+/req/conceptual
+
+| Requirement:   | Requirement 1, /req/core/encoding
+
+
+*Requirement 1:*
+/req/core/encoding
+
+Encoding requirement
+____
+
+
 ==== Legacy Metanorma AsciiDoc syntax
 
 For legacy reasons, a second Metanorma AsciiDoc syntax is permitted for
