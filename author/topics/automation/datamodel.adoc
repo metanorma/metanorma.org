@@ -6,7 +6,7 @@ layout: author-docs
 
 == Purpose
 
-The `datamodel_plantuml` and `datamodel_attributes_table` blocks lets you generate plantuml diagrams
+The `datamodel_diagram` and `datamodel_attributes_table` blocks lets you generate plantuml diagrams
 or model attributes table from a separate YAML file.
 
 == Syntax datamodel_attributes_table
@@ -188,20 +188,20 @@ Where:
 * `{"O" || "M"}` - depending on attribute`s element `cardinality.max` field, if `cardinality.max` equal to `*` then `N` else `1`
 
 
-== Syntax datamodel_plantuml
+== Syntax datamodel_diagram
 
 === Defining the macro
 
-A `datamodel_plantuml` macro is created with the following syntax.
+A `datamodel_diagram` macro is created with the following syntax.
 
 [source,adoc]
 --
-[datamodel_plantuml,{YAML file path},{include path}]
+[datamodel_diagram,{YAML file path},{include path}]
 --
 
 Where:
 
-* `{YAML file path}` is the location of the YAML file that contains view to be rendered. Location of the YAML file is computed relative to the source directory that `[datamodel_plantuml]` is used (e.g., if `[datamodel_plantuml,data.yaml]` is invoked in an `.adoc` file located at `/foo/bar/doc.adoc`, the data file is expected to be found at `/foo/bar/data.yaml`);
+* `{YAML file path}` is the location of the YAML file that contains view to be rendered. Location of the YAML file is computed relative to the source directory that `[datamodel_diagram]` is used (e.g., if `[datamodel_diagram,data.yaml]` is invoked in an `.adoc` file located at `/foo/bar/doc.adoc`, the data file is expected to be found at `/foo/bar/data.yaml`);
 * `{include path}` - optional attribute that tells where to find models file to import(`imports` attribute).
 
 === Datamodel view file attributes
@@ -262,4 +262,4 @@ the UML diagram.
 
 === Render results
 
-`datamodel_plantuml` macro will generate plantuml block from supplied params. `caption` attribute(if present) will be used as caption text for diagram image figure.
+`datamodel_diagram` macro will generate plantuml block from supplied params. `caption` attribute(if present) will be used as caption text for diagram image figure.
