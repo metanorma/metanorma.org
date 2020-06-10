@@ -1,0 +1,160 @@
+---
+layout: post
+title: "Upgrading Metanorma IETF documents from metanorma-ietf v1 to v2"
+date: 2020-06-10
+categories: about
+authors:
+  -
+    name: Ronald Tse
+    email: tse@ribose.com
+    use_picture: assets
+    social_links:
+      - https://www.linkedin.com/in/rhtse/
+      - https://github.com/ronaldtse
+
+excerpt: >-
+    This post describes steps to migrate Metanorma IETF documents from
+    metanorma-ietf v1 to v2.
+---
+
+== Introduction
+
+Since metanorma-ietf v2 was released in January, we have been migrating a number of
+documents to the newer version.
+
+In order to migrate Metanorma IETF documents to v2 you need to know
+what exactly has changed for the author:
+
+. Metanorma-IETF now only supports RFC XML v3 output -- IETF (and therefore `xml2rfc`) has already switched to RFC XML v3.
+. Metanorma-IETF now generates a Metanorma XML file, and then converts it into a RFC XML file.
+  `xml2rfc` is them used to convert the RFC XML file to TXT, HTML, etc.
+. The bibliographic mechanism has entirely changed.
+
+
+== Changes needed
+
+1. In `:mn-output-extensions:`, the output format is now `rfc` not `xmlrfc2` or `xmlrfc3`. (because we only support xmlrfc3 now)
+2. `:submissionType:` is now `:submission-type:`
+3. The `:status:`, `:intended-series` values are very picky in `xml2rfc` (`xml2rfc` will balk at the values `full-standard` and `standard`, `info` works)
+4. The references sections have changed -- the mechanism to do RFC references is via auto-fetch and manual entry.
+
+
+== Migrating the bibliography
+
+=== Automated reference fetching
+
+Metanorma now supports the automatic fetching of many standard documents as citations.
+
+This includes IETF RFCs/Internet-Drafts, ISO, IEC, ITU, W3C, NIST, CalConnect, OGC, etc.
+
+EXAMPLE: Instead of doing this previously:
+
+[source,adoc]
+----
+[bibliography]
+== Normative References
+
+++++
+<reference anchor="RFC2119"
+  target="https://www.rfc-editor.org/info/rfc2119">
+  <front>
+    <title>Key words for use in RFCs to Indicate
+      Requirement Levels</title>
+    <author initials="S." surname="Bradner" fullname="S. Bradner">
+      <organization/>
+    </author>
+    <date year="1997" month="March"/>
+  </front>
+  <seriesInfo name="BCP" value="14"/>
+  <seriesInfo name="RFC" value="2119"/>
+  <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+</reference>
+++++
+----
+
+
+In IETF RFCs and I-Ds, you just need this:
+
+[source]
+----
+[bibliography]
+== Normative References
+
+* [[[RFC2119,RFC 2119]]]
+----
+
+
+=== Custom reference notation
+
+For custom bibliographic items, Metanorma now supports https://www.relaton.com/specs/asciibib/path/[AsciiBib],
+which is a way of specifying bibliographic data in an AsciiDoc-like syntax
+(with ASCII, of course).
+
+EXAMPLE: Instead of doing this:
+
+[source,adoc]
+----
+[bibliography]
+== Informative References
+
+++++
+<reference anchor="grail_film">
+  <front>
+    <title>Monty Python and the Holy Grail</title>
+    <author initials="G." surname="Chapman"/>
+    <author initials="J." surname="Cleese"/>
+    <author initials="E." surname="Idle"/>
+    <author initials="T." surname="Gilliam"/>
+    <author initials="T." surname="Jones"/>
+    <author initials="M." surname="Palin"/>
+    <organization/>
+    <date year="1975"/>
+  </front>
+</reference>
+++++
+----
+
+
+Do this:
+
+[source,adoc]
+----
+[bibliography]
+== Informative References
+
+[%bibitem]
+== Monty Python and the Holy Grail
+id:: grail_film
+contributor::
+contributor.person.name.initial:: G.
+contributor.person.name.surname:: Chapman
+contributor::
+contributor.person.name.initial:: J.
+contributor.person.name.surname:: Cleese
+contributor::
+contributor.person.name.initial:: E.
+contributor.person.name.surname:: Idle
+contributor::
+contributor.person.name.initial:: T.
+contributor.person.name.surname:: Gilliam
+contributor::
+contributor.person.name.initial:: T.
+contributor.person.name.surname:: Jones
+contributor::
+contributor.person.name.initial:: M.
+contributor.person.name.surname:: Palin
+date::
+date.type:: published
+date.value:: 1975
+----
+
+
+== Conclusion
+
+Metanorma-IETF v2 heavily simplifies bibliographic handling and realizes
+a consistent syntax across all Metanorma flavors.
+
+This is a blessing especially for those that work with multiple
+standardization bodies, where cross-publication is common.
+
+Hope you enjoy the upgraded, declarative, authoring experience!
