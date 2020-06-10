@@ -309,10 +309,10 @@ NOTE: Asciidoctor AsciiDoc permits only five levels of section embedding
 
 [source,asciidoc]
 --
-====== Clause 5
+====== Clause 5A
 
 [level=6]
-===== Clause 6
+====== Clause 6A
 
 [level=7]
 ====== Clause 7A
@@ -361,6 +361,21 @@ This generates the following ISO XML:
 	</title>
 </clause>
 --
+
+and the rendering would be something like
+
+*1.1.1.1.1  Clause 5A*
+
+*1.1.1.1.1.1  Clause 6A*
+
+1.1.1.1.1.1.1  Clause 7A
+
+1.1.1.1.1.1.2  Clause 7B
+
+*1.1.1.1.1.2  Clause 6B*
+
+*1.1.1.1.2  Clause 5B*
+
 
 == Table of Contents
 
