@@ -893,6 +893,14 @@ would be rendered as "the foregoing reference", and hyperlinked to the `ISO7301`
 In Metanorma AsciiDoc cross-references, bibliographic localities
 (e.g. page numbers, clause numbers) can be added directly after the comma,
 as part of the cross-reference text. This overrides the normal AsciiDoc treatment of custom text.
+For example, "ISO 7301, Clause 2, Table 1a, pp. 7-9" would be expressed as:
+
+[source,asciidoc]
+--
+<<ISO7301,clause=2,table=1a,page=7-9>>
+--
+
+See link:bibliography#localities[localities and locality values].
 
 === List items
 
@@ -920,7 +928,10 @@ http://www.example2.com[text to go into the second hyperlink,title=This is a too
 
 === Cross-references to external documents
 
-Metanorma will process cross-references to anchors within external documents
+Under link:bibliography#localities[localities and locality values],
+we saw that anchors can be integrated in citations of documents via references.
+
+Outside of that, Metanorma will process cross-references to anchors within external documents
 just like AsciiDoc would normally. For example,
 
 [source,asciidoc]
