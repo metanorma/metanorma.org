@@ -330,6 +330,43 @@ processor of LaTeXML, respectively.
 NOTE: While `latexmath` can be slower than other available LaTeX to MathML
 converters, it is deterministically accurate.
 
+[NOTE]
+====
+In regard to equation arrays, `latexmlmath` struggles to handle alignments. 
+In consequence, the usage of environments like `eqnarray` is declined in Metanorma. 
+For these cases, an uncomfortable but necessary workaround would be placing the equations in separate blocks. For example, the following equations
+
+[source,asciidoc]
+--
+[latexmath]
+++++
+\begin{eqnarray*}
+         \bf{z^\prime} & = & \bf{\zeta} \\
+         \bf{x^\prime} & = & \langle \bf{\eta} \times \bf{\zeta} \rangle
+\end{eqnarray*}
+++++
+--
+
+should be re-arranged as:
+
+[source,asciidoc]
+--
+[latexmath]
+++++
+\bf{z^\prime} = \bf{\zeta}
+++++
+
+[latexmath]
+++++
+\bf{x^\prime} = \langle \bf{\eta} \times \bf{\zeta} \rangle
+++++
+--
+
+As a curious note, some link:https://www.tug.org/pracjourn/2006-4/madsen/madsen.pdf[LaTeX users] 
+do not recommend using `eqnarray` in LaTeX environment neither, 
+basically due to inconsistencies in vertical alignment and other things.
+====
+
 NOTE: The syntax of AsciiMath recognised by the `asciimath` gem is more strict
 than the common MathJax processor of AsciiMath. For example, `asciimath` insists on numerators being bracketed.
 
