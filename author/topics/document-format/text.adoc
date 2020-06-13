@@ -14,7 +14,7 @@ The following formatting macros are used for strikethrough and small caps text:
 [smallcap]#small caps text#
 --
 
-which renders
+which renders:
 
 .Illustration of strikethrough and small caps text in Metanorma.
 image::/assets/author/topics/document-format/text/fig-strike-small.png[]
@@ -148,13 +148,13 @@ Notes that are not at the end of a clause are folded into the preceding block,
 if that block is not delimited (so that the user could not choose to include or exclude a note).
 That is, notes are folded into a preceding list, formula, or figure.
 
-To prevent that behaviour, add the attribute `keep-separate` 
+To prevent that behaviour, add the attribute `keep-separate`
 to the note [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.29].
 
 [source,asciidoc]
 --
 * A
-* B 
+* B
 * C
 
 [NOTE,keep-separate=true]
@@ -299,50 +299,128 @@ a large range of table formatting options.
 
 == Mathematical expressions
 
-Metanorma AsciiDoc accepts mathematical input in either
-LaTeX math or AsciiMath, with the following conventions:
+=== General
 
-* The document attribute `:stem:` means any markup tagged as `[stem]`
-(`stem:[...]`, or `[stem]` before a block delimited with `++++`)
-is interpreted as AsciiMath.
-* The document attribute `:stem: latexmath` means any markup tagged as `[stem]`
-(`stem:[...]`, or `[stem]` before a block delimited with `++++`)
-is interpreted as LaTeX.
-* Any markup tagged as `[asciimath]`
-(`asciimath:[...]`, or `[asciimath]` before a block delimited with `++++`)
-is interpreted as AsciiMath.
-* Any markup tagged as `[latexmath]`
-(`latexmath:[...]`, or `[latexmath]` before a block delimited with `++++`)
-is interpreted as LaTeX.
+Metanorma AsciiDoc accepts mathematical input in these formats:
+
+* AsciiMath
+* LaTeX math
+* MathML
+
+Math can be entered using one of the following mechanisms:
+
+* the `stem:[...]`, `asciimath:[]` and the `latexmath:[]` commands; and
+* the `[stem]`, `[asciimath]`, `[latexmath]` blocks delimited with `++++`
+
+The math syntax used by `stem:[...]` and `[stem]` blocks depends on
+the value of the document attribute `:stem:`. It accepts these values:
+
+`latexmath`:: any markup within `stem` is interpreted as LaTeX math
+`asciimath`:: any markup within `stem` is interpreted as AsciiMath
+``:: when left empty, AsciiMath is selected
+
+`stem:[...]` and `[stem]` markup that contains MathML markup
+(as detected by an initial `<math ... >`) is interpreted as MathML.
+
+MathML is used as the internal representation of STEM expressions in Metanorma.
+
+
+=== Using AsciiMath
+
+AsciiMath can be entered using the `asciimath:[]` command and the
+`[asciimath]` block delimited with `++++`.
+
+AsciiMath is converted into MathML using the
+https://github.com/asciidoctor/asciimath[asciimath] gem.
+
+The syntax of AsciiMath recognised by the `asciimath` gem is more strict
+than the common MathJax processor of AsciiMath.
+For example, `asciimath` insists on numerators being bracketed.
+
+EXAMPLE:
+
+(IEV 103-01-03)
+
+[source,asciidoc]
+----
+The derivative of a distribution stem:[D] is another distribution
+stem:[D'] defined for any function stem:[f](stem:[x]) by
+stem:[D^( ' ) ( f ) = - D ( d f // d x )].
+----
+
+(ISO 10303-55, Clause 2)
+
+[source,asciidoc]
+----
+[stem]
+++++
+f -= lambda x (a * x + b)
+++++
+----
+
+NOTE: Some math expressions are NOT supported by AsciiMath -- in that
+case it is necessary to use LaTeX math or MathML input.
+
+
+=== Using LaTeX math
+
+LaTeX math is converted into MathML using the
+https://dlmf.nist.gov/LaTeXML/[LaTeXML] processor.
+
+Metanorma relies on
+https://dlmf.nist.gov/LaTeXML/manual/commands/latexmlmath.html[LaTeXML's `latexmlmath` command] for
+LaTeX math parsing as it is deterministically accurate, even though some
+complains of it being slower than other (non-deterministic) LaTeX to MathML
+converters.
 
 Any Unicode characters in the LaTeX source are translated into LaTeX escapes,
 through the https://github.com/metanorma/unicode2latex[unicode2latex] gem.
 
-In addition, stem markup that contains MathML markup (as detected by an initial
-`<math ... >`) is interpreted as MathML.
+EXAMPLE:
 
-MathML is used as the internal representation of STEM expressions in Metanorma:
-AsciiMath and LaTeX math in Metanorma AsciiDoc are converted into MathML,
-using the https://github.com/asciidoctor/asciimath[asciimath] gem and the
-https://dlmf.nist.gov/LaTeXML/manual/commands/latexmlmath.html[LaTeXML]
-processor of LaTeXML, respectively.
+(ISO 10303-110, Clause 4)
+[source,asciidoc]
+----
+The only change from the above example would be the
+nondimensionalization of viscosity, which would become,
+latexmath:[\tilde{\tilde{\mu}} = mu / (rho_infty c_infty L)].
+----
 
-NOTE: While `latexmath` can be slower than other available LaTeX to MathML
-converters, it is deterministically accurate.
+(ISO 10303-110, Clause 4)
+[source,asciidoc]
+----
+[latexmath]
+++++
+\begin{array}{c@{\qquad}c@{\qquad}c}
+  \tilde{x} = x/L, \tilde{u} = u/c_\infty, \tilde{\rho} = \rho/\rho_\infty,
+  \tilde{y} = y/L, \tilde{v} = v/c_\infty, \tilde{p} = p/(\rho_\infty c_\infty^2),
+  \tilde{z} = z/L, \tilde{w} = w/c_\infty, \tilde{\mu} = \mu/\mu_\infty,
+\end{array}
+++++
+----
 
-[NOTE]
-====
-In regard to equation arrays, `latexmlmath` struggles to handle alignments. 
-In consequence, the usage of environments like `eqnarray` is declined in Metanorma. 
-For these cases, an uncomfortable but necessary workaround would be placing the equations in separate blocks concatenated with `+`. For example, the following equations
+
+
+The LaTeX math `eqnarray` environment is not supported in Metanorma as
+it is not supported by LaTeXML. It is also not recommended by the general
+LaTeX community due to inconsistencies in vertical alignment and other aspects
+(see link:https://www.tug.org/pracjourn/2006-4/madsen/madsen.pdf[Madsen])
+
+The proper LaTeX math syntax used to replace existing `eqnarray`
+equations is to place the equations in separate blocks concatenated
+with `+`.
+
+EXAMPLE:
+
+These equations using the `eqnarray` environment:
 
 [source,asciidoc]
 --
 [latexmath]
 ++++
 \begin{eqnarray*}
-         \bf{z^\prime} & = & \bf{\zeta} \\
-         \bf{x^\prime} & = & \langle \bf{\eta} \times \bf{\zeta} \rangle
+  \bf{z^\prime} & = & \bf{\zeta} \\
+  \bf{x^\prime} & = & \langle \bf{\eta} \times \bf{\zeta} \rangle
 \end{eqnarray*}
 ++++
 --
@@ -361,14 +439,6 @@ should be re-arranged as:
 \bf{x^\prime} = \langle \bf{\eta} \times \bf{\zeta} \rangle
 ++++
 --
-
-As a curious note, some link:https://www.tug.org/pracjourn/2006-4/madsen/madsen.pdf[LaTeX users] 
-do not recommend using `eqnarray` in LaTeX environment neither, 
-basically due to inconsistencies in vertical alignment and other things.
-====
-
-NOTE: The syntax of AsciiMath recognised by the `asciimath` gem is more strict
-than the common MathJax processor of AsciiMath. For example, `asciimath` insists on numerators being bracketed.
 
 === Formulae
 
