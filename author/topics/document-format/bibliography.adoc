@@ -49,6 +49,35 @@ styled with `[bibliography]`.
 NOTE: A warning will be raised if `== Bibliography` in the above EXAMPLE was
 preceded by `[bibliography]`.
 
+[NOTE]
+====
+In IETF flavor, there can be "Normative references" and 
+"Informative references" as separated bibliography sections:
+
+[source,asciidoc]
+--
+[bibliography]
+== Normative references
+
+* [[[id1,1]]], _First normative reference_
+...
+
+// Optional
+[bibliography]
+== Informative references
+
+* [[[idn, n]]], _First informative reference_ 
+...
+
+--
+
+Notice that they are not subclauses (like previous example), 
+and "Informative references" is optional.
+See link:https://www.metanorma.com/author/ietf/topics/references/[References (AsciiRFC v3)]
+for further details.
+
+====
+
 === Numbering and ordering
 
 All entries in a bibliography section, whether standards or generic,
