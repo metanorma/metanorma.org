@@ -873,6 +873,25 @@ examples, requirements, recommendations, permissions, tables, figures,
 sourcecode and pseudocode.
 {blank}[added in https://github.com/metanorma/isodoc/releases/tag/v1.0.11]
 
+=== Override numbering
+
+There are circumstances when autonumbering of assets needs to be overriden; 
+e.g. numbering out of sequence in updated documents. To address such use cases, 
+assets can have an optional `number`
+attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1],
+giving a required asset number to override autonumbering. Any assets subsequent 
+to that asset will be autonumbered so as to follow the previous asset, so long as
+the supplied number belongs to the same sequence. 
+For subsequences, number shall have only subsequence scope.
+
+[source,asciidoc]
+--
+[sourcecode,number=7]
+----
+for (i = 0; i < n; i++) { bounce(v[i], wall) }
+----
+--
+
 
 == Cross-references
 
@@ -1002,7 +1021,8 @@ Admonitions (NOTE, IMPORTANT, WARNING, CAUTION etc.) can be
 stated to apply to the entire document by moving them to the
 start of the document body (before the main sequence of clauses).
 
-This can be done by giving them the attribute `beforeclauses=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.30].
+This can be done by giving them the attribute 
+`beforeclauses=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.30].
 
 This attribute will encode the admonition(s) as applicable to the entire document.
 
