@@ -6,26 +6,55 @@ layout: author-docs
 
 == General
 
-The "`Normative References`" and the "`Bibliography`" sections must be
-preceded by the style attribute `[bibliography]`, so that the references
-they contain may be recognized as such:
+In standard documents typically there are two types of references, namely
+the "`normative references`" and the "`bibliography`" (informative references).
+
+Every bibliographic section must be preceded by the style attribute
+`[bibliography]` so that references they contain may be recognized as such:
 
 [source,asciidoc]
 --
 [bibliography]
-=== Bibliography 1
+== Bibliography
 
 * [[[id1,1]]] _First reference_
 * [[[id1,2]]] _Second reference_
 * [[[id3,3]]] _Third reference_
 --
 
-Both of these bibliography sections can be split into subsections.
+EXAMPLE: In ISO, the "`Normative references`" clause is stated in
+Clause 3 (ISO Directives Part 2, Clause 15), while the "`Bibliography`"
+section is set as the last unnumbered section at the end of document
+(ISO Directives Part 2, Clause 21). It should be typeset as the following:
+
+[source,asciidoc]
+----
+...
+// This is clause 3
+[bibliography]
+== Normative references
+
+* [[[ISO8601-1,ISO 8601-1:2019]]] _First normative reference_
+* [[[ISO8601-2,ISO 8601-2:2019]]] _Second normative reference_
+
+...
+
+// This is the last section
+[bibliography]
+== Bibliography
+
+* [[[ISO10241-1,ISO 10241-1]]] _First bibliographic reference_
+...
+----
+
+Bibliography sections can be split into subsections.
 
 Metanorma AsciiDoc requires each subsection containing references
 to be styled with `[bibliography]`, and raises an (ignorable)
 warning if the subsections are contained in a section itself
 styled with `[bibliography]`.
+
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -51,8 +80,9 @@ preceded by `[bibliography]`.
 
 [NOTE]
 ====
-In Metanorma IETF, there are the separated bibliography sections
-"`Normative references`" and "`Informative references`":
+In Metanorma IETF, the bibliography sections "`Normative references`"
+and "`Informative references`" are separate, where the
+"`Informative references`" section is optional:
 
 [source,asciidoc]
 --
@@ -71,8 +101,6 @@ In Metanorma IETF, there are the separated bibliography sections
 
 --
 
-Notice that they are not arranged in subclauses (as in the previous example). 
-The "`Informative references`" section is also optional.
 See https://www.metanorma.com/author/ietf/topics/references/[References (AsciiRFC v3)]
 for further details.
 ====
