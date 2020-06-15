@@ -310,7 +310,7 @@ Metanorma AsciiDoc accepts mathematical input in these formats:
 Math can be entered using one of the following mechanisms:
 
 * the `stem:[...]`, `asciimath:[]` and the `latexmath:[]` commands; and
-* the `[stem]`, `[asciimath]`, `[latexmath]` blocks delimited with `++++`
+* the `[stem]`, `[asciimath]`, `[latexmath]` blocks delimited with `\++++{blank}`
 
 The math syntax used by `stem:[...]` and `[stem]` blocks depends on
 the value of the document attribute `:stem:`. It accepts these values:
@@ -328,7 +328,9 @@ MathML is used as the internal representation of STEM expressions in Metanorma.
 === Using AsciiMath
 
 AsciiMath can be entered using the `asciimath:[]` command and the
-`[asciimath]` block delimited with `++++`.
+`[asciimath]` block delimited with `\++++{blank}`.
+The `stem:[]` and `[stem]` blocks can also be used if the document attribute
+`:stem: asciimath` has been specified in the document.
 
 AsciiMath is converted into MathML using the
 https://github.com/asciidoctor/asciimath[asciimath] gem.
@@ -363,6 +365,11 @@ case it is necessary to use LaTeX math or MathML input.
 
 
 === Using LaTeX math
+
+LaTeX math can be entered using the `latexmath:[]` command and the
+`[latexmath]` block delimited with `\++++{blank}`.
+The `stem:[]` and `[stem]` blocks can also be used if the document attribute
+`:stem: latexmath` has been specified in the document.
 
 LaTeX math is converted into MathML using the
 https://dlmf.nist.gov/LaTeXML/[LaTeXML] processor.
