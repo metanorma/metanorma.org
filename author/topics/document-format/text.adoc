@@ -632,6 +632,38 @@ For accessibility, preformatted blocks can be provided with an alt text attribut
 ....
 --
 
+== Passthrough code
+
+Any XML tags that the user wants to appear in a target format unaltered can be entered
+as a passthrough block [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.27],
+with a format indication corresponding to one or more of the existing output formats of Metanorma,
+comma delimited
+(not limited to: html, doc, pdf, rfc, sts). The XML within the passthrough block need not
+be well-formed, although if the resulting XML structure is not, that is the responsibility of the user:
+
+[source,asciidoc]
+--
+[format=rfc]
+++++
+<artset>
+<artwork>
+++++
+--
+
+Any Metanorma XML tags that the user wants to appear in in the intermediate XML generated from
+Asciidoc input can be entered as a 
+passthrough block [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1],
+with no format indication:
+
+[source,asciidoc]
+--
+++++
+<bibitem>
+++++
+--
+
+
+
 == Source code
 
 Source code is marked up as elsewhere in AsciiDoc, as a preformatted source snippet to
