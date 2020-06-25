@@ -1,11 +1,11 @@
 ---
-layout: mpfd-flavor
+layout: mpfa-flavor
 ---
 
 = Authoring MPFA documents with Metanorma
 
 All the following modifications to the basic Metanorma model are provisional, as a full analysis of the
-formatting requirements of MPFD has not yet been conducted.
+formatting requirements of MPFA has not yet been conducted.
 
 == Document attributes
 
@@ -65,7 +65,7 @@ Compliance documents in the MPFA (e.g. https://github.com/metanorma/samples-mpf/
 present compliance standards, following by an "`Explanatory Notes and Guidance`" clause. That clause is nested within the
 standards clause, and has a special identifier: the standards clause identifier, followed by _E_.
 
-In MPFD AsciiDoc, the "`Explanatory Notes and Guidance`" clause is tagged with a `.guidance` role attribute,
+In MPFA AsciiDoc, the "`Explanatory Notes and Guidance`" clause is tagged with a `.guidance` role attribute,
 and should be entered as a sibling clause to the standard clause it elaborates on:
 
 [source,asciidoc]
@@ -94,13 +94,13 @@ ____
 
 === Container clauses
 
-MPFD documents follow a hierarchically numbered clause structure. However, there are some floating titles
-in MPFD which group clauses together, but are not numbered themselves. These are tagged in MPFD AsciiDoc
+MPFA documents follow a hierarchically numbered clause structure. However, there are some floating titles
+in MPFA which group clauses together, but are not numbered themselves. These are tagged in MPFA AsciiDoc
 with a `.container` role attribute. When the gem numbers clauses, these containers are ignored.
 
 [source,asciidoc]
 --
-== MPFD Structure
+== MPFA Structure
 
 [.container]
 === Benefits
@@ -121,7 +121,7 @@ Without the `.container` tags, the foregoing example would be rendered in HTML a
 
 [source,html]
 --
-<h1>1. MPFD Structure</h1>
+<h1>1. MPFA Structure</h1>
 
 <h2>1.1. Benefits</h2>
 
@@ -141,7 +141,7 @@ are at the same level as their parent sections, and are ignored in numbering:
 
 [source,html]
 --
-<h1>1. MPFD Structure</h1>
+<h1>1. MPFA Structure</h1>
 
 <h1>Benefits</h1>
 
