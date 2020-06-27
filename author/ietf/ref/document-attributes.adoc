@@ -183,7 +183,7 @@ RFC XML: `rfc@consensus`
 `:name`::
 Mandatory. Sets the document's name. This should be a number if
 the document is an RFC, and a name (in the form of `draft-ietf-somewg-someprotocol-07`)
-if it is an Internet-Draft.
+if it is an Internet-Draft (in which case it should be expressed under `docnumber`).
 When `doctype` is set to:
 +
 * `internet-draft`: the value should be in the form `draft-ietf-somewg-someprotocol-07`.
@@ -225,6 +225,8 @@ RFC XML: `front/seriesInfo[2]/@status`;
 `front/seriesInfo[2]/@name` = "";
 `front/@category` (`exp` and `historic` only supported for Internet Drafts; document number not used)
 
+The gem takes care of any needed translation between the v2 vocabulary (e.g. `info`) and the v3 vocabulary
+(e.g. `informational`)
 
 `:submission-type`::
 Set document submission type for this document. The following values are allowed:
@@ -235,6 +237,19 @@ Set document submission type for this document. The following values are allowed
 * `IRTF`
 +
 RFC XML: `rfc@submissionType` and `rfc/front/seriesInfo@stream`
+
+For example:
+
+[source,asciidoc]
+----
+= The Holy Hand Grenade of Antioch
+Arthur son of Uther Pendragon
+:doctype: internet-draft
+:submission-type: independent
+:intended-series: informational
+:docnumber: draft-camelot-holy-grenade-01
+:status: informational
+----
 
 === RFC XML v3 only
 
