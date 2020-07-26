@@ -275,19 +275,62 @@ by prefixing it with the style attribute `[.nonterm]`:
 == Terms and definitions
 
 [.nonterm]
-=== Introduction
-The following terms have non-normative effect, and should be ignored by the ametrical.
+=== Terms defined in ISO 10303-1
+For the purpose of this part of ISO 10303, the following terms defined in ISO 10303-1 apply:
 
-=== Anapaest
-metrical foot consisting of a short, a long, and a short
+* integrated resource
+
+[.nonterm]
+=== Terms defined in ISO 10303-11
+
+For the purposes of this document, the following terms defined in ISO 10303-11 apply.
+
+* entity;
+* entity data type;
 --
 
-renders as
-
-.Inclusion of a non-term subclause into the Terms and Definitions section using the [.nonterm] attribute.
+.Inclusion of non-term subclauses using the `[.nonterm]` attribute.
 image::/assets/author/topics/document-format/section-terms/fig-terms-non-clause-section.png[]
 
-NOTE: please allow us to stress that the `[.nonterm]` attribute is for _exceptional_ cases only (e.g. an introduction section as shown above, or any other subclause not being a term). It should not be applied to subclauses containing terms underneath, as these will not be processed following the corresponding formatting rules.
+
+Now, the `[.nonterm]` attribute must only be used in subclauses that don't contain any
+terms underneath (like the example above), otherwise, these won't be processed following the 
+corresponding formatting rules. For instance, let us apply the `[.nonterm]` attribute 
+to a term-containing subclause to see what happens:
+
+[source,asciidoc]
+--
+== Terms and definitions
+
+[.nonterm]
+=== Terms defined in ISO 10303-1
+For the purpose of this part of ISO 10303, the following terms defined in ISO 10303-1 apply:
+
+[[term-actual_function_range]]
+==== actual function range
+mathematical space containing precisely the tuples of outputs from the function which are related to some tuple of inputs
+--
+
+.Incorrect rendering of a term subclause. The `[.nonterm]` attribute must be removed in this case.
+image::/assets/author/topics/document-format/section-terms/fig-term-clause-incorrect.png[]
+
+
+And this is not the correct rendering. The `[.nonterm]` attribute must be removed:
+
+[source,asciidoc]
+--
+== Terms and definitions
+
+=== Terms defined in ISO 10303-1
+For the purpose of this part of ISO 10303, the following terms defined in ISO 10303-1 apply:
+
+[[term-actual_function_range]]
+==== actual function range
+mathematical space containing precisely the tuples of outputs from the function which are related to some tuple of inputs
+--
+
+.Proper rendering of a term subclause.
+image::/assets/author/topics/document-format/section-terms/fig-term-clause-correct.png[]
 
 == Citing terms
 
