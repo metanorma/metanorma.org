@@ -369,6 +369,19 @@ not (as in the Editing Guidelines) `ITU-T G-Sup.41`.
 
 === Definitions
 
+==== Title
+
+The internal terms section are recognised with the heading "`Terms defined in this Recommendation`".
+The external terms section are recognised with the heading "`Terms defined elsewhere`".
+Setting the heading attribute of a title will also allow the internal and external terms
+section to be recognised [added in https://github.com/metanorma/isodoc/releases/tag/v1.2.0]:
+
+[source,asciidoc]
+----
+[heading="terms defined in this recommendation"]
+=== Terminoj difinitaj en ĉi tiu rekomendaĵo
+----
+
 ==== Boilerplate
 
 If no text appears at the start of the clauses and subclauses in the Definitions section,
@@ -385,6 +398,12 @@ standard boilerplate is provided automatically:
 * If neither subclause appears (as is the case in https://www.itu.int/rec/T-REC-G.650.1/en[ITU G.650.1]
   but not in the documents first sighted), we must inject at the top clause the text
   "`This Recommendation defines the following terms:`".
+
+=== Abbreviations and acronyms
+
+Sections titled "Abbreviations and acronyms" are only recognised as such at the top level of sections,
+or if explicitly given as such with a heading attribute; otherwise they are treated as 
+normal sections [added in https://github.com/metanorma/isodoc/releases/tag/v1.2.1].
 
 === Tables
 
