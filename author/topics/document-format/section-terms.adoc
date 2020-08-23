@@ -224,10 +224,13 @@ term:[rice] from which the husk only has been removed
 
 ==== Stem expressions
 
-AsciiDoc does not permit macros to be nested inside other macros;
-so the following markup, introducing a stem expression as an admitted term, is illegal.
-(The use of stem expressions as preferred terms is not a problem,
-because the macro appears as a header.)
+AsciiDoc does not permit macros to be nested inside other macros.
+
+Therefore the following markup which introduces a stem expression
+as an admitted term, is considered illegal.
+
+NOTE: The use of stem expressions as preferred terms is not a problem,
+because the macro appears as a header.
 
 [source,asciidoc]
 .Bad example
@@ -256,17 +259,18 @@ image::/assets/author/topics/document-format/section-terms/fig-term-stem.png[]
 
 === Subclauses
 
-Any clause within a Terms & Definitions section which is a nonterminal subclause (has
-child nodes) is automatically itself a terms (or definitions) section. On the other hand,
-any descendant of a nonterm clause is also a nonterm clause.
+Any clause within a "`Terms & Definitions`" section which is a non-terminal subclause (has
+child nodes) is automatically considered a terms (or definitions) section. On the other hand,
+any descendant of a `nonterm` clause is also a `nonterm` clause.
 
 Informative clauses are indicated with the attribute `[obligation=informative]`;
 clauses are normative by default.
 
-==== Introductory non-clause section
+==== Introductory non-term section
 
-As defined above, all terminal subclauses of a term section (i.e. clauses that have no subclauses
+All terminal subclauses of a term section (i.e. clauses that have no subclauses
 of their own) are treated as term definitions.
+
 Exceptionally, an introductory section can be treated as a subclause instead of a term,
 by prefixing it with the style attribute `[.nonterm]`:
 
@@ -276,27 +280,34 @@ by prefixing it with the style attribute `[.nonterm]`:
 
 [.nonterm]
 === Terms defined in ISO 10303-1
-For the purpose of this part of ISO 10303, the following terms defined in ISO 10303-1 apply:
+
+For the purpose of this part of ISO 10303, the following terms
+defined in ISO 10303-1 apply:
 
 * integrated resource
 
 [.nonterm]
 === Terms defined in ISO 10303-11
 
-For the purposes of this document, the following terms defined in ISO 10303-11 apply.
+For the purposes of this document, the following terms defined in
+ISO 10303-11 apply.
 
 * entity;
 * entity data type;
 --
 
-.Inclusion of non-term subclauses using the `[.nonterm]` attribute.
+.Inclusion of non-term subclauses using the `[.nonterm]` attribute
 image::/assets/author/topics/document-format/section-terms/fig-terms-non-clause-section.png[]
 
+The `[.nonterm]` attribute must only be used in subclauses that do
+not contain any terms underneath (like the example above).
+Otherwise, these terms will not be processed following the
+corresponding formatting rules.
 
-Now, the `[.nonterm]` attribute must only be used in subclauses that don't contain any
-terms underneath (like the example above), otherwise, these won't be processed following the 
-corresponding formatting rules. For instance, let us apply the `[.nonterm]` attribute 
-to a term-containing subclause to see what happens:
+[example]
+======
+EXAMPLE: If the `[.nonterm]` attribute is applied to a
+term-containing subclause, the wrong rendering will occur:
 
 [source,asciidoc]
 --
@@ -304,33 +315,37 @@ to a term-containing subclause to see what happens:
 
 [.nonterm]
 === Terms defined in ISO 10303-1
-For the purpose of this part of ISO 10303, the following terms defined in ISO 10303-1 apply:
 
-[[term-actual_function_range]]
+For the purpose of this part of ISO 10303, the following terms
+defined in ISO 10303-1 apply:
+
 ==== actual function range
-mathematical space containing precisely the tuples of outputs from the function which are related to some tuple of inputs
+mathematical space containing precisely the tuples of outputs from
+the function which are related to some tuple of inputs
 --
 
-.Incorrect rendering of a term subclause. The `[.nonterm]` attribute must be removed in this case.
+.Incorrect rendering of a term subclause due to wrong application of `[.nonterm]`
 image::/assets/author/topics/document-format/section-terms/fig-term-clause-incorrect.png[]
 
-
-And this is not the correct rendering. The `[.nonterm]` attribute must be removed:
+Therefore the `[.nonterm]` attribute must be removed:
 
 [source,asciidoc]
 --
 == Terms and definitions
 
 === Terms defined in ISO 10303-1
-For the purpose of this part of ISO 10303, the following terms defined in ISO 10303-1 apply:
 
-[[term-actual_function_range]]
+For the purpose of this part of ISO 10303, the following terms
+defined in ISO 10303-1 apply:
+
 ==== actual function range
-mathematical space containing precisely the tuples of outputs from the function which are related to some tuple of inputs
+mathematical space containing precisely the tuples of outputs from
+the function which are related to some tuple of inputs
 --
 
-.Proper rendering of a term subclause.
+.Proper rendering of a term subclause
 image::/assets/author/topics/document-format/section-terms/fig-term-clause-correct.png[]
+======
 
 == Citing terms
 
@@ -374,7 +389,7 @@ If the term is defined within the current document, the term citation
 gives the anchor of the term definition in the document, the canonical
 term name, and optionally the text to be displayed.
 
-The anchor is converted into a document crossreference in the Metanorma XML.
+The anchor is converted into a document crossreference in Metanorma XML.
 
 The syntax is:
 

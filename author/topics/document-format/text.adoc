@@ -197,7 +197,7 @@ This note will be folded in the preceding block.
 NOTE: This one too.
 --
 
-Notes may be given a type through the attribute 
+Notes may be given a type through the attribute
 `type` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
 
 [source,asciidoc]
@@ -933,8 +933,10 @@ for (i = 0; i < n; i++) { bounce(v[i], wall) }
 ----
 --
 
-
+[[text-cross-refs]]
 == Cross-references
+
+=== General
 
 Cross-references are realized in Metanorma AsciiDoc by assigning an anchor
 to the block to be referenced, and writing a cross-reference containing
@@ -952,14 +954,11 @@ The requirements are...
 As seen in <<anchor-id>>...
 --
 
-The anchor ID must follow the https://www.w3.org/TR/xml-id/#processing[NCName constraints of xml:id]:
+WARNING: See <<text-ref-allowed-anchors>> for allowed characters in anchor IDs.
 
-* it may start with a letter, an underscore, or any other character specified by the attribute link:https://www.w3.org/TR/xml-names11/#NT-NCNameStartChar[NCNameStartChar]. It must not contain colons, white spaces, or words starting with numbers.
-The permitted characters are specified by the link:https://www.w3.org/TR/xml-names11/#NT-NCName[NCName attribute for Namesapece Declaration].
-
-// TODO: ISO-specific, move or make a NOTE?
-The guidance given in ISO/IEC DIR 2 for internal cross-references
-guarantees unambiguous referencing and is followed rigorously by Metanorma.
+NOTE: Cross-reference text in Metanorma adheres to guidance given in
+ISO/IEC DIR 2 for internal cross-references, in order to guarantee
+unambiguous referencing.
 
 In particular, if a formula, example, figure, list, list item or table is cross-referenced
 outside its (sub)clause, the clause containing the item is always given in the cross-reference,
@@ -967,16 +966,16 @@ unless the item is being referenced in the same clause.
 
 In the case of notes, the containing clause is extended to containing example, figure or table.
 
-[NOTE]
+[example]
 ====
-For example, in the AsciiISO Rice model sample document
+For example, in the Metanorma ISO Rice model sample document
 formula B.1 is defined in Annex B.6, and is referenced in B.6 and B.7.
 
-In the Rice model document published by ISO, both instances are cited as "Formula (B.1)".
+In the Rice model document published by ISO, both instances are cited as "`Formula (B.1)`".
 However, Metanorma follows ISO/IEC DIR 2 in citing the former
-as "Formula (B.1)", but the latter as "B.6, Formula (B.1)".
+as "`Formula (B.1)`", but the latter as "`B.6, Formula (B.1)`".
 
-In this sense, Metanorma is "more royalist than the king" in applying formatting rules and
+In this sense, Metanorma is "`more royalist than the king`" in applying formatting rules and
 validation—which is what you would want of a computer-based tool.
 ====
 
@@ -985,6 +984,20 @@ are all taken care of by Metanorma; the document author needs only give the item
 in the AsciiDoc source
 (e.g. `\<<``formulaB-1``>>` generates either "`Formula (B.1)`" or "`B.6, Formula (B.1)`",
 depending on where in the document it occurs.)
+
+
+[[text-ref-allowed-anchors]]
+=== Anchor ID syntax
+
+Anchor IDs of any type (cross-references, items, bibliographies, etc.) are directly
+converted into XML, and therefore *must not* contain the following:
+
+* colons
+* whitespaces or;
+* words starting with numbers.
+
+These cases are not supported in XML; permitted characters are specified by the link:https://www.w3.org/TR/xml-names11/#NT-NCName[NCName attribute for Namesapece Declaration].
+
 
 === Localities
 
@@ -1000,12 +1013,15 @@ as part of the cross-reference text.
 
 NOTE: This differs from the normal AsciiDoc treatment of custom text.
 
+[example]
+====
 EXAMPLE: "`ISO 7301, Clause 2, Table 1a, pp. 7-9`" would be expressed as:
 
 [source,asciidoc]
 --
 <<ISO7301,clause=2,table=1a,page=7-9>>
 --
+====
 
 See link:bibliography#localities[localities and locality values].
 
@@ -1026,12 +1042,15 @@ Hyperlinks to URIs can have alt text, which is used in accessibility (correspond
 `a@title` attribute). This is specified by appending `,title=...` after the text in the
 URL macro in AsciiDoc:
 
+[example]
+====
 [source,asciidoc]
 --
 http://www.example.com[text to go into the hyperlink]
 
 http://www.example2.com[text to go into the second hyperlink,title=This is a tooltip for the link]
 --
+====
 
 === Cross-references to external documents
 
