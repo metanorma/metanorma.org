@@ -176,15 +176,17 @@ Identifier embedded into a document type-specific external URL.
 `:previous-uri:`::
 URI of previous version of the document.
 
-`:docnumber:` The document number assigned to the OGC document (without the "OGC" prefix).
-The document number is formulated following the following rules:
-
-* The final two digits of the year are used at the start of the number (YY).
-* A three digit number is assigned sequentially for each document in the year (NNN).
-* The first edition of a document has the document number YY-NNN; for example, `00-027` is OGC document 027 first published in 2000.
+`:docnumber:`::
+The document number assigned to the OGC document (without the "`OGC`" prefix). +
++
+The number is formulated following the following rules:
++
+* The final two digits of the year are used at the start of the number (`YY`).
+* A three digit number is assigned sequentially for each document in the year (`NNN`).
+* The first edition of a document has the document number `YY-NNN`; for example, `00-027` is OGC document 027 first published in 2000.
 * Minor editorial changes and corrigenda do not result in a change to the document number
-* The YY-NNN identifier for a document (the document number root) is maintained if the document undergoes content changes (revisions). These revisions are numbered sequentially, and are indicated with `r` followed by the revision number. So `05-020r27` is revision 27 of OGC document 020 first published in 2005. (Revision 27 may appear years later than 2005.)
-* A major version of a document receives a new document number, including likely a new year.
+* The `YY-NNN` identifier for a document (the document number root) is maintained if the document undergoes content changes (revisions). These revisions are numbered sequentially, and are indicated with `r` followed by the revision number. So `05-020r27` is revision 27 of OGC document 020 first published in 2005. (Revision 27 may appear years later than 2005.)
+* A new major version of a document receives a new document number, including likely a new year.
 
 === Mapping to OGC legacy AsciiDoc
 
@@ -504,7 +506,7 @@ Requirement Class [added in https://github.com/metanorma/metanorma-ogc/releases/
 ========
 
 Embedded requirements (such as are found within Requirement Classes) will automatically
-insert cross-references to the non-embedded requirements with the same 
+insert cross-references to the non-embedded requirements with the same
 label [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.8]:
 
 [source,asciidoc]
