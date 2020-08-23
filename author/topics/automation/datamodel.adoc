@@ -2,18 +2,254 @@
 layout: author-docs
 ---
 
-= Generating plantuml diagrams from YAML data
+= Datamodel plugin: data model diagrams and attribute tables
 
 == Purpose
 
-The `datamodel_diagram` and `datamodel_attributes_table` blocks lets you generate plantuml diagrams
-or model attributes table from a separate YAML file.
+The "`datamodel`" plugin allows you to include UML data models
+in the document, represented in diagrams with their attributes
+described in text.
 
-== Syntax datamodel_attributes_table
+The datamodel plugin uses a model-view structure, allowing
+the separate definition of the models themselves and the
+views that render them.
 
-=== Defining the macro
+Metanorma's "`Datamodel YAML format`" let you:
 
-A `datamodel_attributes_table` macro is created with the following syntax.
+* Define UML models ("`Model yaml`")
+* Create diagrams that utilize those models ("`View yaml`")
+
+Metanorma provides two macros for this purpose:
+
+* `datamodel_attributes_table` for generating model attributes in table form;
+* `datamodel_diagram` for generating UML diagrams.
+
+
+== Model definition
+
+=== Model YAML specification
+
+The Model YAML format covers the following UML elements:
+
+* Class
+* Attribute, AttributeCardinality
+* Relation, Relationship, RelationshipEnd, RelationshipEndAttribute, RelationAction
+
+
+==== Class / Top-level
+
+[options="header"]
+|===
+|YAML Key |Data type |Required? |Description
+
+|`name`
+|`String`
+|false
+|
+Defaults to `<model_name>` (name of the Model YAML File).
+
+|`modelType`
+|`Enum{"class", "enum"}`
+|true
+|
+An enumeration value to specify the type of model.
+
+|`type`
+|`String`
+|false
+|
+Defaults to empty. If specified, stereotype of the model in UML.
+
+EXAMPLE: in `class System <<Singleton>>`, Singleton is the stereotype of the class,
+i.e. the value of this key.
+
+|`definition`
+|`AsciiDoc`
+|false
+|
+Defaults to empty. Textual definition of this model in Metanorma AsciiDoc.
+
+|`attributes`
+|`Map<String, ModelAttribute>`
+|false
+|
+Collection of attributes of this class. Value of this key is a map of attribute names to `ModelAttribute` objects.
+
+|`values`
+|`Map<String, EnumValue>`
+|Conditional
+|
+Only for models of `modelType` as `enum` and must be set in this case.
+
+|`relations`
+|`Array<Relation>`
+|false
+|
+Collection to specify the association of a model to another model.
+
+|===
+
+
+==== Attribute
+
+[options="header"]
+|===
+|YAML Key |Data type |Required? |Description
+
+|`definition`
+|`AsciiDoc`
+|false
+|
+Defaults to the text "`TODO: <todo_message>`".
+Textual description shown as definition in the attributes table for this attribute.
+
+|`type`
+|`String`
+|true
+|
+Name of another model to specify the data type of this `ModelAttribute` object.
+
+|`cardinality`
+|`AttributeCardinality`
+|false
+|
+The min/max occurrences of the attribute.
+
+|===
+
+==== AttributeCardinality
+
+[options="header"]
+|===
+|YAML Key |Data type |Required? |Description
+
+|`min`
+|`Integer/String`
+|false
+|
+Minimum cardinality of this attribute. Defaults to `1`. The String value of `*` denotes infinite occurrences.
+
+|`max`
+|`Integer/String`
+|false
+|
+Maximum cardinality of this attribute. Defaults to `1`. The String value of `*` denotes infinite occurrences.
+
+|===
+
+==== Relation
+
+[options="header"]
+|===
+|YAML Key |Data type |Required? |Description
+|`target`
+|`String`
+|true
+|
+Name of the associated model. MUST match name of the associated model for proper association in UML.
+
+|`relationship`
+|`Relationship`
+|false
+|
+Specifies the actual relationship between the source and target model.
+
+|`action`
+|`RelationAction`
+|false
+|
+Specifies the label on relations in a UML relationship.
+
+|===
+
+
+==== Relationship
+
+[options="header"]
+|===
+|YAML Key |Data type |Required? |Description
+
+|`source`
+|`RelationshipEnd`
+|false
+|
+Specifies the actual relationship of the source model to the target model.
+
+|`target`
+|`RelationshipEnd`
+|false
+|
+Specifies the actual relationship of the target model to the source model.
+
+|`association`
+|`String`
+|false
+|
+Type of the intermediate model between the source model and the target model.
+
+|===
+
+==== RelationshipEnd
+
+[options="header"]
+|===
+|YAML Key |Data type |Required? |Description
+
+|`type`
+|`Enum{"inheritance", "aggregation", "composition", "direct"}`
+|false
+|
+Specifies the type of association in UML.
+
+|`attribute`
+|`Map<String, RelationshipEndAttribute>`
+|false
+|
+Specifies the attribute of association in UML.
+Key value pair where the key is the attribute name and the value is the data of
+the attribute.
+
+|===
+
+==== RelationshipEndAttribute
+
+[options="header"]
+|===
+|YAML Key |Data type |Required? |Description
+
+|`cardinality`
+|`AttributeCardinality`
+|false
+|
+Specifies the min/max occurrences of the attribute.
+
+|===
+
+==== RelationAction
+
+[options="header"]
+|===
+|YAML Key |Data type |Required? |Description
+
+|`verb`
+|`String`
+|true
+|
+Specifies the text of the label in UML.
+
+|`direction`
+|`Enum{"source", "target"}`
+|true
+|
+Specifies the direction of the arrow of the label in UML.
+
+|===
+
+
+=== Rendering the data model attribute table
+
+The `datamodel_attributes_table` command generates a table of
+all attributes of a certain class in a Model YAML.
 
 [source,adoc]
 --
@@ -22,131 +258,10 @@ A `datamodel_attributes_table` macro is created with the following syntax.
 
 Where:
 
-* `{YAML file path}` is the location of the YAML file that contains model to be represented. Location of the YAML file is computed relative to the source directory that `[datamodel_attributes_table]` is used (e.g., if `[datamodel_attributes_table,data.yaml]` is invoked in an `.adoc` file located at `/foo/bar/doc.adoc`, the data file is expected to be found at `/foo/bar/data.yaml`);
+* `{YAML file path}` is the location of the YAML file that contains model to be represented. Location of the YAML file is computed relative to the source directory that `[datamodel_attributes_table]` is used (e.g., if `[datamodel_attributes_table,data.yaml]` is invoked in an `.adoc` file located at `foo/bar/doc.adoc`, the data file is expected to be found at `foo/bar/data.yaml`).
 
-=== Datamodel model file attributes
 
-[options="header"]
-|===
-|Attribute  |Type                        |Mandatory?  |Description
-|name       |String                      |false       |If the attribute is not
-specified, <model_name> will be set as the value of the attribute.
-|modelType  |Enum{"class", "enum"}       |true        |An enumeration value to
-specify the type of model.
-|type       |String                      |false       |If the attribute is
-specified, it will become the stereotype of the model in UML.
-
-Example: class System \<<Singleton>>, Singleton is the stereotype of the class,
-i.e. the value of this attribute.
-|definition |AsciiDoc                    |false       |The value of this
-attribute is the textual definition to be rendered to the metanorma-standoc
-document. It can be written in the metanorma-standoc format. If the attribute
-is not specified, empty definition will be rendered to the document.
-|attributes |Map<String, ModelAttribute> |false       |This attribute acts as a
-collection of attributes of a model. The value of this attribute is a map
-between attribute names and "ModelAttribute" objects.
-|values     |Map<String, EnumValue>      |Conditional |This attribute is only
-available for models of "modelType" as "enum". When available, this attribute
-is MANDATORY.
-|relations  |Array<Relation>             |false       |This attribute acts as a
-collection to specify the association of a model to another model.
-|===
-
-==== ModelAttribute's attributes
-
-[options="header"]
-|===
-|Attribute   |Type                        |Mandatory? |Description
-|definition  |AsciiDoc                    |false      |If it is NOT specified,
-it will result in a "TODO: <todo_message>" as definition in the attributes
-table of the metanorma-standoc document. The value of this attribute is the
-textual definition to be rendered to the attributes table of the document. It
-can be written in the metanorma-standoc format.
-|type        |String                      |true       |The value of this
-attribute is the name of another model to specify the data type of this
-ModelAttribute object.
-|cardinality |AttributeCardinality        |false      |Its value is to specify
-the min/max occurrences of the attribute.
-|===
-
-==== AttributeCardinality's attributes
-
-[options="header"]
-|===
-|Attribute    |Type           |Mandatory? |Description
-|min          |Integer/String |false      |Its value is to specify the minimum
-cardinality of the attribute. If it is NOT specified, the value will be 1. The
-String value of "*" denotes infinity occurrences.
-|max          |Integer/String |false      |Its value is to specify the maximum
-cardinality of the attribute. If it is NOT specified, the value will be 1. The
-String value of "*" denotes infinity occurrences.
-|===
-
-==== Relation's attributes
-
-[options="header"]
-|===
-|Attribute    |Type                        |Mandatory? |Description
-|target       |String                      |true       |The value of this
-attribute is the name of the associated model. It MUST exact match to the name
-of the associated model to associate properly in UML.
-|relationship |Relationship                |false       |The value of this
-attribute is to specify the actual relationship between the source and target
-model.
-|action       |RelationAction              |false       |Its value is to
-specify the label on relations in UML.
-|===
-
-==== Relationship's attributes
-
-[options="header"]
-|===
-|Attribute    |Type                        |Mandatory? |Description
-|source       |RelationshipEnd             |false       |Its value is to
-specify the actual relationship of the source model to the target model.
-|target       |RelationshipEnd             |false       |Its value is to
-specify the actual relationship of the target model to the source model.
-|association  |String                      |false       |Its value is the type
-of the intermediate model between the source model and the target model.
-|===
-
-==== RelationshipEnd's attributes
-
-[options="header"]
-|===
-|Attribute    |Type                                  |Mandatory? |Description
-|type         |Enum{"inheritance", "aggregation", "composition",
-"direct"}                                            |false      |Its value is to
-specify the type of association in UML.
-|attribute    |Map<String, RelationshipEndAttribute> |false      |Its value is a
-key value pair where the key is the attribute name and the value is the data of
-the attribute. It specifies the attribute of association in UML.
-|===
-
-==== RelationshipEndAttribute's attributes
-
-[options="header"]
-|===
-|Attribute   |Type                        |Mandatory? |Description
-|cardinality |AttributeCardinality        |false      |Its value is to specify
-the min/max occurrences of the attribute.
-|===
-
-==== RelationAction's attributes
-
-[options="header"]
-|===
-|Attribute   |Type                     |Mandatory? |Description
-|verb        |String                   |true       |Its value is to specify the
-text of the label in UML.
-|direction   |Enum{"source", "target"} |true       |Its value is to specify the
-direction of the arrow of the label in UML.
-|===
-
-=== Render results
-
-`datamodel_attributes_table` macro will transform given model yaml file into the following format:
-
+The command transforms the given model YAML file into the following format:
 
 [source,adoc]
 --
@@ -180,19 +295,124 @@ direction of the arrow of the label in UML.
 
 Where:
 
-* `{name}`, `{definition}` - attributes with the same name from supplied yaml model file
-* `{file_name}` - name of the model yaml file without the extention.
-* `{attribute}` - element of `attributes` list from yaml file(if one is present)
-* `{value}` - element of `values` list from yaml file(if one is present)
-* `{"O" || "M"}` - depending on attribute`s element `cardinality.min` field, if `cardinality.min` equal to `0` then `O` else `M`
-* `{"O" || "M"}` - depending on attribute`s element `cardinality.max` field, if `cardinality.max` equal to `*` then `N` else `1`
+* `{name}`, `{definition}` - attributes with the same name from supplied YAML model file
+* `{file_name}` - name of the model YAML file without the extension.
+* `{attribute}` - element of `attributes` list from YAML file(if one is present)
+* `{value}` - element of `values` list from YAML file(if one is present)
+* `{"O" || "M"}` - depending on attribute's element `cardinality.min` field, if `cardinality.min` equal to `0` then `O` else `M`
+* `{"O" || "M"}` - depending on attribute's element `cardinality.max` field, if `cardinality.max` equal to `*` then `N` else `1`
 
 
-== Syntax datamodel_diagram
 
-=== Defining the macro
 
-A `datamodel_diagram` macro is created with the following syntax.
+
+== View definition
+
+=== View YAML specification
+
+The View YAML format is used to specify diagrams using Model YAMLs.
+
+==== Top-level
+
+[options="header"]
+|===
+|YAML Key |Data type |Required? |Description
+
+|`name`
+|`String`
+|true
+|
+Unique name to identify this diagram for internal processing.
+
+|`caption`
+|`AsciiDoc`
+|false
+|
+Specifies the caption under the image of the diagram in the document.
+
+|`imports`
+|`Map<String, ModelFidelity>`
+|false
+|
+Map between model YAML paths (`<model_path>/<model_name>`) and "`Model Fidelity`" objects.
+The specified models in the model YAML paths will be imported into this diagram.
+
+|`relations`
+|`Array<Relation>`
+|false
+|
+A collection of relations in this diagram.
+Used to aid rendering of the models by specifying hidden lines with direction.
+
+|`fidelity`
+|`ViewFidelity`
+|false
+|
+Specifies the type of details to be rendered in the diagram.
+
+|===
+
+==== ModelFidelity
+
+[options="header"]
+|===
+|YAML Key |Data type |Required? |Description
+
+|===
+
+==== RelationAction
+
+[options="header"]
+|===
+|YAML Key |Data type |Required? |Description
+
+|`target`
+|`String`
+|true
+|
+Name of the associated model. This must match the name
+of the associated model to be properly associated in UML.
+
+|`relationship`
+|`Relationship`
+|false
+|
+Specifies the relationship between the source and target model.
+
+|`action`
+|`RelationAction`
+|false
+|
+Specifies the label on relations in UML.
+
+|===
+
+==== ViewFidelity
+
+[options="header"]
+|===
+|YAML Key |Data type |Required? |Description
+
+|`hideMembers`
+|`Boolean`
+|false
+|
+Specifies whether model attributes and their definitions should be rendered in
+the diagram.
+
+|`hideOtherClasses`
+|`Boolean`
+|false
+|
+Specifies whether related models other than the imported ones should be rendered in
+the diagram.
+
+|===
+
+
+=== Rendering the data model diagram in the document
+
+The `datamodel_diagram` command renders a UML diagram specified in a View YAML file.
 
 [source,adoc]
 --
@@ -201,65 +421,9 @@ A `datamodel_diagram` macro is created with the following syntax.
 
 Where:
 
-* `{YAML file path}` is the location of the YAML file that contains view to be rendered. Location of the YAML file is computed relative to the source directory that `[datamodel_diagram]` is used (e.g., if `[datamodel_diagram,data.yaml]` is invoked in an `.adoc` file located at `/foo/bar/doc.adoc`, the data file is expected to be found at `/foo/bar/data.yaml`);
-* `{include path}` - optional attribute that tells where to find models file to import(`imports` attribute).
+* `{YAML file path}` is the location of the View YAML file. Location of the YAML file is computed relative to the source directory that `[datamodel_diagram]` is used (e.g., if `[datamodel_diagram,data.yaml]` is invoked in an `.adoc` file located at `/foo/bar/doc.adoc`, the data file is expected to be found at `/foo/bar/data.yaml`);
 
-=== Datamodel view file attributes
+* `{include path}`, optional attribute that tells where to find models file to import (`imports` key).
 
-[options="header"]
-|===
-|Attribute |Type                       |Mandatory? |Description
-|name      |String                     |true       |It is to uniquely
-identify among the views for the internal processing of the datamodels.
-|caption   |AsciiDoc                   |false      |Its value is to specify
-the caption under the image of the data model in the document.
-|imports   |Map<String, ModelFidelity> |false      |Its value is a map
-between "<model_path>/<model_name>" strings and "Model Fidelity" objects. By
-specifying the key "<model_path>/<model_name>" in the map, the corresponding
-model will be imported into the UML diagram.
-|relations |Array<Relation>            |false      |The "Relation" objects in
-this attribute are the same as that of the attribute "relations" of a model.
-The  purpose of this attribute is to aid the rendering of the models by
-specifying hidden lines with direction.
-|fidelity  |ViewFidelity               |false      |Its value is to specify
-what details to be rendered in the UML diagram
-|===
+The `caption` key in the View YAML file will be used as caption text for diagram image figure, if available.
 
-==== ModelFidelity's attributes
-
-[options="header"]
-|===
-|Attribute    |Type                    |Mandatory? |Description
-|===
-
-==== RelationAction's attributes
-
-[options="header"]
-|===
-|Attribute    |Type                        |Mandatory? |Description
-|target       |String                      |true       |The value of this
-attribute is the name of the associated model. It MUST exact match to the name
-of the associated model to associate properly in UML.
-|relationship |Relationship                |false       |The value of this
-attribute is to specify the actual relationship between the source and target
-model.
-|action       |RelationAction              |false       |Its value is to
-specify the label on relations in UML.
-|===
-
-==== ViewFidelity's attributes
-
-[options="header"]
-|===
-|Attribute        |Type                 |Mandatory? |Description
-|hideMembers      |Boolean              |false      |Its value is to specify
-whether the attributes of models and their definitions should be rendered in
-the UML diagram.
-|hideOtherClasses |Boolean              |false      |Its value is to specify
-whether the related models other than the imported ones should be rendered in
-the UML diagram.
-|===
-
-=== Render results
-
-`datamodel_diagram` macro will generate plantuml block from supplied params. `caption` attribute(if present) will be used as caption text for diagram image figure.
