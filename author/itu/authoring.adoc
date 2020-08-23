@@ -68,7 +68,7 @@ The identifier for the document, including the series, the document number, and 
 but excluding the bureau. For instance, `H.781`, `G.108.2`, `G.709/Y.1331`.
 
 `:series:`::
-Series that the recommendation belongs to. Use full title, for example:
+Series that the Recommendation belongs to. Use full title, for example:
 "`H: Audiovisual and Multimedia Systems`"
 
 `:series1:`::
@@ -178,28 +178,35 @@ Year that Project workgroup study period ended.
 === Recommendation Status
 
 `:recommendation-from:`::
-Date from which recommendation status applies
+Date from which Recommendation status applies
 
 `:recommendation-to:`::
-Date to which recommendation status applies
+Date to which Recommendation status applies
 
 `:approval-process:`::
-Approval Process for recommendation status. Legal values are:
+Approval Process for Recommendation status. Legal values are:
 +
 --
-* `tap`: Traditional Approval Process (TAP), as described in https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1, Section 9].
-* `aap`: Alternative Approval Process (AAP), as described in https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8].
+* `tap`: Traditional Approval Process (TAP), as described in
+https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1, Section 9].
+
+* `aap`: Alternative Approval Process (AAP), as described in
+https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8].
 --
 
 `:approval-status:`::
-Approval status code for recommendation status. Legal values are:
+Approval status code for Recommendation status. Legal values are:
 +
 --
-* If `:approval-process:` is set to `tap`: (refer to https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1], Figure 9.1 "`Approval of new and revised Recommendations using TAP -- Sequence of events`")
+* If `:approval-process:` is set to `tap`: (refer to
+  https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1],
+  Figure 9.1 "`Approval of new and revised Recommendations using TAP -- Sequence of events`")
 ** `determined`: Determined
 ** `in-force`: In-force
 
-* If `:approval-process:` is set to `aap`: (refer to https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8], Figure 1 "`Sequence of Events`")
+* If `:approval-process:` is set to `aap`: (refer to
+  https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8],
+  Figure 1 "`Sequence of Events`")
 ** `a`: Approved
 ** `ac`: Approved with Substantial Changes
 ** `aj`: Additional Review Judgement
@@ -217,20 +224,23 @@ Approval status code for recommendation status. Legal values are:
 === Visual appearance
 
 `:smartquotes:`::
-In the rest of Metanorma, if this attribute is not supplied, quotes and apostrophes default to smart.
 In ITU, quotes and apostrophes default to straight.
+When this attribute is set, Metanorma will convert quotes and apostrophes to smart quotes and smart apostrophes.
+In the rest of Metanorma, if this attribute is not supplied, quotes and apostrophes default to "`smart`".
 
 `:legacy-do-not-insert-missing-sections:`::
-If set, do not insert the sections Scope, References, Definitions, Abbreviations and acronyms,
-Conventions if missing [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.11].
-Use this if you have a legacy recommendation document with clauses with names preceding this requirement
-(e.g. "Prerequisites", "Process", "General"), and you do not want the compulsory new sections
+If set, do not insert the sections "`Scope`", "`References`", "`Definitions`", "`Abbreviations and acronyms`",
+"`Conventions`" if missing [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.11]. +
++
+Use this if you have a legacy Recommendation document with clauses with names preceding this requirement
+(e.g. "`Prerequisites`", "`Process`", "`General`"), and you do not want the compulsory new sections
 to be added in at the start of the document.
 
 `:hierarchical-object-numbering:`::
 If set, do not numbering objects (tables, figures etc.) consecutively throughout the body of the
 document, but restart numbering with each clause
-(hierarchically) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.11].
+(hierarchically) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.11]. +
++
 Use in complex documents, with multiple tables or figures, that need to be tracked against
 clauses for ease of lookup (so _Figure 6-3, 6-4_, instead of _Figure 21, 22_.)
 Note that equations in ITU are always numbered hierarchically.
@@ -240,16 +250,16 @@ Note that equations in ITU are always numbered hierarchically.
 
 === Prefatory
 
-The summary sections of recommendations are marked up with the
+The summary sections of Recommendations are marked up with the
 style attribute `[abstract]`.
 
-The prefatory sections Summary,
-History,  [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16] Source,
+The prefatory sections "`Summary`",
+"`History`", [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16] Source,
 and the Keywords appear in the Word frontispiece.
 
 === Lists
 
-The ITU Author's guide specifies that ordered lists by default
+The "`ITU Author's Guide`" specifies that ordered lists by default
 should follow the following numbering scheme (which is also default to Metanorma):
 
 * _a), b), c),_
@@ -363,7 +373,7 @@ identifiers prefixed with `b-`:
 --
 
 ITU Supplements must be cited with the exact same abbreviation they appear as on the ITU
-web site, so that their reference deatils can be looked up online. That abbreviation
+web site, so that their reference details can be looked up online. That abbreviation
 can vary from the abbreviation used in documents: e.g. `ITU-T G Suppl. 41`,
 not (as in the Editing Guidelines) `ITU-T G-Sup.41`.
 
@@ -371,8 +381,12 @@ not (as in the Editing Guidelines) `ITU-T G-Sup.41`.
 
 ==== Title
 
-The internal terms section are recognised with the heading "`Terms defined in this Recommendation`".
-The external terms section are recognised with the heading "`Terms defined elsewhere`".
+The internal terms section is recognised with the heading
+"`Terms defined in this Recommendation`".
+
+The external terms section are recognised with the heading
+"`Terms defined elsewhere`".
+
 Setting the heading attribute of a title will also allow the internal and external terms
 section to be recognised [added in https://github.com/metanorma/isodoc/releases/tag/v1.2.0]:
 
@@ -384,26 +398,31 @@ section to be recognised [added in https://github.com/metanorma/isodoc/releases/
 
 ==== Boilerplate
 
-If no text appears at the start of the clauses and subclauses in the Definitions section,
-standard boilerplate is provided automatically:
+If no text appears at the start of the clauses and subclauses in
+the "`Definitions`" section, standard boilerplate is provided
+automatically:
 
-* If there is a terms subclause "`Terms defined elsewhere`", we must inject the text
+* If there is a terms subclause named "`Terms defined elsewhere`", the text
   "`This Recommendation uses the following terms defined elsewhere:`"
-  or "`None`", depending on whether any terms are present.
+  or "`None`" is provided, depending on whether any terms are present.
 
-* If there is a terms subclause "`Terms defined in this Recommendation`", we must
-  inject the text "`This Recommendation defines the following terms:`"
-  or "`None`", depending on whether any terms are present.
+* If there is a terms subclause named "`Terms defined in this Recommendation`",
+  the text "`This Recommendation defines the following terms:`" or "`None`"
+  is provided, depending on whether any terms are present.
 
-* If neither subclause appears (as is the case in https://www.itu.int/rec/T-REC-G.650.1/en[ITU G.650.1]
-  but not in the documents first sighted), we must inject at the top clause the text
-  "`This Recommendation defines the following terms:`".
+* If neither subclause appears
+  (as is the case in https://www.itu.int/rec/T-REC-G.650.1/en[ITU G.650.1]),
+  the text "`This Recommendation defines the following terms:`" is provided.
 
 === Abbreviations and acronyms
 
-Sections titled "Abbreviations and acronyms" are only recognised as such at the top level of sections,
-or if explicitly given as such with a heading attribute; otherwise they are treated as 
-normal sections [added in https://github.com/metanorma/isodoc/releases/tag/v1.2.1].
+"`Abbreviations and acronyms`" sections are recognized as such when:
+
+* A section titled "`Abbreviations and acronyms`" is given as a top-level section;
+* A section attribute of `[heading=Abbreviations and acronyms]` is explicitly given.
+
+Otherwise they are treated as normal
+sections [added in https://github.com/metanorma/isodoc/releases/tag/v1.2.1].
 
 === Tables
 
@@ -436,11 +455,13 @@ Indexes are not currently supported in Metanorma.
 
 === Cross-references
 
-Cross-references to clauses are in lowercase: "`see clause 4.1`". Metanorma will attempt to
-impose correct capitalisation for instances at the start of blocks and sentences, but it
-may well get it wrong; to override such capitalisation, you can use the
-the flags `capital%` or `lowercase%` as the content of the crossreference,
-to force that casing on the
+Cross-references to clauses are rendered in lowercase: "`see clause 4.1`".
+
+Metanorma will attempt to impose correct capitalisation for instances at
+the start of blocks and sentences, but it may get it wrong.
+
+To override such capitalisation, you can use the the flags `capital%`
+or `lowercase%` as the content of the crossreference, to force that casing on the
 cross-reference [added in https://github.com/metanorma/isodoc/releases/tag/v1.0.28]:
 
 [source,asciidoc]
