@@ -488,7 +488,7 @@ A < B
 
 which renders
 
-.Example of a block stem inequation in Metanorma.
+.Example of a block stem inequality in Metanorma.
 image::/assets/author/topics/document-format/text/fig-stem-inequality.png[]
 
 
@@ -684,9 +684,9 @@ be rendered in monospace font, and with spaces preserved:
 --
 [source,ruby]
 ----
-  def increment(x)
-    x + 1
-  end
+def increment(x)
+  x + 1
+end
 ----
 --
 
@@ -766,7 +766,7 @@ instead of using an automatically generated filename.
 
 === General
 
-The following document elements ("`assets`") are auto-numbered
+The following document elements ("`elements`") are auto-numbered
 by Metanorma, so users do not need to specify any numbering in
 their source documents:
 
@@ -778,14 +778,17 @@ their source documents:
 * permissions, recommendations and requirements.
 
 The conventions for numbering vary by Metanorma flavour, but the
-default is to number all assets consecutively in the main body of a document, and
+default is to number all elements consecutively in the main body of a document, and
 separately in each Annex/Appendix, prefixed bt the Annex/Appendix number.
 
 === Multi-level numbering
 
-Auto-numbering numbers assets consecutively. Some times, more than one level of numbering
-is required for a sequence of assets; e.g. _17a_, _17b_. To indicate that, all assets
-in the subsequence are assigned the same `subsequence` attribute:
+Metanorma's auto-numbering functionality assigns numbers to elements consecutively.
+Sometimes, more than one level of numbering is required for a sequence of elements;
+for instance, _17a_, _17b_.
+
+To indicate that, all elements in the subsequence are assigned the same
+`subsequence` attribute:
 
 [source,asciidoc]
 --
@@ -832,7 +835,7 @@ ____
 
 === Unnumbered elements
 
-Sometimes an asset needs to be excluded from auto-numbering.
+Sometimes a document element needs to be excluded from auto-numbering.
 This is achieved by giving it the option attribute `%unnumbered`:
 
 [source,asciidoc]
@@ -862,9 +865,10 @@ stem:[forall v_{i}] *bounce* stem:[v_{i}] off the wall
 ----
 --
 
+
 === Prevention of double-numbering
 
-If an asset is included in a block type that is already subject to numbering,
+If a document element is included in a block type that is already subject to numbering,
 it will be excluded from auto-numbering.
 
 This means that tables, sourcecode and pseudocode, and figures are
@@ -873,15 +877,20 @@ examples, requirements, recommendations, permissions, tables, figures,
 sourcecode and pseudocode.
 {blank}[added in https://github.com/metanorma/isodoc/releases/tag/v1.0.11]
 
+
 === Override numbering
 
-There are circumstances when autonumbering of assets needs to be overriden; 
-e.g. numbering out of sequence in updated documents. To address such use cases, 
-assets can have an optional `number`
+There are circumstances when auto-numbering of elements needs to be overriden;
+for instance, numbering out of sequence in updated documents.
+
+In these cases, elements can be given an optional `number`
 attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1],
-giving a required asset number to override autonumbering. Any assets subsequent 
-to that asset will be autonumbered so as to follow the previous asset, so long as
-the supplied number belongs to the same sequence. 
+assigning a required document element number to override auto-numbering.
+
+Elements subsequent to that element will be auto-numbered so as to
+follow the previous element, so long as the supplied number belongs
+to the same sequence.
+
 For subsequences, number shall have only subsequence scope.
 
 [source,asciidoc]
@@ -895,7 +904,7 @@ for (i = 0; i < n; i++) { bounce(v[i], wall) }
 
 == Cross-references
 
-Cross-references are realised in Metanorma AsciiDoc by assigning an anchor
+Cross-references are realized in Metanorma AsciiDoc by assigning an anchor
 to the block to be referenced, and writing a cross-reference containing
 that anchor ID:
 
@@ -1021,7 +1030,7 @@ Admonitions (NOTE, IMPORTANT, WARNING, CAUTION etc.) can be
 stated to apply to the entire document by moving them to the
 start of the document body (before the main sequence of clauses).
 
-This can be done by giving them the attribute 
+This can be done by giving them the attribute
 `beforeclauses=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.30].
 
 This attribute will encode the admonition(s) as applicable to the entire document.
