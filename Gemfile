@@ -27,6 +27,8 @@ group :jekyll_plugins do
   gem "jekyll-redirect-from"
   gem "git"
   gem "jekyll-theme-open-project-helpers"
+  gem "kramdown-parser-gfm"
+  gem "kramdown-syntax-coderay"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
