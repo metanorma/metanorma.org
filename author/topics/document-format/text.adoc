@@ -119,13 +119,24 @@ EXAMPLE:
 
 === Avoiding page breaks
 
-Most blocks support the boolean attributes `keep-with-next` and 
-`keep-lines-together` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1]:
+The "`keep with next`" feature is useful if you want to indicate that
+a document element must belong on the same page with another element.
+Kind of like the opposite of a "`page break`".
+
+Most blocks support the boolean attributes `keep-with-next` and
+`keep-lines-together` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
+
+The following syntax indicates that these two paragraphs will always be
+presented on the same page, even if the textual layout allows them to be
+split into two pages.
 
 [source,asciidoc]
 --
 [keep-with-next=true]
-This is a paragraph
+This is a paragraph.
+
+This is a paragraph that will be on the same page as the
+immediately previous one.
 --
 
 
