@@ -49,26 +49,39 @@ The permitted types are: `proposal`,
 `working-draft`, `committee-draft`, `draft-standard`, `final-draft`,
 `published`, `withdrawn`.
 
-`:committee:`:: The name of the relevant UN committee (mandatory). For example,
-  `United Nations Centre for Trade Facilitation and Electronic Business (UN/CEFACT)`
+`:committee:`:: The name of the relevant UN committee (mandatory).
++
+[example]
+====
+EXAMPLE: `United Nations Centre for Trade Facilitation and Electronic Business (UN/CEFACT)`
+====
 
-`:language:` :: The language(s) of the document. This is the language in which the document
-has been issued, not the language(s) in which it has been submitted. ISO 639-1 codes are used
-for languages, and they are comma-delimited. If not specified, the six official languages of the
-UN are assumed: Arabic, Chinese, English, French, Russian and Spanish (`ar,zh,en,fr,ru,es`).
+`:language:` :: The language(s) of the document in ISO 639-1 codes, comma-delimited.
+The language in which the document has been issued, not the language(s) in which it has been submitted.
+This value defaults to the six official languages of the
+UN: Arabic, Chinese, English, French, Russian and Spanish
+(i.e. `ar,zh,en,fr,ru,es`).
 
 `:toc:` :: Include table of contents in Word output.
 (The "`Table of contents`" is always included in HTML output.)
 
 `:distribution:`::
 Extent of distribution allowed.
-For example: `General`.
++
+[example]
+====
+EXAMPLE: `General`
+====
 
 === Recommendations
 
 `:docnumber:`::
 The document number if the document is a Recommendation (required only for Recommendations).
-For example, specify `42` for Recommendation 42.
++
+[example]
+====
+EXAMPLE: Specify `42` for Recommendation 42.
+====
 
 `:submissionlanguage:`::
 The language(s) in which the document was originally submitted.
@@ -79,16 +92,27 @@ ISO-639-1 codes are used for languages. Multiple languages can be comma-delimite
 
 `:session-date:`::
 The session where this document will be discussed.
-For example, _Geneva, 30 April – 1 May 2018_
++
+[example]
+====
+EXAMPLE: _Geneva, 30 April – 1 May 2018_
+====
 
 `:item-number:`::
-  Number of the agenda item this document belongs to.
-  For example, _Item 6 of the provisional agenda_.
-  - If the document corresponds to multiple items, they are comma-delimited.
-  - If the document belongs to multiple subitems under a single item,
-    following
-    http://dd.dgacm.org/editorialmanual/ed-guidelines/format/Model_mast21.pdf[editorial practice of th UN],
-    give the item and subitems identifiers here.
+Number of the agenda item this document belongs to.
++
+--
+* If the document corresponds to multiple items, they are comma-delimited.
+* If the document belongs to multiple subitems under a single item,
+  following
+  http://dd.dgacm.org/editorialmanual/ed-guidelines/format/Model_mast21.pdf[editorial practice of th UN],
+  give the item and subitems identifiers here.
+--
++
+[example]
+====
+EXAMPLE: Specify `6` for _Item 6 of the provisional agenda_.
+====
 
 `:item-name:`::
 Name of the agenda item this document belongs to.
@@ -99,17 +123,27 @@ Name of the agenda subitem this document belongs to.
 If the document corresponds to multiple subitems, they are comma-delimited.
 
 `:collaborator:`::
-Collaborator of this document, if any. For example, `World Economic Forum`
+Collaborator of this document, if any.
++
+[example]
+====
+EXAMPLE: `World Economic Forum`
+====
 
 `:agenda-id:`::
 The unique identifier of this agenda item.
-For example, `ECE/TRADE/C/CEFACT/2018/6`.
-If there are multiple agenda items or subitems, given them comma-delimited.
+If there are multiple agenda items or subitems, give them comma-delimited.
++
+[example]
+====
+EXAMPLE: `ECE/TRADE/C/CEFACT/2018/6`
+====
 
 `:item-footnote:`::
 Footnoted reference to item, if item is on the preliminary list or the provisional agenda.
 
 === General
+
 `:do-not-number-subheadings:`::
 If this attribute is present, headings are numbered in the document, but subheadings
 are not [added in https://github.com/metanorma/metanorma-un/releases/tag/v0.3.9].
