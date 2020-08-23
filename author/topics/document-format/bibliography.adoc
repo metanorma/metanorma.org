@@ -96,7 +96,7 @@ and "`Informative references`" are separate, where the
 [bibliography]
 == Informative references
 
-* [[[idn, n]]], _First informative reference_ 
+* [[[idn, n]]], _First informative reference_
 ...
 
 --
@@ -421,10 +421,12 @@ for example:
 
 === Anchors
 
-Exceptionally, the "anchor" locality is only used in HTML, to generate 
+Exceptionally, the `anchor` locality is only used in HTML, to generate
 anchor links to other HTML pages [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
 It is intended for use with bibliographic anchors linking to URLs (`repo()`):
-see <<hyperlink-biblio>>. So
+see <<hyperlink-biblio>>.
+
+The following input:
 
 [source,asciidoc]
 --
@@ -435,12 +437,13 @@ see <<hyperlink-biblio>>. So
 * [[[ISO7301,path(./iso7301.html,ISO 7301)]]]
 --
 
-will render in HTML as
+will render in HTML as:
 
 [source,html]
--- 
+--
 <a href="./iso7301.html#xyz">ISO 7301, Clause 2, Table 1a, page 7-9</a>
 --
+
 
 [[autofetch]]
 == Automatic reference fetching ("auto-fetch")
@@ -479,17 +482,19 @@ ____
 
 === Other databases
 
-Metanorma allows bibliographic entries to be specified for retrieval from arbitrary 
-databases [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1],
-with the syntax 
+Metanorma allows bibliographic entries to be specified for retrieval from arbitrary
+databases [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
+
+This is achieved with the following syntax:
 
 [source,asciidoc]
 --
 * [[[anchor,repo:(repository-name/document-entry,document-identifier)]]]
 --
 
-This retrieves item "document-entry" from repository "repository-name"; the document
+This retrieves item `document-entry` from repository `repository-name`; the document
 identifier "document-identifier" is retained in order for citations to remain well-formed.
+
 Bibliographical information about the entry is *not* auto-fetched via Relaton.
 
 By default, `repo:(repository-name/document-entry)` is left in the Metanorma XML as
@@ -499,8 +504,9 @@ a document identifier, of type "repo"; it will typically be resolved in post-pro
 === HTML links
 
 Metanorma allows bibliographic entries to be specified by either relative or absolute
-hyperlink [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1],
-with the syntax
+hyperlink [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
+
+This is achieved with the following syntax:
 
 [source,asciidoc]
 --
@@ -508,12 +514,12 @@ with the syntax
 --
 
 As with `repo:()` bibliographic entries, the document
-identifier "document-identifier" is retained in order for citations to remain well-formed.
+identifier `document-identifier` is retained in order for citations to remain well-formed.
+
 Bibliographical information about the entry is *not* auto-fetched via Relaton. Instead,
-if the hyperlink is local, Metanorma will look for an XML or RXL (Metanorma XML or
-Relaton XML) file at the nominated location with the same filename, and read in the
+if the hyperlink is local, Metanorma will look for an XML (Metanorma XML) or
+RXL (Relaton XML) file at the nominated location with the same filename, and read in the
 bibliographic metadata from there.
 
-All citations of this entry in the document (referencing "anchor") will be rendered with
+All citations of this entry in the document (referencing `anchor`) will be rendered with
 the hyperlink in HTML.
-

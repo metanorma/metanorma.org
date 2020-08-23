@@ -888,12 +888,15 @@ Normally in AsciiDoc, any text in a cross-reference that follows a comma
 constitutes custom text for the cross-reference.
 
 So a cross-reference `\<<ISO7301,the foregoing reference>>`
-would be rendered as "the foregoing reference", and hyperlinked to the `ISO7301` reference.
+would be rendered as "`the foregoing reference`", and hyperlinked to the `ISO7301` reference.
 
 In Metanorma AsciiDoc cross-references, bibliographic localities
 (e.g. page numbers, clause numbers) can be added directly after the comma,
-as part of the cross-reference text. This overrides the normal AsciiDoc treatment of custom text.
-For example, "ISO 7301, Clause 2, Table 1a, pp. 7-9" would be expressed as:
+as part of the cross-reference text.
+
+NOTE: This differs from the normal AsciiDoc treatment of custom text.
+
+EXAMPLE: "`ISO 7301, Clause 2, Table 1a, pp. 7-9`" would be expressed as:
 
 [source,asciidoc]
 --
@@ -928,11 +931,13 @@ http://www.example2.com[text to go into the second hyperlink,title=This is a too
 
 === Cross-references to external documents
 
-Under link:bibliography#localities[localities and locality values],
-we saw that anchors can be integrated in citations of documents via references.
+In link:bibliography#localities[localities and locality values],
+anchor can be integrated in citations of documents via references.
 
-Outside of that, Metanorma will process cross-references to anchors within external documents
-just like AsciiDoc would normally. For example,
+Outside of that, Metanorma will process cross-references to anchors within
+external documents just like typical AsciiDoc.
+
+EXAMPLE:
 
 [source,asciidoc]
 --
