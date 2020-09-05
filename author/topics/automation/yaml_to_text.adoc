@@ -16,7 +16,7 @@ from a separate YAML file into the document. [added in https://github.com/metano
 
 == Expressions
 
-There are only two kinds of expressions:
+Before (metanorma-standoc 1.5.3 release)[https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3] there were only two kinds of expressions:
 
 * rendering expressions: for string interpolation (single argument, e.g. `{x}`)
 * control flow expressions: for directives to modify processing flow (more than one argument, e.g. `{x,y}`)
@@ -39,10 +39,18 @@ Control flow expressions:
 * Allows control over enumerable items: arrays and objects
 * Provides locality context within enumerators
 
+In https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3[metanorma-standoc 1.5.3 release] support for liquid expressions was added. yaml2text now supports all liquid default https://shopify.github.io/liquid/basics/introduction/[syntax] expressions:
 
+* variables, variable assignment
+* flow control(if/case)
+* filters
+* loops
+
+See https://shopify.github.io/liquid/basics/introduction/ for the full description of liquid tags and expressions.
 
 == Syntax
 
+[[defining_syntax]]
 === Defining the block
 
 A `yaml2text` block is created with the following syntax.
@@ -68,7 +76,7 @@ Where:
 
 === Interpolation
 
-`yaml2text` takes an interpolation syntax that is similar to that of AsciiDoc with curly braces `{ }`.
+`yaml2text` takes an interpolation syntax that is similar to that of AsciiDoc with curly braces `{ }`, also basic liquid tags and expressions are supported: `{{ }}`, `{% %}`
 
 The value within the curly braces will be interpolated by `yaml2text`.
 
@@ -536,6 +544,50 @@ Last item is dolor.
 \include::doc-2.rb[]
 ----
 
+------
+
+--
+
+
+=== Liquid code snippets
+
+`yaml2text` can use basic Liquid expressions and tags. Yaml data is stored in the <<defining_syntax,context name>> variable which can be used in the expressions.
+
+EXAMPLE:
+--
+Given:
+
+example.yml
+[source,yaml]
+----
+---
+- name: One
+  show: true
+- name: Two
+  show: true
+- name: Three
+  show: false
+----
+
+And the block:
+[source,asciidoc]
+--------
+[yaml2text,example.yml,my_context]
+----
+{% for item in my_context %}
+{% if item.show %}
+{{ item.name | upcase }}
+{{ item.name | size }}
+{% endif %}
+{% endfor %}
+----
+--------
+
+Will render as:
+[source,asciidoc]
+------
+ONE 3
+TWO 3
 ------
 
 --
