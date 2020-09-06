@@ -67,6 +67,7 @@ Next, we'll see how various YAML data structures can be represented:
 * <<array-of-interpolated-files,interpolate file names for AsciiDoc `include`>>
 * <<array-of-objects,array of objects>>
 
+yaml2text also supports basic liquid tags and expressions, see  <<liquid-code-snippets, liquid code snippets>>
 
 [[simple-object]]
 == Accessing object properties
@@ -481,6 +482,51 @@ You might also have noticed that one can do simple arithmetics in
 interpolations and array indexing, like `{num.# + 1}` and `{ar[num.# - 1]}` in
 the example above.
 
+
+--
+
+
+[[liquid-code-snippets]]
+== Liquid code snippets
+
+`yaml2text` can use basic Liquid expressions and tags.
+
+EXAMPLE:
+--
+Given:
+
+example.yml
+[source,yaml]
+----
+---
+- name: One
+  show: true
+- name: Two
+  show: true
+- name: Three
+  show: false
+----
+
+And the block:
+[source,asciidoc]
+--------
+[yaml2text,example.yml,my_context]
+----
+{% for item in my_context %}
+{% if item.show %}
+{{ item.name | upcase }}
+{{ item.name | size }}
+{% endif %}
+{% endfor %}
+----
+--------
+
+Will render as:
+[source,asciidoc]
+------
+ONE 3
+TWO 3
+------
 
 --
 
