@@ -16,37 +16,19 @@ from a separate YAML file into the document. [added in https://github.com/metano
 
 == Expressions
 
-Before (metanorma-standoc 1.5.3 release)[https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3] there were only two kinds of expressions:
-
-* rendering expressions: for string interpolation (single argument, e.g. `{x}`)
-* control flow expressions: for directives to modify processing flow (more than one argument, e.g. `{x,y}`)
-
-And four types of values:
-
-* number
-* string
-* object / hash
-* array
-
-
-Rendering expressions:
-
-* Only takes a single argument.
-
-Control flow expressions:
-
-* More than one argument must be provided.
-* Allows control over enumerable items: arrays and objects
-* Provides locality context within enumerators
-
-In https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3[metanorma-standoc 1.5.3 release] support for liquid expressions was added. yaml2text now supports all liquid default https://shopify.github.io/liquid/basics/introduction/[syntax] expressions:
+`yaml2text` supports all https://shopify.github.io/liquid/basics/introduction/[Liquid syntax expressions], including:
 
 * variables, variable assignment
-* flow control(if/case)
+* flow control (if/case)
 * filters
 * loops
 
-See https://shopify.github.io/liquid/basics/introduction/ for the full description of liquid tags and expressions.
+See https://shopify.github.io/liquid/basics/introduction/[here] for the full description of Liquid tags and expressions.
+
+NOTE: Liquid expressions are supported from
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3[metanorma-standoc version 1.5.3] onwards.
+
+
 
 == Syntax
 
@@ -76,13 +58,18 @@ Where:
 
 === Interpolation
 
-`yaml2text` takes an interpolation syntax that is similar to that of AsciiDoc with curly braces `{ }`, also basic liquid tags and expressions are supported: `{{ }}`, `{% %}`
+`yaml2text` accepts string interpolation of the following forms:
+
+. `{variable}`: as in AsciiDoc syntax;
+. `{{ variable }}`, `{% variable %}`: basic Liquid tags and expressions are supported.
 
 The value within the curly braces will be interpolated by `yaml2text`.
 
-* In `{x}`, `x` is the name of the variable or AsciiDoc attribute.
-* The location of `{x}` in text will be replaced with the value of `x`.
-* Evaluation order will be first from the defined context, then of the AsciiDoc document.
+Where:
+
+* In `{variable}`, `variable` is the name of the variable or AsciiDoc attribute.
+* The location of `{variable}` in text will be replaced with the value of `variable`.
+* Evaluation order will be first from the defined context, then of the Metanorma AsciiDoc document.
 
 
 === Accessing object values
@@ -591,3 +578,32 @@ TWO 3
 ------
 
 --
+
+
+== Legacy version < 1.5.3
+
+Legacy `yaml2text` functionality is available between
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3[metanorma-standoc version 1.3.25] and
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3[metanorma-standoc version 1.5.3].
+
+In the legacy version, two types of expressions were supported:
+
+* rendering expressions: for string interpolation (single argument, e.g. `{x}`)
+* control flow expressions: for directives to modify processing flow (more than one argument, e.g. `{x,y}`)
+
+And four types of values:
+
+* number
+* string
+* object / hash
+* array
+
+Rendering expressions:
+
+* Only takes a single argument.
+
+Control flow expressions:
+
+* More than one argument must be provided.
+* Allows control over enumerable items: arrays and objects
+* Provides locality context within enumerators
