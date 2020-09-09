@@ -61,14 +61,14 @@ Where:
 `yaml2text` accepts string interpolation of the following forms:
 
 . `{variable}`: as in AsciiDoc syntax;
-. `{{ variable }}`, `{% variable %}`: basic Liquid tags and expressions are supported.
+. `{{ variable }}`, `{% if/else/for/case %}`: basic Liquid tags and expressions are supported.
 
 The value within the curly braces will be interpolated by `yaml2text`.
 
 Where:
 
-* In `{variable}`, `variable` is the name of the variable or AsciiDoc attribute.
-* The location of `{variable}` in text will be replaced with the value of `variable`.
+* In `{variable}`(`{{variable}}`), `variable` is the name of the variable or AsciiDoc attribute.
+* The location of `{variable}`(`{{variable}}`) in text will be replaced with the value of `variable`.
 * Evaluation order will be first from the defined context, then of the Metanorma AsciiDoc document.
 
 
@@ -93,12 +93,12 @@ And the block:
 ------
 [yaml2text,strings.yaml,data]
 ----
-I'm heading to the {data.foo} for {data.dead}.
+I'm heading to the {{data.foo}} for {{data.dead}}.
 ----
 ------
 
 The file path is `strings.yaml`, and context name is `data`.
-`{data.foo}` evaluates to the value of the key `foo` in `data`.
+`{{data.foo}}` evaluates to the value of the key `foo` in `data`.
 
 Will render as:
 [source,asciidoc]
@@ -113,7 +113,7 @@ I'm heading to the bar for beef.
 
 ==== Length
 
-The length of an array can be obtained by `{arrayname.*}`.
+The length of an array can be obtained by `{{arrayname.size}}`.
 
 EXAMPLE:
 --
@@ -133,12 +133,12 @@ And the block:
 ------
 [yaml2text,strings.yaml,data]
 ----
-The length of the YAML array is {data.*}.
+The length of the YAML array is {{data.size}}.
 ----
 ------
 
 The file path is `strings.yaml`, and context name is `data`.
-`{data.*}` evaluates to the length of the array.
+`{{data.size}}` evaluates to the length of the array using liquid `size` https://shopify.github.io/liquid/filters/size/[filter].
 
 Will render as:
 [source,asciidoc]
@@ -154,24 +154,29 @@ The following syntax is used to enumerate items within an array:
 
 [source,asciidoc]
 --
-{array_name.*,item_name,block_delimiter}
+{% for item in array_name %}
   ...content...
-{block_delimiter}
+{% endfor %}
 --
 
 Where:
 
 * `array_name` is the name of the existing context that contains array data
-* `item_name` is used to refer to the current item within the array
-* `block_delimiter` indicates where the array enumeration block ends
+* `item` is the current item within the array
 
-Within an array enumerator, the following expressions can be used:
+Within an array enumerator, the following https://shopify.dev/docs/themes/liquid/reference/objects/for-loops[expressions] can be used:
 
-* `item_name.#` gives the zero-based position of the item `item_name` within the parent array
+* `{{forloop.index0}}` gives the zero-based position of the item `item_name` within the parent array
 
-* `array_name.*` gives the length of the array `array_name`
+* `{{forloop.length}}` returns the number of iterations of the loop.
 
-* `array_name[i]` provides the value at index `i` (zero-based: starts with `0`) in the array `array_name`; `-1` can be used to refer to the last item, `-2` the second last item, and so on.
+* `{{forloop.first}}` returns `true` if it's the first iteration of the for loop. Returns `false` if it is not the first iteration.
+
+* `{{forloop.last}}` returns `true` if it's the last iteration of the for loop. Returns `false` if it is not the last iteration.
+
+* `{{array_name.size}}` gives the length of the array `array_name`
+
+* `{{array_name[i]}}` provides the value at index `i` (zero-based: starts with `0`) in the array `array_name`; `-1` can be used to refer to the last item, `-2` the second last item, and so on.
 
 
 EXAMPLE:
@@ -192,12 +197,12 @@ And the block:
 ------
 [yaml2text,strings.yaml,arr]
 ----
-{arr.*,item,EOS}
-=== {item.#} {item}
+{% for item in arr %}
+=== {{forloop.index0}} {item}
 
 This section is about {item}.
 
-{EOS}
+{endfor}
 ----
 ------
 
@@ -205,7 +210,7 @@ Where:
 
 * file path is `strings.yaml`
 * current context within the enumerator is called `item`
-* `{item.#}` gives the zero-based position of item `item` in the parent array `arr`.
+* `{{forloop.index0}}` gives the zero-based position of item `item` in the parent array `arr`.
 
 Will render as:
 [source,text]
@@ -233,7 +238,7 @@ This section is about dolor.
 ==== Size
 
 Similar to arrays, the number of key-value pairs within an object can be
-obtained by `{objectname.*}`.
+obtained by `{{objectname.size}}`.
 
 EXAMPLE:
 --
@@ -252,14 +257,14 @@ And the block:
 ------
 [yaml2text,object.yaml,data]
 ----
-=== {data.name}
+=== {{data.name}}
 
-{data.desc}
+{{data.desc}}
 ----
 ------
 
 The file path is `object.yaml`, and context name is `data`.
-`{data.*}` evaluates to the size of the object.
+`{{data.size}}` evaluates to the size of the object.
 
 Will render as:
 [source,asciidoc]
@@ -277,21 +282,17 @@ The following syntax is used to enumerate key-value pairs within an object:
 
 [source,asciidoc]
 --
-{object_name.*,key_name,block_delimiter}
-  ...content...
-{block_delimiter}
+{% for item in object_name %}
+  {{item[0]}}, {{item[1]}}
+{% endfor %}
 --
 
 Where:
 
 * `object_name` is the name of the existing context that contains the object
-* `key_name` is used to refer to the current key under enumeration within the object
-* `block_delimiter` indicates where the object enumeration block ends
-
-Within an object enumerator, the following expressions can be used:
-
-* `item_name[key]` gives the dereferenced value of the data path `item_name.{key}. e.g. `{yaml.items[s.#]}`, `{my_object[key_name]}`. Note that items should only be de-referenced with the item key, not with an integer index.
-
+* `{{item[0]}}` contains the key of the current enumrated object
+* `{{item[1]}}` contains the value
+* `{% endfor %}` indicates where the object enumeration block ends
 
 
 EXAMPLE:
@@ -311,20 +312,21 @@ And the block:
 ------
 [yaml2text,object.yaml,my_item]
 ----
-{my_item.*,key,EOI}
-=== {key}
+{% for item in my_item %}
+=== {{item[0]}}
 
-{my_item[key]}
+{{item[1]}}
 
-{EOI}
+{% endfor %}
 ----
 ------
 
 Where:
 
 * file path is `object.yaml`
-* current key within the enumerator is called `key`
-* `{my_item[key]}` gives the value of key `key` in the parent array `my_item`.
+* current key within the enumerator is called `item[0]`
+* `{{item[0]}}` gives the key name in the current iteration
+* `{{item[1]}}` gives the value in the current iteration
 
 Will render as:
 [source,text]
@@ -362,13 +364,13 @@ And the block:
 ------
 [yaml2text,object.yaml,item]
 ----
-.{item.values[1]}
+.{{item.values[1]}}
 [%noheader,cols="h,1"]
 |===
-{item.*,key,EOK}
-| {key} | {item[key]}
+{% for elem in item %}
+| {{elem[0]}} | {{elem[1]}}
 
-{EOK}
+{% endfor %}
 |===
 ----
 ------
@@ -377,8 +379,8 @@ Where:
 
 * file path is `object.yaml`
 * current key within the enumerator is called `key`
-* `{item[key]}` gives the value of key `key` in the parent array `item`
-* `item.values[1]` gives the value located at the second key within `item`
+* `{{item[1]}}` gives the value of key in the current iteration the parent array `my_item`.
+* `{{item.values[1]}}` gives the value located at the second key within `item`
 
 Will render as:
 [source,text]
@@ -390,6 +392,53 @@ Will render as:
 | name | Lorem ipsum
 | desc | dolor sit amet
 |===
+----
+
+--
+
+There are several optional arguments to the for tag that can influence which items you receive in your loop and what order they appear in:
+
+* limit:<INTEGER> lets you restrict how many items you get.
+* offset:<INTEGER> lets you start the collection with the nth item.
+* reversed iterates over the collection from last to first.
+
+EXAMPLE:
+--
+Given:
+
+strings.yaml
+[source,yaml]
+----
+---
+- lorem
+- ipsum
+- dolor
+- sit
+- amet
+----
+
+And the block:
+[source,asciidoc]
+------
+[yaml2text,strings.yaml,items]
+----
+{% for elem in items limit:2 offset:2 %}
+{{item}}
+{% endfor %}
+----
+------
+
+Where:
+
+* file path is `strings.yaml`
+* `limit` - how many items we shoudl take from the array
+* `offset` - zero-based offset of item from which start the loop
+* `{{item}}` gives the value of item in the array
+
+Will render as:
+[source,text]
+----
+dolor sit
 ----
 
 --
@@ -428,22 +477,21 @@ And the block:
 ------
 [yaml2text,array_of_objects.yaml,ar]
 ----
-{ar.*,item,EOF}
+{% for item in ar %}
 
-{item.name}:: {item.desc}
+{{item.name}}:: {{item.desc}}
 
-{item.nums.*,num,EON}
-- {item.name}: {num}
-{EON}
+{% for num in item.nums %}
+- {{item.name}}: {{num}}
+{% endfor %}
 
-{EOF}
+{% endfor %}
 ----
 ------
 
 Notice we are now defining multiple contexts:
 
 * using different context names: `ar`, `item`, and `num`
-* delimited by different block markers: `EOF, EON` (self-defined, heredoc-esque markers)
 
 Will render as:
 [source,asciidoc]
@@ -488,18 +536,18 @@ And the block:
 --------
 [yaml2text,strings.yaml,yaml]
 ------
-First item is {yaml.items[0]}.
-Last item is {yaml.items[-1]}.
+First item is {{yaml.items.first}}.
+Last item is {{yaml.items.last}}.
 
-{yaml.items.*,s,EOS}
-=== {s.#} -> {s.# + 1} {s} == {yaml.items[s.#]}
+{% for s in yaml.items %}
+=== {{forloop.index0}} -> {{forloop.index0 | plus: 1}} {{s}} == {{yaml.items[forloop.index0]}}
 
 [source,ruby]
 ----
-\include::{yaml.prefix}{s.#}.rb[]
+\include::{{yaml.prefix}}{{forloop.index0}}.rb[]
 ----
 
-{EOS}
+{% endfor %}
 ------
 --------
 
@@ -531,50 +579,6 @@ Last item is dolor.
 \include::doc-2.rb[]
 ----
 
-------
-
---
-
-
-=== Liquid code snippets
-
-`yaml2text` can use basic Liquid expressions and tags. Yaml data is stored in the <<defining_syntax,context name>> variable which can be used in the expressions.
-
-EXAMPLE:
---
-Given:
-
-example.yml
-[source,yaml]
-----
----
-- name: One
-  show: true
-- name: Two
-  show: true
-- name: Three
-  show: false
-----
-
-And the block:
-[source,asciidoc]
---------
-[yaml2text,example.yml,my_context]
-----
-{% for item in my_context %}
-{% if item.show %}
-{{ item.name | upcase }}
-{{ item.name | size }}
-{% endif %}
-{% endfor %}
-----
---------
-
-Will render as:
-[source,asciidoc]
-------
-ONE 3
-TWO 3
 ------
 
 --
