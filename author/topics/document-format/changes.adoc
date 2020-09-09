@@ -1,0 +1,87 @@
+---
+layout: author-docs
+---
+
+= Machine readable changes
+
+Emendations to documents can be presented in a machine readable form in Metanorma. This form
+is recommended for use in document amendments. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3]
+
+The format involves expressing each change as a clause. Clauses describing changes are
+identified through the attribute `change`, which describes the kind of change involved; the
+allowed values are `add`, `modify`, and `delete`.
+
+The following attributes can be expressed on changes:
+
+* `locality` gives the location in the reference document to be modified, as a collection of
+locality key/values, following the convention in link:bibliography#localities[localities and locality values].
+* `path` gives an XPath within the identified locality, indicating the specific element to be changed.
+* `path_end` is used in conjunction with `path`, if a range of elements is to be changed. In that case, `path`
+gives the initial element in the range, and `path_end` gives the final element.
+* `title` can be used to specify a title for the change. If a title is given for the clause, that is used instead.
+
+The content of the change clause is treated as the human-readable description of the change.
+
+[source,asciidoc]
+----
+[change=delete,locality="clause=introduction",path="./p[4]",path_end="./p[7]",title="Introduction"]
+== {blank}
+
+Delete the fourth to seventh paragraphs.
+----
+
+If the `change` attribute has the value `modify`, the replacement text needs to be provided. This is
+represented as a final blockquote within the change clause.
+
+[source,asciidoc]
+----
+[change=modify,locality="page=14,clause=4.3.1",title="Array based unstructured mesh",path="./source"]
+==== {blank}
+
+_Some attributes referenced in the EXPRESS are not properly defined, Remove the EXPRESS definition of this entity and replace with:_
+
+____
+[%unnumbered]
+[source,html]
+-----
+*)
+ENTITY array_based_unstructured_mesh
+...
+(*
+-----
+____
+----
+
+The replacement text may contain assets that need to be numbered on rendering, in order to reflect
+how they should look in the target document. Replacement text cannot rely on autonumbering, and its
+content is by default skipped in autonumbering; but the starting point for any autonumbering can
+be defined for an asset with the macro `autonumber:asset_class[value]`, giving the starting value
+for autonumbering an asset class within the change clause; for example `autonumber:table[2]` means
+start numbering any tables in the replacement text from 2.
+
+[source,asciidoc]
+----
+[locality="page=27",path="//table[2]",path_end="//table[2]/following-sibling:note[1]"]
+==== {blank}
+
+autonumber:table[2]
+autonumber:note[7]
+
+_This table contains information on polygon cells which are not included in ISO 10303-52. Remove table 2 completely and replace with:_
+
+____
+.Edges of triangle and quadrilateral cells
+|===
+2+^.^h| triangle 2+^.^h| quadrilateral
+^.^| edge ^.^| vertices ^.^| edge ^.^| vertices
+^.^| 1 ^.^| 1, 2 ^.^| 1 ^.^| 1, 2
+^.^| 2 ^.^| 2, 3 ^.^| 2 ^.^| 2, 3
+^.^| 3 ^.^| 3, 1 ^.^| 3 ^.^| 3, 4
+| | ^.^| 4 ^.^| 4, 1
+|===
+
+NOTE: This is not generalised further.
+
+____
+
+----
