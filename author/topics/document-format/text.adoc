@@ -989,6 +989,21 @@ in the AsciiDoc source
 (e.g. `\<<``formulaB-1``>>` generates either "`Formula (B.1)`" or "`B.6, Formula (B.1)`",
 depending on where in the document it occurs.)
 
+If the crossreference is given with `droploc=true` as its text, then the label and prefix
+are dropped: the crossreference value is given in 
+isolation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.4]. 
+This can be done for example for ranges:
+
+[source,asciidoc]
+----
+Clauses <<context,droploc=true>> to <<improvement,droploc=true>>
+----
+
+to be rendered as e.g.
+
+____
+Clauses 7 to 9
+____
 
 [[text-ref-allowed-anchors]]
 === Anchor ID syntax
