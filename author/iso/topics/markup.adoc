@@ -2,7 +2,51 @@
 layout: iso-flavor
 ---
 
-= Metanorma-ISO markup
+= Metanorma markup for ISO
+
+== Lists
+
+Unordered lists in Word are rendered with em-dashes instead of bullets, as preferred by ISO/CS.
+
+== Admonitions
+
+Admonitions can be applied to:
+
+* Document elements, by adding the block anywhere in the document;
+* To the document as a whole, by adding the block to before the first numbered clause.
+
+Metanorma AsciiDoc natively supports the ISO admonitions
+"`Caution`", "`Warning`", and "`Important`" through its
+admonition syntax.
+
+[source,asciidoc]
+--
+CAUTION: This is a single-block caution.
+
+[WARNING]
+====
+This is a
+
+multiple-block warning
+====
+--
+
+If the admonitions "`Danger`" and "`Safety Precaution`" are needed, they should be indicated
+through a `type` attribute, which will override the admonition type appearing in the AsciiDoc:
+
+[source,asciidoc]
+--
+[type=Danger]
+CAUTION: This is a single-block caution
+
+[WARNING,type=Safety Precaution]
+====
+This is a
+
+multiple-block warning
+====
+--
+
 
 == Cross-references
 
@@ -24,134 +68,13 @@ on clause 5 should be given as just:
 <<tabular>>
 --
 
-…and custom text will be automatically rendered as `Clause 5` by Metanorma-ISO.
+...and custom text will be automatically rendered as `Clause 5` by Metanorma-ISO.
 
 ISO clause references will suppress the word "Clause" before a subclause reference,
 following ISO/IEC DIR 2: `<``<ISO24333,clause=5>``>` will be rendered as _ISO 24333, Clause 5_,
 but `<``<ISO7301,clause=3.1>``>` will be rendered as _ISO 7301, 3.1_.
 
-== Bibliographies
 
-[[note_general_doc_ref_bib]]
-NOTE: This subsection supplements link:/author/topics/document-format/bibliography[References & Bibliography] in general Metanorma documentation.
-
-All references under Normative References are expected to have such a standard document identifier. For example:
-
-[source,asciidoc]
---
-* [[[ricepotentialmilling,ISO 6646]]], _Rice -- Determination of the potential milling yield from paddy and from husked rice_
-* [[[ISOGuide73, ISO Guide 73:2009]]], _Risk management -- Vocabulary_
---
-
-[subs="quotes"]
-ISO 6646 in this example would be cited from elsewhere in the document through cross-references to the `ricepotentialmilling` identifier; e.g. `\<< ricepotentialmilling>>` (which will be rendered as `ISO 6646`), `<<``ricepotentialmilling, section 5``>>` (which will be rendered as `ISO 6646, Section 5`), `<<``ricepotentialmilling,section 5: the foregoing discussion``>>` (which will be tagged in the XML representation as Section 5 of ISO 6646, but will be displayed as `the foregoing discussion`.)
-
-ISO treats dated and undated references as separate (an undated reference is taken to
-refer to the latest published edition of that reference.) if reference is to be made to
-both an undated and a dated version of an ISO reference, these need to be explicitly listed as
-separate references.
-
-
-[TIP]
-====
-If an ISO reference is in preparation, ISO/IEC DIR 2 dictates that details of the reference status be given as a footnote. In Asciidoc, this is done by giving the date as a double dash, and following the bibliographic anchor with a footnote macro:
-
-[source,asciidoc]
---
-* [[[ISO16634,ISO 16634:--]]] footnote:[Under preparation. (Stage at the time of publication ISO/DIS 16634)], _Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs -- Determination of the total nitrogen content by combustion according to the Dumas principle and calculation of the crude protein content_
---
-
-If an ISO reference includes all parts of the standard, that is indicated by appending `(all parts)` after the reference anchor:
-
-[source,asciidoc]
---
-* [[[ISO16634,ISO 16634 (all parts)]]] _Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs -- Determination of the total nitrogen content by combustion according to the Dumas principle and calculation of the crude protein content_
---
-====
-
-In informative references, references to standards documents are still given with the same format of bibliographic anchor, and they are cited by their document identifier -- although they are displayed with an incrementing reference number in brackets, for consistency with any bibliographic entries that are not standards documents. ISO references appear before non-ISO references. So
-
-[source,asciidoc]
---
-[bibliography]
-== Bibliography
-
-* [[[ISO3696,ISO 3696]]], _Water for analytical laboratory use -- Specification and test methods_
-...
-* [[[ref11,11]]] Nitrogen-ammonia-protein modified Kjeldahl method -- Titanium oxide and copper sulfate catalyst. _Official Methods and Recommended Practices of the AOCS_ (ed. Firestone, D.E.), AOCS Official Method Ba Ai 4-91, 1997, AOCS Press, Champaign, IL
---
-
-is displayed as:
-
-[quote]
-____
-*Bibliography*
-
-[1] ISO 3696, _Water for analytical laboratory use -- Specification and test methods_
-...
-[11] Nitrogen-ammonia-protein modified Kjeldahl method -- Titanium oxide and copper sulfate catalyst. _Official Methods and Recommended Practices of the AOCS_ (ed. Firestone, D.E.), AOCS Official Method Ba Ai 4-91, 1997, AOCS Press, Champaign, IL
-____
-
-The entries in the Bibliography are reordered (and, for numerical references, renumbered) according to the following criteria:
-
-* Document class (as defined in the ISO sample Rice document): standard which ISO has published or co-published; standard which IEC has published or co-published; other standards; other documents.
-** Standards are identified by the use of a code for the document identifier, as opposed to a number.
-* Document identifier type (as a proxy for the standards setting body)
-* Document number (the numeric portion of the standards identifier, sorted numerically)
-* Full document identifier
-* Document title
-
-The bracketed reference numbers are expected to be correct and in order (accounting for the fact that references to standards will end up numbered): they are not overriden in rendering.
-
-
-== Annexes and appendices
-
-In ISO, Appendixes to annexes can occur, although they are not mentioned in ISO/IEC DIR 2; ISO/IEC DIR 1 features them. They are marked up as immediate subsections of annexes, and must be tagged with an option attribute of `appendix`:
-
-[source,asciidoc]
---
-[appendix]
-== Annex A
-Text
-
-[%appendix]
-=== Appendix 1
-Text
---
-
-== Additional warning types
-
-Metanorma AsciiDoc natively supports the ISO admonitions
-"`Caution`", "`Warning`", and "`Important`" through its
-admonition syntax:
-
-[source,asciidoc]
---
-CAUTION: This is a single-block caution
-
-[WARNING]
-====
-This is a
-
-multiple-block warning
-====
---
-
-If the admonitions "Danger" and "Safety Precaution" are needed, they should be indicated
-through a `type` attribute, which will override the admonition type appearing in the AsciiDoc:
-
-[source,asciidoc]
---
-[type=Danger]
-CAUTION: This is a single-block caution
-
-[WARNING,type=Safety Precaution]
-====
-This is a
-
-multiple-block warning
-====
---
 
 == Terms and definitions
 
@@ -291,14 +214,100 @@ lorem
 
 
 
-== Lists
 
-Unordered lists in Word are rendered with em-dashes instead of bullets, as preferred by ISO/CS.
+== Annexes and appendices
+
+In ISO, Appendixes to annexes can occur, although they are not mentioned in ISO/IEC DIR 2; ISO/IEC DIR 1 features them. They are marked up as immediate subsections of annexes, and must be tagged with an option attribute of `appendix`:
+
+[source,asciidoc]
+--
+[appendix]
+== Annex A
+Text
+
+[%appendix]
+=== Appendix 1
+Text
+--
+
+== Bibliographies
+
+[[note_general_doc_ref_bib]]
+NOTE: This subsection supplements link:/author/topics/document-format/bibliography[References & Bibliography] in general Metanorma documentation.
+
+All references under Normative References are expected to have such a standard document identifier. For example:
+
+[source,asciidoc]
+--
+* [[[ricepotentialmilling,ISO 6646]]], _Rice -- Determination of the potential milling yield from paddy and from husked rice_
+* [[[ISOGuide73, ISO Guide 73:2009]]], _Risk management -- Vocabulary_
+--
+
+[subs="quotes"]
+ISO 6646 in this example would be cited from elsewhere in the document through cross-references to the `ricepotentialmilling` identifier; e.g. `\<< ricepotentialmilling>>` (which will be rendered as `ISO 6646`), `<<``ricepotentialmilling, section 5``>>` (which will be rendered as `ISO 6646, Section 5`), `<<``ricepotentialmilling,section 5: the foregoing discussion``>>` (which will be tagged in the XML representation as Section 5 of ISO 6646, but will be displayed as `the foregoing discussion`.)
+
+ISO treats dated and undated references as separate (an undated reference is taken to
+refer to the latest published edition of that reference.) if reference is to be made to
+both an undated and a dated version of an ISO reference, these need to be explicitly listed as
+separate references.
+
+
+[TIP]
+====
+If an ISO reference is in preparation, ISO/IEC DIR 2 dictates that details of the reference status be given as a footnote. In Asciidoc, this is done by giving the date as a double dash, and following the bibliographic anchor with a footnote macro:
+
+[source,asciidoc]
+--
+* [[[ISO16634,ISO 16634:--]]] footnote:[Under preparation. (Stage at the time of publication ISO/DIS 16634)], _Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs -- Determination of the total nitrogen content by combustion according to the Dumas principle and calculation of the crude protein content_
+--
+
+If an ISO reference includes all parts of the standard, that is indicated by appending `(all parts)` after the reference anchor:
+
+[source,asciidoc]
+--
+* [[[ISO16634,ISO 16634 (all parts)]]] _Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs -- Determination of the total nitrogen content by combustion according to the Dumas principle and calculation of the crude protein content_
+--
+====
+
+In informative references, references to standards documents are still given with the same format of bibliographic anchor, and they are cited by their document identifier -- although they are displayed with an incrementing reference number in brackets, for consistency with any bibliographic entries that are not standards documents. ISO references appear before non-ISO references. So
+
+[source,asciidoc]
+--
+[bibliography]
+== Bibliography
+
+* [[[ISO3696,ISO 3696]]], _Water for analytical laboratory use -- Specification and test methods_
+...
+* [[[ref11,11]]] Nitrogen-ammonia-protein modified Kjeldahl method -- Titanium oxide and copper sulfate catalyst. _Official Methods and Recommended Practices of the AOCS_ (ed. Firestone, D.E.), AOCS Official Method Ba Ai 4-91, 1997, AOCS Press, Champaign, IL
+--
+
+is displayed as:
+
+[quote]
+____
+*Bibliography*
+
+[1] ISO 3696, _Water for analytical laboratory use -- Specification and test methods_
+...
+[11] Nitrogen-ammonia-protein modified Kjeldahl method -- Titanium oxide and copper sulfate catalyst. _Official Methods and Recommended Practices of the AOCS_ (ed. Firestone, D.E.), AOCS Official Method Ba Ai 4-91, 1997, AOCS Press, Champaign, IL
+____
+
+The entries in the Bibliography are reordered (and, for numerical references, renumbered) according to the following criteria:
+
+* Document class (as defined in the ISO sample Rice document): standard which ISO has published or co-published; standard which IEC has published or co-published; other standards; other documents.
+** Standards are identified by the use of a code for the document identifier, as opposed to a number.
+* Document identifier type (as a proxy for the standards setting body)
+* Document number (the numeric portion of the standards identifier, sorted numerically)
+* Full document identifier
+* Document title
+
+The bracketed reference numbers are expected to be correct and in order (accounting for the fact that references to standards will end up numbered): they are not overriden in rendering.
+
 
 == Amendments and technical corrigenda
 
 Amendments and technical corrigenda [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
-have the following particularities in their markup:
+have the following particularities in their markup.
 
 === Dates
 
@@ -323,8 +332,9 @@ distinct bibliographies.
 
 Clauses are only expected to be one level deep.
 
-The clauses in amendments and technical corrigenda are instances of the change clauses discussed
-in link:/author/topics/document-format/changes[Machine readable changes].
+The clauses in amendments and technical corrigenda are instances of the
+change clauses described in
+link:/author/topics/document-format/changes[Machine-readable changes].
 
 [source,adoc]
 ----
@@ -336,7 +346,7 @@ in link:/author/topics/document-format/changes[Machine readable changes].
 
 The document takes the form of clauses describing what is to be amended; the amendments themselves are quoted.
 
-Because the quoted material are snippets with little context, autonumbering will not yield sensible results,
+Because the quoted material are snippets with little context, auto-numbering will not yield sensible results,
 and neither will cross-referencing autonumbered blocks or clauses. For that reason, amendments and technical corrigenda
 must not use cross-referencing, and any auto-numbering is suppressed. Users will have to include explicit
 numbering in any snippets of text (as they already do), and mock up clause titles by using boldface
