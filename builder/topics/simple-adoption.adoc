@@ -69,6 +69,7 @@ i18nyaml: lib/isodoc/generic/html/i18n-en.yml
 docid_template: "{{ organization_name_short }} {{ docnumeric }}"
 published_stages: ["published", "withdrawn"]
 committees: []
+relations: []
 default_stage: "published"
 metadata_extensions: []
 stage_abbreviations: (initials of stage)
@@ -141,7 +142,9 @@ the config file values can also be used in the Liquid template [added in https:/
 
 `published_stages`:: list of stages considered published
 
-`committees`:: list of legal committee values
+`committees`:: list of legal committee values [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.4]
+
+`relations`:: list of recognised relations to other documents, expressed through document attributes [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.4]
 
 `stage_abbreviations`:: hash of stages and their corresponding abbreviations. If not supplied, the initials of the stage are used, as is the default for Metanorma. This structure is used to configure stages.
 
