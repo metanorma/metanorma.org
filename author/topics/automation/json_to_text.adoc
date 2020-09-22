@@ -80,9 +80,10 @@ Given:
 strings.json
 [source,json]
 ----
----
-foo: bar
-dead: beef
+{
+  "foo": "bar",
+  "dead": "beef"
+}
 ----
 
 And the block:
@@ -119,10 +120,11 @@ Given:
 strings.json
 [source,json]
 ----
----
-- lorem
-- ipsum
-- dolor
+[
+  "lorem",
+  "ipsum",
+  "dolor"
+]
 ----
 
 And the block:
@@ -183,10 +185,11 @@ Given:
 strings.json
 [source,json]
 ----
----
-- lorem
-- ipsum
-- dolor
+[
+  "lorem",
+  "ipsum",
+  "dolor"
+]
 ----
 
 And the block:
@@ -244,9 +247,7 @@ Given:
 object.json
 [source,json]
 ----
----
-name: Lorem ipsum
-desc: dolor sit amet
+{"name":"Lorem ipsum","desc":"dolor sit amet"}
 ----
 
 And the block:
@@ -299,9 +300,10 @@ Given:
 object.json
 [source,json]
 ----
----
-name: Lorem ipsum
-desc: dolor sit amet
+{
+  "name": "Lorem ipsum",
+  "desc": "dolor sit amet"
+}
 ----
 
 And the block:
@@ -351,9 +353,10 @@ Given:
 object.json
 [source,json]
 ----
----
-name: Lorem ipsum
-desc: dolor sit amet
+{
+  "name": "Lorem ipsum",
+  "desc": "dolor sit amet"
+}
 ----
 
 And the block:
@@ -406,12 +409,13 @@ Given:
 strings.json
 [source,json]
 ----
----
-- lorem
-- ipsum
-- dolor
-- sit
-- amet
+[
+  "lorem",
+  "ipsum",
+  "dolor",
+  "sit",
+  "amet"
+]
 ----
 
 And the block:
@@ -457,16 +461,19 @@ Given:
 array_of_objects.json
 [source,json]
 ----
----
-- name: Lorem
-  desc: ipsum
-  nums: [2]
-- name: dolor
-  desc: sit
-  nums: []
-- name: amet
-  desc: lorem
-  nums: [2, 4, 6]
+[{
+  "name": "Lorem",
+  "desc": "ipsum",
+  "nums": [2]
+}, {
+  "name": "dolor",
+  "desc": "sit",
+  "nums": []
+}, {
+  "name": "amet",
+  "desc": "lorem",
+  "nums": [2, 4, 6]
+}]
 ----
 
 And the block:
@@ -520,12 +527,10 @@ Given:
 strings.json
 [source,json]
 ----
----
-prefix: doc-
-items:
-- lorem
-- ipsum
-- dolor
+{
+  "prefix": "doc-",
+  "items": ["lorem", "ipsum", "dolor"]
+}
 ----
 
 And the block:
