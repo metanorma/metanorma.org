@@ -175,7 +175,83 @@ files [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6
 
 `word_monospacefont`:: The default font to use in DOC output for monospace text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
 
-`metadata_extensions`:: A list of single-value fields to add to `bibdata/ext` for the document, as metadata; they will be populated through document attributes with the same name [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.7].
+`metadata_extensions`:: A set of fields to be added to `bibdata/ext` for the document, as metadata. These can be entered in one of two formats:
+** A list of single-value fields to add to `bibdata/ext` for the document, as metadata; they will be populated through document attributes with the same name [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.7]. For example,
++
+--
+[source,yaml]
+----
+metadata_extensions:
+  - security
+  - comment-period
+----
+--
+
+** A nested list of fields, representing the target XML structure [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.7.1]. Each field corresponds to the corresponding document attribute. CSV-delimited values can be indicated with the special key `_list: true`; fields to be treated as attributes, with `_attribute: true`. If the field is to have a different name in the XML structure, that name is given with the special key `_output`. For example:
++
+--
+[source,yaml]
+----
+metadata_extensions:
+  comment-period:
+    comment-period-type: 
+        _output: type
+        _attribute: true
+    comment-period-from: 
+        _output: from
+        _list: true
+    comment-period-to: 
+         _output: to
+    reply-to:
+  security:
+----
+
+given the Asciidoctor document attributes:
+
+[source,asciidoc]
+----
+:comment-period-from: A,B,C
+:comment-period-to: D
+:comment-period-type: E
+:reply-to: F
+:security: X
+----
+
+will generate the metadata extensions:
+
+[source,xml]
+----
+<ext>
+  <comment-period type="E">
+    <from>A</from>
+    <from>B</from>
+    <from>C</from>
+    <to>D</to>
+    <reply-to>F</reply-to>
+  </comment-period>
+  <security>X</security>
+</ext>
+----
+--
+
+** The Liquid metadata template exports `/bibdata/ext` as a Ruby object under 
+`metadata_extensions` [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.7.1],
+in order to preserve its structure; so the foregoing example maps to:
++
+--
+[source,ruby]
+----
+:metadata_extensions=>{
+  "comment-period_type"=>"E", 
+  "comment-period"=>{
+    "from"=>["A", "B", "C"], 
+    "to"=>"D", 
+     "reply-to"=>"F"
+   }, 
+   "security"=>"X"}
+----
+--
+
 
 `webfont`:: A list of URLs of web fonts, to be loaded into HTML output [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8]. For example,
 +
