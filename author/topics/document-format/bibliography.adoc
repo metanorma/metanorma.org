@@ -335,6 +335,31 @@ docid::
 type:: standard
 --
 
+The `id` attribute of bibitem clauses (the anchor of the clause) can be overridden by an Asciidoctor
+anchor on the clause [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1]. 
+This can be required for Asciidoc to process crossreferences correctly. Any such anchors must not be
+preceded by `_`, as Asciidoc uses that to indicate anchors it inserts automatically, which are not
+supplied in the source.
+
+[source,asciidoc]
+--
+[bibliography]
+== Normative References
+
+[[iso123]]
+[%bibitem]
+=== Rubber latex -- Sampling
+id:: iso123
+docid::
+  type::: ISO
+  id::: ISO 123
+docid:: 
+  type::: ABC
+  id::: 32784
+type:: standard
+--
+
+
 == Citations
 
 Citations of references in Metanorma are formulated as cross-references; the ID cross-referenced is the
