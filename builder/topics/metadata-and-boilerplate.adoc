@@ -169,6 +169,8 @@ of the lifecycle event modelled by Relaton, including
 The date is extracted from `//bidata/date[@type = {type}]`.
 
 `doctype`:: Flavour-specific document type, from `//bibdata/ext/doctype`.
+`doctype_display`:: Flavour-specific localised document type, from `//local_bibdata/ext/doctype`
+{blank}[added in https://github.com/metanorma/isodoc/releases/tag/v1.2.5].
 
 `agency`:: A concatenation of all the agency abbreviations (or, if that is unavailable,
 agency names) responsible for publishing the document. Extracted from
@@ -180,17 +182,24 @@ Extracted from
 `//bibdata/contributor[xmlns:role/@type = 'publisher']/organization/name`
 {blank}[added in https://github.com/metanorma/isodoc/releases/tag/v1.0.23].
 
+`subdivision`:: Subdivision of the first agency responsible for publishing the document
+{blank}[added in https://github.com/metanorma/isodoc/releases/tag/v1.2.6].
+
 `unpublished`:: Boolean value of whether the document is considered to be an unpublished
 draft or published, based on the status of the document.
 
 `keywords`:: An array of the keywords of the document.
 
 `stage`:: The stage of the document, extracted from `//bibdata/status/stage`.
+`stage_display`:: The localised stage of the document, extracted 
+from `//local_bibdata/status/stage` [added in https://github.com/metanorma/isodoc/releases/tag/v1.2.5].
 `stageabbr`:: The abbreviation of the stage of the document, as extracted from `//bibdata/status/stage`.
 By default, this is the initials of the stage if the document is unpublished,
 and nil if the document is published.
 
 `substage`:: The substage of the document, extracted from `//bibdata/status/substage`.
+`substage_display`:: The localised substage of the document, extracted from `//bibdata/status/substage`
+{blank}[added in https://github.com/metanorma/isodoc/releases/tag/v1.2.5].
 
 `iteration`:: The iteration of the document stage, extracted from `//bibdata/status/iteration`.
 
@@ -210,7 +219,7 @@ preceded by an agency abbreviation and/or a document type.
 `revdate_monthyear`:: The document revision date, extracted from `//bibdata/version/revision-date`, given 
 as month name and year (internationalised where defined).
 `draftinfo`:: The draft number and revision date, preceded with the local label for DRAFT.
-`title`:: The document title, extracted from the first `//bibdata/title[@language='en']` found in the document.
+`doctitle`:: The document title, extracted from the first `//bibdata/title[@language='en']` found in the document.
 `partof`:: The identifier of the document this document is part of, extracted from
 `//bibdata/relation[@type = 'partOf']//docidentifier`.
 
@@ -229,6 +238,9 @@ as month name and year (internationalised where defined).
 `doc`:: The URL for a DOC version of this document, extracted from `//bibdata/uri[@type = 'doc']`.
 
 `url`:: The URL for an unspecified version of this document, extracted from `//bibdata/uri[not(@type)]`.
+`keywords`:: The keywords of the document, extracted from `//bibdata/keywords`.
+`title_footnote`:: Footnotes belonging to the document title, extracted from 
+`//bibdata/note[@type = 'title-footnote']` [added in https://github.com/metanorma/isodoc/releases/tag/v1.2.6].
 
 == Boilerplate processing
 
