@@ -217,6 +217,13 @@ When the text of a footnote is repeated in two different places, default behavio
 both for HTML and for DOC, is to use the same footnote number in both places, rather than
 treat the repetition as a new footnote.
 
+Footnotes on document titles are 
+recognised [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1],
+but by default they are not rendered, because of how document title pages are processed separately
+in Metanorma via Liquid templates. Document title footnotes are moved into 
+`/bibdata/note[@type = "title-footnote"]`, and are treated as document metadata, as are document
+titles themselves. The location of the footnote within the title is not preserved.
+
 == Index Terms
 
 Metanorma supports index entries with primary, secondary and tertiary index terms; however
@@ -247,7 +254,8 @@ to align with ISO/IEC DIR 2:
 
 NOTE: Metanorma AsciiDoc ignores the `type` attribute for ordered lists
 used in Asciidoctor AsciiDoc, which allows the user to specify the label
-of an ordered list.
+of an ordered list. Metanorma AsciiDoc also ignores the `start` attribute
+on ordered lists.
 
 === List items with more than one paragraph
 
