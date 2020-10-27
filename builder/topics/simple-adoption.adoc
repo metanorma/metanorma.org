@@ -139,9 +139,9 @@ https://shopify.github.io/liquid/[Liquid template language], and metadata values
 (see link:/builder/topics/metadata-and-boilerplate/#default-metadata[Default metadata values]);
 the config file values can also be used in the Liquid template [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.1].
 
-`i18nyaml`:: YAML file to be used for internationalisation and 
-labels [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.3]. 
-The configuration may instead be a hash of language abbreviations to 
+`i18nyaml`:: YAML file to be used for internationalisation and
+labels [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.3].
+The configuration may instead be a hash of language abbreviations to
 files [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.4]; e.g.:
 +
 --
@@ -153,7 +153,7 @@ files [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6
 --
 
 `boilerplate`:: Boilerplate file for inclusion in Metanorma XML [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.4].
-The configuration may be a single file, or a hash of language abbreviations to 
+The configuration may be a single file, or a hash of language abbreviations to
 files, as with `i18nyaml`.
 
 `published_stages`:: list of stages considered published
@@ -199,19 +199,19 @@ metadata_extensions:
 ----
 metadata_extensions:
   comment-period:
-    comment-period-type: 
+    comment-period-type:
         _output: type
         _attribute: true
-    comment-period-from: 
+    comment-period-from:
         _output: from
         _list: true
-    comment-period-to: 
+    comment-period-to:
          _output: to
     reply-to:
   security:
 ----
 
-given the Asciidoctor document attributes:
+given the Metanorma AsciiDoc document attributes:
 
 [source,asciidoc]
 ----
@@ -239,7 +239,7 @@ will generate the metadata extensions:
 ----
 --
 
-** The Liquid metadata template exports `/bibdata/ext` as a Ruby object under 
+** The Liquid metadata template exports `/bibdata/ext` as a Ruby object under
 `metadata_extensions` [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.7.1],
 in order to preserve its structure; so the foregoing example maps to:
 +
@@ -247,12 +247,12 @@ in order to preserve its structure; so the foregoing example maps to:
 [source,ruby]
 ----
 :metadata_extensions=>{
-  "comment-period_type"=>"E", 
+  "comment-period_type"=>"E",
   "comment-period"=>{
-    "from"=>["A", "B", "C"], 
-    "to"=>"D", 
+    "from"=>["A", "B", "C"],
+    "to"=>"D",
      "reply-to"=>"F"
-   }, 
+   },
    "security"=>"X"}
 ----
 --
