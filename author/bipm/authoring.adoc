@@ -1,0 +1,143 @@
+---
+layout: bipm-flavor
+---
+
+= Using Metanorma-BIPM (alpha)
+
+WARNING: Metanorma-BIPM is currently in ALPHA. DO NOT use unless you are prepared to read up on implemented code.
+We recommend using `git:master` to minimize issues.
+
+== Document attributes
+
+The gem relies on Asciidoctor document attributes to provide necessary
+metadata about the document. These include:
+
+`:edition:`:: The document edition
+
+`:revdate:`:: The date the document was last updated
+
+`:title-en:`:: The title of the document in English (mandatory)
+`:title-fr:`:: The title of the document in French (mandatory)
+`:title-cover-en:`:: The title of the front cover of the document in English (where different from the title proper)
+`:title-cover-fr:`:: The title of the front cover of the document in French (where different from the title proper)
+`:title-appendix-en:`:: The title of the appendix in English, if this document is an appendix published separately; `title-en` becomes the title of the main document, as presented within the standalone appendix.
+`:title-appendix-fr:`:: The title of the appendix in English, if this document is an appendix published separately; `title-en` becomes the title of the main document, as presented within the standalone appendix.
+
+`:appendix-id:`:: The number of the appendix, if this document is an appendix published separately
+
+`:si-aspect:`:: The domain of SI covered by the document; used to select logo in PDF cover page. The logo nominates one primary SI base units, and defining consonants for that unit and possibly others as well. The permitted values are: 
++
+--
+* A_e_deltanu (ampere; time)
+* A_e (ampere)
+* cd_Kcd_h_deltanu (candela; mass, time)
+* cd_Kcd (candela) 
+* full (all units) 
+* K_k_deltanu (kelvin; mass, time)
+* K_k (kelvin)
+* kg_h_c_deltanu (kilogram; length, time)
+* kg_h (kilogram)
+* m_c_deltanu (metre; time)
+* m_c (metre) 
+* mol_NA (mole)
+* s_deltanu (second)
+--
+
+`:copyright-year:`:: The year which will be claimed as when the copyright for
+the document was issued
+
+`:supersedes:`:: One or more BIPM document that this BIPM document standard supersedes; the superseded
+document may still remain in effect. Identified with document identifier. Comma delimited.
+
+`:superseded-by:`:: One or more BIPM document that this BIPM document standard is superseded by; this
+document may still remain in effect. Identified with document identifier. Comma delimited.
+
+`:supersedes-date_{i}:`:: Date of the document draft or version which this document supersedes.
+Assumes superseded document does not have distinct identifier.
+`:supersedes-draft_{i}:`:: Draft of the document which this document supersedes.
+Assumes superseded document does not have distinct identifier.
+`:supersedes-edition{i}:``:: Version of the document which this document supersedes.
+Assumes superseded document does not have distinct identifier.
+
+`:doctype:`:: The document type (mandatory). The permitted types are:
++
+--
+* brochure (default)
+* mise-en-pratique
+* rapport
+* monographie
+* guide
+* meeting-report
+* technical-report
+* working-party-note
+* strategy
+* cipm-mra
+* resolution
+--
+
+`:status:``:: The document status. The permitted types are: `draft-proposal`,
+`draft-development`, `in-force`, `retired`.
+
+`:committee-en:`:: The name of the relevant committee in English (mandatory)
+`:committee-fr:`:: The name of the relevant committee in French (mandatory)
+`:committee-acronym:`:: The acronym of the relevant committee (mandatory)
++
+--
+* CGPM: General Conference on Weights and Measures / Conférence générale des poids et mesures
+* CIPM: International Committee for Weights and Measures / Comité international des poids et mesures
+* BIPM: International Bureau of Weights and Measures / Bureau International des Poids et Mesures
+* CCAUV: Consultative Committee for Acoustics, Ultrasound and Vibration / Comité consultatif de l'acoustique, des ultrasons et des vibrations
+* CCEM: Consultative Committee for Electricity and Magnetism / Comité consultatif d'électricité et magnétisme
+* CCL: Consultative Committee for Length / Comité consultatif des longueurs
+* CCM: Consultative Committee for Mass and Related Quantities / Comité consultatif pour la masse et les grandeurs apparentées
+* CCPR: Consultative Committee for Photometry and Radiometry / Comité consultatif de photométrie et radiométrie
+* CCQM: Consultative Committee for Amount of Substance: Metrology in Chemistry and Biology / Comité consultatif pour la quantité de matière : métrologie en chimie et biologie
+* CCRI: Consultative Committee for Ionizing Radiation / Comité consultatif des rayonnements ionisants
+* CCT: Consultative Committee for Thermometry / Comité consultatif de thermométrie
+* CCTF: Consultative Committee for Time and Frequency / Comité consultatif du temps et des fréquences
+* CCU: Consultative Committee for Units / Comité consultatif des unités
+* CCL-CCTF: Frequency Standards Working Group
+* JCGM: Joint Committee for Guides in Metrology / Comité commun pour les guides en métrologie
+* JCRB: Joint Committee of the Regional Metrology Organizations and the BIPM / Comité mixte des organisations régionales de métrologie et du BIPM
+* JCTLM: Joint Committee for Traceability in Laboratory Medicine / Comité commun pour la traçabilité en médecine de laboratoire
+* INetQI: International Network on Quality Infrastructure
+--
+`:workgroup:`:: The name of the relevant workgroup (mandatory)
+`:workgroup-acronym:`:: The acronym of the relevant workgroup (mandatory)
+
+`:language:` :: The language of the document (`en` or `fr`)  (mandatory)
+
+`:comment-period-from:`:: Start of the period during which comments are allowed on the document draft
+`:comment-period-to:`:: End of the period during which comments are allowed on the document draft (optional)
+
+`:obsoleted-date:`:: The date a document was superseded
+`:implemented-date:`:: The date a document became effective
+
+`:meeting-note:`:: Note on when and where a guide was adopted.
+
+`:role_{i}:`:: If provided and is other than "author" or "editor" (e.g. "WG-N co-chair"),
+is treated as a subclass of "editor".
+
+`:supersedes-date_{i}:`:: Date of the document draft or version which this document supersedes.
+`:supersedes-draft_{i}:`:: Draft of the document which this document supersedes.
+`:supersedes-version_{i}:``:: Version of the document which this document supersedes.
+
+
+The attribute `:draft:`, if present, includes review notes in the XML output;
+these are otherwise suppressed.
+
+== Markup
+
+Cross-references formatted as `<<{{anchor}},pagenumber%>>` are rendered in PDF as just the page number;
+they are used for tables of content. In HTML output, they are treated as normal cross-references.
+
+Clauses and annexes may be marked as `[%unnumbered]`, in which case they do not receive section numbering, and are cross-referenced by their title.
+
+Unlike the Metanorma default, ordered lists do not have a fixed sequence of numbering styles: the type set for each ordered list (including nested lists) is respected. The default numbering style for ordered lists is always arabic.
+
+Numerals are automatically formatted as required by BIPM (French localisation).
+
+Cross-references to clauses are rendered in lowercase: “see section 4.1”. Metanorma will attempt to impose correct capitalisation for instances at the start of blocks and sentences, but it may get it wrong.
+
+To override such capitalisation, you can use the the flags `capital%` or `lowercase%` as the content of the cross-reference, to force that casing on the cross-reference.
+
