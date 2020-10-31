@@ -14,6 +14,27 @@ The language of the document is specified in following link:/author/ref/document
 - `:i18nyaml:` — language template file. Only needed if you’re using a language other than
   English, Chinese (Simplified) or French.
 
+Localised string variants can be specified using the 
+`lang:[]` macro [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3]:
+
+* `lang:XX[]` indicates a string specific to language XX; e.g. `lang:en[text]`
+* `lang:XX-XXXX[]` indicates a string specific to language XX and script XXXX; e.g. `lang:zh-Hans[text]`
+
+If `lang:[]` macros appear next to each other in a document, and one of the macros
+matches the current document language (and script, if supplied), then only that macro will be rendered.
+For example, if the document is in English,
+
+[source,asciidoc]
+----
+=== lang:en[husked rice] lang:fr[riz décortiqué]
+----
+
+is rendered as
+
+____
+*husked rice*
+____
+
 [TIP]
 ====
 If you’re looking for information about how to add support for a new language
