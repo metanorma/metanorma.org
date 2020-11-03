@@ -8,17 +8,17 @@ Metanorma allows generation of standards in different languages.
 
 The language of the document is specified in following link:/author/ref/document-attributes/#languages-localization[document attributes]:
 
-- `:language:` — two-letter language code, such as `en` (default) or `fr`.
-- `:script:` — script (for languages with more than one script). Specify
-  `Hans` for Simplified Chinese. Default is `Latn`.
-- `:i18nyaml:` — language template file. Only needed if you’re using a language other than
+* `:language:` — ISO 639-2 two-letter language code. Defaults to `en`.
+* `:script:` — ISO 15924 script code (for languages with more than one script). 
+  Defaults to `Latn`. e.g., specify `Hant` for Traditional Chinese.
+* `:i18nyaml:` — language template file. Only needed if you’re using a language other than
   English, Chinese (Simplified) or French.
 
 Localised string variants can be specified using the 
 `lang:[]` macro [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3]:
 
-* `lang:XX[]` indicates a string specific to language XX; e.g. `lang:en[text]`
-* `lang:XX-XXXX[]` indicates a string specific to language XX and script XXXX; e.g. `lang:zh-Hans[text]`
+* `lang:XX[]` indicates a string specific to language XX; e.g. `lang:fr[text]`
+* `lang:XX-YYYY[]` indicates a string specific to language `XX` and script `YYYY`; e.g. `lang:zh-Hant[text]`
 
 If `lang:[]` macros appear next to each other in a document, and one of the macros
 matches the current document language (and script, if supplied), then only that macro will be rendered.
