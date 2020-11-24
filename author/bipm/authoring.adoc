@@ -171,6 +171,8 @@ EXAMPLE: `\stem:[32123.456789]` is rendered as _32 123,456 789_ in French, and _
 Cross-references formatted as `\<<{{anchor}},pagenumber%>>` are rendered in PDF as just the page number;
 they are used for tables of content. In HTML output, they are treated as normal cross-references.
 
+In PDF, cross-references are accompanied by a page number, preceded by _see_/_voir_. If the cross-reference is formatted as `\<<{{anchor}},nosee%>>`, that _see_/_voir_ is not inserted.
+
 Cross-references to clauses are rendered in lowercase: "`see section 4.1`". Metanorma will attempt to impose correct capitalisation for instances at the start of blocks and sentences, but it may get it wrong.
 
 To override such capitalisation, you can use the the flags `capital%` or `lowercase%` as the content of the cross-reference, to force that casing on the cross-reference.
