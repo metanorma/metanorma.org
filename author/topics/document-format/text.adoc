@@ -224,6 +224,25 @@ in Metanorma via Liquid templates. Document title footnotes are moved into
 `/bibdata/note[@type = "title-footnote"]`, and are treated as document metadata, as are document
 titles themselves. The location of the footnote within the title is not preserved.
 
+Multi-paragraph footnotes are not natively supported in Asciidoctor. In order to generate
+such footnotes, use the macro `footnoteblock:[id]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.4],
+where "id" is the identifier of a note containing the contents of the footnote:
+
+[source,asciidoc]
+----
+This is a paragraph.footnoteblock:[id1] This continues the paragraph.
+
+[[id]]
+[NOTE]
+--
+This is
+
+a multi-paragraph
+
+footnote
+--
+----
+
 
 == Index terms
 
