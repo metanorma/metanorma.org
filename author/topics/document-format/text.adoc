@@ -217,19 +217,19 @@ When the text of a footnote is repeated in two different places, default behavio
 both for HTML and for DOC, is to use the same footnote number in both places, rather than
 treat the repetition as a new footnote.
 
-Footnotes on document titles are 
+Footnotes on document titles are
 recognised [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1],
 but by default they are not rendered, because of how document title pages are processed separately
-in Metanorma via Liquid templates. Document title footnotes are moved into 
+in Metanorma via Liquid templates. Document title footnotes are moved into
 `/bibdata/note[@type = "title-footnote"]`, and are treated as document metadata, as are document
 titles themselves. The location of the footnote within the title is not preserved.
 
-== Index Terms
 
-Metanorma supports index entries with primary, secondary and tertiary index terms; however
-these are currently only rendered in the IETF flavour, and do not appear otherwise in
-DOC, PDF or HTML output
-[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+== Index terms
+
+Metanorma supports index entries with primary, secondary and tertiary index terms
+entered with the following
+syntax. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
 
 [source,asciidoc]
 --
@@ -239,27 +239,46 @@ signifying by divine providence that I, ((Arthur)),
 was to carry Excalibur (((Sword, Broadsword, Excalibur))).
 --
 
+Index term links are only rendered in certain flavours, and do not appear otherwise in
+DOC, PDF or HTML output.
+
+NOTE: Only Metanorma IETF XML RFC output renders index terms.
+
+
 == Lists
 
-=== Ordered Lists
+=== Ordered lists
 
-Ordered lists in both HTML and Word have their labels pre-configured
-to align with ISO/IEC DIR 2:
+Ordered list labels conform to rules specified in ISO/IEC DIR 2:
 
-- _a), b), c)_ for the first level,
-- then _1), 2), 3)_ for the second level,
-- then _i), ii), iii)_,
-- then _A), B), C)_,
-- then _I), II), III)_.
+- level 1: _a), b), c)_ (`alphabetic`),
+- level 2: _1), 2), 3)_ (`arabic`),
+- level 3: _i), ii), iii)_ (`roman`),
+- level 4: _A), B), C)_ (`alphabetic_upper`),
+- level 5: _I), II), III)_ (`roman_upper`).
 
-NOTE: Metanorma AsciiDoc ignores the `start` attribute
-on ordered lists. 
+NOTE: This labeling applies to all output formats, including
+PDF, HTML and Word.
 
-NOTE: Metanorma AsciiDoc no longer ignores the `type` attribute for ordered lists
-used in Asciidoctor AsciiDoc [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.0],
-which allows the user to specify the label of an ordered list. However, the attribute
-will be ignored in Word rendering, and a single label setting used instead;
-by default, the  ISO/IEC DIR 2 labelling used instead.
+The `type` attribute, with acceptable values listed in the list above,
+can be used to allow specifying labels of an ordered
+list [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.0].
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+[type="alphabetic_upper"]
+. First as "A"
+. Second as "B"
+--
+
+NOTE: In Word rendering the `type` attribute is always ignored in favor of
+ISO/IEC DIR 2 compliant labelling.
+
+The `start` attribute for ordered lists is only allowed by
+certain Metanorma flavors, such as BIPM.
+
 
 === List items with more than one paragraph
 
@@ -270,7 +289,7 @@ NOTE: In HTML output, all the paragraphs within a list item will be aligned.
 
 [NOTE]
 ====
-.MS Word caveats
+.Microsoft Word caveats
 
 - For list items containing multiple paragraphs,
   Metanorma attempts to format them appropriately by using custom list continuation styles
@@ -278,19 +297,19 @@ NOTE: In HTML output, all the paragraphs within a list item will be aligned.
   however, you should check the output document
   and may need to manually intervene.
 
-- In MS Word, each list entry must be a single paragraph.
+- In Microsoft Word, each list entry must be a single paragraph.
   Metanorma is employing a workaround through list continuation styles,
   and results may be unexpected if the list is edited.
 ====
 
-=== Definition Lists
+=== Definition lists
 
 Definition lists are rendered by default horizontally, with the definition
 in the same line as the term. In Word, definition lists are rendered as true
 tables, and the width of the term column is determined by the Word autowidth
 algorithm; if you need to ensure that terms are rendered in a single line in Word,
 you may need to use non-breaking spaces and non-breaking hyphens
-(which can be entered in AsciiDoc as HTML escapes: &nbsp; or &#xa0;, and &#x2011;,
+(which can be entered in AsciiDoc as HTML escapes: `&nbsp;` or `&#xa0;`, and `&#x2011;`,
 respectively;, e.g. `This&nbsp;is&nsbp;a&nbsp;non&#x2011;breaking&nbsp;term`
 instead of `This is a non-breaking term`.)
 
@@ -563,8 +582,8 @@ In some flavours (e.g. ITU), they are referenced differently as "`Equations`" an
 == Figures
 
 Like formulae, figures can be followed by a definition list for the variables used in the figure;
-the definition list is either preceded by the paragraph `+*Key*+` (in English), 
-or [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3] is marked up with `[%key]`. 
+the definition list is either preceded by the paragraph `+*Key*+` (in English),
+or [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3] is marked up with `[%key]`.
 For example:
 
 [source,asciidoc]
