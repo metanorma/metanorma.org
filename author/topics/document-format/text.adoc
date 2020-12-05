@@ -354,9 +354,10 @@ Tables can also have alternate text as a title, `alt`, and summary text,
 `summary`, both of which are to be rendered as a summary of the table
 for accessibility.
 
-Tables can finally have a `width` attribute, which following HTML CSS and HTML 4
-can set the width of a table to either a percentage (e.g. `70%`) or a pixel count
-(e.g. `500px`) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21].
+Tables can be set with a `width` attribute, which could be either a 
+percentage (e.g. `70%`) or a pixel count (e.g. `500px`). [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21].
+
+NOTE: The `width` attribute value aligns with HTML CSS and HTML 4 behavior. 
 
 [source,asciidoc]
 --
@@ -370,14 +371,19 @@ stem:[w_max]
 |===
 --
 
-which renders
+which renders:
 
 .Illustration of a table in Metanorma (DOC output). Configuration: 70% of width, two header rows, one normal row, one footnote.
 image::/assets/author/topics/document-format/text/fig-table.png[]
 
 
-Typical AsciiDoc allows table cells to have footnotes (which Metanorma renders inside the table)
-and notes following the table (which Metanorma moves inside the table footer).
+In Metanorma AsciiDoc:
+
+* table cell footnotes are rendered inside the table;
+* notes following the table are rendered inside the table footer.
+
+NOTE: Typical AsciiDoc renders table cell footnotes inside the cell, 
+and notes trailing the table outside the table.
 
 [TIP]
 ====
@@ -385,7 +391,20 @@ Table 1 in the AsciiISO Rice example document illustrates
 a large range of table formatting options.
 ====
 
-Table columns can also have their widths set, as is supposrted in AsciiDoc [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3]. Unlike native Asciidoc, Metanorma Asciidoc requires the column widths to be enumerated explicitly to generate column widths: `[cols="3"]` will not be processed as generating equal width columns, but `[cols="1,1,1"]` will.
+Table columns can also have their widths set [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3].
+Table column widths must be enumerated explicitly per column to generate column widths.
+
+EXAMPLE:
+
+The following syntax will be processed as generating equal width columns.
+
+[source,adoc]
+----
+[cols="1,1,1"]
+----
+
+NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to `[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.
+
 
 == Mathematical expressions
 
