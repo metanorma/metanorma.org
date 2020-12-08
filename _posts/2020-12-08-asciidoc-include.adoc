@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Include behaviour in the Asciidoctor parser"
+title: "Updated \"include\" behaviour in Metanorma AsciiDoc"
 date: 2020-12-08
 categories: about
 authors:
@@ -9,19 +9,20 @@ authors:
     email: opoudjis@gmail.com
     social_links:
       - https://github.com/opoudjis
-  
+
 excerpt: >-
-    Recent changes to Asciidoctor processing of include files.
+    Recent changes to Metanorma AsciiDoc processing of included files.
 ---
 
-== Recent changes in `include` directive processing
+== Recent changes in "include" directive processing
 
-Many Metanorma users assemble their documents out of smaller components, using the `include:[]` macro,
+Many Metanorma users assemble their documents out of smaller components,
+using the `include:[]` macro in the AsciiDoc format,
 as documented in the https://asciidoctor.org/docs/user-manual/#include-directive[Asciidoctor User Manual].
 
-If you have created file `sections-en/00-foreword.adoc` to contain the foreword in AsciiDoc format, and
-`sections-en/00-introduction.adoc` to contain the introduction, then you can include them in a master document
-by typing:
+If you have created file `sections-en/00-foreword.adoc` to contain the foreword, and
+`sections-en/00-introduction.adoc` to contain the introduction,
+then you can include them in a master document by typing:
 
 [source,asciidoc]
 ----
@@ -30,18 +31,18 @@ by typing:
 \include::sections-en/00-introduction.adoc[]
 ----
 
-The contents of the file replace the `include` macro that invokes it. 
+The contents of the file replace the `include` macro that invokes it.
 
-The parser used in Metanorma, Asciidoctor, is very sensitive to blank lines:
+The AsciiDoc parser used in Metanorma, _Asciidoctor_, is very sensitive to blank lines:
 if a blank line is not used to separate blocks of various kinds from
 each other, bad things will happen.
 
-For that reason, it's been conventional to add a blank line at the end of files that are included,
-so that in the fully "`include-resolved`" file there are blank lines between the `include`s.
+For that reason, it has been conventional to add a blank line at the end of files that are included,
+so that in the fully "`include`"-resolved file there are blank lines between the includes.
 
 Until recently, include macros with no blank lines between them have worked fine,
 as long as there are blank lines at the top or bottom of the included files:
-which has the effect of separating the `include`s in the fully resolved file.
+which has the effect of separating the includes in the fully resolved file.
 
 So this:
 
@@ -51,9 +52,9 @@ So this:
 \include::sections-en/00-introduction.adoc[]
 ----
 
-used to work, as long as there were at least one blank trailing line in the included files.
+used to work, as long as there were at least one blank trailing line in the `include`d files.
 
-== Problem with new Asciidoctor behavior (2.0.11+)
+== Issue with new parsing behavior (used with Asciidoctor 2.0.11+)
 
 That expectation, however, has changed -- all blank lines wrapping the included files
 are now stripped since https://github.com/asciidoctor/asciidoctor/releases/tag/v2.0.11[Asciidoctor 2.0.11],
@@ -79,13 +80,13 @@ As a result, unpleasant consequences now emerge when include macros are't separa
 https://github.com/asciidoctor/asciidoctor/issues/3875[asciidoctor#3875].)
 
 
-== Solution
+== Moving forward
 
 If you don't have blank lines between include macros in your document, and your
 included files are blocks of text (including clauses, which is the typical case),
 we encourage you to insert blank lines between them now.
 
-i.e. Remember to do this!
+i.e. Start doing this!
 
 [source,asciidoc]
 ----
