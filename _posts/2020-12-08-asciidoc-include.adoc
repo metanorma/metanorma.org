@@ -1,0 +1,64 @@
+---
+layout: post
+title: "Asciidoctor include behaviour"
+date: 2020-12-08
+categories: about
+authors:
+  -
+    name: Nick Nicholas
+    email: opoudjis@gmail.com
+    social_links:
+      - https://github.com/opoudjis
+  
+excerpt: >-
+    Recent changes to Asciidoctor processing of include files.
+---
+
+== Asciidoctor includes
+
+Many Metanorma users assemble their documents out of smaller components, using the Asciidoctor `include:[]` macro,
+as documented in the https://asciidoctor.org/docs/user-manual/#include-directive[Asciidoctor User Manual]. So
+if you have created file `sections-en/00-foreword.adoc` to contain the foreword in Asciidoctor format, and
+`sections-en/00-introduction.adoc` to contain the introduction, then you can include them in a master document
+by typing:
+
+[source,asciidoc]
+----
+include::sections-en/00-foreword.adoc[]
+
+include::sections-en/00-introduction.adoc[]
+
+----
+
+The contents of the file replace the `include` macro that invokes it. 
+
+Now, Asciidoctor is very sensitive to blank lines: if a blank line is not used to separate blocks of various kinds from 
+each other, bad things will happen. For that reason, it's been conventional to add a blank line at the end of files that are included.
+
+The expectation in Asciidoctor, however, is that the blank line separating the included file from what follows it should apppear
+in the including document. So this:
+
+[source,asciidoc]
+----
+include::sections-en/00-foreword.adoc[]
+include::sections-en/00-introduction.adoc[]
+----
+
+is wrong, and can in theory lead to all sorts of unpleasant consequences in processing the document. As the Asciidoctor User Manual
+puts it,
+
+____
+The best way to think of the include directive is to imagine that it is being replaced by the lines from the include file (i.e., the imported lines). Only then does the parser read and interpret those lines. That’s also why it’s important to surround the include directive by blank lines if it imports in a discrete structure. You only want to place include files directly adjacent to one another if the imported content should be directly adjacent.
+____
+
+Until recently, include macros with no blank lines between them have worked fine: Asciidoctor has tacitly been doing the equivalent of
+inserting blank lines after each included file.
+
+This changed with https://github.com/asciidoctor/asciidoctor/releases/tag/v2.0.11[Asciidoctor 2.0.11], released on November 3. The tacit
+blank line insertion has been done away with. In fact, even if the included file ends in blank lines, those lines are ignored. As a result,
+unpleasant consequences are indeed starting to emerge when include macros are't separated by blank lines.
+(See also discussion in https://github.com/asciidoctor/asciidoctor/issues/3878[], https://github.com/asciidoctor/asciidoctor/issues/3875[].)
+
+If you don't have blank lines between include macros in your document, and your included files are blocks of text (including clauses, which is the typical case),
+we encourage you to insert blank lines between them now.
+
