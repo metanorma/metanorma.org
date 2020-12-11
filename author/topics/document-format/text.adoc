@@ -260,6 +260,30 @@ signifying by divine providence that I, ((Arthur)),
 was to carry Excalibur (((Sword, Broadsword, Excalibur))).
 --
 
+Metanorma also supports "see" and "see also" crossreferences between
+index terms [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.5],
+using the `index` macro. The macro has at least two parameters, the primary index term to be crossreferenced,
+and the target of the crossreference; the secondary and tertiary index term to be crossreferenced are
+optional parameters.
+
+[source,asciidoc]
+--
+index:see[Satchmo,Louis Armstrong]
+index:see[James Brown,influences,Hank Ballard and the Midnighters]
+index:also[guitar,electric,technique,Jimi Hendrix]
+--
+
+Rendered as:
+
+____
+* Satchmo, _see_ Louis Armstrong
+* James Brown
+** influences, _see_ Hank Ballard and the Midnighters
+* guitar
+** electric
+*** technique, _see also_ Jimi Hendrix
+____
+
 Index term links are only rendered in certain flavours, and do not appear otherwise in
 DOC, PDF or HTML output.
 
