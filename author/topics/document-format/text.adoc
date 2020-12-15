@@ -1150,7 +1150,7 @@ EXAMPLE: "`ISO 7301, Clause 2, Table 1a, pp. 7-9`" would be expressed as:
 --
 ====
 
-See link:bibliography#localities[localities and locality values].
+See link:/author/topics/document-format/bibliography#localities[localities and locality values].
 
 === List items
 
@@ -1181,8 +1181,16 @@ http://www.example2.com[text to go into the second hyperlink,title=This is a too
 
 === Cross-references to external documents
 
-In link:bibliography#localities[localities and locality values],
-anchor can be integrated in citations of documents via references.
+In link:/author/topics/document-format/bibliography#localities[localities and locality values],
+anchor can be integrated in citations of documents via references; for example:
+
+[source,asciidoc]
+--
+<<ISO7301,anchor=xyz>>  
+--    
+
+will generate a hyperlink to the element with ID xyz in document ISO7301. This convention
+is necessary for crossreferences between documents in a Metanorma document collection.
 
 Outside of that, Metanorma will process cross-references to anchors within
 external documents just like typical AsciiDoc.
