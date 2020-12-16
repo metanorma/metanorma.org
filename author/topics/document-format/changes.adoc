@@ -2,23 +2,40 @@
 layout: author-docs
 ---
 
-= Machine readable changes
+= Machine-readable changes
 
-Emendations to documents can be presented in a machine readable form in Metanorma. This form
-is recommended for use in document amendments. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3]
+Individual changes to documents can be presented in a
+machine-readable form in Metanorma.
 
-The format involves expressing each change as a clause. Clauses describing changes are
-identified through the attribute `change`, which describes the kind of change involved; the
-allowed values are `add`, `modify`, and `delete`.
+This form is recommended for use in document amendments, where
+every independent change ("`patch`") are encoded in
+machine-readable format for
+extraction. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3]
+
+The machine-readable change  format involves expressing each change as a clause. Clauses
+describing changes are identified through the attribute `change`,
+which describes the kind of change involved; the allowed values are:
+
+* `add`;
+* `modify`; and
+* `delete`.
+
 
 The following attributes can be expressed on changes:
 
-* `locality` gives the location in the reference document to be modified, as a collection of
-locality key/values, following the convention in link:/author/topics/document-format/bibliography#localities[localities and locality values].
-* `path` gives an XPath within the identified locality, indicating the specific element to be changed.
-* `path_end` is used in conjunction with `path`, if a range of elements is to be changed. In that case, `path`
-gives the initial element in the range, and `path_end` gives the final element.
-* `title` can be used to specify a title for the change. If a title is given for the clause, that is used instead.
+* `locality` gives the location in the reference document to be
+  modified, as a collection of locality key/values, following
+  the convention in
+  link:/author/topics/document-format/bibliography#localities[localities and locality values].
+
+* `path` gives an XPath within the identified locality, indicating
+  the specific element to be changed.  * `path_end` is used in
+  conjunction with `path`, if a range of elements is to be changed.
+  In that case, `path` gives the initial element in the range, and
+  `path_end` gives the final element.
+
+* `title` can be used to specify a title for the change. If a title
+  is given for the clause, that is used instead.
 
 The content of the change clause is treated as the human-readable description of the change.
 
@@ -38,7 +55,8 @@ represented as a final blockquote within the change clause.
 [change=modify,locality="page=14,clause=4.3.1",title="Array based unstructured mesh",path="./source"]
 ==== {blank}
 
-_Some attributes referenced in the EXPRESS are not properly defined, Remove the EXPRESS definition of this entity and replace with:_
+_Some attributes referenced in the EXPRESS are not properly defined,
+Remove the EXPRESS definition of this entity and replace with:_
 
 ____
 [%unnumbered]
@@ -67,7 +85,9 @@ start numbering any tables in the replacement text from 2.
 autonumber:table[2]
 autonumber:note[7]
 
-_This table contains information on polygon cells which are not included in ISO 10303-52. Remove table 2 completely and replace with:_
+_This table contains information on polygon cells which are not
+included in ISO 10303-52. Remove table 2 completely and replace
+with:_
 
 ____
 .Edges of triangle and quadrilateral cells
