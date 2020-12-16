@@ -260,6 +260,35 @@ signifying by divine providence that I, ((Arthur)),
 was to carry Excalibur (((Sword, Broadsword, Excalibur))).
 --
 
+Metanorma does support formatting in index terms [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0],
+although formatting is ignored in IETF rendering.
+
+[source,asciidoc]
+--
+signifying by divine providence that I, ((*Arthur*)),
+was to carry Excalibur (((Sword~A~, stem:[sqrt(2)], Excalibur))).
+--
+
+Metanorma supports index entries that involve ranges [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0],
+using the macro `index-range:to[(((...)))]`. The index entry range starts at the location of the 
+macro, as with `(((...)))`; the end of the range is the element with anchor `to`, and that is expected to be
+provided as a bookmark. The macro itself contains an Asciidoctor index entry.
+
+[source,asciidoc]
+--
+signifying by divine providence that I, index-range:end-range-1[((*Arthur*))],
+was to carry Excalibur index-range:end-range-2[(((Sword~A~, stem:[sqrt(2)], Excalibur)))].
+
+...
+
+and so forth.[[end-range-1]]
+
+...
+
+_Sic explicit fabula._[[end-range-2]]
+--
+
+
 Metanorma also supports "see" and "see also" crossreferences between
 index terms [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.5],
 using the `index` macro. The macro has at least two parameters, the primary index term to be crossreferenced,
