@@ -12,6 +12,6 @@ _site:
 	bundle exec jekyll build --trace
 
 serve:
-	bundle exec jekyll serve
+	bundle exec jekyll serve --trace
 
 .PHONY: bundle all open serve distclean clean
