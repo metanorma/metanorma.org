@@ -185,16 +185,21 @@ EXAMPLE: `\stem:[32123.456789]` is rendered as _32 123,456 789_ in French, and _
 
 == Cross-references
 
+Rendered cross-references are locale-aware.
+
 Cross-references formatted as `\<<{{anchor}},pagenumber%>>`
 are rendered in PDF as just the page number; they are used for
 tables of content.
-In HTML output, they are treated as normal cross-references.
+In HTML output, such cross-references are treated as normal cross-references.
 
-Rendered cross-references are locale-aware.
-In PDF, cross-references are accompanied by a page number,
+In PDF, cross-references are otherwise accompanied by a page number,
 preceded by _see_ (English) or _voir_ (French).
 If the cross-reference is formatted as `\<<{{anchor}},nosee%>>`,
-then _see_/_voir_ is not inserted.
+then _see_/_voir_ is not inserted, just the page number.
+If the cross-reference
+is formatted as `\<<{{anchor}},nopage%>>`, then neither _see_/_voir_
+nor the page number is inserted [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v1.0.1].
+Again, both such cross-references are treated as normal cross-references in HTML.
 
 Cross-references to clauses are rendered in lowercase: "`see section 4.1`".
 Metanorma will attempt to impose correct capitalisation for instances at
