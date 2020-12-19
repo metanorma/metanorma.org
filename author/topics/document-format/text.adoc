@@ -248,9 +248,43 @@ supported in typical AsciiDoc.
 
 == Index terms
 
-Metanorma supports index entries with primary, secondary and tertiary index terms
-entered with the following
-syntax. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+=== General
+
+Metanorma supports index entries with primary, secondary and tertiary
+index terms. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+
+Primary index terms are listed under the first-level index,
+the secondary index terms are listed under the primary index terms' sub-index,
+and the tertiary index terms are listed under the secondary index term's sub-index.
+
+.Illustration of an index in Metanorma with primary and secondary indexes are shown.
+image::/assets/author/topics/document-format/text/fig-index.png[Illustration of an index in Metanorma with primary and secondary indexes are shown,width=70%]
+
+Index term links are only rendered in certain flavours, and do not
+appear otherwise in DOC, PDF or HTML output.
+
+NOTE: Currently, only Metanorma IETF XML RFC and Metanorma BIPM outputs render index terms.
+
+
+=== Rendered index term syntax
+
+Metanorma index entries are entered through two different
+syntaxes. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+
+Rendered index term: `+((Term))+`
+
+* Produces the output "`Term`"; and
+* Links to the primary index term of the same name, "`Term`".
+
+Hidden index term: `+(((IndexTerm1)))+`,
+  `+(((IndexTerm1, IndexTerm2)))+` or
+  `+(((IndexTerm1, IndexTerm2, IndexTerm3)))+`
+
+* Produces no output; and
+* Links to the primary index term `IndexTerm1`. And if provided, links to
+  the secondary nesting, `IndexTerm2` and the tertiary nesting `IndexTerm3`.
+
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -260,21 +294,33 @@ signifying by divine providence that I, ((Arthur)),
 was to carry Excalibur (((Sword, Broadsword, Excalibur))).
 --
 
-Metanorma does support formatting in index terms [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0],
-although formatting is ignored in IETF rendering.
+
+=== Rich-text formatting
+
+Rich-text formatting in index terms is
+supported [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
 
 [source,asciidoc]
 --
 signifying by divine providence that I, ((*Arthur*)),
-was to carry Excalibur (((Sword~A~, stem:[sqrt(2)], Excalibur))).
+was to carry Excalibur (((Sword~E~, stem:[sqrt(E)], Excalibur))).
 --
 
+NOTE: Formatting of index terms is ignored in IETF rendering.
+
+
+=== Entry ranges
+
 Metanorma supports index entries that involve ranges [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0],
-using the macro `index-range:to[...]`.
-The macro itself contains an Asciidoctor index entry, such as `+((...))+` or `+(((...)))+`.
-The index entry range starts at the location of the `index-range` macro, 
-in the same way as the index macro it contains; the end of the range is the element with the anchor `to`, 
-and that is expected to be provided as a bookmark. 
+using the command `index-range:to[...]`.
+
+The command itself accepts an AsciiDoc index entry, such as
+`+((...))+` or `+(((...)))+`.
+
+The index entry range starts at the location of the `index-range`
+command, in the same way as the index command it contains; the end of
+the range is the element with the anchor `to`, and that is expected
+to be provided as a bookmark.
 
 [source,asciidoc]
 --
@@ -290,15 +336,23 @@ and so forth.[[end-range-1]]
 _Sic explicit fabula._[[end-range-2]]
 --
 
-The preceding example has a visible index entry for _**Arthur**_, ranging from the location of `+*Arthur*+`
-up to `end-range-1`, and a hidden index entry for _Sword~A~_, ranging from the location of `+Sword~A~+`
-up to `end-range-2`.
+The preceding example has a visible index entry for _**Arthur**_,
+ranging from the location of `+*Arthur*+` up to `end-range-1`, and
+a hidden index entry for _Sword~A~_, ranging from the location of
+`+Sword~A~+` up to `end-range-2`.
 
-Metanorma also supports "see" and "see also" crossreferences between
+
+=== Cross-references
+
+Metanorma also supports "`see`" and "`see also`" cross-references between
 index terms [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.5],
-using the `index` macro. The macro has at least two parameters, the primary index term to be crossreferenced,
-and the target of the crossreference; the secondary and tertiary index term to be crossreferenced are
-optional parameters.
+using the `index` command.
+
+The command takes at least two parameters:
+
+* the primary index term to be cross-referenced;
+* the target of the cross-reference;
+* optionally, the secondary and tertiary index term to be cross-referenced.
 
 [source,asciidoc]
 --
@@ -317,11 +371,6 @@ ____
 ** electric
 *** technique, _see also_ Jimi Hendrix
 ____
-
-Index term links are only rendered in certain flavours, and do not appear otherwise in
-DOC, PDF or HTML output.
-
-NOTE: Only Metanorma IETF XML RFC and Metanorma BIPM output renders index terms.
 
 
 == Lists
@@ -371,10 +420,10 @@ NOTE: In HTML output, all the paragraphs within a list item will be aligned.
 .Microsoft Word caveats
 
 - For list items containing multiple paragraphs,
-  Metanorma attempts to format them appropriately by using custom list continuation styles
-  (`ListContLevel1` etc.) applied to groups of paragraphs;
-  however, you should check the output document
-  and may need to manually intervene.
+  Metanorma attempts to format them appropriately by using custom
+  list continuation styles (`ListContLevel1` etc.) applied to groups
+  of paragraphs; however, you should check the output document and
+  may need to manually intervene.
 
 - In Microsoft Word, each list entry must be a single paragraph.
   Metanorma is employing a workaround through list continuation styles,
@@ -385,12 +434,13 @@ NOTE: In HTML output, all the paragraphs within a list item will be aligned.
 
 Definition lists are rendered by default horizontally, with the definition
 in the same line as the term. In Word, definition lists are rendered as true
-tables, and the width of the term column is determined by the Word autowidth
+tables, and the width of the term column is determined by the Word auto-width
 algorithm; if you need to ensure that terms are rendered in a single line in Word,
 you may need to use non-breaking spaces and non-breaking hyphens
 (which can be entered in AsciiDoc as HTML escapes: `&nbsp;` or `&#xa0;`, and `&#x2011;`,
 respectively;, e.g. `This&nbsp;is&nsbp;a&nbsp;non&#x2011;breaking&nbsp;term`
 instead of `This is a non-breaking term`.)
+
 
 == Tables
 
@@ -412,10 +462,10 @@ Tables can also have alternate text as a title, `alt`, and summary text,
 `summary`, both of which are to be rendered as a summary of the table
 for accessibility.
 
-Tables can be set with a `width` attribute, which could be either a 
+Tables can be set with a `width` attribute, which could be either a
 percentage (e.g. `70%`) or a pixel count (e.g. `500px`). [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21].
 
-NOTE: The `width` attribute value aligns with HTML CSS and HTML 4 behavior. 
+NOTE: The `width` attribute value aligns with HTML CSS and HTML 4 behavior.
 
 [source,asciidoc]
 --
@@ -440,7 +490,7 @@ In Metanorma AsciiDoc:
 * table cell footnotes are rendered inside the table;
 * notes following the table are rendered inside the table footer.
 
-NOTE: Typical AsciiDoc renders table cell footnotes inside the cell, 
+NOTE: Typical AsciiDoc renders table cell footnotes inside the cell,
 and notes trailing the table outside the table.
 
 [TIP]
@@ -461,7 +511,8 @@ The following syntax will be processed as generating equal width columns.
 [cols="1,1,1"]
 ----
 
-NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to `[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.
+NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to
+`[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.
 
 
 == Mathematical expressions
@@ -539,15 +590,17 @@ The `\stem:[]` and `[stem]` blocks can also be used if the document attribute
 `:stem: latexmath` has been specified in the document.
 
 LaTeX math is converted into MathML using the
-https://dlmf.nist.gov/LaTeXML/[LaTeXML] processor.
+https://github.com/plurimath/latexmath[latexmath] gem, which generates
+output compliant with the deterministic output of the
+https://dlmf.nist.gov/LaTeXML/[NIST LaTeXML] suite.
 
-Metanorma relies on
-https://dlmf.nist.gov/LaTeXML/manual/commands/latexmlmath.html[LaTeXML's `latexmlmath` command] for
-LaTeX math parsing as it is deterministically accurate, even though some
-complains of it being slower than other (non-deterministic) LaTeX to MathML
-converters.
+NOTE: LaTeX math parsing of the
+https://dlmf.nist.gov/LaTeXML/manual/commands/latexmlmath.html[LaTeXML's `latexmlmath` command]
+is deterministically accurate.
+The https://github.com/plurimath/latexmath[latexmath] gem was created
+to generate identical output to the `latexmlmath` command.
 
-Any Unicode characters in the LaTeX source are translated into LaTeX escapes,
+Unicode characters in the LaTeX source are translated into LaTeX escapes
 through the https://github.com/metanorma/unicode2latex[unicode2latex] gem.
 
 EXAMPLE:
@@ -576,9 +629,10 @@ latexmath:[\tilde{\tilde{\mu}} = mu / (rho_infty c_infty L)].
 
 
 The LaTeX math `eqnarray` environment is not supported in Metanorma as
-it is not supported by LaTeXML. It is also not recommended by the general
+it is not supported by LaTeXML and the latexmath gem.
+It is also not recommended by the general
 LaTeX community due to inconsistencies in vertical alignment and other aspects
-(see link:https://www.tug.org/pracjourn/2006-4/madsen/madsen.pdf[Madsen])
+(see link:https://www.tug.org/pracjourn/2006-4/madsen/madsen.pdf[Madsen]).
 
 The proper LaTeX math syntax used to replace existing `eqnarray`
 equations is to place the equations in separate blocks concatenated
@@ -1244,11 +1298,11 @@ anchor can be integrated in citations of documents via references; for example:
 
 [source,asciidoc]
 --
-<<ISO7301,anchor=xyz>>  
---    
+<<ISO7301,anchor=xyz>>
+--
 
-will generate a hyperlink to the element with ID xyz in document ISO7301. This convention
-is necessary for crossreferences between documents in a Metanorma document collection.
+will generate a hyperlink to the element with ID `xyz` in document `ISO7301`. This convention
+is necessary for cross-references between documents in a Metanorma document collection.
 
 Outside of that, Metanorma will process cross-references to anchors within
 external documents just like typical AsciiDoc.
