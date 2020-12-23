@@ -13,15 +13,15 @@ excerpt: >-
     Generate a collection mini site using Metanorma CLI
 ---
 
-Each metanorma collection can be published as a mini site, there are couple of
-steps involed in this process to take a collection, compile it and generate the
-publishable site.
+A set of metanorma documents can be compiled and published as a min-site. There
+are a couple of steps involved in this process, like compiling each of these
+documents, building the collection, and generate the publishable site.
 
-To make this process easier, Metanorma has been offering a
+To make this process easier, Metanorma has been offering a 
 https://github.com/metanorma/mn-samples-itu/blob/master/Makefile[Makefile] that
-provides some targets to build the mini site. This has been working great until
-recently, but overtime it grew a lot and became harder to maintian, so we have
-decided to ship this as part of the CLI now.
+provides some targets to build the mini-site. It has been working great up until
+now, but over time it grew a lot and became harder to maintain, so we have
+decided to ship this as part of the CLI.
 
 Let's go through a quick demo to see it in action and also customize the build
 
@@ -31,7 +31,7 @@ Let's go through a quick demo to see it in action and also customize the build
 
 Let's take this https://github.com/metanorma/mn-samples-itu[ITU
 sample repo] as an exmaple, There are quite some files there but to keep the
-demo short let's pay attension to the following files and directory.
+demo short let's pay attention to the following files and directory.
 
 [source,sh]
 ----
@@ -51,20 +51,21 @@ Inside `sources` there are two source files and an `images` folder for assets.
 
 ==== Generate the site
 
-How can we generate the site now? Well it's pretty simple, all you need is the
-latest version of the https://github.com/metanorma/metanorma-cli[Metanorma CLI],
-and then you can run the following:
+How can we generate the site now? Well, it's pretty simple, all you need is the
+latest version of the
+https://github.com/metanorma/metanorma-cli/releases/latest[Metanorma CLI] and
+then you can run the following:
 
 [source, sh]
 ----
 metanorma site generate ./sources --output-dir site-folder
 ----
 
-That's it, metanorma will take care of everything now, like compling those soruce
-files, building collection and finally generating the HTML site. To keep you
-updated, metanorma will also print out the details in your terminal.
+That's it, metanorma will take care of everything now, like compiling those
+source files, building the collection, and finally generating the HTML site.
+To keep you updated, metanorma will also print out the details in the terminal.
 
-These are the very bare minimum to geneaate a site, but let's look at the help
+These are the very bare minimum to generate a site, but let's look at the help
 to see what's available. Running `metanorma site help generate`:
 
 [source, sh]
@@ -84,24 +85,24 @@ for you.
 
 === Customizing site generation
 
-If you are like us and don't miss out the details then you might have seen the
-`-config` option in `site generate` help documentation, we didn't say anything
-earlier but that's actually the option to customize the build.
+If you are like us and don't miss out on the details then you might have seen
+the `-config` option in `site generate` help documentation, we didn't say
+anything earlier but that's the option to customize the build.
 
-This option takes a `YAML` file and usages that as site generation instructions,
-Currently it offers the follwing customiations:
+This option takes a `YAML` file and uses that as site generation instructions,
+Currently it offers the following customizations:
 
 * Build a site with specific source files
 * Customize site metadata (Eg: title, and copyright)
 
 ==== Build a site with specifc source files
 
-The demo projects contains couple of documents in the source directory, but for
-our example shake let's say we only want to use `sources/G.191.adoc` for the
+The demo projects contain a couple of documents in the source directory, but for
+our example's sake let's say we only want to use `sources/G.191.adoc` for the
 site generation, how can we do it?
 
-That's the perfect scenario for configuraiton file, the name of the file could
-anything but please pay attension to the node structure:
+That's the perfect scenario for a configuration file, the name of the file could
+be anything but please pay attention to the node structure:
 
 [source, ruby]
 ----
@@ -113,24 +114,24 @@ metanorma:
       - G.191.adoc
 ----
 
-At top level we have `metanorma`, then nested `source`, and then one more level
-of nestihg with `files`. In `files` we can provide the relative path (In terms
-of source directory) for each files as a list and then run the following:
+At the top level we have `metanorma`, then nested `source`, and then one more
+level of nesting with `files`. In `files` we can provide the relative path (In
+terms of source directory) for each file as a list and then run the following:
 
 [source, sh]
 ----
 metanorma site generate ./sources -o site-folder --config metanorma.yml
 ----
 
-This will build the site with the speicfic files you have added in your config
-fiel, but if you need to be more flexible then we also suppport wildcard for
-file listing.
+This will build the site with the specific files you have added in your config
+file, but if you need to be more flexible then we also support wildcard for file
+listing
 
 ==== Customize site metadata (Eg: title, copyright)
 
-Now let's look at how can we provide a custom title for hero area or the name
-for the site copyright. To do that we can use the same configuration file and
-add the following data to to it.
+Now let's look at how can we provide a custom title for the hero area or the
+name for the site copyright. To do that we can use the same configuration file
+and add the following data to it.
 
 [source, sh]
 ----
@@ -148,9 +149,9 @@ https://github.com/metanorma/metanorma-cli/blob/master/spec/fixtures/metanorma.y
 
 ==== Final thoughts
 
-Thanks for making it this far, we've tried to build this interface in way we use
-internally. This offer some basic customization, but if you would like to see
-more or give us a feedback then please get in touch.
+Thanks for making it this far, we've tried to build this interface in a way we
+use internally. This offers some basic customization, but if you would like to
+see more or give us feedback then please get in touch.
 
 ==== Reference
 
