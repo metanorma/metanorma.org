@@ -134,8 +134,11 @@ By default, Terms and Definitions sections are automatically prefixed with boile
 before any terms ooccur,
 indicating the provenance of any definitions (see <<source>>), and, depending on the flavour,
 where definitions may be consulted (e.g. for ISO documents, a reference to the ISO Online Browsing Platform
-and to the IEC Electropedia). Any paragraphs or lists in the AsciiDoc input (which can replicate the expected boilerplate)
-are stripped in the intermediate XML format. So:
+and to the IEC Electropedia). 
+
+Any paragraphs or lists in the AsciiDoc input before the first term are appended to the flavour's defined boilerplate,
+in the intermediate XML format [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0]. [The
+behaviour until that release was for any such text to be overwritten by the flavour's defined boilerplate.] So:
 
 [source,asciidoc]
 --
@@ -149,8 +152,8 @@ This is some random text I have inserted in this document.
 === Term 1
 --
 
-under the ISO flavour has the text between the title and the first term definition overwritten
-with the boilerplate required by ISO:
+under the ISO flavour has the text between the title and the first term definition appended to
+the boilerplate required by ISO:
 
 ____
 *3. Terms and definitions*
@@ -160,6 +163,11 @@ ISO and IEC maintain terminological databases for use in
 
 * ISO Online browsing platform: available at http://www.iso.org/obp[]
 * IEC Electropedia: available at http://www.electropedia.org[]
+
+This is some random text I have inserted in this document.
+
+* It does not follow ISO requirements
+* Nor does it follow IEC requirements
 
 *3.1 Term 1*
 ____
