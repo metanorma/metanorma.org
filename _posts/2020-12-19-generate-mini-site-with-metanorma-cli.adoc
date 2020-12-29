@@ -10,12 +10,12 @@ authors:
       - https://github.com/abunashir
 
 excerpt: >-
-    Generate a collection mini site using Metanorma CLI
+    Generate a mini site for a set of documents using Metanorma CLI
 ---
 
 A set of metanorma documents can be compiled and published as a min-site. There
 are a couple of steps involved in this process, like compiling each of these
-documents, building the collection, and generate the publishable site.
+documents, building the document set, and generate the publishable site.
 
 To make this process easier, Metanorma has been offering a 
 https://github.com/metanorma/mn-samples-itu/blob/master/Makefile[Makefile] that
@@ -39,7 +39,7 @@ mn-samples-itu                          # Root directory
 |
 |-- sources                             # Source directory
 |   |-- images                          # Nested images for assets
-|   |-- G.191.adoc                      # Collection file inside sources
+|   |-- G.191.adoc                      # Individual document file inside sources
 |   |-- G.650.1-201803.adoc
 |
 |-- Gemfile                             # Gemfile in root directory
@@ -62,7 +62,7 @@ metanorma site generate ./sources --output-dir site-folder
 ----
 
 That's it, metanorma will take care of everything now, like compiling those
-source files, building the collection, and finally generating the HTML site.
+source files, building the document set, and finally generating the HTML site.
 To keep you updated, metanorma will also print out the details in the terminal.
 
 These are the very bare minimum to generate a site, but let's look at the help
@@ -125,7 +125,16 @@ metanorma site generate ./sources -o site-folder --config metanorma.yml
 
 This will build the site with the specific files you have added in your config
 file, but if you need to be more flexible then we also support wildcard for file
-listing
+listing.
+
+One important thing to note here, by default if there is a file named with
+`metanorma.yml` in the current working directory then the CLI will consider
+that and will use it automatically, so technically you could use
+
+[source, sh]
+----
+metanorma site generate ./sources -o site-folder
+----
 
 ==== Customize site metadata (Eg: title, copyright)
 
