@@ -2,9 +2,7 @@
 layout: itu-flavor
 ---
 
-= Authoring ITU documents using Metanorma
-
-== Document attributes
+= Metanorma ITU document attributes
 
 [[note_general_doc_ref_doc_attrib_itu]]
 [NOTE]
@@ -16,7 +14,7 @@ For _common document attributes_, see link:/author/ref/document-attributes/[Docu
 For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
 ====
 
-=== Document Information
+== Document Information
 
 `doctype`::
 Document type. Choices:
@@ -114,7 +112,7 @@ in each of the official languages of the ITU.
 `:subtitle-{en, fr, es, ar, ru, zh}:`:: The subtitle to use, in each of the official languages of the ITU;
 appears only at the start of the document body, not in the front cover [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
 
-=== Author Information
+== Author Information
 
 `:bureau_{i}:`::
 Mandatory. Bureau that the document belongs to. Choices:
@@ -190,9 +188,14 @@ Year that Project workgroup study period started.
 Year that Project workgroup study period ended.
 
 `:meeting:`::
-Name of meeting that generated this document (for technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
+Name of meeting that generated this document (for resolutions, technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
 `:meeting-date:`::
-Date of meeting that generated this document (for technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
+Date of meeting that generated this document (for resolutions, technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]. If the date is a range, it is given slash-delimited, e.g. `2000-01-01/2000-01-02`
+`:meeting-place:`::
+Place of meeting that generated this document (for resolutions) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.11].
+`:meeting-acronym:`::
+Acronym of meeting that generated this document (for resolutions) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.11].
+
 `:source:`::
 Source for this document (for technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
 
@@ -217,7 +220,7 @@ Email of contact for this document (for technical reports, technical papers, imp
 `:role_{i}:`::
 Role of contact for this document (for implementers guides): may be either `editor` (default) or `rapporteur` [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.8]
 
-=== Recommendation Status
+== Recommendation Status
 
 `:recommendation-from:`::
 Date from which Recommendation status applies
@@ -263,7 +266,7 @@ Approval status code for Recommendation status. Legal values are:
 ** `tap`: Moved to TAP (ITU-T A.8 / §5.2)
 --
 
-=== Visual appearance
+== Visual appearance
 
 `:smartquotes:`::
 In ITU, quotes and apostrophes default to straight.
@@ -286,243 +289,4 @@ document, but restart numbering with each clause
 Use in complex documents, with multiple tables or figures, that need to be tracked against
 clauses for ease of lookup (so _Figure 6-3, 6-4_, instead of _Figure 21, 22_.)
 Note that equations in ITU are always numbered hierarchically.
-
-
-== Markup
-
-=== Prefatory
-
-The summary sections of Recommendations are marked up with the
-style attribute `[abstract]`.
-
-The prefatory sections "`Summary`",
-"`History`", [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16] Source,
-and the Keywords appear in the Word frontispiece.
-
-=== Lists
-
-The "`ITU Author's Guide`" specifies that ordered lists by default
-should follow the following numbering scheme (which is also default to Metanorma):
-
-* _a), b), c),_
-* then _1), 2), 3)_,
-* then _i), ii), iii)_,
-* then _A), B), C)_,
-* then _I), II), III)_.
-
-If an ordered list is intended to describe "`steps`" within a process,
-it should start with Arabic numbers and should be encoded with the
-class `steps`:
-
-* _1), 2), 3)_,
-* then _a), b), c),_.
-
-Encoding an ordered list as steps:
-
-[source,asciidoc]
---
-[class=steps]
-. First Step
-. Second Step
-. Third Step
---
-
-=== Formulae
-
-By default, formulae are labelled "`Equation`" with a formula sequence number, such as "`Equation 18`".
-
-[source,asciidoc]
---
-[stem]
-++++
-A = B + 100
-++++
---
-
-Inequalities are indicated through the option attribute `%inequality`.
-They will be shown with a label such as "`Inequality 19`".
-
-[source,asciidoc]
---
-[stem%inequality]
-++++
-A < B
-++++
---
-
-=== Numbers
-
-Numbers should be marked up with `\stem:[...]` to have them formatted
-as required by the _ITU Editing Guidelines_.
-This way the numbers will be shown with single quote as a thousands separator.
-
-EXAMPLE: `\stem:[1234567890]` is rendered as _1'234'567'890_.
-
-
-=== Corrigenda
-
-Text to be marked as added or deleted in corrigenda is indicated through the macros `add:[...]` and
-`del:[...]`:
-
-[source,asciidoc]
---
-del:[The use of echo cancellers on the VBD channel, as per Rec. ITU-T G.168.]
-
-... or other forms of redundancy add:[(e.g. per <<rfc2198>>)]
---
-
-=== Annexes
-
-Appendixes are annexes marked as informative instead of normative, which is the default.
-
-Appendixes are numbered
-with roman numerals rather than letters, as a separate sequence from normative Annexes.
-
-[source,asciidoc]
---
-[appendix,obligation=normative]
-== First Annex
-
-[appendix,obligation=informative]
-== First Appendix
---
-
-renders as
-
-____
-*Annex A*
-
-*First Annex*
-
-(This annex forms an integral part of this Recommendation)
-
-*Appendix I*
-
-*First Appendix*
-
-(This appendix does not form an integral part of this Recommendation)
-____
-
-ITU Annexes skip numbering of "`Annex I`" in order to avoid ambiguity, due to the
-identical "`I`" in "`letter I`" and "`Roman numeral one`".
-(e.g. is "`Figure I.3`" part of the first Appendix, or the ninth Annex?).
-Therefore the Annexes skip from "`Annex H`" directly to "`Annex J`".
-
-=== References & bibliography
-
-The normative references section in ITU documents is titled "`References`". All documents
-have the same references predefined text inserted at the start of the section, which overwrites
-any text already supplied before the individual references.
-
-Any references given in the bibliography section are expected to have user-supplied
-identifiers prefixed with `b-`:
-
-[source,asciidoc]
---
-* [[[b-CMake,b-CMake]]], Kitware (2018), _CMake_. https://cmake.org/.
-* [[[ISO20483,(b-ISO 20483)ISO 20483]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
---
-
-ITU Supplements must be cited with the exact same abbreviation they appear as on the ITU
-web site, so that their reference details can be looked up online. That abbreviation
-can vary from the abbreviation used in documents: e.g. `ITU-T G Suppl. 41`,
-not (as in the Editing Guidelines) `ITU-T G-Sup.41`.
-
-=== Definitions
-
-==== Title
-
-The internal terms section is recognised with the heading
-"`Terms defined in this Recommendation`".
-
-The external terms section are recognised with the heading
-"`Terms defined elsewhere`".
-
-Setting the heading attribute of a title will also allow the internal and external terms
-section to be recognised [added in https://github.com/metanorma/isodoc/releases/tag/v1.2.0]:
-
-[source,asciidoc]
-----
-[heading="terms defined in this recommendation"]
-=== Terminoj difinitaj en ĉi tiu rekomendaĵo
-----
-
-==== Predefined text
-
-If no text appears at the start of the clauses and subclauses in
-the "`Definitions`" section, standard predefined text is provided
-automatically:
-
-* If there is a terms subclause named "`Terms defined elsewhere`", the text
-  "`This Recommendation uses the following terms defined elsewhere:`"
-  or "`None`" is provided, depending on whether any terms are present.
-
-* If there is a terms subclause named "`Terms defined in this Recommendation`",
-  the text "`This Recommendation defines the following terms:`" or "`None`"
-  is provided, depending on whether any terms are present.
-
-* If neither subclause appears
-  (as is the case in https://www.itu.int/rec/T-REC-G.650.1/en[ITU G.650.1]),
-  the text "`This Recommendation defines the following terms:`" is provided.
-
-=== Abbreviations and acronyms
-
-"`Abbreviations and acronyms`" sections are recognized as such when:
-
-* A section titled "`Abbreviations and acronyms`" is given as a top-level section;
-* A section attribute of `[heading=Abbreviations and acronyms]` is explicitly given.
-
-Otherwise they are treated as normal
-sections [added in https://github.com/metanorma/isodoc/releases/tag/v1.2.1].
-
-=== Tables
-
-The ITU editorial rules specifies the following formatting rules for authors:
-
-. table header row content must be center-aligned;
-. "`text`" in tables should be left-aligned;
-. "`values`" in tables should be center-aligned.
-
-In Metanorma, this is conveyed by setting the horizontal alignment on the
-corresponding columns and ensuring that the header cells are centered;
-e.g.
-
-[source,asciidoc]
-----
-[cols="<,^,^,<", options="header"]
-|===
-^| Text ^| Value ^| Value ^| Text
-
-| Table | 121 | 0.1 | Other table
-|===
-----
-
-NOTE: This editorial rule is mandated by the ITU Editorial Team,
-but is not described in the ITU-T Author's Guide.
-
-=== Index
-
-Indexes are not currently supported in Metanorma.
-
-=== Cross-references
-
-Cross-references to clauses are rendered in lowercase: "`see clause 4.1`".
-
-Metanorma will attempt to impose correct capitalisation for instances at
-the start of blocks and sentences, but it may get it wrong.
-
-To override such capitalisation, you can use the the flags `capital%`
-or `lowercase%` as the content of the cross-reference, to force that casing on the
-cross-reference [added in https://github.com/metanorma/isodoc/releases/tag/v1.0.28]:
-
-[source,asciidoc]
-----
-[[cl3]]
-== Clause 3
-
-== Clause 4
-
-See e.g. <<cl3,lowercase%>> +
-<<cl3,capital%>>.
-----
 
