@@ -21,7 +21,7 @@ The `body` of the HTML document is divided into the following parts:
 * A title section (`<div class="title-section">`), comprising identifying information about the document, such as appears in a title page in print. 
 ** The section is populated with an HTML template (the `:htmlcoverpage` parameter of `HtmlConvert.new()`). The information in this section is sourced from document metadata, rather than document content proper; the gem uses http://liquidmarkup.org[Liquid Template] to populate the HTML template. Different fields usually have distinct class names for CSS styling; these can vary by gem. 
 ** For example, ISO documents have `coverpage_docnumber` (for the document ID), `coverpage_techcommittee` (for the technical committee responsible for the document), `doctitle-en` (for the English-language title of the document), `doctitle-fr` (for the French title), `title, subtitle, part` (for the three components of the document title), and `coverpage_docstage` (for the stage of publication of the document).
-* A prefatory section (`<div class="prefatory-section">`), comprising boilerplate information which also does not come from document content proper. This is typically restricted to a copyright statement (`<div class="copyright">`), contact details, and a table of contents `<div id="toc">`. 
+* A prefatory section (`<div class="prefatory-section">`), comprising predefined text which also does not come from document content proper. This is typically restricted to a copyright statement (`<div class="copyright">`), contact details, and a table of contents `<div id="toc">`. 
 ** The section is also populated with a Liquid HTML template (the `:htmlintropage` parameter of `HtmlConvert.new()`). 
 ** The table of contents in the HTML template is a placeholder; it is populated by a table of contents script included among the scripts loaded into the HTML body.
 * The main section of the document (`<main class="main-section">`), which is populated with the document content.
@@ -105,10 +105,10 @@ The `body` of the Word HTML document is divided into the following parts:
 
 * A title section (`<div class="WordSection1">`), comprising identifying information about the document, such as appears in a title page in print. 
 ** The section is populated with an HTML template (the `:wordcoverpage` parameter of `WordConvert.new()`). As with HTML, the information in this section is sourced from document metadata, rather than document content proper; and the gem uses http://liquidmarkup.org[Liquid Template] to populate the HTML template. 
-* A prefatory section (`<div class="WordSection2">`), comprising boilerplate information which does not come from document content proper (such as a Table of Contents shell), as well as prefatory material from the document content. The prefatory section is set in the CSS stylesheet to have Roman numerals for its pagination.
+* A prefatory section (`<div class="WordSection2">`), comprising predefined text which does not come from document content proper (such as a Table of Contents shell), as well as prefatory material from the document content. The prefatory section is set in the CSS stylesheet to have Roman numerals for its pagination.
 ** Because of the requirement for Roman numerals, prefatory material from the document is sent to this section, whereas all document content in the HTML document is sent to the main section.
 * The main section of the document (`<div class="WordSection3">`), which is populated with the remaining document content. The main section is set in the CSS stylesheet to have Arabic numerals for its pagination.
-* Optionally, a colophon (`<div class="colophon">`), which is populated with boilerplate information and/or document metadata. (Currently colophons in Metanorma gems appear only in Word output.)
+* Optionally, a colophon (`<div class="colophon">`), which is populated with predefined text and/or document metadata. (Currently colophons in Metanorma gems appear only in Word output.)
 
 === Body markup
 

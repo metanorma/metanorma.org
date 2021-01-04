@@ -36,7 +36,7 @@ That means you can change the styling of output documents readily, so long as yo
 
 * Additional files (e.g. logos) can be loaded in the `initialize()` method of `IsoDoc::...::HtmlConvert`; for them to be access during document generation, they need to be copied to the working directory. (They can be removed subsequently by adding them to the `@files_to_delete` array. All image files are copied into an `_html` subdirectory.)
 
-* The HTML templates are populated through Liquid Templates: variables in `{{...}}` correspond to the hash keys for metadata extracted in `IsoDoc::...::Metadata`, and its superclass `IsoDoc::Metadata` in the `isodoc` gem. See link:/builder/topics/metadata-and-boilerplate/[Metadata and Boilerplate] for more information.
+* The HTML templates are populated through Liquid Templates: variables in `{{...}}` correspond to the hash keys for metadata extracted in `IsoDoc::...::Metadata`, and its superclass `IsoDoc::Metadata` in the `isodoc` gem. See link:/builder/topics/metadata-and-boilerplate/[Metadata and Predefined text] for more information.
 
 * The SCSS stylesheets treat fonts as variables. Those variables are set in `default_fonts()`, which generates variable assignments for SCSS. Stylesheets normally recognize three fonts: `$bodyfont` for body text, `$headerfont` for headers and captions (which may be the same font as `$bodyfont`), and `$monospacefont` for monospace text. Note that `default_fonts()` takes the options passed to initialise `HtmlConvert` as a parameter; the document language and script can be used to make different font choices for different document scripts. (The existing gems refer to `Latn`, Latin script, and `Hans`, Simplified Chinese script.)
 
