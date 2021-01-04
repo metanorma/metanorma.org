@@ -115,7 +115,7 @@ EXAMPLE:
 <<ISO7301,section 3.2>>,
 
 [.source]
-<<ISO7302,section 3.10>,
+<<ISO7302,section 3.10>>,
 --
 
 
@@ -128,17 +128,33 @@ was published.
 
 EXAMPLE: "`IEC 60050-113:2011, 113-01-07`".
 
-=== Boilerplate
+=== Predefined text / Boilerplate
 
-By default, Terms and Definitions sections are automatically prefixed with boilerplate,
-before any terms ooccur,
-indicating the provenance of any definitions (see <<source>>), and, depending on the flavour,
-where definitions may be consulted (e.g. for ISO documents, a reference to the ISO Online Browsing Platform
-and to the IEC Electropedia). 
+==== Appending to predefined text
 
-Any paragraphs or lists in the AsciiDoc input before the first term are appended to the flavour's defined boilerplate,
-in the intermediate XML format [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0]. [The
-behaviour until that release was for any such text to be overwritten by the flavour's defined boilerplate.] So:
+The "`terms and definitions`" clause is often prefixed with
+predefined text ("`predefined text`") automatically before any terms are
+listed.
+
+Such predefined text typically serve the following purposes:
+
+* indicate provenance of definitions (see <<source>>); and
+* provide the location where definitions may be consulted,
+  depending on the flavour.
+
+EXAMPLE: For ISO documents, a reference to the ISO Online
+Browsing Platform and to the IEC Electropedia is provided in
+the predefined text.
+
+Any paragraphs or lists in the input before the first term
+are appended to the flavour's defined predefined text, in the
+intermediate XML format [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0]. [The
+behaviour until that release was for any such text to be overwritten by the flavour's defined predefined text.]
+
+In the following example the Metanorma ISO flavor is used
+to demonstrate the behavior.
+
+Input:
 
 [source,asciidoc]
 --
@@ -152,14 +168,14 @@ This is some random text I have inserted in this document.
 === Term 1
 --
 
-under the ISO flavour has the text between the title and the first term definition appended to
-the boilerplate required by ISO:
+In the rendering, the text between the title and the first
+term definition is appended to the predefined text required by ISO:
 
 ____
 *3. Terms and definitions*
 
 ISO and IEC maintain terminological databases for use in
-      standardization at the following addresses:
+standardization at the following addresses:
 
 * ISO Online browsing platform: available at http://www.iso.org/obp[]
 * IEC Electropedia: available at http://www.electropedia.org[]
@@ -172,21 +188,28 @@ This is some random text I have inserted in this document.
 *3.1 Term 1*
 ____
 
-If there are no terms and definitions defined in this standards document,
-no terms should be included in the section body (it should be blank).
-The boilerplate at the start of the section is adjusted to reflect both possibilities.
+==== Overriding predefined text
 
-If the user wishes to override the boilerplate text with their own boilerplate,
-they should provide an initial subclause with the style attribute 
-`[.boilerplate]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0]:
+If there are no terms and definitions defined in the document,
+no terms should be included in the clause body (it should be blank).
+The predefined text at the start of the clause is adjusted to
+reflect both possibilities.
+
+In order to replace (override) the predefined text with custom
+content, an initial subclause with the style attribute
+`[.boilerplate]` can be used to do
+so [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
+
+Input:
 
 [source,asciidoc]
 --
 == Terms and definitions
 
 [.boilerplate]
-=== My boilerplate clause
-This is boilerplate that I'm going to use to overwrite the default.
+=== My predefined text (<<<=== this will be stripped)
+
+This is predefined text that overwrites the default.
 
 * No, it does not follow ISO requirements
 * And no, it does not follow IEC requirements either
@@ -194,14 +217,18 @@ This is boilerplate that I'm going to use to overwrite the default.
 === Term 1
 --
 
-The title of the boilerplate clause will be stripped (so you could equally use `=== {blank}`);
-the boilerplate is encoded as a subclause, so that its extent can be made unambiguous in initial processing. 
+Where:
+
+* The title of the predefined text clause will be stripped (so you could equally use `=== {blank}`);
+* The custom predefined text is encoded as a subclause, so that
+  its extent can be made unambiguous in initial processing.
+
 The example above will be rendered as:
 
 ____
 *3. Terms and definitions*
 
-This is boilerplate that I'm going to use to overwrite the default.
+This is predefined text that overwrites the default.
 
 * No, it does not follow ISO requirements
 * And no, it does not follow IEC requirements either
@@ -209,8 +236,12 @@ This is boilerplate that I'm going to use to overwrite the default.
 *3.1 Term 1*
 ____
 
-If you want to prevent the default boilerplate from appearing, you can do so by providing
-an empty boilerplate clause:
+
+==== Emptying predefined text
+
+If you want to prevent the default predefined text from
+appearing, you can do so by providing an empty
+predefined text subclause.
 
 [source,asciidoc]
 --
