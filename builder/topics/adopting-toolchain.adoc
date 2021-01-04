@@ -64,7 +64,7 @@ title page, as opposed to the document body. For that reason, metadata
 is extracted into a `Hash`, which is passed to document output (title
 page, Word header) via the
 https://shopify.github.io/liquid/[Liquid template language].
-See link:/builder/topics/metadata-and-boilerplate/[Metadata and Boilerplate] for more information.
+See link:/builder/topics/metadata-and-boilerplate/[Metadata and Predefined text] for more information.
 
 * `Isodoc::HtmlConvert` converts Metanorma Standoc XML to HTML.
 
@@ -78,7 +78,7 @@ The `Isodoc::HtmlConvert` and `Isodoc::WordConvert` are expected to be near-iden
 
 In the following snippets, the parameter `node` represents the current node of the AsciiDoc document, and `xml` represents the Nokogiri Builder node of the XML output.
 
-* The boilerplate representation of the document's author, publisher and copyright holder names Acme as the responsible organization.
+* The predefined text representation of the document's author, publisher and copyright holder names Acme as the responsible organization.
 
 [source,ruby]
 --
@@ -325,7 +325,7 @@ def i18n_init(lang, script)
 end
 --
 
-* Simplify the processing of boilerplate for terms and definitions: do not add a trailing boilerplate section.
+* Simplify the processing of predefined text for terms and definitions: do not add a trailing predefined text section.
 applicable whether or no the terms and definitions section is empty:
 
 [source,ruby]
