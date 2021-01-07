@@ -149,9 +149,12 @@ to "informative" as a section attribute if needed. For example:
 === Numbering
 
 As with link:/author/topics/document-format/text#numbering-override[block element numbering],
-a clause number may be provided to override autonumbering, e.g. for numbering out of sequence in updated 
-documentso [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.3].
-That number is provided with the attribute `number`:
+a clause number may be provided to override auto-numbering.
+
+For instance, in order to number out-of-sequence clauses in updated
+documents or amendments [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.3].
+
+A manual clause number is specified with the attribute `number`:
 
 [source,asciidoc]
 ----
@@ -161,10 +164,14 @@ That number is provided with the attribute `number`:
 === Zeroth Subclause
 ----
 
-Elements subsequent to that element will be auto-numbered so as to
-follow the previous element; this may include incrementing the final letter in an alphanumeric clause number (e.g.
-_7a_ followed by _7b_.) If this is not intended (e.g. _7bis_ show not be followed by _7bit_), an explicit
-number also needs to be given to the following clause.
+Elements subsequent to the manually numbered element will be auto-numbered
+so as to follow the previous element. This may include incrementing the final
+letter in an alphanumeric clause number (e.g. _7a_ followed by _7b_.)
+
+If resumption of auto-numbering is not intended for subsequent clauses
+(e.g. _7bis_ should not be followed by _7bit_),
+an explicit number also needs to be given to those clauses separately.
+
 
 == Prefatory clauses
 
