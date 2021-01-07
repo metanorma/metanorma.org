@@ -146,6 +146,26 @@ to "informative" as a section attribute if needed. For example:
 == Determination of defects
 --
 
+=== Numbering
+
+As with link:/author/topics/document-format/text#numbering-override[block element numbering],
+a clause number may be provided to override autonumbering, e.g. for numbering out of sequence in updated 
+documentso [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.3].
+That number is provided with the attribute `number`:
+
+[source,asciidoc]
+----
+== Clause 7
+
+[number=0]
+=== Zeroth Subclause
+----
+
+Elements subsequent to that element will be auto-numbered so as to
+follow the previous element; this may include incrementing the final letter in an alphanumeric clause number (e.g.
+_7a_ followed by _7b_.) If this is not intended (e.g. _7bis_ show not be followed by _7bit_), an explicit
+number also needs to be given to the following clause.
+
 == Prefatory clauses
 
 === Foreword
