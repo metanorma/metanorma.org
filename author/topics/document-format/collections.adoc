@@ -1,0 +1,290 @@
+---
+layout: author-docs
+---
+
+= Collections
+
+Metanorma supports _collections_: groupings of individual Metanorma documents into a whole.
+In HTML, Metanorma collections are treated as a web site, with each Metanorma document a component
+web site. In PDF, they are treated as a single document, composed of the individual Metanorma documents.
+
+Collections are of particular use when the component documents are tightly linked with each other;
+for example, multilingual documents (where each component document has the same content in a different
+language), or documents that extensively cross-reference each other (e.g. definitions of an informational
+model spanning multiple documents.)
+
+Collections are a work in progress as of this writing, and their functionality is in flux as they are
+starting to be applied to flavours. Currently collections are used in the BIPM flavour, and are in the
+process of being applied to ISO standards.
+
+== Compiling collections
+
+Collections are compiled using the `metanorma` executable, as follows:
+
+[source]
+----
+Usage:
+  metanorma collection FILENAME [..options]
+
+Options:
+  -x, [--extensions=EXTENSIONS]     # Type of extension to generate
+  -w, [--output-folder=FOLDER]      # Folder to generate collection in
+  -c, [--coverpage=COVERPAGE]       # Cover page as Liquid template for collection (currently HTML only)
+----
+
+The `FILENAME` argument to `metanorma collection` is the collection manifest. This is a YAML file, 
+outlining the structure of the
+collection, including the location and identifier for each of the component files. The `COVERPAGE` argument
+is a Liquid template for the index page to the collection in HTML. Both are described further below.
+
+So the command:
+
+`bundle exec metanorma collection si-brochure-bilingual.yml -x xml,html,presentation,pdf -w bilingual-brochure -c collection_cover.html`
+
+compiles the collection described in the collection manifest `si-brochure-bilingual.yml`. It generates the collection as XML, Presentation XML, HTML and PDF, in the folder `bilingual-brochure`, and using the HTML index page template `collection_cover.html`.
+
+Currently the `metanorma collection` executable presupposes that the individual metanorma collections
+are already compiled into XML. 
+// I don't know how to make that not happen, and would ask that Abu Nashir addresses that.
+The compilation of the collection resolves any cross-references between files in the collection in preprocessing, 
+so that they become simple hyperlinks. The output folder contains those preprocessed individual files, and
+files named `collection` in the target formats.
+
+== Specifying collections
+
+=== Collection Manifest
+
+The collection manifest contains:
+
+* Directives on how the collection should be generated (`directives`):
+** `documents-inline` indicates that the files should be concatenated into a single XML file for processing; if absent,
+the files are kept separate in processing (`documents-external`).
+* Metadata about the collection (`bibdata`, in Relaton format).
+** Currently `docid/type` is mandatory, as this is how the processor establishes the flavour of the collection.
+Currently a collection can only contain documents of one flavour.
+* A manifest listing the documents contained in the collection, in nested hierarchy (`manifest`)
+** `level` names the current hierarchical level of the manifest
+** `title` gives the title of the current level of the manifest
+** `docref` lists the documents to be used at that level of the manifest: it is a list of file paths relative to the manifest file (`fileref`) and document identifiers (`identifier`).
+** `manifest` can appear recursively in a manifest.
+* Content to put at the beginning of the collection container (`prefatory-content`)
+* Content to put at the endeginning of the collection container (`final-content`)
+
+The following is an example collection manifest:
+
+[source,yaml]
+----
+directives:
+  - documents-inline
+bibdata:
+  title:
+    type: title-main
+    language: en
+    content: ISO Collection 1
+  type: collection
+  docid:
+    type: iso
+    id: ISO 12345
+  edition: 1
+  date:
+    - type: created
+      value: "2020"
+    - type: issued
+      value: "2020"
+  copyright:
+    owner:
+      name: International Organization for Standardization
+      abbreviation: ISO
+    from: "2020"
+manifest:
+  level: collection
+  title: ISO Collection
+  manifest:
+    - level: subcollection
+      title: Standards
+      docref:
+        - fileref: rice-en.final.xml
+          identifier: ISO 17301-1:2016
+        - fileref: dummy.xml
+          identifier: ISO 17302
+        - fileref: rice1-en.final.xml
+          identifier: ISO 1701:1974
+    - level: subcollection
+      title: Amendments
+      docref:
+        fileref: rice-amd.final.xml
+        identifier: ISO 17301-1:2016/Amd.1:2017
+prefatory-content:
+|
+
+  == Clause
+  Welcome to our collection
+
+final-content:
+|
+  == Exordium
+  Hic explicit
+----
+
+=== Index page template
+
+The HTML index page template is currently realised as a Liquid template, which forms a sidebar for the display
+of the HTML content of each file. The following fields are defined:
+
+* `doctitle`, `docnumber`, etc.: Information derived from the Relaton YAML description in the manifest. 
+The field names are as defined for Liquid templates in Metanorma: see 
+link:/builder/topics/metadata-and-boilerplate.adoc[Metadata and Boilerplate].
+* `navigation`: A nested list giving hyperlinks to the constituent documents, following the specification
+in the `manifest` field of the collection manifest.
+
+== Cross-references
+
+=== Direct cross-references
+
+A source document can link to a target document in the same collection, or a specific location within the target
+document. Documents are processed one document at a time; so such a link is encoded as a bibliographical reference,
+to an external document, as described in link:/author/topics/document-format/bibliography[Bibliography].
+That means that we need to define a bibliographic entry for each hyperlinked document in the same collection;
+those bibliographic entries will be suppressed from display in the collection. (If the documents are to be used
+in isolation, those bibliographic entries still need to be displayed: otherwise, the reference cannot be made
+sense of.)
+
+The bibliographic reference for another document in the same collection is:
+
+[source,asciidoc]
+----
+* [[[myanchor,repo:(current-metanorma-collection/docid)]]]
+----
+
+where `docid` is the document identifier as it appears in the collection manifest.
+
+The location to link to in the target document can be specified as a clause number, as is normal in citations:
+e.g. `\<<myanchor,clause=3.1>>`. 
+The processor will then navigate the target document, to try to resolve the reference. (Currently only one
+level of nesting of locations is implemented: the processor will not resolve references like `clause=3.1,note-3`.)
+
+Alternatively, the location can be specified as an anchor, e.g. `\<<myanchor,anchor=ident>>`. The hyperlink
+will then be made directly to the element with anchor `ident` in the the target document. That approach is to be
+preferred as simpler.
+
+For example, we wish to link from the French BIPM Brochure to the English BIPM Brochure, and specifically to 
+an example in the English document. We start by assigning the target document example an anchor identifier:
+
+[source,asciidoc]
+----
+[[english_example]]
+[NOTE]
+====
+For example: The maximum electric potential difference is stem:[ii(U)_("max") = 1000 " "rm(V)]  but not stem:[ii(U) = 1000 " "rm(ii(V)_(max))]. The mass fraction of copper in the sample of silicon is stem:[w("Cu") = 1.3 xx 10^(-6)] but not stem:[1.3 xx 10^(-6) " "rm(w)//rm(w)].
+====
+----
+
+We then define a citation in the source document, using that anchor:
+
+[source,asciidoc]
+----
+Ce n’est que
+lorsque l’on écrit le nom de l’unité en toutes lettres que l’on applique les règles
+grammaticales ordinaires (voir un exemple en anglais page <<english-doc,anchor=english_example>>).
+----
+
+Finally, we define a bibliographic entry in the source document for the English-language target document:
+
+[source,asciidoc]
+----
+[bibliography]
+== Bibliography
+
+* [[[english-doc,repo:(current-metanorma-collection/si-brochure-en)]]] (Version anglaise de la brochure BIPM).
+----
+
+The identifier given to the target document needs to match that given in the collection manifest:
+
+[source,yaml]
+----
+manifest:
+  level: brochure
+  title: Brochure/Brochure
+  docref:
+    - fileref: si-brochure-fr.xml
+      identifier: si-brochure-fr
+    - fileref: si-brochure-en.xml
+      identifier: si-brochure-en
+----
+
+=== Indirect cross-references
+
+In some documents, anchors (targets for cross-references) are inserted in various files in the collection, 
+and we do not necessarily know at the time of authoring which files those anchors will end up in.
+A good example of that is computer-generated documentation of schemas: schema documentation is organised
+by entity, and the documentation of one entity can cross-reference attributes in a different entity.
+But at the time of authoring, we may not know which document the target entity will appear in, so we cannot
+supply a bibliographic entity naming that document.
+
+To deal with that circumstance, Metanorma implements a special class of cross-references, which are
+namespaced and which use containers:
+
+[source,asciidoc]
+----
+<<namespace:container>>
+<<namespace:container,text>>
+<<namespace:container:locality>>
+<<namespace:container:locality,text>>
+----
+
+* The namespace is provided to deal with the fact that such anchors
+can have different provenance, and they may have particular rendering requirements. (So if we are documenting
+two different schemas, we may want to differentiate their references, and render them differently.)
+* The container relies on the fact that such anchors can be grouped together in a target document,
+under a clause. (For example, a schema instance.) For efficient processing, we treat each of those container clauses
+as a single bibliographic reference, and use the identifier of that clause as the bibliographic anchor.
+We also assign the container clause the namespace as a type, again for efficiency and to enforce consistent rendering.
+This is mandatory.
+* The locality is the identifier of the particular component addressed within the container. It is an identifier
+in the target document, and will typically point to a subclause of the container clause.
+* The text is the text to be rendered for the cross-reference. If not provided, Metanorma will provide a clause
+reference for the target.
+
+To give a worked example: 
+
+We are generating documentation for a set of schemas in the EXPRESS language as a Metanorma collection. 
+We wish to point to the identifier `basic_attribute_schema.id_attribute.identified_item` from our source document.
+We do not know (or care) what document that identifier will turn up in: we will have collection processing
+deal with that.
+
+`basic_attribute_schema.id_attribute.identified_item` is an identifier within the `basic` schema,
+// I am changing the name of the schema on purpose
+and we are grouping the definitions of the `basic` schema together, under a single clause in the target document.
+
+The target document will thus contain a container clause with identifier `basic`, containing all those definitions,
+including `basic_attribute_schema.id_attribute.identified_item`. The container clause is made to be 
+of type `express` (because its content comes from that language,
+and we want to follow the conventions of that language in any processing).
+
+[source,asciidoc]
+----
+[[basic]]
+[type=express]]
+=== Basic Schema
+
+....
+
+[[basic_attribute_schema.id_attribute.identified_item]]
+===== Identified Item
+----
+
+The cross-reference to that identifier, from either the same document or a different document in the same collection,
+is:
+
+[source,asciidoc]
+----
+<<express:basic:basic_attribute_schema.id_attribute.identified_item,Identified Item>>
+----
+
+We do not need to indicate which document `basic_attribute_schema.id_attribute.identified_item` is in,
+unlike for direct cross-references. Because of the namespacing, we know that we are looking for the identifier 
+`basic_attribute_schema.id_attribute.identified_item` inside a clause with id `basic` and type `express`:
+that narrows down our search while generating the collection. The `basic` collection identifier is actually
+optional; but if you don't provide it, you will need to put `[type=express]` on any cross-reference target,
+and collection processing will be more expensive.
+
