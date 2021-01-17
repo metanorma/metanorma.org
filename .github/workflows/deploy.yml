@@ -1,4 +1,4 @@
-name: deploy-master
+name: deploy
 
 on:
   push:
@@ -9,6 +9,9 @@ jobs:
   build:
     name: Build site
     runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://www.metanorma.com
     steps:
       - name: Setup prerequisites
         run: |
@@ -16,9 +19,7 @@ jobs:
           sudo apt-get install -y curl make libxml2-dev libxslt-dev openssl
       - name: Setup snaps
         run: |
-          sudo snap install yq
           sudo snap install aws-cli --classic
-          sudo snap install node --classic --channel=10/stable
       - name: Use Ruby
         uses: actions/setup-ruby@v1
         with:
@@ -27,14 +28,13 @@ jobs:
       - uses: actions/checkout@master
       - name: Update gems
         run: |
-          gem install bundler -v "~> 2"
+          gem install bundler
           bundle install --jobs 4 --retry 3
       - name: Build site
         run: |
           make _site
 
-
-      - name: Deploy to ${{ secrets.S3_BUCKET_NAME }}
+      - name: Deploy to AWS
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
