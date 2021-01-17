@@ -1,75 +1,124 @@
 ---
 layout: post
-title: "Generate mini site with Metanorma CLI"
+title: "Generate document sites with the Metanorma CLI"
 categories: about
 authors:
-  -
-    name: Abu Nashir
+  - name: Abu Nashir
     email: abunashir@gmail.com
     social_links:
       - https://github.com/abunashir
 
 excerpt: >-
-    Generate a mini site for a set of documents using Metanorma CLI
+    Generate a document site for a set of documents using Metanorma CLI
 ---
 
-A set of metanorma documents can be compiled and published as a min-site. There
-are a couple of steps involved in this process, like compiling each of these
-documents, building the document set, and generate the publishable site.
+A set of Metanorma documents can be compiled and published as a
+document site.
 
-To make this process easier, Metanorma has been offering a 
-https://github.com/metanorma/mn-samples-itu/blob/master/Makefile[Makefile] that
-provides some targets to build the mini-site. It has been working great up until
-now, but over time it grew a lot and became harder to maintain, so we have
-decided to ship this as part of the CLI.
+It is not uncommon that multiple Metanorma documents are managed
+within a single repository. These cases include:
 
-Let's go through a quick demo to see it in action and also customize the build
+* multiple documents belong to the same series;
+* a single document published to multiple venues;
+* multiple parts of a document collection.
 
-=== Site Generation
+The NIST ACVP series is one such example.
 
-==== Demo Setup
+In fact, the Metanorma sample document sites for every flavor
+provides multiple sample documents arranged under a single site.
 
-Let's take this https://github.com/metanorma/mn-samples-itu[ITU
-sample repo] as an exmaple, There are quite some files there but to keep the
-demo short let's pay attention to the following files and directory.
+Previous to this announcement, there are a couple tools (and hoops)
+to jump through to make this happen:
+
+1. Use a build dependency tool such as `make` (our favorite)
+  to manage shared dependencies
+2. Use a static-site generator (SSG), such as Relaton or Jekyll
+  to make the generated documents available in an HTML index.
+3. Link these tools up with Metanorma and generate the document
+  renders, the publishable site, and finally deploy the site.
+
+Cumbersome to say the least!
+
+Many Metanorma users have been using the "`unofficial`"
+https://github.com/metanorma/mn-samples-itu/blob/master/Makefile[Makefile]
+that is being used in Metanorma sample document sites.
+It typically works fine, except that over time it grew
+and became hard to maintain.
+
+I'm happy to announce that site generation functionality
+is now available as part of the official CLI.
+
+Let's go through a quick demo to see it in action, and then
+try customizing the build.
+
+
+== Demo setup
+
+Let's use the https://github.com/metanorma/mn-samples-itu[Metanorma ITU sample repo]
+as an example.
+
+There are several files there, but to keep the demo short, we focus
+on the following files and directories.
 
 [source,sh]
 ----
-mn-samples-itu                          # Root directory
+mn-samples-itu              # Root directory
 |
-|-- sources                             # Source directory
-|   |-- images                          # Nested images for assets
-|   |-- G.191.adoc                      # Individual document file inside sources
-|   |-- G.650.1-201803.adoc
+|-- sources                 # Source directory
+|   |-- images              # Nested images for assets
+|   |-- G.191.adoc          # Individual document inside sources
+|   |-- G.650.1-201803.adoc # Another individual document
+|   |-- ...
 |
-|-- Gemfile                             # Gemfile in root directory
-|-- metanorma.yml                       # Configuration file in root directory
+|-- metanorma.yml           # Configuration file in root directory
+|...
 ----
 
-In root level, we have the `Gemfile`, `metanorma.yml` and `sources` directory.
-Inside `sources` there are two source files and an `images` folder for assets.
+There are two important components that relate to site generation:
 
-==== Generate the site
+. the `metanorma.yml` configuration file;
+. the individual documents under the `sources/` directory
 
-How can we generate the site now? Well, it's pretty simple, all you need is the
+Under `sources` there are two Metanorma AsciiDoc files
+(the "`source documents`") and an `images` folder for assets.
+
+
+== Generate the site
+
+To generate the site, all you need is to install the
 latest version of the
-https://github.com/metanorma/metanorma-cli/releases/latest[Metanorma CLI] and
-then you can run the following:
+https://github.com/metanorma/metanorma-cli/releases/latest[Metanorma CLI].
+
+Then run the following:
 
 [source, sh]
 ----
-metanorma site generate ./sources --output-dir site-folder
+metanorma site generate ./sources
 ----
 
-That's it, metanorma will take care of everything now, like compiling those
-source files, building the document set, and finally generating the HTML site.
-To keep you updated, metanorma will also print out the details in the terminal.
+The `./sources` path indicates to Metanorma that the documents inside this
+path should be compiled and built into a site.
 
-These are the very bare minimum to generate a site, but let's look at the help
-to see what's available. Running `metanorma site help generate`:
+Specifically, this is what Metanorma does:
 
-[source, sh]
+* scan through `./sources` and discover any Metanorma document files;
+* compile those documents;
+* create `site/` and place within an `index.html` and the compiled document files, linked from the index.
+
+Voila! You will have the `site/` created with HTML ready to deploy (or package!).
+
+During the process, Metanorma will also print out the details in the terminal
+to keep you updated.
+
+This command is the very bare minimum to generate a site, but let's look at the help
+command to see what's available.
+
+Running `metanorma site help generate` shows the basics of the command:
+
+[source,sh]
 ----
+$ metanorma site help generate
+
 Usage:
   metanorma site generate SOURCE_PATH
 
@@ -79,32 +128,52 @@ Options:
                                  # Default: /home/[your-repo-path]/site
 ----
 
-This should cover most of the use cases, but what if we only want to include
-some specific files or add custom site metadata, well, then the next section is
-for you.
+This covers most use cases, but what if we only want to include
+specific files or add custom site metadata? The next section is for you.
 
-=== Customizing site generation
 
-If you are like us and don't miss out on the details then you might have seen
-the `-config` option in `site generate` help documentation, we didn't say
-anything earlier but that's the option to customize the build.
+== Specify output path
 
-This option takes a `YAML` file and uses that as site generation instructions,
+You can also specify the output path of the generated site.
+By default, `metanorma site generate` places the generated site
+under the directory `site/` (auto-created if it doesn't exist)
+relative to the current working directory.
+
+To specify the output path, you can use the `--output-dir={path}` (`-o {path}`)
+option.
+
+This command generates the site at `production/`.
+
+[source, sh]
+----
+metanorma site generate ./sources -o production
+----
+
+
+== Customize site generation
+
+You might have noticed the `--config={file}` (or just `-c {file}`) option
+in the `site generate` help documentation. There is indeed an option
+to customize the site build.
+
+This option takes a YAML file and uses that as site generation instructions,
+
 Currently it offers the following customizations:
 
 * Build a site with specific source files
-* Customize site metadata (Eg: title, and copyright)
+* Customize site metadata (e.g., site title, site copyright)
 
-==== Build a site with specifc source files
 
-The demo projects contain a couple of documents in the source directory, but for
-our example's sake let's say we only want to use `sources/G.191.adoc` for the
-site generation, how can we do it?
+=== Build with specific source files
 
-That's the perfect scenario for a configuration file, the name of the file could
-be anything but please pay attention to the node structure:
+By default, `metanorma site generate` generates documents for the entire
+folder. But let's say we only want to generate the site with a single
+file: `sources/G.191.adoc`.
 
-[source, ruby]
+Here's how we do it through the Metanorma site configuration file:
+(please pay attention to the node structure)
+
+[source,yaml]
 ----
 # filename: metanorma.yml
 
@@ -114,55 +183,81 @@ metanorma:
       - G.191.adoc
 ----
 
-At the top level we have `metanorma`, then nested `source`, and then one more
-level of nesting with `files`. In `files` we can provide the relative path (In
-terms of source directory) for each file as a list and then run the following:
+The Metanorma site configuration file uses the following structure:
 
-[source, sh]
-----
-metanorma site generate ./sources -o site-folder --config metanorma.yml
-----
+* at the top level we have the key `metanorma` followed by the key `source` below
+* under the key `source`, there is one more level of nesting with `files`
 
-This will build the site with the specific files you have added in your config
-file, but if you need to be more flexible then we also support wildcard for file
-listing.
+Under `files`, relative paths to documents (each entry is a path to a document;
+relative to the directory of the config file) can be provided as an array
+(each YAML array value is prefixed with a hyphen-space `- xxx.adoc`).
 
-One important thing to note here, by default if there is a file named with
-`metanorma.yml` in the current working directory then the CLI will consider
-that and will use it automatically, so technically you could use
+If you need to more flexibility, the wildcard "`asterisk`" (`*`) is also
+supported for file paths.
 
-[source, sh]
+By default, Metanorma will look for a config file named `metanorma.yml` in the
+current directory.
+
+This follow command will build the site with the file paths you specified in
+`metanorma.yml`.
+
+[source,sh]
 ----
 metanorma site generate ./sources -o site-folder
 ----
 
-==== Customize site metadata (Eg: title, copyright)
+In the case where you juggle multiple site configurations, or wish to name your
+configuration file differently, you can specify a different path for
+the configuration file, such as:
 
-Now let's look at how can we provide a custom title for the hero area or the
-name for the site copyright. To do that we can use the same configuration file
-and add the following data to it.
+[source,sh]
+----
+metanorma site generate ./sources --config production.yml
+----
 
-[source, sh]
+
+=== Customize site metadata (e.g. title, copyright)
+
+The site generation functionality also allows the provision of a custom title
+for the hero area or the name for the documents that form site, which is useful
+to indicate ownership or copyright.
+
+To do that we can use the same configuration file and add the following information.
+
+[source,yaml]
 ----
 # filename: metanorma.yml
 
 metanorma:
+  source:
+    files:
+      - G.191.adoc
+      - ...
   collection:
-    name: Sample Name for the hero area
-    organization: Sample organization name
+    name: ITU-T G.191 and related documents
+    organization: International Telecommunication Union
 ----
 
-Then pass this configuration file as earlier to customize your build. You can
-find a complete sample configuration file here:
+Under the `collection` key, you can specify:
+
+* `name`, the site title;
+* `organization`, the owner of the site.
+
+A complete configuration file is shown here for reference:
 https://github.com/metanorma/metanorma-cli/blob/master/spec/fixtures/metanorma.yml[Sample Metanorma Config]
 
-==== Final thoughts
 
-Thanks for making it this far, we've tried to build this interface in a way we
-use internally. This offers some basic customization, but if you would like to
-see more or give us feedback then please get in touch.
+== Final thoughts
 
-==== Reference
+Thanks for making it this far -- we've tried to build these commands in a way
+that match our users' feedback (as well as how we wished to use internally).
+
+While this post discusses several customization options, if you would like to
+see more or have any feedback -- please file an issue at
+https://github.com/metanorma/metanorma-cli[our CLI GitHub repo]!
+
+
+== Reference
 
 * https://github.com/metanorma/metanorma-cli[The Metanorma CLI]
 * https://github.com/metanorma/mn-samples-itu/blob/master/Makefile[Metanorma Makefile]
