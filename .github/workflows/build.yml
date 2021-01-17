@@ -20,12 +20,12 @@ jobs:
       - name: Use Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: '2.6'
+          ruby-version: '2.7'
           architecture: 'x64'
       - uses: actions/checkout@master
       - name: Update gems
         run: |
-          gem install bundler -v "~> 2"
+          gem install bundler
           bundle install --jobs 4 --retry 3
       - name: Build site
         run: |
