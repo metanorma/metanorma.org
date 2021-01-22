@@ -1,8 +1,7 @@
 ---
 layout: author-docs
+title: Collections
 ---
-
-= Collections
 
 Metanorma supports _collections_: groupings of individual Metanorma documents into a whole.
 In HTML, Metanorma collections are treated as a web site, with each Metanorma document a component
@@ -32,21 +31,27 @@ Options:
   -c, [--coverpage=COVERPAGE]       # Cover page as Liquid template for collection (currently HTML only)
 ----
 
-The `FILENAME` argument to `metanorma collection` is the collection manifest. This is a YAML file, 
+The `FILENAME` argument to `metanorma collection` is the collection manifest. This is a YAML file,
 outlining the structure of the
 collection, including the location and identifier for each of the component files. The `COVERPAGE` argument
 is a Liquid template for the index page to the collection in HTML. Both are described further below.
 
 So the command:
 
-`bundle exec metanorma collection si-brochure-bilingual.yml -x xml,html,presentation,pdf -w bilingual-brochure -c collection_cover.html`
+[source,sh]
+----
+bundle exec metanorma collection si-brochure-bilingual.yml \
+  -x xml,html,presentation,pdf \
+  -w bilingual-brochure \
+  -c collection_cover.html
+----
 
 compiles the collection described in the collection manifest `si-brochure-bilingual.yml`. It generates the collection as XML, Presentation XML, HTML and PDF, in the folder `bilingual-brochure`, and using the HTML index page template `collection_cover.html`.
 
 Currently the `metanorma collection` executable presupposes that the individual metanorma collections
-are already compiled into XML. 
+are already compiled into XML.
 // I don't know how to make that not happen, and would ask that Abu Nashir addresses that.
-The compilation of the collection resolves any cross-references between files in the collection in preprocessing, 
+The compilation of the collection resolves any cross-references between files in the collection in preprocessing,
 so that they become simple hyperlinks. The output folder contains those preprocessed individual files, and
 files named `collection` in the target formats.
 
@@ -68,7 +73,7 @@ Currently a collection can only contain documents of one flavour.
 ** `docref` lists the documents to be used at that level of the manifest: it is a list of file paths relative to the manifest file (`fileref`) and document identifiers (`identifier`).
 ** `manifest` can appear recursively in a manifest.
 * Content to put at the beginning of the collection container (`prefatory-content`)
-* Content to put at the endeginning of the collection container (`final-content`)
+* Content to put at the end of the collection container (`final-content`)
 
 The following is an example collection manifest:
 
@@ -131,9 +136,10 @@ final-content:
 The HTML index page template is currently realised as a Liquid template, which forms a sidebar for the display
 of the HTML content of each file. The following fields are defined:
 
-* `doctitle`, `docnumber`, etc.: Information derived from the Relaton YAML description in the manifest. 
-The field names are as defined for Liquid templates in Metanorma: see 
+* `doctitle`, `docnumber`, etc.: Information derived from the Relaton YAML description in the manifest.
+The field names are as defined for Liquid templates in Metanorma: see
 link:/builder/topics/metadata-and-boilerplate.adoc[Metadata and Boilerplate].
+
 * `navigation`: A nested list giving hyperlinks to the constituent documents, following the specification
 in the `manifest` field of the collection manifest.
 
@@ -159,7 +165,8 @@ The bibliographic reference for another document in the same collection is:
 where `docid` is the document identifier as it appears in the collection manifest.
 
 The location to link to in the target document can be specified as a clause number, as is normal in citations:
-e.g. `\<<myanchor,clause=3.1>>`. 
+e.g. `\<<myanchor,clause=3.1>>`.
+
 The processor will then navigate the target document, to try to resolve the reference. (Currently only one
 level of nesting of locations is implemented: the processor will not resolve references like `clause=3.1,note-3`.)
 
@@ -167,7 +174,7 @@ Alternatively, the location can be specified as an anchor, e.g. `\<<myanchor,anc
 will then be made directly to the element with anchor `ident` in the the target document. That approach is to be
 preferred as simpler.
 
-For example, we wish to link from the French BIPM Brochure to the English BIPM Brochure, and specifically to 
+For example, we wish to link from the French BIPM Brochure to the English BIPM Brochure, and specifically to
 an example in the English document. We start by assigning the target document example an anchor identifier:
 
 [source,asciidoc]
@@ -215,7 +222,7 @@ manifest:
 [[indirect-xrefs]]
 === Indirect cross-references
 
-In some documents, anchors (targets for cross-references) are inserted in various files in the collection, 
+In some documents, anchors (targets for cross-references) are inserted in various files in the collection,
 and we do not necessarily know at the time of authoring which files those anchors will end up in.
 A good example of that is computer-generated documentation of schemas: schema documentation is organised
 by entity, and the documentation of one entity can cross-reference attributes in a different entity.
@@ -246,9 +253,9 @@ in the target document, and will typically point to a subclause of the container
 * The text is the text to be rendered for the cross-reference. If not provided, Metanorma will provide a clause
 reference for the target.
 
-To give a worked example: 
+To give a worked example:
 
-We are generating documentation for a set of schemas in the EXPRESS language as a Metanorma collection. 
+We are generating documentation for a set of schemas in the EXPRESS language as a Metanorma collection.
 We wish to point to the identifier `basic_attribute_schema.id_attribute.identified_item` from our source document.
 We do not know (or care) what document that identifier will turn up in: we will have collection processing
 deal with that.
@@ -258,7 +265,7 @@ deal with that.
 and we are grouping the definitions of the `basic` schema together, under a single clause in the target document.
 
 The target document will thus contain a container clause with identifier `basic`, containing all those definitions,
-including `basic_attribute_schema.id_attribute.identified_item`. The container clause is made to be 
+including `basic_attribute_schema.id_attribute.identified_item`. The container clause is made to be
 of type `express` (because its content comes from that language,
 and we want to follow the conventions of that language in any processing).
 
@@ -283,7 +290,7 @@ is:
 ----
 
 We do not need to indicate which document `basic_attribute_schema.id_attribute.identified_item` is in,
-unlike for direct cross-references. Because of the namespacing, we know that we are looking for the identifier 
+unlike for direct cross-references. Because of the namespacing, we know that we are looking for the identifier
 `basic_attribute_schema.id_attribute.identified_item` inside a clause with id `basic` and type `express`:
 that narrows down our search while generating the collection. The `basic` collection identifier is actually
 optional; but if you don't provide it, you will need to put `[type=express]` on any cross-reference target,
