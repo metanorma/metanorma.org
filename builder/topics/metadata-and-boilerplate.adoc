@@ -308,10 +308,13 @@ only `{{ doctitlemain}}` ends up populated.
 
 
 The `Isodoc::Convert.populate` method merges the metadata Hash with the
-`@labels` hash used for internationalisation (see
+`@labels` hash used for internationalisation, taken from the i18n YAML files in each flavour (see
 link:/builder/topics/localizing-output/[Localization how-to guide]).
 This is so that any templated text can also access localised labels
-defined for the current language.
+defined for the current language. Those labels are accessed through a `labels` 
+object; e.g. `{{ labels["table_of_contents"] }} for the table of contents title
+in the current flavour and language [added in https://github.com/metanorma/isodoc/releases/tag/v1.5.0] 
+(previously they were accessible at the top level of variables.)
 
 The metadata hash for a flavour is also populated with the absolute
 file locations of the gem's copy of any logo images. That means that
