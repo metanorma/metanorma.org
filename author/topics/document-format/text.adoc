@@ -938,7 +938,9 @@ of Metanorma in a comma delimited manner
 
 == Source code
 
-Source code is marked up as elsewhere in AsciiDoc, as a preformatted source snippet to
+=== General
+
+Source code is marked up as elsewhere in AsciiDoc, as a pre-formatted source snippet to
 be rendered in monospace font, and with spaces preserved:
 
 [source,asciidoc]
@@ -954,15 +956,17 @@ end
 Source code highlighting can be used automatically to highlight keywords specific
 to the nominated computer language.
 
-=== Markup in sourcecode
+
+=== Markup in source code blocks
 
 In a few cases, it is desirable to introduce markup into source code; for example,
 hyperlinking words in source code to external definitions, or else introducing formatting
 in lieu of automated highlighting.
 
 In order to achieve this, Metanorma allows inline AsciiDoc markup to be introduced
-into source code, isolating it from the rest of the source code through 
+into source code, isolating it from the rest of the source code through
 delimiters. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.4]
+
 By default, the delimiters are `{{{` and `}}}`; these can be overridden (in case
 `{{{` and `}}}` are already used in the document) through the document attributes
 `:sourcecode-markup-start:` and `sourcecode-markup-end:`.
@@ -976,6 +980,17 @@ By default, the delimiters are `{{{` and `}}}`; these can be overridden (in case
 end
 --
 ----
+
+// TODO: Insert rendering
+//
+// This will get rendered as:
+//
+// --
+// *def* `method1(x)` +
+// ``  ``++method2++``(x) + 3`` +
+// `end`
+// --
+
 
 
 === Pseudocode
