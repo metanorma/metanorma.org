@@ -1,0 +1,47 @@
+---
+layout: post
+title: "New options for font processing in Metanorma CLI"
+categories: about
+authors:
+  - name: Alex Bobrikovich
+    email: abobrikoich@gmail.com
+    social_links:
+      - https://github.com/CAMOBAP
+
+excerpt: >-
+    Available options for font processing in Metanorma CLI
+---
+
+Starting from 1.3.9 metanorma-cli supports list of font's related arguments:
+
+* `--agree-to-terms`
+* `--no-install-fonts`
+* `--continue-without-fonts`
+
+All of them turned off by default. So highly-likely when you will try to generate some documents you will get this error:
+
+[source,console]
+----
+metanorma compile -t ogc -x xml,html,doc,pdf document.adoc
+-----------------------------------------------------------------------
+
+FONT LICENSE END ("Arial")
+/usr/local/bundle/gems/fontist-1.8.4/lib/fontist/font.rb:120:in `check_and_confirm_required_license': Fontist will not download these fonts unless you accept the terms. (Fontist::Errors::LicensingError)
+...
+----
+
+Arguments have a comprehensive description in `metanorma help compile` menu, but shortly they are mean next:
+
+* `--agree-to-terms` - agree with font's license agreement
+* `--no-install-fonts` - don't try to install fonts
+* `--continue-without-fonts` - don't stop compilation if come errors happens during font installation
+
+Those options available for all document processing-related sub-commands:
+
+* `metanorma compile`
+* `metanorma collection`
+* `metanorma site`
+
+== Reference
+
+* https://github.com/metanorma/metanorma-cli[The Metanorma CLI]
