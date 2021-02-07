@@ -1,0 +1,304 @@
+---
+layout: author-docs
+---
+
+= Text formatting
+
+== Index terms
+
+=== General
+
+Metanorma supports index entries with primary, secondary and tertiary
+index terms. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+
+Primary index terms are listed under the first-level index,
+the secondary index terms are listed under the primary index terms' sub-index,
+and the tertiary index terms are listed under the secondary index term's sub-index.
+
+.Illustration of an index in Metanorma with primary and secondary indexes are shown.
+image::/assets/author/topics/document-format/text/fig-index.png[Illustration of an index in Metanorma with primary and secondary indexes are shown,width=70%]
+
+Index term links are only rendered in certain flavours, and do not
+appear otherwise in DOC, PDF or HTML output.
+
+NOTE: Currently, only Metanorma IETF XML RFC and Metanorma BIPM outputs render index terms.
+
+
+=== Rendered index term syntax
+
+Metanorma index entries are entered through two different
+syntaxes. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+
+Rendered index term: `+((Term))+`
+
+* Produces the output "`Term`"; and
+* Links to the primary index term of the same name, "`Term`".
+
+Hidden index term: `+(((IndexTerm1)))+`,
+  `+(((IndexTerm1, IndexTerm2)))+` or
+  `+(((IndexTerm1, IndexTerm2, IndexTerm3)))+`
+
+* Produces no output; and
+* Links to the primary index term `IndexTerm1`. And if provided, links to
+  the secondary nesting, `IndexTerm2` and the tertiary nesting `IndexTerm3`.
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+The Lady of the Lake, her arm clad in the purest shimmering samite,
+held aloft Excalibur from the bosom of the water,
+signifying by divine providence that I, ((Arthur)),
+was to carry Excalibur (((Sword, Broadsword, Excalibur))).
+--
+
+
+=== Rich-text formatting
+
+Rich-text formatting in index terms is
+supported [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
+
+[source,asciidoc]
+--
+signifying by divine providence that I, ((*Arthur*)),
+was to carry Excalibur (((Sword~E~, stem:[sqrt(E)], Excalibur))).
+--
+
+NOTE: Formatting of index terms is ignored in IETF rendering.
+
+
+=== Entry ranges
+
+Metanorma supports index entries that involve ranges [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0],
+using the command `index-range:to[...]`.
+
+The command itself accepts an AsciiDoc index entry, such as
+`+((...))+` or `+(((...)))+`.
+
+The index entry range starts at the location of the `index-range`
+command, in the same way as the index command it contains; the end of
+the range is the element with the anchor `to`, and that is expected
+to be provided as a bookmark.
+
+[source,asciidoc]
+--
+signifying by divine providence that I, index-range:end-range-1[((*Arthur*))],
+was to carry Excalibur index-range:end-range-2[(((Sword~A~, stem:[sqrt(2)], Excalibur)))].
+
+...
+
+and so forth.[[end-range-1]]
+
+...
+
+_Sic explicit fabula._[[end-range-2]]
+--
+
+The preceding example has a visible index entry for _**Arthur**_,
+ranging from the location of `+*Arthur*+` up to `end-range-1`, and
+a hidden index entry for _Sword~A~_, ranging from the location of
+`+Sword~A~+` up to `end-range-2`.
+
+
+=== Cross-references
+
+Metanorma also supports "`see`" and "`see also`" cross-references between
+index terms [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.5],
+using the `index` command.
+
+The command takes at least two parameters:
+
+* the primary index term to be cross-referenced;
+* the target of the cross-reference;
+* optionally, the secondary and tertiary index term to be cross-referenced.
+
+[source,asciidoc]
+--
+index:see[Satchmo,Louis Armstrong]
+index:see[James Brown,influences,Hank Ballard and the Midnighters]
+index:also[guitar,electric,technique,Jimi Hendrix]
+--
+
+Rendered as:
+
+____
+* Satchmo, _see_ Louis Armstrong
+* James Brown
+** influences, _see_ Hank Ballard and the Midnighters
+* guitar
+** electric
+*** technique, _see also_ Jimi Hendrix
+____
+
+
+[[text-cross-refs]]
+== Cross-references
+
+=== General
+
+Cross-references are realized in Metanorma AsciiDoc by assigning an anchor
+to the block to be referenced, and writing a cross-reference containing
+that anchor ID:
+
+[source,asciidoc]
+--
+[[anchor-id]]
+== Target clause
+
+The requirements are...
+
+== Reference clause
+
+As seen in <<anchor-id>>...
+--
+
+WARNING: See <<text-ref-allowed-anchors>> for allowed characters in anchor IDs.
+
+NOTE: Cross-reference text in Metanorma adheres to guidance given in
+ISO/IEC DIR 2 for internal cross-references, in order to guarantee
+unambiguous referencing.
+
+In particular, if a formula, example, figure, list, list item or table is cross-referenced
+outside its (sub)clause, the clause containing the item is always given in the cross-reference,
+unless the item is being referenced in the same clause.
+
+In the case of notes, the containing clause is extended to containing example, figure or table.
+
+[example]
+====
+For example, in the Metanorma ISO Rice model sample document
+formula B.1 is defined in Annex B.6, and is referenced in B.6 and B.7.
+
+In the Rice model document published by ISO, both instances are cited as "`Formula (B.1)`".
+However, Metanorma follows ISO/IEC DIR 2 in citing the former
+as "`Formula (B.1)`", but the latter as "`B.6, Formula (B.1)`".
+
+In this sense, Metanorma is "`more royalist than the king`" in applying formatting rules and
+validation—which is what you would want of a computer-based tool.
+====
+
+The label of the item cross-referenced, the use of brackets, and the containing reference
+are all taken care of by Metanorma; the document author needs only give the item identifier
+in the AsciiDoc source
+(e.g. `\<<``formulaB-1``>>` generates either "`Formula (B.1)`" or "`B.6, Formula (B.1)`",
+depending on where in the document it occurs.)
+
+If the cross-reference is given with `droploc%` as its text, then the label and prefix
+are dropped: the cross-reference value is given in
+isolation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.4].
+
+This can be done for example for ranges:
+
+[source,asciidoc]
+----
+Clauses <<context,droploc%>> to <<improvement,droploc%>>
+----
+
+to be rendered as e.g.
+
+____
+Clauses 7 to 9
+____
+
+
+[[text-ref-allowed-anchors]]
+=== Anchor ID syntax
+
+Anchor IDs of any type (cross-references, items, bibliographies, etc.) are directly
+converted into XML, and therefore *must not* contain the following:
+
+* colons
+* whitespaces or;
+* words starting with numbers.
+
+These cases are not supported in XML; permitted characters are specified by the link:https://www.w3.org/TR/xml-names11/#NT-NCName[NCName attribute for Namesapece Declaration].
+
+Colons in cross-references are used for
+link:/author/topics/document-format/collections#indirect-xrefs[indirect cross-references between files in the same collection],
+to delimit namespaces and containers from anchor IDs [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.4].
+
+=== Localities
+
+Normally in AsciiDoc, any text in a cross-reference that follows a comma
+constitutes custom text for the cross-reference.
+
+So a cross-reference `\<<ISO7301,the foregoing reference>>`
+would be rendered as "`the foregoing reference`", and hyperlinked to the `ISO7301` reference.
+
+In Metanorma AsciiDoc cross-references, bibliographic localities
+(e.g. page numbers, clause numbers) can be added directly after the comma,
+as part of the cross-reference text.
+
+NOTE: This differs from the normal AsciiDoc treatment of custom text.
+
+[example]
+====
+EXAMPLE: "`ISO 7301, Clause 2, Table 1a, pp. 7-9`" would be expressed as:
+
+[source,asciidoc]
+--
+<<ISO7301,clause=2,table=1a,page=7-9>>
+--
+====
+
+See link:/author/topics/document-format/bibliography#localities[localities and locality values].
+
+=== List items
+
+List items can be cross-referenced by inserting a bookmark at the very start of the list item:
+
+[source,asciidoc]
+--
+. Ordered list
+.. [[id1]] This is the first list item
+... [[id2]] This is a list sub-item
+--
+
+=== Hyperlinks
+
+Hyperlinks to URIs can have alt text, which is used in accessibility (corresponding to the HTML
+`a@title` attribute). This is specified by appending `,title=...` after the text in the
+URL macro in AsciiDoc:
+
+[example]
+====
+[source,asciidoc]
+--
+http://www.example.com[text to go into the hyperlink]
+
+http://www.example2.com[text to go into the second hyperlink,title=This is a tooltip for the link]
+--
+====
+
+=== Cross-references to external documents
+
+In link:/author/topics/document-format/bibliography#localities[localities and locality values],
+anchor can be integrated in citations of documents via references; for example:
+
+[source,asciidoc]
+--
+<<ISO7301,anchor=xyz>>
+--
+
+will generate a hyperlink to the element with ID `xyz` in document `ISO7301`. This convention
+is necessary for cross-references between documents in a Metanorma document collection.
+
+Outside of that, Metanorma will process cross-references to anchors within
+external documents just like typical AsciiDoc.
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+<<document1.adoc#b>>
+--
+
+will be processed as a link to anchor `#b` in document `document1.adoc`.
+
+If the reference uses the `.adoc` suffix, as in the example above, it is stripped in Metanorma XML
+and substituted with the extension of the current document type during document generation.
+
+The above example is rendered in Metanorma XML as `<xref target="document1#b">`,
+in HTML as `<a href="document1.html#b">`, and in PDF as `<a href="document1.pdf#b">`.
+
+
