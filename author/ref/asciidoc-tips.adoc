@@ -4,7 +4,7 @@ layout: author-docs
 
 = Metanorma AsciiDoc tips
 
-Metanorma AsciiDoc adopts Asciidoctor syntax for AsciiDoc, and the
+Metanorma AsciiDoc adopts the Asciidoctor syntax for AsciiDoc, and the
 http://asciidoctor.org/docs/user-manual/[Asciidoctor User Manual] is an
 excellent companion when authoring Metanorma AsciiDoc documents.
 
@@ -15,13 +15,13 @@ which you might need to dig deeper to find in the manual; we list some of them h
 == Multi-paragraph footnotes
 
 Native Asciidoctor supports only single-paragraph
-footnotes through its footnote macro
-(which can only contain a single line of text).  
+footnotes through its `footnote` macro
+(which can only contain a single line of text).
 This is due to a stylistic bias against digressive text by the
 Asciidoctor project, and probably will not change.
 
-Metanorma has introduced a footnote macro, `footnoteblock:[id]`, which allows multi-paragraph
-notes to be treated as footnotes: see  link:/author/topics/document-format/text/#footnotes[Footnotes].
+Metanorma introduces a footnote macro `footnoteblock:[id]` which allows multi-paragraph
+notes to be treated as footnotes: see link:/author/topics/document-format/text/#footnotes[Footnotes].
 
 == Complex notes and admonitions
 
@@ -96,37 +96,40 @@ c)  Definition Term   Definition
 
 == AsciiDoc character substitutions
 
-Metanorma AsciiDoc inherits the AsciiDoc character substitutions for 
+Metanorma AsciiDoc inherits the AsciiDoc character substitutions for
 https://docs.asciidoctor.org/asciidoc/latest/subs/special-characters/[special characters]
-(`<`, `>, `&`), and https://docs.asciidoctor.org/asciidoc/latest/subs/replacements/[character replacements):
+(`<`, `>`, `&`), and
+https://docs.asciidoctor.org/asciidoc/latest/subs/replacements/[character replacements]:
+
+[cols="a,a,a",options="header"]
+|===
+|Sequence |Replacement |Notes
+
+|`+(C)+`    |(C) |
+|`+(R)+`    |(R) |
+|`+(TM)+`   |(TM) |
+|`+--+`     |—  (em-dash) | Only replaced if between two word characters, between a word character and a line boundary, or flanked by spaces.  When flanked by space characters (e.g., `+a -- b+`), the normal spaces are replaced by thin spaces (Unicode `U+2009` THIN SPACE, HTML `+&#8201;+`).
+|`+...+`    |... |
+|`+->+`     |-> |
+|`+=>+`     |=> |
+|`+<-+`     |<- |
+|`+<=+`     |<= |
 
 |===
-|Sequence |Replacement
 
-|`(C)`    |(C)
-|`(R)`    |(R)
-|`(TM)`   |(TM)
-|`--`     |—  (em-dash)    | "Only replaced if between two word characters, between a word character and a line boundary, or flanked by spaces.  When flanked by space characters (e.g., `a -- b`), the normal spaces are replaced by thin spaces (&#8201;).
-|`...`    |...
-|`->`     |->
-|`=>`     |=>
-|`<-`     |<-
-|`<=`     |<=
-|===
+In addition, Metanorma AsciiDoc by default converts straight single and double quotes
+into smart quotes. The rules for smart formatting follow the
+https://github.com/pbhogan/sterile[`sterile`] gem, and are given in
+https://github.com/pbhogan/sterile/blob/master/lib/sterile/data/smart_format_rules.rb[`smart_format_rules.rb`].
 
-In addition, Metanorma Asciidoctor by default converts straight single and double quotes
-into smartquotes. The rules for smart formatting follow the
-https://github.com/pbhogan/sterile[sterile] gem, and are given in
-https://github.com/pbhogan/sterile/blob/master/lib/sterile/data/smart_format_rules.rb[smart_format_rules.rb].
-
-There is no equivalent given for en-dash. Metanorma AsciiDoc will recognise any UTF-8 character,
-and character escapes like `&#x2062;` and `&#8201;`.
+There is no equivalent given for en-dash. Metanorma AsciiDoc
+will recognize any UTF-8 character,
+and character escapes like `+&#x2062;+` and `+&#8201;+`.
 
 [[asciidoc_escaping]]
 == AsciiDoc escaping
 
 There are some characters that constitute markup in Metanorma AsciiDoc
-//(and Asciidoctor AsciiDoc),
 and need to be escaped if they will be used in text (usually by putting a backslash before them).
 
 That applies in particular to:
@@ -149,9 +152,9 @@ Metanorma AsciiDoc markup, and processed only at the very end.
 See for example https://asciidoctor.org/docs/user-manual/#url[the Asciidoctor User Manual]
 on using document attributes to deal with complex URLs.
 
-To prevent the substitution of 
-multiple-character combinations, try interpolating `\&#x200c;` between the characters; so
-`-\&#x200c;-` here. Character U+200c (the zero width non-joiner) is invisible, and its function
+To prevent the substitution of
+multiple-character combinations, try interpolating `+&#x200c;+` between the characters; so
+`+-\&#x200c;-+` here. Character `U+200c` (the zero width non-joiner) is invisible, and its function
 is to prevent ligatures combining the characters either side of it.
 
 == Document attributes
