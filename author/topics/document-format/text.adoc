@@ -361,6 +361,162 @@ NOTE: Multi-paragraph footnotes are a Metanorma AsciiDoc feature and not
 supported in typical AsciiDoc.
 
 
+== Index
+
+=== General
+
+Metanorma supports index entries with primary, secondary and tertiary
+index terms. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+
+Primary index terms are listed under the first-level index,
+the secondary index terms are listed under the primary index terms' sub-index,
+and the tertiary index terms are listed under the secondary index term's sub-index.
+
+.Illustration of an index in Metanorma with primary and secondary indexes are shown.
+image::/assets/author/topics/document-format/text/fig-index.png[Illustration of an index in Metanorma with primary and secondary indexes are shown,width=70%]
+
+Index term links are only rendered in certain flavours, and do not
+appear otherwise in DOC, PDF or HTML output.
+
+NOTE: Currently, only Metanorma IETF XML RFC and Metanorma BIPM outputs render index terms.
+
+
+=== Rendered index term syntax
+
+Metanorma index entries are entered through two different
+syntaxes. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+
+Rendered index term: `+((Term))+`
+
+* Produces the output "`Term`"; and
+* Links to the primary index term of the same name, "`Term`".
+
+Hidden index term: `+(((IndexTerm1)))+`,
+  `+(((IndexTerm1, IndexTerm2)))+` or
+  `+(((IndexTerm1, IndexTerm2, IndexTerm3)))+`
+
+* Produces no output; and
+* Links to the primary index term `IndexTerm1`. And if provided, links to
+  the secondary nesting, `IndexTerm2` and the tertiary nesting `IndexTerm3`.
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+The Lady of the Lake, her arm clad in the purest shimmering samite,
+held aloft Excalibur from the bosom of the water,
+signifying by divine providence that I, ((Arthur)),
+was to carry Excalibur (((Sword, Broadsword, Excalibur))).
+--
+
+
+=== Rich-text formatting
+
+Rich-text formatting in index terms is
+supported [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
+
+[source,asciidoc]
+--
+signifying by divine providence that I, ((*Arthur*)),
+was to carry Excalibur (((Sword~E~, stem:[sqrt(E)], Excalibur))).
+--
+
+NOTE: Formatting of index terms is ignored in IETF rendering.
+
+
+=== Entry ranges
+
+Metanorma supports index entries that involve ranges [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0],
+using the command `index-range:to[...]`.
+
+The command itself accepts an AsciiDoc index entry, such as
+`+((...))+` or `+(((...)))+`.
+
+The index entry range starts at the location of the `index-range`
+command, in the same way as the index command it contains; the end of
+the range is the element with the anchor `to`, and that is expected
+to be provided as a bookmark.
+
+[source,asciidoc]
+--
+signifying by divine providence that I, index-range:end-range-1[((*Arthur*))],
+was to carry Excalibur index-range:end-range-2[(((Sword~A~, stem:[sqrt(2)], Excalibur)))].
+
+...
+
+and so forth.[[end-range-1]]
+
+...
+
+_Sic explicit fabula._[[end-range-2]]
+--
+
+The preceding example has a visible index entry for _**Arthur**_,
+ranging from the location of `+*Arthur*+` up to `end-range-1`, and
+a hidden index entry for _Sword~A~_, ranging from the location of
+`+Sword~A~+` up to `end-range-2`.
+
+
+=== Cross-references
+
+Metanorma also supports "`see`" and "`see also`" cross-references between
+index terms [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.5],
+using the `index` command.
+
+The command takes at least two parameters:
+
+* the primary index term to be cross-referenced;
+* the target of the cross-reference;
+* optionally, the secondary and tertiary index term to be cross-referenced.
+
+[source,asciidoc]
+--
+index:see[Satchmo,Louis Armstrong]
+index:see[James Brown,influences,Hank Ballard and the Midnighters]
+index:also[guitar,electric,technique,Jimi Hendrix]
+--
+
+Rendered as:
+
+____
+* Satchmo, _see_ Louis Armstrong
+* James Brown
+** influences, _see_ Hank Ballard and the Midnighters
+* guitar
+** electric
+*** technique, _see also_ Jimi Hendrix
+____
+
+=== Placement
+
+As with normal Asciidoctor, a top-level clause with style attribute `[index]` can be used
+as a placeholder for an index in the rendered 
+document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.4]. 
+If there is any content in the clause, the index terms will be appended to it.
+
+[source,asciidoc]
+--
+[index]
+== Index
+The following is an index of this document.
+--
+
+It is possible for there to be more than one index in a document; if so, they will 
+be differentiated with a type attribute. However, this has not yet been implemented in any
+Metanorma flavours.
+
+[source,asciidoc]
+--
+[[alphabetic]]
+[index,type=alphabetical]
+== Alphabetic Index
+
+[[subjectindex]]
+[index,type=subject]
+== Subject Index
+--
+
+
 == Lists
 
 === Ordered lists
