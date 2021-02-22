@@ -489,29 +489,32 @@ ____
 
 === Placement
 
-As with normal Asciidoctor, a top-level clause with style attribute `[index]` can be used
-as a placeholder for an index in the rendered 
-document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.4]. 
+A top-level clause with style attribute `[index]` is used as a
+placeholder for an index in the rendered
+document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.4].
+
 If there is any content in the clause, the index terms will be appended to it.
 
 [source,asciidoc]
 --
 [index]
 == Index
+
 The following is an index of this document.
 --
 
-It is possible for there to be more than one index in a document; if so, they will 
-be differentiated with a type attribute. However, this has not yet been implemented in any
-Metanorma flavours.
+A document may have multiple indexes in a document. If so, they will
+be differentiated with a type attribute.
+
+NOTE: Multiple indexes are not yet supported in any Metanorma flavours.
 
 [source,asciidoc]
 --
-[[alphabetic]]
+[[alphabetic-index]]
 [index,type=alphabetical]
 == Alphabetic Index
 
-[[subjectindex]]
+[[subject-index]]
 [index,type=subject]
 == Subject Index
 --
