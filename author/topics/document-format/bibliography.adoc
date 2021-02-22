@@ -215,10 +215,12 @@ NOTE: To indicate usage of the numeric reference system, any number
 can be entered into the reference tag field. All references are
 automatically re-sorted and auto-incremented during compilation.
 
-Numbers are not acceptable for entries in normative references, since bibliography numbering starts at 1.
+Normative references must use either standard document identifiers, or named reference tags.
+
+NOTE: Numeric references cannot be used for entries in normative references, as bibliography numbering starts at 1.
 Execution will abort if a numeric reference tag is found in normative references, in order to prevent
 numbering confusion [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.4].
-Normative references must use either standard document identifiers, or named reference tags.
+
 
 === Named reference tags
 
@@ -340,7 +342,7 @@ type:: standard
 --
 
 The `id` attribute of bibitem clauses (the anchor of the clause) can be overridden by an AsciiDoc
-anchor on the clause [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1]. 
+anchor on the clause [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
 This can be required for AsciiDoc to process crossreferences correctly. Any such anchors must not be
 preceded by `_`, as AsciiDoc uses that to indicate anchors it inserts automatically, which are not
 supplied in the source.
@@ -357,7 +359,7 @@ id:: iso123
 docid::
   type::: ISO
   id::: ISO 123
-docid:: 
+docid::
   type::: ABC
   id::: 32784
 type:: standard
