@@ -9,6 +9,19 @@ command-line toolchain installed.
 
 The toolchain consists of `metanorma-cli` Ruby gem and its dependencies.
 
+In general, these installation methods are recommended.
+
+Platform-specific methods:
+
+* macOS: via <<homebrew,Homebrew>>
+* Linux: via the <<linux,all-in-one setup script>>
+* Windows: via <<chocolatey,Chocolatey>>
+
+Platform-independent methods:
+
+* Docker: the <<docker-setup,Metanorma Docker container>>
+* Ruby: install the native Ruby <<gems,metanorma-cli gem>>
+
 [TIP]
 ====
 .Full manual
@@ -18,8 +31,114 @@ You will have to take care of dependencies: an appropriate Ruby version,
 plus other software depending on the end documents you’re building.
 
 Refer to link:/software/metanorma-cli/docs/installation/[Metanorma CLI installation docs]
-for more.
+for details.
 ====
+
+
+[[macos-setup]]
+== macOS
+
+[[homebrew]]
+=== Using https://brew.sh/[Homebrew]
+
+[source,sh]
+----
+brew tap metanorma/metanorma
+brew install metanorma
+----
+
+This uses Metanorma's link:/software/homebrew-metanorma[Homebrew formula].
+
+To install using the HEAD development version of the formula, run:
+
+[source,sh]
+----
+brew install --HEAD https://raw.githubusercontent.com/metanorma/homebrew-metanorma/master/metanorma.rb
+----
+
+
+=== All-in-one script
+
+Run the following for an automatic install
+that would prepare a fresh system to work with Metanorma.
+
+NOTE: This installs not just the Metanorma components, but also prerequisites
+such as Homebrew and basic tools like Sublime Text.
+
+This should take less than 15 minutes depending on your machine and Internet connection:
+
+[source,sh]
+----
+bash <(curl -s https://raw.githubusercontent.com/metanorma/metanorma-macos-setup/master/metanorma-setup)
+----
+
+
+[[linux]]
+== Linux
+
+Linux setup uses all-in-one script. You need to have `curl` installed beforehand.
+
+TIP: See more in https://github.com/metanorma/metanorma-linux-setup[metanorma-linux-setup] repository.
+
+=== Ubuntu
+
+[source,sh]
+----
+sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/ubuntu.sh | bash"
+curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/install-gems.sh | bash
+----
+
+=== CentOS
+
+[source,sh]
+----
+sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/centos.sh | bash"
+curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/install-gems.sh | bash
+----
+
+
+[[windows]]
+== Windows
+
+[[chocolatey]]
+=== Using https://chocolatey.org/[Chocolatey]
+
+Execute the following:
+
+[source,console]
+----
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+refreshenv
+cinst msys2 --params "/NoUpdate" -y # install msys2 without system update
+cinst metanorma -y
+refreshenv
+----
+
+[TIP]
+====
+For LaTeX processing, a UTF-8 compatible command line interface is necessary.
+If you are using the Windows default command line interpreter `cmd.exe`,
+please do run `chcp 65001` before using Metanorma.
+====
+
+[TIP]
+====
+See
+link:/blog/12-25-2018/metanorma-on-windows-via-chocolatey/[the blog post on Metanorma Chocolatey package]
+for more background.
+====
+
+
+=== Docker installation shortcut
+
+Run this command in your `cmd.exe` or `PowerShell` to install
+the Metanorma Docker container and all prerequisites (see <<docker-setup>>):
+
+[source,sh]
+----
+bitsadmin /transfer get https://raw.githubusercontent.com/metanorma/metanorma-windows-setup/master/install.bat %cd%\install.bat & .\install.bat
+----
+
 
 
 [[docker-setup]]
@@ -72,105 +191,8 @@ See https://github.com/metanorma/metanorma-docker[metanorma-docker] for more inf
 ====
 
 
-[[macos-setup]]
-== macOS
-
-=== Using https://brew.sh/[Homebrew]
-
-[source,sh]
-----
-brew tap metanorma/metanorma
-brew install metanorma
-----
-
-This uses Metanorma’s link:/software/homebrew-metanorma[Homebrew formula].
-
-To install using the HEAD development version of the formula, run:
-
-[source,sh]
-----
-brew install --HEAD https://raw.githubusercontent.com/metanorma/homebrew-metanorma/master/metanorma.rb
-----
-
-
-=== All-in-one script
-
-Run the following for an automatic install
-that would prepare a fresh system to work with Metanorma.
-
-NOTE: This installs not just the Metanorma components, but also prerequisites
-such as Homebrew and basic tools like Sublime Text.
-
-This should take less than 15 minutes depending on your machine and Internet connection:
-
-[source,sh]
-----
-bash <(curl -s https://raw.githubusercontent.com/metanorma/metanorma-macos-setup/master/metanorma-setup)
-----
-
-
-== Linux
-
-Linux setup uses all-in-one script. You need to have `curl` installed beforehand.
-
-TIP: See more in https://github.com/metanorma/metanorma-linux-setup[metanorma-linux-setup] repository.
-
-=== Ubuntu
-
-[source,sh]
-----
-sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/ubuntu.sh | bash"
-curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/install-gems.sh | bash
-----
-
-=== CentOS
-
-[source,sh]
-----
-sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/centos.sh | bash"
-curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/install-gems.sh | bash
-----
-
-
-== Windows
-
-=== Using https://chocolatey.org/[Chocolatey]
-
-Execute the following:
-
-[source,console]
-----
-Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-refreshenv
-cinst msys2 --params "/NoUpdate" -y # install msys2 without system update
-cinst metanorma -y
-refreshenv
-----
-
-[TIP]
-====
-Windows encoding in cmd.exe usually not UTF-8, so to make it UTF-8 please run `chcp 65001`.
-This workaround critical when you need work with LaTeXML
-====
-
-[TIP]
-====
-See also
-link:/blog/12-25-2018/metanorma-on-windows-via-chocolatey/[the blog post on Metanorma Chocolatey package].
-====
-
-=== Docker installation shortcut
-
-Run this command in your `cmd.exe` or `PowerShell` to install
-the Metanorma Docker container and all prerequisites (see <<docker-setup>>):
-
-[source,sh]
-----
-bitsadmin /transfer get https://raw.githubusercontent.com/metanorma/metanorma-windows-setup/master/install.bat %cd%\install.bat & .\install.bat
-----
-
-
+[[gems]]
 == Installing gems separately
 
 See link:/software/metanorma-cli/[Metanorma CLI docs]
-on how to install that gem on its own, be sure to note the dependencies.
+on how to install the Ruby gem on its own.
