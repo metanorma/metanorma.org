@@ -17,9 +17,9 @@ In general, these installation methods are recommended.
 
 Platform-specific methods:
 
-* macOS: via <<homebrew,Homebrew>>
-* Linux: via the <<linux,all-in-one setup script>> or <<snap, Snapcraft package>>
-* Windows: via <<chocolatey,Chocolatey>>
+* macOS: via our <<homebrew,Homebrew formula>>
+* Linux: via our <<snap, Snapcraft package>>
+* Windows: via our <<chocolatey,Chocolatey package>>
 
 Platform-independent methods:
 
@@ -63,20 +63,26 @@ brew install metanorma/metanorma/metanorma
 == Linux
 
 [[snap]]
-=== Snap
+=== Using https://snapcraft.io[Snap]
 
-Metanorma have https://snapcraft.io/metanorma[snapcraft package] which can be installed with a single coomand:
+The easiest way is to install the https://snapcraft.io/metanorma[Metanorma Snap]
+with a single command:
 
 [source,sh]
 ----
 sudo snap install metanorma
 ----
 
-If `snapd` isn't available on your distribution, all-in-one script still can be used. You need to have `curl` installed beforehand.
+If `snapd` isn't available on your distribution, use the all-in-one install script
+described below for various platforms.
+You will need to have `curl` installed beforehand.
 
 TIP: For details, please see the https://github.com/metanorma/metanorma-linux-setup[metanorma-linux-setup] repository.
 
-=== Ubuntu
+
+=== Install script for Ubuntu
+
+The `curl` command must be installed.
 
 [source,sh]
 ----
@@ -84,7 +90,10 @@ sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linu
 curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/install-gems.sh | bash
 ----
 
-=== CentOS
+
+=== Install script for CentOS
+
+The `curl` command must be installed.
 
 [source,sh]
 ----
@@ -101,7 +110,8 @@ curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master
 
 To install `chocolatey` follow https://chocolatey.org/install[these instructions]
 
-Execute the following in your `cmd.exe` or `PowerShell`:
+Execute the following in your `cmd.exe` or `PowerShell`
+to install the Metanorma Chocolatey package:
 
 [source,console]
 ----
