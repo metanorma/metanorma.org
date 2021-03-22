@@ -47,8 +47,23 @@ section is set as the last unnumbered section at the end of document
 ...
 ----
 
-Bibliography sections can be split into subsections.
+Normative and informative references are normally recognised by the
+distinct title given them, specific to the flavour; however, the normative
+status of the bibliographic section can be given explicitly with
+a `normative` boolean attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.7]:
 
+[source,asciidoc]
+----
+[bibliography,normative=true]
+== References normative
+
+...
+
+[bibliography,normative=false]
+== References informative
+----
+
+Bibliography sections can be split into subsections.
 Metanorma AsciiDoc requires each subsection containing references
 to be styled with `[bibliography]`, and raises an (ignorable)
 warning if the subsections are contained in a section itself
