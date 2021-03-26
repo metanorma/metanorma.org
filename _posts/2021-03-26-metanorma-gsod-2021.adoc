@@ -14,7 +14,175 @@ excerpt: >-
 
 == Content
 
-...
+= Proposal title: Authoring guide for Metanorma
+
+== About Metanorma 
+
+https://www.metanorma.org[Metanorma] is an open-source, freely-licensed authoring framework for writing and publishing machine-readable, semantic standards. Semantic standards preserve the intent of the standards to be understood by the standards readers without potential corruption in meaning.
+
+Metanorma was first launched in 2017 and is now used by standards authors worldwide among leading standards development organizations (SDOs), including ISO, IEC, ITU, IETF, and industry standards bodies such as OGC and CalConnect, as well as governmental organizations like NIST and BSI. These authors use Metanorma to create standards across broad swathes of industries: from smart manufacturing to geographic information, internet technology to health and safety.
+
+Metanorma has been named with two Gold http://stevieawards.com/iba[Stevie Awards] for “Best New Semantic Technology Platform, Tools and Applications”, and “Best New Scholarly Publishing Information Solution”. Its core information models have been adopted by ISO in the international standard ISO 36100 (“Standardization documents — Document metamodel”), which is currently under development. 
+
+Internally, the framework is composed of a core engine with extensions for every SDO (called “flavors”). Each flavor is composed of a set of document types, validation rules, layouts, rendering formats, and specific commands for the SDO. The core engine, flavors, and plugins are all available as open-source projects hosted on GitHub. All Metanorma’s 219 public repositories are developed and maintained under open-source licenses (software: BSD-2, documentation: CC-By).
+
+The following individuals of the project community have offered to act as volunteer mentors for this project, collectively bringing a holistic perspective of the community:
+
+//* Scott Simmons, Chief Operating Officer of the Open Geospatial Consortium, in charge of the OGC Standards program, representative at the ANSI Machine-Readable Standards group
+
+//* Marc Petit-Huguenin, Distinguished Engineer and ex-CTO at 8x8, author of the Computerate Specifying standard and multiple IETF RFC standards, chair of multiple IETF working groups
+
+* Nick Nicholas, Technical Analyst and Lead Developer of the Metanorma project, expert representative to ISO/TC 46
+
+* Daniel Wyatt, Lead Developer of the RNP OpenPGP library, IETF contributor, previously at FEMA, Google Summer of Code participant
+
+* Ronald Tse, Vice President of CalConnect, chair of CalConnect TC VCARD, convenor for ISO/TC 154/WG 4 and 5, Canadian representative to the ISO Machine-Readable Standards group and IEC SG 12
+
+== Project description
+
+=== Current status
+
+The Metanorma website hosts numerous https://www.metanorma.org/blog/[blog posts], guides, specifications, and other reference documents. These include documentation on its information models, setup and usage guides, as well as customization and programming references.
+ 
+For every SDO flavor, the following documentation is provided:
+
+* A reference guide is provided detailing the use of specific functions and metadata information necessary for documents. For example, the Metanorma ITU guide is found here: https://www.metanorma.org/author/itu/ref/document-attributes/.
+
+* A sample document repository is provided for authors to quickly get started with compilable examples of the flavor’s document types. Each sample document comes from a real example authored in Metanorma with full annotations in order to make it as realistic as possible with the necessary details for authoring education.
+ 
+=== Identified issues
+
+. Lack of a general authoring guide, especially geared towards the novice author.
+New Metanorma users have pointed out the lack of an authoring guide that guides the novice on the steps on setting up the environment, on creating a document, and on preparing a document for publication. Visitors to the site have indicated that it is easy to be overwhelmed by the number of repositories and specifications at first glance.
+
+. Lack of flavor-specific authoring guides.
+Standards authors use Metanorma to create SDO-specific standards, for example, IETF or OGC. Each SDO applies different encoding requirements and content rules on their standards and requires different metadata elements to be entered. While Metanorma does provide reference documentation, they are not sufficient to initiate the author of a standard who is new to Metanorma.
+
+. Unintuitive information architecture.
+Existing Metanorma users have suggested that the information requested is often scattered across multiple locations. One may need to go back and forth across several documents to find the desired information.
+
+. Non-development direct enquiries.
+New users often directly contact project contributors via email or create issues at the GitHub repositories for information they could not locate in the documents. Most of these topics are actually covered on the project website, but they can be difficult to locate for new users.
+ 
+=== Project scope
+
+Deliverable: Audit report of the current state of documentation
+
+* Familiarize and audit existing documentation and software
+* Develop an understanding of existing community needs
+* Strengths and weaknesses of current documentation
+
+Deliverable: Information architecture
+
+* The desired information architecture should:
+** Allow the audience to discover the information they need;
+** Use a layered approach, where the audience can learn more detailed information step-by-step, allowing the novice to progress in knowledge without being overwhelmed; and
+** Be understandable to laymen. Most Metanorma users are standardization experts and professionals in diverse industries -- they cannot be expected to have a level of computer knowledge comparable to that of developers.
+
+Deliverable: Metanorma authoring guide for new users
+
+* Consolidate information across existing documentation, covering these topics:
+** Introduction to Metanorma;
+** A “quick start” that allows new users to get up and running quickly, with pointers to existing documents where appropriate;
+** Flavors of Metanorma and their authoring guidance (see next deliverable);
+** Metanorma standards and specifications; and
+** A list of related tools and guidance of their usage
+
+Deliverable: SDO-specific “pilot” authoring guides for IETF and OGC
+
+* Covering these topics:
+** Introduction to the usage of Metanorma in the SDO
+** Describe the publication flow of a standard at the SDO, and where Metanorma applies within that workflow
+** Provide authoring guidance on how to author a standard for that SDO, including pointers to existing reference guides
+** Provide actionable guidance on how to submit the Metanorma-created standard to the SDO for publication
+
+Deliverable: GSoD project case study
+
+* Authored by the technical writer and interested project mentors
+* Describes the success and challenges faced during the GSoD project for future reference
+
+Work considered out-of-scope:
+
+* This project will not create SDO-specific guidance for every available flavor
+* Full-fledged SDO-specific authoring guides as SDO organization rules can be complex and too  numerous to members outside of the organization itself
+
+We are seeking a competent open-source technical writer who is willing to learn about standards.
+ 
+== Potential impacts of the project
+
+Standards form the basis of the modern world -- critical to today’s economy and society. Standards drive interoperability and facilitate commercial competition amidst industry co-operation for the betterment of consumers. 
+ 
+Development of standards today occurs through a large number of standardization bodies, many organized through international treaties, as international organizations, industry consortia, governments, or even as smaller technology enclaves.
+ 
+Metanorma is a recognized leader in interoperable machine-readable standards -- its core contributors heavily lead the development of SMART standards in ISO, IEC, BSI, and other venues. With its machine-readable standards technology being used to support model-based enterprises (MBE) and in smart manufacturing (Industry 4.0) efforts worldwide, the success of this project will ensure the growing adoption of an interoperable way of publishing and using standards.
+ 
+The authoring guide will bridge new laymen users, who may be less technically advanced than developers, by helping them to adopt the technology. The authoring guide will not cover every single detail but will provide an easy-to-follow guide for a user to quickly get started.
+ 
+The project will bring positive impacts by allowing more standard authors to write semantic standards, which enables users of them to utilize standards in the way they were originally meant.
+ 
+== Measuring project’s success
+
+=== Expected results
+
+The developed authoring guide is planned to be published on the Metanorma project website at https://www.metanorma.org.
+
+* Goal: A layman user can read the guide to (i) understand the core ideas of the project, (ii) comprehend the relationships between different software tools and specifications in the project, and (iii) know where to find the details.
+** Indication metric: Reduction in direct contact enquiries received about Metanorma in general.
+ 
+* Goal: Allow new users to self-discover content about Metanorma with a layered learning approach.
+** Indication metric: Reduction in direct contact enquiries about advanced features in Metanorma, such as in scripted templating.
+ 
+* Goal: Allow new SDO users to learn how they can utilize Metanorma within the SDO’s standards development process.
+** Indication metric: Reduction in direct contact enquiries from SDO users, increased number of unique visits to SDO-specific authoring guides.
+
+=== Measurable project metrics
+
+The goal of the guide is to help users find the information they want more easily. We will track the following performance metrics after the authoring guide is published.
+ 
+. Number of views of the new authoring guides (monthly).
+We expect that new visitors and existing users can make use of the authoring guide to look for the information they need. A high number relative to the project site would indicate that  the authoring guide has a demonstrable impact.
+
+. Number of non-development direct enquiries (quarterly).
+When visitors cannot find answers to their questions in the documents, they may send enquiries (via GitHub or email) to the project team. The new authoring guide will be proven useful if this number drops.
+ 
+The project would be considered successful if, after publication of the authoring guide:
+
+. Unique visits to the new guide (and its pages) constitute at least 20% of the total visits of the project website.
+
+. Decrease in the number of non-development direct enquiries by 20% across our GitHub repositories and project email.
+ 
+== Project schedule
+
+=== Project Length
+
+3 months
+
+=== Project Plan
+
+|===
+| Item | Duration (month)
+
+| Technical writer acclimatizes to existing project documentation and seeks clarifications from mentors. |0.5
+| Technical writer develops a high-level structure of deliverables under mentorship.|0.5
+| Technical writer develops contents of deliverables with progress overseen by mentors. |1.5
+| Technical writer facilitates testing of the developed deliverables by seeking public feedback and project contributors. Finalizes deliverables addressing community feedback. |0.5
+|Total|3
+
+|===
 
 
-== Mentors
+== Budget
+
+|===
+|Item|Amount|Running Total|Notes/justifications
+
+|Technical writer|4,800.00|4,800.00|
+|Swag|200|5,000.00|Project T-shirts (with shipping)
+||TOTAL|5,000.00
+
+|===
+
+== Additional Information
+
+The Metanorma project has mainly been documented by its technical contributors, its user organizations and individual authors. The experience brought by our mentors is representative of today’s leading international SDOs. Amongst our mentors, Daniel Wyatt has participated in the Google Summer of Code program as a participant twice.
+ 
