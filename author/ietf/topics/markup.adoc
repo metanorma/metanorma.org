@@ -116,8 +116,7 @@ or "`EXAMPLE nnn: `" if there are more than one examples in the clause.
 === Figures
 
 Figures are rendered as RFC XML `figure`, and are treated as wrappers for
-ASCII art, source code and images; they are redundant for RFC XML v3, since
-the processing of those blocks already inserts the `figure` wrapper.
+ASCII art, source code and images.
 Any text in an example block that precedes or follows sourcecode, an image, or preformatted text
 is moved outside the figure.
 
@@ -132,11 +131,12 @@ to be human readable (those set to `exclude` attribute) are left out of RFC XML.
 
 === Source code listings
 
-In RFC XML, `sourcecode` elements only occur within a
-`figure` wrapper; Metanorma-IETF supplies that wrapper if it is not provided
-explicitly.
+In RFC XML v2, `sourcecode` elements only occur within a
+`figure` wrapper. This is not the case for RFC XML v3, and
+Metanorma-IETF no longer supplies that wrapper if it is not provided
+explicitly [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.3.0].
 
-Any label supplied for sourcecode will be rendered before the `figure` wrapper.
+Any label supplied for sourcecode will be dropped, since `sourcecode` in RFC XML has no caption.
 
 Metanorma pseudocode is marked up in RFC as sourcecode; any formatting is
 removed from the pseudocode body.
@@ -153,10 +153,10 @@ begin() {
 }
 ----
 --
-<1> `figure/@anchor`
-<2> `figure/name`
-<3> `figure/sourcecode/@type`, `figure/sourcecode/@src`, `figure/sourcecode/@markers`, `figure/sourcecode/@name`. If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute.
-<4> `figure/sourcecode`
+<1> `sourcecode/@anchor`
+<2> Ignored
+<3> `sourcecode/@type`, `sourcecode/@src`, `sourcecode/@markers`, `sourcecode/@name`. If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute.
+<4> `sourcecode`
 
 [source,asciidoc]
 .With Figure Wrapper
@@ -467,8 +467,8 @@ This is a ((primary:primary index term)) <3>, and so is
 --
 <1> `<iref item="indexterm">indexterm</iref>`
 <2> `<iref item="indexterm" subitem="index-subterm"/>`
-<3> `<iref item="indexterm" primary="true">primary index term</iref>` [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.3.0]
-<4> `<iref item="indexterm" subitem="index-subterm"/>` [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.3.0]
+<3> `<iref item="indexterm" primary="true">primary index term</iref>` [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.2.9]
+<4> `<iref item="indexterm" subitem="index-subterm"/>` [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.2.9]
 
 
 === Inline formatting
