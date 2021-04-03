@@ -70,7 +70,7 @@ Currently a collection can only contain documents of one flavour.
 * A manifest listing the documents contained in the collection, in nested hierarchy (`manifest`)
 ** `level` names the current hierarchical level of the manifest
 ** `title` gives the title of the current level of the manifest
-** `docref` lists the documents to be used at that level of the manifest: it is a list of file paths relative to the manifest file (`fileref`) and document identifiers (`identifier`).
+** `docref` lists the documents to be used at that level of the manifest: it is a list of file paths relative to the manifest file (`fileref`) and document identifiers (`identifier`). If `attachment` is true, the file is not a Metanorma document but an attachment, and is passed through [added in https://github.com/metanorma/metanorma/releases/tag/v1.2.9].
 ** `manifest` can appear recursively in a manifest.
 * Content to put at the beginning of the collection container (`prefatory-content`)
 * Content to put at the end of the collection container (`final-content`)
@@ -114,6 +114,9 @@ manifest:
           identifier: ISO 17302
         - fileref: rice1-en.final.xml
           identifier: ISO 1701:1974
+        - fileref: config.xml
+          identifier: config.xml
+          attachment: true
     - level: subcollection
       title: Amendments
       docref:
