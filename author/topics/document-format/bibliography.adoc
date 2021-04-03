@@ -391,7 +391,7 @@ So a cross-reference `\<<ISO7301,the foregoing reference>>` will be rendered as
 "`the foregoing reference`", and hyperlinked to the `ISO7301` reference.
 
 [[localities]]
-== Localities
+=== Localities
 
 Citations can include details of where in the document the citation is located (or the word "`whole`");
 these are entered by suffixing the lowercase type of locality, then an equals sign,
@@ -469,7 +469,7 @@ for example:
 <<ISO7301,clause=5,table=1,the foregoing reference>>
 --
 
-=== Anchors
+==== Anchors
 
 Exceptionally, the `anchor` locality is only used in HTML, to generate
 anchor links to other HTML pages [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
@@ -493,6 +493,28 @@ will render in HTML as:
 --
 <a href="./iso7301.html#xyz">ISO 7301, Clause 2, Table 1a, page 7-9</a>
 --
+
+=== Case and dropped locality labels
+
+The `capital%`, `lowercase%` and `droploc%` options used for internal crossreferences can also be used as prefixes to
+localities, modifying how those localities are rendered [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.9]
+
+The following input:
+
+[source,asciidoc]
+--
+<<ISO7301,droploc%clause=2>>
+
+<<ISO7301,lowercase%clause=2>>
+--
+
+will render as:
+
+____
+ISO 7301, 2
+
+ISO 7301, clause 2
+____
 
 
 [[autofetch]]
