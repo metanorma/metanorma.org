@@ -385,19 +385,21 @@ RFC XML: `front/author/address/phone`
 
 `:address{_i}:`::
 Used to directly format postal addresses without regard
-to the prior types. Multiple lines are given as separate lines, each ending with plus and backslash (`" + \"`).
+to the prior types. Multiple lines are given as separate lines, each ending with a space, then a plus symbol, then a backslash symbol (`" + \"`).
++
 The `postal-line` attribute is mutually exclusive with the presence of `street`,
 `city`, `region`, `country` and `code` attributes (which are not currently supported).
++
 RFC XML: `front/author/address/postal/postalLine`
-
-[source,asciidoctor]
++
+[source,asciidoc]
 ----
-:address:  Palace + \
+:address: Palace + \
 Camel Lot 1 + \
 UK
 ----
 
-== Attributes for `xml2rfc` processing instructions
+== Processing instructions for `xml2rfc`
 
 The `xml2rfc` tool accepts processing instructions of the form `<?rfc keyword='value'?>`:
 see https://xml2rfc.tools.ietf.org/authoring/README.html#processing.instructions .
