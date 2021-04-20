@@ -129,10 +129,18 @@ was published.
 EXAMPLE: "`IEC 60050-113:2011, 113-01-07`".
 
 
-There may be link:https://www.iso.org/obp/ui/#iso:std:iso-iec:2382:ed-1:v1:en[cases]
-where terminological clauses don't include any character separator like dashes or
-floating points (as they usually do).
-For example,
+In some cases,
+like link:https://www.iso.org/obp/ui/#iso:std:iso-iec:2382:ed-1:v1:en[ISO/IEC 2382],
+terminological clauses are numbered as plain numbers
+without character separators (dashes or periods).
+
+In the ISO world, terminological entries are technically identified
+by identifiers, not clauses.
+However, when the location is cited as a number, Metanorma will consider
+the location a top-level clause, which will be represented in the
+ISO style "`Clause X`", instead of the desired "`X`".
+
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -140,7 +148,10 @@ For example,
 <<ISO2382,clause 2121372>>, Notes to entry and accepted term "`computer program`" have been omitted.
 --
 
-here, `2121372` is a valid terminological entry but it will be unwantedly referred as a top-level clause if we don't specify additional markup. So, in such cases we can write:
+In this case, we will have to apply additional markup to indicate
+the number is not a top-level clause using the `droploc%` flag.
+
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -148,7 +159,8 @@ here, `2121372` is a valid terminological entry but it will be unwantedly referr
 <<ISO2382,droploc%clause 2121372>>, Notes to entry and accepted term "`computer program`" have been omitted.
 --
 
-where `droploc%` serve as a flag to give just the number of the term.
+`droploc%` serves as an indication for Metanorma not to prepend
+the number with the location type of "`Clause`".
 
 
 === Predefined text / Boilerplate
