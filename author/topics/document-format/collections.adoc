@@ -222,6 +222,38 @@ manifest:
       identifier: si-brochure-en
 ----
 
+This form of direct cross-reference is also used to reference 
+attachments [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.2]. For example, if you wanted to
+link to a text file from a collection document, the manifest would look as follows:
+
+[source,yaml]
+----
+manifest:
+  level: brochure
+  title: Brochure/Brochure
+  docref:
+    - fileref: si-brochure-fr.xml
+      identifier: si-brochure-fr
+    - fileref: attachment.txt
+      identifier: ABC
+      attachment: true
+----
+
+And the hyperlink to the attachment, and the bibliographic entry for it, would be as follows:
+
+[source,asciidoc]
+----
+Download the attachment from: <<theattachement>>.
+
+....
+
+[bibliography]
+== Bibliography
+
+* [[[theattachment,repo:(current-metanorma-collection/ABC)]]]
+----
+
+
 [[indirect-xrefs]]
 === Indirect cross-references
 
