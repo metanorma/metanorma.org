@@ -11,7 +11,6 @@ Unordered lists in Word are rendered with em-dashes instead of bullets, as prefe
 Ordered list numbering enforce the ISO/IEC DIR 2 labelling convention,
 therefore the `type` attribute is ignored in ordered lists.
 
-
 == Admonitions
 
 Admonitions can be applied to:
@@ -51,7 +50,6 @@ multiple-block warning
 ====
 --
 
-
 == Cross-references
 
 Custom cross-references should not be used in ISO standards,
@@ -79,12 +77,10 @@ following ISO/IEC DIR 2: `<``<ISO24333,clause=5>``>` will be rendered as _ISO 24
 but `<``<ISO7301,clause=3.1>``>` will be rendered as _ISO 7301, 3.1_.
 
 
-
 == Terms and definitions
 
 [[note_general_doc_ref_terms_defs]]
 NOTE: This subsection supplements link:/author/topics/document-format/section-terms[Terms and definitions] in general Metanorma documentation.
-
 
 === Grouped terms and definitions
 
@@ -97,7 +93,6 @@ otherwise it is titled _"`Terms and definitions`"_.
 
 The "`Symbols`" and "`Abbreviated terms`" subclauses are also titled;
 other subclauses of "`Terms and definitions`" clauses are not.
-
 
 === Intelligent terms referencing
 
@@ -161,8 +156,6 @@ This has the same effect as the verbose and error-prone form of:
 system of ordered marks which can be attributed to _instants_ (<<term-instant>>) on the _time axis_ (<<term-time-axis>>), one instant being chosen as the origin
 ----
 
-
-
 ==== Automatic term section anchors
 
 The terms reference capability relies on automatically created anchor references for every term defined.
@@ -217,7 +210,27 @@ lorem
 ----
 
 
+=== Vocabulary documents
 
+In documents of subtype `:vocabulary:`, terminological entries are permitted outside of 
+Clause 3 [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.8.3]. Such
+sections still need indicated with the `heading` attribute set to `terms and definitions`:
+
+[source,adoc]
+----
+:docsubtype: vocabulary
+
+....
+
+== Terms and definitions
+
+...
+
+[heading=terms and definitions]
+== Terms related to comedy
+
+....
+----
 
 == Annexes and appendices
 
