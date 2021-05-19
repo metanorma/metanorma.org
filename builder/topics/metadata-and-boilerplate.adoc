@@ -163,10 +163,23 @@ The affiliations are extracted from the personal author names (see above) as
 comma-delimited, or else either the name or the address. So for example,
 `{ "CSIRO" => ["Fred Nerk", "Joe Bloggs"], "University of Auckland" => ["John Doe"] }`.
 
-`{type}date`:: The date at which the `{type}` event occurred. The `{type}` is the name
-of the lifecycle event modelled by Relaton, including
-`published accessed created implemented obsoleted confirmed updated issued received unchanged circulated announced vote-started vote-ended`.
+`{type}date`:: The date at which the `{type}` event occurred.
 The date is extracted from `//bidata/date[@type = {type}]`.
+The `{type}` is the name of the lifecycle event modelled by Relaton, including:
+*** `published`
+*** `accessed`
+*** `created`
+*** `implemented`
+*** `obsoleted`
+*** `confirmed`
+*** `updated`
+*** `issued`
+*** `received`
+*** `unchanged`
+*** `circulated`
+*** `announced`
+*** `vote-started`
+*** `vote-ended`
 
 `doctype`:: Flavour-specific document type, from `//bibdata/ext/doctype`.
 `doctype_display`:: Flavour-specific localised document type, from `//local_bibdata/ext/doctype`
@@ -175,7 +188,7 @@ The date is extracted from `//bidata/date[@type = {type}]`.
 `agency`:: A concatenation of all the agency abbreviations (or, if that is unavailable,
 agency names) responsible for publishing the document. Extracted from
 `//bibdata/contributor[xmlns:role/@type = 'publisher']/organization`,
-using either `./abbreviation` or `./name`. E.g. "ISO/IEC".
+using either `./abbreviation` or `./name`. E.g. "`ISO/IEC`".
 
 `publisher`:: A concatenation of all the agency names responsible for publishing the document.
 Extracted from
@@ -214,9 +227,10 @@ draft or published, based on the status of the document.
 `stage`:: The stage of the document, extracted from `//bibdata/status/stage`.
 `stage_display`:: The localised stage of the document, extracted
 from `//local_bibdata/status/stage` [added in https://github.com/metanorma/isodoc/releases/tag/v1.2.5].
+
 `stageabbr`:: The abbreviation of the stage of the document, as extracted from `//bibdata/status/stage`.
 By default, this is the initials of the stage if the document is unpublished,
-and nil if the document is published.
+and `nil` if the document is published.
 
 `substage`:: The substage of the document, extracted from `//bibdata/status/substage`.
 `substage_display`:: The localised substage of the document, extracted from `//bibdata/status/substage`
