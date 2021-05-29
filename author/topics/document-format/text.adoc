@@ -82,6 +82,23 @@ spaces (Unicode 'Thin Space' `U+2009`).
 Metanorma AsciiDoc also recognises HTML and XML character references,
 and decimal and hexadecimal Unicode code points.
 
+=== Links
+
+Links to other Metanorma documents are expected to change their suffix depending on whether
+they are rendered as HTML, PDF, or DOC. To make this happen, you can add the option
+`updatetype=true` 
+to any links you create to Metanorma documents [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.4],
+so long as the link is relative and not absolute, and it does not have a file suffix:
+
+[source,asciidoc]
+--
+link:../parent[updatetype=true]
+link:../child[This Is The Child Document,updatetype=true]
+--
+
+This will link to `../parent.html` and `../child.html` in HTML, and to
+ `../parent.pdf` and `../child.pdf` in PDF.
+
 == Corrigenda
 
 Text to be marked as added or deleted in corrigenda is indicated through the macros `add:[...]` and
