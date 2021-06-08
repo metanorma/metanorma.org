@@ -14,16 +14,17 @@ jobs:
       my_url: ${{ steps.setenv.outputs.my_url }}
     runs-on: ubuntu-latest
     steps:
-    - id: setenv-master
-      if: github.ref == 'refs/heads/master'
+    - id: setenv
       run: |
-        echo "::set-output name=my_env::production"
-        echo "::set-output name=my_url::https://www.metanorma.com"
-    - id: setenv-staging
-      if: github.ref == 'refs/heads/staging'
-      run: |
-        echo "::set-output name=my_env::staging"
-        echo "::set-output name=my_url::https://staging-www.metanorma.com"
+        if [ "$GITHUB_REF" = "refs/heads/master" ]
+        then
+          echo "::set-output name=my_env::production"
+          echo "::set-output name=my_url::https://www.metanorma.com"
+        elif [ "$GITHUB_REF" = "refs/heads/staging" ]
+        then
+          echo "::set-output name=my_env::staging"
+          echo "::set-output name=my_url::https://staging-www.metanorma.com"
+        fi
 
   build_deploy:
     name: Build and deploy to ${{ needs.set_environment.outputs.my_env }}
