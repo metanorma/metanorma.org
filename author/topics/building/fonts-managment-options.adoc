@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: author-docs
 title: "Metanorma CLI: new font processing options"
 categories: about
 authors:
@@ -10,6 +10,8 @@ authors:
 
 excerpt: >-
     Learn about new font processing options now available in Metanorma CLI
+
+tags: ["interface:CLI", "fonts"]
 ---
 
 == New font-related command line options
@@ -132,6 +134,32 @@ We *STRONGLY ENCOURAGE YOU* to _manually run the font installs locally
 Do look at the Metanorma sample document repos for reference
 on how to use these options in your continuous integration flow, e.g.
 https://github.com/metanorma/mn-samples-itu[mn-samples-itu].
+
+== Fonts caching for docker
+
+To avoid fonts re-download on each docker run, both `metanorma/mn` and `metanorma/metanorma`
+exposes separate volume `/config/fonts` for fonts.
+
+This is how it can be used:
+
+For Linux/macOS:
+
+[source,sh]
+----
+docker run -v "$(pwd)":/metanorma -v "${HOME}/.fontist/fonts":/config/fonts -w /metanorma metanorma/mn metanorma metanorma site generate --agree-to-terms
+----
+
+For Windows (Batch/PowerShell):
+
+[source,cmd]
+----
+docker run -v %cd%:/metanorma -v %USERPROFILE%\.fontist\fonts:/config/fonts -w /metanorma -it metanorma/mn metanorma site generate --agree-to-terms
+----
+
+[source,powershell]
+----
+docker run -v ${pwd.Path}:/metanorma -v ${env:USERPROFILE}/.fontist/fonts:/config/fonts -w /metanorma -it metanorma/mn metanorma site generate --agree-to-terms
+----
 
 
 == Final thoughts
