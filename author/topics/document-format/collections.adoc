@@ -64,6 +64,13 @@ The collection manifest contains:
 * Directives on how the collection should be generated (`directives`):
 ** `documents-inline` indicates that the files should be concatenated into a single XML file for processing; if absent,
 the files are kept separate in processing (`documents-external`).
+** `presentation-xml` indicates that the XML supplied is Presentation XML already, and does not need to be converted
+to Presentation XML by metanorma [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.5]. This is automatically
+included when `sectionsplit` is set in the Metanorma file, to break a single document up into multiple HTML files.
+** `bare-after-first` compiles the first HTML document in the collection complete (with coverpage and boilerplate),
+and all subsequent files with the `bare` option (i.e. without coverpage and 
+boilerplate) [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.5]. This is automatically
+included when `sectionsplit` is set in the Metanorma file, to break a single document up into multiple HTML files.
 * Metadata about the collection (`bibdata`, in Relaton format).
 ** Currently `docid/type` is mandatory, as this is how the processor establishes the flavour of the collection.
 Currently a collection can only contain documents of one flavour.
