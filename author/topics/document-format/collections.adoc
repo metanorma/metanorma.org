@@ -62,24 +62,51 @@ files named `collection` in the target formats.
 The collection manifest contains:
 
 * Directives on how the collection should be generated (`directives`):
-** `documents-inline` indicates that the files should be concatenated into a single XML file for processing; if absent,
+
+** `documents-inline` indicates that the files should be
+concatenated into a single XML file for processing; if absent,
 the files are kept separate in processing (`documents-external`).
-** `presentation-xml` indicates that the XML supplied is Presentation XML already, and does not need to be converted
-to Presentation XML by metanorma [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.5]. This is automatically
-included when `sectionsplit` is set in the Metanorma file, to break a single document up into multiple HTML files.
-** `bare-after-first` compiles the first HTML document in the collection complete (with coverpage and boilerplate),
-and all subsequent files with the `bare` option (i.e. without coverpage and 
-boilerplate) [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.5]. This is automatically
-included when `sectionsplit` is set in the Metanorma file, to break a single document up into multiple HTML files.
-* Metadata about the collection (`bibdata`, in Relaton format).
-** Currently `docid/type` is mandatory, as this is how the processor establishes the flavour of the collection.
+
+** `presentation-xml` indicates that the XML supplied is
+in Presentation XML format, and does not need to be converted to
+Presentation XML by Metanorma [added in
+https://github.com/metanorma/metanorma/releases/tag/v1.3.5].
+This is automatically included when `sectionsplit` is set in the
+Metanorma file, to break a single document up into multiple HTML files.
+
+** `bare-after-first` compiles the first HTML document in the
+collection complete (with coverpage and boilerplate), and all
+subsequent files with the `bare` option (i.e. without coverpage and
+boilerplate) [added in
+https://github.com/metanorma/metanorma/releases/tag/v1.3.5].
+This is automatically included when `sectionsplit` is set in the
+Metanorma file, to break a single document up into multiple HTML files.
+
+* Metadata about the collection
+(`bibdata`, in https://www.relaton.org[Relaton] format).
+
+** Currently `docid/type` is mandatory, as this is how the processor
+establishes the flavour of the collection.
 Currently a collection can only contain documents of one flavour.
-* A manifest listing the documents contained in the collection, in nested hierarchy (`manifest`)
+
+* A manifest listing the documents contained in the collection,
+in nested hierarchy (`manifest`)
+
 ** `level` names the current hierarchical level of the manifest
+
 ** `title` gives the title of the current level of the manifest
-** `docref` lists the documents to be used at that level of the manifest: it is a list of file paths relative to the manifest file (`fileref`) and document identifiers (`identifier`). If `attachment` is true, the file is not a Metanorma document but an attachment, and is passed through [added in https://github.com/metanorma/metanorma/releases/tag/v1.2.9].
+
+** `docref` lists the documents to be used at that level of the
+manifest: it is a list of file paths relative to the manifest file
+(`fileref`) and document identifiers (`identifier`). If `attachment`
+is true, the file is not a Metanorma document but an attachment, and
+is passed through [added in
+https://github.com/metanorma/metanorma/releases/tag/v1.2.9].
+
 ** `manifest` can appear recursively in a manifest.
+
 * Content to put at the beginning of the collection container (`prefatory-content`)
+
 * Content to put at the end of the collection container (`final-content`)
 
 The following is an example collection manifest:
@@ -229,7 +256,7 @@ manifest:
       identifier: si-brochure-en
 ----
 
-This form of direct cross-reference is also used to reference 
+This form of direct cross-reference is also used to reference
 attachments [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.2]. For example, if you wanted to
 link to a text file from a collection document, the manifest would look as follows:
 
