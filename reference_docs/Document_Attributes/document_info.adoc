@@ -1,0 +1,94 @@
+---
+
+---
+
+== Document info 
+//Standoc
+
+`:classification:`::
+Comma-delimited list of classification tokens, expressed as `type:value` pairs; if no prefix is given to a value,
+"default" is supplied as the type [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.1]
+
+`:doctype:`::
+The document type; e.g. "standard", "guide", "report".
+
+`:docsubtype:`::
+The document subtype; by default, used to provide an ad hoc, user defined document class,
+unless provided for explicitly in the flavour,
+as in OGC [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.1]
+
+`:docsubstage:`:: The substage code for the document status, where applicable.
+
+[[docnumber]] `:docnumber:`::
+The numeric component of the document identifier.
+The full identifier is formed by prefixing and suffixing this element with other strings
+derived from metadata.
+
+[[draft]] `:draft:`::
+The document draft.
+Used in addition to document stage.
+The value must provide the exact draft iteration in _X.Y_ format
+(major version number and minor version number separated by a dot).
+If present, link:/author/topics/document-format/reviewer-notes[reviewer notes]
+will be rendered (otherwise those are suppressed).
+
+`:publisher:`:: The standards agency publishing the standard; can be multiple
+(semicolon-delimited: processed via CSV, recognising quote marks). [added in
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
+(Formerly: comma-delimited [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.1].)
+
+`:copyright-holder:`:: The copyright holder, if distinct from the publisher;
+can be multiple
+(semicolon-delimited: processed via CSV, recognising quote marks). [added in
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
+(Formerly: comma-delimited [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.1].)
+
+`:edition:`::
+The document edition.
+
+`:revdate:`::
+The date the document was last updated.
+
+`:library-ics:`::
+The ICS (International Categorization for Standards) number for the standard.
+There may be more than one ICS for a document; if so, they should be comma-delimited.
+(The ICS identifier is added to the document metadata,
+but may not be visible in the resulting document, depending on Metanorma flavor.)
+
+`:isbn:`::
+The ISBN-13 number of the document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.2]
+
+`:isbn10:`::
+The ISBN-10 number of the document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.2]
+
+`:title:`::
+The title of the document. If not supplied, the built-in AsciiDoc title
+(first line of document header) is used instead.
+
+`:title-XX:`::
+The title of the document in the language `XX` (where “XX” is a ISO 639-1 code;
+for example, `:title-en:`, `:title-fr`:).
+
+
+`:status:`:: The status of the document; e.g. "draft", "published".
+Synonym: `:docstage:`.
+
+`:iteration:`:: The iteration of a stage, in case there have been multiple drafts
+(e.g. `2` on a `CD`: this is the second iteration through the `CD` stage).
+
+`:keywords:`::
+Comma-delimited list of keywords associated with the document.
+
+
+// ISO
+
+
+`:docsubtype:`:: A subclass of doctype for which special processing rules apply:
++
+** `vocabulary`: [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.8.2]
+The "vocabulary" document type is defined in the
+https://www.iso.org/ISO-house-style.html[ISO House Rules]
+and title requirements defined in the ISO/IEC Directives, Part 2, 2018, 11.5.2.
+The initial clause of the terms section,
+"`For the purposes of this document, the following terms and definitions apply`",
+is deleted; terminological entries are permitted outside of Clause 3.
