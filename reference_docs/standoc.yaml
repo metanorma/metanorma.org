@@ -1,0 +1,51 @@
+version: v1.2.3
+
+document_attributes:
+
+  classification: # Unique across document attributes for a flavor
+    tags: [] # A list of strings
+  
+    # Consistent capitalization can be left to rendering stage?
+    title: "classification"
+  
+    # Describes the value. Can use inline AsciiDoc.
+    # For consistency, omit full stop.
+    # NOTE: Can there be attributes that don’t take a value?
+    # Should we require those attributes
+    # to be declared as “boolean” or “true or false”, for clarity?
+    value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
+  
+    # Default value. A string showing literal value for this attribute, without quotes.
+    value_default: null
+  
+    # Should we, instead of “required”, just look if there’s a default value
+    # and if not consider the attribute “required”? Is that how it works
+    # across flavors?
+    required: true
+  
+    # Not sure about this. It’s useful, but it can be auto-inferred.
+    # The problems with auto inference, however:
+    # 1. It may get a bit involved. The renderer would
+    # flip back through repository history and compare this attribute
+    # contents with the current version; when a commit reached
+    # where this attribute spec was different or didn’t exist, it’ll
+    # check flavor version at that point and auto append
+    # “added in X” or “changed in X”.
+    # 2. Auto inference can be triggered by minor clarifications,
+    # so it might say “changed in version X” even though a typo was fixed.
+    added_in_version: v1.9.1
+  
+    # Can contain inline and block AsciiDoc formatting
+    description: "TBD: Explain what “classification” is used for".
+  
+    # Should be pure AsciiDoc.
+    # Will be rendered as is inside an example block.
+    example: >- ...
+  
+  doctype:
+    title: "document type"
+    values: ...
+    required: false
+  
+  docsubtype:
+    # ...
