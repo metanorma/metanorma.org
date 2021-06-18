@@ -1,51 +1,227 @@
-version: v1.2.3
+# How to use this template: 
+# Within the document_attributes section, there are several key value pairs to model a reference entry. 
+# A complete reference entry looks like this:
+# nameOfTheAttribute: # Unique across document attributes for a flavor
+#   tags: []  # A list of strings; Include flavor and type of attribute, e.g. "Author info"
+#   title: "name of the attribute"
+#   description: "Can contain inline and block AsciiDoc formatting". 
+#   declaration: ":attribute:" #How the attribute is invoked
+#   value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
+#   value_default: null  #OPTIONAL A string showing literal value for this attribute, without quotes. If the attribute doesn't take a values, this stays empty.
+#   required: true #Describes if the attribute is required to generate a well-formed doc or optional. Takes a boolean.
+#   added_in_version: v1.9.1 # Could be auto-inferred, however the renderer might run into trouble, see https://github.com/metanorma/metanorma.org/wiki/Flavor-reference-structure-specification
+#   example: >- ...  #OPTIONAL Should be pure AsciiDoc. Will be rendered as is inside an example block.
+#   more_information: "string" #OPTIONAL Use to provide related links, such as a blog article that discusses background info, if applicable
+
+version: v1.x.x #@opoudjis Check versions throughout this doc. Huuuge thanks!
 
 document_attributes:
-
-  classification: # Unique across document attributes for a flavor
-    tags: [] # A list of strings
-  
-    # Consistent capitalization can be left to rendering stage?
-    title: "classification"
-  
-    # Describes the value. Can use inline AsciiDoc.
-    # For consistency, omit full stop.
-    # NOTE: Can there be attributes that don’t take a value?
-    # Should we require those attributes
-    # to be declared as “boolean” or “true or false”, for clarity?
-    value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
-  
-    # Default value. A string showing literal value for this attribute, without quotes.
-    value_default: null
-  
-    # Should we, instead of “required”, just look if there’s a default value
-    # and if not consider the attribute “required”? Is that how it works
-    # across flavors?
-    required: true
-  
-    # Not sure about this. It’s useful, but it can be auto-inferred.
-    # The problems with auto inference, however:
-    # 1. It may get a bit involved. The renderer would
-    # flip back through repository history and compare this attribute
-    # contents with the current version; when a commit reached
-    # where this attribute spec was different or didn’t exist, it’ll
-    # check flavor version at that point and auto append
-    # “added in X” or “changed in X”.
-    # 2. Auto inference can be triggered by minor clarifications,
-    # so it might say “changed in version X” even though a typo was fixed.
-    added_in_version: v1.9.1
-  
-    # Can contain inline and block AsciiDoc formatting
-    description: "TBD: Explain what “classification” is used for".
-  
-    # Should be pure AsciiDoc.
-    # Will be rendered as is inside an example block.
-    example: >- ...
-  
-  doctype:
-    title: "document type"
-    values: ...
+#--- Build and validation ---#
+  nodoc: 
+    tags: ["standoc", "Build and validation"] 
+    title: "No document generation" #@opoudjis Review how we should actually name :nodoc:
+    description: "TBD: Explain what “nodoc” is used for".
+    value_spec: "Does not take values" #@opoudjis verify claim
     required: false
+    added_in_version: v1.x.x
+    example: >- 
+              Optional code sample using AsciiDoc syntax
+    more_information: >-
+              Optional: Provide a link to resources that explain this attribute. 
+              If we do not have content on this topic, but you think we need it, let @kickoke or @techtrailhead know. 
   
-  docsubtype:
-    # ...
+  novalid:
+    tags: ["standoc", "Build and validation"]
+    title: "document type"
+    description: "TBD: Explain what “novalid” is used for".
+    value_spec: "Does not take values" #@opoudjis verify claim
+    required: false
+    added_in_version: v1.x.x
+    example: >- 
+              Optional code sample using AsciiDoc syntax
+    more_information: >-
+              Optional: Provide a link to resources that explain this attribute
+              If we do not have content on this topic, but you think we need it, let @kickoke or @techtrailhead know. 
+  
+  #--- Bibliographic lookup ---#
+  no-isobib: 
+    tags: ["standoc", "Bibliographic lookup"] 
+    title: "name of the attribute"
+    description: "Can contain inline and block AsciiDoc formatting". 
+    declaration: ":no-isobib:" 
+    value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
+    value_default: null  
+    required: false 
+    added_in_version: v1.x.x
+     example: >- 
+              Optional code sample using AsciiDoc syntax
+    more_information: >-
+              Optional: Provide a link to resources that explain this attribute
+              If we do not have content on this topic, but you think we need it, let @kickoke or @techtrailhead know. 
+  
+#--- Please include all Bibliographic lookup references from https://www.metanorma.org/author/topics/building/reference-lookup/ ---#
+
+  nameOfTheAttribute: 
+    tags: ["standoc", "Bibliographic lookup"] 
+    title: "name of the attribute"
+    description: "Can contain inline and block AsciiDoc formatting". 
+    declaration: ":attribute:" 
+    value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
+    value_default: null  #optional, depending if and what values the attr takes
+    required: false 
+    added_in_version: v1.x.x
+     example: >- 
+              Optional code sample using AsciiDoc syntax
+    more_information: >-
+              Optional: Provide a link to resources that explain this attribute
+              If we do not have content on this topic, but you think we need it, let @kickoke or @techtrailhead know. 
+  
+  #--- Caches ---#
+      #--- Is there some reference information hidden in https://www.metanorma.org/author/topics/building/reference-lookup/#lookup-result-caching ? ---#
+
+  nameOfTheAttribute: 
+    tags: ["standoc", "Caches"] 
+    title: "name of the attribute"
+    description: "Can contain inline and block AsciiDoc formatting". 
+    declaration: ":attribute:" 
+    value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
+    value_default: null  #optional, depending if and what values the attr takes
+    required: false 
+    added_in_version: v1.x.x
+     example: >- 
+              Optional code sample using AsciiDoc syntax
+    more_information: >-
+              Optional: Provide a link to resources that explain this attribute
+              If we do not have content on this topic, but you think we need it, let @kickoke or @techtrailhead know. 
+  
+
+
+
+  #--- Math ---#
+      #--- Please include all references from https://www.metanorma.org/author/topics/document-format/text/#mathematical-expressions ---#
+  nameOfTheAttribute: 
+    tags: ["standoc", "Math"] 
+    title: "name of the attribute"
+    description: "Can contain inline and block AsciiDoc formatting". 
+    declaration: ":attribute:" 
+    value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
+    value_default: null  #optional, depending if and what values the attr takes
+    required: false 
+    added_in_version: v1.x.x
+     example: >- 
+              Optional code sample using AsciiDoc syntax
+    more_information: >-
+              Optional: Provide a link to resources that explain this attribute
+              If we do not have content on this topic, but you think we need it, let @kickoke or @techtrailhead know. 
+  
+
+
+  #--- Languages and localization ---#
+      #--- Please include all references from https://www.metanorma.org/author/topics/languages/ ---#
+  nameOfTheAttribute: 
+    tags: ["standoc", "Languages and localization"] 
+    title: "name of the attribute"
+    description: "Can contain inline and block AsciiDoc formatting". 
+    declaration: ":attribute:" 
+    value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
+    value_default: null  #optional, depending if and what values the attr takes
+    required: false 
+    added_in_version: v1.x.x
+     example: >- 
+              Optional code sample using AsciiDoc syntax
+    more_information: >-
+              Optional: Provide a link to resources that explain this attribute
+              If we do not have content on this topic, but you think we need it, let @kickoke or @techtrailhead know. 
+  
+
+
+  #--- Document info ---#
+  nameOfTheAttribute: 
+    tags: ["standoc", "Document info"] 
+    title: "name of the attribute"
+    description: "Can contain inline and block AsciiDoc formatting". 
+    declaration: ":attribute:" 
+    value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
+    value_default: null  #optional, depending if and what values the attr takes
+    required: false 
+    added_in_version: v1.x.x
+     example: >- 
+              Optional code sample using AsciiDoc syntax
+    more_information: >-
+              Optional: Provide a link to resources that explain this attribute
+              If we do not have content on this topic, but you think we need it, let @kickoke or @techtrailhead know. 
+  
+
+
+  #--- URIs ---#
+  nameOfTheAttribute: 
+    tags: ["standoc", "URIs"] 
+    title: "name of the attribute"
+    description: "Can contain inline and block AsciiDoc formatting". 
+    declaration: ":attribute:" 
+    value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
+    value_default: null  #optional, depending if and what values the attr takes
+    required: false 
+    added_in_version: v1.x.x
+     example: >- 
+              Optional code sample using AsciiDoc syntax
+    more_information: >-
+              Optional: Provide a link to resources that explain this attribute
+              If we do not have content on this topic, but you think we need it, let @kickoke or @techtrailhead know. 
+
+
+
+
+  #--- Timestamps ---#
+  nameOfTheAttribute: 
+    tags: ["standoc", "Timestamps"] 
+    title: "name of the attribute"
+    description: "Can contain inline and block AsciiDoc formatting". 
+    declaration: ":attribute:" 
+    value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
+    value_default: null  #optional, depending if and what values the attr takes
+    required: false 
+    added_in_version: v1.x.x
+     example: >- 
+              Optional code sample using AsciiDoc syntax
+    more_information: >-
+              Optional: Provide a link to resources that explain this attribute
+              If we do not have content on this topic, but you think we need it, let @kickoke or @techtrailhead know. 
+  
+
+
+
+  #--- Author info ---#
+  nameOfTheAttribute: 
+    tags: ["standoc", "Author info"] 
+    title: "name of the attribute"
+    description: "Can contain inline and block AsciiDoc formatting". 
+    declaration: ":attribute:" 
+    value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
+    value_default: null  #optional, depending if and what values the attr takes
+    required: false 
+    added_in_version: v1.x.x
+     example: >- 
+              Optional code sample using AsciiDoc syntax
+    more_information: >-
+              Optional: Provide a link to resources that explain this attribute
+              If we do not have content on this topic, but you think we need it, let @kickoke or @techtrailhead know. 
+  
+
+
+  #--- Visual appearance ---#
+  nameOfTheAttribute: 
+    tags: ["standoc", "Visual appearance"] 
+    title: "name of the attribute"
+    description: "Can contain inline and block AsciiDoc formatting". 
+    declaration: ":attribute:" 
+    value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
+    value_default: null  #optional, depending if and what values the attr takes
+    required: false 
+    added_in_version: v1.x.x
+     example: >- 
+              Optional code sample using AsciiDoc syntax
+    more_information: >-
+              Optional: Provide a link to resources that explain this attribute
+              If we do not have content on this topic, but you think we need it, let @kickoke or @techtrailhead know. 
+  
