@@ -4,11 +4,11 @@
 # nameOfTheAttribute: # Unique across document attributes for a flavor
 #   tags: []  # A list of strings; Include flavor and type of attribute, e.g. "Author info"
 #   title: "name of the attribute"
-#   description: "Can contain inline and block AsciiDoc formatting". 
+#   description: "Can contain inline and block AsciiDoc formatting".
+#   required: true #Describes if the attribute is required to generate a well-formed doc or optional. Takes a boolean.
 #   declaration: ":attribute:" #How the attribute is invoked
 #   value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
 #   value_default: null  #OPTIONAL A string showing literal value for this attribute, without quotes. If the attribute doesn't take a values, this stays empty.
-#   required: true #Describes if the attribute is required to generate a well-formed doc or optional. Takes a boolean.
 #   added_in_version: v1.9.1 # Could be auto-inferred, however the renderer might run into trouble, see https://github.com/metanorma/metanorma.org/wiki/Flavor-reference-structure-specification
 #   example: >- ...  #OPTIONAL Should be pure AsciiDoc. Will be rendered as is inside an example block.
 #   more_information: "string" #OPTIONAL Use to provide related links, such as a blog article that discusses background info, if applicable
@@ -21,8 +21,9 @@ document_attributes:
     tags: ["standoc", "Build and validation"] 
     title: "No document generation" #@opoudjis Review how we should actually name :nodoc:
     description: "TBD: Explain what “nodoc” is used for".
-    value_spec: "Does not take values" #@opoudjis verify claim
     required: false
+    declaration: ":nodoc:" 
+    value_spec: "Does not take values" #@opoudjis verify claim
     added_in_version: v1.x.x
     example: >- 
               Optional code sample using AsciiDoc syntax
@@ -34,8 +35,9 @@ document_attributes:
     tags: ["standoc", "Build and validation"]
     title: "document type"
     description: "TBD: Explain what “novalid” is used for".
+    required: false 
+    declaration: ":novalid:"
     value_spec: "Does not take values" #@opoudjis verify claim
-    required: false
     added_in_version: v1.x.x
     example: >- 
               Optional code sample using AsciiDoc syntax
@@ -48,10 +50,10 @@ document_attributes:
     tags: ["standoc", "Bibliographic lookup"] 
     title: "name of the attribute"
     description: "Can contain inline and block AsciiDoc formatting". 
-    declaration: ":no-isobib:" 
+    required: false
+    declaration: ":no-isobib:"  
     value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
     value_default: null  
-    required: false 
     added_in_version: v1.x.x
      example: >- 
               Optional code sample using AsciiDoc syntax
@@ -65,10 +67,10 @@ document_attributes:
     tags: ["standoc", "Bibliographic lookup"] 
     title: "name of the attribute"
     description: "Can contain inline and block AsciiDoc formatting". 
+    required: false
     declaration: ":attribute:" 
     value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
-    value_default: null  #optional, depending if and what values the attr takes
-    required: false 
+    value_default: null  #optional, depending if and what values the attr takes 
     added_in_version: v1.x.x
      example: >- 
               Optional code sample using AsciiDoc syntax
@@ -83,10 +85,10 @@ document_attributes:
     tags: ["standoc", "Caches"] 
     title: "name of the attribute"
     description: "Can contain inline and block AsciiDoc formatting". 
+    required: false
     declaration: ":attribute:" 
     value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
     value_default: null  #optional, depending if and what values the attr takes
-    required: false 
     added_in_version: v1.x.x
      example: >- 
               Optional code sample using AsciiDoc syntax
@@ -102,11 +104,11 @@ document_attributes:
   nameOfTheAttribute: 
     tags: ["standoc", "Math"] 
     title: "name of the attribute"
-    description: "Can contain inline and block AsciiDoc formatting". 
+    description: "Can contain inline and block AsciiDoc formatting".
+    required: false  
     declaration: ":attribute:" 
     value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
     value_default: null  #optional, depending if and what values the attr takes
-    required: false 
     added_in_version: v1.x.x
      example: >- 
               Optional code sample using AsciiDoc syntax
@@ -121,11 +123,11 @@ document_attributes:
   nameOfTheAttribute: 
     tags: ["standoc", "Languages and localization"] 
     title: "name of the attribute"
-    description: "Can contain inline and block AsciiDoc formatting". 
+    description: "Can contain inline and block AsciiDoc formatting".
+    required: false 
     declaration: ":attribute:" 
     value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
     value_default: null  #optional, depending if and what values the attr takes
-    required: false 
     added_in_version: v1.x.x
      example: >- 
               Optional code sample using AsciiDoc syntax
@@ -139,11 +141,11 @@ document_attributes:
   nameOfTheAttribute: 
     tags: ["standoc", "Document info"] 
     title: "name of the attribute"
-    description: "Can contain inline and block AsciiDoc formatting". 
+    description: "Can contain inline and block AsciiDoc formatting".
+    required: false 
     declaration: ":attribute:" 
     value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
-    value_default: null  #optional, depending if and what values the attr takes
-    required: false 
+    value_default: null  #optional, depending if and what values the attr takes 
     added_in_version: v1.x.x
      example: >- 
               Optional code sample using AsciiDoc syntax
@@ -157,11 +159,11 @@ document_attributes:
   nameOfTheAttribute: 
     tags: ["standoc", "URIs"] 
     title: "name of the attribute"
-    description: "Can contain inline and block AsciiDoc formatting". 
+    description: "Can contain inline and block AsciiDoc formatting".
+    required: false  
     declaration: ":attribute:" 
     value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
     value_default: null  #optional, depending if and what values the attr takes
-    required: false 
     added_in_version: v1.x.x
      example: >- 
               Optional code sample using AsciiDoc syntax
@@ -176,11 +178,11 @@ document_attributes:
   nameOfTheAttribute: 
     tags: ["standoc", "Timestamps"] 
     title: "name of the attribute"
-    description: "Can contain inline and block AsciiDoc formatting". 
+    description: "Can contain inline and block AsciiDoc formatting".
+    required: false  
     declaration: ":attribute:" 
     value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
     value_default: null  #optional, depending if and what values the attr takes
-    required: false 
     added_in_version: v1.x.x
      example: >- 
               Optional code sample using AsciiDoc syntax
@@ -196,10 +198,10 @@ document_attributes:
     tags: ["standoc", "Author info"] 
     title: "name of the attribute"
     description: "Can contain inline and block AsciiDoc formatting". 
+    required: false 
     declaration: ":attribute:" 
     value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
     value_default: null  #optional, depending if and what values the attr takes
-    required: false 
     added_in_version: v1.x.x
      example: >- 
               Optional code sample using AsciiDoc syntax
@@ -214,10 +216,10 @@ document_attributes:
     tags: ["standoc", "Visual appearance"] 
     title: "name of the attribute"
     description: "Can contain inline and block AsciiDoc formatting". 
+    required: false 
     declaration: ":attribute:" 
     value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
     value_default: null  #optional, depending if and what values the attr takes
-    required: false 
     added_in_version: v1.x.x
      example: >- 
               Optional code sample using AsciiDoc syntax
