@@ -1,0 +1,148 @@
+---
+layout: post
+title: "Metanorma CLI: new font processing options"
+categories: about
+authors:
+  - name: Alex Bobrikovich
+    email: abobrikoich@gmail.com
+    social_links:
+      - https://github.com/CAMOBAP
+
+excerpt: >-
+  Learn about new font processing options now available in Metanorma CLI
+---
+
+== New font-related command line options
+
+Metanorma CLI, starting from version 1.3.9, supports the following additional
+font-related arguments:
+
+* `--agree-to-terms`
+* `--no-install-fonts`
+* `--continue-without-fonts`
+
+== Background
+
+There are some fonts that we expect to be on every single platform, but it is simply not the case.
+
+For example, the "`https://docs.microsoft.com/en-us/typography/font-list/arial[Arial]`"
+font is installed by default on both Windows and macOS,
+yet it is not as such on Linux. Despite Arial being an openly-licensed font for use,
+an additional package or a manual install is still necessary to make
+this font available on your favorite Linux distro.
+
+A number of flavors, such as Metanorma OGC, does require fonts like "`Arial`", and this limits
+the platforms where document builds can occur -- unlike HTML, a PDF cannot be generated without
+given the correct font files.
+
+
+== Automatic font installs with Fontist
+
+To make openly-licensed fonts available, Metanorma is now integrated with
+https://github.com/fontist/fontist[Fontist] --
+a cross-platform font installer that helps you install publicly available fonts.
+
+Simply speaking, if Metanorma detects that a necessary font is missing on your
+setup, it would automatically invoke Fontist to install the font.
+
+NOTE: For those who are interested, the full list of fonts supported
+by Fontist can be seen in its https://github.com/fontist/formulas["`Formulas`"]
+repository. Since some fonts are only available from larger pieces
+of software, installing those fonts can take time.
+
+
+== Publicly available fonts and licensing needs
+
+Some fonts are openly-licensed under the https://scripts.sil.org/OFL[SIL Open Font License (OFL)]
+and can be installed automatically by Fontist, such
+as the https://software.sil.org/fonts/[SIL fonts] and https://fonts.google.com[Google's font collection].
+
+However, fonts like "`Arial`" from Microsoft, which we are all so familiar with,
+require user acceptance of a font license.
+
+This is clearly not something that that Metanorma or Fontist can decide for the user.
+
+
+== Manual intervention needed for font installation
+
+If you run a Metanorma flavor, such as OGC, which requires a font like Arial --
+that can be installed but requires acceptance of a font license --
+you will be presented with the following daunting message.
+
+[source,console]
+----
+$ metanorma compile -t ogc -x xml,html,doc,pdf document.adoc
+-----------------------------------------------------------------------
+
+FONT LICENSE END ("Arial")
+.../fontist-1.8.4/lib/fontist/font.rb:120:in `check_and_confirm_required_license':
+  Fontist will not download these fonts unless you accept the terms.
+  (Fontist::Errors::LicensingError)
+...
+----
+
+At this point you are prompted to enter "`YES`" or "`NO`" to indicate
+acceptance or rejection of the font license.
+
+Which is fine and dandy for a local machine, because you only need
+to install it once. Once the font is installed, you will never be
+asked again since Fontist is clever enough to find the font
+on your machine.
+
+
+== Automated font license acceptance as CLI options
+
+However, this becomes cumbersome in an automated pipeline such as for continuous integration,
+a clear need to enable non-attended installation for such fonts.
+
+Enter the new CLI options: allowing you to indicate acceptance
+of the font licenses.
+
+Metanorma CLI starting from version 1.3.9, supports the following additional
+font-related arguments under all document processing subcommands
+(`compile`, `collection` and `site`):
+
+`--agree-to-terms`::  agree to all font license agreements of necessary fonts
+`--no-install-fonts`:: do not install any fonts
+`--continue-without-fonts`:: continue with compilation even if necessary fonts are not installed
+
+You can always run the command `metanorma help compile` to get
+reminded of these options:
+
+[source,sh]
+----
+$ metanorma help compile
+Usage:
+  metanorma compile FILENAME
+
+Options:
+    ...
+    [--agree-to-terms], [--no-agree-to-terms]
+      # Agree / Disagree with all third-party licensing terms
+      # presented (WARNING: do know what you are agreeing with!)
+    [--no-install-fonts], [--no-no-install-fonts]
+      # Skip the font installation process
+    [--continue-without-fonts], [--no-continue-without-fonts]
+      # Continue processing even when fonts are missing
+----
+
+
+We *STRONGLY ENCOURAGE YOU* to _manually run the font installs locally
+*first* to know what font licenses you are accepting_ (on every automated run)!
+
+Do look at the Metanorma sample document repos for reference
+on how to use these options in your continuous integration flow, e.g.
+https://github.com/metanorma/mn-samples-itu[mn-samples-itu].
+
+
+== Final thoughts
+
+As always, if you need help with the new command line options,
+feel free to file an issue at
+https://github.com/metanorma/metanorma-cli[our CLI GitHub repo]!
+
+
+== References
+
+* link:/topics/building/font-management/[Metanorma font management]
+* https://github.com/metanorma/metanorma-cli[Metanorma CLI]
