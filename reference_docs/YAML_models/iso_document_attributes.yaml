@@ -33,6 +33,7 @@ document_attributes:
       - technical-corrigendum
       - amendment"
     required: true
+    value_spec: "enum: international-standard, technical-specification, technical-report, publicly-available-specification, international-workshop-agreement, guide, technical-corrigendum, amendment"
     value_default: international-standard
 
   updates-document-type: 
@@ -65,12 +66,13 @@ document_attributes:
     title: "Document Sub-stage" 
     description: "The substage code for the document status (see International harmonized stage codes). If this is left out, a substage of “00” is assumed, with the exception of stage “60” (published), where a substage of “60” is assumed. (“60.00” is the final proof “PRF stage”, “60.60” the published document “published”.)"
     required: "don't know"
-    more_information: https://www.iso.org/stage-codes.html
+    more_information: see https://www.iso.org/stage-codes.html
 
   horizontal: 
     tags: ["Document info"]
     title: "Horizontal" 
-    description: "Document is a horizontal standard (true/false)"
+    description: "Document is a horizontal standard."
+    value_spec: boolean
     added_in_version: v1.5.13
 
 #--- Title ---#
@@ -145,18 +147,19 @@ document_attributes:
     title: "Technical Committee Number" 
     description: "The number of the relevant ISO technical committee."
     required: "don't know"
+    declaration: ":technical-committee-number:, :technical-committee-number{_i}:"
     value_spec: number
     example: |
       In case of having more than one Technical Committee Number, multiple groups
-      can be encoded by suffixing `_n` to the attribute where `n` is a sequential number after 1.
-      Ex. ":technical-committee-number_2:", ":technical-committee-number_3:", ":technical-committee-number_n:"
+      can be encoded by suffixing `_i` to the attribute where `i` is a sequential number after 1.
+      Ex. ":technical-committee-number_2:", ":technical-committee-number_3:", ":technical-committee-number_i:"
 
   technical-committee-type: 
     tags: ["Author info"]
     title: "Technical Committee Type"
     description: "The type of the relevant technical committee."
     required: "don't know"
-    value_spec: "Possible values: TC, PC, JTC, JPC"
+    value_spec: "enum: TC, PC, JTC, JPC"
     value_default: "TC"
 
   technical-committee: 
@@ -164,21 +167,23 @@ document_attributes:
     title: "Technical Committee" 
     description: "The name of the relevant ISO technical committee."
     required: true
+    declaration: ":stechnical-committee:, :technical-committee{_i}:"
     example: |
       In case of having more than one Technical Committee, multiple groups
-      can be encoded by suffixing `_n` to the attribute where `n` is a sequential number after 1.
-      Ex. ":technical-committee_2:", ":technical-committee_3:", ":technical-committee_n:"
+      can be encoded by suffixing `_i` to the attribute where `i` is a sequential number after 1.
+      Ex. ":technical-committee_2:", ":technical-committee_3:", ":technical-committee_i:"
 
   subcommittee-number: 
     tags: ["Author info"]
     title: "Subcommittee Number" 
     description: "The number of the relevant ISO subcommittee."
     required: "don't know"
+    declaration: ":subcommittee-number:, :subcommittee-number{_i}:"
     value_spec: number
     example: |
       In case of having more than one Subcommittee Number, multiple groups
-      can be encoded by suffixing `_n` to the attribute where `n` is a sequential number after 1.
-      Ex. ":subcommittee-number_2:", ":subcommittee-number_3:", ":subcommittee-number_n:"
+      can be encoded by suffixing `_i` to the attribute where `i` is a sequential number after 1.
+      Ex. ":subcommittee-number_2:", ":subcommittee-number_3:", ":subcommittee-number_i:"
 
   subcommittee-type: 
     tags: ["Author info"]
@@ -192,10 +197,11 @@ document_attributes:
     title: "Subcommittee" 
     description: "The name of the relevant ISO subcommittee."
     required: "don't know"
+    declaration: ":subcommittee:, :subcommittee{_i}:"
     example: |
       In case of having more than one Subcommittee, multiple groups
-      can be encoded by suffixing `_n` to the attribute where `n` is a sequential number after 1.
-      Ex. ":subcommittee_2:", ":subcommittee_3:", ":subcommittee_n:"
+      can be encoded by suffixing `_i` to the attribute where `i` is a sequential number after 1.\n
+      Ex. ":subcommittee_2:", ":subcommittee_3:", ":subcommittee_i:"
 
   workgroup-number: 
     tags: ["Author info"]
