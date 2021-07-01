@@ -106,10 +106,11 @@ document_attributes:
       * `experimental` (mapped in v2 to: `exp`)
       * `bcp`
       * `historic`
-      +
+      
       RFC XML `rfc@category`
 
       NOTE: Usage here differs from usage in AsciiRFC v3.".
+    value_spec: "enum: standard, informational, experimental, bcp, historic"
 
   intended-series:
     tags: ["Document attributes"]
@@ -132,11 +133,11 @@ document_attributes:
       RFC XML `front/@category` (`exp` and `historic` only supported for Internet Drafts; document number not used)
 
       NOTE: Usage here differs from usage in AsciiRFC v3.".
-      required: true
+    required: true
 
   series-no:
     tags: ["Document attributes"]
-    title: ""
+    title: "Series number"
     description: |
       'The document series is defined by the `category` attribute;
       `seriesNo` is only applicable to the values _info_ ("FYI" series),
@@ -146,7 +147,7 @@ document_attributes:
 
   submission-type:
     tags: ["Document attributes"]
-    title: ""
+    title: "Submission type"
     description: |
       "Set document submission type for this document. The following values are allowed:
 
@@ -230,6 +231,7 @@ document_attributes:
       * `true` (mapped in v2 to: `yes`)
 
       RFC XML: `rfc@consensus`".
+    value_spec: boolean
 
 #--- Author attributes ---#
   fullname:
@@ -458,7 +460,7 @@ document_attributes:
 
   sort-refs:
     tags: ["Processing instructions for xml2rfc"]
-    title: ""
+    title: "Sort references"
     description: "(`sortrefs`) sort references".
 
   strict:
@@ -473,17 +475,17 @@ document_attributes:
 
   sym-refs:
     tags: ["Processing instructions for xml2rfc"]
-    title: "sym refs"
+    title: "Symbolic references"
     description: "(`symrefs`) use anchors rather than numbers for references".
 
   text-list-symbols:
     tags: ["Processing instructions for xml2rfc"]
     title: "Text list symbols"
-    description: "Modify the list of symbols used (when generated text) for list type="symbols". For example, specifying "abcde" will cause "a" to be used for 1st level, "b" for the 2nd level, etc, cycling back to the first character "a" at the 6th level. Specifying "o*" will cause the characters "o" and "*" to be alternated for each successive level.".
+    description: 'Modify the list of symbols used (when generated text) for list type="symbols". For example, specifying "abcde" will cause "a" to be used for 1st level, "b" for the 2nd level, etc, cycling back to the first character "a" at the 6th level. Specifying "o*" will cause the characters "o" and "*" to be alternated for each successive level.'.
 
   toc-include:
     tags: ["Processing instructions for xml2rfc"]
-    title: "Generate table of contents"
+    title: "ToC include"
     description: "(`toc`) generate a table-of-contents".
 
   tocappendix:
