@@ -96,8 +96,6 @@ other subclauses of "`Terms and definitions`" clauses are not.
 
 === Intelligent terms referencing
 
-==== Basic usage
-
 In ISO deliverables, if a term definition contains a term that is defined in the current document,
 this term needs to be put in italics with a cross-reference for that term supplied between parenthesis immediately after.
 
@@ -106,109 +104,25 @@ ____
 part of a terminological data collection which contains the _terminological data_ (3.1.3) related to one _concept_ (3.2.1)
 ____
 
-Metanorma provides a shortcut syntax that makes this easy and fool-proof.
+This is done in Metanorma by using citation of terms, on which see
+link:/author/topics/document-format/section-terms#citeterms[Citing terms]
+[added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.8.6].
 
-Defined previously terms can be referenced throughout the document by:
-
-[source,adoc]
-----
-term:[{referenced term}]
-----
-
-or if the displayed term differs from the referenced term:
+So the foregoing instance would be automatically generated through:
 
 [source,adoc]
 ----
-term:[{displayed term},{referenced term}]
+part of a terminological data collection which contains the {{terminological data}} related to one {{concept}}
 ----
 
-Where,
-
-* `{displayed term}` is the term displayed;
-* `{referenced term}` is the term referenced that exists in the document, which will be used generate the cross-reference.
-
-
-This example demonstrates usage of this syntax using the previous example:
-====
-[source,adoc]
-----
-part of a terminological data collection which contains the term:[terminological data] related to one term:[concept]
-----
-====
-
-In some cases, the displayed term is a variant of the referenced term, such as its plural form.
-
-EXAMPLE (ISO 8601:2019, 3.1.1.5):
+assuming the terms are defined as the text "terminological data" and "concept", or
 
 [source,adoc]
 ----
-===== time scale
-
-system of ordered marks which can be attributed to term:[instants, instant] on the term:[time axis], one instant being chosen as the origin
+part of a terminological data collection which contains the {{terminology data,terminological data}} related to one {{cpnceptual notion,concept}}
 ----
 
-This has the same effect as the verbose and error-prone form of:
-
-[source,adoc]
-----
-===== time scale
-
-system of ordered marks which can be attributed to _instants_ (<<term-instant>>) on the _time axis_ (<<term-time-axis>>), one instant being chosen as the origin
-----
-
-==== Automatic term section anchors
-
-The terms reference capability relies on automatically created anchor references for every term defined.
-
-For example, in the following text,
-
-[source,adoc]
-----
-== Terms and definitions
-=== Foo
-
-bar
-
-=== Lor
-
-special kind of term:[foo]
-----
-
-the anchors of `\[[term-foo]]` and `\[[term-lor]]` are automatically created.
-
-These anchors are generated from the terms themselves according to these rules:
-
-* the terms are lowercased;
-* non-ASCII characters are stripped;
-* whitespaces are replaced by `-`.
-
-This means if you wanted to refer to a particular term from body text, you could either:
-
-* directly refer to the term: e.g., `see definition of term:[foo]`
-* refer to the anchor of the term: e.g., `the topic is further explained in \<<term-foo>>`
-
-In case you have created manual anchors that conflict with `[[term-{X}]]`, the term reference mechanism is smart enough to rename the generated anchor as `[[term-{X}-{n}]]`, where `n` is a number from 1, and so forth.
-
-Therefore this will still work as expected:
-
-[source,adoc]
-----
-== Terms and definitions
-=== Foo
-
-bar
-
-=== Lor
-
-special kind of term:[foo]
-
-
-[[term-foo]]
-== My section
-
-lorem
-----
-
+if say the terms are defined with different wording.
 
 === Vocabulary documents
 
