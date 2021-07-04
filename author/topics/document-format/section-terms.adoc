@@ -12,8 +12,9 @@ layout: author-docs
 reflected in their Metanorma AsciiDoc markup:
 
 * The term is given as a *subheading* at the appropriate level
-  (three equal signs, unless there are subsections in the Terms and Definition section).
-  The term may be cross-referenced from other terms, in which case it should have an *anchor*.
+  (three equal signs, unless there are subsections in the Terms and Definition
+  section). The term may be cross-referenced from other terms, in which case it
+  should have an *anchor*.
 
 * The term is optionally followed by *alternative/admitted terms*,
   which must be marked up in an `+alt:[...]+` macro;
@@ -25,7 +26,8 @@ reflected in their Metanorma AsciiDoc markup:
 * The definition is optionally followed by *examples*
   (paragraphs with an `[example]` style attribute).
 
-* The definition is then optionally followed by *notes* (denoted with a `NOTE:` prefix).
+* The definition is then optionally followed by *notes* (denoted with a `NOTE:`
+  prefix).
 
 * The definition is then followed by a *citation* for the term
   (marked with a `[.source]` role attribute).
@@ -104,8 +106,9 @@ renders as
 .Example of a single source tagged as "`modified`".
 image::/assets/author/topics/document-format/section-terms/fig-term-single-source.png[Example of a single source tagged as modified]
 
-A term and definition can be sourced from multiple sources (in accordance with ISO 10241-1).
-In this case each source should be entered in a separate `[.source]` paragraph.
+A term and definition can be sourced from multiple sources (in accordance with
+ISO 10241-1). In this case each source should be entered in a separate
+`[.source]` paragraph.
 
 EXAMPLE:
 
@@ -119,11 +122,11 @@ EXAMPLE:
 --
 
 
-The requirement that the source of a term be given in a citation also applies when the source
-is a termbase,
-such as the http://www.electropedia.org[International Electrotechnical Vocabulary (IEV)].
-Formally, IEV references should be cited as `IEC 60050-nnn:20xx`,
-where `n` is the top-level clause, and `20xx` is the year when that particular specification
+The requirement that the source of a term be given in a citation also applies
+when the source is a termbase, such as the
+http://www.electropedia.org[International Electrotechnical Vocabulary (IEV)].
+Formally, IEV references should be cited as `IEC 60050-nnn:20xx`, where `n` is
+the top-level clause, and `20xx` is the year when that particular specification
 was published.
 
 EXAMPLE: "`IEC 60050-113:2011, 113-01-07`".
@@ -225,7 +228,7 @@ ____
 
 ==== Overriding predefined text
 
-If there are no terms and definitions defined in the document,
+If there are no terms and definitions from the document,
 no terms should be included in the clause body (it should be blank).
 The predefined text at the start of the clause is adjusted to
 reflect both possibilities.
@@ -254,7 +257,9 @@ This is predefined text that overwrites the default.
 
 Where:
 
-* The title of the predefined text clause will be stripped (so you could equally use `=== {blank}`);
+* The title of the predefined text clause will be stripped (so you could equally
+  use `=== {blank}`);
+
 * The custom predefined text is encoded as a subclause, so that
   its extent can be made unambiguous in initial processing.
 
@@ -291,11 +296,14 @@ predefined text subclause.
 
 === Grouping IEV references
 
-For convenience, Metanorma requires all IEV references to be to a single reference,
-named `IEV` in the normative references. During the rendering of Metanorma AsciiDoc into Metanorma XML,
-this reference will be replaced by the various required "`IEC 60050-nnn:20xx`" references.
-(That means that you should not insert your own instances of IEC 60050 references
-for IEV citations: they will be duplicated by the automatically generated references.)
+For convenience, Metanorma requires all IEV references to be to a single
+reference, named `IEV` in the normative references. During the rendering of
+Metanorma AsciiDoc into Metanorma XML, this reference will be replaced by the
+various required "`IEC 60050-nnn:20xx`" references.
+
+NOTE: That means that you should not insert your own instances of IEC 60050
+references for IEV citations; they will be duplicated by the automatically
+generated references.
 
 [source,asciidoc]
 --
@@ -408,9 +416,10 @@ image::/assets/author/topics/document-format/section-terms/fig-term-stem.png[Ill
 
 === Subclauses
 
-Any clause within a "`Terms & Definitions`" section which is a non-terminal subclause (has
-child nodes) is automatically considered a terms (or definitions) section. On the other hand,
-any descendant of a `nonterm` clause is also a `nonterm` clause.
+Any clause within a "`Terms & Definitions`" section which is a non-terminal
+subclause (has child nodes) is automatically considered a terms (or definitions)
+section. On the other hand, any descendant of a `nonterm` clause is also a
+`nonterm` clause.
 
 Informative clauses are indicated with the attribute `[obligation=informative]`;
 clauses are normative by default.
@@ -420,27 +429,27 @@ clauses are normative by default.
 All terminal subclauses of a term section (i.e. clauses that have no subclauses
 of their own) are treated as term definitions.
 
-We have already seen one exception to this, in `[.boilerplate]` clauses. More generally,
-an introductory section can be treated as a subclause instead of a term (and will retain its
-status as a subclause),
-by prefixing it with the style attribute `[.nonterm]`:
+We have already seen one exception to this, in `[.boilerplate]` clauses. More
+generally, an introductory section can be treated as a subclause instead of a
+term (and will retain its status as a subclause), by prefixing it with the style
+attribute `[.nonterm]`:
 
 [source,asciidoc]
 --
 == Terms and definitions
 
 [.nonterm]
-=== Terms defined in ISO 10303-1
+=== Terms from ISO 10303-1
 
 For the purpose of this part of ISO 10303, the following terms
-defined in ISO 10303-1 apply:
+from ISO 10303-1 apply:
 
 * integrated resource
 
 [.nonterm]
-=== Terms defined in ISO 10303-11
+=== Terms from ISO 10303-11
 
-For the purposes of this document, the following terms defined in
+For the purposes of this document, the following terms from
 ISO 10303-11 apply.
 
 * entity;
@@ -465,10 +474,10 @@ term-containing subclause, the wrong rendering will occur:
 == Terms and definitions
 
 [.nonterm]
-=== Terms defined in ISO 10303-1
+=== Terms from ISO 10303-1
 
 For the purpose of this part of ISO 10303, the following terms
-defined in ISO 10303-1 apply:
+from ISO 10303-1 apply:
 
 ==== actual function range
 mathematical space containing precisely the tuples of outputs from
@@ -484,10 +493,10 @@ Therefore the `[.nonterm]` attribute must be removed:
 --
 == Terms and definitions
 
-=== Terms defined in ISO 10303-1
+=== Terms from ISO 10303-1
 
 For the purpose of this part of ISO 10303, the following terms
-defined in ISO 10303-1 apply:
+from ISO 10303-1 apply:
 
 ==== actual function range
 mathematical space containing precisely the tuples of outputs from
@@ -499,217 +508,74 @@ image::/assets/author/topics/document-format/section-terms/fig-term-clause-corre
 ======
 
 [[citeterms]]
-== Citing terms
+== Referencing concepts
 
 === General
 
 Instances of terms in the body of the document can be marked up to
-indicate where the term is defined.
+indicate where the concept is defined.
 [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14].
 
-This can be done whether the term is defined:
+This can be done whether the concept is defined:
 
 * in the current document;
-* in a cited document; or
+* in an external, cited document; or
 * in an external termbase.
 
 Marking up term instances does not currently have any impact on how
 they are rendered: this markup is intended for semantic processing of
-standards documents.
+standards documents in Metanorma Semantic XML.
 
-The syntax for citing terms has been overhauled; the following describes
-the current syntax
+NOTE: The syntax for citing terms has been overhauled for v1.10.0.
+This section describes the current syntax
 [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.0].
 
 [source,adoc]
 ----
-{{<<identifier>>,term}}
-
-// if the display text differs from the cited term
-{{<<identifier>>,term,text}}
-
-// if no explicit term identifier is given, and the term is inferred through automatic term section anchors
+// The term is from the current document as a concept.
 {{term}}
-term:[term] // synonym
+// or synonym:
+term:[term]
 
-// if no explicit term identifier is given, and the term is inferred through automatic term section anchors, and the display text differs from the cited term
+// If the desired display text differs from the concept term.
 {{term,text}}
-term:[term,text] // synonym
+// or synonym:
+term:[term,display-text]
 ----
 
 The `{{<<identifier>>,term,text}}` markup is analogous to the markup of
-cross-references in AsciiDoc, `\<<anchor,text>>`, and consists of:
+cross-references in Metanorma AsciiDoc, `\<<anchor,text>>`, and consists of:
 
 * An identifier for the term being cited;
 * The term cited, in its canonical form;
 * The text to be displayed, if it is distinct from the cited term.
 
-Instances of cited terms are converted into a distinct `concept` element in Metanorma XML,
-which includes a cross-reference to the term definition, and optionally the canonical form
-of the term name.
+Instances of cited terms are converted into a distinct `concept` element in
+Metanorma XML, which includes a cross-reference to the term definition, and
+optionally the canonical form of the term name.
 
-=== Term defined within current document
+=== Concepts defined within current document
 
-If the term is defined within the current document, the term citation
-gives the anchor of the term definition in the document, the canonical
-term name, and optionally the text to be displayed. The anchor must be given
-in angle brackets, like a normal cross-reference in AsciiDoc.
+==== Reference by term
 
-The syntax is:
+To cite a concept defined within a document the following syntax can be used.
 
-[source,adoc]
-----
-{{<<local-anchor>>,term}}
+NOTE: Metanorma automatically creates anchor references for every concept
+from the document, which is used when referencing by term.
 
-// if the display text differs from the cited term
-{{<<local-anchor>>,text,term}}
-----
-
-EXAMPLE:
-
-[source,asciidoc]
---
-== Terms and definitions
-
-[[immatk]]
-=== immature kernel
-alt:[unripe kernel]
-
-kernel, whole or broken, which is unripe and/or underdeveloped
-
-== Discussion
-The source of the {{<<immatk>>,immature kernel}} has not yet been identified.
-Allusions to {{<<immatk>>,unripe kernels,immature kernel}} are plentiful in
-the literature.
---
-
-=== Term defined in external document
-
-If the term is defined in an external document, which has a
-corresponding bibliographic anchor, the term citation gives the
-bibliographic anchor of the term definition in that document, the
-canonical term name, and optionally the text to be displayed.
-
-In other words, the same arguments are used as for the internal
-cross-reference, except that a bibliographic anchor substitutes the
-internal anchor. 
-
-The syntax is:
+Syntax:
 
 [source,adoc]
 ----
-{{<<bibliographic-anchor>>,term}}
-
-// if the display text differs from the cited term
-{{<<bibliographic-anchor>>,text,term}}
-----
-
-EXAMPLE:
-
-[source,asciidoc]
---
-[bibliography]
-== Normative References
-* [[[iso17301,ISO 17301]]] Cereals and pulses -- Specifications and test methods -- Rice
-
-== Discussion
-The source of the {{<<iso17301>>,immature kernel}} has not yet been identified.
-Allusions to {{<<iso17301>>,unripe kernels,immature kernel}} are plentiful in
-the literature.
---
-
-As with citation markup, the `bibliographic-anchor` element can be supplemented by
-a comma-delimited list of
-link:/author/topics/document-format/bibliography#localities[localities and locality values].
-These need to follow the angle brackets around
-the bibliographic-anchor, and precede the term and/or text.
-
-The syntax is:
-
-[source,adoc]
-----
-{{<<bibliographic-anchor>>,locality1=X,term}} (e.g. {{<<iso639-1>>,clause=3.1,language}} )
-
-// if the display text differs from the cited term
-{{<<bibliographic-anchor>>,locality1=X,text,term}}
-----
-
-
-EXAMPLE:
-
-[source,asciidoc]
---
-[bibliography]
-== Normative References
-* [[[iso17301,ISO 17301]]] Cereals and pulses -- Specifications and test methods -- Rice
-
-== Discussion
-The source of the {{<<iso17301>>,clause=3.9,immature kernel}} has not yet been identified.
-Allusions to {{<<iso17301>>,clause=3.9,unripe kernels,immature kernel}} are plentiful in
-the literature.
---
-
-
-=== Term defined in external termbase
-
-If the term is defined in an external termbase, the term is identified
-as the termbase identifier, then colon, then the identifier for the
-term within the termbase.
-
-Because colons are not permitted in cross-references or bibliographic
-anchors, the presence of a colon identifies the first argument in a
-term citation as identifying an external termbase term. The other two
-arguments of the macro are as above, the canonical term name, and
-optionally the text to be displayed. There is no expectation that the
-termbase be included in the bibliography. The angle brackets should NOT
-be given for any such references.
-
-[source,adoc]
-----
-{{termbase-anchor,term}}
-
-// if the display text differs from the cited term
-{{termbase-anchor,text,term}}
-----
-
-The `termbase-anchor` is implementation-specific.
-Currently, only the IEC's Electropedia (IEV) is supported, where the
-reference syntax is `IEV:{IEV term ID}`.
-
-[source,adoc]
-----
-{{IEV:IEV-term-ID,term}}
-
-// if the display text differs from the cited term
-{{IEV:IEV-term-ID,text,term}}
-----
-
-EXAMPLE:
-
-[source,asciidoc]
---
-== Discussion
-The source of the {{IEV:171-05-02,immature kernel}} has not yet been identified.
-Allusions to {{IEV:171-05-02,unripe kernels,immature kernel}} are plentiful in
-the literature.
---
-
-=== Automatic term section anchors
-
-It is possible to cite a term defined within a document, without using an explicit term anchor.
-This relies on the fact that Metanorma automatically creates anchor references for every term defined;
-Metanorma can use this to look up the text of the term as it appears in the term definition.
-
-The syntax for this is:
-
-[source,adoc]
-----
+// The term is from the current document as a concept.
 {{term}}
-term:[term] // synonym
+// or synonym:
+term:[term]
 
-// if the display text differs from the cited term
+// If the desired display text differs from the concept term.
 {{term,text}}
-term:[term,text] // synonym
+// or synonym:
+term:[term,display-text]
 ----
 
 EXAMPLE (ISO/IEC Directives Part 2 (2020), 16.5.10):
@@ -727,15 +593,18 @@ EXAMPLE (ISO/IEC Directives Part 2 (2020), 16.5.10):
 
 === terminological entry
 
-part of a terminological data collection which contains the {{terminological data}} related to one {{concept}}
+part of a terminological data collection which contains the
+{{terminological data}} related to one {{concept}}
 
 // equivalent:
 
-part of a terminological data collection which contains the term:[terminological data] related to one term:[concept]
+part of a terminological data collection which contains the
+term:[terminological data] related to one term:[concept]
 ----
 ====
 
-In some cases, the displayed term is a variant of the referenced term, such as its plural form.
+In some cases, the displayed term is a variant of the referenced term, such as
+its plural form.
 
 EXAMPLE (ISO 8601:2019, 3.1.1.5):
 
@@ -749,16 +618,17 @@ EXAMPLE (ISO 8601:2019, 3.1.1.5):
 
 ===== time scale
 
-
-system of ordered marks which can be attributed to {{instant, instants}} on the {{time axis}}, one instant being chosen as the origin
+system of ordered marks which can be attributed to {{instant, instants}} on the
+{{time axis}}, one instant being chosen as the origin
 
 // equivalent:
 
-system of ordered marks which can be attributed to term:[instant, instants] on the term:[time axis], one instant being chosen as the origin
+system of ordered marks which can be attributed to term:[instant, instants] on
+the term:[time axis], one instant being chosen as the origin
 ----
 
-
-The terms reference capability relies on automatically created anchor references for every term defined.
+NOTE: The terms reference capability relies on automatically created anchor
+references for every term defined.
 
 For example, in the following text,
 
@@ -787,7 +657,9 @@ This means if you wanted to refer to a particular term from body text, you could
 * directly refer to the term: e.g., `see definition of term:[foo]`
 * refer to the anchor of the term: e.g., `the topic is further explained in \<<term-foo>>`
 
-In case you have created manual anchors that conflict with `[[term-{X}]]`, the term reference mechanism is smart enough to rename the generated anchor as `[[term-{X}-{n}]]`, where `n` is a number from 1, and so forth.
+In case you have created manual anchors that conflict with `[[term-{X}]]`, the
+term reference mechanism is smart enough to rename the generated anchor as
+`[[term-{X}-{n}]]`, where `n` is a number from 1, and so forth.
 
 Therefore this will still work as expected:
 
@@ -810,3 +682,186 @@ lorem
 ----
 
 
+==== Reference by anchor
+
+In certain cases it is more appropriate to reference a concept (defined
+in the current document) by anchor instead of by term, e.g.:
+
+* the defined term is not plain text, e.g., a math formula;
+* the defined term is long in length.
+
+To reference a concept by anchor, the anchor of the concept should be provided,
+and optionally the text to be displayed. The anchor must be given in angle
+brackets, like a normal cross-reference in Metanorma AsciiDoc.
+
+The following elements are needed to make this inference:
+
+* anchor of the concept;
+* (optional) text to be displayed.
+
+The syntax is:
+
+[source,adoc]
+----
+// The concept is from the current document but a manual anchor has been
+// created for referencing it as a shorthand, useful in the case where a
+// concept term is not in plain text (e.g. MathML).
+{{<<identifier>>}}
+
+// If the display text differs from the cited concept term, referred through
+// an anchor.
+{{<<identifier>>,display-text}}
+----
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+== Terms and definitions
+
+[[immatk]]
+=== immature kernel
+alt:[unripe kernel]
+
+kernel, whole or broken, which is unripe and/or underdeveloped
+
+== Discussion
+The source of the {{<<immatk>>,immature kernel}} has not yet been identified.
+Allusions to {{<<immatk>>,unripe kernels,immature kernel}} are plentiful in
+the literature.
+--
+
+
+=== Concepts from external documents
+
+To refer to concepts from an external document requires a corresponding
+bibliographic anchor for that document.
+
+The following elements are needed to make this inference:
+
+* bibliographic anchor of the external document, optionally including the
+  locality of the term definition in that document;
+* concept term name;
+* (optional) text to be displayed.
+
+The syntax is:
+
+[source,adoc]
+----
+// The concept is from the current document but a manual anchor has been
+// created for referencing it as a shorthand, useful in the case where a
+// concept term is not in plain text (e.g. MathML).
+{{<<bibliographic-anchor>>,term}}
+
+// If the display text differs from the cited concept term, referred through
+// an anchor.
+{{<<bibliographic-anchor>>,text,term}}
+----
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+[bibliography]
+== Normative References
+* [[[iso17301,ISO 17301]]] Cereals and pulses -- Specifications and test methods -- Rice
+
+== Discussion
+The source of the {{<<iso17301>>,immature kernel}} has not yet been identified.
+Allusions to {{<<iso17301>>,unripe kernels,immature kernel}} are plentiful in
+the literature.
+--
+
+To supplement the concept reference with a locality, the `bibliographic-anchor`
+element can be supplemented by a comma-delimited list of
+link:/author/topics/document-format/bibliography#localities[localities and locality values].
+These need to follow the angle brackets around the `bibliographic-anchor`, and
+precede the term and/or text.
+
+The syntax is:
+
+[source,adoc]
+----
+{{<<anchor,locality=X>>,term}}
+
+// Simple example:
+{{<<iso639-1,clause=3.1>>,language}}
+
+// If the display text differs from the cited term:
+{{<<anchor>>,locality1=X,term,display-text}}
+
+// Multiple localities can be used:
+{{<<anchor>>,clause 4.7,table 1,display-text}}
+----
+
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+[bibliography]
+== Normative References
+
+* [[[iso17301,ISO 17301]]] Cereals and pulses -- Specifications and test methods -- Rice
+
+== Discussion
+
+The source of the {{<<iso17301>>,clause=3.9,immature kernel}} has not yet been
+identified. Allusions to {{<<iso17301>>,clause=3.9,unripe kernels,immature
+kernel}} are plentiful in the literature.
+--
+
+
+=== Concepts from external termbase
+
+To refer to a concept from an external termbase, the termbase
+identifier and the concept identifier within that termbase are needed.
+
+The following elements are needed to make this inference:
+
+* termbase identifier;
+* concept identifier within that termbase;
+* (optional) text to be displayed.
+
+// NOTE: The presence of a colon identifies the first argument in a term citation
+// as identifying an external termbase term, since colons are not permitted in
+// cross-references or bibliographic anchors.
+
+// The other two arguments of the macro are as above, the canonical term name, and
+// optionally the text to be displayed.
+
+The syntax is as follows:
+
+[source,adoc]
+----
+{{termbase-identifier:concept-identifier,term}}
+
+// If the display text differs from the cited concept term.
+{{termbase-identifier:concept-identifier,term,text}}
+----
+
+NOTE: The termbase does not require a corresponding reference in the
+bibliography.
+
+NOTE: Angle brackets are not used for termbase references.
+
+Currently, only the IEC Electropedia (IEV) is supported, where the
+reference syntax is `IEV:{IEV concept ID}`.
+
+[source,adoc]
+----
+{{IEV:IEV-concept-ID,term}}
+
+// If the display text differs from the cited concept term.
+{{IEV:IEV-concept-ID,text,term}}
+----
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+== Discussion
+The source of the {{IEV:171-05-02,immature kernel}} has not yet been identified.
+Allusions to {{IEV:171-05-02,unripe kernels,immature kernel}} are plentiful in
+the literature.
+--
