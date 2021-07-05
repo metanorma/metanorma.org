@@ -532,27 +532,48 @@ This section describes the current syntax
 
 [source,adoc]
 ----
-// The term is from the current document as a concept.
-{{term}}
-// or synonym:
-term:[term]
-
-// If the desired display text differs from the concept term.
-{{term,text}}
-// or synonym:
-term:[term,display-text]
+{{<<identifier>>,term,display-text,cross-reference,options="..."}}
 ----
 
-The `{{<<identifier>>,term,text}}` markup is analogous to the markup of
-cross-references in Metanorma AsciiDoc, `\<<anchor,text>>`, and consists of:
+In this full form of the concept macro, *all* arguments are optional, except
+for `term`. That means that all of the following are possible:
 
-* An identifier for the term being cited;
-* The term cited, in its canonical form;
-* The text to be displayed, if it is distinct from the cited term.
+[source,adoc]
+----
+{{term}}              // or synonym: term:[term]
+// Used if the concept is defined in the current document.
+
+{{term,display-text}} // or synonym: term:[term,display-text]
+// Used if the concept is defined in the current document, and the desired
+// display text differs from the concept term.
+
+{{term,display-text,cross-reference}}
+{{term,display-text,cross-reference,options="..."}}
+
+{{<<identifier>>,term}}
+{{<<identifier>>,term,display-text}}
+{{<<identifier>>,term,display-text,cross-reference}}
+{{<<identifier>>,term,display-text,cross-reference,options="..."}}
+----
+
+The `{{<<identifier>>,term,display-text,cross-reference,options=".."}}` markup 
+is analogous to the markup of
+cross-references in Metanorma AsciiDoc, `\<<anchor,%option,text>>`. It consists of:
+
+* An identifier for the term being cited (optional).
+* The term cited, in its canonical form (mandatory).
+* The text to be displayed, if it is distinct from the cited term (optional).
+If this argument is not provided, the canonical form and the display text are
+assumed to be identical.
+* Text to display for the crossreference to the concept definition (optional).
+If this argument is not provided, the default rendering of the cross-reference
+for the current Metanorma flavour is provided.
+* Options determining how the concept is to be displayed (may be flavour-specific).
 
 Instances of cited terms are converted into a distinct `concept` element in
-Metanorma XML, which includes a cross-reference to the term definition, and
-optionally the canonical form of the term name.
+Metanorma XML, which includes a cross-reference to the term definition, 
+the canonical form of the term name, and the text to be displayed for the term
+in that instance.
 
 === Concepts defined within current document
 
@@ -573,9 +594,12 @@ Syntax:
 term:[term]
 
 // If the desired display text differs from the concept term.
-{{term,text}}
+{{term,display-text}}
 // or synonym:
 term:[term,display-text]
+
+// If a specific version of the cross-reference text is required.
+{{term,display-text,crossreference-text}}
 ----
 
 EXAMPLE (ISO/IEC Directives Part 2 (2020), 16.5.10):
@@ -603,8 +627,24 @@ term:[terminological data] related to one term:[concept]
 ----
 ====
 
+This will be displayed according to the flavour; the rendering typically contains the term text,
+and a crossreference to its definition. The default Metanorma rendering would look like:
+
+____
+part of a terminological data collection which contains the
+_terminological data_ [term defined in Clause 3.1] related to one _concept_ [term defined in Clause 3.2]
+____
+
+In the ISO flavour of Metanorma, and flavours derived from it, the rendering follows ISO conventions:
+
+____
+part of a terminological data collection which contains the
+_terminological data_ (3.1) related to one _concept_ (3.2)
+____
+
 In some cases, the displayed term is a variant of the referenced term, such as
-its plural form.
+its plural form. That means that the display text needs to be differentiated
+from the referenced term.
 
 EXAMPLE (ISO 8601:2019, 3.1.1.5):
 
@@ -627,7 +667,40 @@ system of ordered marks which can be attributed to term:[instant, instants] on
 the term:[time axis], one instant being chosen as the origin
 ----
 
-NOTE: The terms reference capability relies on automatically created anchor
+In the rendering, the display text is used instead of the referenced term:
+
+____
+system of ordered marks which can be attributed to _instants_ (3.7) on
+the _time axis_ (3.9), one instant being chosen as the origin
+____
+
+It is conceivable that authors will want to override the automatically generated crossreference
+text with their own text, as is already possible for crossreferences within Metanorma.
+This requires an expanded version of the expression:
+
+[source,adoc]
+----
+===== instant
+...
+
+===== time axis
+...
+
+===== time scale
+
+system of ordered marks which can be attributed to {{instant, instants}} on the
+{{time axis,time axis,see the preceding discussion}}, one instant being chosen as the origin
+----
+
+____
+
+system of ordered marks which can be attributed to _instants_ (3.7) on
+the _time axis_ (see the preceding discussion), one instant being chosen as the origin
+____
+
+[NOTE]
+--
+The terms reference capability relies on automatically created anchor
 references for every term defined.
 
 For example, in the following text,
@@ -644,7 +717,8 @@ bar
 special kind of term:[foo]
 ----
 
-the anchors of `\[[term-foo]]` and `\[[term-lor]]` are automatically created.
+the anchors `\[[term-foo]]` and `\[[term-lor]]` are automatically created and assigned to the terms
+'foo` and `lor`.
 
 These anchors are generated from the terms themselves according to these rules:
 
@@ -680,12 +754,12 @@ special kind of term:[foo]
 
 lorem
 ----
-
+--
 
 ==== Reference by anchor
 
 In certain cases it is more appropriate to reference a concept (defined
-in the current document) by anchor instead of by term, e.g.:
+in the current document) by anchor, instead of by term, e.g.:
 
 * the defined term is not plain text, e.g., a math formula;
 * the defined term is long in length.
@@ -703,7 +777,7 @@ The syntax is:
 
 [source,adoc]
 ----
-// The concept is from the current document but a manual anchor has been
+// The concept is from the current document, but a manual anchor has been
 // created for referencing it as a shorthand, useful in the case where a
 // concept term is not in plain text (e.g. MathML).
 {{<<identifier>>}}
@@ -735,14 +809,16 @@ the literature.
 === Concepts from external documents
 
 To refer to concepts from an external document requires a corresponding
-bibliographic anchor for that document.
+bibliographic anchor for that document. The identifier for the concept
+is then given in the same fashion as any citation of an external document.
 
 The following elements are needed to make this inference:
 
 * bibliographic anchor of the external document, optionally including the
   locality of the term definition in that document;
 * concept term name;
-* (optional) text to be displayed.
+* (optional) text to be displayed;
+* (optional) cross-reference text to be displayed.
 
 The syntax is:
 
@@ -755,7 +831,10 @@ The syntax is:
 
 // If the display text differs from the cited concept term, referred through
 // an anchor.
-{{<<bibliographic-anchor>>,text,term}}
+{{<<bibliographic-anchor>>,term,display-text}}
+
+// If the cross-reference text for the external document needs to be overriden.
+{{<<bibliographic-anchor>>,term,display-text,crossreference-text}}
 ----
 
 EXAMPLE:
@@ -768,30 +847,40 @@ EXAMPLE:
 
 == Discussion
 The source of the {{<<iso17301>>,immature kernel}} has not yet been identified.
-Allusions to {{<<iso17301>>,unripe kernels,immature kernel}} are plentiful in
+Allusions to {{<<iso17301>>,immature kernel,unripe kernels}} are plentiful in
 the literature.
 --
 
+In Metanorma, this will be displayed by default as:
+
+____
+The source of the _immature kernel_ [term defined in ISO 17301] has not yet been identified. 
+Allusions to _unripe kernels_ [term defined in ISO 17301] are plentiful in
+the literature.
+____
+
+NOTE: The Semantic XML preserves the information that the latter term is cited as _unripe kernels_,
+but is defined as _immature kernel_. However by default, only the display text is rendered.
+
 To supplement the concept reference with a locality, the `bibliographic-anchor`
 element can be supplemented by a comma-delimited list of
-link:/author/topics/document-format/bibliography#localities[localities and locality values].
-These need to follow the angle brackets around the `bibliographic-anchor`, and
-precede the term and/or text.
+link:/author/topics/document-format/bibliography#localities[localities and locality values],
+as is normal for a reference to a locality in an external document.
 
 The syntax is:
 
 [source,adoc]
 ----
-{{<<anchor,locality=X>>,term}}
+{{<<bibliographic-anchor,locality=X>>,term}}
 
 // Simple example:
 {{<<iso639-1,clause=3.1>>,language}}
 
 // If the display text differs from the cited term:
-{{<<anchor>>,locality1=X,term,display-text}}
+{{<<bibliographic-anchor,locality1=X>>,term,display-text}}
 
 // Multiple localities can be used:
-{{<<anchor>>,clause 4.7,table 1,display-text}}
+{{<<bibliographic-anchor,clause=4.7,table=1>>,display-text}}
 ----
 
 
@@ -811,6 +900,14 @@ identified. Allusions to {{<<iso17301>>,clause=3.9,unripe kernels,immature
 kernel}} are plentiful in the literature.
 --
 
+In Metanorma, this will be displayed by default as:
+
+____
+The source of the _immature kernel_ [term defined in ISO 17301, Clause 3.9] has not yet been identified.
+Allusions to _unripe kernels_ [term defined in ISO 17301, Clause 3.9] are plentiful in
+the literature.
+____
+
 
 === Concepts from external termbase
 
@@ -821,14 +918,12 @@ The following elements are needed to make this inference:
 
 * termbase identifier;
 * concept identifier within that termbase;
-* (optional) text to be displayed.
+* (optional) text to be displayed for the term;
+* (optional) text to be displayed for the termbase reference.
 
-// NOTE: The presence of a colon identifies the first argument in a term citation
-// as identifying an external termbase term, since colons are not permitted in
-// cross-references or bibliographic anchors.
-
-// The other two arguments of the macro are as above, the canonical term name, and
-// optionally the text to be displayed.
+NOTE: The presence of a colon identifies the first argument in a term citation
+as identifying an external termbase term, since colons are not permitted in
+cross-references or bibliographic anchors.
 
 The syntax is as follows:
 
@@ -837,13 +932,14 @@ The syntax is as follows:
 {{termbase-identifier:concept-identifier,term}}
 
 // If the display text differs from the cited concept term.
-{{termbase-identifier:concept-identifier,term,text}}
+{{termbase-identifier:concept-identifier,term,display-text}}
+
+// If the text of the crossrefernce to the termbase needs to be overridden.
+{{termbase-identifier:concept-identifier,term,display-text,crossreference-text}}
 ----
 
 NOTE: The termbase does not require a corresponding reference in the
 bibliography.
-
-NOTE: Angle brackets are not used for termbase references.
 
 Currently, only the IEC Electropedia (IEV) is supported, where the
 reference syntax is `IEV:{IEV concept ID}`.
@@ -853,7 +949,10 @@ reference syntax is `IEV:{IEV concept ID}`.
 {{IEV:IEV-concept-ID,term}}
 
 // If the display text differs from the cited concept term.
-{{IEV:IEV-concept-ID,text,term}}
+{{IEV:IEV-concept-ID,text,display-term}}
+
+// If the IEV citation text differs from the flavour default.
+{{IEV:IEV-concept-ID,text,display-term,crossreference-text}}
 ----
 
 EXAMPLE:
@@ -862,6 +961,15 @@ EXAMPLE:
 --
 == Discussion
 The source of the {{IEV:171-05-02,immature kernel}} has not yet been identified.
-Allusions to {{IEV:171-05-02,unripe kernels,immature kernel}} are plentiful in
+Allusions to {{IEV:171-05-02,unripe kernels,immature kernel,ibid.}} are plentiful in
 the literature.
 --
+
+In Metanorma, this will be displayed by default as:
+
+____
+The source of the _immature kernel_ [term defined in IEV 171-05-02] has not yet been identified.
+Allusions to _unripe kernels_ [ibid.] are plentiful in
+the literature.
+____
+
