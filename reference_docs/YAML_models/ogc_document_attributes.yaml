@@ -19,9 +19,9 @@ document_attributes:
       "Document type. Choices:
       +
       --
-      * `standard`: Standard (a document subtype is necessary)
+      * `standard`: Standard (requires a document subtype)
       * `abstract-specification-topic`: Abstract Specification
-      * `best-practice`: Best Practice (a document subtype is necessary)
+      * `best-practice`: Best Practice (requires a document subtype)
       * `change-request-supporting-document`: Change Request Supporting Document
       * `community-practice`: Community Practice
       * `community-standard`: Community Standard
@@ -34,7 +34,7 @@ document_attributes:
       * `test-suite`: Test Suite
       * `user-guide`: User Guide
       * `white-paper`: White Paper
-      --".
+      --"
     required: true
     value_spec: "enum: standard, abstract-specification-topic, best-practice, change-request-supporting-document, community-practice, community-standard, discussion-paper, engineering-report, other, policy, reference-model, release-notes, test-suite, user-guide, white-paper"
     value_default: standard
@@ -88,7 +88,7 @@ document_attributes:
   edition:
     tags: ["Document type and stage"]
     title: "Edition"
-    description: "Version number of the document. Dot-delimited, consists of a major version number, a minor version number, and an optional patch version number; e.g. `2.3.1`: major version 2, minor version 3, patch version 1.".
+    description: "Version number of the document. Dot-delimited, consists of a major version number, a minor version number, and an optional patch version number; e.g. `2.3.1`: major version 2, minor version 3, patch version 1."
 
   keywords:
     tags: ["Document type and stage"]
@@ -113,35 +113,35 @@ document_attributes:
   subcommittee-type:
     tags: ["Author info"]
     title: "Subcommittee type"
-    description: "Type of the relevant subcommittee producing the document.".
+    description: "Type of the relevant subcommittee producing the document."
 
   subcommittee-number:
     tags: ["Author info"]
     title: "Subcommittee number"
-    description: "Number of the relevant subcommittee producing the document.".
+    description: "Number of the relevant subcommittee producing the document."
     value_spec: number
 
   workingGroup:
     tags: ["Author info"]
     title: "Working Group"
-    description: "Name of relevant working group producing the document.".
+    description: "Name of relevant working group producing the document."
     required: true
 
   workgroup-type:
     tags: ["Author info"]
     title: "Workgroup Type"
-    description: "Type of the relevant workgroup producing the document.".
+    description: "Type of the relevant workgroup producing the document."
 
   workgroup-number:
     tags: ["Author info"]
     title: "Workgroup number"
-    description: "Number of the relevant workgroup producing the document.".
+    description: "Number of the relevant workgroup producing the document."
     value_spec: number
 
   submitting-organizations:
     tags: ["Author info"]
     title: "Submitting organizations"
-    description: "Semicolon-delimited list of the submitting organizations for this document. The organization names themselves may contain commas.".
+    description: "Semicolon-delimited list of the submitting organizations for this document. The organization names themselves may contain commas."
     example: "_University of Calgary, Canada; National Central University, Taiwan_"
 
   editor:
@@ -158,7 +158,7 @@ document_attributes:
   referenceURLID:
     tags: ["URIs and IDs"]
     title: "Reference URL"
-    description: "Identifier embedded into a document type-specific external URL.".
+    description: "Identifier embedded into a document type-specific external URL."
 
   previous-uri:
     tags: ["URIs and IDs"]
@@ -167,15 +167,15 @@ document_attributes:
 
   docnumber:
     tags: ["URIs and IDs"]
-    title: "Dcoument number"
+    title: "Document number"
     description: |
       'The document number assigned to the OGC document (without the "`OGC`" prefix).
 
-      The number is formulated following the following rules:
+      The number is formulated according to the following rules:
       +
       * The final two digits of the year are used at the start of the number (`YY`).
       * A three digit number is assigned sequentially for each document in the year (`NNN`).
       * The first edition of a document has the document number `YY-NNN`; for example, `00-027` is OGC document 027 first published in 2000.
       * Minor editorial changes and corrigenda do not result in a change to the document number
       * The `YY-NNN` identifier for a document (the document number root) is maintained if the document undergoes content changes (revisions). These revisions are numbered sequentially, and are indicated with `r` followed by the revision number. So `05-020r27` is revision 27 of OGC document 020 first published in 2005. (Revision 27 may appear years later than 2005.)
-      * A new major version of a document receives a new document number, including likely a new year.'.
+      * A new major version of a document receives a new document number, including likely a new year.'

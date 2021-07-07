@@ -50,7 +50,7 @@ document_attributes:
       "A subclass of doctype for which special processing rules apply:
       - vocabulary: The "vocabulary" document type is defined in the ISO House Rules and title requirements defined in the ISO/IEC Directives, Part 2, 2018, 11.5.2. The initial clause of the terms section, “For the purposes of this document, the following terms and definitions apply”, is deleted; terminological entries are permitted outside of Clause 3."
     added_in_version: v1.8.2
-    more_information: see https://www.iso.org/ISO-house-style.html
+    more_information: "See https://www.iso.org/ISO-house-style.html[ISO house style]"
 
   docstage:
     tags: ["Document info"]
@@ -59,14 +59,14 @@ document_attributes:
       "Stage code for the document status (see International harmonized stage codes). Synonym of `:status:`.
       ISO authors usually create Metanorma documents at stages 00 through 40 (PWI 00., AWI, NP, WD, CD, DIS). Documents at the final stages, 50 and 60 (FDIS, PRF, IS), are created by ISO Editorial Program Managers at ISO/CS (aka ISO EPMs, ISO Editors). Authors using Metanorma are not expected to edit documents at those stages, and are not necessary in a normal submission process. These stages, however, can be used for mirroring and tracking of final stage and published standards, which many authors do."
     required: true
-    more_information: see https://www.iso.org/stage-codes.html
+    more_information: "See https://www.iso.org/stage-codes.html[ISO stage codes]"
 
   docsubstage:
     tags: ["Document info"]
     title: "Document Sub-stage"
     description: "Substage code for the document status (see International harmonized stage codes). If this is left out, a substage of “00” is assumed, with the exception of stage “60” (published), where a substage of “60” is assumed. (“60.00” is the final proof “PRF stage”, “60.60” the published document “published”.)"
     required: "don't know"
-    more_information: see https://www.iso.org/stage-codes.html
+    more_information: "See https://www.iso.org/stage-codes.html[ISO stage codes]"
 
   horizontal:
     tags: ["Document info"]
@@ -123,14 +123,14 @@ document_attributes:
   amendment-number:
     tags: ["Title"]
     title: "Amendment Number"
-    description: "Number of the amendment. (Only when `doctype` is set to `amendment`)"
+    description: "Number of the amendment. Use only when `doctype` is set to `amendment`."
     value_spec: number
     added_in_version: v1.3.25
 
   corrigendum-number:
     tags: ["Title"]
     title: "Corrigendum Number"
-    description: "Number of the technical corrigendum. (Only when `doctype` is set to `technical-corrigendum`)"
+    description: "Number of the technical corrigendum. Use only when `doctype` is set to `technical-corrigendum`."
     value_spec: number
     added_in_version: v1.3.25
 
@@ -167,7 +167,7 @@ document_attributes:
     title: "Technical Committee"
     description: "Name of the relevant ISO technical committee."
     required: true
-    declaration: ":stechnical-committee:, :technical-committee{_i}:"
+    declaration: ":technical-committee:, :technical-committee{_i}:"
     example: |
       In case of having more than one Technical Committee, multiple groups
       can be encoded by suffixing `_i` to the attribute where `i` is a sequential number after 1.
@@ -223,4 +223,3 @@ document_attributes:
     title: "Workgroup"
     description: "Type of the relevant ISO working group."
     required: "don't know"
-
