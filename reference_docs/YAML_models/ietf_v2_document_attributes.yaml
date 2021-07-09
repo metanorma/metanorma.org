@@ -19,16 +19,16 @@ document_attributes:
       ** `rfc@number` will be set to the `:name:` attribute.
     value_default: internet-draft
 
-#--- Global options  ---#
+#--- Pre-processing options  ---#
   no-rfc-bold-bcp14:
-    tags: ["Global options"]
+    tags: ["Pre-processing options"]
     title: "No RFC bold BCP14"
     description: "Override default assumption that boldface uppercase BCP14 word is to be rendered with `bcp14` tag."
     value_spec: boolean
     value_default: true
 
   smart-quotes:
-    tags: ["Global options"]
+    tags: ["Pre-processing options"]
     title: "Smart quotes"
     description: |
       Permit smart quotes, when they are specified explicitly in AsciiDoc (as `pass:['`...`']`, `pass:['`...`']`). When disabled, smart quotes are rendered as straight quotes, and Asciidoc's default conversion of straight apostrophes to smart is undone.
@@ -36,7 +36,7 @@ document_attributes:
     value_default: true
 
   inline-definition-lists:
-    tags: ["Global options"]
+    tags: ["Pre-processing options"]
     title: "Inline definition lists"
     description: |
       Only applies to v2. By default, `<vspace blankLines="1">` is inserted after the definition in a v2 definition list, to satisfy the requirement from `idnits` validation that definition terms be separated by a carriage return from the definition. That is, by default inline definition lists are rendered as paragraphing definition lists. If the option is on, the additional `vspace` element is not added, and inline definition lists are left as is.
@@ -44,7 +44,7 @@ document_attributes:
     value_default: false
 
   flush-caches:
-    tags: ["Global options"]
+    tags: ["Pre-processing options"]
     title: "Flush caches"
     description: |
       Delete and reload the caches of references to be included externally, and of workgroups, during processing of this document. +
@@ -53,31 +53,31 @@ document_attributes:
     value_default: false
 
   biblio-dir:
-    tags: ["Global options"]
+    tags: ["Pre-processing options"]
     title: "Reference directory"
     description: "Name of directory. If present, gives the name of a directory from which RFC XML references are to be read into the document, rather than assuming the references are already present in the document."
 
   normative:
-    tags: ["Global options"]
+    tags: ["Pre-processing options"]
     title: "Normative"
     description: 'Comma-delimited list of reference anchors. Used in conjunction with `:biblio-dir:`, which uses a single directory for all references: this attribute lists those references which are to be considered normative, and listed under the "`Normative References`" heading.'
     value_spec: comma-list
 
-#--- Document attributes  ---#
+#--- Document info  ---#
   title:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Title of document"
     description: "Title of document."
     required: true
 
   abbrev:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Abbreviation of document"
     description: "Abbreviation of document title. Usually the document name without the keyword `draft-`. RFC XML: `rfc/front/title@abbrev`."
     required: true
 
   name:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Name of document"
     description: |
       Sets the document's name. This should be a number if
@@ -95,7 +95,7 @@ document_attributes:
     required: true
 
   status:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Status"
     description: |
       Set the current status of this document. Synonym: `:docstage:`.
@@ -113,7 +113,7 @@ document_attributes:
     value_spec: "enum: standard, informational, experimental, bcp, historic"
 
   intended-series:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Intended series"
     description: |
       Set the intended series of this
@@ -136,7 +136,7 @@ document_attributes:
     required: true
 
   series-no:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Series number"
     description: |
       The document series is defined by the `category` attribute;
@@ -146,7 +146,7 @@ document_attributes:
       NOTE: This attribute is only available in AsciiRFC v3.
 
   submission-type:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Submission type"
     description: |
       Set document submission type for this document from the predefined values. +
@@ -156,7 +156,7 @@ document_attributes:
     value_default: IETF
 
   ipr:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "IP status"
     description: "Intellectual property status of document. RFC XML: `rfc@ipr`."
     required: true
@@ -164,59 +164,59 @@ document_attributes:
     more_information: "See https://tools.ietf.org/html/rfc7991#section-2.45.5[RFC 7991]."
 
   ipr-extract:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "IPR extract"
     description: "Identifies a section that can be extracted from text. RFC XML: `rfc@iprExtract`."
     more_information: "See https://tools.ietf.org/html/rfc7991#section-2.45.6[RFC 7991]"
     
   obsoletes:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Obsoletes"
     description: "A comma-separated list of RFC numbers or Internet-Draft names that this document obsoletes. RFC XML: `rfc@obsoletes`."
     value_spec: comma-list
 
   updates:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Updates"
     description: "A comma-separated list of RFC numbers or Internet-Draft names that this document updates. RFC XML: `rfc@updates`."
     value_spec: comma-list
 
   submission-type:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Submission type"
     description: "Document stream of document described in https://tools.ietf.org/html/rfc7841[RFC7841]. RFC XML: `rfc@submissionType`."
     value_spec: "enum: IETF, independent, IAB, IRTF"
     value_default: IETF
 
   revdate:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Revision date"
     description: "Latest revision date of document. Default value is current time. Accepts ISO 8601 date. Also accepts `YYYY` year, and `YYYY[-]MM` year/month. For consistency with AsciiDoc, `:revdate:` is given as an ISO 8601 date; the converter breaks it down into day, month name and year RFC XML: `front/date@day`, `front/date@month`, `front/date@year`."
     value_default: "{current time}"
 
   area:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Area of document"
     description: 'Comma delimited text on which IETF area this document relates to. Value should be either the full name or the abbreviation of one of the http://www.ietf.org/iesg/area.html[IETF areas]. RFC XML: `front/area`.'
 
   workgroup:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Workgroup"
     description: "Comma delimited text on which IETF or IRTF workgroup or research group this document originates from. RFC XML: `front/workgroup`."
     more_information: See https://tools.ietf.org/html/rfc7991#section-2.65[RFC 7991]
 
   keyword:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Keyword"
     description: "Comma delimited text for singular keywords used for RFC index and metadata. RFC XML: `front/keyword`."
 
   xml-lang:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "XML language"
     description: "Set the document language. By default this is `en`. RFC XML: `rfc@xml:lang`."
 
   consensus:
-    tags: ["Document attributes"]
+    tags: ["Document info"]
     title: "Consensus"
     description: |
       Set document consensus for this document. The following values are allowed:
