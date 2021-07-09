@@ -28,7 +28,7 @@ document_attributes:
       * `discussion-paper`: Discussion Paper
       * `engineering-report`: Engineering Report
       * `other`: Note, Primer, etc.
-      * `policy`: Policy, Policy -- Name Type Specification
+      * `policy`: Policy, Name Type Specification
       * `reference-model`: Reference Model
       * `release-notes`: Release Notes
       * `test-suite`: Test Suite
@@ -90,11 +90,6 @@ document_attributes:
     title: "Edition"
     description: "Version number of the document. Dot-delimited, consists of a major version number, a minor version number, and an optional patch version number; e.g. `2.3.1`: major version 2, minor version 3, patch version 1."
 
-  keywords:
-    tags: ["Document info"]
-    title: "Keywords"
-    description: "Comma-delimited list of the keywords associated with the document."
-
 #--- Author info ---#
   committee:
     tags: ["Author info"]
@@ -142,8 +137,21 @@ document_attributes:
     title: "Editor"
     description: "Same as `:fullname:` alongside `:role:` specified as `editor`."
     example: |
+      [source,asciidoc]
+      ----
       :editor: Scott Henderson
       :editor_2: Andy Timmons
+      ----
+
+      is the same as:
+
+      [source,asciidoc]
+      ----
+      :fullname: Scott Henderson
+      :role: editor
+      :fullname_2: Andy Timmons
+      :role_2: editor
+      ----
 
 #--- URIs and IDs ---#
   external-id:
