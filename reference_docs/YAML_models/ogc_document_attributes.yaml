@@ -6,17 +6,17 @@ inherits_from:
   version: v1.x.x
 
 document_attributes:
-#--- Document type and stage  ---#
+#--- Document info  ---#
   abbrev:
-    tags: ["Document type and stage"]
+    tags: ["Document info"]
     title: "Standard abbreviation"
-    description: "Standard abbreviation of the document, used e.g. in URIs".
+    description: "Standard abbreviation of the document, used e.g. in URIs."
 
   doctype:
-    tags: ["Document type and stage"]
+    tags: ["Document info"]
     title: "Document type"
     description: |
-      "Document type. Choices:
+      Document type. Choices:
       +
       --
       * `standard`: Standard (requires a document subtype)
@@ -34,16 +34,16 @@ document_attributes:
       * `test-suite`: Test Suite
       * `user-guide`: User Guide
       * `white-paper`: White Paper
-      --"
+      --
     required: true
     value_spec: "enum: standard, abstract-specification-topic, best-practice, change-request-supporting-document, community-practice, community-standard, discussion-paper, engineering-report, other, policy, reference-model, release-notes, test-suite, user-guide, white-paper"
     value_default: standard
 
   docsubtype:
-    tags: ["Document type and stage"]
+    tags: ["Document info"]
     title: "Document subtype"
     description: |
-      "Document subtype.
+      Document subtype.
       Choices:
       +
       --
@@ -63,14 +63,14 @@ document_attributes:
       ** `extension`: Extension
       ** `profile`: Profile
       ** `profile-with-extension`: Profile with extension
-      --".
+      --
     value_default: "implementation, general"
 
   status:
-    tags: ["Document type and stage"]
+    tags: ["Document info"]
     title: "Status"
     description: |
-      'Document status/stage. Synonym: `:docstage:`.
+      Document status/stage. Synonym: `:docstage:`.
       Choices:
       +
       --
@@ -81,32 +81,25 @@ document_attributes:
       * `approved`: Published. This is the document intended to be published, after comments are handled with the TC chair (after `tc-vote`). `published` is allowed as a synonym of `approved`  [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.5].
       * `deprecated`: Deprecated. This document has been deprecated.
       * `retired`: Retired. This document has been retired and no longer considered normative.
-      --'.
+      --
     required: "don't know"
     value_spec: "enum: swg-draft, oab-review, public-rfc, tc-vote, approved, deprecated, retired"
 
   edition:
-    tags: ["Document type and stage"]
+    tags: ["Document info"]
     title: "Edition"
     description: "Version number of the document. Dot-delimited, consists of a major version number, a minor version number, and an optional patch version number; e.g. `2.3.1`: major version 2, minor version 3, patch version 1."
 
   keywords:
-    tags: ["Document type and stage"]
+    tags: ["Document info"]
     title: "Keywords"
-    description: "Comma-delimited list of the keywords associated with the document.".
+    description: "Comma-delimited list of the keywords associated with the document."
 
 #--- Author info ---#
   committee:
     tags: ["Author info"]
     title: "Committee"
-    description: |
-      "Name of relevant committee producing the document. Use one of:
-      +
-      --
-      * `technical`: Technical Committee
-      * `planning`: Planning Committee
-      * `strategic-member-advisory`: Strategic Member Advisory Committee
-      --".
+    description: "Name of relevant committee producing the document."
     required: true
     value_spec: "enum: technical, planning, strategic-member-advisory"
 
@@ -147,13 +140,19 @@ document_attributes:
   editor:
     tags: ["Author info"]
     title: "Editor"
-    description: "Same as `:fullname:` alongside `:role:` specified as `editor`.".
+    description: "Same as `:fullname:` alongside `:role:` specified as `editor`."
+    example: |
+      :editor: Scott Henderson
+      :editor_2: Andy Timmons
 
 #--- URIs and IDs ---#
   external-id:
     tags: ["URIs and IDs"]
     title: "External ID"
-    description: "External identifier referring to this document. If not supplied, a default value is generated: `http://www.opengis.net/doc/{abbrevation of doctype}/{abbrev}/{version}`. (Version is omitted if not provided. If `:abbrev:` and `:doctype:` are not provided, the default value is not generated.".
+    description: |
+      External identifier referring to this document. If not supplied, a default value is generated: `http://www.opengis.net/doc/{abbrevation of doctype}/{abbrev}/{version}`. 
+      
+      If there is no version is provided, it will be omitted. If `:abbrev:` and `:doctype:` are not provided, the default value is not generated.
 
   referenceURLID:
     tags: ["URIs and IDs"]
@@ -163,13 +162,13 @@ document_attributes:
   previous-uri:
     tags: ["URIs and IDs"]
     title: "Previous URI"
-    description: "URI of previous version of the document.".
+    description: "URI of previous version of the document."
 
   docnumber:
     tags: ["URIs and IDs"]
     title: "Document number"
     description: |
-      'The document number assigned to the OGC document (without the "`OGC`" prefix).
+      The document number assigned to the OGC document (without the "`OGC`" prefix).
 
       The number is formulated according to the following rules:
       +
@@ -178,4 +177,4 @@ document_attributes:
       * The first edition of a document has the document number `YY-NNN`; for example, `00-027` is OGC document 027 first published in 2000.
       * Minor editorial changes and corrigenda do not result in a change to the document number
       * The `YY-NNN` identifier for a document (the document number root) is maintained if the document undergoes content changes (revisions). These revisions are numbered sequentially, and are indicated with `r` followed by the revision number. So `05-020r27` is revision 27 of OGC document 020 first published in 2005. (Revision 27 may appear years later than 2005.)
-      * A new major version of a document receives a new document number, including likely a new year.'
+      * A new major version of a document receives a new document number, including likely a new year.
