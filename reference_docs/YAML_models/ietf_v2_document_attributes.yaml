@@ -35,14 +35,6 @@ document_attributes:
     value_spec: boolean
     value_default: true
 
-  inline-definition-lists:
-    tags: ["Pre-processing options"]
-    title: "Inline definition lists"
-    description: |
-      Only applies to v2. By default, `<vspace blankLines="1">` is inserted after the definition in a v2 definition list, to satisfy the requirement from `idnits` validation that definition terms be separated by a carriage return from the definition. That is, by default inline definition lists are rendered as paragraphing definition lists. If the option is on, the additional `vspace` element is not added, and inline definition lists are left as is.
-    value_spec: boolean
-    value_default: false
-
   flush-caches:
     tags: ["Pre-processing options"]
     title: "Flush caches"
@@ -51,17 +43,6 @@ document_attributes:
       The caches are stored in `~/.metanorma-ietf-biblio-cache.json` and `~/.metanorma-ietf-workgroup-cache.json`.
     value_spec: boolean
     value_default: false
-
-  biblio-dir:
-    tags: ["Pre-processing options"]
-    title: "Reference directory"
-    description: "Name of directory. If present, gives the name of a directory from which RFC XML references are to be read into the document, rather than assuming the references are already present in the document."
-
-  normative:
-    tags: ["Pre-processing options"]
-    title: "Normative"
-    description: 'Comma-delimited list of reference anchors. Used in conjunction with `:biblio-dir:`, which uses a single directory for all references: this attribute lists those references which are to be considered normative, and listed under the "`Normative References`" heading.'
-    value_spec: comma-list
 
 #--- Document info  ---#
   title:
