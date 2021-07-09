@@ -997,3 +997,27 @@ the literature.
 ____
 ====
 
+=== Rendering options
+
+The following rendering options are defined for concepts.
+
+`noital`:: do not italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+`noref`:: do not give a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+
+[source,asciidoc]
+----
+== Discussion
+
+The source of the {{<<IEV:171-05-02>>,immature kernel,option="noital"}} has not yet been identified.
+Allusions to {{<<IEV:171-05-02>>,unripe kernels,immature kernel,ibid.,option="noref"}} are plentiful in
+the literature. Allusions to {{<<IEV:171-05-02>>,non-ripe kernels,immature kernel,ibid.,option="noref,noital"}} 
+are rather less frequent.
+----
+
+In Metanorma, this will be displayed by default as:
+
+____
+The source of the immature kernel [term defined in IEV 171-05-02] has not yet been identified.
+Allusions to _unripe kernels_ are plentiful in the literature. Allusions to non-ripe kernels are
+rather less frequent.
+____
