@@ -22,16 +22,7 @@ document_attributes:
   doctype:
     tags: ["Document info"]
     title: "Document Type"
-    description: |
-      "Defines Type of Document. Permitted types are:
-      - international-standard
-      - technical-specification
-      - technical-report
-      - publicly-available-specification
-      - international-workshop-agreement
-      - guide
-      - technical-corrigendum
-      - amendment"
+    description: "Assign one of the predefined document types to your document."
     required: true
     value_spec: "enum: international-standard, technical-specification, technical-report, publicly-available-specification, international-workshop-agreement, guide, technical-corrigendum, amendment"
     value_default: international-standard
@@ -47,8 +38,8 @@ document_attributes:
     tags: ["Document info"]
     title: "Document subtype"
     description: |
-      "A subclass of doctype for which special processing rules apply:
-      - vocabulary: The "vocabulary" document type is defined in the ISO House Rules and title requirements defined in the ISO/IEC Directives, Part 2, 2018, 11.5.2. The initial clause of the terms section, “For the purposes of this document, the following terms and definitions apply”, is deleted; terminological entries are permitted outside of Clause 3."
+      A subclass of doctype for which special processing rules apply:
+      - vocabulary: The "vocabulary" document type is defined in the ISO House Rules and title requirements defined in the ISO/IEC Directives, Part 2, 2018, 11.5.2. The initial clause of the terms section, “For the purposes of this document, the following terms and definitions apply”, is deleted; terminological entries are permitted outside of Clause 3.
     added_in_version: v1.8.2
     more_information: "See https://www.iso.org/ISO-house-style.html[ISO house style]"
 
@@ -56,8 +47,8 @@ document_attributes:
     tags: ["Document info"]
     title: "Document Stage"
     description: |
-      "Stage code for the document status (see International harmonized stage codes). Synonym of `:status:`.
-      ISO authors usually create Metanorma documents at stages 00 through 40 (PWI 00., AWI, NP, WD, CD, DIS). Documents at the final stages, 50 and 60 (FDIS, PRF, IS), are created by ISO Editorial Program Managers at ISO/CS (aka ISO EPMs, ISO Editors). Authors using Metanorma are not expected to edit documents at those stages, and are not necessary in a normal submission process. These stages, however, can be used for mirroring and tracking of final stage and published standards, which many authors do."
+      Stage code for the document status (see International harmonized stage codes). Synonym of `:status:`.
+      ISO authors usually create Metanorma documents at stages 00 through 40 (PWI 00., AWI, NP, WD, CD, DIS). Documents at the final stages, 50 and 60 (FDIS, PRF, IS), are created by ISO Editorial Program Managers at ISO/CS (aka ISO EPMs, ISO Editors). Authors using Metanorma are not expected to edit documents at those stages, and are not necessary in a normal submission process. These stages, however, can be used for mirroring and tracking of final stage and published standards, which many authors do.
     required: true
     more_information: "See https://www.iso.org/stage-codes.html[ISO stage codes]"
 
@@ -199,8 +190,7 @@ document_attributes:
     required: "don't know"
     declaration: ":subcommittee:, :subcommittee{_i}:"
     example: |
-      In case of having more than one Subcommittee, multiple groups
-      can be encoded by suffixing `_i` to the attribute where `i` is a sequential number after 1.\n
+      In case of having more than one Subcommittee, multiple groups can be encoded by suffixing `_i` to the attribute where `i` is a sequential number after 1. +
       Ex. ":subcommittee_2:", ":subcommittee_3:", ":subcommittee_i:"
 
   workgroup-number:
