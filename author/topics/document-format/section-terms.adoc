@@ -512,7 +512,7 @@ image::/assets/author/topics/document-format/section-terms/fig-term-clause-corre
 
 === General
 
-Instances of terms used in the document can be marked up to indicate the
+Instances of terms or symbols/abbreviations used in the document can be marked up to indicate the
 semantic meaning of the concept.
 [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14].
 
@@ -522,7 +522,8 @@ This can be done whether the concept is defined:
 * in an external, cited document; or
 * in an external termbase.
 
-Marking up term instances in the content body generally does not impact their
+Marking up mentions of concepts (terms, symbols, or abbreviations) in the content body
+generally does not impact their
 rendering. This tagging is intended for semantic processing of standards
 documents in Metanorma Semantic XML.
 
@@ -771,6 +772,37 @@ special kind of term:[foo]
 lorem
 ----
 --
+
+==== Reference by symbol
+
+Symbols and abbreviations defined in the document can also be cited as 
+concepts [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1].
+In the case of symbols and abbreviations, the `symbol:[]` macro is used instead of
+`term:[]`, and targets a symbol defined in a definition list within a Symbols & Abbreviations section.
+Such symbols have automatic anchors assigned to them, as with terms, but prefixed with
+`symbol-` rather than `term-`. If the `{{...}}` format is used instead, either a term or
+a symbol is matched; terms are matched by default.
+
+[source,adoc]
+----
+== Symbols and abbreviated terms
+ISO:: International Standards Organization // automatically assigned the anchor symbol-ISO
+[[xyz]]IEC:: International Electrotechnical Commission // is assigned the anchor xyz
+
+== Discussion
+The vocabulary is authorised by {{ISO}} and {{IEC,the IEC}}.
+
+// equivalent
+
+The vocabulary is authorised by symbol:[ISO] and symbol:[IEC,the IEC].
+----
+
+Unlike terms, symbols and abbreviations are not italicised, referenced, or hyperlinked by default.
+
+____
+The vocabulary is authorised by ISO and IEC.
+____
+
 
 ==== Reference by anchor
 
