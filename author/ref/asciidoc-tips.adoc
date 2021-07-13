@@ -122,6 +122,10 @@ into smart quotes. The rules for smart formatting follow the
 https://github.com/pbhogan/sterile[`sterile`] gem, and are given in
 https://github.com/pbhogan/sterile/blob/main/lib/sterile/data/smart_format_rules.rb[`smart_format_rules.rb`].
 
+Metanorma treats `+-+` identically to `+--+`; this is important particularly in citation of ISO-style titles
+(so _Sterilization of health care products - Radiation_ is correctly rendered as 
+_Sterilization of health care products — Radiation_, as can be seen in ISO PDF output.)
+
 There is no equivalent given for en-dash. Metanorma AsciiDoc
 will recognize any UTF-8 character,
 and character escapes like `+&#x2062;+` and `+&#8201;+`.
@@ -154,7 +158,8 @@ on using document attributes to deal with complex URLs.
 
 To prevent the substitution of
 multiple-character combinations, try interpolating `+&#x200c;+` between the characters; so
-`+-\&#x200c;-+` here. Character `U+200c` (the zero width non-joiner) is invisible, and its function
+`+-\&#x200c;-+` or `+\&#x200c;-+` for double or single hyphens, to prevent them being smart-rendered
+as em-dashes. Character `U+200c` (the zero width non-joiner) is invisible, and its function
 is to prevent ligatures combining the characters either side of it.
 
 == Document attributes
