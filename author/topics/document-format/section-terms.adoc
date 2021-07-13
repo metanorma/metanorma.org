@@ -1036,6 +1036,14 @@ The following rendering options are defined for concepts.
 
 `noital`:: do not italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
 `noref`:: do not give a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+`ital`:: do italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+`ref`:: do give a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+
+If these options are missing, Metanorma applies the defaults for the current flavour. The default behaviour in
+Metanorma is `ital,ref` for all terms, `noital,noref` for acronyms. In ISO, the default behaviour for terms is refined:
+`noital,noref` for terms outside the Terms & Definitions section; `ital,ref` for the first mention of a term within
+the Terms & Definitions section; `ital,noref` for all subsequent mentions within
+the Terms & Definitions section.
 
 [source,asciidoc]
 ----
