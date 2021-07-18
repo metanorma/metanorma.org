@@ -1,0 +1,184 @@
+---
+layout: author-docs
+---
+
+= Lutaml uml datamodel description plugin: Content from Enterprise Architect(xmi) files
+
+== Syntax
+
+=== Defining the block
+
+This macro allows to quickly render datamodel packages and its dependent objects for supplied xmi file.
+
+Given enterprise architect `example.xmi` file with 2 packages 'Another' and 'CityGML':
+
+And the `lutaml_uml_datamodel_description` macro:
+
+[source,adoc]
+-----
+[lutaml_uml_datamodel_description, path/to/example.xmi]
+--
+--
+[.before]
+---
+mine text
+---
+
+[.before, package="Another"]
+---
+text before Another package
+---
+
+[.after, package="Another"]
+---
+text after Another package
+---
+
+[.after, package="CityGML"]
+---
+text after CityGML package
+---
+
+[.after]
+---
+footer text
+---
+--
+--
+-----
+
+Where:
+
+- `path/to/example.xmi` - required, path to the xmi file to render
+- `[.before]` - macro to add additional text before the rendered output, can be used only once, additional occurrences of macro will overwrite text
+- `[.after]` - macro to add additional text after the rendered output, can be used only once, additional occurrences of macro will overwrite text
+- `[.after, package="Another"]` - macro with text to be inserted before(after in case of `.before` name) the package
+
+
+Will produce this output:
+
+[source,adoc]
+-----
+= preface
+mine text
+
+text before Another package
+
+=== Another
+
+[[rc_another-model_section]]
+==== Another
+
+==== Requirements
+
+==== Class Definitions
+
+.Classes used in Another
+[cols="2a,6a",options="header"]
+|===
+|Class |Description
+
+
+|<<AbstractAtomicTimeseries-section,AbstractAtomicTimeseries>>
+«»
+|
+
+
+|<<AbstractTimeseries-section,AbstractTimeseries>>
+«»
+|
+
+....
+|===
+
+
+
+.Data Types used in Another
+[cols="2,6",options="header"]
+|===
+|Name |Description
+
+
+|<<ADEOfAbstractAtomicTimeseries-section,ADEOfAbstractAtomicTimeseries>>
+|
+
+
+|<<ADEOfAbstractTimeseries-section,ADEOfAbstractTimeseries>>
+|
+
+....
+|===
+
+
+
+.Enumerated Classes used in Another
+[cols="2a,6a",options="header"]
+|===
+|Name |Description
+
+|<<TimeseriesTypeValue-section,TimeseriesTypeValue>>
+|
+
+|===
+
+
+==== Additional Information
+
+Additional information about the Another can be found in the link:http://docs.opengeospatial.org/DRAFTS/20-066.html#ug-model-another-section[OGC CityGML 3.0 Users Guide]
+
+
+text after Another package
+
+
+=== CityGML
+
+[[rc_citygml-model_section]]
+==== CityGML
+
+==== Requirements
+
+==== Class Definitions
+
+==== Additional Information
+
+Additional information about the CityGML can be found in the link:http://docs.opengeospatial.org/DRAFTS/20-066.html#ug-model-citygml-section[OGC CityGML 3.0 Users Guide]
+
+
+text after CityGML package
+
+
+= footer
+footer text
+
+-----
+
+In addition to just supplying xmi file this macro also supports yaml configuration file. The format for it is like this:
+
+[source,yaml]
+-----
+---
+packages:
+  # includes these packages
+  - "Package *"
+  - two*
+  - three
+  # skips these packages
+  - skip: four
+-----
+
+Where:
+
+- `packages` - required, root element with the list of strings or objects
+- `Package *` - pattern matching, specifies lookup condition for packages to render, in this case, equal to the following regexp: /^Package .*$/
+- `skip: four` - object with package name to skip for
+
+Usage with macro:
+
+[source,adoc]
+-----
+[lutaml_uml_datamodel_description, path/to/example.xmi, path/to/config.yml]
+....
+-----
+
+The macro processor will read supplied yaml file and arrange packages according to the order supplied in the config file, also all packages supplied as `skip` will be skipped during render
+
