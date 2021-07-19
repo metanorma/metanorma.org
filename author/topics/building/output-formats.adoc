@@ -20,10 +20,8 @@ not supported. All HTML output has a sidebar with a Javascript-generated Table o
 
 == PDF
 
-PDF output, for those standards gems that support it, is generated from the HTML output via Google Puppeteer (which runs in Node.js).
-The PDF output generation takes advantage of the print mode in the HTML CSS stylesheet, so much of the browser-like styling of the HTML
-is rendered as a more print-like document. Because it is generated from HTML, the PDF output does not support page numbers in its
-Table of Contents. Nor does it support advanced paragraph formatting, such as Keep With Next or Widow/Orphan control.
+Metanorma generates PDF output from XML. The styling comes from an https://www.xml.com/articles/2017/01/01/what-is-xsl-fo/[XSL-FO] stylesheet. Apache FOP interprets the stylesheet and generates the PDF. 
+For more information about how Apache FOP supports the XSL-FO standard, see the https://xmlgraphics.apache.org/fop/compliance.html[Apache FOP documentation].
 
 == Microsoft Word
 
