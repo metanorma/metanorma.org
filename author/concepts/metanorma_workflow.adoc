@@ -1,0 +1,90 @@
+---
+title: The Metanorma workflow
+---
+The Metanorma workflow consists of six phases:
+
+. Document creation
+. Editing the document
+. Validation
+. Output generation
+. Review
+. Publication
+
+
+.The Metanorma Workflow from start to finish 
+image::/assets/author/concepts/Metanorma_Workflow.png[The Metanorma workflow]
+
+== Document creation
+
+You can create a new standard document either by:
+
+* Creating a new, empty AsciiDoc file
+* Using a template
+* Importing a Word Document
+
+*New file*
+
+The easiest way is to create a document from scratch, by creating an empty AsciiDoc file (`.adoc`) in the desired folder. 
+
+*Templates*
+
+Templates get you started faster, as they provide the structure of a standard document already. If your organization provides templates, you can create a new document based on a template using the command line. 
+
+*Import from Word*
+
+Importing from Word makes sense if you are moving from Word to Metanorma. To facilitate the migration, you can use the import tool called “Reverse AsciiDoc”. However, the imports are not always perfect, so you need to be familiar with the Metanorma and know how to resolve error messages. 
+
+== Editing the document
+
+You can edit Metanorma documents in any plain-text editor because they only consist of text. The next lesson will introduce you to the basics of AsciiDoc.
+These editors have been reported to work well for writing Metanorma AsciiDoc:
+
+* https://atom.io/[Atom] with https://atom.io/users/asciidoctor[Asciidoctor plugins]
+* https://code.visualstudio.com/[Microsoft Visual Studio Code] with https://marketplace.visualstudio.com/items?itemName=joaompinto.asciidoctor-vscode[AsciiDoc extension] for live preview
+
+== Validation
+
+Before you can generate any outputs, the AsciiDoc document needs to be checked against the document model to ensure it follows the rules of your SDO. Since the document model is defined in an XML schema, the compiler converts the AsciiDoc document into an XML file. The XML file is then checked against the SDO’s XML schema:
+
+* ❌ Invalid XML: The XML file does not comply with the XML schema.
+All errors are logged to the terminal and are saved to an Error file (.`err`).
+
+* ✅ Valid XML: The XML file complies with the XML schema and the compiler can proceed to generate an output.
+
+== Output generation
+
+The Metanorma toolchain compiles documents in the following formats: 
+
+* Metanorma XML
+* HTML
+* PDF
+* Microsoft Word
+
+*Metanorma XML*
+
+Metanorma always generates an XML output first because it is the intermediate format used to drive the other formats. The Metanorma XML file marks up the semantic content of the standards document and is therefore used during the validation stage.
+
+*HTML*
+
+The HTML output is in HTML 5. All HTML output has a sidebar with a Javascript-generated table of contents, which is two section levels deep. Audio and video files are not supported.
+
+*PDF*
+
+Metanorma generates PDF output from XML. The styling comes from an https://www.xml.com/articles/2017/01/01/what-is-xsl-fo/[XSL-FO] stylesheet. A processing engine (Apache FOP) interprets the stylesheet and generates the PDF. 
+
+*Microsoft Word*
+
+Metanorma can also generate a `.doc` Word output. Metanorma does not output `.docx` because it is easier to support all of the formatting requirements in a `.doc` file.
+
+== Review
+
+Standards documents require collaboration and every SDO has its own process for reviews. Metanorma does support authors and reviewers by providing metadata that indicate in which phase the document is in and who reviewed it. You can add your remarks to a document with comments or create a to-do if you want someone to act.
+
+== Publication
+Once you and your reviewers agree that the standard is ready for publishing, you send it to your standard developing organization (SDO). The SDO will publish your document in their preferred channels, such as online or print. 
+
+=== Related links
+
+* Creating a new document from a template
+* Word import Tool: https://github.com/metanorma/reverse_adoc[Reverse AsciiDoc]
+* For more on why Metanorma uses .doc, see https://github.com/metanorma/html2doc/wiki/Why-not-docx%3F[Why not .docx]
