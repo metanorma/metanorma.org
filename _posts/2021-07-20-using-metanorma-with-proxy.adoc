@@ -1,0 +1,50 @@
+---
+layout: post
+title:  "Configure metanorma to work with proxy"
+date:   2021-07-20
+categories: documentation
+author:
+  name: Alexander Bobrikovich
+  email: abobrikovich@gmail.com
+  social_links:
+    - https://www.linkedin.com/in/opoudjis/
+    - https://github.com/camobap
+excerpt: >-
+    How to use metanorma with HTTP/HTTPS/SOCKS proxies
+---
+
+== Intro
+
+Some of our users must use proxies to access internet, due to network requirment.
+
+== How to use proxies with metanorma
+
+Before v1.4.12 metanorma supports only HTTP proxies via `HTTP_PROXY` environment variable
+
+[source,console]
+----
+env HTTP_PROXY=http://example.proxy metanorma site generate --agree-to-terms .
+----
+
+Starting from v1.4.12 metanorma supports `HTTP_PROXY` and `SOCKS_PROXY`
+
+[source,console]
+----
+env SOCKS_PROXY=socks5h://example.proxy metanorma site generate --agree-to-terms .
+----
+
+=== How to add proxy to git calls from metanorma
+
+metanorma extensively use `git` command for fonts and template installation. So proxy for git must me setted up by modifying `~/.gitconfig`
+
+There are many ways how it can be configured. Nice guide about git proxies available here https://gist.github.com/evantoli/f8c23a37eb3558ab8765
+
+For SOCKS proxies guide under link above works also, just pay attention to the URL schema:
+ - `socks://` - for SOCKS below v5
+ - `socks5://` - for SOCKS v5
+ - `socks5h://` - for SOCKS below v5 + host resolution via SOCKS
+
+== References
+
+* https://ruby-doc.org/stdlib-2.6.3/libdoc/net/http/rdoc/Net/HTTP.html#class-Net::HTTP-label-Proxies[HTTP Proxy in Ruby]
+* https://gist.github.com/evantoli/f8c23a37eb3558ab8765
