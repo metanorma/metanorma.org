@@ -319,25 +319,25 @@ document_attributes:
 
 #--- Author attributes ---#
   fullname:
-    tags: ["Author attributes"]
+    tags: ["Author info"]
     title: "Fullname"
     description: 'Author&apos;s full name. Can set here instead of document header&apos;s "`Author`" line. RFC XML: `front/author@fullname`.'
 
   initials:
-    tags: ["Author attributes"]
+    tags: ["Author info"]
     title: "Initials"
     description: "Author's initials excluding surname. RFC XML: `front/author@initials`."
     declaration: ":fullname:, :fullname{_i}:"
 
   givenname:
-    tags: ["Author attributes"]
+    tags: ["Author info"]
     title: "Given name"
     description: |
       Given names of Author. Not used directly in RFC XML, but initials can be derived from them if not explicitly included. RFC XML: `front/author@initials`.
     declaration: ":givenname:, :givenname{_i}:"
 
   surname:
-    tags: ["Author attributes"]
+    tags: ["Author info"]
     title: "Surname"
     description: |
       Author's last name. Can set here instead of document header's "`Author`" line. +
@@ -345,7 +345,7 @@ document_attributes:
     declaration: ":surname:, :surname{_i}:"
 
   role:
-    tags: ["Author attributes"]
+    tags: ["Author info"]
     title: "Role"
     description: "Defaults to `author`. Possible values: `author`, `editor`. If `author` is supplied, the attribute is not populated. RFC XML: `front/author@role`."
     declaration: ":role:, :role{_i}:"
@@ -353,14 +353,14 @@ document_attributes:
     value_default: author
 
   affiliation:
-    tags: ["Author attributes"]
+    tags: ["Author info"]
     title: "Organization affiliation"
     description: "Author's organization affiliation. RFC XML: `front/author/organization`."
     declaration: ":affiliation:, :affiliation{_i}:"
     value_default: ""
 
   affiliation_abbrev:
-    tags: ["Author attributes"]
+    tags: ["Author info"]
     title: "Organization abbreviation"
     description: "Author's organization's abbreviation shown. RFC XML: `front/author/organization@abbrev`."
     declaration: ":organization_abbrev:, :organization_abbrev{_i}:"
@@ -581,4 +581,3 @@ document_attributes:
     tags: ["Processing instructions for xml2rfc"]
     title: "useobject"
     description: "When producing a html file, use the <object> html element with inner replacement content instead of the <img> html element, when a source xml element includes an src attribute."
-
