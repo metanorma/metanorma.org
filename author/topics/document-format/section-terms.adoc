@@ -416,7 +416,7 @@ image::/assets/author/topics/document-format/section-terms/fig-term-stem.png[Ill
 
 === Subclauses
 
-Any clause within a "`Terms & Definitions`" section which is a non-terminal
+Any clause within a "`Terms and definitions`" section which is a non-terminal
 subclause (has child nodes) is automatically considered a terms (or definitions)
 section. On the other hand, any descendant of a `nonterm` clause is also a
 `nonterm` clause.
@@ -512,9 +512,9 @@ image::/assets/author/topics/document-format/section-terms/fig-term-clause-corre
 
 === General
 
-Instances of terms or symbols/abbreviations used in the document can be marked up to indicate the
-semantic meaning of the concept.
-[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14].
+Instances of terms, symbols or abbreviations used in the document can be marked
+up to indicate the semantic meaning of the concept. [added in
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14].
 
 This can be done whether the concept is defined:
 
@@ -522,14 +522,15 @@ This can be done whether the concept is defined:
 * in an external, cited document; or
 * in an external termbase.
 
-Marking up mentions of concepts (terms, symbols, or abbreviations) in the content body
-generally does not impact their
-rendering. This tagging is intended for semantic processing of standards
-documents in Metanorma Semantic XML.
+Marking up mentions of concepts (terms, symbols, or abbreviations) in the
+content body generally does not impact their rendering.
 
-Marking up term instances in "`terms and definitions`" clauses may cause terms
-to render differently in certain flavors, such as for ISO and IEC, in order
-to display location of where those concepts are defined.
+This tagging is intended for semantic processing of standards documents in
+Metanorma Semantic XML.
+
+Marking up term instances in the "`terms and definitions`" clauses may cause
+terms to render differently in certain flavors, such as for ISO and IEC, in
+order to display location of where those concepts are defined.
 
 NOTE: The syntax for citing terms has been changed for v1.10.0.
 This section describes the current syntax
@@ -641,16 +642,20 @@ term:[terminological data] related to one term:[concept]
 ----
 ====
 
-This will be displayed according to the flavour; the rendering typically contains the term text,
-and a cross-reference to its definition. Any hyperlinking is done on the cross-reference.
+This will be displayed according to the flavour; the rendering typically
+contains the term text, and a cross-reference to its definition. Any
+hyperlinking is done on the cross-reference.
+
 The default Metanorma rendering would look like:
 
 ____
 part of a terminological data collection which contains the
-_terminological data_ [term defined in Clause 3.1] related to one _concept_ [term defined in Clause 3.2]
+_terminological data_ [term defined in Clause 3.1] related to one
+_concept_ [term defined in Clause 3.2]
 ____
 
-In the ISO flavour of Metanorma, and flavours derived from it, the rendering follows ISO conventions:
+In the ISO flavour of Metanorma, and flavours derived from it, the rendering
+follows ISO conventions:
 
 ____
 part of a terminological data collection which contains the
@@ -689,8 +694,10 @@ system of ordered marks which can be attributed to _instants_ (3.7) on
 the _time axis_ (3.9), one instant being chosen as the origin
 ____
 
-It is conceivable that authors will want to override the automatically generated crossreference
-text with their own text, as is already possible for crossreferences within Metanorma.
+It is conceivable that authors will want to override the automatically-generated
+cross-reference text with their own text, as is already possible for
+cross-references within Metanorma.
+
 This requires an expanded version of the expression:
 
 [source,adoc]
@@ -704,14 +711,16 @@ This requires an expanded version of the expression:
 ===== time scale
 
 system of ordered marks which can be attributed to {{instant, instants}} on the
-{{time axis,time axis,see the preceding discussion}}, one instant being chosen as the origin
+{{time axis,time axis,see the preceding discussion}}, one instant being chosen
+as the origin
 ----
 
 Renders into:
 
 ____
-system of ordered marks which can be attributed to _instants_ (3.7) on
-the _time axis_ (see the preceding discussion), one instant being chosen as the origin
+system of ordered marks which can be attributed to _instants_ (3.7) on the
+_time axis_ (see the preceding discussion), one instant being chosen as the
+origin
 ____
 
 
@@ -743,7 +752,8 @@ These anchors are generated from the terms themselves according to these rules:
 * non-ASCII characters are stripped;
 * whitespaces are replaced by `-`.
 
-This means if you wanted to refer to a particular term from body text, you could either:
+This means if you wanted to refer to a particular term from body text, you could
+either:
 
 * directly refer to the term: e.g., `see definition of term:[foo]`
 * refer to the anchor of the term: e.g., `the topic is further explained in \<<term-foo>>`
@@ -775,17 +785,21 @@ lorem
 
 ==== Reference by symbol
 
-Symbols and abbreviations defined in the document can also be cited as 
+Symbols and abbreviated terms defined in the document can also be cited as
 concepts [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1].
-In the case of symbols and abbreviations, the `symbol:[]` macro is used instead of
-`term:[]`, and targets a symbol defined in a definition list within a Symbols & Abbreviations section.
-Such symbols have automatic anchors assigned to them, as with terms, but prefixed with
-`symbol-` rather than `term-`. If the `{{...}}` format is used instead, either a term or
-a symbol is matched; terms are matched by default.
+
+In the case of symbols and abbreviated terms, the `symbol:[]` macro is used
+instead of `term:[]`, and targets a symbol defined in a definition list within
+the "`Symbols and abbreviated terms`" section.
+
+NOTE: Such symbols have automatic anchors assigned to them, as with terms, but
+prefixed with `symbol-` rather than `term-`. If the `{{...}}` format is used
+instead, either a term or a symbol is matched; terms are matched by default.
 
 [source,adoc]
 ----
 == Symbols and abbreviated terms
+
 ISO:: International Standards Organization // automatically assigned the anchor symbol-ISO
 [[xyz]]IEC:: International Electrotechnical Commission // is assigned the anchor xyz
 
@@ -902,9 +916,9 @@ the literature.
 In Metanorma, this will be displayed by default as:
 
 ____
-The source of the _immature kernel_ [term defined in ISO 17301] has not yet been identified.
-Allusions to _unripe kernels_ [term defined in ISO 17301] are plentiful in
-the literature.
+The source of the _immature kernel_ [term defined in ISO 17301] has not yet been
+identified. Allusions to _unripe kernels_ [term defined in ISO 17301] are
+plentiful in the literature.
 ____
 
 NOTE: Metanorma Semantic XML preserves the information that the latter term is
@@ -952,9 +966,9 @@ kernel}} are plentiful in the literature.
 In Metanorma, this will be displayed by default as:
 
 ____
-The source of the _immature kernel_ [term defined in ISO 17301, Clause 3.9] has not yet been identified.
-Allusions to _unripe kernels_ [term defined in ISO 17301, Clause 3.9] are plentiful in
-the literature.
+The source of the _immature kernel_ [term defined in ISO 17301, Clause 3.9] has
+not yet been identified. Allusions to _unripe kernels_ [term defined in ISO
+17301, Clause 3.9] are plentiful in the literature.
 ____
 ====
 
@@ -1024,26 +1038,34 @@ the literature.
 In Metanorma, this will be displayed by default as:
 
 ____
-The source of the _immature kernel_ [term defined in IEV 171-05-02] has not yet been identified.
-Allusions to _unripe kernels_ [ibid.] are plentiful in
-the literature.
+The source of the _immature kernel_ [term defined in IEV 171-05-02] has not yet
+been identified. Allusions to _unripe kernels_ [ibid.] are plentiful in the
+literature.
 ____
 ====
 
 === Rendering options
 
-The following rendering options are defined for concepts.
+The following rendering options are defined for concept mentions.
+
+`ital`:: italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+
+`ref`:: provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
 
 `noital`:: do not italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
-`noref`:: do not give a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
-`ital`:: do italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
-`ref`:: do give a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
 
-If these options are missing, Metanorma applies the defaults for the current flavour. The default behaviour in
-Metanorma is `ital,ref` for all terms, `noital,noref` for acronyms. In ISO, the default behaviour for terms is refined:
-`noital,noref` for terms outside the Terms & Definitions section; `ital,ref` for the first mention of a term within
-the Terms & Definitions section; `ital,noref` for all subsequent mentions within
-the Terms & Definitions section.
+`noref`:: do not provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+
+If these options are missing, Metanorma applies the defaults for the current
+flavour.
+
+The default behaviour in Metanorma is `ital,ref` for all terms, `noital,noref`
+for acronyms.
+
+In ISO, the default behaviour for terms is refined: `noital,noref` for terms
+outside the "`Terms and definitions`" section; `ital,ref` for the first mention
+of a term within the "`Terms and definitions`" section; `ital,noref` for all
+subsequent mentions within the "`Terms and definitions`" section.
 
 [source,asciidoc]
 ----
@@ -1051,7 +1073,7 @@ the Terms & Definitions section.
 
 The source of the {{<<IEV:171-05-02>>,immature kernel,option="noital"}} has not yet been identified.
 Allusions to {{<<IEV:171-05-02>>,unripe kernels,immature kernel,ibid.,option="noref"}} are plentiful in
-the literature. Allusions to {{<<IEV:171-05-02>>,non-ripe kernels,immature kernel,ibid.,option="noref,noital"}} 
+the literature. Allusions to {{<<IEV:171-05-02>>,non-ripe kernels,immature kernel,ibid.,option="noref,noital"}}
 are rather less frequent.
 ----
 
