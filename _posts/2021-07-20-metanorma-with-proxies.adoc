@@ -45,7 +45,7 @@ The general pattern of the proxy value is:
 Where:
 
 * `:{port}` is optional
-* `{user}@{password}` is optional
+* `{user}:{password}@` is optional
 * the rest are mandatory
 
 They can be used like this:
@@ -53,10 +53,10 @@ They can be used like this:
 [source,console]
 ----
 # Using the metanorma command directly with the proxy endpoint
-HTTPS_PROXY=https://https-proxy.example.org metanorma site generate
+HTTP_PROXY=https://https-proxy.example.org metanorma site generate
 #
 # or if the environment variable is set separately
-# e.g. export HTTPS_PROXY=https://https-proxy.example.org
+# e.g. export HTTP_PROXY=https://https-proxy.example.org
 metanorma site generate
 ----
 
@@ -78,14 +78,14 @@ Proxies on a non-default port are supported in this pattern:
 
 [source,console]
 ----
-HTTPS_PROXY=https://{proxyhost}:{port} metanorma site generate
+HTTP_PROXY=https://{proxyhost}:{port} metanorma site generate
 ----
 
 e.g.
 
 [source,console]
 ----
-HTTPS_PROXY=https://https-proxy.example.org:32586 metanorma site generate
+HTTP_PROXY=https://https-proxy.example.org:32586 metanorma site generate
 ----
 
 == Using authenticated proxies
@@ -97,7 +97,7 @@ Such as this.
 
 [source,console]
 ----
-HTTPS_PROXY=https://user:pass@https-proxy.example.org metanorma site generate
+HTTP_PROXY=https://user:pass@https-proxy.example.org metanorma site generate
 ----
 
 [source,console]
