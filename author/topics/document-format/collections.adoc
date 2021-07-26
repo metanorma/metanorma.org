@@ -3,18 +3,29 @@ layout: author-docs
 title: Collections
 ---
 
-Metanorma supports _collections_: groupings of individual Metanorma documents into a whole.
-In HTML, Metanorma collections are treated as a web site, with each Metanorma document a component
-web site. In PDF, they are treated as a single document, composed of the individual Metanorma documents.
+Metanorma supports _collections_: groupings of individual Metanorma documents
+into a whole.
 
 Collections are of particular use when the component documents are tightly linked with each other;
 for example, multilingual documents (where each component document has the same content in a different
 language), or documents that extensively cross-reference each other (e.g. definitions of an informational
 model spanning multiple documents.)
 
-Collections are a work in progress as of this writing, and their functionality is in flux as they are
-starting to be applied to flavours. Currently collections are used in the BIPM flavour, and are in the
-process of being applied to ISO standards.
+A collection can rendered into the following output formats (other than
+Metanorma XML):
+
+* HTML: treated as a single web site, with each Metanorma document a component
+  web site.
+
+* PDF: treated as a single document, composed of the individual Metanorma
+  documents.
+
+NOTE: Collections are a work in progress as of this writing, and their
+functionality is in flux as they are starting to be applied to flavours.
+
+NOTE: Currently collections are used in the BIPM flavour, and are in the process
+of being applied to ISO standards.
+
 
 == Compiling collections
 
@@ -31,12 +42,19 @@ Options:
   -c, [--coverpage=COVERPAGE]       # Cover page as Liquid template for collection (currently HTML only)
 ----
 
-The `FILENAME` argument to `metanorma collection` is the collection manifest. This is a YAML file,
-outlining the structure of the
-collection, including the location and identifier for each of the component files. The `COVERPAGE` argument
-is a Liquid template for the index page to the collection in HTML. Both are described further below.
+Where:
 
-So the command:
+* The `FILENAME` argument to `metanorma collection` is the collection manifest.
+This is a YAML file, outlining the structure of the collection, including the
+location and identifier for each of the component files.
+
+* The `COVERPAGE` argument is a Liquid template for the index page to the
+collection in HTML.
+
+Both are described further below.
+
+The command below compiles the collection described in the collection manifest
+`si-brochure-bilingual.yml`:
 
 [source,sh]
 ----
@@ -46,18 +64,27 @@ bundle exec metanorma collection si-brochure-bilingual.yml \
   -c collection_cover.html
 ----
 
-compiles the collection described in the collection manifest `si-brochure-bilingual.yml`. It generates the collection as XML, Presentation XML, HTML and PDF, in the folder `bilingual-brochure`, and using the HTML index page template `collection_cover.html`.
+Specifically, it:
 
-Currently the `metanorma collection` executable presupposes that the individual metanorma collections
-are already compiled into XML.
+* generates the collection as XML, Presentation XML, HTML and PDF in the folder
+  `bilingual-brochure`; and
+
+* uses the HTML index page template `collection_cover.html`.
+
+Currently the `metanorma collection` executable presupposes that the individual
+metanorma collections are already compiled into XML.
 // I don't know how to make that not happen, and would ask that Abu Nashir addresses that.
-The compilation of the collection resolves any cross-references between files in the collection in preprocessing,
-so that they become simple hyperlinks. The output folder contains those preprocessed individual files, and
-files named `collection` in the target formats.
+
+The compilation of the collection resolves any cross-references between files in
+the collection in preprocessing, so that they become simple hyperlinks.
+
+The output folder contains those preprocessed individual files, and files named
+`collection` in the target formats.
+
 
 == Specifying collections
 
-=== Collection Manifest
+=== Collection manifest
 
 The collection manifest contains:
 
@@ -96,17 +123,16 @@ in nested hierarchy (`manifest`)
 
 ** `title` gives the title of the current level of the manifest
 
-** `docref` lists the documents to be used at that level of the
-manifest: it is a list of file paths relative to the manifest file
-(`fileref`) and document identifiers (`identifier`). 
+** `docref` lists the documents to be used at that level of the manifest: it is
+a list of file paths relative to the manifest file (`fileref`) and document
+identifiers (`identifier`).
 
-** If `attachment`
-is true, the file is not a Metanorma document but an attachment, and
-is passed through [added in
+** If `attachment` is true, the file is not a Metanorma document but an
+attachment, and is passed through [added in
 https://github.com/metanorma/metanorma/releases/tag/v1.2.9].
 
-** If `index` is false (true by default), the file is not to be included
-in any listing of manifest contents (i.e. in the collection coverpage). [added in
+** If `index` is false (true by default), the file is not to be included in any
+listing of manifest contents (i.e. in the collection coverpage). [added in
 https://github.com/metanorma/metanorma/releases/tag/v1.3.8]
 
 ** `manifest` can appear recursively in a manifest.
@@ -176,15 +202,18 @@ final-content:
 
 === Index page template
 
-The HTML index page template is currently realised as a Liquid template, which forms a sidebar for the display
-of the HTML content of each file. The following fields are defined:
+The HTML index page template is currently realised as a Liquid template, which
+forms a sidebar for the display of the HTML content of each file.
 
-* `doctitle`, `docnumber`, etc.: Information derived from the Relaton YAML description in the manifest.
-The field names are as defined for Liquid templates in Metanorma: see
+The following fields are defined:
+
+* `doctitle`, `docnumber`, etc.: Information derived from the Relaton YAML
+description in the manifest. The field names are as defined for Liquid templates
+in Metanorma: see
 link:/builder/topics/metadata-and-boilerplate.adoc[Metadata and Boilerplate].
 
-* `navigation`: A nested list giving hyperlinks to the constituent documents, following the specification
-in the `manifest` field of the collection manifest.
+* `navigation`: A nested list giving hyperlinks to the constituent documents,
+following the specification in the `manifest` field of the collection manifest.
 
 == Cross-references
 
@@ -225,7 +254,12 @@ an example in the English document. We start by assigning the target document ex
 [[english_example]]
 [NOTE]
 ====
-For example: The maximum electric potential difference is stem:[ii(U)_("max") = 1000 " "rm(V)]  but not stem:[ii(U) = 1000 " "rm(ii(V)_(max))]. The mass fraction of copper in the sample of silicon is stem:[w("Cu") = 1.3 xx 10^(-6)] but not stem:[1.3 xx 10^(-6) " "rm(w)//rm(w)].
+For example: The maximum electric potential difference is
+stem:[ii(U)_("max") = 1000 " "rm(V)] but not
+stem:[ii(U) = 1000 " "rm(ii(V)_(max))].
+The mass fraction of copper in the sample of silicon is
+stem:[w("Cu") = 1.3 xx 10^(-6)] but not
+stem:[1.3 xx 10^(-6) " "rm(w)//rm(w)].
 ====
 ----
 
@@ -233,9 +267,9 @@ We then define a citation in the source document, using that anchor:
 
 [source,asciidoc]
 ----
-Ce n’est que
-lorsque l’on écrit le nom de l’unité en toutes lettres que l’on applique les règles
-grammaticales ordinaires (voir un exemple en anglais page <<english-doc,anchor=english_example>>).
+Ce n’est que lorsque l’on écrit le nom de l’unité en toutes lettres que l’on
+applique les règles grammaticales ordinaires (voir un exemple en anglais page
+<<english-doc,anchor=english_example>>).
 ----
 
 Finally, we define a bibliographic entry in the source document for the English-language target document:
@@ -318,13 +352,16 @@ namespaced and which use containers:
 * The namespace is provided to deal with the fact that such anchors
 can have different provenance, and they may have particular rendering requirements. (So if we are documenting
 two different schemas, we may want to differentiate their references, and render them differently.)
+
 * The container relies on the fact that such anchors can be grouped together in a target document,
 under a clause. (For example, a schema instance.) For efficient processing, we treat each of those container clauses
 as a single bibliographic reference, and use the identifier of that clause as the bibliographic anchor.
 We also assign the container clause the namespace as a type, again for efficiency and to enforce consistent rendering.
 This is mandatory.
+
 * The locality is the identifier of the particular component addressed within the container. It is an identifier
 in the target document, and will typically point to a subclause of the container clause.
+
 * The text is the text to be rendered for the cross-reference. If not provided, Metanorma will provide a clause
 reference for the target.
 
