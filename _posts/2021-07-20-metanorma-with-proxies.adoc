@@ -31,9 +31,11 @@ https://everything.curl.dev/usingcurl/proxies[proxy usage].
 
 You can now use these environment variables to enable proxy access:
 
-* `HTTPS_PROXY`: sets the endpoint of a HTTPS proxy
-* `HTTP_PROXY`: sets the endpoint of a HTTP proxy (not recommended due to HTTP)
+* `HTTP_PROXY`: sets the endpoint of a HTTPS or HTTP proxy (HTTP not recommended)
 * `SOCKS_PROXY`: sets the endpoint of a SOCKS proxy
+
+NOTE: Metanorma differs from cURL behavior, where proxy settings for both HTTPS
+and HTTP protocols are set according to the `HTTP_PROXY` environment variable.
 
 The general pattern of the proxy value is:
 
