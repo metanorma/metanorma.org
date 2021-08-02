@@ -2,17 +2,17 @@
 layout: author-docs
 ---
 
-= Lutaml uml datamodel description plugin: Content from Enterprise Architect(xmi) files
+= LutaML UML datamodel description plugin: Enterprise Architect XMI files
 
 == Syntax
 
 === Defining the block
 
-This macro allows to quickly render datamodel packages and its dependent objects for supplied xmi file.
+This macro allows rendering datamodel packages and its dependent objects for a supplied XMI model.
 
-Given enterprise architect `example.xmi` file with 2 packages 'Another' and 'CityGML':
+Given the Enterprise Architect `example.xmi` file with 2 packages, 'Another' and 'CityGML':
 
-And the `lutaml_uml_datamodel_description` macro:
+The `lutaml_uml_datamodel_description` macro can be used as follows:
 
 [source,adoc]
 -----
@@ -21,7 +21,7 @@ And the `lutaml_uml_datamodel_description` macro:
 --
 [.before]
 ---
-mine text
+my text
 ---
 
 [.before, package="Another"]
@@ -52,7 +52,7 @@ Where:
 - `path/to/example.xmi` - required, path to the xmi file to render
 - `[.before]` - macro to add additional text before the rendered output, can be used only once, additional occurrences of macro will overwrite text
 - `[.after]` - macro to add additional text after the rendered output, can be used only once, additional occurrences of macro will overwrite text
-- `[.after, package="Another"]` - macro with text to be inserted before(after in case of `.before` name) the package
+- `[.after, package="Another"]` - macro with text to be inserted before (after in case of `.before` name) the package
 
 
 Will produce this output:
@@ -141,9 +141,6 @@ text after Another package
 
 ==== Additional Information
 
-Additional information about the CityGML can be found in the link:http://docs.opengeospatial.org/DRAFTS/20-066.html#ug-model-citygml-section[OGC CityGML 3.0 Users Guide]
-
-
 text after CityGML package
 
 
@@ -169,7 +166,8 @@ packages:
 Where:
 
 - `packages` - required, root element with the list of strings or objects
-- `Package *` - pattern matching, specifies lookup condition for packages to render, in this case, equal to the following regexp: /^Package .*$/
+- `Package *` - pattern matching, specifies lookup condition for packages to render,
+  in this case, equal to the following regexp: /^Package .*$/
 - `skip: four` - object with package name to skip for
 
 Usage with macro:
@@ -180,5 +178,8 @@ Usage with macro:
 ....
 -----
 
-The macro processor will read supplied yaml file and arrange packages according to the order supplied in the config file, also all packages supplied as `skip` will be skipped during render
+The macro processor will read the supplied YAML file and arrange packages according
+to the order supplied in the config file.
+
+All packages supplied as `skip` will be skipped during render.
 
