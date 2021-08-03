@@ -1,16 +1,5 @@
-////
-Checkboxes: 
-[%interactive]
-* [*] checked
-* [x] also checked
-* [ ] not checked
-* normal list item 
-////
-
 tag::exercise-2-1[]
-
 Now it’s your turn. Fill the document with the following attributes: 
-
 [%interactive]
 * [ ] Document title
 * [ ] Your name
@@ -41,63 +30,214 @@ Add the following sections:
 * [ ] Bibliography on line 60
 
 end::exercise-2-2[]
+
+tag::exercise-2-3[]
 Add lists to the prepopulated document.
 
 [%interactive]
-* [ ] Add an unordered list in line xx
-* [ ] Add an ordered list in line xx
-* [ ] Add a definition list in line xx
+* [ ] Add an ordered list in lines 17-24.
+* [ ] Add an unordered list in lines 36-40.
+* [ ] Add a definition list in lines 46-48.
 
+.Hint
+[%collapsible]
+====
+Ordered list items start with a dot, followed by a blank: `. List item`.
 
-tag::exercise-2-3[]
-Add a definition, alternative terms, deprecated terms, definitions
+Unordered list items start with an asterisk, followed by a blank: `* List item`. 
 
+To write a definition list, follow the syntax: 
+`term:: Definition`
+====
 end::exercise-2-3[]
 
 tag::exercise-2-4[]
-Create a new table
+Create a term definition entry for the term "immature kernel":
+[%interactive]
+* [ ] Add an alternative term ("unripe kernel")
+* [ ] Add a deprecated term ("raw kernel")
+* [ ] Add a definition: kernel, whole or broken, which is unripe and/or underdeveloped.
+
+.Hint
+[%collapsible]
+======
+The structure for a term definition looks like this:
+[source, AsciiDoc]
+----
+=== Term
+alt:[alternative term]
+deprecated:[deprecated term]
+
+definition
+----
+======
 end::exercise-2-4[]
 
+
 tag::exercise-2-5[]
-Insert a graphic from a url
-URL raussuchen
+Let's compare rice against wheat in a table:
+[%interactive]
+* [ ] Create an empty three column table with seven columns
+* [ ] Add a table title: "Nutrient profile of rice vs. wheat"
+* [ ] Let's make the first column a bit wider than the other two colums in the ratio 3:2:2 by using the `cols` attribute.
+* [ ] Populate the table like this: +
+
+[cols="3,2,2"]
+.Nutrient profile of rice vs. wheat
+|===
+|Nutrient | Rice| Wheat
+|Energy (kJ)| 1736 | 1574
+|Protein (g)| 8.1 | 14.5
+|Fat (g)| 0.8 | 1.8
+|Carbohydrates (g)| 91 | 82
+|Fiber (g) | 1.5 | 14
+|Sugar (g)|0.1 | 0.5
+|===
+
+
+.Hint
+[%collapsible]
+======
+The structure for a three column table looks like this:
+[source, AsciiDoc]
+----
+|===
+|||
+|||
+|||
+|===
+----
+======
 end::exercise-2-5[]
 
 tag::exercise-2-6[]
-Write 3 admonitions
+Insert an image of a rice plant in line 17 by following the steps below:
+[%interactive]
+* [ ] Add an image macro.  
+* [ ] Populate the `image::` macro with this link: +
+----
+ https://upload.wikimedia.org/wikipedia/commons/2/27/Oryza_sativa_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-232.jpg
+----
+[%interactive]
+* [ ] Add a picture title (Oryza sativa)
+* [ ] Create a key with three entries +
+----
+A:: Rice - A flowering specimen of the variety _melanoceras_ Alef.
+B:: blossom panicle
+C:: crop panicle
+----
+
+.Hint
+[%collapsible]
+====
+The syntax for images is: `image::URL[]`. 
+
+Make sure to include the square brackets after the link.
+====
 end::exercise-2-6[]
 
 tag::exercise-2-7[]
-Enter the following ruby/java/python code as a sample into the document and check the output. 
+Turn the existing text into admonitions:
+[%interactive]
+* [ ] Turn the text in line 15 into an `IMPORTANT` admonition.
+* [ ] Turn the text in lines 17-19 into a `WARNING` admonition.
+* [ ] Turn the text in line 21 into a `NOTE` admonition.
+
+.Hint
+[%collapsible]
+======
+To create admonitions that span several lines, you need to declare a block.
+[source, AsciiDoc]
+----
+[NOTE]
+====
+This is a long note. 
+It contains three lines.
+Line three.
+====
+----
+======
 end::exercise-2-7[]
 
 tag::exercise-2-8[]
-Mark up the following text using the text formatting options above.
+There are some code samples in the document but they are not neatly packed into `source` blocks, so they cause trouble. 
+
+[%interactive]
+* [ ] Create a source block with the attribute `ruby` for the code in lines 14-29.
+* [ ] Create a source block with the attribute `python` for the code in line 32
+* [ ] Create a source block with the attribute `java` for the code in lines 35-39.
+
+.Hint
+[%collapsible]
+======
+Source code blocks look like this:
+
+[source, Asciidoc]
+----
+[source, language]
+====
+Code
+====
+----
+======
 end::exercise-2-8[]
 
 tag::exercise-2-9[]
-Create a new index section at the bottom of the document
-Define index entries for the following words in the document:
-Word 1
-Word 2
-Word 3
-Word 4
-Word 5
-Add a second level and third level to the words:
-Word 2, Second word, ..
-Word 3, second word, ..
-Word 5, second word, ..
-
+Format the text using the following formatting:
+[%interactive]
+* [ ] Add underline formatting to "Earth institute" in line 18
+* [ ] Add bold formatting to "from Africa, for Africa" in line 20
+* [ ] Add italic formatting to _The New York times_ and _International Herald Tribune_ in line 21
+* [ ] Add smallcaps formatting to all instances of "NERICA"
 end::exercise-2-9[]
 
 tag::exercise-2-10[]
-Look at the following document and implement an internal reference for the figure and for a table. --> maybe split into several exercises
+Let's add some index entries to the text. 
+[%interactive]
+* [ ] Add a visible index entry to "UN Millennium Development project" in line 17
+* [ ] Add an invisible three level index entry after NERICA in line 21: NERICA, economy, Green revolution
+* [ ] Add an invisible two level index entry in line 22 after rice: rice, perennial
+* [ ] Create a new index section at the bottom of the document
+
+.Hint
+[%collapsible]
+====
+Visible index terms: `\((Level 1 index term))`
+
+Hidden index terms: `(\((Level 1 index term, Level 2 index term, Level 3 index term)))`
+====
 end::exercise-2-10[]
 
 tag::exercise-2-11[]
+Let's add some references to the sample document.
+
+Internal references: 
+[%interactive]
+* [ ] Create an anchor for the table called `table1`
+* [ ] Reference the table in lines 30 and 36.
+
+Bibliographic references: 
+The text references some standards which don't have a matching entry in the bibliography section. Add the following references: 
+[%interactive]
+* [ ] ISO712, ISO712:2009, _Cereals and cereal products — Determination of moisture content — Reference method_
+* [ ] ISO7301, ISO 7301:2011, _Rice -- Specification_
+* [ ] IEC61010-2, IEC 61010-2:1998, _Safety requirements for electric equipment for measurement, control, and laboratory use -- Part 2: Particular requirements for laboratory equipment for the heating of material_
+
+.Hint
+[%collapsible]
+====
+Setting an anchor: `\[[anchor]]`
+
+Referencing an achor: `\<<anchor>>`
+====
 end::exercise-2-11[]
 
 tag::exercise-3-1[]
+The text contains some typos. Mark the errors using comments.
+[%interactive]
+* [ ] Line 16: weter
+* [ ] Line 18: exseed
+* [ ] Line 20: eyes
 end::exercise-3-1[]
 
 tag::exercise-3-2[]
@@ -105,4 +245,11 @@ Enter the command `metanorma document.adoc` into the terminal and see what happe
 end::exercise-3-2[]
 
 tag::exercise-4[]
+The following document doesn't compile because there are some errors. Debug the document:
+[%interactive]
+* [ ] Line xx: Resolve xyz
+* [ ] Line xx: Resolve xyz
+* [ ] Line xx: Resolve xyz
+
+Once you solved the errors, run `metanorma document.adoc` and see if the document compiles. 
 end::exercise-4[]
