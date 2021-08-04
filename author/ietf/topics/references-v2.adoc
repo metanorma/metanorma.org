@@ -168,11 +168,6 @@ The cache of externally addressable bibliographic information is built from scre
 * https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/
 * https://xml2rfc.tools.ietf.org/public/rfc/bibxml5/
 
-The cache of current IETF and IRTF workgroups is built from screenscraping the contents of:
-
-* https://tools.ietf.org/wg/
-* https://irtf.org/groups
-
 The caches are not rebuilt daily, as the bibliographic cache is with `xml2rfc`.
 If you want to refresh the caches,
 
@@ -183,3 +178,10 @@ the header of the document being processed; or
 * run the asciidoctor executable with option `-a flush-caches=true`
 (which has the same effect).
 
+Formerly a cache of current IETF and IRTF workgroups was also built from screenscraping the contents of:
+
+* https://tools.ietf.org/wg/
+* https://irtf.org/groups
+
+This functionality has moved to being bundled with new gem releases, instead of being cached
+dynamically [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.4.0].
