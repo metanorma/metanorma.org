@@ -73,7 +73,7 @@ Choices:
 * `oab-review`: OAB Review. This is the intended draft for the "`OAB + OGC-NA Review`".
 * `public-rfc`: Public RFC. This is the draft for the (30 days) public comment period.
 * `tc-vote`: TC Vote. This is the intended draft for the TC adoption and PC adoption votes.
-* `approved`: Published. This is the document intended to be published, after comments are handled with the TC chair (after `tc-vote`). `published` is allowed as a synonym of `approved`  [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.5]. 
+* `approved`: Published. This is the document intended to be published, after comments are handled with the TC chair (after `tc-vote`). `published` is allowed as a synonym of `approved`  [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.5].
 * `deprecated`: Deprecated. This document has been deprecated.
 * `retired`: Retired. This document has been retired and no longer considered normative.
 --
@@ -567,27 +567,67 @@ ____
 Encoding requirement
 ____
 
-==== Rendering of requirements
+==== Rendering requirements
 
-In order to match the Metanorma encoding of requirements to existing OGC Asciidoc
-markup of requirements, users can refer to the rendering of Metanorma requirements
-which is aligned the existing, tabular OGC encoding of requirements.
+NOTE: In order to match the Metanorma encoding of requirements to existing OGC
+AsciiDoc markup of requirements, users can refer to the rendering of Metanorma
+requirements which is aligned the existing, tabular OGC encoding of
+requirements.
 
-A requirement under OGC is rendered as follows:
+An OGC requirement is rendered as follows:
 
 * It is a table
-* The CSS class of the requirement table is the `type` attribute of the requirement. The only types recognised are: `verification`, `abstracttest`, `class`, `conformanceclass`, and the default `recommend`.
-* The heading of the table (spanning two columns) is its name (the Asciidoctor role or style of the requirement, e.g. `[.permission] or [permission]`), optionally followed by its title (the caption of the requirement, e.g. `.Title`).
+
+* The CSS class of the requirement table is the `type` attribute of the
+requirement.
++
+The only types recognised are:
+
+** `verification`,
+** `abstracttest`,
+** `class`,
+** `conformanceclass`, and
+** `recommend` (default).
+
+* The heading of the table (spanning two columns) is its name (the AsciiDoc role
+or style of the requirement, e.g. `[.permission] or [permission]`), optionally
+followed by its title (the caption of the requirement, e.g. `.Title`).
+
 * The title of the table (spanning two columns) is its `label` attribute.
+
 * The initial rows of the body of the table are:
-  * The `obligation` attribute of the requirement, if given: _Obligation_ followed by the attribute value
-  * The `subject` attribute of the requirement, if given: _Target Type_ (for Class or Conformance Class requirement) or _Subject_, followed by the attribute value
-  * The `inherit` attribute of the requirement, if given: _Dependency_ followed by the attribute value
-  * The `classification` attributes of the requirement, if given: the classification tag (in capitals), followed by the classification value.
-* The remaining rows of the requirement are the components of the requirement, encoded as table rows instead of as a definition table (as they are by default in Metanorma). 
-  * Components can include nested requirements; these are expected in the class of Class and Conformance Class requirements.
-  * Components can include descriptive text.
-  * Components can include open blocks marked with role attributes; the Standoc default recognised components are `[.specification]`, `[.measurement-target]`, `[.verification]`, `[.import]`. Other components are not currently supported.
+
+** The `obligation` attribute of the requirement, if given: _Obligation_
+followed by the attribute value
+
+** The `subject` attribute of the requirement, if given: _Target Type_ (for
+Class or Conformance Class requirement) or _Subject_, followed by the attribute
+value
+
+** The `inherit` attribute of the requirement, if given: _Dependency_ followed
+by the attribute value
+
+** The `classification` attributes of the requirement, if given: the
+classification tag (in capitals), followed by the classification value.
+
+* The remaining rows of the requirement are the components of the requirement,
+encoded as table rows instead of as a definition table (as they are by default
+in Metanorma).
+
+** Components can include nested requirements; these are expected in the class
+of Class and Conformance Class requirements.
+
+** Components can include descriptive text.
+
+** Components can include open blocks marked with role attributes.
++
+The components recognized are:
+
+*** `[.specification]`
+*** `[.measurement-target]`
+*** `[.verification]`
+*** `[.import]`
+*** Other components are not currently supported.
 
 ==== Legacy Metanorma AsciiDoc syntax
 
