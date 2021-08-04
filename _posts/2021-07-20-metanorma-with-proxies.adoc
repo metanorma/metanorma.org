@@ -1,0 +1,176 @@
+---
+layout: post
+title:  "Using Metanorma with proxies (HTTPS, SOCKS)"
+date:   2021-07-20
+categories: documentation
+author:
+  name: Alexander Bobrikovich
+  email: abobrikovich@gmail.com
+  social_links:
+    - https://github.com/camobap
+excerpt: >-
+  Metanorma now supports Internet access via HTTP/HTTPS and SOCKS proxy servers!
+---
+
+== Introduction
+
+A good portion of Metanorma users work in security-sensitive environments (to no
+one's surprise? :-) ) that have firewalls that block access to the Internet.
+
+The only sanctioned manner to access the Internet in those environments is to
+use an HTTPS or SOCKS proxy server provided by the organization.
+
+
+== Proxied Internet access
+
+The latest Metanorma release, v1.4.12, now supports using HTTP/HTTPS and SOCKS
+proxy servers via the setting of environment variables.
+
+We took inspiration from https://curl.se[cURL] in the manner of its
+https://everything.curl.dev/usingcurl/proxies[proxy usage].
+
+You can now use these environment variables to enable proxy access:
+
+* `HTTP_PROXY`: sets the endpoint of a HTTPS or HTTP proxy (HTTP not recommended)
+* `SOCKS_PROXY`: sets the endpoint of a SOCKS proxy
+
+NOTE: Metanorma differs from cURL behavior, where proxy settings for both HTTPS
+and HTTP protocols are set according to the `HTTP_PROXY` environment variable.
+
+The general pattern of the proxy value is:
+
+[source,sh]
+----
+{protocol}://{user}:{password}@{proxyhost}:{port}
+----
+
+Where:
+
+* `:{port}` is optional
+* `{user}:{password}@` is optional
+* the rest are mandatory
+
+They can be used like this:
+
+[source,console]
+----
+# Using the metanorma command directly with the proxy endpoint
+HTTP_PROXY=https://https-proxy.example.org metanorma site generate
+#
+# or if the environment variable is set separately
+# e.g. export HTTP_PROXY=https://https-proxy.example.org
+metanorma site generate
+----
+
+And:
+
+[source,console]
+----
+# Using the metanorma command directly with the proxy endpoint
+env SOCKS_PROXY=socks5h://socks-proxy.example.org metanorma site generate
+#
+# or if the environment variable is set separately
+# export SOCKS_PROXY=socks5h://socks-proxy.example.org
+metanorma site generate
+----
+
+== Non-default proxy ports
+
+Proxies on a non-default port are supported in this pattern:
+
+[source,console]
+----
+HTTP_PROXY=https://{proxyhost}:{port} metanorma site generate
+----
+
+e.g.
+
+[source,console]
+----
+HTTP_PROXY=https://https-proxy.example.org:32586 metanorma site generate
+----
+
+== Using authenticated proxies
+
+Metanorma also supports authenticated proxies. The authentication information
+needs to be supplied in the URL of the proxy.
+
+Such as this.
+
+[source,console]
+----
+HTTP_PROXY=https://user:pass@https-proxy.example.org metanorma site generate
+----
+
+[source,console]
+----
+SOCKS_PROXY=socks5h://user:pass@socks-proxy.example.org metanorma site generate
+----
+
+
+== Proxying Git usage in Metanorma
+
+Metanorma uses Git internally for fetching of templates and fonts, and the proxy
+feature also applies to them.
+
+In order to use Git functionality behind a proxy, you need to update your own
+Git config via the `git config` command or the `~/.gitconfig` preference file.
+
+There are many ways to configure your local Git install to use proxies.
+
+The simplest, global way of setting a proxy for Git is the following.
+
+* For HTTP
++
+[source,sh]
+----
+git config --global http.proxy http://{user}:{pass}@{proxyhost}:{port}
+----
+
+* For HTTPS, you may need to handle SSL/TLS verification errors after setting
+the proxy since the encryption end is located at your HTTPS proxy endpoint:
++
+[source,sh]
+----
+git config --global http.proxy https://{user}:{pass}@{proxyhost}:{port}
+git config --global https.proxy https://{user}:{pass}@{proxyhost}:{port}
+----
+
+* For SOCKS, you will need to decide on the SOCKS protocol
++
+[source,sh]
+----
+git config --global http.proxy '{protocol}://{user}:{pass}@{proxyhost}:{port}'
+git config --global https.proxy '{protocol}://{user}:{pass}@{proxyhost}:{port}'
+----
++
+For example,
++
+[source,sh]
+----
+git config --global http.proxy 'socks5h://user:pass@socks-proxy.example.org'
+git config --global https.proxy 'socks5h://user:pass@socks-proxy.example.org'
+----
+
+The list of supported SOCKS protocols for the `{protocol}` field:
+
+* `socks://`: for SOCKS below v5
+* `socks5://`: for SOCKS v5
+* `socks5h://`: for SOCKS below v5 + host resolution via SOCKS
+
+You could actually set different proxy behavior for individual Git repositories
+-- for that topic, let's defer to this
+https://gist.github.com/evantoli/f8c23a37eb3558ab8765[great guide]
+on how to use Git proxies (thanks to the GitHub user
+https://github.com/evantoli[evantoli]).
+
+
+== Final thoughts
+
+As always, if you need help with the new functionality, please post at
+https://github.com/metanorma/discussions/discussions[Metanorma Discussions]!
+
+
+== References
+
+* https://ruby-doc.org/stdlib-2.6.3/libdoc/net/http/rdoc/Net/HTTP.html#class-Net::HTTP-label-Proxies[HTTP Proxy in Ruby]

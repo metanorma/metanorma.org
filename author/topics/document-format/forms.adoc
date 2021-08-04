@@ -9,7 +9,7 @@ macros [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.
 In PDF and Word output, these elements are rendered with simple fallbacks.
 
 * A `form` is entered as an open block or example block with style parameter `[form]`, and with optional parameters
-`id`, `name`, `action`.
+`id`, `name`, `action`, and [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1] `class`.
 * An `input` element is entered as the macro `input:type:[attributes]`, where `type` is the
 input `type` attribute, and attributes are the remaining supported attributes
 (`id name value disabled readonly checked maxlength minlength`), as comma-delimited `name=value`
@@ -32,7 +32,7 @@ The following is an illustration of a Metanorma encoding of a form, and the HTML
 
 [source,asciidoc]
 ----
-[form,id=N0,name=N1,action="/action_page.php"]
+[form,id=N0,name=N1,action="/action_page.php",class="checkboxes"]
 --
 label:fname[First name:] +
 input:text[id=fname,name=fname] +
@@ -70,7 +70,7 @@ input:submit[value="Submit"]
 
 [source,html]
 ----
-<form id="_0e96c6c2-44a2-4657-9899-4649470fbf41" name="N1" action="/action_page.php">
+<form id="_0e96c6c2-44a2-4657-9899-4649470fbf41" name="N1" action="/action_page.php" class="checkboxes">
 <p id="_3ba204fc-eb2b-4369-951d-5b5e2bd19b6b"><label for="fname">First name:</label><br />
 <input id="fname" name="fname" type="text" /><br />
 <label for="lname">Last name:</label><br />

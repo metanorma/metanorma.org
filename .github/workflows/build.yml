@@ -22,10 +22,10 @@ jobs:
         with:
           ruby-version: '2.7'
           architecture: 'x64'
+          bundler-cache: true
       - uses: actions/checkout@master
       - name: Update gems
         run: |
-          gem install bundler
           bundle install --jobs 4 --retry 3
       - name: Build site
         run: |
