@@ -1,0 +1,1062 @@
+////
+This is everything what the tutorial will cover. I will break it up into topics according to the underscores that separate the sections from one another. 
+Please read the tutorial and provide me with feedback if the information is accurate from a technical point of view. 
+If you have other recommendations for what I should inlcude or leave out, let me know. Please bear in mind that the tutorial should teach an *absolute beginner* how to get started. 
+I will come up with exercises while you review the document. 
+////
+
+//Welcome page:
+If you are completely unfamiliar with Metanorma, you’ve come to the right place. In this tutorial, you will learn how to create Metanorma documents, create outputs, and even learn the basics of troubleshooting. 
+
+Curriculum:
+// Include good-looking navigation of the headings. 
+
+== Introduction to Metanorma
+tag::[learningobjectives-1]
+
+Before we dive into using the Metanorma toolchain, let’s cover the basic ideas you need to understand to work with Metanorma. In this lesson we will cover:
+
+* What Metanorma is
+* The differences between Word and Metanorma 
+* The paradigms “What you see is what you get” vs. “What you see is what you mean”
+* What the Metanorma workflow looks like from document creation to publication
+
+end::[learningobjectives-1]
+
+=== What is Metanorma?
+include::../author/concepts/wysiwyg_vs_wysiwym.adoc[leveloffset=+2]
+include::../author/concepts/what_is_metanorma.adoc[leveloffset=+2]
+
+Let’s explore the workflow of Metanorma in the next lesson.
+>> Start next lesson //Button text
+
+=== The Metanorma Workflow
+
+include::../author/concepts/metanorma_workflow.adoc[]
+
+Let’s look at the core of each standard document: Metanorma AsciiDoc.
+>> Start next lesson //Button text
+
+
+=== Summary
+
+Let’s recap what we’ve learned so far:
+
+* Metanorma uses a what you see is what you mean (WYSIWYM) approach, meaning that the text you write is what you *want* to see.
+* You need to render documents to have a correct visible output. The appearance is controlled in a stylesheet.
+* Metanorma is an umbrella term for several things and consists of: +
+The metanorma toolchain, document models and a XML schema of these document models.
+* Metanorma documents use Metanorma AsciiDoc markup 
+* When you want to generate an output, the AsciiDoc document is converted into XML in order to be checked against the XML schema.
+* If the document is valid, Metanorma generates an HTML, PDF and Microsoft Word (`.doc`) output. 
+
+Now that we have covered the fundamentals, let’s have a look at AsciiDoc.
+>> Start next lesson
+
+== Introduction to AsciiDoc
+
+tag::[learningobjectives-2]
+
+Before we write our first Metanorma document, let us look at the foundation for all Metanorma documents: AsciiDoc. In this lesson, we will discuss what AsciiDoc is and what a typical Metanorma document looks like. You will also learn how to write AsciiDoc.
+
+end::[learningobjectives-2]
+
+Each Metanorma document is written in AsciiDoc, a markup language that annotates text with processing instructions for layout. Since AsciiDoc only consists of text, you can use any editor to create AsciiDoc files (`.adoc` files). AsciiDoc is very similar to Markdown or Wiki formatting but provides more precise markup for creating text documents, for example to create a bibliography section or an index.
+
+Because Metanorma fulfills the markup requirements of SDOs, Metanorma extends plain AsciiDoc. This version of AsciiDoc is called Metanorma AsciiDoc. 
+
+An AsciiDoc document consists of different levels of granularity:
+
+* The document head (also called the header)
+* Sections
+* Blocks
+* Inline markup
+
+We will have a look at these different levels of markup in the following lessons. 
+You can do the exercises either in the browser, or on your local machine. If you choose to use your local machine, you will need to install metanorma and set up a new metanorma project. 
+
+>> Start next lesson
+
+=== The Header
+
+The header contains information about the document (metadata). Some of the metadata will be visible in your document, such as `:title:`, while others are not visible but still affect how your document is generated, like `:draft:`. 
+You can specify metadata about:
+
+* Authors: Issuing organization, authors, and their location
+* Document info: Language, document stages (draft, published, etc.) copyright holder, etc.
+* Dates: Draft dates, revision dates, publishing date, copyright year, etc. 
+* Identifiers: Document numbers, ISBNs, URIs (Uniform Resource Identifiers)
+
+NOTE: Other metadata influence how the document is generated and should only be used by advanced users. Often, they will require familiarity with your SDO's structures and processes.
+
+Here’s an example:
+
+[source, AsciiDoc]
+----
+= Rice model <1>
+Author <2>
+:docnumber: 17301 <3>
+:doctype: standard <4>
+:copyright-year: 2021
+:language: en
+:mn-document-class: iso <5>
+:technical-committee: Food products <6>
+:fullname: Your Name <7> 
+:fullname_2: Co-Authors Name
+:address: Chemin de Blandonnet 8 + \ <8>
+CP 401 - 1214 Vernier + \
+Geneva + \
+Switzerland
+----
+
+<1> Document title
+<2> The author line is ignored by Metanorma, but needs to be present for Asciidoctor to process document attributes correctly.
+<3> `:docnumber:` is the first document attribute, and it has the value _17301_
+<4> `:doctype:` defines the type of document, for example standard, report, guide, etc. The allowed values for this attribute are specific to each SDO.
+<5> `:mn-document-class:` indicates the Metanorma flavor the document should be checked against. 
+<6> The committee responsible for the document
+<7> The author’s name. You can add co-authors by appending the attribute with a number:  `_2`, `_3`, and so on. 
+<8> When you add an address that contains multiple lines, end each line except for the last with `+ \`. Alternatively, you can enter each line into its own attribute, such as `:street:`, `:postcode:`, `:city:`, `:country:`. 
+
+[[exercise-2-1]]
+include::exercises.adoc[tag=exercise-2-1]
+
+Let’s add some sections to our document in the next lesson.
+>> Start next lesson 
+
+=== Sections
+
+Sections define hierarchy levels in your document and are equivalent to chapters. The document title is the highest section and is created by prepending a `=` sign in front of the heading. If you want to go one level deeper in the hierarchy, add another `=`. 
+Here’s an example: 
+
+[source, AsciiDoc]
+----
+= Document title
+== Section 1
+=== Section 1.1
+==== Section 1.1.1
+===== Section 1.1.1.1
+== Section 2
+…
+----
+
+Metanorma provides a document model that determines what sections need to appear in a document. Let’s have a look at the standard document model (standoc) to understand what kinds of sections appear in a typical Metanorma document.
+
+NOTE: The standoc flavour does not correspond to any one SDO: it is a default model that other flavors are based on.
+
+.A UML representation of all section classes in Metanorma
+image::https://raw.githubusercontent.com/metanorma/metanorma-model-standoc/master/images/StandardDoc_Sections.png[A UML representation of all section classes in Metanorma]
+
+A typical Metanorma document can contain the following sections:
+
+* Abstract
+* Foreword
+* Introduction
+* Acknowledgments
+* Scope
+* Terminology 
+* Definitions
+* Clauses 
+* Bibliography
+* Annex
+
+NOTE: Each organization is based on the standard document model but they can omit sections or make them mandatory, if they choose to. For example, only NIST uses the acknowledgments section, whereas other SDOs do not require it. Check the https://www.metanorma.org/flavors/[flavor documentation] for more details on how your SDO uses Metanorma. 
+
+To successfully validate a document, the compiler needs to know what sections are in the document. Most of the time, the section headings match sections defined in the document model. However, not all sections need an identifier, for example, your ordinary content sections fall under the category of `clause section`, and are not further standardized.
+
+If you want to use a different title or create a document in a language other than English, you need to add metadata in square brackets to ensure that sections are recognized. Plain AsciiDoc already provides some https://docs.asciidoctor.org/asciidoc/latest/sections/section-ref/#section-styles[section metadata] that Metanorma uses for document validation: 
+
+* `[abstract]`
+* `[acknowledgments]`
+* `[appendix]`
+* `[bibliography]`
+* `[index]`
+* `[preface]`
+
+Documents can contain only one Abstract, one Acknowledgements section, and one Index. On the other hand, documents can have any number of appendixes (or annexes), bibliographies, and prefatory sections, each of them marked with those attributes.
+There are also some Metanorma-specific section identifiers, that follow the syntax `[heading=section]`:
+
+* `[heading=terms and definitions]`
+* [heading=foreword]
+* [heading=introduction]
+* [heading=scope]
+* [heading=symbols and abbreviated terms]
+
+
+
+[source, AsciiDoc]
+----
+= Document title
+
+== Abstract
+
+== Foreword
+
+[preface] <1>
+== Introduction to version 3 of this standard
+
+[bibliography] <2>
+== Normative references
+
+[heading=terms and definitions] <3>
+== Terms, definitions, and abbreviations
+
+
+[bibliography]
+== Bibliography
+	...
+[appendix,obligation=informative] <4>
+== Annex
+	...
+----
+
+<1> This section is an introduction but the compiler can not recognize it because it deviates from plain `== Introduction`. The `preface` attribute ensures that the document structure is still valid.
+<2> The `Normative references` section contains references to related standards. The compiler needs the `[bibliography]` tag, so that it renders the reference correctly.
+<3> Use the `heading` tag to assign section types specific to Metanorma.
+<4> Here, the appendix is called “Annex”, and needs the `appendix` tag to define what kind of section it is. You can specify if a section is normative or informative by adding the `obligation` identifier after the section identifier. 
+
+[[exercise-2-2]]
+include::exercises.adoc[tag=exercise-2-2]
+
+We’ve built the basic structure of a Metanorma document. Let’s add some content to our document in the next lesson.
+>> Start next lesson 
+
+=== Blocks
+
+Information that forms a logical segment, such as a paragraph or a list, is called a block.
+Most blocks start and end with a https://asciidoctor.org/docs/asciidoc-writers-guide/#delimited-blocks[delimiter] which is a matching sequence of characters. The delimiters tell the compiler that the text they contain belongs together. 
+
+.Examples for different blocks
+[source, AsciiDoc]
+------
+I’m a paragraph and I don’t need a block delimiter. 
+<1>
+. I’m a list item and also do not need a delimiter
+. I’m the second list item
+. I'm list item number three
+
+//// <2>
+I’m a comment.
+////
+
+[source, python] <3>
+----
+print("Hello World!")
+----
+------
+
+<1> Paragraphs and lists are types of blocks that do not need any delimiters. They are separated by a blank line in between blocks.
+<2> Comments use four slashes as a delimiter `////`. No other block uses slashes to begin and end a block.
+<3> All other types of blocks rely on delimiters, such as four dashes `----` or four equal signs `====`. This block contains a code sample written in python.
+
+
+There are many types of blocks in AsciiDoc, such as:
+* Paragraphs
+* Lists
+* Tables
+* Images
+* Admonitions (Note, Caution, Warning, etc.)
+* Examples
+* Code samples
+* Mathematic formulas
+* Term definitions
+* Comments
+* Reviewer Notes
+
+Let’s look at lists in the next lesson. 
+>> Next lesson
+
+==== Lists
+
+Metanorma AsciiDoc supports three types of lists:
+
+* Unordered lists
+* Ordered lists
+* Definition lists
+
+*Unordered lists*
+
+Unordered lists are bulleted and can be nested. They look like this:
+
+[source, AsciiDoc]
+----
+The main changes compared to the previous edition are:
+
+* updated normative references;
+* deletions:
+** deletion of 4.3. [nested list item]
+** deletion of 4.4. [nested list item]
+----
+
+*Ordered lists* 
+
+Ordered lists are invoked by beginning the line with a dot `.`. The list items are numbered automatically. The list style depends on the stylesheet of your organization. However, if you want to tweak how your list looks like, you can use an attribute before the list starts, for example:
+
+[source, AsciiDoc]
+----
+[type="alphabetic_upper"]
+. First as "A"
+. Second as "B"
+
+[type="roman_upper"]
+. First as "I"
+. Second as "II"
+----
+
+*Definition lists*
+
+Definition lists (also called https://docs.asciidoctor.org/asciidoc/latest/lists/description/[description lists] pair a term and a description together. They are often used in a "Definitions" section to define units or terms. Definition lists can appear in other sections as well, *except* for the Terms section, which provides a special syntax for defining terms. 
+Definition lists follow the syntax of `term:: Definition`. The following example defines units that are used in the document.
+
+NOTE: `stem:[]` is used for mathematical formatting, and results in italics. So `stem:[w]` is an italic w, _w_; `stem:[m_D]` is an italic m with a D subscript: _m~D~_.
+
+[source, AsciiDoc]
+----
+stem:[w]:: is the mass fraction of grains with a particular defect in the test sample;
+stem:[m_D]:: is the mass, in grams, of grains with that defect;
+stem:[m_S]:: is the mass, in grams, of the test sample.
+----
+
+[[exercise-2-3]]
+include::exercises.adoc[tag=exercise-2-3]
+
+
+Great work! Let’s have a look at term definitions in the next lesson.
+>> Start next lesson
+
+==== Term definitions
+If you want to cite a term throughout the standard, include it in the terms and definitions section. Term definitions vary from definition lists, as they are more granular and provide metadata to mark features such as alternative terms or deprecated terms. 
+Let’s have a look at a term entry:
+
+[source, AsciiDoc]
+----
+== Terms and definitions <1>
+
+=== husked rice <2>
+deprecated:[cargo rice] <3>
+
+Paddy from which the husk only has been removed. <4>
+
+[.source] <5>
+<<ISO7301,clause 3.2>>, The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here
+
+=== milled rice
+alt:[white rice] <6>
+
+term:[husked rice] from which almost all of the bran and embryo have been removed by milling. <7>
+
+=== extraneous matter
+alt:[EM]
+domain:[rice] <8>
+
+organic and inorganic components other than whole or broken kernels
+
+[example] <9>
+Foreign seeds, husks, bran, sand, dust.
+----
+<1> The start of the terms and definitions section
+<2> The term that should be defined is marked as a subheading using three equal signs. `===`.
+<3> The term `husked rice` supersedes `cargo rice`. To document the old term, use the annotation `deprecated:[term]`.
+<4> Definition for the term: the first paragraph of text after macros like `deprecated:[]` and `alt:[]`.
+<5> The `[.source]` attribute indicates that a citation follows, indicating where the term definition has been taken from. Make sure to include the dot `.` before source, so that the citation will be rendered correctly. 
+<6> `alt:[white rice]` indicates the alternative term for milled rice. 
+<7> `term:[husked rice]` cites the previously introduced term.
+<8> Terms that do not obviously belong to a certain domain can be annotated with `domain:[]` at the start of their definition.
+<9> If you provide an example, use the `[example]` attribute so that it renders according to the styling rules of your SDO. 
+
+
+[[exercise-2-4]]
+include::exercises.adoc[tag=exercise-2-4]
+
+The next type of block we will cover are tables.
+>> Start next lesson
+
+==== Tables
+Tables are a useful tool to collect and display measured data. As AsciiDoc is all text input, it uses specific symbols to determine where new table rows and columns begin. A simple table looks like this:
+
+[source, AsciiDoc]
+----
+[cols="1,1"] <1>
+.A table with a title <2>
+|=== <3>
+|Cell in column 1, header row |Cell in column 2, header row <4>
+
+|Cell in column 1, row 2 
+|Cell in column 2, row 2 <5>
+|=== <6>
+----
+<1> Attribute that specifies the table. `[cols="1,1"]` tells the compiler that there are two columns `cols=”x,x”` that should appear in equal amount of spacing. For example, `[cols="4,2,4"]` would define three columns. The first and last column’s width would be four times the relative width and the middle column would be half as broad. This attribute is optional.
+<2> You can add a table title by beginning the line with a dot `.`. Make sure that there is no space between the dot and the first word of the heading. 
+<3> Starting delimiter `|===`
+<4> The first line after the delimiter is the header row. To add a column, add a vertical bar `|` before the text that should be in the column. If you use the `[cols]` attribute, different cells in a row can appear on different lines of AsciiDoc text; otherwise, they need to all be on the same line of text.
+<5> If you deal with larger amounts of text, you can also start the next column in the new line.
+<6> Closing delimiter `|===`
+
+Since standardization documents can get a bit complex, Metanorma AsciiDoc provides additional metadata for tables: 
+* `headerrows` defines how many table rows are headers
+* `alt` defines the alt text that is shown when the table can not be displayed (HTML only)
+* `width` defines the total width of the table in relation to the whole page. 
+
+.Example of a more complex table
+[source, AsciiDoc]
+----
+[headerrows=2,alt=Table of maximum mass fraction of defects in husked rice,width=70%]
+|===
+.2+|Defect 4+^| Maximum permissible mass fraction of defects in husked rice +
+stem:[w_max]
+| in husked rice | in milled rice (non-glutinous) | in husked parboiled rice | in milled parboiled rice
+
+| Extraneous matter: organic | 1,0 | 0,5 | 1,0 | 0,5
+
+|===
+----
+
+The table renders as:
+
+[headerrows=2,alt=Table of maximum mass fraction of defects in husked rice,width=70%]
+|===
+.2+|Defect 4+^| Maximum permissible mass fraction of defects in husked rice +
+stem:[w_max]
+| in husked rice | in milled rice (non-glutinous) | in husked parboiled rice | in milled parboiled rice
+
+| Extraneous matter: organic | 1,0 | 0,5 | 1,0 | 0,5
+|===
+
+[[exercise-2-5]]
+include::exercises.adoc[tag=exercise-2-5]
+
+Let’s look at inserting images next.
+>> Start next lesson
+
+==== Images
+
+There are two AsciiDoc image macro types, block and inline. 
+
+*Block image*
+
+A block image is displayed as a discrete element, i.e., on its own line, in a document. A block image is designated by image macro name and followed by two colons (`::`) It’s preceded by a blank line, entered on a line by itself, and then followed by a blank line.
+
+However, in standard documents images don’t just decorate text, but rather show important features. You might want to reference that image in the text, which you need an anchor for. You can also explain a graphic by adding a key. The entries of the key follow the syntax of a definition list (`key::Explanation`).
+
+[source, AsciiDoc]
+----
+[[figureC-1]] <1>
+.Typical gelatinization curve <2>
+image::images/rice_image2.png[Image of the gelatinization curve] <3>
+
+[%key] <4>
+stem:[t_90]:: time required to gelatinize 90 % of the kernels <5>
+P:: point of the curve corresponding to a cooking time of stem:[t_90]
+----
+<1> Anchor for references
+<2> Image title
+<3> Image macro `image::path/file.jpg[alt text]`. If you don’t want to write alt text, you still need to append empty square brackets at the end of the macro. 
+<4> [%key] indicates that the image has a key.
+<5> Key entries
+
+*Inline image macro* 
+//Maybe only discuss in documentation but not in tutorial, as it won't be covered in the exercise?
+An inline image is displayed in the flow of another element, such as a paragraph. This is useful when you want to incorporate buttons or other icons into the text flow. 
+
+The inline image macro is almost identical to the block image macro, except its macro name is followed by a single colon (:). For more information refer to the https://docs.asciidoctor.org/asciidoc/latest/macros/images/[AsciiDoc documentation]. 
+
+
+[[exercise-2-6]]
+include::exercises.adoc[tag=exercise-2-6]
+
+Let’s look at admonitions next.
+>> Start next lesson
+
+==== Admonitions
+Admonitions are signal words used to catch the reader’s attention, such as “TIP”, “NOTE”, or “WARNING”. There are two ways to declare an admonition: in a single paragraph and as a block.
+
+*Single-paragraph Admonitions*
+
+Start a new line with the signal word in all caps and a colon and write your admonition.
+
+.Example for an inline note
+[source, AsciiDoc]
+----
+NOTE: Advice on when to use which signal word is specified in ANSI Z535.6. 
+----
+
+*Block admonitions*
+
+. Start with the signal word in all caps enclosed in square brackets.
+. Insert the block delimiter.
+. Insert any AsciiDoc markup that you need.
+. End the block with a block delimiter.
+
+.Example for a note block.
+[source, AsciiDoc]
+------
+[NOTE] <1>
+==== <2>
+This is an example of an admonition block. <3>
+
+Unlike an admonition paragraph, it may contain any AsciiDoc content.
+The style can be any one of the admonition labels:
+
+* NOTE
+* TIP
+* WARNING
+* CAUTION
+* IMPORTANT
+==== <4>
+------
+
+Metanorma adds two more signal words: "Safety precautions" and "Danger". Since they are not standard  AsciiDoc functionality, you'll need to mark them with a `type` attribute like this: 
+
+[source, AsciiDoc]
+====
+[type=danger]
+DANGER: Do perform maintenance tasks while the machine is still operating. 
+====
+
+If an admonition is valid for a whole section or a whole document and should appear before any content in the section, you can set the `beforeclauses` attribute like this:
+
+[source, AsciiDoc]
+------
+[IMPORTANT,beforeclauses=true]
+====
+This important notice applies to the entire document.
+====
+------
+
+[[exercise-2-7]]
+include::exercises.adoc[tag=exercise-2-7]
+
+Great progress so far! Let's look at code samples in the next lesson.
+>> Start next lesson
+
+==== Code Samples
+
+AsciiDoc supports code samples using the `[source]` attribute before a new block. If you specify the coding language, the sample will be highlighted correctly in HTML output. Unlike other blocks in Asciidoc, line breaks and space indentations are preserved. Have a look at the example:
+
+[source, AsciiDoc]
+------
+.Sample Code <1>
+[source,ruby] <2>
+==== <3>
+puts "Hello, world." <4>
+%w{a b c}.each do |x|
+  puts x
+end 
+==== <5>
+------
+
+<1> Title for your code sample (optional)
+<2> `[source]` specifies that the block contains code. `ruby` is the coding language. The block will highlight keywords depending on the coding language.
+<3> Starting delimiter
+<4> Sample code
+<5> Ending delimiter
+
+[[exercise-2-8]]
+include::exercises.adoc[tag=exercise-2-8]
+
+We’re done with blocks - good job! The next lesson covers inline markup. 
+>> Start next lesson
+
+=== Inline Markup
+
+To annotate single words, you use inline markup. The markup encloses the word(s) and you do not need to begin a new line. Inline markup allows you to:
+
+* Emphasize text
+* Link to external resources with hyperlinks
+* Create internal cross-references
+* Create index entries
+* Create Bibliographic entries
+
+Let’s look at these features in the following lessons.
+>> Start next lesson
+
+==== Text markup
+
+The simplest form of inline markup is to emphasize text. 
+AsciiDoc allows you to:
+
+* Make words *bold* using asterisks 
+* _Italicise_ words with underscores 
+* Apply `monospacing` using backticks
+
+[source, AsciiDoc]
+---- 
+*bold*
+_italic_
+`monospace`
+^superscript^
+~subscript~
+----
+
+Metanorma extends these simple formats with:
+
+* Strikethrough text ([strike]#strike through text#)
+* Smallcaps text ([smallcap]#small caps text#)
+* Underline text ([underline]#underline text#)
+
+[source, AsciiDoc]
+---- 
+[strike]#strike through text#
+[smallcap]#small caps text#
+[underline]#underline text#
+----
+
+Metanorma also supports automatic character replacements, for example the copyright symbol © can be entered using `(C)`. For more information about automatic character replacements, see https://docs.asciidoctor.org/asciidoc/latest/subs/replacements/[the AsciiDoc documentation]. 
+
+[[exercise-2-9]]
+include::exercises.adoc[tag=exercise-2-9]
+
+Let’s look at a more advanced form of inline formatting: index entries
+>> Start next lesson
+
+==== Index Terms
+
+NOTE: Metanorma always processes index terms and creates the corresponding XML. However, not all flavors render an Index section. Check out the https://www.metanorma.org/flavors/[flavor documentation] for your SDO to see if it supports indexing.
+Before you define an index term, your document needs a section where the index terms can appear. To create an index, define a level 1 section (==) marked with the style index at the end of your document.
+
+[source, AsciiDoc]
+----
+[index]
+== Index
+----
+Index entries can consist of up to three levels using a comma to separate the terms. Metanorma provides two options to create an index entry:
+
+* Visible index terms are words within the text that are annotated with an index entry using double parentheses. `\((Level 1 index term))`
+* Hidden index terms are index entries that are not visible in the final output and are generated using triple parentheses. `(\((Level 1 index term, Level 2 index term, Level 3 index term)))`. These allow the index to include optional subterms and sub-subterms; they also allow the index term to differ from what actually appears in the text.
+
+Let’s have a look at an example:
+
+[source, AsciiDoc]
+----
+The Lady of the Lake, her arm clad in the purest shimmering samite,
+held aloft Excalibur from the bosom of the water,
+signifying by divine providence that I, ((Arthur)), <1>
+was to carry Excalibur (((Sword, Broadsword, Excalibur))). <2>
+----
+<1> `\((Arthur))` will be displayed as `Arthur` in the text and carries a first level index entry
+<2> `(\((Sword, Broadsword, Excalibur)))` will not appear in the text, but a three level index entry will be generated.
+
+[[exercise-2-10]]
+include::exercises.adoc[tag=exercise-2-10]
+
+In the next lesson, we will cover references and links. 
+>> Start next lesson
+
+==== References
+
+References are a core part of standards, because they coexist and relate to other standard documents. There are four types of references:
+
+* Hyperlinks to an external source, for example a link to a website
+* Metadata references
+* Internal references to a section, image, table, etc.
+* Bibliographic entries
+
+*Hyperlinks*
+
+AsciiDoc lets you include links to external sources by pasting the URL into the document, and optionally appending the link text in square brackets `[Link text]`. 
+
+.Example of a link
+[source, AsciiDoc]
+----
+http://www.iso.org/[International Organization for Standardization].
+----
+
+*Metadata references*
+
+Every document contains a set of metadata to describe the document. You can insert a metadata reference by putting the attribute in curly braces `{attribute}`. The reference will be replaced with the value in the rendered output. 
+
+[source, AsciiDoc]
+----
+:technical-committee-number: 2
+:technical-committee: Fasteners
+:subcommittee-number: 11
+:subcommittee: Fasteners with metric external thread
+
+This document was prepared by Technical Committee ISO/TC {technical-committee-number}, _{technical-committee}_, Subcommittee SC {subcommittee-number}, _{subcommittee}_.
+----
+
+
+*Internal references*
+
+To link to an important place in your document, you need to set an anchor using double square brackets `[[anchor]]`. Metanorma automatically numbers and names these references; because they are autonumbered, they will be renumbered automatically if you insert any new text of the same type. Since the markup will be converted into XML, the anchor must follow the https://www.w3.org/TR/xml-names11/[XML namespace conventions]. Therefore, an anchor name name must not contain: 
+colons
+whitespaces
+words starting with numbers.
+
+[source, AsciiDoc]
+----
+[[figureC-1]]
+.Typical gelatinization curve 
+image::images/rice_image2.png[Image of the gelatinization curve] 
+----
+
+image::../assets/author/tutorials/references_img_anchor.jpg[]
+
+To reference an anchor, type the anchor name like this `<<anchor>>`.
+[source, AsciiDoc]
+----
+ <<figureC-1>> gives an example of a typical gelatinization curve.
+----
+
+image::../assets/author/tutorials/references_img_target.jpg[]
+
+If you want to display text other than the anchor text, you just have to append the text inside the brackets using a comma.
+ 
+[source, AsciiDoc]
+----
+ <<figureC-1, The diagram>> gives an example of a typical gelatinization curve.
+----
+
+*Bibliographic entries*
+
+In standard documents typically there are two types of references, namely the “normative references” and the “bibliography” (informative references).
+Every bibliographic section must be preceded by the style attribute `[bibliography]` so that bibliographic references are recognized as such. 
+
+A reference entry is usually part of an unordered list (`*`). The bibliographic entry is enclosed in triple square brackets (`[[[]]]`) and contains:
+
+. The anchor name used to reference this entry
+. A document identifier
+
+After the reference, you may include the reference text in italics, for example the title of the document. If the document identifier is recognised by Metanorma, however, its bibliographic description is fetched automatically from the SDO web site, and will overwrite any title you provide with the authoritative title of the reference.
+
+[source, AsciiDoc]
+----
+* [[[anchor,document identifier or reference tag]]], _reference list text_
+----
+
+.Example for a bibliography section
+[source, AsciiDoc]
+----
+[bibliography]
+== Normative references
+
+* [[[ISO20483,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,ISO 6540:1980]]]. _Maize -- Determination of moisture content (on milled grains and on whole grains)_
+----
+Gets rendered as:
+* ISO 20483:2013. _Cereals and cereal products — Determination of moisture content — Reference method_
+* ISO 6540:1980. _Maize — Determination of moisture content (on milled grains and on whole grains)_
+
+To cite an entry from your bibliography you type the anchor name like this `<<ISO20483>>`.
+If you want to specify a location within the cited document, you can add https://www.metanorma.org/author/topics/document-format/bibliography/#localities[localities] in the brackets like so: `<<ISO20483, part=IV,chapter=3,paragraph=12>>`.
+
+[[exercise-2-11]]
+include::exercises.adoc[tag=exercise-2-11]
+
+Let’s summarize what we’ve learnt so far.
+>> Start next lesson
+
+=== Summary
+
+We’ve covered a lot of ground, so here is a quick summary for you:
+
+* Each Metanorma document contains metadata in the header using the colon notation `:attribute:`.
+* A Metanorma document consists of several predefined sections. The document model of your organization dictates which are optional and which are mandatory. Sections are invoked using equal signs `=`.
+* Blocks are entities that belong together, such as paragraphs, lists, tables, etc. Paragraphs and lists do not need to be marked by delimiters. The remaining block types begin and end with a delimiter, for example four dashes `----`.
+* Inline markup is used for text formatting and references. You can reference:
+** an external source (`URL[Link text]`) 
+** Metadata (`{attribute}`)
+** Places in the document by setting an anchor (`[[anchor-id]]`) and referencing the anchor (`<<anchor-id>>`)
+** Bibliographic entries + 
+[source, AsciiDoc]
+----
+* [[[anchor,document identifier or reference tag]]], _reference list text_
+<<anchor>>
+----
+
+You did a great job so far! Let’s talk about reviewing documents in the next lesson. 
+>> Start next lesson
+
+
+== Reviewing Metanorma Documents
+tag::[learningobjectives-3]
+
+Reviewing documents is an integral part of developing a standard. The best way to review a document, is to use a version control environment that supports comments as well, such as GitHub and its feature GitHub discussions. In case your organization does not use a git-based approach, Metanorma provides a comment functionality that lets you insert your remarks and create to dos. 
+In this lesson, you will learn: 
+
+* How to add comments using AsciiDoc markup
+* How to generate a draft using the command line. 
+
+end::[learningobjectives-3]
+
+>> Start next lesson
+
+=== Adding Comments
+
+include::../author/topics/document-format/reviewer-notes.adoc[leveloffset=1]
+
+[[exercise-3-1]]
+include::exercises.adoc[tag=exercise-3-1]
+
+Now that we've commented on the content, let's create a draft of the document. 
+>> Start next lesson
+
+=== Rendering a Draft Document
+
+To render a draft that your peers should review, you need to add these metadata to the document header:
+
+* `:draft:`: Tells the compiler to display comments in the final output
+* `:status: draft` Defines the current document stage. +
+NOTE: Some flavors, for example ISO, use `:docstage:` and a status code to indicate in what stage the document is.
+
+To compile a metanorma document you must enter the name of the application `metanorma` and the document you want to compile `document.adoc`. 
+
+[source, shell]
+----
+metanorma document.adoc
+----
+With this command you trigger the metanorma toolchain to:
+
+* Read the AsciiDoc input
+* Convert it into XML
+* Check the XML against the document model (XML schema)
+* Create HTML, PDF, and DOC output
+
+[[exercise-3-2]]
+include::exercises.adoc[tag=exercise-3-2]
+
+
+Now that you are familiar with the simplest way of creating a Metanorma document, let's look at different ways to compile documents in the next lesson.
+>> Start next lesson
+
+== Publishing a Metanorma Document
+tag::[learningobjectives-4]
+
+Once you are happy with your document, the next step is to generate an output to send your SDO for publishing. Since Metanorma poses some validity criteria for your document, it is normal to face some errors. Don’t worry, we will go through some common errors and teach you how to resolve them. 
+In this lesson you will learn:
+
+* How to generate PDF, HTML, and Word output using the command line
+* How to troubleshoot common errors 
+
+end::[learningobjectives-4]
+
+>> Start next lesson
+
+=== Compiling a Metanorma Document
+
+To successfully compile a Metanorma document, the toolchain looks at:
+
+* Metadata: The title, document flavor, and document type.
+* Syntax: Is the entered AsciiDoc code correct?
+* Dependencies: Are all tools needed to compile the document installed?
+* File references: Are any files referred to by the file being compiled, and is their path entered correctly, for example when you include images (`image::PATH[]`). Advanced AsciiDoc usage also allows a document to embed other AsciiDoc documents (`include::PATH[]`), and Metanorma extends this in advanced usage to external data sources. 
+
+To compile a Metanorma document:
+
+. On the command line, go to the folder where the document you want to compile is located. 
+. Enter the following command: +
+[source, shell]
+----
+metanorma document.adoc
+----
+With this command you trigger the metanorma toolchain to:
+
+* Read the AsciiDoc input
+* Convert it into XML
+* Check the XML against the document model (XML schema)
+* Create HTML, PDF, and DOC output
+
+You can also manipulate the way Metanorma compiles a document by setting flags. Flags are appended to the build command, like this:  
+
+.Example of a build command with a flag
+[source, shell]
+----
+metanorma document.adoc -x html
+----
+
+You can use the following flags to manipulate the building process:
+
+* `-t`: Sets the flavor of the document +
+NOTE: Either define the flavor in the metadata using `mn-document-class` or use `-t flavor`
+* `-x`: Sets the output format(s) of the document 
+* `-o`: Enter a path that the output should be saved to. 
+
+To see the full list of possible build commands, open the metanorma help on the command line.
+
+[source, shell]
+----
+metanorma help compile
+----
+
+>> Start next lesson
+
+=== Troubleshooting 
+
+There can be many reasons why you can’t compile a Metanorma AsciiDoc document into the final output, but you can easily fix them when you know what typical errors occur and how to fix them. 
+Metanorma tells you what’s wrong in the terminal and stores all errors in an Error file `.err` where your original document is stored. If execution has aborted before the XML content could be finalised, the XML file is still output to disk, suffixed with `.xml.abort` rather than `.xml`, and you can use it to make sense of error messages.
+
+////
+Your input needed!
+What are the most common errors when compiling a document and how they are caused?
+How to resolve the errors?
+
+==== Style Errors
+
+==== Document Attributes Errors
+
+==== Metanorma XML Syntax Errors
+
+==== Any other type of error?
+
+////
+
+// Introduced by Manuel;
+// This text is intended to be edited by technical writers
+// My intention is just capture the idea of the content. Thanks!
+
+==== Compilation errors
+
+Compilation failures can happen due to installation or markup errors.
+Hopefully, the compilation message will provide us with a clear insight of the cause of the failure.
+Usually, the first error line corresponds to the cause of the failure.
+
+In regard to markup errors, some compilation failures can occur when:
+
+*Two or more cross references have the same anchor*
+
+If two or more cross references have the same anchor, document won't build and the error message 
+will be clear on the reason. So, this cannot happen:
+
+[source,asciidoc]
+----
+[[anchor1]]
+== Section 1
+...
+
+[[anchor1]]
+== Section 2
+...
+----
+
+
+*A reference to an external file is not found*
+
+Compilation fails when a reference to an external file cannot be found (i.e., an image or any other type of file).
+The error message will be explicit on which file.
+Problem gets solved by checking the specified location of the file.
+
+
+*Document standard type is not specified*
+
+Document standard type (i.e., `iso`, `ogc`, `itu`, etc.) can be specifed in the header of the document and/or the command line.
+If it's not specified in any of those ways, a compilation failure occurs and the error message will be explicit on that.
+
+
+*A single double quotation mark inside of a stem block*
+
+Double quotation marks are used in stem blocks to denote normal text, e.g.: `stem:["normal text"]`
+An odd number of double quotation marks inside a stem block will provoke a compilation error.
+
+For example, `stem:["normal text""]` leads to the following compilation error:
+
+[source]
+----
+...
+        from C:/tools/ruby25/lib/ruby/gems/2.5.0/gems/metanorma-cli-1.4.6/exe/metanorma:20:in `<top (required)>'
+        from C:/tools/ruby25/lib/ruby/gems/2.5.0/bin/metanorma:23:in `load'
+        from C:/tools/ruby25/lib/ruby/gems/2.5.0/bin/metanorma:23:in `<main>'
+parsing: "normal text""
+undefined method `[]' for nil:NilClass
+----
+
+
+*A reference auto-fetch failure*
+
+When a reference https://www.metanorma.org/author/topics/document-format/bibliography/#autofetch[auto-fetching] process fails, compilation failure may happen.
+
+Metanorma team is constantly searching and solving issues related with the automatic importation of bibliographic entries.
+However, in order to not have to wait for a precise solution of the issue, a quick workaround would be to disable
+the automatic look-up of the individual reference by enclosing its identifier with `nofetch()`. 
+
+For example, let's supose we have an issue with the reference `ITU-R BT.2267-10`.
+Its AsciiDoc markup would correspond to:
+
+[source,asciidoc]
+----
+[bibliography]
+== References
+
+* [[[bt2267-10,ITU-R BT.2267-10]]], Report ITU-R BT.2267-10 (2019), _Integrated broadcast-broadband systems._
+----
+
+and gives us a compilation failure message of:
+
+[source]
+----
+...
+[relaton-itu] ("ITU-R BT.2267-10") fetching...
+C:/tools/ruby25/lib/ruby/gems/2.5.0/gems/relaton-bib-1.7.4/lib/relaton_bib/hash_converter.rb:440:in `block in symbolize': undefined method `to_sym' for 404:Integer (NoMethodError)
+Did you mean?  to_s
+        from C:/tools/ruby25/lib/ruby/gems/2.5.0/gems/relaton-bib-1.7.4/lib/relaton_bib/hash_converter.rb:439:in `each'
+        from C:/tools/ruby25/lib/ruby/gems/2.5.0/gems/relaton-bib-1.7.4/lib/relaton_bib/hash_converter.rb:439:in `reduce'
+...
+----
+
+We can disable the automatic look-up by applying `nofetch()`:
+
+[source,asciidoc]
+----
+[bibliography]
+== References
+
+* [[[bt2267-10,nofetch(ITU-R BT.2267-10)]]], Report ITU-R BT.2267-10 (2019), _Integrated broadcast-broadband systems._
+----
+
+and compilation failure gets solved.
+
+
+*Incorrect format of reference anchor*
+
+Anchor for references and cross references cannot be set with any text we'd like.
+They must begin with a letter and cannot contain any special character other than hyphens and underscores.
+
+An incorrect format of a reference anchor can result in compilation failure.
+
+For example, incorrect manners of setting anchors are shown below:
+
+[source,asciidoc]
+----
+// Examples of incorrect anchors in references
+
+* [[[123anchor1,identifier 1]]], ... // Anchors cannot begin with a number
+
+* [[[_anchor2,identifier 2]]], ... // Anchors cannot begin with underscores or hyphens
+
+* [[[#anchor3,identifier 3]]], ... // Anchors cannot begin with any special character. Just letters.
+----
+
+
+==== Rendering errors
+
+Rendering errors may result, to a large degree, from markup errors.
+Some markup errors can lead to unexpected rendering results.
+Some causes can be:
+
+
+*Number of block delimiters*
+
+Block delimiters must always have the same numbers of characters with a minimum of four.
+A lack (or excess) in the number of characters can lead to unexpected results in rendering.
+
+If you see an odd looking in example blocks, note blocks, or anything else. Look for the 
+beginning of the issue, go to the markup, and checkout the delimiting characters of the blocks.
+
+
+*Cross reference anchors must begin with a letter*
+
+Cross reference anchors cannot begin with numbers, underscores, hyphens or any other special characters. If they do, they will not be processed in compilation and will certaintly lead to rendering errors in the section titles.
+
+
+*Paragraphs beginning with white space*
+
+If you ever see a paragraph rendered inside of a source block, you probably have left a white space
+at its beginning. Paragraphs cannot begin with any white space, they will be erroneously rendered as source blocks.
+
+
+[[exercise-4]]
+//Exercise will promt the user to fix some bugs in a document: For example syntax errors. 
+include::exercises.adoc[tag=exercise-4]
+
+Great work!
+>> Finish the tutorial
+// Maybe include a page after the tutorial where a user can type in their name and a certificate (PDF) will be generated + downloaded? :)
