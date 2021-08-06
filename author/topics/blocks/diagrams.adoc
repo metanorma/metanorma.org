@@ -1,0 +1,37 @@
+---
+title: How to add diagrams
+description: Diagrams are useful to visualize the structure of a system or processes. Metanorma supports the PlantUML diagramming tool, so that you can create different kinds of diagrams directly in a Metanorma document. 
+layout: author-docs
+---
+=== Prerequisites
+
+You need to have PlantUML installed in order to use this feature. To install PlantUML, see link:/software/metanorma-cli/docs/installation/#plantuml[installation notes] for further details.
+
+=== Adding a diagram
+
+To add one or more diagrams in a Metanorma document:
+
+. Begin a new block and use the attribute `[plantuml]`.
++ 
+The compiler now knows that PlantUML syntax follows.
+. Begin the diagram with `@startuml`.
+. Enter your diagram using the PlantUML notation.
+. End the diagram with `@enduml`.
+
+Example:
+[source,asciidoc]
+--
+[plantuml]
+@startuml
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: another authentication Response
+@enduml
+--
+
+Once you compile the document, the compiler will transform your text input into a PNG image. The images are stored in the plantuml directory. 
+
+=== Related links
+* Visit the https://plantuml.com/[PlantUML website] to learn more about PlantUML and what kinds of diagrams it supports.

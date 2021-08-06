@@ -1,0 +1,1088 @@
+---
+layout: author-docs
+---
+
+= Terms
+
+== Defining Terms: the "`Terms and definitions`" section
+
+=== Grammar summary
+
+"`Terms and definitions`" sections follow a strict grammar
+reflected in their Metanorma AsciiDoc markup:
+
+* The term is given as a *subheading* at the appropriate level
+  (three equal signs, unless there are subsections in the Terms and Definition
+  section). The term may be cross-referenced from other terms, in which case it
+  should have an *anchor*.
+
+* The term is optionally followed by *alternative/admitted terms*,
+  which must be marked up in an `+alt:[...]+` macro;
+  *deprecated terms*, which must be marked up in a `+deprecated:[...]+` macro;
+  and a term *domain*, which must be marked up in a `+domain:[...]+` macro.
+
+* The *definition* of the term is given in a separate paragraph.
+
+* The definition is optionally followed by *examples*
+  (paragraphs with an `[example]` style attribute).
+
+* The definition is then optionally followed by *notes* (denoted with a `NOTE:`
+  prefix).
+
+* The definition is then followed by a *citation* for the term
+  (marked with a `[.source]` role attribute).
+
+* The citation is a cross-reference to a normative reference,
+  optionally followed by a comma and a modification if applicable.
+  If the comma is used on its own, then the term will be shown as modified,
+  with no specific modification.
+
+EXAMPLE:
+
+[source,adoc]
+----
+=== instant
+
+point on the term:[time axis]
+
+NOTE: An instantaneous event occurs at a specific instant.
+
+[.source]
+<<IEV,clause "113-01-08">>
+----
+
+renders as
+
+.Example of a single term.
+image::/assets/author/topics/document-format/section-terms/fig-term-instant.png[Example of a single term]
+
+NOTE: An unmodified term and definition does not require any text after
+the source reference.
+
+More complex concepts can also be specified, with alternative terms,
+deprecated terms, domain, examples and a definition modified
+from its original source.
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+[[paddy]]
+=== paddy
+alt:[paddy rice]
+alt:[rough rice]
+deprecated:[cargo rice]
+domain:[rice]
+
+rice retaining its husk after threshing
+
+[example]
+Foreign seeds, husks, bran, sand, dust.
+
+NOTE: The starch of waxy rice consists almost entirely of amylopectin.
+The kernels have a tendency to stick together after cooking.
+
+[.source]
+<<ISO7301,section 3.2>>, The term "cargo rice" is shown as deprecated,
+and Note 1 to entry is not included here.
+--
+
+renders as
+
+.Example of a single term with elaborated specifications
+image::/assets/author/topics/document-format/section-terms/fig-term-paddy.png[Example of a single term with elaborated specifications]
+
+A trailing comma after the source reference can indicate that the
+term or definition was "`modified`", but with no further detail:
+
+[source,asciidoc]
+--
+[.source]
+<<ISO7301,section 3.2>>,
+--
+
+renders as
+
+.Example of a single source tagged as "`modified`".
+image::/assets/author/topics/document-format/section-terms/fig-term-single-source.png[Example of a single source tagged as modified]
+
+A term and definition can be sourced from multiple sources (in accordance with
+ISO 10241-1). In this case each source should be entered in a separate
+`[.source]` paragraph.
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+[.source]
+<<ISO7301,section 3.2>>,
+
+[.source]
+<<ISO7302,section 3.10>>,
+--
+
+
+The requirement that the source of a term be given in a citation also applies
+when the source is a termbase, such as the
+http://www.electropedia.org[International Electrotechnical Vocabulary (IEV)].
+Formally, IEV references should be cited as `IEC 60050-nnn:20xx`, where `n` is
+the top-level clause, and `20xx` is the year when that particular specification
+was published.
+
+EXAMPLE: "`IEC 60050-113:2011, 113-01-07`".
+
+
+In some cases,
+like link:https://www.iso.org/obp/ui/#iso:std:iso-iec:2382:ed-1:v1:en[ISO/IEC 2382],
+terminological clauses are numbered as plain numbers
+without character separators (dashes or periods).
+
+In the ISO world, terminological entries are technically identified
+by identifiers, not clauses.
+However, when the location is cited as a number, Metanorma will consider
+the location a top-level clause, which will be represented in the
+ISO style "`Clause X`", instead of the desired "`X`".
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+[.source]
+<<ISO2382,clause 2121372>>, Notes to entry and accepted term "`computer program`" have been omitted.
+--
+
+In this case, we will have to apply additional markup to indicate
+the number is not a top-level clause using the `droploc%` flag.
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+[.source]
+<<ISO2382,droploc%clause 2121372>>, Notes to entry and accepted term "`computer program`" have been omitted.
+--
+
+`droploc%` serves as an indication for Metanorma not to prepend
+the number with the location type of "`Clause`".
+
+
+=== Predefined text / Boilerplate
+
+==== Appending to predefined text
+
+The "`terms and definitions`" clause is often prefixed with
+predefined text ("`predefined text`") automatically before any terms are
+listed.
+
+Such predefined text typically serve the following purposes:
+
+* indicate provenance of definitions (see <<source>>); and
+* provide the location where definitions may be consulted,
+  depending on the flavour.
+
+EXAMPLE: For ISO documents, a reference to the ISO Online
+Browsing Platform and to the IEC Electropedia is provided in
+the predefined text.
+
+Any paragraphs or lists in the input before the first term
+are appended to the flavour's defined predefined text, in the
+intermediate XML format [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0]. [The
+behaviour until that release was for any such text to be overwritten by the flavour's defined predefined text.]
+
+In the following example the Metanorma ISO flavor is used
+to demonstrate the behavior.
+
+Input:
+
+[source,asciidoc]
+--
+== Terms and definitions
+
+This is some random text I have inserted in this document.
+
+* It does not follow ISO requirements
+* Nor does it follow IEC requirements
+
+=== Term 1
+--
+
+In the rendering, the text between the title and the first
+term definition is appended to the predefined text required by ISO:
+
+____
+*3. Terms and definitions*
+
+ISO and IEC maintain terminological databases for use in
+standardization at the following addresses:
+
+* ISO Online browsing platform: available at http://www.iso.org/obp[]
+* IEC Electropedia: available at http://www.electropedia.org[]
+
+This is some random text I have inserted in this document.
+
+* It does not follow ISO requirements
+* Nor does it follow IEC requirements
+
+*3.1 Term 1*
+____
+
+==== Overriding predefined text
+
+If there are no terms and definitions from the document,
+no terms should be included in the clause body (it should be blank).
+The predefined text at the start of the clause is adjusted to
+reflect both possibilities.
+
+In order to replace (override) the predefined text with custom
+content, an initial subclause with the style attribute
+`[.boilerplate]` can be used to do
+so [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
+
+Input:
+
+[source,asciidoc]
+--
+== Terms and definitions
+
+[.boilerplate]
+=== My predefined text (<<<=== this will be stripped)
+
+This is predefined text that overwrites the default.
+
+* No, it does not follow ISO requirements
+* And no, it does not follow IEC requirements either
+
+=== Term 1
+--
+
+Where:
+
+* The title of the predefined text clause will be stripped (so you could equally
+  use `=== {blank}`);
+
+* The custom predefined text is encoded as a subclause, so that
+  its extent can be made unambiguous in initial processing.
+
+The example above will be rendered as:
+
+____
+*3. Terms and definitions*
+
+This is predefined text that overwrites the default.
+
+* No, it does not follow ISO requirements
+* And no, it does not follow IEC requirements either
+
+*3.1 Term 1*
+____
+
+
+==== Emptying predefined text
+
+If you want to prevent the default predefined text from
+appearing, you can do so by providing an empty
+predefined text subclause.
+
+[source,asciidoc]
+--
+== Terms and definitions
+
+[.boilerplate]
+=== {blank}
+
+=== Term 1
+--
+
+
+=== Grouping IEV references
+
+For convenience, Metanorma requires all IEV references to be to a single
+reference, named `IEV` in the normative references. During the rendering of
+Metanorma AsciiDoc into Metanorma XML, this reference will be replaced by the
+various required "`IEC 60050-nnn:20xx`" references.
+
+NOTE: That means that you should not insert your own instances of IEC 60050
+references for IEV citations; they will be duplicated by the automatically
+generated references.
+
+[source,asciidoc]
+--
+[.source]
+<<ievtermbank,clause="103-01-02">>
+
+...
+
+[bibliography]
+* [[[ievtermbank,IEV]]], _IEV: Electropedia_
+// will be excluded from HTML and Word output. Will be replaced by a canonical reference in XML output.
+--
+
+Note that, for IEV entries to be validated, the IEV reference must be given as a Clause,
+and in quotes (otherwise the locality syntax would be interpreted as a range);
+so `\<<ievtermbank,clause="103-01-02">>` for IEV 103-01-02.
+
+=== Title
+
+A Terms and Definitions clause will be recognized if either _Terms, definitions, symbols and abbreviated terms_
+or _Terms and definitions_ is given as the title,
+regardless of case.
+
+
+[[source]]
+=== Source
+
+If the Terms and Definitions of a standard are partly or fully sourced from
+another standard, that standard is cited in a “source” attribute to the section:
+e.g., `source=STANDARD_IDENTIFIER`, where standard identifier
+is the reference anchor of the cited standard as given under the Normative
+References.
+(The attribute needs to be applied to the top-level clause, if there are subclauses.)
+
+Any predefined text of the Terms and Definitions section is adjusted accordingly.
+
+[source,asciidoc]
+--
+[source=ISO712]
+== Terms and Definitions
+--
+
+renders as
+
+.Illustration of predefined text of the Terms and Definitions section adjusted with a single source ("`ISO 712`").
+image::/assets/author/topics/document-format/section-terms/fig-terms-boilerplate-single-source.png[Illustration of predefined text of the Terms and Definitions section adjusted with a single source ("ISO 712")]
+
+Multiple sources are allowed, and need to be quoted and comma-delimited:
+
+[source,asciidoc]
+--
+[source="ISO712,ISO24333"]
+== Terms and Definitions
+--
+
+which renders as
+
+.Illustration of predefined text of the Terms and Definitions section adjusted with two sources ("`ISO 712 and ISO 24333:2009`").
+image::/assets/author/topics/document-format/section-terms/fig-terms-boilerplate-multiple-sources.png[Illustration of predefined text of the Terms and Definitions section adjusted with two sources]
+
+=== Markup within term macros
+
+The macros `+alt:[...]+`, `+deprecated:[...]+` and `+domain:[...]+`
+can contain their own markup.
+
+[source,asciidoc]
+--
+=== paddy
+alt:[_paddy_ rice]
+deprecated:[[smallcap]#cargo# rice]
+domain:[rice]
+
+term:[rice] from which the husk only has been removed
+--
+
+==== Stem expressions
+
+AsciiDoc does not permit macros to be nested inside other macros.
+
+Therefore the following markup which introduces a stem expression
+as an admitted term, is considered illegal.
+
+NOTE: The use of stem expressions as preferred terms is not a problem,
+because the macro appears as a header.
+
+[source,asciidoc]
+.Bad example
+--
+=== stem:[t_90]
+alt:[stem:[t_A]]
+
+Time to launch.
+--
+
+However, Metanorma will treat any standalone paragraph in a term section,
+consisting of just a stem macro, as an admitted term:
+
+[source,asciidoc]
+.Good example
+--
+=== stem:[t_90]
+
+stem:[t_A]
+
+Time to launch.
+--
+
+.Illustration of a term that uses stem expressions.
+image::/assets/author/topics/document-format/section-terms/fig-term-stem.png[Illustration of a term that uses stem expressions]
+
+=== Subclauses
+
+Any clause within a "`Terms and definitions`" section which is a non-terminal
+subclause (has child nodes) is automatically considered a terms (or definitions)
+section. On the other hand, any descendant of a `nonterm` clause is also a
+`nonterm` clause.
+
+Informative clauses are indicated with the attribute `[obligation=informative]`;
+clauses are normative by default.
+
+==== Introductory non-term section
+
+All terminal subclauses of a term section (i.e. clauses that have no subclauses
+of their own) are treated as term definitions.
+
+We have already seen one exception to this, in `[.boilerplate]` clauses. More
+generally, an introductory section can be treated as a subclause instead of a
+term (and will retain its status as a subclause), by prefixing it with the style
+attribute `[.nonterm]`:
+
+[source,asciidoc]
+--
+== Terms and definitions
+
+[.nonterm]
+=== Terms from ISO 10303-1
+
+For the purpose of this part of ISO 10303, the following terms
+from ISO 10303-1 apply:
+
+* integrated resource
+
+[.nonterm]
+=== Terms from ISO 10303-11
+
+For the purposes of this document, the following terms from
+ISO 10303-11 apply.
+
+* entity;
+* entity data type;
+--
+
+.Inclusion of non-term subclauses using the `[.nonterm]` attribute
+image::/assets/author/topics/document-format/section-terms/fig-terms-non-clause-section.png[Inclusion of non-term subclauses]
+
+The `[.nonterm]` attribute must only be used in subclauses that do
+not contain any terms underneath (like the example above).
+Otherwise, these terms will not be processed following the
+corresponding formatting rules.
+
+[example]
+======
+EXAMPLE: If the `[.nonterm]` attribute is applied to a
+term-containing subclause, the wrong rendering will occur:
+
+[source,asciidoc]
+----
+== Terms and definitions
+
+[.nonterm]
+=== Terms from ISO 10303-1
+
+For the purpose of this part of ISO 10303, the following terms
+from ISO 10303-1 apply:
+
+==== actual function range
+mathematical space containing precisely the tuples of outputs from
+the function which are related to some tuple of inputs
+----
+
+.Incorrect rendering of a term subclause due to wrong application of `[.nonterm]`
+image::/assets/author/topics/document-format/section-terms/fig-term-clause-incorrect.png[Incorrect rendering of a term subclause]
+
+Therefore the `[.nonterm]` attribute must be removed:
+
+[source,asciidoc]
+----
+== Terms and definitions
+
+=== Terms from ISO 10303-1
+
+For the purpose of this part of ISO 10303, the following terms
+from ISO 10303-1 apply:
+
+==== actual function range
+mathematical space containing precisely the tuples of outputs from
+the function which are related to some tuple of inputs
+----
+
+.Proper rendering of a term subclause
+image::/assets/author/topics/document-format/section-terms/fig-term-clause-correct.png[Proper rendering of a term subclause]
+======
+
+[[citeterms]]
+== Referencing concepts
+
+=== General
+
+Instances of terms, symbols or abbreviations used in the document can be marked
+up to indicate the semantic meaning of the concept. [added in
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14].
+
+This can be done whether the concept is defined:
+
+* in the current document;
+* in an external, cited document; or
+* in an external termbase.
+
+Marking up mentions of concepts (terms, symbols, or abbreviations) in the
+content body generally does not impact their rendering.
+
+This tagging is intended for semantic processing of standards documents in
+Metanorma Semantic XML.
+
+Marking up term instances in the "`terms and definitions`" clauses may cause
+terms to render differently in certain flavors, such as for ISO and IEC, in
+order to display location of where those concepts are defined.
+
+NOTE: The syntax for citing terms has been changed for v1.10.0.
+This section describes the current syntax
+[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.0].
+
+The generic syntax is shown here.
+
+[source,adoc]
+----
+{{<<identifier>>,term,display-text,cross-reference-text,options="..."}}
+----
+
+In this full form of the syntax, only the `term` argument is mandatory.
+
+All of the following variants below are supported:
+
+[source,adoc]
+----
+{{term}}                // or synonym: term:[term]
+// Used if the concept is defined in the current document.
+
+{{term,display-text}}   // or synonym: term:[term,display-text]
+// Used if the concept is defined in the current document, and the desired
+// display text differs from the concept term.
+
+{{term,display-text,cross-reference}}
+{{term,display-text,cross-reference,options="..."}}
+
+{{<<identifier>>,term}}
+{{<<identifier>>,term,display-text}}
+{{<<identifier>>,term,display-text,cross-reference-text}}
+{{<<identifier>>,term,display-text,cross-reference-text,options="..."}}
+----
+
+* `identifier`: an identifier for the term being cited (optional).
+
+* `term`: the term cited, in its canonical form (mandatory).
+
+* `display-text`: text to be displayed, if it is distinct from the cited term
+(optional). If this argument is not provided, the canonical form and the display
+text are assumed to be identical.
+
+* `cross-reference-text`: text to display for the cross-reference to the concept
+definition (optional). If this argument is not provided, the default rendering
+of the cross-reference for the current Metanorma flavour is provided.
+
+* `options`: options that determine how the concept is to be displayed (may be
+flavour-specific).
+
+NOTE: The `{{<<identifier>>,term,display-text,cross-reference,options=".."}}`
+markup closely mirrors the markup syntax of cross-references in Metanorma
+AsciiDoc (`\<<anchor,%option,text>>`).
+
+Instances of cited terms are converted into a distinct `concept` element in
+Metanorma Semantic XML, which includes a cross-reference to the term definition,
+the canonical form of the term name, and the text to be displayed for the term
+in that instance.
+
+
+=== Concepts defined within current document
+
+==== Reference by term
+
+To cite a concept defined within a document the following syntax can be used.
+
+Syntax:
+
+[source,adoc]
+----
+// The term is from the current document as a concept.
+{{term}}
+// or synonym:
+term:[term]
+
+// If the desired display text differs from the concept term.
+{{term,display-text}}
+// or synonym:
+term:[term,display-text]
+
+// If a specific version of the cross-reference text is required.
+{{term,display-text,cross-reference-text}}
+----
+
+NOTE: Metanorma automatically creates anchor references for every concept
+from the document, which is used when referencing by term.
+
+
+EXAMPLE (ISO/IEC Directives Part 2 (2020), 16.5.10):
+
+====
+[source,adoc]
+----
+== Terms and definitions
+
+=== terminological data
+....
+
+=== concept
+...
+
+=== terminological entry
+
+part of a terminological data collection which contains the
+{{terminological data}} related to one {{concept}}
+
+// equivalent:
+part of a terminological data collection which contains the
+term:[terminological data] related to one term:[concept]
+----
+====
+
+This will be displayed according to the flavour; the rendering typically
+contains the term text, and a cross-reference to its definition. Any
+hyperlinking is done on the cross-reference.
+
+The default Metanorma rendering would look like:
+
+____
+part of a terminological data collection which contains the
+_terminological data_ [term defined in Clause 3.1] related to one
+_concept_ [term defined in Clause 3.2]
+____
+
+In the ISO flavour of Metanorma, and flavours derived from it, the rendering
+follows ISO conventions:
+
+____
+part of a terminological data collection which contains the
+_terminological data_ (3.1) related to one _concept_ (3.2)
+____
+
+In some cases, the displayed term is a variant of the referenced term, such as
+its plural form. That means that the display text needs to be differentiated
+from the referenced term.
+
+EXAMPLE (ISO 8601:2019, 3.1.1.5):
+
+[source,adoc]
+----
+===== instant
+...
+
+===== time axis
+...
+
+===== time scale
+
+system of ordered marks which can be attributed to {{instant, instants}} on the
+{{time axis}}, one instant being chosen as the origin
+
+// equivalent:
+
+system of ordered marks which can be attributed to term:[instant, instants] on
+the term:[time axis], one instant being chosen as the origin
+----
+
+In the rendering, the display text is used instead of the referenced term:
+
+____
+system of ordered marks which can be attributed to _instants_ (3.7) on
+the _time axis_ (3.9), one instant being chosen as the origin
+____
+
+It is conceivable that authors will want to override the automatically-generated
+cross-reference text with their own text, as is already possible for
+cross-references within Metanorma.
+
+This requires an expanded version of the expression:
+
+[source,adoc]
+----
+===== instant
+...
+
+===== time axis
+...
+
+===== time scale
+
+system of ordered marks which can be attributed to {{instant, instants}} on the
+{{time axis,time axis,see the preceding discussion}}, one instant being chosen
+as the origin
+----
+
+Renders into:
+
+____
+system of ordered marks which can be attributed to _instants_ (3.7) on the
+_time axis_ (see the preceding discussion), one instant being chosen as the
+origin
+____
+
+
+[NOTE]
+--
+The terms reference capability relies on automatically created anchor
+references for every term defined.
+
+For example, in the following text,
+
+[source,adoc]
+----
+== Terms and definitions
+=== Foo
+
+bar
+
+=== Lor
+
+special kind of term:[foo]
+----
+
+the anchors `\[[term-foo]]` and `\[[term-lor]]` are automatically created and
+assigned to the terms 'foo` and `lor`.
+
+These anchors are generated from the terms themselves according to these rules:
+
+* the terms are lowercased;
+* non-ASCII characters are stripped;
+* whitespaces are replaced by `-`.
+
+This means if you wanted to refer to a particular term from body text, you could
+either:
+
+* directly refer to the term: e.g., `see definition of term:[foo]`
+* refer to the anchor of the term: e.g., `the topic is further explained in \<<term-foo>>`
+
+In case you have created manual anchors that conflict with `[[term-{X}]]`, the
+term reference mechanism is smart enough to rename the generated anchor as
+`[[term-{X}-{n}]]`, where `n` is a number from 1, and so forth.
+
+Therefore this will still work as expected:
+
+[source,adoc]
+----
+== Terms and definitions
+=== Foo
+
+bar
+
+=== Lor
+
+special kind of term:[foo]
+
+
+[[term-foo]]
+== My section
+
+lorem
+----
+--
+
+==== Reference by symbol
+
+Symbols and abbreviated terms defined in the document can also be cited as
+concepts [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1].
+
+In the case of symbols and abbreviated terms, the `symbol:[]` macro is used
+instead of `term:[]`, and targets a symbol defined in a definition list within
+the "`Symbols and abbreviated terms`" section.
+
+NOTE: Such symbols have automatic anchors assigned to them, as with terms, but
+prefixed with `symbol-` rather than `term-`. If the `{{...}}` format is used
+instead, either a term or a symbol is matched; terms are matched by default.
+
+[source,adoc]
+----
+== Symbols and abbreviated terms
+
+ISO:: International Standards Organization // automatically assigned the anchor symbol-ISO
+[[xyz]]IEC:: International Electrotechnical Commission // is assigned the anchor xyz
+
+== Discussion
+The vocabulary is authorised by {{ISO}} and {{IEC,the IEC}}.
+
+// equivalent
+
+The vocabulary is authorised by symbol:[ISO] and symbol:[IEC,the IEC].
+----
+
+Unlike terms, symbols and abbreviations are not italicised, referenced, or hyperlinked by default.
+
+____
+The vocabulary is authorised by ISO and IEC.
+____
+
+
+==== Reference by anchor
+
+In certain cases it is more appropriate to reference a concept (defined
+in the current document) by anchor, instead of by term, e.g.:
+
+* the defined term is not plain text, e.g., a math formula;
+* the defined term is long in length.
+
+To reference a concept by anchor, the anchor of the concept should be provided,
+and optionally the text to be displayed. The anchor must be given in angle
+brackets, like a normal cross-reference in Metanorma AsciiDoc.
+
+The following elements are needed to make this inference:
+
+* anchor of the concept;
+* (optional) text to be displayed.
+
+The syntax is:
+
+[source,adoc]
+----
+// The concept is from the current document, but a manual anchor has been
+// created for referencing it as a shorthand, useful in the case where a
+// concept term is not in plain text (e.g. MathML).
+{{<<identifier>>}}
+
+// If the display text differs from the cited concept term, referred through
+// an anchor.
+{{<<identifier>>,display-text}}
+----
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+== Terms and definitions
+
+[[immatk]]
+=== immature kernel
+alt:[unripe kernel]
+
+kernel, whole or broken, which is unripe and/or underdeveloped
+
+== Discussion
+The source of the {{<<immatk>>,immature kernel}} has not yet been identified.
+Allusions to {{<<immatk>>,unripe kernels,immature kernel}} are plentiful in
+the literature.
+--
+
+
+=== Concepts from external documents
+
+To refer to concepts from an external document requires a corresponding
+bibliographic anchor for that document. The identifier for the concept
+is then given in the same fashion as any citation of an external document.
+
+The following elements are needed to make this inference:
+
+* bibliographic anchor of the external document, optionally including the
+  locality of the term definition in that document;
+* concept term name;
+* (optional) text to be displayed;
+* (optional) cross-reference text to be displayed.
+
+The syntax is:
+
+[source,adoc]
+----
+// The concept is from the current document but a manual anchor has been
+// created for referencing it as a shorthand, useful in the case where a
+// concept term is not in plain text (e.g. MathML).
+{{<<bibliographic-anchor>>,term}}
+
+// If the display text differs from the cited concept term, referred through
+// an anchor.
+{{<<bibliographic-anchor>>,term,display-text}}
+
+// If the cross-reference text for the external document needs to be overriden.
+{{<<bibliographic-anchor>>,term,display-text,cross-reference-text}}
+----
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+[bibliography]
+== Normative References
+* [[[iso17301,ISO 17301]]] Cereals and pulses -- Specifications and test methods -- Rice
+
+== Discussion
+The source of the {{<<iso17301>>,immature kernel}} has not yet been identified.
+Allusions to {{<<iso17301>>,immature kernel,unripe kernels}} are plentiful in
+the literature.
+--
+
+In Metanorma, this will be displayed by default as:
+
+____
+The source of the _immature kernel_ [term defined in ISO 17301] has not yet been
+identified. Allusions to _unripe kernels_ [term defined in ISO 17301] are
+plentiful in the literature.
+____
+
+NOTE: Metanorma Semantic XML preserves the information that the latter term is
+cited as _unripe kernels_, but is defined as _immature kernel_. However by
+default, only the display text is rendered.
+
+To supplement the concept reference with a locality, the `bibliographic-anchor`
+element can be supplemented by a comma-delimited list of
+link:/author/topics/document-format/bibliography#localities[localities and locality values],
+as is normal for a reference to a locality in an external document.
+
+The syntax is:
+
+[source,adoc]
+----
+{{<<bibliographic-anchor,locality=X>>,term}}
+
+// Simple example:
+{{<<iso639-1,clause=3.1>>,language}}
+
+// If the display text differs from the cited term:
+{{<<bibliographic-anchor,locality1=X>>,term,display-text}}
+
+// Multiple localities can be used:
+{{<<bibliographic-anchor,clause=4.7,table=1>>,display-text}}
+----
+
+
+EXAMPLE:
+====
+[source,asciidoc]
+----
+[bibliography]
+== Normative References
+
+* [[[iso17301,ISO 17301]]] Cereals and pulses -- Specifications and test methods -- Rice
+
+== Discussion
+
+The source of the {{<<iso17301>>,clause=3.9,immature kernel}} has not yet been
+identified. Allusions to {{<<iso17301>>,clause=3.9,unripe kernels,immature
+kernel}} are plentiful in the literature.
+----
+
+In Metanorma, this will be displayed by default as:
+
+____
+The source of the _immature kernel_ [term defined in ISO 17301, Clause 3.9] has
+not yet been identified. Allusions to _unripe kernels_ [term defined in ISO
+17301, Clause 3.9] are plentiful in the literature.
+____
+====
+
+
+=== Concepts from external termbase
+
+To refer to a concept from an external termbase, the termbase
+identifier and the concept identifier within that termbase are needed.
+
+The following elements are needed to make this inference:
+
+* termbase identifier;
+* concept identifier within that termbase;
+* (optional) text to be displayed for the term;
+* (optional) text to be displayed for the termbase reference.
+
+NOTE: The presence of a colon identifies the first argument in a term citation
+as identifying an external termbase term, since colons are not permitted in
+cross-references or bibliographic anchors.
+
+NOTE: Termbase identifiers are treated as special anchors, they do not need
+to be defined using a bibliographic reference anchor.
+
+The syntax is as follows:
+
+[source,adoc]
+----
+{{termbase-id:concept-id,term}}
+
+// If the display text differs from the cited concept term.
+{{termbase-id:concept-id,term,display-text}}
+
+// If the text of the cross-reference to the termbase needs to be overridden.
+{{termbase-id:concept-id,term,display-text,cross-reference-text}}
+----
+
+NOTE: The termbase does not require a corresponding reference in the
+bibliography.
+
+Currently, only the IEC Electropedia (IEV) is supported, where the
+reference syntax is `<<IEV:{IEV concept ID}>>`.
+
+[source,adoc]
+----
+// Not necessary to define the IEV bibliographic anchor.
+{{<<IEV:IEV-concept-ID>>,term}}
+
+// If the display text differs from the cited concept term.
+{{<<IEV:IEV-concept-ID>>,text,display-term}}
+
+// If the IEV citation text differs from the flavour default.
+{{<<IEV:IEV-concept-ID>>,text,display-term,cross-reference-text}}
+----
+
+EXAMPLE:
+
+====
+[source,asciidoc]
+----
+== Discussion
+
+The source of the {{<<IEV:171-05-02>>,immature kernel}} has not yet been identified.
+Allusions to {{<<IEV:171-05-02>>,unripe kernels,immature kernel,ibid.}} are plentiful in
+the literature.
+----
+
+In Metanorma, this will be displayed by default as:
+
+____
+The source of the _immature kernel_ [term defined in IEV 171-05-02] has not yet
+been identified. Allusions to _unripe kernels_ [ibid.] are plentiful in the
+literature.
+____
+====
+
+=== Rendering options
+
+The following rendering options are defined for concept mentions.
+
+`ital`:: italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+
+`ref`:: provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+
+`noital`:: do not italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+
+`noref`:: do not provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+
+If these options are missing, Metanorma applies the defaults for the current
+flavour.
+
+The default behaviour in Metanorma is `ital,ref` for all terms, `noital,noref`
+for acronyms.
+
+In ISO, the default behaviour for terms is refined: `noital,noref` for terms
+outside the "`Terms and definitions`" section; `ital,ref` for the first mention
+of a term within the "`Terms and definitions`" section; `ital,noref` for all
+subsequent mentions within the "`Terms and definitions`" section.
+
+[source,asciidoc]
+----
+== Discussion
+
+The source of the {{<<IEV:171-05-02>>,immature kernel,option="noital"}} has not yet been identified.
+Allusions to {{<<IEV:171-05-02>>,unripe kernels,immature kernel,ibid.,option="noref"}} are plentiful in
+the literature. Allusions to {{<<IEV:171-05-02>>,non-ripe kernels,immature kernel,ibid.,option="noref,noital"}}
+are rather less frequent.
+----
+
+In Metanorma, this will be displayed by default as:
+
+____
+The source of the immature kernel [term defined in IEV 171-05-02] has not yet been identified.
+Allusions to _unripe kernels_ are plentiful in the literature. Allusions to non-ripe kernels are
+rather less frequent.
+____
+
+In flavours that customise concept rendering, these options override the behaviour of whatever the flavour implements.

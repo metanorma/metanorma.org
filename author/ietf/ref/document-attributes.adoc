@@ -57,6 +57,12 @@ Delete and reload the caches of references to be included externally, and of wor
 during processing of this document.
 The caches are stored in `~/.metanorma-ietf-biblio-cache.json` and
 `~/.metanorma-ietf-workgroup-cache.json`.
++
+--
+NOTE: Workgroups are no longer fetched externally; they are bundled with gem 
+releases [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.4.0].
+`~/.metanorma-ietf-workgroup-cache.json` is therefore no longer used.
+--
 
 `:use-xinclude:`::
 Optional. Default value `true`. Allowed values: `true`, `false`.
@@ -222,11 +228,20 @@ https://tools.ietf.org/html/rfc7841[RFC7841].
 Allowed values: `IETF` (default), `independent`, `IAB`, and `IRTF`.
 RFC XML: `rfc@submissionType`
 
-`:revdate:`::
-Optional. Latest revision date of document. Default value is current time.
+`:published-date:`::
+Optional. Latest revision date of published document. Default value is current date.
 Accepts ISO 8601 date. Also accepts `YYYY` year, and `YYYY[-]MM` year/month.
 For consistency with AsciiDoc, `:revdate:` is given as
-an ISO 8601 date; the converter breaks it down into day, month name and year
+an ISO 8601 date; the converter breaks it down into day, month name and year.
+RFC XML: `front/date@day`, `front/date@month`, `front/date@year`
+
+`:circulated-date:`::
+Optional. Latest revision date of draft document. (The two are not differentiated in
+RFC XML; `:circulated-date:` is used if `:published-date:` is not available.)
+Default value is current date.
+Accepts ISO 8601 date. Also accepts `YYYY` year, and `YYYY[-]MM` year/month.
+For consistency with AsciiDoc, `:revdate:` is given as
+an ISO 8601 date; the converter breaks it down into day, month name and year.
 RFC XML: `front/date@day`, `front/date@month`, `front/date@year`
 
 `:area:`::

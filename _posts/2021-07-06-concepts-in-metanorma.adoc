@@ -1,0 +1,162 @@
+---
+layout: post
+title:  "New functionality: Concept mentions"
+date:   2021-07-06
+categories: documentation
+author:
+  name: Nick Nicholas
+  email: opoudjis@optusnet.com.au
+  social_links:
+    - https://www.linkedin.com/in/opoudjis/
+    - https://github.com/opoudjis
+excerpt: >-
+    New "concept mentions" functionality for semantic encoding of term
+    instances!
+---
+
+== Purpose
+
+Metanorma provides a "`What You See Is What You Mean`" approach to authoring
+standards. That means not just encoding content with an emphasis on meaning over
+appearance: it means making the semantics of the content explicit and
+machine-readable, so that standards documents can serve as the basis for
+deriving meaning downstream.
+
+One of the most straightforward instances of meaning represented in standards
+documents is the definitions of concepts, which can be appealed to by other
+sources—including other standards documents.
+
+Metanorma already provides an explicit mechanism to encode concept
+definitions in its
+link:/author/topics/document-format/section-terms[encoding of terms],
+and that will be enhanced in the months ahead through the related
+https://github.com/glossarist[glossarist] project.
+
+On the other hand, Metanorma also provides for tracking instances where defined
+concepts are mentioned in a document, called "`concept mentions`".
+
+The semantic linking of term instances to their defined concepts allows us to
+capture the actual meaning of the usage of a term, tying them explicitly
+back to the definition of the concept.
+
+== Mechanism and syntax
+
+A concept can be referenced from various locations, whether it is defined:
+
+* within the same document;
+* in an external document; or
+* in a termbase like the https://www.electropedia.org[IEC Electropedia].
+
+That means that the semantic encoding of the document is enriched, and that
+enrichment can be exploited downstream, e.g. in the presentation of document
+meaning.
+
+The syntax for concept mentions is documented in
+link:/author/topics/document-format/section-terms#citetems[Referencing concepts],
+and has recently been overhauled.
+
+The syntax for concept mentions is flexible, and can be as extensive as:
+
+[source,adoc]
+----
+{{<<identifier>>,term,rendering,cross-reference-text,options="..."}}
+----
+
+But for internal document citations, `{{term}}` and `{{term,rendering}}` will
+normally be sufficient.
+
+== Referencing by term defined within document
+
+To cite a concept defined within a document the following syntax can be used.
+
+[source,adoc]
+----
+// The term is defined within the current document as a concept.
+{{thermodynamics}}
+
+// If the desired display text differs from the concept term.
+{{thermodynamics,the field of thermodynamics}}
+
+// If a specific version of the cross-reference text is required.
+{{thermodynamics,the field of thermodynamics,click here}}
+----
+
+== Referencing by anchor defined within document
+
+In certain cases it is more appropriate to reference a concept (defined
+in the current document) by anchor, instead of by term, e.g.:
+
+* the defined term is not plain text, e.g., a math formula;
+* the defined term is long in length.
+
+[source,adoc]
+----
+// The concept is from the current document, but a manual anchor has been
+// created for referencing it as a shorthand, useful in the case where a
+// concept term is not in plain text (e.g. MathML).
+{{<<emc2>>}}
+
+// Different rendered text
+{{<<emc2>>,ee equals em cee squared}}
+----
+
+== Referencing concepts from external documents
+
+To refer to concepts from an external document requires a corresponding
+bibliographic anchor for that document. The identifier for the concept
+is then given in the same fashion as any citation of an external document.
+
+[source,adoc]
+----
+// Assuming that the bibliographic reference anchor to ISO8601-1
+// already exists.
+{{<<ISO8601-1>>,date}}
+
+// Different rendered text
+{{<<ISO8601-1>>,date,important date}}
+----
+
+== Referencing concepts from external termbases
+
+To refer to a concept from an external termbase, the termbase
+identifier and the concept identifier within that termbase are needed.
+
+Only the https://www.electropedia.org[IEC Electropedia] is supported right now,
+whose termbase identifier is `IEV`.
+
+References to termbase concepts do not require explicit anchors.
+
+[source,adoc]
+----
+// The `IEV` reference can be used without explicit definition.
+{{<<IEV:103-10-10>>,wavelength}}
+
+// Different rendered text
+{{<<IEV:103-10-10>>,wavelength,the wavelength lambda symbol}}
+----
+
+NOTE: Link to the actual
+https://std.iec.ch/iev/iev.nsf/display?openform&ievref=103-10-10[IEV 103-10-10].
+
+
+== Migration from "`Smart term references`" functionality
+
+For those who are familiar with the Metanorma ISO flavor, you may notice the
+similarities with "`smart terms referencing`" -- the "`concepts mention`"
+functionality is a generalization of that.
+
+The `term:[term]` and `term:[term,rendering]` commands, which were created to
+encode canonical mentions of terms in ISO documents (e.g. "`_term_ (3.1)`"),
+have been aligned to the concept mention encoding of Metanorma, so that will now
+be treated in Metanorma as semantically enriched elements, and not just
+rendering shortcuts.
+
+The commands `term:[term]` and `term:[term,rendering]` are now synonyms of
+`{{term}}` and `{{term,rendering}}`; for that reason, the arguments of
+`term:[term,rendering]` have been reversed for this update, to align them to the
+`{{...}}` syntax.
+
+For those using the `term:[rendering,term]` command after upgrading to
+https://github.com/metanorma/metanorma-cli[metanorma-cli] version 1.4.10, you
+will need to swap the order of the arguments into `term:[term,rendering]` or
+`{{term,rendering}}`.

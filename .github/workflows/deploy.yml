@@ -3,7 +3,7 @@ name: deploy
 on:
   push:
     branches:
-    - master
+    - main
     - staging
   repository_dispatch:
 
@@ -16,7 +16,7 @@ jobs:
     steps:
     - id: setenv
       run: |
-        if [ "$GITHUB_REF" = "refs/heads/master" ]
+        if [ "$GITHUB_REF" = "refs/heads/main" ]
         then
           echo "::set-output name=my_env::production"
           echo "::set-output name=my_url::https://www.metanorma.com"
@@ -41,7 +41,7 @@ jobs:
     - name: Setup snaps
       run: |
         sudo snap install aws-cli --classic
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
     - name: Use Ruby
       uses: ruby/setup-ruby@v1
       with:
