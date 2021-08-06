@@ -31,7 +31,7 @@ Templates get you started faster, as they provide the structure of a standard do
 
 *Import from Word*
 
-Importing from Word makes sense if you are moving from Word to Metanorma. To facilitate the migration, you can use the import tool called “Reverse AsciiDoc”. However, the imports are not always perfect, so you need to be familiar with the Metanorma and know how to resolve error messages. 
+Importing from Word makes sense if you are moving from Word to Metanorma. To facilitate the migration, you can use the import tool called https://github.com/metanorma/reverse_adoc/[Reverse AsciiDoc]. However, the imports are not always perfect, so you need to be familiar with the Metanorma and know how to resolve error messages. 
 
 == Editing the document
 
@@ -43,10 +43,10 @@ These editors have been reported to work well for writing Metanorma AsciiDoc:
 
 == Validation
 
-Before you can generate any outputs, the AsciiDoc document needs to be checked against the document model to ensure it follows the rules of your SDO. Since the document model is defined in an XML schema, the compiler converts the AsciiDoc document into an XML file. The XML file is then checked against the SDO’s XML schema:
+Before you can generate any outputs, the AsciiDoc document needs to be checked against the document model to ensure it follows the rules of your SDO. Since the document model is defined in an XML schema, the compiler converts the AsciiDoc document into an XML file. The XML file is then checked against the SDO’s XML schema. Metanorma will log all deviations from the SDO's structure or formatting on the terminal and into an error file.
 
-* ❌ Invalid XML: The XML file does not comply with the XML schema.
-All errors are logged to the terminal and are saved to an Error file (.`err`).
+* ❌ Invalid XML: The XML file does not comply with the XML schema, or with the formatting rules defined by the SDO.
+All errors are logged to the terminal and are saved to an Error file (.`err`). Often the document will render successful despite errors, but the error messages point out potential issues with the document structure.
 
 * ✅ Valid XML: The XML file complies with the XML schema and the compiler can proceed to generate an output.
 
@@ -61,7 +61,7 @@ The Metanorma toolchain compiles documents in the following formats:
 
 *Metanorma XML*
 
-Metanorma always generates an XML output first because it is the intermediate format used to drive the other formats. The Metanorma XML file marks up the semantic content of the standards document and is therefore used during the validation stage.
+Metanorma always generates an XML output first because it is the intermediate format used to drive the other formats. The Metanorma XML file marks up the semantic content of the standards document and is therefore used during the validation stage. Metanorma then generates a presentation version of the XML (`.presentation.xml`), which resolves cross-references, captions, and internationalisation, and is used as the basis of all other formats.
 
 *HTML*
 
@@ -84,6 +84,6 @@ Once you and your reviewers agree that the standard is ready for publishing, you
 
 === Related links
 
-* Creating a new document from a template
+* link:../topics/new_document.adoc[Creating a new document from a template]
 * Word import Tool: https://github.com/metanorma/reverse_adoc[Reverse AsciiDoc]
 * For more on why Metanorma uses .doc, see https://github.com/metanorma/html2doc/wiki/Why-not-docx%3F[Why not .docx]

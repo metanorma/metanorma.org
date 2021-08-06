@@ -61,23 +61,25 @@ Before we write our first Metanorma document, let us look at the foundation for 
 
 end::[learningobjectives-2]
 
-Each Metanorma document is written in AsciiDoc, a markup language that annotates text with processing instructions for layout. Since AsciiDoc only consists of text, you can use any editor to create AsciiDoc files (`.adoc` files). Because Metanorma fulfills the markup requirements of SDOs, Metanorma extends plain AsciiDoc. This version of AsciiDoc is called Metanorma AsciiDoc. 
+Each Metanorma document is written in AsciiDoc, a markup language that annotates text with processing instructions for layout. Since AsciiDoc only consists of text, you can use any editor to create AsciiDoc files (`.adoc` files). AsciiDoc is very similar to Markdown or Wiki formatting but provides more precise markup for creating text documents, for example to create a bibliography section or an index.
+
+Because Metanorma fulfills the markup requirements of SDOs, Metanorma extends plain AsciiDoc. This version of AsciiDoc is called Metanorma AsciiDoc. 
 
 An AsciiDoc document consists of different levels of granularity:
 
-* The document head (also called the preamble)
+* The document head (also called the header)
 * Sections
 * Blocks
 * Inline markup
 
 We will have a look at these different levels of markup in the following lessons. 
-You can do the exercises either in the browser, or on your local machine. If you choose to use your local machine, need to install metanorma and set up a new metanorma project. 
+You can do the exercises either in the browser, or on your local machine. If you choose to use your local machine, you will need to install metanorma and set up a new metanorma project. 
 
 >> Start next lesson
 
-=== The Preamble
+=== The Header
 
-The preamble contains information about the document (metadata). Some of the metadata will be visible in your document, such as `:title:`, while others are not visible but still affect how your document is generated, like `:draft:`. 
+The header contains information about the document (metadata). Some of the metadata will be visible in your document, such as `:title:`, while others are not visible but still affect how your document is generated, like `:draft:`. 
 You can specify metadata about:
 
 * Authors: Issuing organization, authors, and their location
@@ -85,7 +87,7 @@ You can specify metadata about:
 * Dates: Draft dates, revision dates, publishing date, copyright year, etc. 
 * Identifiers: Document numbers, ISBNs, URIs (Uniform Resource Identifiers)
 
-NOTE: Other metadata influence how the document is generated and should only be used by advanced users. 
+NOTE: Other metadata influence how the document is generated and should only be used by advanced users. Often, they will require familiarity with your SDO's structures and processes.
 
 Here’s an example:
 
@@ -110,7 +112,7 @@ Switzerland
 <1> Document title
 <2> The author line is ignored by Metanorma, but needs to be present for Asciidoctor to process document attributes correctly.
 <3> `:docnumber:` is the first document attribute, and it has the value _17301_
-<4> `:doctype:` defines the type of document, for example standard, report, guide, etc.
+<4> `:doctype:` defines the type of document, for example standard, report, guide, etc. The allowed values for this attribute are specific to each SDO.
 <5> `:mn-document-class:` indicates the Metanorma flavor the document should be checked against. 
 <6> The committee responsible for the document
 <7> The author’s name. You can add co-authors by appending the attribute with a number:  `_2`, `_3`, and so on. 
@@ -140,6 +142,8 @@ Here’s an example:
 
 Metanorma provides a document model that determines what sections need to appear in a document. Let’s have a look at the standard document model (standoc) to understand what kinds of sections appear in a typical Metanorma document.
 
+NOTE: The standoc flavour does not correspond to any one SDO: it is a default model that other flavors are based on.
+
 .A UML representation of all section classes in Metanorma
 image::https://raw.githubusercontent.com/metanorma/metanorma-model-standoc/master/images/StandardDoc_Sections.png[A UML representation of all section classes in Metanorma]
 
@@ -158,7 +162,7 @@ A typical Metanorma document can contain the following sections:
 
 NOTE: Each organization is based on the standard document model but they can omit sections or make them mandatory, if they choose to. For example, only NIST uses the acknowledgments section, whereas other SDOs do not require it. Check the https://www.metanorma.org/flavors/[flavor documentation] for more details on how your SDO uses Metanorma. 
 
-To successfully validate a document, the compiler needs to know what sections are in the document. Most of the time, the section headings match sections defined in the document model. However, not all sections need an identifier, for example, your ordinary content sections as they fall under the category of `clause section`, and are not further standardized
+To successfully validate a document, the compiler needs to know what sections are in the document. Most of the time, the section headings match sections defined in the document model. However, not all sections need an identifier, for example, your ordinary content sections fall under the category of `clause section`, and are not further standardized.
 
 If you want to use a different title or create a document in a language other than English, you need to add metadata in square brackets to ensure that sections are recognized. Plain AsciiDoc already provides some https://docs.asciidoctor.org/asciidoc/latest/sections/section-ref/#section-styles[section metadata] that Metanorma uses for document validation: 
 
@@ -169,10 +173,16 @@ If you want to use a different title or create a document in a language other th
 * `[index]`
 * `[preface]`
 
-There are also some Metanorma-specific section identifiers:
+Documents can contain only one Abstract, one Acknowledgements section, and one Index. On the other hand, documents can have any number of appendixes (or annexes), bibliographies, and prefatory sections, each of them marked with those attributes.
+There are also some Metanorma-specific section identifiers, that follow the syntax `[heading=section]`:
 
-* `[terms and definitions]`
-* *Any more?* 
+* `[heading=terms and definitions]`
+* [heading=foreword]
+* [heading=introduction]
+* [heading=scope]
+* [heading=symbols and abbreviated terms]
+
+
 
 [source, AsciiDoc]
 ----
@@ -202,7 +212,7 @@ There are also some Metanorma-specific section identifiers:
 
 <1> This section is an introduction but the compiler can not recognize it because it deviates from plain `== Introduction`. The `preface` attribute ensures that the document structure is still valid.
 <2> The `Normative references` section contains references to related standards. The compiler needs the `[bibliography]` tag, so that it renders the reference correctly.
-<3> An alternative way to assign a section identifier is use the `heading` tag. 
+<3> Use the `heading` tag to assign section types specific to Metanorma.
 <4> Here, the appendix is called “Annex”, and needs the `appendix` tag to define what kind of section it is. You can specify if a section is normative or informative by adding the `obligation` identifier after the section identifier. 
 
 [[exercise-2-2]]
@@ -214,7 +224,7 @@ We’ve built the basic structure of a Metanorma document. Let’s add some cont
 === Blocks
 
 Information that forms a logical segment, such as a paragraph or a list, is called a block.
-A block starts and ends with a https://asciidoctor.org/docs/asciidoc-writers-guide/#delimited-blocks[delimiter] which is a sequence of characters. The delimiters tell the compiler that the following input belongs together. 
+Most blocks start and end with a https://asciidoctor.org/docs/asciidoc-writers-guide/#delimited-blocks[delimiter] which is a matching sequence of characters. The delimiters tell the compiler that the text they contain belongs together. 
 
 .Examples for different blocks
 [source, AsciiDoc]
@@ -240,13 +250,15 @@ print("Hello World!")
 <3> All other types of blocks rely on delimiters, such as four dashes `----` or four equal signs `====`. This block contains a code sample written in python.
 
 
-Apart from the blocks shown in the example, there are many types of blocks in AsciiDoc, such as:
+There are many types of blocks in AsciiDoc, such as:
 * Paragraphs
 * Lists
 * Tables
 * Images
 * Admonitions (Note, Caution, Warning, etc.)
+* Examples
 * Code samples
+* Mathematic formulas
 * Term definitions
 * Comments
 * Reviewer Notes
@@ -293,10 +305,10 @@ Ordered lists are invoked by beginning the line with a dot `.`. The list items a
 
 *Definition lists*
 
-Definition lists are special to Metanorma and are used to define a term.They are often used in a Definitions section in a document, but can appear in other sections as well, *except* for the Terms section. 
+Definition lists (also called https://docs.asciidoctor.org/asciidoc/latest/lists/description/[description lists] pair a term and a description together. They are often used in a "Definitions" section to define units or terms. Definition lists can appear in other sections as well, *except* for the Terms section, which provides a special syntax for defining terms. 
 Definition lists follow the syntax of `term:: Definition`. The following example defines units that are used in the document.
 
-NOTE: `stem:[w]` declares the greek letter omega and renders it as stem:[w].
+NOTE: `stem:[]` is used for mathematical formatting, and results in italics. So `stem:[w]` is an italic w, _w_; `stem:[m_D]` is an italic m with a D subscript: _m~D~_.
 
 [source, AsciiDoc]
 ----
@@ -313,7 +325,7 @@ Great work! Let’s have a look at term definitions in the next lesson.
 >> Start next lesson
 
 ==== Term definitions
-If you want to cite a term throughout the standard, include it in the terms and definitions section. Term definitions vary from definition lists, as they are more granular and provide metadata to mark alternative terms or deprecated terms. 
+If you want to cite a term throughout the standard, include it in the terms and definitions section. Term definitions vary from definition lists, as they are more granular and provide metadata to mark features such as alternative terms or deprecated terms. 
 Let’s have a look at a term entry:
 
 [source, AsciiDoc]
@@ -344,12 +356,12 @@ Foreign seeds, husks, bran, sand, dust.
 ----
 <1> The start of the terms and definitions section
 <2> The term that should be defined is marked as a subheading using three equal signs. `===`.
-<3> The term `husked rice` invalidates `cargo rice`. To document the old term, use the annotation `deprecated:[term]`.
-<4> Definition for the term.
-<5> The `[.source]` attribute indicates that a citation follows. Make sure to include the dot `.` before source, so that the citation will be rendered correctly. 
+<3> The term `husked rice` supersedes `cargo rice`. To document the old term, use the annotation `deprecated:[term]`.
+<4> Definition for the term: the first paragraph of text after macros like `deprecated:[]` and `alt:[]`.
+<5> The `[.source]` attribute indicates that a citation follows, indicating where the term definition has been taken from. Make sure to include the dot `.` before source, so that the citation will be rendered correctly. 
 <6> `alt:[white rice]` indicates the alternative term for milled rice. 
 <7> `term:[husked rice]` cites the previously introduced term.
-<8> Terms that do not obviously belong to a certain domain can be annotated with `domain:[]`.
+<8> Terms that do not obviously belong to a certain domain can be annotated with `domain:[]` at the start of their definition.
 <9> If you provide an example, use the `[example]` attribute so that it renders according to the styling rules of your SDO. 
 
 
@@ -373,10 +385,10 @@ Tables are a useful tool to collect and display measured data. As AsciiDoc is al
 |Cell in column 2, row 2 <5>
 |=== <6>
 ----
-<1> Attribute that specifies the table. `[cols="1,1"]` tells the compiler that there are two columns `cols=”x,x”` that should appear in equal amount of spacing. For example, `[cols="4,2,4"]` would define three columns. The first and last column’s width would be four times the relative width and the middle column would be half as broad.
+<1> Attribute that specifies the table. `[cols="1,1"]` tells the compiler that there are two columns `cols=”x,x”` that should appear in equal amount of spacing. For example, `[cols="4,2,4"]` would define three columns. The first and last column’s width would be four times the relative width and the middle column would be half as broad. This attribute is optional.
 <2> You can add a table title by beginning the line with a dot `.`. Make sure that there is no space between the dot and the first word of the heading. 
 <3> Starting delimiter `|===`
-<4> The first line after the delimiter is the header row. To add a column, add a vertical bar `|` before the text that should be in the column. 
+<4> The first line after the delimiter is the header row. To add a column, add a vertical bar `|` before the text that should be in the column. If you use the `[cols]` attribute, different cells in a row can appear on different lines of AsciiDoc text; otherwise, they need to all be on the same line of text.
 <5> If you deal with larger amounts of text, you can also start the next column in the new line.
 <6> Closing delimiter `|===`
 
@@ -432,15 +444,14 @@ However, in standard documents images don’t just decorate text, but rather sho
 .Typical gelatinization curve <2>
 image::images/rice_image2.png[Image of the gelatinization curve] <3>
 
-*Key* <4>
-
+[%key] <4>
 stem:[t_90]:: time required to gelatinize 90 % of the kernels <5>
 P:: point of the curve corresponding to a cooking time of stem:[t_90]
 ----
 <1> Anchor for references
 <2> Image title
 <3> Image macro `image::path/file.jpg[alt text]`. If you don’t want to write alt text, you still need to append empty square brackets at the end of the macro. 
-<4> Key beginning
+<4> [%key] indicates that the image has a key.
 <5> Key entries
 
 *Inline image macro* 
@@ -457,9 +468,9 @@ Let’s look at admonitions next.
 >> Start next lesson
 
 ==== Admonitions
-Admonitions are signal words used to catch the reader’s attention, such as “TIP”, “NOTE”, or “WARNING”. There are two ways to declare an admonition: inline and as a block.
+Admonitions are signal words used to catch the reader’s attention, such as “TIP”, “NOTE”, or “WARNING”. There are two ways to declare an admonition: in a single paragraph and as a block.
 
-*Inline Admonitions*
+*Single-paragraph Admonitions*
 
 Start a new line with the signal word in all caps and a colon and write your admonition.
 
@@ -494,6 +505,14 @@ The style can be any one of the admonition labels:
 ==== <4>
 ------
 
+Metanorma adds two more signal words: "Safety precautions" and "Danger". Since they are not standard  AsciiDoc functionality, you'll need to mark them with a `type` attribute like this: 
+
+[source, AsciiDoc]
+====
+[type=danger]
+DANGER: Do perform maintenance tasks while the machine is still operating. 
+====
+
 If an admonition is valid for a whole section or a whole document and should appear before any content in the section, you can set the `beforeclauses` attribute like this:
 
 [source, AsciiDoc]
@@ -512,7 +531,7 @@ Great progress so far! Let's look at code samples in the next lesson.
 
 ==== Code Samples
 
-AsciiDoc supports code samples using the `[source]` attribute before a new block. If you specify the coding language, the sample will be highlighted correctly. Have a look at the example:
+AsciiDoc supports code samples using the `[source]` attribute before a new block. If you specify the coding language, the sample will be highlighted correctly in HTML output. Unlike other blocks in Asciidoc, line breaks and space indentations are preserved. Have a look at the example:
 
 [source, AsciiDoc]
 ------
@@ -565,6 +584,8 @@ AsciiDoc allows you to:
 *bold*
 _italic_
 `monospace`
+^superscript^
+~subscript~
 ----
 
 Metanorma extends these simple formats with:
@@ -590,6 +611,7 @@ Let’s look at a more advanced form of inline formatting: index entries
 
 ==== Index Terms
 
+NOTE: Metanorma always processes index terms and creates the corresponding XML. However, not all flavors render an Index section. Check out the https://www.metanorma.org/flavors/[flavor documentation] for your SDO to see if it supports indexing.
 Before you define an index term, your document needs a section where the index terms can appear. To create an index, define a level 1 section (==) marked with the style index at the end of your document.
 
 [source, AsciiDoc]
@@ -600,7 +622,7 @@ Before you define an index term, your document needs a section where the index t
 Index entries can consist of up to three levels using a comma to separate the terms. Metanorma provides two options to create an index entry:
 
 * Visible index terms are words within the text that are annotated with an index entry using double parentheses. `\((Level 1 index term))`
-* Hidden index terms are index entries that are not visible in the final output and are generated using triple parentheses. `(\((Level 1 index term, Level 2 index term, Level 3 index term)))`
+* Hidden index terms are index entries that are not visible in the final output and are generated using triple parentheses. `(\((Level 1 index term, Level 2 index term, Level 3 index term)))`. These allow the index to include optional subterms and sub-subterms; they also allow the index term to differ from what actually appears in the text.
 
 Let’s have a look at an example:
 
@@ -631,7 +653,7 @@ References are a core part of standards, because they coexist and relate to othe
 
 *Hyperlinks*
 
-AsciiDoc lets you include links to external sources by pasting the URL into the document and appending the link text in square brackets `[Link text]`. 
+AsciiDoc lets you include links to external sources by pasting the URL into the document, and optionally appending the link text in square brackets `[Link text]`. 
 
 .Example of a link
 [source, AsciiDoc]
@@ -645,13 +667,18 @@ Every document contains a set of metadata to describe the document. You can inse
 
 [source, AsciiDoc]
 ----
+:technical-committee-number: 2
+:technical-committee: Fasteners
+:subcommittee-number: 11
+:subcommittee: Fasteners with metric external thread
+
 This document was prepared by Technical Committee ISO/TC {technical-committee-number}, _{technical-committee}_, Subcommittee SC {subcommittee-number}, _{subcommittee}_.
 ----
 
 
 *Internal references*
 
-To link to an important place in your document, you need to set an anchor using double square brackets `[[anchor]]`. Metanorma automatically numbers and names these references. Since the markup will be converted into XML, the anchor must follow the https://www.w3.org/TR/xml-names11/[XML namespace conventions]. Therefore, an anchor name name must not contain: 
+To link to an important place in your document, you need to set an anchor using double square brackets `[[anchor]]`. Metanorma automatically numbers and names these references; because they are autonumbered, they will be renumbered automatically if you insert any new text of the same type. Since the markup will be converted into XML, the anchor must follow the https://www.w3.org/TR/xml-names11/[XML namespace conventions]. Therefore, an anchor name name must not contain: 
 colons
 whitespaces
 words starting with numbers.
@@ -690,7 +717,7 @@ A reference entry is usually part of an unordered list (`*`). The bibliographic 
 . The anchor name used to reference this entry
 . A document identifier
 
-After the reference, you include the reference text in italics, for example the title of the document.
+After the reference, you may include the reference text in italics, for example the title of the document. If the document identifier is recognised by Metanorma, however, its bibliographic description is fetched automatically from the SDO web site, and will overwrite any title you provide with the authoritative title of the reference.
 
 [source, AsciiDoc]
 ----
@@ -723,7 +750,7 @@ Let’s summarize what we’ve learnt so far.
 
 We’ve covered a lot of ground, so here is a quick summary for you:
 
-* Each Metanorma document contains metadata in the preamble using the colon notation `:attribute:`.
+* Each Metanorma document contains metadata in the header using the colon notation `:attribute:`.
 * A Metanorma document consists of several predefined sections. The document model of your organization dictates which are optional and which are mandatory. Sections are invoked using equal signs `=`.
 * Blocks are entities that belong together, such as paragraphs, lists, tables, etc. Paragraphs and lists do not need to be marked by delimiters. The remaining block types begin and end with a delimiter, for example four dashes `----`.
 * Inline markup is used for text formatting and references. You can reference:
@@ -812,7 +839,7 @@ To successfully compile a Metanorma document, the toolchain looks at:
 * Metadata: The title, document flavor, and document type.
 * Syntax: Is the entered AsciiDoc code correct?
 * Dependencies: Are all tools needed to compile the document installed?
-// Anything else?
+* File references: Are any files referred to by the file being compiled, and is their path entered correctly, for example when you include images (`image::PATH[]`). Advanced AsciiDoc usage also allows a document to embed other AsciiDoc documents (`include::PATH[]`), and Metanorma extends this in advanced usage to external data sources. 
 
 To compile a Metanorma document:
 
@@ -856,7 +883,7 @@ metanorma help compile
 === Troubleshooting 
 
 There can be many reasons why you can’t compile a Metanorma AsciiDoc document into the final output, but you can easily fix them when you know what typical errors occur and how to fix them. 
-Metanorma tells you what’s wrong in the terminal and stores all errors in an Error file `.err` where your original document is stored. 
+Metanorma tells you what’s wrong in the terminal and stores all errors in an Error file `.err` where your original document is stored. If execution has aborted before the XML content could be finalised, the XML file is still output to disk, suffixed with `.xml.abort` rather than `.xml`, and you can use it to make sense of error messages.
 
 ////
 Your input needed!
