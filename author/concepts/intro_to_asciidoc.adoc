@@ -1,45 +1,27 @@
 ---
 layout: author-docs
-description: >-
-  <p>
-  This is a general guidance for authoring Metanorma documents using Metanorma AsciiDoc.
-
-  <p>
-  Since Metanorma uses AsciiDoc markup
-  (see <a href="/author/approach/">Approach</a> for technical background),
-  this section details the specific ways in which Metanorma interprets AsciiDoc markup,
-  as well as custom markup directives.
-
-  <p>
-  This section applies across most of the
-  <a href="/flavors/">officially supported flavors of Metanorma</a>.
-  If you are using one of those flavors,
-  be sure to also check out guidelines for your flavor.
 ---
-// Add tutorial content & merge this information
+= Introduction to Metanorma AsciiDoc
 
-= Metanorma AsciiDoc
+tag::tutorial[]
+Each Metanorma document is written in AsciiDoc, a markup language that annotates text with processing instructions for layout. Since AsciiDoc only consists of text, you can use any editor to create AsciiDoc files (`.adoc` files). AsciiDoc is very similar to Markdown or Wiki formatting but provides more precise markup for creating text documents, for example to create a bibliography section or an index.
 
-== Basic AsciiDoc syntax
+Because Metanorma fulfills the markup requirements of SDOs, Metanorma extends plain AsciiDoc. This version of AsciiDoc is called Metanorma AsciiDoc. 
 
-Metanorma AsciiDoc is based on the AsciiDoc syntax used by Asciidoctor.
+An AsciiDoc document consists of different levels of granularity:
 
-Please refer to the https://asciidoctor.org/docs/user-manual/[Asciidoctor manual]
-for general markup mechanisms offered in typical AsciiDoc.
+* The document head (also called the header)
+* Sections
+* Blocks
+* Inline markup
+end::tutorial[]
 
+The https://asciidoctor.org/docs/user-manual/[Asciidoctor manual] provides ample information about the general markup mechanisms of typical AsciiDoc.
 
 == Unsupported AsciiDoc features
+While Metanorma mostly *adds* functionality to the AsciiDoc markup language, there are also some mechanisms, that Metanorma does not support:
 
 * Sidebars (``aside``s) are not supported. Instead, they are used for link:./reviewer-notes/[reviewer comments].
 * Page breaks (`thematic break`) are not supported.
 * ASCII art/preformatted text (`literal`) are not supported in most Metanorma flavors.
 
-
-== Auto-numbering
-
-In addition to the blocks that typical AsciiDoc already supports auto-numbering for (such as tables
-and figures),
-auto-numbering in Metanorma extends to formulas (which are encoded as `stem` blocks) and notes.
-
-Auto-numbering is applied in the conversion from Metanorma XML to output formats (`isodoc`);
-by default it restarts for each annex, but is continuous within the main body of text.

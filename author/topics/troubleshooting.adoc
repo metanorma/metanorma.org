@@ -1,0 +1,172 @@
+=Troubleshooting 
+
+There can be many reasons why you can’t compile a Metanorma AsciiDoc document into the final output, but you can easily fix them when you know what typical errors occur and how to fix them. 
+Metanorma tells you what’s wrong in the terminal and stores all errors in an Error file `.err` where your original document is stored. If execution has aborted before the XML content could be finalised, the XML file is still output to disk, suffixed with `.xml.abort` rather than `.xml`, and you can use it to make sense of error messages.
+
+////
+Your input needed!
+What are the most common errors when compiling a document and how they are caused?
+How to resolve the errors?
+
+==== Style Errors
+
+==== Document Attributes Errors
+
+==== Metanorma XML Syntax Errors
+
+==== Any other type of error?
+
+////
+
+// Introduced by Manuel;
+// This text is intended to be edited by technical writers
+// My intention is just capture the idea of the content. Thanks!
+
+== Compilation errors
+
+Compilation failures can happen due to installation or markup errors.
+Hopefully, the compilation message will provide us with a clear insight of the cause of the failure.
+Usually, the first error line corresponds to the cause of the failure.
+
+In regard to markup errors, some compilation failures can occur when:
+
+*Two or more cross references have the same anchor*
+
+If two or more cross references have the same anchor, document won't build and the error message 
+will be clear on the reason. So, this cannot happen:
+
+[source,asciidoc]
+----
+[[anchor1]]
+== Section 1
+...
+
+[[anchor1]]
+== Section 2
+...
+----
+
+
+*A reference to an external file is not found*
+
+Compilation fails when a reference to an external file cannot be found (i.e., an image or any other type of file).
+The error message will be explicit on which file.
+Problem gets solved by checking the specified location of the file.
+
+
+*Document standard type is not specified*
+
+Document standard type (i.e., `iso`, `ogc`, `itu`, etc.) can be specifed in the header of the document and/or the command line.
+If it's not specified in any of those ways, a compilation failure occurs and the error message will be explicit on that.
+
+
+*A single double quotation mark inside of a stem block*
+
+Double quotation marks are used in stem blocks to denote normal text, e.g.: `stem:["normal text"]`
+An odd number of double quotation marks inside a stem block will provoke a compilation error.
+
+For example, `stem:["normal text""]` leads to the following compilation error:
+
+[source]
+----
+...
+        from C:/tools/ruby25/lib/ruby/gems/2.5.0/gems/metanorma-cli-1.4.6/exe/metanorma:20:in `<top (required)>'
+        from C:/tools/ruby25/lib/ruby/gems/2.5.0/bin/metanorma:23:in `load'
+        from C:/tools/ruby25/lib/ruby/gems/2.5.0/bin/metanorma:23:in `<main>'
+parsing: "normal text""
+undefined method `[]' for nil:NilClass
+----
+
+
+*A reference auto-fetch failure*
+
+When a reference https://www.metanorma.org/author/topics/document-format/bibliography/#autofetch[auto-fetching] process fails, compilation failure may happen.
+
+Metanorma team is constantly searching and solving issues related with the automatic importation of bibliographic entries.
+However, in order to not have to wait for a precise solution of the issue, a quick workaround would be to disable
+the automatic look-up of the individual reference by enclosing its identifier with `nofetch()`. 
+
+For example, let's supose we have an issue with the reference `ITU-R BT.2267-10`.
+Its AsciiDoc markup would correspond to:
+
+[source,asciidoc]
+----
+[bibliography]
+== References
+
+* [[[bt2267-10,ITU-R BT.2267-10]]], Report ITU-R BT.2267-10 (2019), _Integrated broadcast-broadband systems._
+----
+
+and gives us a compilation failure message of:
+
+[source]
+----
+...
+[relaton-itu] ("ITU-R BT.2267-10") fetching...
+C:/tools/ruby25/lib/ruby/gems/2.5.0/gems/relaton-bib-1.7.4/lib/relaton_bib/hash_converter.rb:440:in `block in symbolize': undefined method `to_sym' for 404:Integer (NoMethodError)
+Did you mean?  to_s
+        from C:/tools/ruby25/lib/ruby/gems/2.5.0/gems/relaton-bib-1.7.4/lib/relaton_bib/hash_converter.rb:439:in `each'
+        from C:/tools/ruby25/lib/ruby/gems/2.5.0/gems/relaton-bib-1.7.4/lib/relaton_bib/hash_converter.rb:439:in `reduce'
+...
+----
+
+We can disable the automatic look-up by applying `nofetch()`:
+
+[source,asciidoc]
+----
+[bibliography]
+== References
+
+* [[[bt2267-10,nofetch(ITU-R BT.2267-10)]]], Report ITU-R BT.2267-10 (2019), _Integrated broadcast-broadband systems._
+----
+
+and compilation failure gets solved.
+
+
+*Incorrect format of reference anchor*
+
+Anchor for references and cross references cannot be set with any text we'd like.
+They must begin with a letter and cannot contain any special character other than hyphens and underscores.
+
+An incorrect format of a reference anchor can result in compilation failure.
+
+For example, incorrect manners of setting anchors are shown below:
+
+[source,asciidoc]
+----
+// Examples of incorrect anchors in references
+
+* [[[123anchor1,identifier 1]]], ... // Anchors cannot begin with a number
+
+* [[[_anchor2,identifier 2]]], ... // Anchors cannot begin with underscores or hyphens
+
+* [[[#anchor3,identifier 3]]], ... // Anchors cannot begin with any special character. Just letters.
+----
+
+
+== Rendering errors
+
+Rendering errors may result, to a large degree, from markup errors.
+Some markup errors can lead to unexpected rendering results.
+Some causes can be:
+
+
+*Number of block delimiters*
+
+Block delimiters must always have the same numbers of characters with a minimum of four.
+A lack (or excess) in the number of characters can lead to unexpected results in rendering.
+
+If you see an odd looking in example blocks, note blocks, or anything else. Look for the 
+beginning of the issue, go to the markup, and checkout the delimiting characters of the blocks.
+
+
+*Cross reference anchors must begin with a letter*
+
+Cross reference anchors cannot begin with numbers, underscores, hyphens or any other special characters. If they do, they will not be processed in compilation and will certaintly lead to rendering errors in the section titles.
+
+
+*Paragraphs beginning with white space*
+
+If you ever see a paragraph rendered inside of a source block, you probably have left a white space
+at its beginning. Paragraphs cannot begin with any white space, they will be erroneously rendered as source blocks.
+

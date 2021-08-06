@@ -3,11 +3,10 @@ layout: author-docs
 ---
 = Auto-numbering
 
-== General
+Typical AsciiDoc already supports auto-numbering for some block types, such as tables and figures.
+Metanorma extends auto-numbering to formulas (which are encoded as `stem` blocks) and notes.
 
-The following document elements ("`elements`") are auto-numbered
-by Metanorma, so users do not need to specify any numbering in
-their source documents:
+Metanorma auto-numbers these document elements, so you do not need to specify any numbering for them:
 
 * figures
 * tables
@@ -77,6 +76,7 @@ ____
 Sometimes a document element needs to be excluded from auto-numbering.
 This is achieved by giving it the option attribute `%unnumbered`:
 
+.Example for an unnumbered figure
 [source,asciidoc]
 --
 [[figureC-1]]
@@ -141,3 +141,7 @@ for (i = 0; i < n; i++) { bounce(v[i], wall) }
 ----
 --
 
+You can also override the numbering style in ordered lists, for example instead of latin numbers, you could use alphabetic numbering. 
+For more information, refer to the https://www.metanorma.org/author/topics/blocks/lists/[Documentation].
+
+NOTE: Not all flavors support these style tags.
