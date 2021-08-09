@@ -101,6 +101,7 @@ the object of the requirement)
 * measurement-target  (for quantitative requirements)
 * verification (verification steps for the requirement)
 * import (code stubs)
+* component (generic component of requirement) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4]
 
 For example:
 
@@ -131,6 +132,22 @@ This is a code stub
 
 ====
 -----
+
+The component value is associated with an additional `class` attribute, to 
+specify the particular kind of component; if no such attribute is given,
+the default value is "component".
+
+[source,asciidoc]
+----
+[.requirement]
+====
+
+[.component,class=conditions]
+--
+The following conditions need to be fulfilled...
+--
+====
+----
 
 The combination of example markup and open block markup  allows us to combine
 nested requirements with internal structure for the nested requirements:
