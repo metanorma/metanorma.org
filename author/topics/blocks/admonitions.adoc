@@ -1,0 +1,61 @@
+---
+layout: author-docs
+title: Admonitions
+---
+
+tag::tutorial[]
+Admonitions are signal words used to catch the reader’s attention, such as “TIP”, “NOTE”, or “WARNING”. There are two ways to declare an admonition: in a single paragraph and as a block.
+
+*Single-paragraph Admonitions*
+
+Start a new line with the signal word in all caps and a colon and write your admonition.
+
+.Example for an inline note
+[source, AsciiDoc]
+----
+NOTE: Advice on when to use which signal word is specified in ANSI Z535.6. 
+----
+
+*Block admonitions*
+
+. Start with the signal word in all caps enclosed in square brackets.
+. Insert the block delimiter.
+. Insert any AsciiDoc markup that you need.
+. End the block with a block delimiter.
+
+.Example for a note block.
+[source, AsciiDoc]
+------
+[NOTE] <1>
+==== <2>
+This is an example of an admonition block. <3>
+
+Unlike an admonition paragraph, it may contain any AsciiDoc content.
+The style can be any one of the admonition labels:
+
+* NOTE
+* TIP
+* WARNING
+* CAUTION
+* IMPORTANT
+==== <4>
+------
+
+Metanorma adds two more signal words: "Safety precautions" and "Danger". Since they are not standard  AsciiDoc functionality, you'll need to mark them with a `type` attribute like this: 
+
+[source, AsciiDoc]
+====
+[type=danger]
+DANGER: Do perform maintenance tasks while the machine is still operating. 
+====
+end::tutorial[]
+
+If an admonition is valid for a whole section or a whole document and should appear before any content in the section, you can set the `beforeclauses` attribute like this:
+
+[source, AsciiDoc]
+------
+[IMPORTANT,beforeclauses=true]
+====
+This important notice applies to the entire document.
+====
+------

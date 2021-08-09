@@ -1,0 +1,126 @@
+---
+layout: author-docs
+---
+= Prefatory Sections
+
+Prefatory sections are introduytory sections that appear before the actual content is shown, for example, the "`Foreword`" section.
+
+== Foreword
+
+The "`Foreword`" can be specified in two ways, depending on whether
+it is a "`simple clause`", or a "`full clause`".
+
+=== Simple foreword clause
+
+If the "`Foreword`" does not contain subclauses, it is considered
+a simple foreword clause.
+
+The Foreword of a standard is detected as any text between the document header
+and the first section header.
+
+The example below specifies the `.Foreword` title
+to the foreword in the source. (Strictly speaking, this is the caption of the
+first paragraph in the foreword, but it is used as the foreword header since
+the Foreword must precede any AsciiDoc section headers.)
+
+Metanorma will supply the "`Foreword`" title if no such title is given.
+
+[source,asciidoc]
+--
+[[foreword]]
+.Foreword
+
+The Calendaring and Scheduling Consortium ("`CalConnect`") is a global non-profit
+organization with the aim to facilitate interoperability of technologies across
+user-centric systems and applications...
+--
+
+=== Full foreword clause
+
+If the "`Foreword`" contains subclauses, it needs to be encoded as
+a full foreword clause.
+
+A full foreword clause is recognized as a full Metanorma AsciiDoc section, with the
+title "`Foreword`"; this can be overruled in different flavours.
+Simple foreword content can also be encoded this way.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
+
+
+[source,asciidoc]
+--
+[[foreword]]
+== Foreword
+The Calendaring and Scheduling Consortium ("`CalConnect`") is a global non-profit
+organization with the aim to facilitate interoperability of technologies across
+user-centric systems and applications...
+
+=== Foreword subclause
+
+More foreword...
+--
+
+
+== Arbitrary prefatory clauses
+
+Arbitrary prefatory clauses are allowed in some flavors, and are disallowed
+but "`accepted`" for encoding in certain flavors for backwards compatibility reasons.
+
+NOTE: Most flavors specify requirements on preface sections. Most flavors specify
+mandatory and optional preface sections, while some completely disallow arbitrary
+preface sections.
+
+[example]
+In ISO only the "`Foreword`" is allowed -- arbitrarily named
+preface sections are prohibited, in accordance with ISO Directives Part 2.
+
+
+Any section detected as the "`Foreword`", or labelled as "`Introduction`",
+"`Acknowledgements`" [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19], or
+"`Abstract`", will be inserted into the document preface.
+
+Any other first-level clauses tagged with the role attribute
+`[.preface]` are also moved into the document preface
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19].
+
+If these prefatory sections are provided, they will be displayed in the following default ordering:
+
+* "`Abstract`"
+* "`Foreword`"
+* "`Introduction`"
+* Preface clauses. Any prefatory clauses that don't fit the other specially "`named`" sections will be placed here.
+* "`Acknowledgments`"
+
+EXAMPLE: +
+====
+This source:
+
+[source,asciidoc]
+--
+// tagged as the "`abstract`"
+[.preface,heading=abstract]
+== Executive summary
+
+Widget manufacture has proven profitable until recent times, when increased
+competition has forced a reevaluation...
+
+// tagged as the "`acknowledgements`"
+[.preface,heading=acknowledgements]
+== Organizational contributors
+
+The following organizations have contributed valuable resources and expertise
+for the completion of this standard...
+
+// tagged as normal
+[.preface]
+== Note for draft
+
+This is not an international standard, please be aware of the responsibilities
+that come with application of this document...
+--
+
+Will be rendered in this order:
+
+* "`Executive summary`"
+* "`Note for draft`"
+* "`Acknowledgments`"
+====

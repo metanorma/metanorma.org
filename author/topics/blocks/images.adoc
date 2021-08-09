@@ -1,0 +1,171 @@
+---
+layout: author-docs
+title: Images
+---
+There are two AsciiDoc image macro types, block and inline. 
+
+== Block image
+tag::tutorial[]
+A block image is displayed as a discrete element, i.e., on its own line, in a document. A block image is designated by image macro name and followed by two colons (`::`) It’s preceded by a blank line, entered on a line by itself, and then followed by a blank line.
+
+However, in standard documents images don’t just decorate text, but rather show important features. You might want to reference that image in the text, which you need an anchor for. You can also explain a graphic by adding a key. The entries of the key follow the syntax of a definition list (`key::Explanation`).
+
+[source, AsciiDoc]
+----
+[[figureC-1]] <1>
+.Typical gelatinization curve <2>
+image::images/rice_image2.png[Image of the gelatinization curve] <3>
+
+[%key] <4>
+stem:[t_90]:: time required to gelatinize 90 % of the kernels <5>
+P:: point of the curve corresponding to a cooking time of stem:[t_90]
+----
+<1> Anchor for references
+<2> Image title
+<3> Image macro `image::path/file.jpg[alt text]`. If you don’t want to write alt text, you still need to append empty square brackets at the end of the macro. 
+<4> [%key] indicates that the image has a key.
+<5> Key entries
+
+end::tutorial[]
+
+== Inline image macro
+
+An inline image is displayed in the flow of another element, such as a paragraph. This is useful when you want to incorporate buttons or other icons into the text flow. 
+
+The inline image macro is almost identical to the block image macro, except its macro name is followed by a single colon (:). For more information refer to the https://docs.asciidoctor.org/asciidoc/latest/macros/images/[AsciiDoc documentation]. 
+
+
+
+
+Old content:
+
+== Figures
+
+Like formulae, figures can be followed by a definition list for the variables used in the figure;
+the definition list is either preceded by the paragraph `+*Key*+` (in English),
+or [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3] is marked up with `[%key]`.
+For example:
+
+[source,asciidoc]
+--
+[[figureC-1]]
+.Typical gelatinization curve
+image::rice_images/rice_image2.png[alt text]
+footnote:[The time stem:[t_90] was estimated to be 18,2 min for this example.]
+
+[%key]
+stem:[w]:: mass fraction of gelatinized kernels, expressed in per cent
+stem:[t]:: cooking time, expressed in minutes
+stem:[t_90]:: time required to gelatinize 90 % of the kernels
+P:: point of the curve corresponding to a cooking time of stem:[t_90]
+
+NOTE: These results are based on a study carried out on three different types of kernel.
+--
+
+[source,asciidoc]
+--
+[[figureC-1]]
+.Typical gelatinization curve
+image::rice_images/rice_image2.png[alt text]
+footnote:[The time stem:[t_90] was estimated to be 18,2 min for this example.]
+
+[%key]
+stem:[w]:: mass fraction of gelatinized kernels, expressed in per cent
+stem:[t]:: cooking time, expressed in minutes
+stem:[t_90]:: time required to gelatinize 90 % of the kernels
+P:: point of the curve corresponding to a cooking time of stem:[t_90]
+
+NOTE: These results are based on a study carried out on three different types of kernel.
+--
+
+As an extension to AsciiDoc syntax, Metanorma allows Data URLs as the URL for an image:
+
+[source,asciidoc]
+--
+image::data:image/png;base64,ivBO[alt text]
+--
+
+=== Subfigures
+
+Subfigures (which appear in ISO formats, for example)
+are entered by including images in AsciiDoc examples.
+
+[source,asciidoc]
+--
+[[figureC-2]]
+.Stages of gelatinization
+====
+.Initial stages: No grains are fully gelatinized (ungelatinized starch granules are visible inside the kernels)
+image::rice_images/rice_image3_1.png[]
+
+.Intermediate stages: Some fully gelatinized kernels are visible
+image::rice_images/rice_image3_2.png[]
+
+.Final stages: All kernels are fully gelatinized
+image::rice_images/rice_image3_3.png[]
+
+====
+--
+
+=== Image size
+
+The value `auto` is accepted for image width and height attributes. It is only passed on
+to HTML output; if the output is to Word, both the width and height attributes are stripped
+from the image.
+
+[source,asciidoc]
+--
+[height=90,width=auto]
+image::logo.jpg
+--
+
+=== Captions and titles
+
+As elsewhere in Metanorma, the caption of an image (of the figure containing the image)
+is set with a line prefixed with dot above the image.
+
+[source,asciidoc]
+--
+.Caption
+image::logo.jpg[]
+--
+
+[source,asciidoc]
+--
+image::logo.jpg[title=Caption]
+--
+
+NOTE: Similar to Asciidoctor AsciiDoc, the `title` attribute is treated as
+identical to the dot-prefixed caption.
+
+
+Metanorma supports a `title` attribute on images for accessibility, which is
+distinct from the figure caption.
+This is entered in Metanorma as the `titleattr` attribute:
+
+[source,asciidoc]
+--
+[titleattr=Title Attribute]
+image::logo.jpg
+--
+
+Or
+
+[source,asciidoc]
+--
+image::logo.jpg[titleattr=Title Attribute]
+--
+
+Both captions and titles could be used together.
+
+[source,asciidoc]
+--
+.Rice husk separation in rice farm at Breton near Dinan
+image::logo.jpg[titleattr=Photo of rice husks being separated]
+--
+
+NOTE: The `titleattr` attribute does not get rendered in Word output due to Word
+limitations. Word only supports a single image "`Alt Text`", which would be set
+by the caption.
+Word's description of "`Alt Text`" is:
+"`How would you describe this object and its context to someone who is blind?`".

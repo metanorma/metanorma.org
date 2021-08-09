@@ -1,0 +1,31 @@
+---
+layout: author-docs
+---
+= Different Sections
+
+Metanorma applies certain formatting when a section contains markup that is typical to that section.  
+
+== Symbols and Abbreviations
+
+Symbols and Abbreviations sections are expected to be simple definition lists
+(https://docs.asciidoctor.org/asciidoc/latest/lists/description/["`description lists`"]
+in AsciiDoc nomenclature).
+
+Metanorma takes care of sorting the symbol entries in the order prescribed by ISO/IEC DIR 2,
+provided the symbols are in AsciiMath; sorting MathML and LaTeX entries is not currently supported.
+
+== Annexes
+
+All annexes must be preceded by the style attribute `[appendix]`, or
+([added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.27])
+the role attribute `[.appendix]`. The latter can be used to combine the appendix.
+with another style attribute, such as `[bibliography]`, though this is not recommended
+practice.
+
+Like all clauses, annexes are **normative by default**,
+an informative annex is indicated with `[appendix,obligation=informative]`.
+
+The **numbering** of annexes and appendices is automatic:
+do not insert "Annex A" or "Appendix 1" as part of the title.
+
+Annex and Appendix **titles** can be left blank, as with Clauses.

@@ -1,0 +1,134 @@
+---
+layout: author-docs
+---
+= Tables
+
+tag::tutorial[]
+Tables are a useful tool to collect and display measured data. As AsciiDoc is all text input, it uses specific symbols to determine where new table rows and columns begin. A simple table looks like this:
+
+[source, AsciiDoc]
+----
+[cols="1,1"] <1>
+.A table with a title <2>
+|=== <3>
+|Cell in column 1, header row |Cell in column 2, header row <4>
+
+|Cell in column 1, row 2 
+|Cell in column 2, row 2 <5>
+|=== <6>
+----
+<1> Attribute that specifies the table. `[cols="1,1"]` tells the compiler that there are two columns `cols=”x,x”` that should appear in equal amount of spacing. For example, `[cols="4,2,4"]` would define three columns. The first and last column’s width would be four times the relative width and the middle column would be half as broad. This attribute is optional.
+<2> You can add a table title by beginning the line with a dot `.`. Make sure that there is no space between the dot and the first word of the heading. 
+<3> Starting delimiter `|===`
+<4> The first line after the delimiter is the header row. To add a column, add a vertical bar `|` before the text that should be in the column. If you use the `[cols]` attribute, different cells in a row can appear on different lines of AsciiDoc text; otherwise, they need to all be on the same line of text.
+<5> If you deal with larger amounts of text, you can also start the next column in the new line.
+<6> Closing delimiter `|===`
+
+Since standardization documents can get a bit complex, Metanorma AsciiDoc provides additional metadata for tables: 
+* `headerrows` defines how many table rows are headers
+* `alt` defines the alt text that is shown when the table can not be displayed (HTML only)
+* `width` defines the total width of the table in relation to the whole page. 
+
+.Example of a more complex table
+[source, AsciiDoc]
+----
+[headerrows=2,alt=Table of maximum mass fraction of defects in husked rice,width=70%]
+|===
+.2+|Defect 4+^| Maximum permissible mass fraction of defects in husked rice +
+stem:[w_max]
+| in husked rice | in milled rice (non-glutinous) | in husked parboiled rice | in milled parboiled rice
+
+| Extraneous matter: organic | 1,0 | 0,5 | 1,0 | 0,5
+
+|===
+----
+
+The table renders as:
+
+[headerrows=2,alt=Table of maximum mass fraction of defects in husked rice,width=70%]
+|===
+.2+|Defect 4+^| Maximum permissible mass fraction of defects in husked rice +
+stem:[w_max]
+| in husked rice | in milled rice (non-glutinous) | in husked parboiled rice | in milled parboiled rice
+
+| Extraneous matter: organic | 1,0 | 0,5 | 1,0 | 0,5
+|===
+
+end::tutorial[]
+
+
+// Old content tables todo
+
+
+== Tables
+
+Metanorma AsciiDoc tables are required to handle the full range of complexity
+of standardization documents, and is therefore significantly more
+powerful than typical AsciiDoc tables, even when typical AsciiDoc already
+handles tables very well for a non-XML markup language.
+
+Metanorma AsciiDoc already supports cells spanning multiple rows and columns,
+horizontal alignment, and [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3]
+vertical alignment.
+
+Metanorma AsciiDoc adds the option of multiple header rows
+via attribute `headerrows` to deal with the complexity
+of standardization documents' tables
+requiring labels, variables, and units to lining up in the header.
+
+Tables can also have alternate text as a title, `alt`, and summary text,
+`summary`, both of which are to be rendered as a summary of the table
+for accessibility.
+
+Tables can be set with a `width` attribute, which could be either a
+percentage (e.g. `70%`) or a pixel count (e.g. `500px`). [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21].
+
+NOTE: The `width` attribute value aligns with HTML CSS and HTML 4 behavior.
+
+[source,asciidoc]
+----
+[headerrows=2,alt=Table of maximum mass fraction of defects in husked rice,summary=Table enumerating the permissible mass fraction of defects in husked and various classes of milled rice,width=70%]
+|===
+.2+|Defect 4+^| Maximum permissible mass fraction of defects in husked rice +
+stem:[w_max]
+| in husked rice | in milled rice (non-glutinous) | in husked parboiled rice | in milled parboiled rice
+
+| Extraneous matter: organic footnote:[Organic extraneous matter includes foreign seeds, husks, bran, parts of straw, etc.] | 1,0 | 0,5 | 1,0 | 0,5
+
+|===
+----
+
+which renders:
+
+.Illustration of a table in Metanorma (DOC output). Configuration: 70% of width, two header rows, one normal row, one footnote.
+image::/assets/author/topics/document-format/text/fig-table.png[Illustration of a table in Metanorma (DOC output). Configuration: 70% of width, two header rows, one normal row, one footnote]
+
+
+In Metanorma AsciiDoc:
+
+* table cell footnotes are rendered inside the table;
+* notes following the table are rendered inside the table footer.
+
+NOTE: Typical AsciiDoc renders table cell footnotes inside the cell,
+and notes trailing the table outside the table.
+
+[TIP]
+====
+Table 1 in the Metanorma ISO Rice example document illustrates
+a large range of table formatting options.
+====
+
+Table columns can also have their widths set [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3].
+Table column widths must be enumerated explicitly per column to generate column widths.
+
+EXAMPLE:
+
+The following syntax will be processed as generating equal width columns.
+
+[source,adoc]
+----
+[cols="1,1,1"]
+----
+
+NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to
+`[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.

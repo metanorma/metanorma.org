@@ -55,46 +55,8 @@ You can do the exercises either in the browser, or on your local machine. If you
 >> Start next lesson
 
 //Lesson 2-1
-=== The Header
-
-The header contains information about the document (metadata). Some of the metadata will be visible in your document, such as `:title:`, while others are not visible but still affect how your document is generated, like `:draft:`. 
-You can specify metadata about:
-
-* Authors: Issuing organization, authors, and their location
-* Document info: Language, document stages (draft, published, etc.) copyright holder, etc.
-* Dates: Draft dates, revision dates, publishing date, copyright year, etc. 
-* Identifiers: Document numbers, ISBNs, URIs (Uniform Resource Identifiers)
-
-NOTE: Other metadata influence how the document is generated and should only be used by advanced users. Often, they will require familiarity with your SDO's structures and processes.
-
-Here’s an example:
-
-[source, AsciiDoc]
-----
-= Rice model <1>
-Author <2>
-:docnumber: 17301 <3>
-:doctype: standard <4>
-:copyright-year: 2021
-:language: en
-:mn-document-class: iso <5>
-:technical-committee: Food products <6>
-:fullname: Your Name <7> 
-:fullname_2: Co-Authors Name
-:address: Chemin de Blandonnet 8 + \ <8>
-CP 401 - 1214 Vernier + \
-Geneva + \
-Switzerland
-----
-
-<1> Document title
-<2> The author line is ignored by Metanorma, but needs to be present for Asciidoctor to process document attributes correctly.
-<3> `:docnumber:` is the first document attribute, and it has the value _17301_
-<4> `:doctype:` defines the type of document, for example standard, report, guide, etc. The allowed values for this attribute are specific to each SDO.
-<5> `:mn-document-class:` indicates the Metanorma flavor the document should be checked against. 
-<6> The committee responsible for the document
-<7> The author’s name. You can add co-authors by appending the attribute with a number:  `_2`, `_3`, and so on. 
-<8> When you add an address that contains multiple lines, end each line except for the last with `+ \`. Alternatively, you can enter each line into its own attribute, such as `:street:`, `:postcode:`, `:city:`, `:country:`. 
+== The Header
+inlcude::../author/topics/metadata.adoc[tag=tutorial]
 
 [[exercise-2-1]]
 include::exercises.adoc[tag=exercise-2-1]
@@ -102,96 +64,10 @@ include::exercises.adoc[tag=exercise-2-1]
 Let’s add some sections to our document in the next lesson.
 >> Start next lesson 
 
-=== Sections
+//Lesson 2-2
+== Sections
 
-Sections define hierarchy levels in your document and are equivalent to chapters. The document title is the highest section and is created by prepending a `=` sign in front of the heading. If you want to go one level deeper in the hierarchy, add another `=`. 
-Here’s an example: 
-
-[source, AsciiDoc]
-----
-= Document title
-== Section 1
-=== Section 1.1
-==== Section 1.1.1
-===== Section 1.1.1.1
-== Section 2
-…
-----
-
-Metanorma provides a document model that determines what sections need to appear in a document. Let’s have a look at the standard document model (standoc) to understand what kinds of sections appear in a typical Metanorma document.
-
-NOTE: The standoc flavour does not correspond to any one SDO: it is a default model that other flavors are based on.
-
-.A UML representation of all section classes in Metanorma
-image::https://raw.githubusercontent.com/metanorma/metanorma-model-standoc/master/images/StandardDoc_Sections.png[A UML representation of all section classes in Metanorma]
-
-A typical Metanorma document can contain the following sections:
-
-* Abstract
-* Foreword
-* Introduction
-* Acknowledgments
-* Scope
-* Terminology 
-* Definitions
-* Clauses 
-* Bibliography
-* Annex
-
-NOTE: Each organization is based on the standard document model but they can omit sections or make them mandatory, if they choose to. For example, only NIST uses the acknowledgments section, whereas other SDOs do not require it. Check the https://www.metanorma.org/flavors/[flavor documentation] for more details on how your SDO uses Metanorma. 
-
-To successfully validate a document, the compiler needs to know what sections are in the document. Most of the time, the section headings match sections defined in the document model. However, not all sections need an identifier, for example, your ordinary content sections fall under the category of `clause section`, and are not further standardized.
-
-If you want to use a different title or create a document in a language other than English, you need to add metadata in square brackets to ensure that sections are recognized. Plain AsciiDoc already provides some https://docs.asciidoctor.org/asciidoc/latest/sections/section-ref/#section-styles[section metadata] that Metanorma uses for document validation: 
-
-* `[abstract]`
-* `[acknowledgments]`
-* `[appendix]`
-* `[bibliography]`
-* `[index]`
-* `[preface]`
-
-Documents can contain only one Abstract, one Acknowledgements section, and one Index. On the other hand, documents can have any number of appendixes (or annexes), bibliographies, and prefatory sections, each of them marked with those attributes.
-There are also some Metanorma-specific section identifiers, that follow the syntax `[heading=section]`:
-
-* `[heading=terms and definitions]`
-* [heading=foreword]
-* [heading=introduction]
-* [heading=scope]
-* [heading=symbols and abbreviated terms]
-
-
-
-[source, AsciiDoc]
-----
-= Document title
-
-== Abstract
-
-== Foreword
-
-[preface] <1>
-== Introduction to version 3 of this standard
-
-[bibliography] <2>
-== Normative references
-
-[heading=terms and definitions] <3>
-== Terms, definitions, and abbreviations
-
-
-[bibliography]
-== Bibliography
-	...
-[appendix,obligation=informative] <4>
-== Annex
-	...
-----
-
-<1> This section is an introduction but the compiler can not recognize it because it deviates from plain `== Introduction`. The `preface` attribute ensures that the document structure is still valid.
-<2> The `Normative references` section contains references to related standards. The compiler needs the `[bibliography]` tag, so that it renders the reference correctly.
-<3> Use the `heading` tag to assign section types specific to Metanorma.
-<4> Here, the appendix is called “Annex”, and needs the `appendix` tag to define what kind of section it is. You can specify if a section is normative or informative by adding the `obligation` identifier after the section identifier. 
+inlcude::../author/topics/sections.adoc[tag=tutorial]
 
 [[exercise-2-2]]
 include::exercises.adoc[tag=exercise-2-2]
@@ -199,110 +75,26 @@ include::exercises.adoc[tag=exercise-2-2]
 We’ve built the basic structure of a Metanorma document. Let’s add some content to our document in the next lesson.
 >> Start next lesson 
 
-=== Blocks
-
-Information that forms a logical segment, such as a paragraph or a list, is called a block.
-Most blocks start and end with a https://asciidoctor.org/docs/asciidoc-writers-guide/#delimited-blocks[delimiter] which is a matching sequence of characters. The delimiters tell the compiler that the text they contain belongs together. 
-
-.Examples for different blocks
-[source, AsciiDoc]
-------
-I’m a paragraph and I don’t need a block delimiter. 
-<1>
-. I’m a list item and also do not need a delimiter
-. I’m the second list item
-. I'm list item number three
-
-//// <2>
-I’m a comment.
-////
-
-[source, python] <3>
-----
-print("Hello World!")
-----
-------
-
-<1> Paragraphs and lists are types of blocks that do not need any delimiters. They are separated by a blank line in between blocks.
-<2> Comments use four slashes as a delimiter `////`. No other block uses slashes to begin and end a block.
-<3> All other types of blocks rely on delimiters, such as four dashes `----` or four equal signs `====`. This block contains a code sample written in python.
-
-
-There are many types of blocks in AsciiDoc, such as:
-* Paragraphs
-* Lists
-* Tables
-* Images
-* Admonitions (Note, Caution, Warning, etc.)
-* Examples
-* Code samples
-* Mathematic formulas
-* Term definitions
-* Comments
-* Reviewer Notes
+//Lesson 2-3
+== Blocks
+include::../author/topics/blocks.adoc[tag=tutorial]
 
 Let’s look at lists in the next lesson. 
 >> Next lesson
 
-==== Lists
+//Lesson 2-3-1
+=== Lists
 
-Metanorma AsciiDoc supports three types of lists:
-
-* Unordered lists
-* Ordered lists
-* Definition lists
-
-*Unordered lists*
-
-Unordered lists are bulleted and can be nested. They look like this:
-
-[source, AsciiDoc]
-----
-The main changes compared to the previous edition are:
-
-* updated normative references;
-* deletions:
-** deletion of 4.3. [nested list item]
-** deletion of 4.4. [nested list item]
-----
-
-*Ordered lists* 
-
-Ordered lists are invoked by beginning the line with a dot `.`. The list items are numbered automatically. The list style depends on the stylesheet of your organization. However, if you want to tweak how your list looks like, you can use an attribute before the list starts, for example:
-
-[source, AsciiDoc]
-----
-[type="alphabetic_upper"]
-. First as "A"
-. Second as "B"
-
-[type="roman_upper"]
-. First as "I"
-. Second as "II"
-----
-
-*Definition lists*
-
-Definition lists (also called https://docs.asciidoctor.org/asciidoc/latest/lists/description/[description lists] pair a term and a description together. They are often used in a "Definitions" section to define units or terms. Definition lists can appear in other sections as well, *except* for the Terms section, which provides a special syntax for defining terms. 
-Definition lists follow the syntax of `term:: Definition`. The following example defines units that are used in the document.
-
-NOTE: `stem:[]` is used for mathematical formatting, and results in italics. So `stem:[w]` is an italic w, _w_; `stem:[m_D]` is an italic m with a D subscript: _m~D~_.
-
-[source, AsciiDoc]
-----
-stem:[w]:: is the mass fraction of grains with a particular defect in the test sample;
-stem:[m_D]:: is the mass, in grams, of grains with that defect;
-stem:[m_S]:: is the mass, in grams, of the test sample.
-----
+include::../author/topics/blocks/lists.adoc[tags=tutorial,leveloffset=+2]
 
 [[exercise-2-3]]
 include::exercises.adoc[tag=exercise-2-3]
 
-
 Great work! Let’s have a look at term definitions in the next lesson.
 >> Start next lesson
 
-==== Term definitions
+//Lesson 2-3-2
+=== Term definitions
 If you want to cite a term throughout the standard, include it in the terms and definitions section. Term definitions vary from definition lists, as they are more granular and provide metadata to mark features such as alternative terms or deprecated terms. 
 Let’s have a look at a term entry:
 
@@ -349,56 +141,9 @@ include::exercises.adoc[tag=exercise-2-4]
 The next type of block we will cover are tables.
 >> Start next lesson
 
-==== Tables
-Tables are a useful tool to collect and display measured data. As AsciiDoc is all text input, it uses specific symbols to determine where new table rows and columns begin. A simple table looks like this:
-
-[source, AsciiDoc]
-----
-[cols="1,1"] <1>
-.A table with a title <2>
-|=== <3>
-|Cell in column 1, header row |Cell in column 2, header row <4>
-
-|Cell in column 1, row 2 
-|Cell in column 2, row 2 <5>
-|=== <6>
-----
-<1> Attribute that specifies the table. `[cols="1,1"]` tells the compiler that there are two columns `cols=”x,x”` that should appear in equal amount of spacing. For example, `[cols="4,2,4"]` would define three columns. The first and last column’s width would be four times the relative width and the middle column would be half as broad. This attribute is optional.
-<2> You can add a table title by beginning the line with a dot `.`. Make sure that there is no space between the dot and the first word of the heading. 
-<3> Starting delimiter `|===`
-<4> The first line after the delimiter is the header row. To add a column, add a vertical bar `|` before the text that should be in the column. If you use the `[cols]` attribute, different cells in a row can appear on different lines of AsciiDoc text; otherwise, they need to all be on the same line of text.
-<5> If you deal with larger amounts of text, you can also start the next column in the new line.
-<6> Closing delimiter `|===`
-
-Since standardization documents can get a bit complex, Metanorma AsciiDoc provides additional metadata for tables: 
-* `headerrows` defines how many table rows are headers
-* `alt` defines the alt text that is shown when the table can not be displayed (HTML only)
-* `width` defines the total width of the table in relation to the whole page. 
-
-.Example of a more complex table
-[source, AsciiDoc]
-----
-[headerrows=2,alt=Table of maximum mass fraction of defects in husked rice,width=70%]
-|===
-.2+|Defect 4+^| Maximum permissible mass fraction of defects in husked rice +
-stem:[w_max]
-| in husked rice | in milled rice (non-glutinous) | in husked parboiled rice | in milled parboiled rice
-
-| Extraneous matter: organic | 1,0 | 0,5 | 1,0 | 0,5
-
-|===
-----
-
-The table renders as:
-
-[headerrows=2,alt=Table of maximum mass fraction of defects in husked rice,width=70%]
-|===
-.2+|Defect 4+^| Maximum permissible mass fraction of defects in husked rice +
-stem:[w_max]
-| in husked rice | in milled rice (non-glutinous) | in husked parboiled rice | in milled parboiled rice
-
-| Extraneous matter: organic | 1,0 | 0,5 | 1,0 | 0,5
-|===
+//Lesson 2-3-3
+=== Tables
+include::../author/topics/blocks/tables.adoc[tag=tutorial]
 
 [[exercise-2-5]]
 include::exercises.adoc[tag=exercise-2-5]
@@ -406,38 +151,9 @@ include::exercises.adoc[tag=exercise-2-5]
 Let’s look at inserting images next.
 >> Start next lesson
 
-==== Images
-
-There are two AsciiDoc image macro types, block and inline. 
-
-*Block image*
-
-A block image is displayed as a discrete element, i.e., on its own line, in a document. A block image is designated by image macro name and followed by two colons (`::`) It’s preceded by a blank line, entered on a line by itself, and then followed by a blank line.
-
-However, in standard documents images don’t just decorate text, but rather show important features. You might want to reference that image in the text, which you need an anchor for. You can also explain a graphic by adding a key. The entries of the key follow the syntax of a definition list (`key::Explanation`).
-
-[source, AsciiDoc]
-----
-[[figureC-1]] <1>
-.Typical gelatinization curve <2>
-image::images/rice_image2.png[Image of the gelatinization curve] <3>
-
-[%key] <4>
-stem:[t_90]:: time required to gelatinize 90 % of the kernels <5>
-P:: point of the curve corresponding to a cooking time of stem:[t_90]
-----
-<1> Anchor for references
-<2> Image title
-<3> Image macro `image::path/file.jpg[alt text]`. If you don’t want to write alt text, you still need to append empty square brackets at the end of the macro. 
-<4> [%key] indicates that the image has a key.
-<5> Key entries
-
-*Inline image macro* 
-//Maybe only discuss in documentation but not in tutorial, as it won't be covered in the exercise?
-An inline image is displayed in the flow of another element, such as a paragraph. This is useful when you want to incorporate buttons or other icons into the text flow. 
-
-The inline image macro is almost identical to the block image macro, except its macro name is followed by a single colon (:). For more information refer to the https://docs.asciidoctor.org/asciidoc/latest/macros/images/[AsciiDoc documentation]. 
-
+//Lesson 2-3-4
+=== Images
+include::../author/topics/blocks/images.adoc[tag=tutorial]
 
 [[exercise-2-6]]
 include::exercises.adoc[tag=exercise-2-6]
@@ -445,69 +161,17 @@ include::exercises.adoc[tag=exercise-2-6]
 Let’s look at admonitions next.
 >> Start next lesson
 
-==== Admonitions
-Admonitions are signal words used to catch the reader’s attention, such as “TIP”, “NOTE”, or “WARNING”. There are two ways to declare an admonition: in a single paragraph and as a block.
-
-*Single-paragraph Admonitions*
-
-Start a new line with the signal word in all caps and a colon and write your admonition.
-
-.Example for an inline note
-[source, AsciiDoc]
-----
-NOTE: Advice on when to use which signal word is specified in ANSI Z535.6. 
-----
-
-*Block admonitions*
-
-. Start with the signal word in all caps enclosed in square brackets.
-. Insert the block delimiter.
-. Insert any AsciiDoc markup that you need.
-. End the block with a block delimiter.
-
-.Example for a note block.
-[source, AsciiDoc]
-------
-[NOTE] <1>
-==== <2>
-This is an example of an admonition block. <3>
-
-Unlike an admonition paragraph, it may contain any AsciiDoc content.
-The style can be any one of the admonition labels:
-
-* NOTE
-* TIP
-* WARNING
-* CAUTION
-* IMPORTANT
-==== <4>
-------
-
-Metanorma adds two more signal words: "Safety precautions" and "Danger". Since they are not standard  AsciiDoc functionality, you'll need to mark them with a `type` attribute like this: 
-
-[source, AsciiDoc]
-====
-[type=danger]
-DANGER: Do perform maintenance tasks while the machine is still operating. 
-====
-
-If an admonition is valid for a whole section or a whole document and should appear before any content in the section, you can set the `beforeclauses` attribute like this:
-
-[source, AsciiDoc]
-------
-[IMPORTANT,beforeclauses=true]
-====
-This important notice applies to the entire document.
-====
-------
-
+//Lesson 2-3-5
+=== Admonitions
+include::../author/topics/blocks/admonitions.adoc[tag=tutorial]
 [[exercise-2-7]]
 include::exercises.adoc[tag=exercise-2-7]
 
 Great progress so far! Let's look at code samples in the next lesson.
 >> Start next lesson
 
-==== Code Samples
+//Lesson 2-3-6
+=== Code Samples
 
 AsciiDoc supports code samples using the `[source]` attribute before a new block. If you specify the coding language, the sample will be highlighted correctly in HTML output. Unlike other blocks in Asciidoc, line breaks and space indentations are preserved. Have a look at the example:
 
@@ -535,7 +199,8 @@ include::exercises.adoc[tag=exercise-2-8]
 We’re done with blocks - good job! The next lesson covers inline markup. 
 >> Start next lesson
 
-=== Inline Markup
+//Lesson 2-4
+== Inline Markup
 
 To annotate single words, you use inline markup. The markup encloses the word(s) and you do not need to begin a new line. Inline markup allows you to:
 
@@ -548,7 +213,8 @@ To annotate single words, you use inline markup. The markup encloses the word(s)
 Let’s look at these features in the following lessons.
 >> Start next lesson
 
-==== Text markup
+//Lesson 2-4-1
+=== Text markup
 
 The simplest form of inline markup is to emphasize text. 
 AsciiDoc allows you to:

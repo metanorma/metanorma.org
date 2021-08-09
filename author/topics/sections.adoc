@@ -1,41 +1,102 @@
 ---
 layout: author-docs
 ---
+= Adding Document Sections
 
-// Tutorial Content
+tag::tutorial[]
+Sections define hierarchy levels in your document and are equivalent to chapters. The document title is the highest section and is created by prepending a `=` sign in front of the heading. If you want to go one level deeper in the hierarchy, add another `=`. 
+Here’s an example: 
 
-// Content from existing pages
+[source, AsciiDoc]
+----
+= Document title
+== Section 1
+=== Section 1.1
+==== Section 1.1.1
+===== Section 1.1.1.1
+== Section 2
+…
+----
 
----
-layout: author-docs
----
+== Section headings and validation
 
-= Document sections
+Metanorma provides a document model that determines what sections need to appear in a document. Let’s have a look at the standard document model (standoc) to understand what kinds of sections appear in a typical Metanorma document.
 
-Sections are marked off in AsciiDoc with titles prefixed by at least two equal signs, `==`.
+NOTE: The standoc flavour does not correspond to any one SDO: it is a default model that other flavors are based on.
 
-* `===` indicates a first level subsection;
-* `====` a second level subsection;
-* and so on.
+.A UML representation of all section classes in Metanorma
+image::https://raw.githubusercontent.com/metanorma/metanorma-model-standoc/master/images/StandardDoc_Sections.png[A UML representation of all section classes in Metanorma]
 
-== Clause headings
+A typical Metanorma document can contain the following sections:
 
-=== Fixed section names
+* Abstract
+* Foreword
+* Introduction
+* Acknowledgments
+* Scope
+* Normative references
+* Terms and definitions
+* Definitions
+* Clauses 
+* Symbols and abbreviated terms
+* Bibliography
+* Annex
 
-Metanorma relies on certain pre-defined section titles
-to identify the different kinds of sections in the document, namely these:
+To successfully validate a document, the compiler needs to know what sections are in the document. Metanorma relies on these predefined section titles to check them against the document model. However, not all sections need an identifier, for example, your ordinary content sections fall under the category of `clause section`, and are not further standardized.
 
-* `Abstract`
-* `Foreword` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
-* `Introduction`
-* `Acknowledgements` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
-* `Scope`
-* `Normative references`
-* `Terms and definitions`
-* `Symbols and abbreviated terms`
-* `Symbols` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.0]
-* `Abbreviated terms` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.0]
-* `Bibliography`
+NOTE: Each organization is based on the standard document model but they can omit sections or make them mandatory, if they choose to. For example, only NIST uses the acknowledgments section, whereas other SDOs do not require it. Flavours may overrule these pre-defined section titles with titles of their own, or may choose not to recognise at least some of them as special sections. Check the https://www.metanorma.org/flavors/[flavor documentation] for more details on how your SDO uses Metanorma. 
+
+== Deviating section titles
+
+If you want to use a different title or create a document in a language other than English, you need to add metadata in square brackets to ensure that sections are recognized. Plain AsciiDoc already provides some https://docs.asciidoctor.org/asciidoc/latest/sections/section-ref/#section-styles[section metadata] that Metanorma uses for document validation: 
+
+* `[abstract]`
+* `[acknowledgments]`
+* `[appendix]`
+* `[bibliography]`
+* `[index]`
+* `[preface]`
+
+Documents can contain only one Abstract, one Acknowledgements section, and one Index. On the other hand, documents can have any number of appendixes (or annexes), bibliographies, and prefatory sections, each of them marked with those attributes.
+There are also some Metanorma-specific section identifiers, that follow the syntax `[heading=section]`:
+
+* `[heading=terms and definitions]`
+* `[heading=foreword]`
+* `[heading=introduction]`
+* `[heading=scope]`
+* `[heading=symbols and abbreviated terms]`
+
+[source, AsciiDoc]
+----
+= Document title
+
+== Abstract
+
+== Foreword
+
+[preface] <1>
+== Introduction to version 3 of this standard
+
+[bibliography] <2>
+== Normative references
+
+[heading=terms and definitions] <3>
+== Terms, definitions, and abbreviations
+
+[bibliography]
+== Bibliography
+	...
+[appendix,obligation=informative] <4>
+== Annex
+	...
+----
+
+<1> This section is an introduction but the compiler can not recognize it because it deviates from plain `== Introduction`. The `preface` attribute ensures that the document structure is still valid.
+<2> The `Normative references` section contains references to related standards. The compiler needs the `[bibliography]` tag, so that it renders the reference correctly.
+<3> Use the `heading` tag to assign section types specific to Metanorma.
+<4> Here, the appendix is called “Annex”, and needs the `appendix` tag to define what kind of section it is. You can specify if a section is normative or informative by adding the `obligation` identifier after the section identifier. 
+
+end::tutorial[]
 
 [NOTE]
 ====
@@ -46,38 +107,9 @@ some organizations utilize
 https://en.wikipedia.org/wiki/Letter_case#Title_case[title case].
 ====
 
-[NOTE]
-====
-A dedicated topic link:../section-terms/[expands on "`Terms and definitions`" section grammar], specifically.
-====
-
-Flavours may overrule these pre-defined section titles with titles of their own,
-or may choose not to recognise at least some of them as special sections.
-
-As an alternative
-(if the document deviates from that naming structure, or is in a language other than English),
-the section can be prefixed with a `heading=` attribute
-that provides the English canonical form of the section name. For example:
-
-[source,asciidoc]
---
-== Normative references
-
-[heading=terms and definitions]
-== Terms, definitions and abbreviations
---
-
 === Blank subclause headings
 
-Blank subclause headings can be given like this:
-
-[source,asciidoc]
---
-=== {blank}
---
-
-These are used when you want to give a subclause number for a new subclause,
-but without an associated header text. For example,
+Blank subclause headings are used when you want to give a subclause number for a new subclause, but without an associated header text. For example,
 
 [source,asciidoc]
 --
@@ -102,235 +134,6 @@ This notation should not be used to implement paragraph numbering as required fo
 The link:/flavors/un/[UN Metanorma flavor] treats each paragraph
 as a distinct clause and automatically numbers it.
 ====
-
-=== Inline headings
-
-Inline subclause headings (e.g. for test methods) are indicated by preceding the heading
-with the `[%inline-header]` option attribute. So in the Rice Model document,
-
-[source,asciidoc]
---
-[%inline-header]
-==== Sieve,
-
-with round perforations of diameter 1,4 mm.
---
-
-renders as
-
-____
-*A.2.1.1. Sieve,* with round perforations of diameter 1,4 mm.
-____
-
-== Clause attributes
-
-=== Language & script
-
-The language and script of a section is indicated via the optional attributes
-`language` and `script`:
-
-[source,asciidoc]
---
-[language=fr]
-== Section 3
-
-[appendix,script=Zmth]
-== Math Appendix
---
-
-=== Obligations
-
-The obligation of a section—whether it is normative or informative—is indicated
-via the attribute “obligation” (see example below).
-
-For most sections, this is fixed; for annexes and clauses,
-the default value of the obligation is "normative" and users need to set the obligation
-to "informative" as a section attribute if needed. For example:
-
-[source,asciidoc]
---
-[[AnnexA]]
-[appendix,obligation=informative]
-== Determination of defects
---
-
-=== Numbering
-
-As with link:/author/topics/document-format/text#numbering-override[block element numbering],
-a clause number may be provided to override auto-numbering.
-
-For instance, in order to number out-of-sequence clauses in updated
-documents or amendments [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.3].
-
-A manual clause number is specified with the attribute `number`:
-
-[source,asciidoc]
-----
-== Clause 7
-
-[number=0]
-=== Zeroth Subclause
-----
-
-Elements subsequent to the manually numbered element will be auto-numbered
-so as to follow the previous element. This may include incrementing the final
-letter in an alphanumeric clause number (e.g. _7a_ followed by _7b_.)
-
-If resumption of auto-numbering is not intended for subsequent clauses
-(e.g. _7bis_ should not be followed by _7bit_),
-an explicit number also needs to be given to those clauses separately.
-
-
-== Prefatory clauses
-
-=== Foreword
-
-==== General
-
-The "`Foreword`" can be specified in two ways, depending on whether
-it is a "`simple clause`", or a "`full clause`".
-
-==== Simple foreword clause
-
-If the "`Foreword`" does not contain subclauses, it is considered
-a simple foreword clause.
-
-The Foreword of a standard is detected as any text between the document header
-and the first section header.
-
-The example below specifies the `.Foreword` title
-to the foreword in the source. (Strictly speaking, this is the caption of the
-first paragraph in the foreword, but it is used as the foreword header since
-the Foreword must precede any AsciiDoc section headers.)
-
-Metanorma will supply the "`Foreword`" title if no such title is given.
-
-[source,asciidoc]
---
-[[foreword]]
-.Foreword
-
-The Calendaring and Scheduling Consortium ("`CalConnect`") is a global non-profit
-organization with the aim to facilitate interoperability of technologies across
-user-centric systems and applications...
---
-
-
-===== Full foreword clause
-
-If the "`Foreword`" contains subclauses, it needs to be encoded as
-a full foreword clause.
-
-A full foreword clause is recognized as a full Metanorma AsciiDoc section, with the
-title "`Foreword`"; this can be overruled in different flavours.
-Simple foreword content can also be encoded this way.
- [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
-
-
-[source,asciidoc]
---
-[[foreword]]
-== Foreword
-The Calendaring and Scheduling Consortium ("`CalConnect`") is a global non-profit
-organization with the aim to facilitate interoperability of technologies across
-user-centric systems and applications...
-
-=== Foreword subclause
-
-More foreword...
---
-
-
-=== Arbitrary prefatory clauses
-
-Arbitrary prefatory clauses are allowed in some flavors, and are disallowed
-but "`accepted`" for encoding in certain flavors for backwards compatibility reasons.
-
-NOTE: Most flavors specify requirements on preface sections. Most flavors specify
-mandatory and optional preface sections, while some completely disallow arbitrary
-preface sections.
-
-[example]
-In ISO only the "`Foreword`" is allowed -- arbitrarily named
-preface sections are prohibited, in accordance with ISO Directives Part 2.
-
-
-Any section detected as the "`Foreword`", or labelled as "`Introduction`",
-"`Acknowledgements`" [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19], or
-"`Abstract`", will be inserted into the document preface.
-
-Any other first-level clauses tagged with the role attribute
-`[.preface]` are also moved into the document preface
- [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19].
-
-If these prefatory sections are provided, they will be displayed in the following default ordering:
-
-* "`Abstract`"
-* "`Foreword`"
-* "`Introduction`"
-* Preface clauses. Any prefatory clauses that don't fit the other specially "`named`" sections will be placed here.
-* "`Acknowledgments`"
-
-EXAMPLE: +
-====
-This source:
-
-[source,asciidoc]
---
-// tagged as the "`abstract`"
-[.preface,heading=abstract]
-== Executive summary
-
-Widget manufacture has proven profitable until recent times, when increased
-competition has forced a reevaluation...
-
-// tagged as the "`acknowledgements`"
-[.preface,heading=acknowledgements]
-== Organizational contributors
-
-The following organizations have contributed valuable resources and expertise
-for the completion of this standard...
-
-// tagged as normal
-[.preface]
-== Note for draft
-
-This is not an international standard, please be aware of the responsibilities
-that come with application of this document...
---
-
-Will be rendered in this order:
-
-* "`Executive summary`"
-* "`Note for draft`"
-* "`Acknowledgments`"
-====
-
-
-== Symbols and Abbreviations
-
-Symbols and Abbreviations sections are expected to be simple definition lists
-(http://asciidoctor.org/docs/user-manual/#labeled-list["`labelled lists`"]
-in AsciiDoc nomenclature).
-
-Metanorma takes care of sorting the symbol entries in the order prescribed by ISO/IEC DIR 2,
-provided the symbols are in AsciiMath; sorting MathML and LaTeX entries is not currently supported.
-
-== Annexes
-
-All annexes must be preceded by the style attribute `[appendix]`, or
-([added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.27])
-the role attribute `[.appendix]`. The latter can be used to combine the appendix.
-with another style attribute, such as `[bibliography]`, though this is not recommended
-practice.
-
-Like all clauses, annexes are **normative by default**,
-an informative annex is indicated with `[appendix,obligation=informative]`.
-
-The **numbering** of annexes and appendices is automatic:
-do not insert "Annex A" or "Appendix 1" as part of the title.
-
-Annex and Appendix **titles** can be left blank, as with Clauses.
 
 == Sections deeper than 5 levels
 
@@ -413,22 +216,3 @@ and the rendering would be something like
 *1.1.1.1.1.2  Clause 6B*
 
 *1.1.1.1.2  Clause 5B*
-
-
-== Table of Contents
-
-The table of contents is generated automatically for Word, HTML, and PDF output.
-
-* In Word, it takes the form of a normal Word Table of Contents; the page numbers
-are not populated when the document is generated, and the table of contents needs
-to be refreshed (Right Click: Update Field).
-* In HTML, it takes the form of a side panel. In PDF, it takes the form of an
-introductory table of contents; because the PDF is generated from HTML in Metanorma,
-there are no page numbers in the table of contents.
-
-By default, the table of contents includes two levels of heading. More levels of
-heading can be set by using the document attribute `:toclevels:`; e.g.
-`:toclevels: 3` for three levels of heading included. The number of levels of heading
-to include can be set separately for HTML/PDF and for DOC, by using the document
-attributes `:htmltoclevels:` and `:doctoclevels:`.
-
