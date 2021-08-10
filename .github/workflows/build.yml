@@ -5,29 +5,24 @@ on:
     branches:
       - '*'         # matches every branch
       - '*/*'       # matches every branch containing a single '/'
-      - '!master'   # excludes master
-      - '!staging'   # excludes master
+      - '!main'     # excludes main
+      - '!staging'  # excludes staging
 
 jobs:
   build:
     name: Build site
     runs-on: ubuntu-latest
     steps:
-      - name: Setup prerequisites
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y curl make libxml2-dev libxslt-dev openssl
-      - name: Use Ruby
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: '2.7'
-          architecture: 'x64'
-          bundler-cache: true
-      - uses: actions/checkout@master
-      - name: Update gems
-        run: |
-          bundle install --jobs 4 --retry 3
-      - name: Build site
-        run: |
-          make _site
-
+    - name: Setup prerequisites
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y curl make libxml2-dev libxslt-dev openssl
+    - uses: actions/checkout@v2
+    - name: Use Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+    - name: Build site
+      run: |
+        make _site
