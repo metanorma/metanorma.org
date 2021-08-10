@@ -1,0 +1,283 @@
+---
+layout: author-docs
+---
+
+= LutaML for UML plugin
+
+== Purpose
+
+Many standards organizations, such as OGC, ISO and IEC, rely on
+https://www.omg.org/spec/UML/[UML] to describe and standardize
+conceptual or implementation models.
+
+Standards authors who wish to describe a UML model in a standard document
+may take advantage of the Metanorma "`model-based authoring`" approach, where
+the author can programmatically generate content by having Metanorma navigate
+through the actual UML model.
+
+The LutaML for UML plugin supports navigating through UML models stored in
+https://www.omg.org/spec/XMI/[XMI] files (version 2.4+).
+
+NOTE: Currently, only XMI files exported via Enterprise Architect (versions
+15.0+) from https://sparxsystems.com[SparxSystems] are officially supported.
+In particular, Enterprise Architect supports the export of a "`Canonical UML
+XMI`" model file, where the LutaML for UML plugin takes as input.
+
+
+== Basic UML concepts
+
+An UML XMI model file can contain a combination of the following objects:
+
+* Package
+* Class / Enumerations / Classifiers
+* Attributes
+* Associations
+* Instances
+
+
+== Describing UML packages
+
+=== General
+
+A common use case in standards authoring is to iterate through a UML package
+and have the document perform the following:
+
+* display diagrams of the package
+* describe classes and associations in the package
+** for each class, describe its attributes
+* describe enumerations in the package
+
+The following syntax allows for navigating within one or more UML packages
+in an XMI model file and generating text from them.
+
+=== lutaml_uml_datamodel_description
+
+==== Syntax
+
+The `lutaml_uml_datamodel_description` command renders UML packages and its
+dependent objects from a XMI model file.
+
+[source,adoc]
+----
+[lutaml_uml_datamodel_description, path/to/file.xmi, path/to/config.yml]
+--
+{block}
+--
+----
+
+The `lutaml_uml_datamodel_description` command takes two arguments and a block:
+
+* `path/to/file.xmi`: location of the XMI file.
+* `path/to/config.yml`: (optional) configuration that specifies what packages
+  and classes to iterate through.
+* `{block}`: (optional) provides the ability to insert specified content
+  before or after designated packages.
+
+==== Inserting text via the supplied block
+
+Within the supplied block to the command, the following roles are available:
+
+* `[.before]`: macro to add additional text before the rendered output. There
+  are two variants.
+
+** `[.before]`. When provided without the `package` attribute, specifies
+text to be inserted before the description of the first package.
++
+NOTE: This role is only to be entered once per block, additional occurrences of
+the role will overwrite the previous content.
+
+** `[.before, package="{package-name}"]`. When provided with the `package`
+attribute to specify locality of the block, specifies text to be inserted
+before the description of the chosen package.
++
+NOTE: This role is only to be entered once per package, additional occurrences
+of the role will overwrite the previous content.
+
+* `[.after]`: macro to add additional text after the rendered output. There
+  are two variants.
+
+** `[.after]`. When provided without the `package` attribute, specifies
+text to be inserted after the description of the last package.
++
+NOTE: This role is only to be entered once per block, additional occurrences of
+the role will overwrite the previous content.
+
+** `[.after, package="{package-name}"]`. When provided with the `package`
+attribute to specify locality of the block, specifies text to be inserted
+after the description of the chosen package.
++
+NOTE: This role is only to be entered once per package, additional occurrences
+of the role will overwrite the previous content.
+
+==== Selecting and ordering packages
+
+The `lutaml_uml_datamodel_description` command supports selection and ordering
+of packages from the XMI file by providing a YAML configuration file.
+
+The YAML configuration file is optional to the command.
+
+The format of the configuration file is as follows:
+
+[source,yaml]
+-----
+---
+packages:
+  # includes these packages
+  - "Package *"
+  - two*
+  - three
+  # skips these packages
+  - skip: four
+-----
+
+Where:
+
+* `packages`: required, root element with an array of strings or objects.
+
+** string: treated as an regular expression pattern to be matched against
+  package names for inclusion.
+
+** object: only the `skip` key is supported in an object, where the packages
+  with names matching the value of the `skip` key are excluded.
+
+* the order of the array determines the order of packages rendered in text.
+
+
+In this example,
+
+* `"Package *"`: performs pattern matching, equal to the following regular
+  expression: `/^Package .*$/`
+
+* `skip: four`: excludes packages with a name that matches this criteria.
+
+* The command will read the supplied YAML file and arrange packages according
+  to the order supplied in the config file.
+
+
+==== Illustration
+
+For example, given an XMI file named `example.xmi` which contains 2 UML
+packages, 'Package-One' and 'Package-Two', the following Metanorma AsciiDoc
+syntax can be used.
+
+[source,adoc]
+----
+[lutaml_uml_datamodel_description, path/to/example.xmi]
+--
+[.before]
+---
+This text will be inserted before the description of all packages.
+---
+
+[.before, package="Package-One"]
+---
+This text will be inserted before the description of the package Package-One.
+---
+
+[.after, package="Package-One"]
+---
+This text will be inserted after the description of the package Package-One.
+---
+
+[.after, package="Package-Two"]
+---
+This text will be inserted after the description of the package Package-Two.
+---
+
+[.after]
+---
+This text will be inserted after the description of all packages.
+---
+--
+----
+
+
+Will translate into this output:
+
+[source,adoc]
+----
+This text will be inserted before the description of all packages.
+
+This text will be inserted before the description of the package Package-One.
+
+=== Package-One
+
+==== Package-One
+
+==== Requirements
+
+==== Class Definitions
+
+.Classes used in Package-One
+[cols="2a,6a",options="header"]
+|===
+|Class |Description
+
+
+|<<AbstractAtomicTimeseries-section,AbstractAtomicTimeseries>>
+«some-stereotype»
+|
+
+
+|<<AbstractTimeseries-section,AbstractTimeseries>>
+«some-stereotype»
+|
+
+....
+|===
+
+
+
+.Data Types used in Package-One
+[cols="2,6",options="header"]
+|===
+|Name |Description
+
+
+|<<ADEOfAbstractAtomicTimeseries-section,ADEOfAbstractAtomicTimeseries>>
+|
+
+
+|<<ADEOfAbstractTimeseries-section,ADEOfAbstractTimeseries>>
+|
+
+....
+|===
+
+
+
+.Enumerated Classes used in Package-One
+[cols="2a,6a",options="header"]
+|===
+|Name |Description
+
+|<<TimeseriesTypeValue-section,TimeseriesTypeValue>>
+|
+
+|===
+
+
+==== Additional Information
+
+...
+
+
+This text will be inserted after the description of the package Package-One.
+
+
+=== Package-Two
+
+==== Package-Two
+
+==== Requirements
+
+==== Class Definitions
+
+==== Additional Information
+
+This text will be inserted after the description of the package Package-Two.
+
+This text will be inserted after the description of all packages.
+
+----
+
