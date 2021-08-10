@@ -607,10 +607,23 @@ value
 ** The `inherit` attribute of the requirement, if given: _Dependency_ followed
 by the attribute value
 
+** The `component` components of the requirement [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.3.8].
+These are divided into three categories:
+
+*** Components with the `class` attribute `conditions`, `test-purpose`, or `test-method`
+are extrcted and presented in that order, as _Conditions_, _Test Purpose_ and
+_Test Method_, followed by the component contents.
+
+*** Components with the `class` attribute `part` are extracted and presented in order:
+each Part is rendered as an incrementing capital letter (_A_, _B_, _C_ and so on),
+followed by the component contents.
+
+*** Other `class` attribute values are not currently supported.
+
 ** The `classification` attributes of the requirement, if given: the
 classification tag (in capitals), followed by the classification value.
 
-* The remaining rows of the requirement are the components of the requirement,
+* The remaining rows of the requirement are the remaining components of the requirement,
 encoded as table rows instead of as a definition table (as they are by default
 in Metanorma).
 
@@ -627,7 +640,92 @@ The components recognized are:
 *** `[.measurement-target]`
 *** `[.verification]`
 *** `[.import]`
-*** Other components are not currently supported.
+*** `[.component]`, as discussed above: `[.component,class=conditions]`, `[.component,class=test-purpose]`,
+`[.component,class=test-method]`, `[.component,class=part]`
+*** Other component classes are not currently supported.
+
+So the following recommendation class:
+
+[source,asciidoc]
+----
+[recommendation,type=class,label=/ogc/recommendation/wfs/2,obligation=permission,subject=user,inherit=/ss/584/2015/level/1,classification="control-class:Technical;priority:P0"]
+.Widgets
+====
+[.component,class=test-purpose]
+---
+To determine whether witches can fly when provided with widgets
+---
+
+[.component,class=test-method]
+---
+* Provide witch with widget
+* Launch witch
+* Determine travel distance reached by witch
+---
+
+[.component,class=conditions]
+---
+. Candidate test subject is a witch
+. Widget has been suitably calibrated for aerodynamics
+---
+
+[.component,class=part]
+---
+Determine travel distance by flight path
+---
+
+
+
+[recommendation,label=/ogc/recommendation/wfs/2/1]
+=====
+Provisioning widgets
+=====
+
+[recommendation,label=/ogc/recommendation/wfs/2/1]
+=====
+Launching witches
+=====
+
+[.component,class=part]
+---
+Independently verify flight path
+---
+
+
+Widgets are tested for aerodynamic flight potential in partnership with witches.
+Consult local coven for more information.
+====
+----
+
+will render as follows:
+
+____
+[cols="1,3"]
+|====
+2+a|Recommendation Class 1 +
+Widgets
+
+|Target Type  |user
+|Dependency   |/ss/584/2015/level/1A
+|Conditions  
+a| . Candidate test subject is a witch
+. Widget has been suitably calibrated for aerodynamics
+
+|Test Purpose | To determine whether witches can fly when provided with widgets
+|Test Method a| * Provide witch with widget
+* Launch witch
+* Determine travel distance reached by witch
+
+|A | Determine travel distance by flight path
+|B | Independently verify flight path
+|Control-class |Technical
+|Priority |P0
+|Recommendation 1-1|Provisioning widgets
+|Recommendation 1-2|Launching witches
+2+|Widgets are tested for aerodynamic flight potential in partnership with witches.
+Consult local coven for more information.
+|====
+____
 
 ==== Legacy Metanorma AsciiDoc syntax
 
