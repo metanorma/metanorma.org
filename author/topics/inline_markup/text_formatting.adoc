@@ -1,0 +1,57 @@
+---
+layout: author-docs
+title: Text Formatting Attributes
+---
+tag::tutorial[]
+The simplest form of inline markup is to emphasize text. 
+AsciiDoc allows you to:
+
+* Make words *bold* using asterisks 
+* _Italicise_ words with underscores 
+* Apply `monospacing` using backticks
+* Superscript and subscript characters (like CO~2~ or x^4^)
+
+[source, AsciiDoc]
+---- 
+*bold*
+_italic_
+`monospace`
+^superscript^
+~subscript~
+----
+
+Metanorma extends these simple formats with:
+
+* Strikethrough text ([strike]#strike through text#)
+* Smallcaps text ([smallcap]#small caps text#)
+* Underline text ([underline]#underline text#)
+
+[source, AsciiDoc]
+---- 
+[strike]#strike through text#
+[smallcap]#small caps text#
+[underline]#underline text#
+----
+
+//Images don't render. Check locations?
+//renders as:
+////
+.Illustration of strikethrough text in Metanorma.
+image::/assets/author/topics/inline_formatting/fig-strikethrough.png[Illustration of strikethrough text in Metanorma,width=500]
+
+
+.Illustration of small caps text in Metanorma.
+image::/assets/author/topics/inline_markup/fig-smallcaps.png[Illustration of small caps text in Metanorma,width=500]
+
+.Illustration of underlined text in Metanorma.
+image::/assets/author/topics/inline_markup/fig-underline.png[Illustration of underlined text in Metanorma,width=500]
+////
+
+== Character substitutions
+
+Metanorma also supports automatic character replacements, for example the copyright symbol © can be entered using `(C)`. Metanorma AsciiDoc also recognises HTML and XML character references,
+and decimal and hexadecimal Unicode code points.
+
+For more information about automatic character replacements, see https://docs.asciidoctor.org/asciidoc/latest/subs/replacements/[the AsciiDoc documentation]. 
+
+end::tutorial[]

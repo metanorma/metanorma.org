@@ -1,3 +1,129 @@
 ---
 layout: author-docs
+title: Code samples
 ---
+// Tutorial
+
+tag::tutorial[]
+
+AsciiDoc supports code samples using the `[source]` attribute before a new block. If you specify the coding language, the sample will be highlighted correctly in HTML output. Unlike other blocks in Asciidoc, line breaks and space indentations are preserved. Have a look at the example:
+
+[source, AsciiDoc]
+------
+.Sample Code <1>
+[source,ruby] <2>
+==== <3>
+puts "Hello, world." <4>
+%w{a b c}.each do |x|
+  puts x
+end 
+==== <5>
+------
+
+<1> Title for your code sample (optional)
+<2> `[source]` specifies that the block contains code. `ruby` is the coding language. The block will highlight keywords depending on the coding language.
+<3> Starting delimiter
+<4> Sample code
+<5> Ending delimiter
+
+end::tutorial[]
+
+//Existing content
+== Source code
+
+=== General
+
+Source code is marked up as elsewhere in AsciiDoc, as a pre-formatted source snippet to
+be rendered in monospace font, and with spaces preserved:
+
+[source,asciidoc]
+--
+[source,ruby]
+----
+def increment(x)
+  x + 1
+end
+----
+--
+
+Source code highlighting can be used automatically to highlight keywords specific
+to the nominated computer language.
+
+
+=== Markup in source code blocks
+
+In a few cases, it is desirable to introduce markup into source code; for example,
+hyperlinking words in source code to external definitions, or else introducing formatting
+in lieu of automated highlighting.
+
+In order to achieve this, Metanorma allows inline AsciiDoc markup to be introduced
+into source code, isolating it from the rest of the source code through
+delimiters. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.4]
+
+By default, the delimiters are `{{{` and `}}}`; these can be overridden (in case
+`{{{` and `}}}` are already used in the document) through the document attributes
+`:sourcecode-markup-start:` and `sourcecode-markup-end:`.
+
+[source,asciidoc]
+----
+[source,ruby]
+--
+{{{*def*}}} method1(x)
+  {{{<<method2-definition,method2>>}}}(x) + 3
+end
+--
+----
+
+// TODO: Insert rendering
+//
+// This will get rendered as:
+//
+// --
+// *def* `method1(x)` +
+// ``  ``++method2++``(x) + 3`` +
+// `end`
+// --
+
+
+
+=== Pseudocode
+
+Pseudocode is a mix between formal math with code like properties commonly
+used in computer science and related fields.
+
+Unlike source code, pseudocode is typically in a proportional font, but it
+still needs to be indented to reflect code structure.
+Moreover, pseudocode typically requires source code highlighting
+such as boldface; but unlike well-defined computer languages, there is no
+guaranteed way of automating such highlighting.
+
+Pseudocode is supported in Metanorma as a special class of example, marked up
+with a pseudocode block macro with these differences:
+
+* text within a pseudocode block is treated as normal text, including
+  respect for inline formatting;
+
+* lines do not need to be separated by line breaks, although two carriage returns
+  in a row are still interpreted as a new
+  paragraph. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10]
+
+* indentation spaces at the start of each line are preserved, by converting
+  them into non-breaking spaces; initial tabs are converted into four
+  non-breaking spaces.
+
+[source,asciidoc]
+--
+[pseudocode]
+====
+*do in-parallel*
+  [smallcap]#SharedAccess#
+*enddo*
+
+[smallcap]#ExclusiveAccess# stem:[-=]
+  *if* _ag.mode_ = _exclusive_ stem:[^^ AA t in] [smallcap]#Token# : _t.available_ *then*
+    *do forall* _t_ : stem:[in]  [smallcap]#_Token_#
+      _t.owner_ := _ag_
+    *enddo*
+  *endif*
+====
+--

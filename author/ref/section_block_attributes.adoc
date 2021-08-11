@@ -1,0 +1,207 @@
+---
+layout: author-docs
+title: Section and Block-level Attributes
+description: An overview of all attributes used on the section and block-level to influence how Metanorma builds the output. 
+---
+// To do: Align dumps from existing docs; find a good structure
+
+// Dump 1 from existing docs (section attributes)
+= Section Attributes
+
+== Language & script
+
+The language and script of a section is indicated via the optional attributes
+`language` and `script`:
+
+[source,asciidoc]
+--
+[language=fr]
+== Section 3
+
+[appendix,script=Zmth]
+== Math Appendix
+--
+
+== Obligations
+
+The obligation of a section—whether it is normative or informative—is indicated
+via the attribute “obligation” (see example below).
+
+For most sections, this is fixed; for annexes and clauses,
+the default value of the obligation is "normative" and users need to set the obligation
+to "informative" as a section attribute if needed. For example:
+
+[source,asciidoc]
+--
+[[AnnexA]]
+[appendix,obligation=informative]
+== Determination of defects
+--
+
+== Numbering
+
+As with link:/author/topics/document-format/text#numbering-override[block element numbering],
+a clause number may be provided to override auto-numbering.
+
+For instance, in order to number out-of-sequence clauses in updated
+documents or amendments [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.3].
+
+A manual clause number is specified with the attribute `number`:
+
+[source,asciidoc]
+----
+== Clause 7
+
+[number=0]
+=== Zeroth Subclause
+----
+
+Elements subsequent to the manually numbered element will be auto-numbered
+so as to follow the previous element. This may include incrementing the final
+letter in an alphanumeric clause number (e.g. _7a_ followed by _7b_.)
+
+If resumption of auto-numbering is not intended for subsequent clauses
+(e.g. _7bis_ should not be followed by _7bit_),
+an explicit number also needs to be given to those clauses separately.
+
+== Inline headings
+
+Inline subclause headings (e.g. for test methods) are indicated by preceding the heading
+with the `[%inline-header]` option attribute. So in the Rice Model document,
+
+[source,asciidoc]
+--
+[%inline-header]
+==== Sieve,
+
+with round perforations of diameter 1,4 mm.
+--
+
+renders as
+
+____
+*A.2.1.1. Sieve,* with round perforations of diameter 1,4 mm.
+____
+
+// Dump 2 from existing docs
+
+== Paragraph alignment
+
+Paragraph alignment is defined as an attribute for paragraphs:
+
+[source,asciidoc]
+--
+[align=left]
+This paragraph is aligned left
+
+[align=center]
+This paragraph is aligned center
+
+[align=right]
+This paragraph is aligned right
+
+[align=justified]
+This paragraph is justified, which is the default
+--
+
+which renders
+
+.Illustration of possible paragraph alignments in Metanorma.
+image::/assets/author/topics/document-format/text/fig-par-align.png[Illustration of possible paragraph alignments in Metanorma]
+
+If you have line-breaks in a paragraph, and the default alignment in the stylesheet
+is justified (as is often the case in Word output), you will need to set `[align=left]`
+to make the paragraph look as normally expected:
+
+[source,asciidoc]
+--
+[align=left]
+Vache Equipment +
+Fictitious +
+World +
+mailto:gehf@vacheequipment.fic[]
+--
+
+which renders
+
+.Illustration of left-alignment for multiple line-breaks in Metanorma.
+image::/assets/author/topics/document-format/text/fig-left-aligned.png[Illustration of left-alignment for multiple line-breaks in Metanorma]
+
+
+== Page breaks
+
+Page breaks can be given a page orientation, which applies from that
+point forward until the next page break with a page
+orientation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.17].
+
+Page orientation only appears in paged output, such as in Word.
+
+To set content to landscape mode, the syntax is:
+
+[source,asciidoc]
+--
+[%landscape]
+<<<
+--
+
+To set content to portrait mode, the syntax is:
+
+[source,asciidoc]
+--
+[%portrait]
+<<<
+--
+
+If no orientation option is given, the text after the page break
+remains in the same orientation as that before. In Word, page breaks
+changing orientation are realised as distinct sections.
+
+In Metanorma, documents are split into three sections by default:
+
+* a cover page,
+* a preface, and
+* the main document body (including annexes and bibliography)
+* (some documents also have a colophon)
+
+The page orientation is reset at the start of the main document body to `portrait`.
+
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+// Content following this directive will be shown in landscape mode
+[%landscape]
+<<<
+
+...
+
+// Content following this directive will return to portrait mode
+[%portrait]
+<<<
+
+...
+
+--
+
+=== Avoiding page breaks
+
+The "`keep with next`" feature is useful if you want to indicate that
+a document element must belong on the same page with another element.
+Kind of like the opposite of a "`page break`".
+
+Most blocks support the boolean attributes `keep-with-next` and
+`keep-lines-together` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
+
+The following syntax indicates that these two paragraphs will always be
+presented on the same page, even if the textual layout allows them to be
+split into two pages.
+
+[source,asciidoc]
+--
+[keep-with-next=true]
+This is a paragraph.
+
+This is a paragraph that will be on the same page as the
+immediately previous one.
+--

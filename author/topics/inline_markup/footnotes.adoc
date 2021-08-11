@@ -1,0 +1,68 @@
+---
+layout: author-docs
+title: Footnotes
+---
+tag::tutorial[]
+Footnotes are a great option to add a remark to your content without disturbing the reading flow. AsciiDoc allows you to enter single line footnotes. Metanorma extends this functionality and provides the option to enter multi-paragraph footnotes.
+
+
+== Single-line footnotes
+You can add footnotes to your document using the footnote macro (`footnote:[]`). Just add the footnote where you want it to appear, like this:
+
+[source,Asciidoc]
+====
+Oryza sativafootnote:[Sativa means "cultivated"], is rice that is farmed commercially.
+====
+
+
+== Multi-paragraph footnotes
+
+Native Asciidoctor supports only single-paragraph
+footnotes through its `footnote` macro
+(which can only contain a single line of text).
+
+Metanorma introduces a footnote macro `footnoteblock:[id]` which allows multi-paragraph notes to be treated as footnotes.
+
+Multi-paragraph footnotes can be entered using the macro `footnoteblock:[id]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.4],
+where `id` is the identifier of a note containing the contents of the footnote:
+
+.Example of a multi-paragraph footnote
+[source,asciidoc]
+----
+This is a paragraph.footnoteblock:[id1] This continues the paragraph.
+
+[[id]]
+[NOTE]
+--
+This is
+
+a multi-paragraph
+
+footnote
+--
+----
+
+end::tutorial[]
+
+== Repeating footnotes
+AsciiDoc markup allows you to reuse footnotes, so that you don't need to repeat yourself. To make a footnote reusable: 
+. Create a new footnote and specify a unique ID in the target position.
+. Write your footnote content into the square brackets.
+. Reference the existing footnote using ID and leaving the text in the square brackets empty.
+
+.Example of a reused footnote
+[source,Asciidoc]
+====
+A bold statement!footnote:disclaimer[Opinions are my own.] 
+
+Another outrageous statement.footnote:disclaimer[]
+====
+
+If you don't assign IDs, Metanorma uses the same footnote number if the text of a footnote is repeated in two different places, rather than treat the repetition as a new footnote. This behavior is default for both HTML and DOC output. 
+
+
+== Footnotes in tables and figures.
+Table and figure footnotes are treated differently from all other footnotes: they are rendered at the bottom of the table or figure, and they are numbered separately.
+
+== Footnotes in headings
+Footnotes on document titles are recognised [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1], but by default they are not rendered, because of how document title pages are processed separately in Metanorma via Liquid templates. Document title footnotes are moved into `/bibdata/note[@type = "title-footnote"]`, and are treated as document metadata, as are document titles themselves. The location of the footnote within the title is not preserved.

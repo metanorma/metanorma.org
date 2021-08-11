@@ -2,11 +2,10 @@
 layout: author-docs
 title: Admonitions
 ---
-
 tag::tutorial[]
 Admonitions are signal words used to catch the reader’s attention, such as “TIP”, “NOTE”, or “WARNING”. There are two ways to declare an admonition: in a single paragraph and as a block.
 
-*Single-paragraph Admonitions*
+== Single-paragraph admonitions
 
 Start a new line with the signal word in all caps and a colon and write your admonition.
 
@@ -16,7 +15,7 @@ Start a new line with the signal word in all caps and a colon and write your adm
 NOTE: Advice on when to use which signal word is specified in ANSI Z535.6. 
 ----
 
-*Block admonitions*
+== Block admonitions
 
 . Start with the signal word in all caps enclosed in square brackets.
 . Insert the block delimiter.
@@ -59,3 +58,49 @@ If an admonition is valid for a whole section or a whole document and should app
 This important notice applies to the entire document.
 ====
 ------
+
+
+//Old content:
+== Notes
+
+Notes that are not at the end of a clause are folded into the preceding block,
+if that block is not delimited (so that the user could not choose to include or exclude a note).
+That is, notes are folded into a preceding list, formula, or figure.
+
+To prevent that behaviour, add the attribute `keep-separate`
+to the note [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.29].
+
+[source,asciidoc]
+--
+* A
+* B
+* C
+
+[NOTE,keep-separate=true]
+====
+Note not folded into its preceding block
+====
+--
+
+Without the `keep-separate=true` markup, the note would be attached to the list,
+and numbered accordingly.
+
+
+[source,asciidoc]
+--
+[NOTE]
+This note will be folded in the preceding block.
+
+NOTE: This one too.
+--
+
+Notes may be given a type through the attribute
+`type` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
+
+[source,asciidoc]
+--
+[NOTE,type=bibliographic]
+====
+Bibliographic note
+====
+--

@@ -87,8 +87,8 @@ Let’s look at lists in the next lesson.
 
 include::../author/topics/blocks/lists.adoc[tags=tutorial,leveloffset=+2]
 
-[[exercise-2-3]]
-include::exercises.adoc[tag=exercise-2-3]
+[[exercise-2-3-1]]
+include::exercises.adoc[tag=exercise-2-3-1]
 
 Great work! Let’s have a look at term definitions in the next lesson.
 >> Start next lesson
@@ -135,8 +135,8 @@ Foreign seeds, husks, bran, sand, dust.
 <9> If you provide an example, use the `[example]` attribute so that it renders according to the styling rules of your SDO. 
 
 
-[[exercise-2-4]]
-include::exercises.adoc[tag=exercise-2-4]
+[[exercise-2-3-2]]
+include::exercises.adoc[tag=exercise-2-3-2]
 
 The next type of block we will cover are tables.
 >> Start next lesson
@@ -145,8 +145,8 @@ The next type of block we will cover are tables.
 === Tables
 include::../author/topics/blocks/tables.adoc[tag=tutorial]
 
-[[exercise-2-5]]
-include::exercises.adoc[tag=exercise-2-5]
+[[exercise-2-3-3]]
+include::exercises.adoc[tag=exercise-2-3-3]
 
 Let’s look at inserting images next.
 >> Start next lesson
@@ -155,241 +155,67 @@ Let’s look at inserting images next.
 === Images
 include::../author/topics/blocks/images.adoc[tag=tutorial]
 
-[[exercise-2-6]]
-include::exercises.adoc[tag=exercise-2-6]
+[[exercise-2-3-4]]
+include::exercises.adoc[tag=exercise-2-3-4]
 
 Let’s look at admonitions next.
 >> Start next lesson
 
 //Lesson 2-3-5
 === Admonitions
-include::../author/topics/blocks/admonitions.adoc[tag=tutorial]
-[[exercise-2-7]]
-include::exercises.adoc[tag=exercise-2-7]
+include::../author/topics/blocks/admonitions.adoc[tag=tutorial,leveloffset=+2]
+[[exercise-2-3-5]]
+include::exercises.adoc[tag=exercise-2-3-5]
 
 Great progress so far! Let's look at code samples in the next lesson.
 >> Start next lesson
 
 //Lesson 2-3-6
 === Code Samples
-
-AsciiDoc supports code samples using the `[source]` attribute before a new block. If you specify the coding language, the sample will be highlighted correctly in HTML output. Unlike other blocks in Asciidoc, line breaks and space indentations are preserved. Have a look at the example:
-
-[source, AsciiDoc]
-------
-.Sample Code <1>
-[source,ruby] <2>
-==== <3>
-puts "Hello, world." <4>
-%w{a b c}.each do |x|
-  puts x
-end 
-==== <5>
-------
-
-<1> Title for your code sample (optional)
-<2> `[source]` specifies that the block contains code. `ruby` is the coding language. The block will highlight keywords depending on the coding language.
-<3> Starting delimiter
-<4> Sample code
-<5> Ending delimiter
-
-[[exercise-2-8]]
-include::exercises.adoc[tag=exercise-2-8]
+include::../author/topics/blocks/code_samples.adoc[tag=tutorial]
+[[exercise-2-3-6]]
+include::exercises.adoc[tag=exercise-2-3-6]
 
 We’re done with blocks - good job! The next lesson covers inline markup. 
 >> Start next lesson
 
 //Lesson 2-4
 == Inline Markup
-
-To annotate single words, you use inline markup. The markup encloses the word(s) and you do not need to begin a new line. Inline markup allows you to:
-
-* Emphasize text
-* Link to external resources with hyperlinks
-* Create internal cross-references
-* Create index entries
-* Create Bibliographic entries
+include::../author/topics/inline_markup.adoc[tag=tutorial]
 
 Let’s look at these features in the following lessons.
 >> Start next lesson
 
 //Lesson 2-4-1
 === Text markup
-
-The simplest form of inline markup is to emphasize text. 
-AsciiDoc allows you to:
-
-* Make words *bold* using asterisks 
-* _Italicise_ words with underscores 
-* Apply `monospacing` using backticks
-
-[source, AsciiDoc]
----- 
-*bold*
-_italic_
-`monospace`
-^superscript^
-~subscript~
-----
-
-Metanorma extends these simple formats with:
-
-* Strikethrough text ([strike]#strike through text#)
-* Smallcaps text ([smallcap]#small caps text#)
-* Underline text ([underline]#underline text#)
-
-[source, AsciiDoc]
----- 
-[strike]#strike through text#
-[smallcap]#small caps text#
-[underline]#underline text#
-----
-
-Metanorma also supports automatic character replacements, for example the copyright symbol © can be entered using `(C)`. For more information about automatic character replacements, see https://docs.asciidoctor.org/asciidoc/latest/subs/replacements/[the AsciiDoc documentation]. 
-
-[[exercise-2-9]]
-include::exercises.adoc[tag=exercise-2-9]
+include::../author/topics/inline_markup/text_formatting.adoc[tag=tutorial,leveloffset=+2]
+==== Footnotes
+include::..//author/topics/inline_markup/footnotes.adoc[tag=tutorial]
+[[exercise-2-4-1]]
+include::exercises.adoc[tag=exercise-2-4-1]
 
 Let’s look at a more advanced form of inline formatting: index entries
 >> Start next lesson
 
-==== Index Terms
-
-NOTE: Metanorma always processes index terms and creates the corresponding XML. However, not all flavors render an Index section. Check out the https://www.metanorma.org/flavors/[flavor documentation] for your SDO to see if it supports indexing.
-Before you define an index term, your document needs a section where the index terms can appear. To create an index, define a level 1 section (==) marked with the style index at the end of your document.
-
-[source, AsciiDoc]
-----
-[index]
-== Index
-----
-Index entries can consist of up to three levels using a comma to separate the terms. Metanorma provides two options to create an index entry:
-
-* Visible index terms are words within the text that are annotated with an index entry using double parentheses. `\((Level 1 index term))`
-* Hidden index terms are index entries that are not visible in the final output and are generated using triple parentheses. `(\((Level 1 index term, Level 2 index term, Level 3 index term)))`. These allow the index to include optional subterms and sub-subterms; they also allow the index term to differ from what actually appears in the text.
-
-Let’s have a look at an example:
-
-[source, AsciiDoc]
-----
-The Lady of the Lake, her arm clad in the purest shimmering samite,
-held aloft Excalibur from the bosom of the water,
-signifying by divine providence that I, ((Arthur)), <1>
-was to carry Excalibur (((Sword, Broadsword, Excalibur))). <2>
-----
-<1> `\((Arthur))` will be displayed as `Arthur` in the text and carries a first level index entry
-<2> `(\((Sword, Broadsword, Excalibur)))` will not appear in the text, but a three level index entry will be generated.
-
-[[exercise-2-10]]
-include::exercises.adoc[tag=exercise-2-10]
+//Lesson 2-4-2
+=== Index Terms
+include::../author/topics/inline_markup/index.adoc[tag=tutorial]
+[[exercise-2-4-2]]
+include::exercises.adoc[tag=exercise-2-4-2]
 
 In the next lesson, we will cover references and links. 
 >> Start next lesson
 
+//Lesson 2-4-3
 ==== References
-
-References are a core part of standards, because they coexist and relate to other standard documents. There are four types of references:
-
-* Hyperlinks to an external source, for example a link to a website
-* Metadata references
-* Internal references to a section, image, table, etc.
-* Bibliographic entries
-
-*Hyperlinks*
-
-AsciiDoc lets you include links to external sources by pasting the URL into the document, and optionally appending the link text in square brackets `[Link text]`. 
-
-.Example of a link
-[source, AsciiDoc]
-----
-http://www.iso.org/[International Organization for Standardization].
-----
-
-*Metadata references*
-
-Every document contains a set of metadata to describe the document. You can insert a metadata reference by putting the attribute in curly braces `{attribute}`. The reference will be replaced with the value in the rendered output. 
-
-[source, AsciiDoc]
-----
-:technical-committee-number: 2
-:technical-committee: Fasteners
-:subcommittee-number: 11
-:subcommittee: Fasteners with metric external thread
-
-This document was prepared by Technical Committee ISO/TC {technical-committee-number}, _{technical-committee}_, Subcommittee SC {subcommittee-number}, _{subcommittee}_.
-----
-
-
-*Internal references*
-
-To link to an important place in your document, you need to set an anchor using double square brackets `[[anchor]]`. Metanorma automatically numbers and names these references; because they are autonumbered, they will be renumbered automatically if you insert any new text of the same type. Since the markup will be converted into XML, the anchor must follow the https://www.w3.org/TR/xml-names11/[XML namespace conventions]. Therefore, an anchor name name must not contain: 
-colons
-whitespaces
-words starting with numbers.
-
-[source, AsciiDoc]
-----
-[[figureC-1]]
-.Typical gelatinization curve 
-image::images/rice_image2.png[Image of the gelatinization curve] 
-----
-
-image::../assets/author/tutorials/references_img_anchor.jpg[]
-
-To reference an anchor, type the anchor name like this `<<anchor>>`.
-[source, AsciiDoc]
-----
- <<figureC-1>> gives an example of a typical gelatinization curve.
-----
-
-image::../assets/author/tutorials/references_img_target.jpg[]
-
-If you want to display text other than the anchor text, you just have to append the text inside the brackets using a comma.
- 
-[source, AsciiDoc]
-----
- <<figureC-1, The diagram>> gives an example of a typical gelatinization curve.
-----
-
-*Bibliographic entries*
-
-In standard documents typically there are two types of references, namely the “normative references” and the “bibliography” (informative references).
-Every bibliographic section must be preceded by the style attribute `[bibliography]` so that bibliographic references are recognized as such. 
-
-A reference entry is usually part of an unordered list (`*`). The bibliographic entry is enclosed in triple square brackets (`[[[]]]`) and contains:
-
-. The anchor name used to reference this entry
-. A document identifier
-
-After the reference, you may include the reference text in italics, for example the title of the document. If the document identifier is recognised by Metanorma, however, its bibliographic description is fetched automatically from the SDO web site, and will overwrite any title you provide with the authoritative title of the reference.
-
-[source, AsciiDoc]
-----
-* [[[anchor,document identifier or reference tag]]], _reference list text_
-----
-
-.Example for a bibliography section
-[source, AsciiDoc]
-----
-[bibliography]
-== Normative references
-
-* [[[ISO20483,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
-* [[[ISO6540,ISO 6540:1980]]]. _Maize -- Determination of moisture content (on milled grains and on whole grains)_
-----
-Gets rendered as:
-* ISO 20483:2013. _Cereals and cereal products — Determination of moisture content — Reference method_
-* ISO 6540:1980. _Maize — Determination of moisture content (on milled grains and on whole grains)_
-
-To cite an entry from your bibliography you type the anchor name like this `<<ISO20483>>`.
-If you want to specify a location within the cited document, you can add https://www.metanorma.org/author/topics/document-format/bibliography/#localities[localities] in the brackets like so: `<<ISO20483, part=IV,chapter=3,paragraph=12>>`.
-
-[[exercise-2-11]]
-include::exercises.adoc[tag=exercise-2-11]
+include::../author/topics/inline_markup/links.adoc[tag=tutorial]
+[[exercise-2-4-3]]
+include::exercises.adoc[tag=exercise-2-4-3]
 
 Let’s summarize what we’ve learnt so far.
 >> Start next lesson
 
+//Lesson 2-4-5
 === Summary
 
 We’ve covered a lot of ground, so here is a quick summary for you:
@@ -411,13 +237,14 @@ We’ve covered a lot of ground, so here is a quick summary for you:
 You did a great job so far! Let’s talk about reviewing documents in the next lesson. 
 >> Start next lesson
 
-
+//Lesson 3
 == Reviewing Metanorma Documents
 
 include::../tutorials/learning_objectives.adoc[tag=learningobjectives-3]
 
 >> Start next lesson
 
+//Lesson 3-1
 === Adding Comments
 
 include::../author/topics/document-format/reviewer-notes.adoc[leveloffset=1]
@@ -428,6 +255,7 @@ include::exercises.adoc[tag=exercise-3-1]
 Now that we've commented on the content, let's create a draft of the document. 
 >> Start next lesson
 
+//Lesson 3-2
 === Rendering a Draft Document
 
 To render a draft that your peers should review, you need to add these metadata to the document header:
@@ -456,12 +284,14 @@ include::exercises.adoc[tag=exercise-3-2]
 Now that you are familiar with the simplest way of creating a Metanorma document, let's look at different ways to compile documents in the next lesson.
 >> Start next lesson
 
+//Lesson 4
 == Publishing a Metanorma Document
 
 include::../tutorials/learning_objectives.adoc[tag=learningobjectives-4]
 
 >> Start next lesson
 
+//Lesson 4-1
 === Compiling a Metanorma Document
 
 To successfully compile a Metanorma document, the toolchain looks at:
@@ -510,8 +340,9 @@ metanorma help compile
 
 >> Start next lesson
 
-//Troubleshooting lesson
-include::../author/topics/troubleshooting.adoc[leveloffset=+2]
+// Lesson 4-2
+=== Troubleshooting
+include::../author/topics/troubleshooting.adoc[tag=tutorial,leveloffset=+2]
 
 //Exercise will promt the user to fix some bugs in a document: For example syntax errors. 
 include::exercises.adoc[tag=exercise-4]
