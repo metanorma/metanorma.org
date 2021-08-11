@@ -608,24 +608,25 @@ value
 by the attribute value
 
 ** The `component` components of the requirement [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.3.8].
++
 These are divided into three categories:
 
-*** Components with the `class` attribute `conditions`, `test-purpose`, or `test-method`
-are extrcted and presented in that order, as _Conditions_, _Test Purpose_ and
-_Test Method_, followed by the component contents.
+*** Components with the `class` attribute `conditions`, `test-purpose`, or
+`test-method` are extracted and presented in that order, as _Conditions_, _Test
+Purpose_ and _Test Method_, followed by the component contents.
 
-*** Components with the `class` attribute `part` are extracted and presented in order:
-each Part is rendered as an incrementing capital letter (_A_, _B_, _C_ and so on),
-followed by the component contents.
+*** Components with the `class` attribute `part` are extracted and presented in
+order: each Part is rendered as an incrementing capital letter (_A_, _B_, _C_
+and so on), followed by the component contents.
 
 *** Other `class` attribute values are not currently supported.
 
 ** The `classification` attributes of the requirement, if given: the
 classification tag (in capitals), followed by the classification value.
 
-* The remaining rows of the requirement are the remaining components of the requirement,
-encoded as table rows instead of as a definition table (as they are by default
-in Metanorma).
+* The remaining rows of the requirement are the remaining components of the
+requirement, encoded as table rows instead of as a definition table (as they are
+by default in Metanorma).
 
 ** Components can include nested requirements; these are expected in the class
 of Class and Conformance Class requirements.
@@ -640,8 +641,13 @@ The components recognized are:
 *** `[.measurement-target]`
 *** `[.verification]`
 *** `[.import]`
-*** `[.component]`, as discussed above: `[.component,class=conditions]`, `[.component,class=test-purpose]`,
-`[.component,class=test-method]`, `[.component,class=part]`
+
+*** `[.component]`, and its various classes:
+**** `[.component,class=conditions]`
+**** `[.component,class=test-purpose]`
+**** `[.component,class=test-method]`
+**** `[.component,class=part]`
+
 *** Other component classes are not currently supported.
 
 So the following recommendation class:
@@ -674,8 +680,6 @@ To determine whether witches can fly when provided with widgets
 Determine travel distance by flight path
 ---
 
-
-
 [recommendation,label=/ogc/recommendation/wfs/2/1]
 =====
 Provisioning widgets
@@ -691,7 +695,6 @@ Launching witches
 Independently verify flight path
 ---
 
-
 Widgets are tested for aerodynamic flight potential in partnership with witches.
 Consult local coven for more information.
 ====
@@ -701,13 +704,13 @@ will render as follows:
 
 ____
 [cols="1,3"]
-|====
+|===
 2+a|Recommendation Class 1 +
 Widgets
 
 |Target Type  |user
 |Dependency   |/ss/584/2015/level/1A
-|Conditions  
+|Conditions
 a| . Candidate test subject is a witch
 . Widget has been suitably calibrated for aerodynamics
 
@@ -724,7 +727,7 @@ a| . Candidate test subject is a witch
 |Recommendation 1-2|Launching witches
 2+|Widgets are tested for aerodynamic flight potential in partnership with witches.
 Consult local coven for more information.
-|====
+|===
 ____
 
 ==== Legacy Metanorma AsciiDoc syntax
