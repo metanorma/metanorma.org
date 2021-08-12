@@ -1,0 +1,320 @@
+---
+layout: ogc-flavor
+---
+
+= Recommendations, requirements, and permissions
+
+In this clause we will use the term "`requirement`" to refer to the
+generic class of recommendations, requirements and permissions.
+
+NOTE: This subsection supplements
+link:/author/topics/document-format/requirements[Requirement, Recommendation, and Permission blocks]
+in general Metanorma documentation.
+
+== Requirement verifications (tests)
+
+A requirement with `type=verification` is cross-referenced and captioned as
+a "`{Requirement} Test`". It is rendered differently from the
+actual requirement itself.
+
+NOTE: Verifications for Recommendations will be captioned as
+Recommendation Tests, similarly for Requirement Tests and
+Permission Tests.
+
+Requirement verifications are excluded from the
+"`Table of Requirements`" in Word output
+[added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.10].
+
+A requirement with `type=abstracttest` is cross-referenced and captioned as
+an "Abstract Test", and is otherwise rendered identically to a
+Requirement Verification [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.4].
+
+== Requirement classes
+
+A requirement with `type=class` is cross-referenced and captioned as
+a "`{Requirement} Class`", and is rendered differently to the actual
+requirement itself
+[added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.11].
+
+NOTE: Classes for Recommendations will be captioned as
+Recommendation Classes, similarly for Requirement Classes and
+Permission Classes.
+
+Requirement Classes must use the following Metanorma Requirement attributes:
+
+* Target Type. Specified in the `subject` attribute.
+* Name. Specified as the requirement's title.
+* Dependencies (optional). Specified with the `inherit` attribute (which can take multiple semicolon-delimited values).
+* Nesting (optional). Requirements contained in a class are presented as nested requirements.
+
+A requirement with `type=conformanceclass` is cross-referenced and captioned as
+a "Conformance Class", and is otherwise rendered identically to a
+Requirement Class [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.4].
+
+[example]
+========
+[source,asciidoc]
+--
+[requirement,type="class",label="http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]",obligation="requirement",subject="Encoding of logical models",inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used"]
+.GWML2 core logical model
+====
+
+[requirement,type="general",label="/req/core/encoding"]
+======
+======
+
+[requirement,type="general",label="/req/core/quantities-uom"]
+======
+======
+
+[recommendation,type="general",label="/req/core/codelist"]
+======
+======
+
+[requirement,type="general",label="/req/core/codelistURI"]
+======
+======
+
+[requirement,type="general",label="/req/core/identifier"]
+======
+======
+
+[requirement,type="general",label="/req/core/feature"]
+======
+======
+
+====
+--
+========
+
+Embedded requirements (such as are found within Requirement Classes) will automatically
+insert cross-references to the non-embedded requirements with the same
+label [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.8]:
+
+[source,asciidoc]
+--
+[requirement,type="class",label="/req/conceptual"]
+.GWML2 core logical model
+====
+
+[requirement,type="general",label="/req/core/encoding"]
+======
+======
+
+====
+
+[requirement,type="general",label="/req/core/encoding"]
+====
+Encoding requirement
+====
+--
+
+renders as:
+
+____
+*Requirement Class 3: GWML2 core logical model* +
+/req/conceptual
+
+| Requirement 1:   | /req/core/encoding
+
+
+*Requirement 1:*
+/req/core/encoding
+
+Encoding requirement
+____
+
+== Rendering requirements
+
+NOTE: In order to match the Metanorma encoding of requirements to existing OGC
+AsciiDoc markup of requirements, users can refer to the rendering of Metanorma
+requirements which is aligned the existing, tabular OGC encoding of
+requirements.
+
+An OGC requirement is rendered as follows:
+
+* It is a table
+
+* The CSS class of the requirement table is the `type` attribute of the
+requirement.
++
+The only types recognised are:
+
+** `verification`,
+** `abstracttest`,
+** `class`,
+** `conformanceclass`, and
+** `recommend` (this is the default value if no type is specifically set).
+
+* The heading of the table (spanning two columns) is its name (the AsciiDoc role
+or style of the requirement, e.g. `[.permission] or [permission]`), optionally
+followed by its title (the caption of the requirement, e.g. `.Title`).
+
+* The title of the table (spanning two columns) is its `label` attribute.
+
+* The initial rows of the body of the table are:
+
+** The `obligation` attribute of the requirement, if given: _Obligation_
+followed by the attribute value
+
+** The `subject` attribute of the requirement, if given: _Target Type_ (for
+Class or Conformance Class requirement) or _Subject_, followed by the attribute
+value
+
+** The `inherit` attribute of the requirement, if given: _Dependency_ followed
+by the attribute value
+
+** The `component` components of the requirement [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.3.8].
++
+These are divided into three categories:
+
+*** Components with the `class` attribute `conditions`, `test-purpose`, or
+`test-method` are extracted and presented in that order, as _Conditions_, _Test
+Purpose_ and _Test Method_, followed by the component contents.
+
+*** Components with the `class` attribute `part` are extracted and presented in
+order: each Part is rendered as an incrementing capital letter (_A_, _B_, _C_
+and so on), followed by the component contents.
+
+*** Other `class` attribute values are not currently supported.
+
+** The `classification` attributes of the requirement, if given: the
+classification tag (in capitals), followed by the classification value.
+
+* The remaining rows of the requirement are the remaining components of the
+requirement, encoded as table rows instead of as a definition table (as they are
+by default in Metanorma).
+
+** Components can include nested requirements; these are expected in the class
+of Class and Conformance Class requirements.
+
+** Components can include descriptive text.
+
+** Components can include open blocks marked with role attributes.
++
+The components recognized are:
+
+*** `[.specification]`
+*** `[.measurement-target]`
+*** `[.verification]`
+*** `[.import]`
+
+*** `[.component]`, and its various classes:
+**** `[.component,class=conditions]`
+**** `[.component,class=test-purpose]`
+**** `[.component,class=test-method]`
+**** `[.component,class=part]`
+
+*** Other component classes are not currently supported.
+
+So the following recommendation class:
+
+[source,asciidoc]
+----
+[recommendation,type=class,label=/ogc/recommendation/wfs/2,obligation=permission,subject=user,inherit=/ss/584/2015/level/1,classification="control-class:Technical;priority:P0"]
+.Widgets
+====
+[.component,class=test-purpose]
+---
+To determine whether witches can fly when provided with widgets
+---
+
+[.component,class=test-method]
+---
+* Provide witch with widget
+* Launch witch
+* Determine travel distance reached by witch
+---
+
+[.component,class=conditions]
+---
+. Candidate test subject is a witch
+. Widget has been suitably calibrated for aerodynamics
+---
+
+[.component,class=part]
+---
+Determine travel distance by flight path
+---
+
+[recommendation,label=/ogc/recommendation/wfs/2/1]
+=====
+Provisioning widgets
+=====
+
+[recommendation,label=/ogc/recommendation/wfs/2/1]
+=====
+Launching witches
+=====
+
+[.component,class=part]
+---
+Independently verify flight path
+---
+
+Widgets are tested for aerodynamic flight potential in partnership with witches.
+Consult local coven for more information.
+====
+----
+
+will render as follows:
+
+____
+[cols="1,3"]
+|===
+2+a|Recommendation Class 1 +
+Widgets
+
+|Target Type  |user
+|Dependency   |/ss/584/2015/level/1A
+|Conditions
+a| . Candidate test subject is a witch
+. Widget has been suitably calibrated for aerodynamics
+
+|Test Purpose | To determine whether witches can fly when provided with widgets
+|Test Method a| * Provide witch with widget
+* Launch witch
+* Determine travel distance reached by witch
+
+|A | Determine travel distance by flight path
+|B | Independently verify flight path
+|Control-class |Technical
+|Priority |P0
+|Recommendation 1-1|Provisioning widgets
+|Recommendation 1-2|Launching witches
+2+|Widgets are tested for aerodynamic flight potential in partnership with witches.
+Consult local coven for more information.
+|===
+____
+
+== Legacy Metanorma AsciiDoc syntax
+
+For legacy reasons, a second Metanorma AsciiDoc syntax is permitted for
+recommendations, requirements and permissions.
+
+In this syntax, Metanorma AsciiDoc tables are used to express the
+data needed for requirements:
+
+* Type of requirement. Specified in the first table cell,
+  one of `Recommendation`, `Requirement` or `Permission`.
+  Optionally followed by a number
+  (which is ignored in parsing; the elements are renumbered
+  automatically in rendering.)
+* Internal label. First paragraph of the second table cell.
+* Body of requirement. Second and subsequent paragraphs of the second table cell.
+
+[example]
+====
+[source,asciidoc]
+----
+[[recommendation1]]
+|===
+|Recommendation |/ogc/recommendation/wfs/2 +
+
+If the API definition document uses the OpenAPI Specification 3.0,
+the document SHOULD conform to the
+<<rc_oas30,OpenAPI Specification 3.0 requirements class>>.
+|===
+----
+====
+
