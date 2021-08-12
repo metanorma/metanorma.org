@@ -1,0 +1,242 @@
+---
+layout: ogc-flavor
+---
+
+= Metanorma markup for OGC
+
+== General
+
+The rendering of OGC documents has changed over the years. Metanorma formats OGC documents
+following current practice:
+
+* All body text is left justified, with no exceptions allowed.
+* Where section obligations are named (i.e. in annex names), they are only given as
+"normative" or "informative"; the alternate text of "non-normative" is disallowed.
+* Ordered lists follow ISO style numbering, i.e. "a), b), c) ...", with no exceptions allowed.
+
+== Inline formatting
+
+Metanorma-OGC supports highlighting of text [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.16]:
+
+[source,asciidoc]
+----
+This is #text to be highlighted#.
+----
+
+== Sections
+
+The Normative References section may be named just "`References`", reflecting OGC practice.
+
+== Preliminary elements
+
+
+=== General
+
+The following clauses are preliminary elements, and are moved into the frontispiece
+of the document (in Metanorma, the document preface).
+
+The OGC DocTeam has specified that all these elements are *MANDATORY* in OGC documents (in this order):
+
+* Abstract
+* Keywords
+* Preface
+* Security Considerations [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.5]
+* Submitting Organizations
+* Submitters
+
+The Foreword and Introduction are not recognised as part of the document preface
+by default [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.2].
+
+[NOTE]
+--
+Additional preliminary sections are *allowed* but not encouraged.
+There are two mechanisms for adding additional content as preliminary elements:
+
+. Add their content in the <<ogc-full-preface,Full Preface>> as additional sub-sections
+. Add them as <<ogc-additional-prelim,additional preliminary elements>>
+--
+
+=== Abstract
+
+The abstract is recognized as the first clause with an `abstract` style attribute:
+
+[source,asciidoc]
+----
+[abstract]
+== Abstract
+
+This standard describes a conceptual and logical model for the exchange
+of groundwater data, as well as a GML/XML encoding with examples.
+----
+
+=== Preface
+
+==== General
+
+The "`Preface`" can be specified in two ways, depending on whether
+it is a "`simple clause`", or a "`full clause`".
+
+==== Simple preface clause
+
+If the "`Preface`" does not contain subclauses, it is considered
+a simple preface clause.
+
+A simple preface clause is entered as text after the `.Preface` label,
+placed between the AsciiDoc document attributes and the first AsciiDoc
+section title. It should not be given a section title of its own.
+
+[source,asciidoc]
+----
+:received-date: 2019-01-01
+
+.Preface
+
+Your preface text...
+
+More preface text...
+----
+
+[[ogc-full-preface]]
+==== Full preface clause
+
+If the "`Preface`" contains subclauses, it needs to be encoded as
+a full preface clause.
+
+A full preface clause is recognized as a full Metanorma AsciiDoc section, with the
+title "`Preface`". Simple preface content can also be encoded this way.
+\[added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.1]
+
+[source,asciidoc]
+----
+:received-date: 2019-01-01
+
+== Preface
+
+Your preface text...
+
+=== Preface sub-clause
+
+More preface text...
+----
+
+
+=== Keywords
+
+"`Keywords`" are entered as document attributes as `:keywords:`, with the
+value as a comma-delimited list.
+
+Prefatory text is generated automatically.
+
+EXAMPLE:
+
+[source,adoc]
+----
+:keywords: ogcdoc, OGC document, groundwater, hydrogeology, GWML2
+----
+
+=== Security Considerations
+
+The Security Considerations section is entered as a clause with the title "`Security Considerations`"
+
+EXAMPLE:
+
+[source,adoc]
+----
+== Security Considerations
+
+The following security considerations apply...
+----
+
+If the Security Considerations are not provided in the source document, the clause is inserted with the text
+"`No security considerations have been made for this standard.`"
+
+=== Submitting Organizations
+
+"`Submitting Organizations`" are entered using the `:submitting-organizations:` document attribute.
+The values are entered using a semi-colon delimited list.
+
+Prefatory text is generated automatically.
+
+EXAMPLE:
+
+[source,adoc]
+----
+:submitting-organizations: Geological Survey of Canada (GSC), Canada; U.S. Geological Survey (USGS), United States of America
+----
+
+
+=== Submitters
+
+"`Submitters`" are entered using a table, contained in a section with the title `Submitters`.
+
+EXAMPLE:
+
+[source,adoc]
+----
+== Submitters
+
+|===
+|Name |Affiliation |OGC member
+
+|Steve Liang | University of Calgary, Canada / SensorUp Inc. | Yes
+|===
+----
+
+EXAMPLE:
+
+[source,adoc]
+----
+== Submitters
+
+All questions regarding this submission should be directed to the editor or the submitters:
+
+|===
+|Name |Affiliation
+
+|Boyan Brodaric |GSC
+|Alexander Kmoch |U Salzburg
+|===
+----
+
+
+[[ogc-additional-prelim]]
+=== Additional preliminary elements
+
+The OGC DocTeam has specified that additional preliminary elements are *allowed*
+but not *encouraged*. This is useful for document backwards-compatibility and
+cross-published standards at other SDOs.
+
+Additional preliminary elements should be encoded under the `[.preface]` element,
+and they will be rendered *after* the five mandatory preliminary elements.
+
+Functionality implemented in https://github.com/metanorma/metanorma-ogc/issues/83.
+
+EXAMPLE:
+
+[source,adoc]
+----
+.Preface
+
+...
+
+[.preface]
+== Intended audience
+
+...
+
+----
+
+
+== Examples
+
+Unlike the normal case in Metanorma, examples can have captions:
+
+[source,asciidoc]
+----
+[example]
+.Example caption
+====
+Text
+====
+----
+
