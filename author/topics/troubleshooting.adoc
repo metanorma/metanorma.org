@@ -1,79 +1,96 @@
 ---
 layout: author-docs
+title: Troubleshooting
 ---
-
-= Troubleshooting 
-
 tag::tutorial[]
-There can be many reasons why you can’t compile a Metanorma AsciiDoc document into the final output, but you can easily fix them when you know what typical errors occur and how to fix them. 
-Metanorma tells you what’s wrong in the terminal and stores all errors in an Error file `.err` where your original document is stored. If execution has aborted before the XML content could be finalised, the XML file is still output to disk, suffixed with `.xml.abort` rather than `.xml`, and you can use it to make sense of error messages.
+There can be many reasons why you can’t compile a Metanorma AsciiDoc document into the final output, but you can easily fix them when you are familiar with typical errors. 
 
+Metanorma tells you what’s wrong in the terminal while it is building the document. The errors are also stored in an Error file `.err` in the same directory where your original document is stored, so you can debug them later. 
 
+== How to troubleshoot a document
+
+The best way to troubleshoot a document is to break up the content in several parts to narrow down the location of the error. 
+Regardless of troubleshooting, it is a good practice to divide a document into sections. You can then compile each section separately, or compile several of them in order to locate the error easier. 
+For example, if you assume there could be some error in Foreword section and want to exclude it from being rendered, you can easily comment out the section. 
+
+.Example for a modular document setup
+[source,Asciidoc]
+====
+`Header with Metadata...``
+
+`//include::sections/00-foreword.adoc[]`
+
+`include::sections/01-introduction.adoc[]`
+`include::sections/02-scope.adoc[]` 
+
+...
+====
+
+=== Where to start troubleshooting? 
+
+* *If the document did not compile:* +
+If Metanorma did not generate any visual output, you need to work with the errors in the terminal. If execution has aborted before the XML content could be finalised, the XML file is still output to disk, suffixed with `.xml.abort` rather than `.xml`, and you can use it to make sense of error messages.
+
+* *If the document did compile and generated visual output:* +
+Have a look at the compiled output: Are there missing sections? Is the formatting different than what you expected? Sometimes you can catch errors by looking at the rendered document. After that, have a look at the errors on the terminal to pinpoint where things went wrong. 
 
 end::tutorial[]
-////
-Your input needed!
-What are the most common errors when compiling a document and how they are caused?
-How to resolve the errors?
+The following sections discuss common errors and how to fix them.
 
-==== Style Errors
-
-==== Document Attributes Errors
-
-==== Metanorma XML Syntax Errors
-
-==== Any other type of error?
-
-////
-
-// Introduced by Manuel;
-// This text is intended to be edited by technical writers
-// My intention is just capture the idea of the content. Thanks!
-
-== Compilation errors
+== The document won't build - Compilation errors
 
 Compilation failures can happen due to installation or markup errors.
-Hopefully, the compilation message will provide us with a clear insight of the cause of the failure.
-Usually, the first error line corresponds to the cause of the failure.
+Hopefully, the compilation message will provide us with a clear insight of the cause of the failure. The first error line usually tells us the cause of the failure.
 
-In regard to markup errors, some compilation failures can occur when:
+Before looking at installation or markup errors, make sure you are running the build command in the place where your document is placed.
 
-*Two or more cross references have the same anchor*
-
-If two or more cross references have the same anchor, document won't build and the error message 
-will be clear on the reason. So, this cannot happen:
-
-[source,asciidoc]
+.Example for a failed build because of the wrong location
+[source,shell]
 ----
-[[anchor1]]
-== Section 1
-...
+user@machine my-standard % metanorma document.adoc <1>
+Error: Specified input file 'document.adoc' does not exist. 
 
-[[anchor1]]
-== Section 2
-...
+user@machine sources % metanorma document.adoc <2>
 ----
+<1> When we try to run Metanorma in the place that doesn't contain the actual document, it says that the document doesn't exist. 
+<2> Go to the folder that contains the document and run the build command again. 
 
+=== Installation errors
+Metanorma uses Ruby gems - small software packets that contain a certain function - to build Metanorma documents. For example, the `metanorma-iso` gem processes ISO standards.
+To manage dependencies, Metanorma uses the tool https://bundler.io/v1.12/[Bundler].
 
-*A reference to an external file is not found*
+To successfully compile a document, you need to install all gems Metanorma uses and make sure they are up-to-date. Normally, all relevant gems are installed if you followed the https://www.metanorma.org/install/[Installation guide]. 
 
-Compilation fails when a reference to an external file cannot be found (i.e., an image or any other type of file).
-The error message will be explicit on which file.
-Problem gets solved by checking the specified location of the file.
+To *install* all relevant gems:
 
+. Go to root folder of the directory in which your Metanorma project sits. +
+TIP: You can move into another directory using the "change directory" command (`cd`). 
 
-*Document standard type is not specified*
+. Run `bundle install` +
+Bundler fetches and installs the missing gems.
 
-Document standard type (i.e., `iso`, `ogc`, `itu`, etc.) can be specifed in the header of the document and/or the command line.
-If it's not specified in any of those ways, a compilation failure occurs and the error message will be explicit on that.
+To *update* outdated gems run `bundle-update` in your project directory.
 
+tag::no-compile-markup[]
+=== Markup errors
+Metanorma can't compile a document, when required information is missing or there are markup errors. 
 
-*A single double quotation mark inside of a stem block*
+==== Header lacks required metadata 
+Metanorma can't compile documents when the core metadata of a document are missing or incomplete. Metanorma will not render a document if one or more attributes are missing or contain unknown values:
 
-Double quotation marks are used in stem blocks to denote normal text, e.g.: `stem:["normal text"]`
+* Type of flavor `:mn-document-class:`, for example `iso, ietf, un, etc.` +
+If the document flavor isn't specified in the header, it needs to be specified in the build command, or else the compilation will fail. 
+
+* Document type `:doctype:`, for example `international standard` +
+If the document type isn't specified in the header, it needs to be specified in the build command, or else the compilation will fail. 
+
+* Metadata specific to your organization. Check the https://www.metanorma.org/flavors/[flavor documentation] to make sure you've entered the metadata correctly.
+
+==== A single double quotation mark inside of a stem block
+Double quotation marks are used in stem blocks to denote normal text, e.g.: `\stem:["normal text"]`
 An odd number of double quotation marks inside a stem block will provoke a compilation error.
 
-For example, `stem:["normal text""]` leads to the following compilation error:
+For example, `\stem:["normal text""]` leads to the following compilation error:
 
 [source]
 ----
@@ -85,14 +102,127 @@ parsing: "normal text""
 undefined method `[]' for nil:NilClass
 ----
 
+==== An external file is not found
+Metanorma can't compile a document when a reference to an external file cannot be found (i.e., an image or any other type of file). The error message will be explicit on which file.
+You can solve the roblem by checking the specified location of the file.
 
-*A reference auto-fetch failure*
+==== Two or more cross-references have the same anchor
+If two or more cross-references have the same anchor, the document won't build and the error message will be clear on the reason.
 
+.Example of the same anchor name
+[source,asciidoc]
+----
+[[anchor1]]
+== Section 1
+...
+
+[[anchor1]]
+== Section 2
+...
+----
+
+To solve this problem, rename the anchor. Check your document against any references for the anchor that you changed and update them. 
+end::no-compile-markup[]
+
+== The document builds, but looks odd 
+
+tag::rendering-errors[]
+
+=== Rendering errors
+The main cause for rendering errors are markup errors which can lead to unexpected rendering results.
+Some issues can be:
+
+==== Title page is missing information
+If your title page is missing completely, or only shows parts, check the document attributes in the header. If metadata, like the title, is missing, the document will be rendered faulty. 
+
+==== Document starts to look odd from one point onwards
+AsciiDoc requires block delimiters for some block types, such as code samples and tables. The block delimiter consists of a minimum of four characters. If the number or type of block delimiters don't match, the compiler doesn't know where a block begins/ends. 
+
+Look for the beginning of the issue, go to the markup, and check out the delimiting characters of the blocks.
+
+.Examples of faulty blocks
+[source, Asciidoc]
+----
+
+[source,Asciidoc]
+=== <1>
+image::../assets/image.png[]
+=== 
+
+|== <2>
+|Name of Column 1
+|Name of Column 2
+
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|--- <3>
+
+----
+<1> The author wanted to demonstrate how to insert an image using AsciiDoc markup. However, the compiler will insert the image (if it exists) because of the missing `=`.
+<2> The block delimiter is only three characters long, so the compiler will not render the table. 
+<3> `|---` This delimiter is invalid.
+
+==== Paragraphs look like code blocks
+If you ever see a paragraph rendered inside of a source block, you probably have left a white space at its beginning. Paragraphs cannot begin with any white space or they will be erroneously rendered as source blocks.
+
+==== Missing images
+If there are images missing, make sure that: 
+
+* The syntax is correct. Make sure you set the square brackets at the end, even if you don't want to use any attributes for the image. +
+----
+image::path/file.jpg[]
+----
+* The path and the file extension are correct. If you used the https://docs.asciidoctor.org/asciidoc/latest/macros/images-directory/[`:imagesdir:` attribute] to set the image path, check if the path is correct. 
+
+end::rendering-errors[]
+
+==== Index term is showing up multiple times
+If an index term that only should appear once, appears several times, check the parentheses used in the index entries for this term. 
+The syntax for index entries looks like this: 
+
+[source, Asciidoc]
+====
+Visible index terms: `\((Level 1 index term))`
+
+Hidden index terms: `(\((Level 1 index term, Level 2 index term, Level 3 index term)))`
+====
+
+
+=== Cross-reference errors
+
+==== Incorrect format of reference anchor
+Cross-reference anchors cannot begin with numbers, underscores, hyphens or any other special characters. If they do, they will not be processed in compilation and will certaintly lead to rendering errors in the section titles. Anchors must begin with a letter or an underscore and can not contain any special character other than hyphens and underscores.
+
+.Example for incorrect anchor names
+[source,asciidoc]
+----
+// Examples of incorrect anchors in references
+
+* [[[123anchor1,identifier 1]]], ... // Anchors cannot begin with a number
+
+* [[[_anchor2,identifier 2]]], ... // Anchors cannot begin with underscores or hyphens
+
+* [[[#anchor3,identifier 3]]], ... // Anchors cannot begin with any special character. Just letters.
+----
+
+Also make sure to use the same keyword for references. If the compiler finds a reference without a matching anchor, it will not process the reference.
+
+[source, Asciidoc]
+----
+[[anchor1234]]
+<<anchor1432>>
+
+Error message: No label has been processed for ID anchor1432
+----
+
+==== A reference auto-fetch failure
 When a reference https://www.metanorma.org/author/topics/document-format/bibliography/#autofetch[auto-fetching] process fails, compilation failure may happen.
 
-Metanorma team is constantly searching and solving issues related with the automatic importation of bibliographic entries.
-However, in order to not have to wait for a precise solution of the issue, a quick workaround would be to disable
-the automatic look-up of the individual reference by enclosing its identifier with `nofetch()`. 
+The Metanorma team is constantly searching and solving issues related with the automatic importation of bibliographic entries.
+Instead of waiting for a bugfix, you can apply a quick workaround. You can disable the automatic look-up of the individual reference by enclosing its identifier with `nofetch()`. 
 
 For example, let's supose we have an issue with the reference `ITU-R BT.2267-10`.
 Its AsciiDoc markup would correspond to:
@@ -118,63 +248,20 @@ Did you mean?  to_s
 ...
 ----
 
-We can disable the automatic look-up by applying `nofetch()`:
+To solve issues with automatic lookup, we can set the `nofetch()` attribute:
 
+.Example of disabled automatic lookup for one bibliographic entry
 [source,asciidoc]
-----
+====
 [bibliography]
 == References
 
 * [[[bt2267-10,nofetch(ITU-R BT.2267-10)]]], Report ITU-R BT.2267-10 (2019), _Integrated broadcast-broadband systems._
-----
+====
 
-and compilation failure gets solved.
+=== Errors that are bugs
 
-
-*Incorrect format of reference anchor*
-
-Anchor for references and cross references cannot be set with any text we'd like.
-They must begin with a letter and cannot contain any special character other than hyphens and underscores.
-
-An incorrect format of a reference anchor can result in compilation failure.
-
-For example, incorrect manners of setting anchors are shown below:
-
-[source,asciidoc]
-----
-// Examples of incorrect anchors in references
-
-* [[[123anchor1,identifier 1]]], ... // Anchors cannot begin with a number
-
-* [[[_anchor2,identifier 2]]], ... // Anchors cannot begin with underscores or hyphens
-
-* [[[#anchor3,identifier 3]]], ... // Anchors cannot begin with any special character. Just letters.
-----
+Metanorma is under continuous development, so it is possible to face an error that you can not fix because it is a bug. If you need help with a persisting error or if you found a bug, please create a new issue on Github in your organization's repository (`metanorma-ORGNAME`), for example `metanorma-iso`. 
 
 
-== Rendering errors
-
-Rendering errors may result, to a large degree, from markup errors.
-Some markup errors can lead to unexpected rendering results.
-Some causes can be:
-
-
-*Number of block delimiters*
-
-Block delimiters must always have the same numbers of characters with a minimum of four.
-A lack (or excess) in the number of characters can lead to unexpected results in rendering.
-
-If you see an odd looking in example blocks, note blocks, or anything else. Look for the 
-beginning of the issue, go to the markup, and checkout the delimiting characters of the blocks.
-
-
-*Cross reference anchors must begin with a letter*
-
-Cross reference anchors cannot begin with numbers, underscores, hyphens or any other special characters. If they do, they will not be processed in compilation and will certaintly lead to rendering errors in the section titles.
-
-
-*Paragraphs beginning with white space*
-
-If you ever see a paragraph rendered inside of a source block, you probably have left a white space
-at its beginning. Paragraphs cannot begin with any white space, they will be erroneously rendered as source blocks.
-
+* https://github.com/metanorma[Metanorma Github] 

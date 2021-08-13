@@ -1,5 +1,5 @@
-//This file contains all the lessons for the tutorials. Since there was no template while I (Tina) contributed to Metanorma, you'll find all lessons here, and you can copy the inlcudes into the tutorial templates later. 
-//All content that isn't fit for reuse elsewhere can be written into the file directly. 
+//This file contains all the lessons for the tutorials. Since there was no template while Tina contributed to Metanorma, you'll find all lessons here, and you can copy the inlcudes into the tutorial templates later. 
+//All content that isn't fit for reuse elsewhere, for example the "Summary" sections, can be written into the file directly. 
 //Should you have any questions, you can contact me via e-mail (tina@kickoke.com). 
 
 //Lesson 1
@@ -13,7 +13,7 @@ include::../tutorials/learning_objectives.adoc[tag=learningobjectives-1]
 === What you get is what you see vs. What you get is what you mean
 include::../author/concepts/wysiwyg_vs_wysiwym.adoc[tag=tutorial]
 === What is Metanorma?
-include::../author/concepts/what_is_metanorma.adoc[tag=tutorial]
+include::../author/concepts/what_is_Metanorma.adoc[tag=tutorial]
 
 Let’s explore the workflow of Metanorma in the next lesson.
 >> Start next lesson 
@@ -21,9 +21,9 @@ Let’s explore the workflow of Metanorma in the next lesson.
 //Lesson 1-2
 == The Metanorma Workflow
 
-include::../author/concepts/metanorma_workflow.adoc[tag=tutorial, leveloffset=+1]
+include::../author/concepts/Metanorma_workflow.adoc[tag=tutorial, leveloffset=+1]
 
-Before we dive into AsciiDoc, let's recap what we've learnt so far.
+Before we dive into AsciiDoc, let's summarize what we've covered so far.
 >> Start next lesson 
 
 //Lesson 1-3
@@ -34,7 +34,7 @@ Let’s recap what we’ve learned so far:
 * Metanorma uses a what you see is what you mean (WYSIWYM) approach, meaning that the text you write is what you *want* to see.
 * You need to render documents to have a correct visible output. The appearance is controlled in a stylesheet.
 * Metanorma is an umbrella term for several things and consists of: +
-The metanorma toolchain, document models and a XML schema of these document models.
+The Metanorma toolchain, document models and a XML schema of these document models.
 * Metanorma documents use Metanorma AsciiDoc markup 
 * When you want to generate an output, the AsciiDoc document is converted into XML in order to be checked against the XML schema.
 * If the document is valid, Metanorma generates an HTML, PDF and Microsoft Word (`.doc`) output. 
@@ -50,7 +50,7 @@ include::../tutorials/learning_objectives.adoc[tag=learningobjectives-2]
 include::../author/concepts/intro_to_asciidoc.adoc[tag=tutorial, leveloffset=+2]
 
 We will have a look at these different levels of markup in the following lessons. 
-You can do the exercises either in the browser, or on your local machine. If you choose to use your local machine, you will need to install metanorma and set up a new metanorma project. 
+You can do the exercises either in the browser, or on your local machine. If you choose to use your local machine, you will need to https://www.metanorma.org/install/[install Metanorma] and set up a new Metanorma project. 
 
 >> Start next lesson
 
@@ -80,7 +80,7 @@ We’ve built the basic structure of a Metanorma document. Let’s add some cont
 include::../author/topics/blocks.adoc[tag=tutorial]
 
 Let’s look at lists in the next lesson. 
->> Next lesson
+>> Start next lesson
 
 //Lesson 2-3-1
 === Lists
@@ -93,7 +93,8 @@ include::exercises.adoc[tag=exercise-2-3-1]
 Great work! Let’s have a look at term definitions in the next lesson.
 >> Start next lesson
 
-//Lesson 2-3-2
+//Lesson 2-3-2; Incorporate Tutorial content into author/topics/terms/ when reworking terms_definitions.adoc
+
 === Term definitions
 If you want to cite a term throughout the standard, include it in the terms and definitions section. Term definitions vary from definition lists, as they are more granular and provide metadata to mark features such as alternative terms or deprecated terms. 
 Let’s have a look at a term entry:
@@ -247,7 +248,7 @@ include::../tutorials/learning_objectives.adoc[tag=learningobjectives-3]
 //Lesson 3-1
 === Adding Comments
 
-include::../author/topics/document-format/reviewer-notes.adoc[leveloffset=1]
+include::../author/topics/reviewing.adoc[leveloffset=1]
 
 [[exercise-3-1]]
 include::exercises.adoc[tag=exercise-3-1]
@@ -255,7 +256,7 @@ include::exercises.adoc[tag=exercise-3-1]
 Now that we've commented on the content, let's create a draft of the document. 
 >> Start next lesson
 
-//Lesson 3-2
+//Lesson 3-2 Add to docs
 === Rendering a Draft Document
 
 To render a draft that your peers should review, you need to add these metadata to the document header:
@@ -264,13 +265,13 @@ To render a draft that your peers should review, you need to add these metadata 
 * `:status: draft` Defines the current document stage. +
 NOTE: Some flavors, for example ISO, use `:docstage:` and a status code to indicate in what stage the document is.
 
-To compile a metanorma document you must enter the name of the application `metanorma` and the document you want to compile `document.adoc`. 
+To compile a Metanorma document you must enter the name of the application `Metanorma` and the document you want to compile `document.adoc`. 
 
 [source, shell]
 ----
-metanorma document.adoc
+Metanorma document.adoc
 ----
-With this command you trigger the metanorma toolchain to:
+With this command you trigger the Metanorma toolchain to:
 
 * Read the AsciiDoc input
 * Convert it into XML
@@ -307,9 +308,9 @@ To compile a Metanorma document:
 . Enter the following command: +
 [source, shell]
 ----
-metanorma document.adoc
+Metanorma document.adoc
 ----
-With this command you trigger the metanorma toolchain to:
+With this command you trigger the Metanorma toolchain to:
 
 * Read the AsciiDoc input
 * Convert it into XML
@@ -321,7 +322,7 @@ You can also manipulate the way Metanorma compiles a document by setting flags. 
 .Example of a build command with a flag
 [source, shell]
 ----
-metanorma document.adoc -x html
+Metanorma document.adoc -x html
 ----
 
 You can use the following flags to manipulate the building process:
@@ -331,11 +332,11 @@ NOTE: Either define the flavor in the metadata using `mn-document-class` or use 
 * `-x`: Sets the output format(s) of the document 
 * `-o`: Enter a path that the output should be saved to. 
 
-To see the full list of possible build commands, open the metanorma help on the command line.
+To see the full list of possible build commands, open the Metanorma help on the command line.
 
 [source, shell]
 ----
-metanorma help compile
+Metanorma help compile
 ----
 
 >> Start next lesson
@@ -343,10 +344,32 @@ metanorma help compile
 // Lesson 4-2
 === Troubleshooting
 include::../author/topics/troubleshooting.adoc[tag=tutorial,leveloffset=+2]
+include::../author/topics/troubleshooting.adoc[tag=no-compile-markup,leveloffset=+1]
+include::../author/topics/troubleshooting.adoc[tag=rendering-errors,leveloffset=+1]
+
 
 //Exercise will promt the user to fix some bugs in a document: For example syntax errors. 
 include::exercises.adoc[tag=exercise-4]
+>> Start next lesson
 
-Great work!
+// Lesson 4-2
+=== Summary
+Let's summarize what we've learnt in this lesson:
+
+* To generate a Metanorma document, enter the following command: +
+[source, shell]
+----
+Metanorma document.adoc
+----
+
+* More often than not, we encounter errors that we need to fix:
+
+** Metadata errors: Provide all metadata that your organization mandates; include the flavor type and document type either in the header or in the build command.
+** Markup errors: Make sure you've entered the correct syntax for blocks or inline macros and provided the correct filenames and paths. 
+** Reference errors: If a reference can't be resolved, make sure that the anchor name follows the naming rules; The anchor and the reference need to be identical. 
+** Bugs: Sometimes, when you can't solve an error, you might have discovered a bug. Feel free to raise an issue in your organization's repository on the https://github.com/Metanorma[Metanorma Github page].
+
+
+Great work! 
 >> Finish the tutorial
 // Maybe include a page after the tutorial where a user can type in their name and a certificate (PDF) will be generated + downloaded? :)

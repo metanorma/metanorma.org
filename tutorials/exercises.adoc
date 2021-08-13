@@ -246,11 +246,30 @@ Enter the command `metanorma document.adoc` into the terminal and see what happe
 end::exercise-3-2[]
 
 tag::exercise-4[]
-The following document doesn't compile because there are some errors. Debug the document:
-[%interactive]
-* [ ] Line xx: Resolve xyz
-* [ ] Line xx: Resolve xyz
-* [ ] Line xx: Resolve xyz
+The following document doesn't compile because there are some errors. 
 
-Once you solved the errors, run `metanorma document.adoc` and see if the document compiles. 
+. Enter `metnanorma exercise-4.adoc` to trigger the build process
+. Have a look at the error messages
+. Try to debug the document. If you get stuck, have a look at the hints. 
+. Once you solved the errors, run `metanorma exercise-4.adoc` again to see if the document compiles.
+
+.Hint Error 1
+[%collapsible]
+====
+Lines 12 and 43: Both sections have the anchor `\[[prefatory-clause]]` assigned.
+You can solve this error by renaming the anchors. 
+====
+
+.Hint Error 2
+[%collapsible]
+====
+Line 76: The file that should be included cannot be found.
+Since the scope section already contains text, you can delete the reference. 
+====
+
+.Hint Error 3
+[%collapsible]
+====
+Line 420: The image attribute contains a whitespace after `image::`, so the path is invalid. Delete the whitespace. 
+====
 end::exercise-4[]
