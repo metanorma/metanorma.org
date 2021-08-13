@@ -78,7 +78,9 @@ as _Conditions_ followed by the component contents.
 
 *** Components with the `class` attribute `part` are extracted and presented in
 order: each Part is rendered as an incrementing capital letter (_A_, _B_, _C_
-and so on), followed by the component contents.
+and so on), followed by the component contents. Any crossreferences to part components
+will automatically be labelled with the label of their parent requirement, followed by their ordinal
+letter.
 
 ** The `classification` attributes of the requirement, if given: the
 classification tag (in capitals), followed by the classification value.
@@ -104,6 +106,8 @@ So the following simple recommendation:
 
 [source,asciidoc]
 ----
+=== Clause Four Point Five
+[[a1]]
 [recommendation,label=/ogc/recommendation/wfs/2,obligation=permission,subject=user,inherit=/ss/584/2015/level/1,classification="control-class:Technical;priority:P0"]
 .Widgets
 ====
@@ -118,6 +122,7 @@ So the following simple recommendation:
 Determine travel distance by flight path
 ---
 
+[[a2]]
 [.component,class=part]
 ---
 Independently verify flight path
@@ -126,12 +131,17 @@ Independently verify flight path
 Widgets are tested for aerodynamic flight potential in partnership with witches.
 Consult local coven for more information.
 ====
+
+== Clause Five
+See <<a1>>, in particular <<a2>>.
 ----
 
 
 will render as follows:
 
 ____
+*4.5 Clause Four Point Five*
+
 [cols="1,3"]
 |===
 2+a|Recommendation 1 +
@@ -150,6 +160,10 @@ a| . Candidate test subject is a witch
 2+|Widgets are tested for aerodynamic flight potential in partnership with witches.
 Consult local coven for more information.
 |===
+
+*5. Clause Five*
+
+See Clause 4.5, Recommendation 1, in particular Clause 4.5, Recommendation 1 B.
 ____
 
 == OGC Classes of Requirement
