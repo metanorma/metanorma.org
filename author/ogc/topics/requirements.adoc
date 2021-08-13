@@ -60,10 +60,12 @@ followed by the attribute value
 ** The `subject` attribute of the requirement, if given: _Subject_, followed by the attribute.
 (In other classes of requirement, the `subject` attribute of the requirement
 is rendered differently; see below.) The subject attribute can be marked up as a cross-reference
-to another requirent given in the same document.
+to another requirent given in the same document. If there are multiple values of the subject,
+they are semicolon delimited [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4].
 
 ** The `inherit` attribute of the requirement, if given: _Dependency_ followed
-by the attribute value
+by the attribute value. If there are multiple values of the subject,
+they are semicolon delimited.
 
 ** The `component` components of the 
 requirement [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.0],
@@ -165,6 +167,36 @@ Consult local coven for more information.
 
 See Clause 4.5, Recommendation 1, in particular Clause 4.5, Recommendation 1 B.
 ____
+
+As in the rest of Metanorma, attributes can also be expressed as a `[%metadata]` definition list
+within the requirement:
+
+[source,asciidoc]
+.An exhaustive attribute example
+-----
+[requirement]
+====
+[%metadata]
+model:: ogc
+type:: class
+label:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
+subject:: Encoding of logical models
+inherit:: urn:iso:dis:iso:19156:clause:7.2.2
+inherit:: urn:iso:dis:iso:19156:clause:8
+inherit:: http://www.opengis.net/doc/IS/GML/3.2/clause/2.4
+inherit:: O&M Abstract model, OGC 10-004r3, clause D.3.4
+inherit:: http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used
+inherit:: <<ref2>>
+inherit:: <<ref3>>
+classification:: priority:P0
+classification:: domain:Hydrology,Groundwater
+classification:: control-class:Technical
+obligation:: recommendation,requirement
+
+I recommend this
+====
+-----
+
 
 == OGC Classes of Requirement
 

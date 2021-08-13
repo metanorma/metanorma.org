@@ -25,7 +25,8 @@ In addition to block type described above,
 following attributes are supported (see usage example below):
 
 `subject`:: Indicates the subject of the requirement.
-Does not get rendered in final output.
+Does not get rendered in final output (although this may be overridden in flavours).
+Multiple instances of `subject` can be given, semicolon-delimited [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4]
 
 `label`:: Indicates conventional label assigned to the requirement.
 If present, it will be rendered in final output.
@@ -63,6 +64,40 @@ inherit:[<<ref3>>]
 I recommend this
 ====
 -----
+
+As can be seen, the foregoing syntax can get quite awkward. For that reason, Metanorma also supports
+using a definition list, marked with role attribute `[.metadata]`, within the requirement,
+to enter the attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4].
+All attributes have the same syntax as above. That also allows `subjects` as well as `inherit` to
+be marked up as cross-references, and it allows multiple instances of an attribute to be marked up
+separately. So the foregoing example can also be marked up as:
+
+[source,asciidoc]
+.An exhaustive attribute example
+-----
+[requirement]
+====
+[%metadata]
+model:: ogc
+type:: class
+label:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
+subject:: Encoding of logical models
+inherit:: urn:iso:dis:iso:19156:clause:7.2.2
+inherit:: urn:iso:dis:iso:19156:clause:8
+inherit:: http://www.opengis.net/doc/IS/GML/3.2/clause/2.4
+inherit:: O&M Abstract model, OGC 10-004r3, clause D.3.4
+inherit:: http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used
+inherit:: <<ref2>>
+inherit:: <<ref3>>
+classification:: priority:P0
+classification:: domain:Hydrology,Groundwater
+classification:: control-class:Technical
+obligation:: recommendation,requirement
+
+I recommend this
+====
+-----
+
 
 == Nested blocks
 
