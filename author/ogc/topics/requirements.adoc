@@ -4,20 +4,26 @@ layout: ogc-flavor
 
 = Recommendations, requirements, and permissions
 
-In this clause we will use the term "`requirement`" to refer to the
-generic class of recommendations, requirements and permissions.
+In this clause we will use the term "`requirement`" to refer to the generic
+class of "`recommendations`", "`requirements`" and "`permissions`".
 
-This subsection supplements
+NOTE: This subsection supplements
 link:/author/topics/document-format/requirements[Requirement, Recommendation, and Permission blocks]
-in general Metanorma documentation. In some instances, the naming of terms that Metanorma
-uses in general is used in Metanorma markup instead of the nomenclature used in the 
-https://www.ogc.org/standards/modularspec[OGC Modular Specification].
+in general Metanorma documentation.
 
-In particular, Metanorma refers to what the requirement is about as the _subject_.
-The different types of requirement expressed by Metanorma OGC are about different things,
-and the more abstract types of requirement are about other requirements. Metanorma uses
-_subject_ rather than the more specific language of the Modular Specification, to 
-ensure that requirements are represented consistently within Metanorma.
+In some instances, the naming of terms that Metanorma uses in general is used in
+Metanorma markup instead of the nomenclature used in the
+https://www.ogc.org/standards/modularspec[OGC Modular Specification]:
+
+* In particular, Metanorma refers to what the requirement is about as the _subject_.
+
+* The different types of requirement expressed by Metanorma-OGC are about
+different things, and the more abstract types of requirement are about other
+requirements.
+
+* Metanorma uses _subject_ rather than the more specific language of the Modular
+Specification, to ensure that requirements are represented consistently within
+Metanorma.
 
 == Basic encoding of Requirements
 
@@ -26,12 +32,15 @@ AsciiDoc markup of requirements, users can refer to the rendering of Metanorma
 requirements which is aligned the existing, tabular OGC encoding of
 requirements.
 
-An OGC requirement is marked up using the Metanorma conventions, of tagged example blocks containing
-other tagged example blocks and open blocks. (We give illustrations below.)
-An OGC requirement is rendered as a table, as is consistent with current practice.
+An OGC requirement is marked up using the Metanorma conventions, of tagged
+example blocks containing other tagged example blocks and open blocks. (We give
+illustrations below.)
 
-* The CSS class of the requirement table, for HTML rendering, is the `type` attribute of the
-requirement.
+An OGC requirement is rendered as a table, as is consistent with current
+practice.
+
+* The CSS class of the requirement table, for HTML rendering, is the `type`
+attribute of the requirement.
 +
 --
 The only types recognised are:
@@ -45,6 +54,7 @@ If no type attribute is given, this is considered to be a simple requirement.
 The default CSS class currently assigned for HTML rendering is `recommend`.
 In the rest of this section, we look at simple requirements.
 --
+
 * The heading of the table (spanning two columns) is its name (the AsciiDoc role
 or style of the requirement, e.g. `[.permission] or [permission]`), optionally
 followed by its title (the caption of the requirement, e.g. `.Title`).
@@ -67,20 +77,20 @@ they are semicolon delimited [added in https://github.com/metanorma/metanorma-st
 by the attribute value. If there are multiple values of the subject,
 they are semicolon delimited.
 
-** The `component` components of the 
+** The `component` components of the
 requirement [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.0],
 which capture internal components of the requirement.
 +
 These are divided into two categories:
 
-*** Components with a `class` attribute other than `part` are 
+*** Components with a `class` attribute other than `part` are
 extracted in order, with the class name normalised (title case), followed by the component contents.
 So a component with a `class` attribute of `conditions` will be rendered as
 as _Conditions_ followed by the component contents.
 
 *** Components with the `class` attribute `part` are extracted and presented in
 order: each Part is rendered as an incrementing capital letter (_A_, _B_, _C_
-and so on), followed by the component contents. Any crossreferences to part components
+and so on), followed by the component contents. Any cross-references to part components
 will automatically be labelled with the label of their parent requirement, followed by their ordinal
 letter.
 
@@ -168,8 +178,8 @@ Consult local coven for more information.
 See Clause 4.5, Recommendation 1, in particular Clause 4.5, Recommendation 1 B.
 ____
 
-As in the rest of Metanorma, attributes can also be expressed as a `[%metadata]` definition list
-within the requirement:
+As in the rest of Metanorma, attributes can also be expressed as a `[%metadata]`
+definition list within the requirement:
 
 [source,asciidoc]
 .An exhaustive attribute example
@@ -193,32 +203,45 @@ classification:: domain:Hydrology,Groundwater
 classification:: control-class:Technical
 obligation:: recommendation,requirement
 
-I recommend this
+Logical models encoded as XSDs should be faithful to the original UML conceptual
+models.
 ====
 -----
 
 
 == OGC Classes of Requirement
 
+=== General
+
 To simplify the Modular Specification (Annex C),
 
-* A Conformance Class consists of multiple Conformance Tests, associated to and only to the requirements
-in a corresponding Requirements Class.
-** A Conformance Class is thus about a single Requirement Class 
-* A Requirement Class consists of multiple Requirements, all about the same standardization target type
-* A Conformance Test checks if a set of Requirements is met by a single standardization target (an entity)
-** A Conformance Test is thus in a many-to-many relation with Requirements
-** A Conformance Test is about a single standardization target
-** Conformance Tests include Abstract Tests
-* A Requirement is a condition to be satisfied by a single standardization target type
+* A Conformance Class consists of multiple Conformance Tests, associated to and
+only to the requirements in a corresponding Requirements Class.
 
-These relations are captured in the structure below:
+** A Conformance Class is thus about a single Requirement Class
+
+* A Requirement Class consists of multiple Requirements, all about the same
+standardization target type
+
+* A Conformance Test checks if a set of Requirements is met by a single
+standardization target (an entity)
+
+** A Conformance Test is thus in a many-to-many relation with Requirements
+
+** A Conformance Test is about a single standardization target
+
+** Conformance Tests include Abstract Tests
+
+* A Requirement is a condition to be satisfied by a single standardization
+target type
+
+These relations are captured in the structure below.
 
 === Requirement classes
 
-A requirement with `type=class` is cross-referenced and captioned as
-a "`{Requirement} Class`", and is rendered differently to the actual
-requirement itself
+A requirement with `type=class` is cross-referenced and captioned as a
+"`{Requirement} Class`", and is rendered differently to the actual requirement
+itself
 [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.11].
 
 NOTE: Classes for Recommendations will be captioned as
@@ -227,10 +250,16 @@ Permission Classes.
 
 Requirement Classes must use the following Metanorma Requirement attributes:
 
-* Target Type. Specified in the `subject` attribute, and rendered as _Target Type_.
+* Target Type. Specified in the `subject` attribute, and rendered as _Target
+Type_.
+
 * Name. Specified as the requirement's title.
-* Dependencies (optional). Specified with the `inherit` attribute (which can take multiple semicolon-delimited values).
-* Nesting (optional). Requirements contained in a class are marked up as nested requirements.
+
+* Dependencies (optional). Specified with the `inherit` attribute (which can
+take multiple semicolon-delimited values).
+
+* Nesting (optional). Requirements contained in a class are marked up as nested
+requirements.
 
 For example:
 
@@ -377,10 +406,10 @@ ____
 
 ===  Conformance Tests
 
-A requirement with `type=verification` is a Conformance Test, and 
+A requirement with `type=verification` is a Conformance Test, and
 is cross-referenced and captioned as
 a "`{Requirement} Test`". It is rendered differently from the
-actual requirement itself. 
+actual requirement itself.
 
 NOTE: Verifications for Recommendations will be captioned as
 Recommendation Tests, similarly for Requirement Tests and

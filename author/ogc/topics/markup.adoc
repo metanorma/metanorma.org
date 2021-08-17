@@ -2,7 +2,7 @@
 layout: ogc-flavor
 ---
 
-= Metanorma markup for OGC
+= Metanorma for OGC markup
 
 == General
 
@@ -10,9 +10,13 @@ The rendering of OGC documents has changed over the years. Metanorma formats OGC
 following current practice:
 
 * All body text is left justified, with no exceptions allowed.
-* Where section obligations are named (i.e. in annex names), they are only given as
-"normative" or "informative"; the alternate text of "non-normative" is disallowed.
-* Ordered lists follow ISO style numbering, i.e. "a), b), c) ...", with no exceptions allowed.
+
+* Where section obligations are named (i.e. in annex names), they are only given
+  as "`normative`" or "`informative`"; the alternate text of "`non-normative`" is
+  disallowed.
+
+* Ordered lists follow ISO style numbering, i.e. "`a), b), c) ...`", with no
+  exceptions allowed.
 
 == Inline formatting
 
@@ -25,17 +29,19 @@ This is #text to be highlighted#.
 
 == Sections
 
-The Normative References section may be named just "`References`", reflecting OGC practice.
+The Normative References section may be named just "`References`", reflecting
+OGC practice.
 
 == Preliminary elements
 
 
 === General
 
-The following clauses are preliminary elements, and are moved into the frontispiece
-of the document (in Metanorma, the document preface).
+The following clauses are preliminary elements, and are moved into the
+frontispiece of the document (in Metanorma, the "`document preface`").
 
-The OGC DocTeam has specified that all these elements are *MANDATORY* in OGC documents (in this order):
+The https://www.ogc.org/projects/groups/docteam[OGC DocTeam] has specified that
+all these elements are *MANDATORY* in OGC documents (in this order):
 
 * Abstract
 * Keywords
@@ -58,7 +64,8 @@ There are two mechanisms for adding additional content as preliminary elements:
 
 === Abstract
 
-The abstract is recognized as the first clause with an `abstract` style attribute:
+The abstract is recognized as the first clause with an `abstract` style
+attribute:
 
 [source,asciidoc]
 ----
@@ -136,7 +143,8 @@ EXAMPLE:
 
 === Security Considerations
 
-The Security Considerations section is entered as a clause with the title "`Security Considerations`"
+The Security Considerations section is entered as a clause with the title
+"`Security Considerations`".
 
 EXAMPLE:
 
@@ -147,12 +155,16 @@ EXAMPLE:
 The following security considerations apply...
 ----
 
-If the Security Considerations are not provided in the source document, the clause is inserted with the text
-"`No security considerations have been made for this standard.`"
+If the Security Considerations are not provided in the source document, the
+clause is inserted with the text "`No security considerations have been made for
+this standard.`"
+
 
 === Submitting Organizations
 
-"`Submitting Organizations`" are entered using the `:submitting-organizations:` document attribute.
+"`Submitting Organizations`" are entered using the `:submitting-organizations:`
+document attribute.
+
 The values are entered using a semi-colon delimited list.
 
 Prefatory text is generated automatically.
@@ -167,7 +179,7 @@ EXAMPLE:
 
 === Submitters
 
-"`Submitters`" are entered using a table, contained in a section with the title `Submitters`.
+"`Submitters`" are entered using a table, contained in a section with the title "`Submitters`".
 
 EXAMPLE:
 
@@ -188,7 +200,8 @@ EXAMPLE:
 ----
 == Submitters
 
-All questions regarding this submission should be directed to the editor or the submitters:
+All questions regarding this submission should be directed to the editor or the
+submitters:
 
 |===
 |Name |Affiliation
@@ -206,8 +219,9 @@ The OGC DocTeam has specified that additional preliminary elements are *allowed*
 but not *encouraged*. This is useful for document backwards-compatibility and
 cross-published standards at other SDOs.
 
-Additional preliminary elements should be encoded under the `[.preface]` element,
-and they will be rendered *after* the five mandatory preliminary elements.
+Additional preliminary elements should be encoded under the `[.preface]`
+element, and they will be rendered *after* the five mandatory preliminary
+elements.
 
 Functionality implemented in https://github.com/metanorma/metanorma-ogc/issues/83.
 
