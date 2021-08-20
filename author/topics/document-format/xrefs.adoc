@@ -320,4 +320,67 @@ and substituted with the extension of the current document type during document 
 The above example is rendered in Metanorma XML as `<xref target="document1#b">`,
 in HTML as `<a href="document1.html#b">`, and in PDF as `<a href="document1.pdf#b">`.
 
+== Table of Contents
+
+=== Default
+
+In most flavours, a table of contents is inserted by default at the start of the document:
+it appears as a sidebar in the HTML rendering of the document, and in the prefatory material
+in the PDF and DOC rendering. This table is typically a listing of all clauses of the document,
+and runs two levels deep.
+
+In a few flavours, a separate table of contents is inserted for figures, tables, and recommendations.
+
+=== Manual Table of Contents
+
+A manual table of contents command has been added to 
+Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.5].
+This is intended for a local table of contents, e.g. at the start of an appendix.
+
+The table of contents command takes the form of a macro, as follows:
+
+[source,asciidoc]
+----
+toc:["xpath1:depth1","xpath2:depth2","xpath3:depth3"...]
+----
+
+where each `depth` is a number indicating the depth of indentation of the ToC entry (default value 1),
+and `xpath` is the XPath of the title being indexed in the Metanorma XML. For example,
+
+[source,asciidoc]
+----
+toc:["//clause[@id = 'clause1'\]/clause/title","//clause[@id = 'clause1'\]/clause/clause/title:2"]
+----
+
+indicates that:
+
+* all titles of subclauses of the clause with ID `clause1` are at the first depth level of the manual table of contents
+* all titles of sub-subclauses of the clause with ID `clause1` are at the second depth level of the manual table of contents
+
+--- which means that this is a table of contents of the first-level clause with ID `clause1`, running three
+levels deep.
+
+=== Variant titles
+
+Clauses in Metanorma normally have only one title, and that title is used to compile the table of contents.
+However, the manual table of contents can make use of variant titles instead.
+
+Variant titles [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.5]
+are entered as paragraphs with a `variant-title` role attribute within a clause, as follows:
+
+[source,asciidoc]
+----
+=== Proper title
+
+[.variant-title,type=toc]
+This is the variant title
+
+Text of section...
+----
+
+Variant titles are not rendered in the body of the text. However, any variant titles of type `toc`
+are used instead of the title as the entry text for a manual table of contents.
+
+As of this writing, variant titles are not used to generate the automated all-of-document table of contents,
+or tables of other entities.
 
