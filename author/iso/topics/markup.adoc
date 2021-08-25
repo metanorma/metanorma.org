@@ -82,6 +82,53 @@ but `<``<ISO7301,clause=3.1>``>` will be rendered as _ISO 7301, 3.1_.
 [[note_general_doc_ref_terms_defs]]
 NOTE: This subsection supplements link:/author/topics/document-format/section-terms[Terms and definitions] in general Metanorma documentation.
 
+=== Nested terms 
+
+In an ISO document, terms may be numbered either in mixed order, organised by divisions and subdivisions,
+or else they may be numbered systematically, with the term number reflecting hierarchical position in
+a schema.
+
+The former arrangement is consistent with the rest of Metanorma: in this arrangement, only the terminal
+subclauses within a Terms & Definitions clause are treated as terms, and any intermediate sections are
+treated as subclauses:
+
+[source,asciidoc]
+--
+== Terms and definitions
+
+=== Subclause 1
+
+==== Term
+
+==== Term
+
+=== Subclause 2
+
+==== Term
+--
+
+The latter arrangement means that terms can also occur in non-terminal subclauses, and in effect means
+that terms can appear to be nested within other terms in numbering. This is indicated in Metanorma
+Asciidoctor by using a `[.term]` role attribute:
+
+[source,asciidoc]
+--
+== Terms and definitions
+
+[.term]
+=== Term
+
+==== Term
+
+==== Term
+
+[.term]
+=== Term
+
+==== Term
+--
+
+
 === Grouped terms and definitions
 
 The title of a top-level "`Terms and definitions`" clause is populated
