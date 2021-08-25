@@ -2,11 +2,12 @@
 layout: iso-flavor
 ---
 
-= Metanorma markup for ISO
+= Metanorma for ISO markup
 
 == Lists
 
-Unordered lists in Word are rendered with em-dashes instead of bullets, as preferred by ISO/CS.
+Unordered lists in Word are rendered with em-dashes instead of bullets, as
+preferred by ISO/CS.
 
 Ordered list numbering enforce the ISO/IEC DIR 2 labelling convention,
 therefore the `type` attribute is ignored in ordered lists.
@@ -26,27 +27,30 @@ admonition syntax.
 --
 CAUTION: This is a single-block caution.
 
+WARNING: This is a warning.
+
 [WARNING]
 ====
-This is a
+This is a warning
 
-multiple-block warning
+spanning multiple-blocks.
 ====
 --
 
-If the admonitions "`Danger`" and "`Safety Precaution`" are needed, they should be indicated
-through a `type` attribute, which will override the admonition type appearing in the AsciiDoc:
+If the admonitions "`Danger`" and "`Safety Precaution`" are needed, they should
+be indicated through a `type` attribute, which will override the admonition type
+appearing in the AsciiDoc:
 
 [source,asciidoc]
 --
 [type=Danger]
-CAUTION: This is a single-block caution
+CAUTION: This is a single-block danger.
 
 [WARNING,type=Safety Precaution]
 ====
-This is a
+This is a safety precaution
 
-multiple-block warning
+spanning multiple-blocks.
 ====
 --
 
@@ -63,34 +67,103 @@ For example, a cross-reference to the anchor such as:
 [[tabular]]
 --
 
-on clause 5 should be given as just:
+on Clause 5 should be given as just:
 
 [source,asciidoc]
 --
 <<tabular>>
 --
 
-...and custom text will be automatically rendered as `Clause 5` by Metanorma-ISO.
+...and custom text will be automatically rendered as `Clause 5`.
 
-ISO clause references will suppress the word "Clause" before a subclause reference,
-following ISO/IEC DIR 2: `<``<ISO24333,clause=5>``>` will be rendered as _ISO 24333, Clause 5_,
-but `<``<ISO7301,clause=3.1>``>` will be rendered as _ISO 7301, 3.1_.
+ISO clause references will suppress the word "Clause" before a subclause
+reference, following ISO/IEC DIR 2: `<``<ISO24333,clause=5>``>` will be rendered
+as _ISO 24333, Clause 5_, but `<``<ISO7301,clause=3.1>``>` will be rendered as
+_ISO 7301, 3.1_.
 
 
 == Terms and definitions
 
-[[note_general_doc_ref_terms_defs]]
-NOTE: This subsection supplements link:/author/topics/document-format/section-terms[Terms and definitions] in general Metanorma documentation.
+NOTE: This subsection supplements
+link:/author/topics/document-format/section-terms[Terms and definitions] in
+general Metanorma documentation.
 
-=== Nested terms 
+=== Terminological entry numbering
 
-In an ISO document, terms may be numbered either in mixed order, organised by divisions and subdivisions,
-or else they may be numbered systematically, with the term number reflecting hierarchical position in
-a schema.
+==== General
 
-The former arrangement is consistent with the rest of Metanorma: in this arrangement, only the terminal
-subclauses within a Terms & Definitions clause are treated as terms, and any intermediate sections are
-treated as subclauses:
+Terminology presented in ISO documents adhere to ISO 10241-1. ISO 10241-1, 6.1
+details the organization of numbering terminological entries, which could be
+one of:
+
+* systematic order (also called "`nested terms`"); or
+* mixed order (also called "`grouped terms`").
+
+
+==== Systematic order
+
+In systematic order, the entry numbers are "serial numbers reflecting
+the position of the respective concept within a concept system".
+
+EXAMPLE.
+
+====
+3.1 Terminological entry at first level of concept system. +
+3.2 Terminological entry at first level of concept system. +
+3.2.1 Terminological entry at second level of concept system. +
+3.2.2 Terminological entry at second level of concept system. +
+3.2.2.1 Terminological entry at third level of concept system. +
+3.3 Terminological entry at first level of concept system.
+====
+
+This arrangement means that terms can also occur in non-terminal subclauses, and
+in effect means that terms can appear to be nested within other terms in
+numbering. This is indicated via a `[.term]` role attribute:
+
+[source,asciidoc]
+--
+== Terms and definitions
+
+[.term]
+=== Term
+
+==== Term
+
+==== Term
+
+[.term]
+=== Term
+
+==== Term
+--
+
+
+==== Mixed order
+
+In mixed order,
+
+* entry numbers of divisions are "serial numbers reflecting the structure of
+  the concept system"
+* entry numbers of terminological entries within the divisions are "serial
+  numbers reflecting the order of preference"
+
+EXAMPLE.
+
+====
+3.1 Division at first level of concept system. +
+3.2 Division at first level of concept system. +
+3.2.1 Terminological entry in the order of preference. +
+3.2.2 Terminological entry in the order of preference. +
+3.2 Division at first level of concept system. +
+3.2.1 Division at second level of concept system. +
+3.2.1.1 Terminological entry in the order of preference.
+====
+
+This arrangement is of typical structure in Metanorma, where only the terminal
+subclauses within a "`Terms and definitions`" clause are treated as terms, and
+any intermediate sections are treated as subclauses.
+
+EXAMPLE.
 
 [source,asciidoc]
 --
@@ -107,29 +180,7 @@ treated as subclauses:
 ==== Term
 --
 
-The latter arrangement means that terms can also occur in non-terminal subclauses, and in effect means
-that terms can appear to be nested within other terms in numbering. This is indicated in Metanorma
-Asciidoctor by using a `[.term]` role attribute:
-
-[source,asciidoc]
---
-== Terms and definitions
-
-[.term]
-=== Term
-
-==== Term
-
-==== Term
-
-[.term]
-=== Term
-
-==== Term
---
-
-
-=== Grouped terms and definitions
+=== Combined terms and definitions
 
 The title of a top-level "`Terms and definitions`" clause is populated
 automatically, overriding the title provided by the user.
