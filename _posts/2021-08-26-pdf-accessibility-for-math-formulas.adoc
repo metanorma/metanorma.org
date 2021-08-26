@@ -1,0 +1,82 @@
+---
+layout: post
+title: "PDF accessibility for math formulas"
+date: 2021-08-26
+categories: documentation
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+  -
+    name: Alexander Dyuzhev
+    email: dyuzhev@gmail.com
+    social_links:
+      - https://www.linkedin.com/in/alexander-dyuzhev/
+      - https://github.com/Intelligent2013/
+
+excerpt: >-
+    The BIPM SI Brochure utilizes several advanced PDF techniques for accessibility, not only using PDF/UA features but also making math formulas accessible for non-Adobe PDF viewers.
+---
+
+== PDF accessibility for math formulas
+
+Metanorma generates PDFs with using of Apache FOP (Formatting Objects Processor). Apache FOP is a print formatter driven by XSL formatting objects (XSL-FO). 
+Apache FOP renders math formulas in SVG (Scalable Vector Graphics) format with using of JEuclid library, and users can't use search feature in PDF readers (for example Adobe Reader or Preview tool on Mac) 
+to find the characters in math formulas, and also text cannot be selected from math formulas from PDF and pasted to another destination (e.g. text editor).
+In the BIPM SI Brochure we introduce a few features that allow to bypass these restrictions.
+
+The BIPM SI Brochure utilizes several advanced PDF techniques for accessibility, not only using PDF/UA features but also making math formulas accessible for non-Adobe PDF viewers.
+
+They include:
+
+* Embedding MathML formulas as attachments
+* Techniques to render AsciiMath/LaTeX Math as PDF content to allow copy/pasting for non-Adobe readers (PDF Content tree)
+* Using PDF/UA features such as "Actual Text" and "Alternate Text" for tag readers (PDF Tag tree)
+
+
+=== Embedding MathML formulas as attachments
+
+PDF includes the attachment file for each math formula. So if your PDF reader application (e.g. Adobe Reader) supports PDF attachments feature, 
+you can click on the math formula and MathML file (.mml) will be opened in the associated application or text editor as you choose.
+
+NOTE: MacOS applications Preview and Skim don't support PDF attachments.
+
+
+=== Techniques to render AsciiMath/LaTeX Math as PDF content to allow copy/pasting for non-Adobe readers (PDF Content tree)
+
+In order to allow user to find math character and copy/pasting math formulas in PDF, we added non-visible text behind SVG math formulas.
+To do this we use Apache FOP Intermediate Format that allow to change at low-level add some features that now allowable by standard way in XSL-FO into resulted PDF.
+How we did it:
+* in Metanorma xml added additional AsciiMath markup as comment in mathml tag
+* determine position and bounding box (width and height) of SVG math formula
+* determine font size of the AsciiMath text to fit into bounding box
+* insert white-color AsciiMath text under math formula
+
+
+=== Using PDF/UA features such as "Actual Text" and "Alternate Text" for tag readers (PDF Tag tree)
+
+Regarding www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf[ISO 32000:2008], PDF can contain such Accessibility features as:
+
+* Alternate Descriptions (or Alternate Text), Alt entry in PDF, are human-readable text that could, for example, be vocalized by a text-to-speech engine for the benefit of users with visual impairments.
+* Replacement Text (or Actual Text), Actual Text entry in PDF, can be provided for images and other items that do not translate naturally into text (as described in the preceding sub-clause), replacement text can be specified for content that does translate into text but that is represented in a nonstandard way.
+
+In the PDF for the BIPM SI Brochure we put:
+
+* AsciiMath in Alt entry, and
+- MathML in Actual Text entry.
+
+Adobe Acrobat Reader and Acrobat Pro can read the content of Alt entry via "Read Out Loud" function (available via menu View -> Read Out Load).
+
+Adobe Acrobat Pro has additional features to see Alt and Actual entries texts:
+
+* open "Accessibility" pane, click "Set Alternate Text" and navigate through entries to see Alternate text
+* open Tags pane via menu "View > Show/Hide > Navigation Pane > Tags", and then manually drill down to the document structure, then right-click the object, then "Object Properties", in order to see the Actual Text and Alternate Text
+
+NOTE: Acrobat Reader, and MacOS applications Preview and Skim, can't a way to see Alt and Actual Text entries text.
+
+
+== References
+
+* www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf[ISO 32000:2008]
