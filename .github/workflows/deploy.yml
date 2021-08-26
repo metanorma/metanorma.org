@@ -19,11 +19,11 @@ jobs:
         if [ "$GITHUB_REF" = "refs/heads/main" ]
         then
           echo "::set-output name=my_env::production"
-          echo "::set-output name=my_url::https://www.metanorma.com"
+          echo "::set-output name=my_url::https://www.metanorma.org"
         elif [ "$GITHUB_REF" = "refs/heads/staging" ]
         then
           echo "::set-output name=my_env::staging"
-          echo "::set-output name=my_url::https://staging-www.metanorma.com"
+          echo "::set-output name=my_url::https://staging-www.metanorma.org"
         fi
 
   build_deploy:
