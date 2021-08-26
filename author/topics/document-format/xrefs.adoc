@@ -52,7 +52,7 @@ Hidden index term: `+(((IndexTerm1)))+`,
 
 EXAMPLE:
 
-[source,asciidoc]
+[source,adoc]
 --
 The Lady of the Lake, her arm clad in the purest shimmering samite,
 held aloft Excalibur from the bosom of the water,
@@ -66,7 +66,7 @@ was to carry Excalibur (((Sword, Broadsword, Excalibur))).
 Rich-text formatting in index terms is
 supported [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
 
-[source,asciidoc]
+[source,adoc]
 --
 signifying by divine providence that I, ((*Arthur*)),
 was to carry Excalibur (((Sword~E~, stem:[sqrt(E)], Excalibur))).
@@ -88,7 +88,7 @@ command, in the same way as the index command it contains; the end of
 the range is the element with the anchor `to`, and that is expected
 to be provided as a bookmark.
 
-[source,asciidoc]
+[source,adoc]
 --
 signifying by divine providence that I, index-range:end-range-1[((*Arthur*))],
 was to carry Excalibur index-range:end-range-2[(((Sword~A~, stem:[sqrt(2)], Excalibur)))].
@@ -120,7 +120,7 @@ The command takes at least two parameters:
 * the target of the cross-reference;
 * optionally, the secondary and tertiary index term to be cross-referenced.
 
-[source,asciidoc]
+[source,adoc]
 --
 index:see[Satchmo,Louis Armstrong]
 index:see[James Brown,influences,Hank Ballard and the Midnighters]
@@ -148,7 +148,7 @@ Cross-references are realized in Metanorma AsciiDoc by assigning an anchor
 to the block to be referenced, and writing a cross-reference containing
 that anchor ID:
 
-[source,asciidoc]
+[source,adoc]
 --
 [[anchor-id]]
 == Target clause
@@ -197,7 +197,7 @@ isolation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/
 
 This can be done for example for ranges:
 
-[source,asciidoc]
+[source,adoc]
 ----
 Clauses <<context,droploc%>> to <<improvement,droploc%>>
 ----
@@ -231,7 +231,8 @@ Normally in AsciiDoc, any text in a cross-reference that follows a comma
 constitutes custom text for the cross-reference.
 
 So a cross-reference `\<<ISO7301,the foregoing reference>>`
-would be rendered as "`the foregoing reference`", and hyperlinked to the `ISO7301` reference.
+would be rendered as "`the foregoing reference`", and hyperlinked to the
+`ISO7301` reference.
 
 In Metanorma AsciiDoc cross-references, bibliographic localities
 (e.g. page numbers, clause numbers) can be added directly after the comma,
@@ -243,7 +244,7 @@ NOTE: This differs from the normal AsciiDoc treatment of custom text.
 ====
 EXAMPLE: "`ISO 7301, Clause 2, Table 1a, pp. 7-9`" would be expressed as:
 
-[source,asciidoc]
+[source,adoc]
 --
 <<ISO7301,clause=2,table=1a,page=7-9>>
 --
@@ -253,9 +254,10 @@ See link:/author/topics/document-format/bibliography#localities[localities and l
 
 === List items
 
-List items can be cross-referenced by inserting a bookmark at the very start of the list item:
+List items can be cross-referenced by inserting a bookmark at the very start of
+the list item:
 
-[source,asciidoc]
+[source,adoc]
 --
 . Ordered list
 .. [[id1]] This is the first list item
@@ -264,10 +266,11 @@ List items can be cross-referenced by inserting a bookmark at the very start of 
 
 === Definition List Terms
 
-Definition list terms can be cross-referenced by inserting a bookmark at the very start
+Definition list terms can be cross-referenced by inserting a bookmark at the
+very start
 of the term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.0]:
 
-[source,asciidoc]
+[source,adoc]
 --
 [[id1]]Term 1:: Definition
 [[id2]]Term 2::: Another Definition
@@ -275,13 +278,15 @@ of the term [added in https://github.com/metanorma/metanorma-standoc/releases/ta
 
 === Hyperlinks
 
-Hyperlinks to URIs can have alt text, which is used in accessibility (corresponding to the HTML
-`a@title` attribute). This is specified by appending `,title=...` after the text in the
-URL macro in AsciiDoc:
+Hyperlinks to URIs can have alt text, which is used in accessibility
+(corresponding to the HTML `a@title` attribute).
+
+This is specified by appending `,title=...` after the text in the URL macro in
+Metanorma AsciiDoc:
 
 [example]
 ====
-[source,asciidoc]
+[source,adoc]
 --
 http://www.example.com[text to go into the hyperlink]
 
@@ -292,22 +297,25 @@ http://www.example2.com[text to go into the second hyperlink,title=This is a too
 === Cross-references to external documents
 
 In link:/author/topics/document-format/bibliography#localities[localities and locality values],
-anchor can be integrated in citations of documents via references; for example:
+anchor can be integrated in citations of documents via references.
 
-[source,asciidoc]
+For example:
+
+[source,adoc]
 --
 <<ISO7301,anchor=xyz>>
 --
 
-will generate a hyperlink to the element with ID `xyz` in document `ISO7301`. This convention
-is necessary for cross-references between documents in a Metanorma document collection.
+will generate a hyperlink to the element with ID `xyz` in document `ISO7301`.
+This convention is necessary for cross-references between documents in a
+Metanorma document collection.
 
 Outside of that, Metanorma will process cross-references to anchors within
 external documents just like typical AsciiDoc.
 
 EXAMPLE:
 
-[source,asciidoc]
+[source,adoc]
 --
 <<document1.adoc#b>>
 --
@@ -320,67 +328,87 @@ and substituted with the extension of the current document type during document 
 The above example is rendered in Metanorma XML as `<xref target="document1#b">`,
 in HTML as `<a href="document1.html#b">`, and in PDF as `<a href="document1.pdf#b">`.
 
-== Table of Contents
+== Table of contents
 
-=== Default
+=== General
 
-In most flavours, a table of contents is inserted by default at the start of the document:
-it appears as a sidebar in the HTML rendering of the document, and in the prefatory material
-in the PDF and DOC rendering. This table is typically a listing of all clauses of the document,
-and runs two levels deep.
+A table of contents is provided at the start of a Metanorma document rendering,
+either as:
 
-In a few flavours, a separate table of contents is inserted for figures, tables, and recommendations.
+* prefatory material in electronic document formats (PDF, Word); or
+* a sidebar in the HTML output.
 
-=== Manual Table of Contents
+This table is typically a listing of all clauses of the document, and runs two
+levels deep.
 
-A manual table of contents command has been added to 
+In some flavours, a separate table of contents is inserted for figures, tables,
+and recommendations.
+
+=== Manual compilation
+
+A manual table of contents command has been added to
 Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.5].
-This is intended for a local table of contents, e.g. at the start of an appendix.
 
-The table of contents command takes the form of a macro, as follows:
+This is intended for a local table of contents, e.g., at the start of an
+appendix.
 
-[source,asciidoc]
+The table of contents command is utilized as follows.
+
+[source,adoc]
 ----
 toc:["xpath1:depth1","xpath2:depth2","xpath3:depth3"...]
 ----
 
-where each `depth` is a number indicating the depth of indentation of the ToC entry (default value 1),
-and `xpath` is the XPath of the title being indexed in the Metanorma XML. For example,
+Where,
 
-[source,asciidoc]
+* `depth` is a number indicating the depth of indentation of the ToC
+entry (default value `1`)
+
+* `xpath` is the XPath of the title being indexed in the Metanorma XML.
+
+
+For instance, in the following command:
+
+[source,adoc]
 ----
 toc:["//clause[@id = 'clause1'\]/clause/title","//clause[@id = 'clause1'\]/clause/clause/title:2"]
 ----
 
-indicates that:
+* all titles of subclauses of the clause with ID `clause1` are at the first
+  depth level of the manual table of contents (defaults to depth `1`)
 
-* all titles of subclauses of the clause with ID `clause1` are at the first depth level of the manual table of contents
-* all titles of sub-subclauses of the clause with ID `clause1` are at the second depth level of the manual table of contents
+* all titles of sub-subclauses of the clause with ID `clause1` are at the second
+  depth level of the manual table of contents
 
---- which means that this is a table of contents of the first-level clause with ID `clause1`, running three
-levels deep.
+This means that the table of contents will have of the first-level clause with
+ID `clause1`, running three levels deep.
+
 
 === Variant titles
 
-Clauses in Metanorma normally have only one title, and that title is used to compile the table of contents.
+Clauses in Metanorma normally have only one title, and that title is used to
+compile the table of contents.
+
 However, the manual table of contents can make use of variant titles instead.
 
-Variant titles [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.5]
-are entered as paragraphs with a `variant-title` role attribute within a clause, as follows:
+Variant titles [added in
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.5] are entered
+as paragraphs with a `variant-title` role attribute within a clause, as follows:
 
-[source,asciidoc]
+[source,adoc]
 ----
 === Proper title
 
 [.variant-title,type=toc]
 This is the variant title
 
-Text of section...
+Text of section.
 ----
 
-Variant titles are not rendered in the body of the text. However, any variant titles of type `toc`
-are used instead of the title as the entry text for a manual table of contents.
+Variant titles are not rendered in the body of the text. However, any variant
+titles of type `toc` are used instead of the title as the entry text for a
+manual table of contents.
 
-As of this writing, variant titles are not used to generate the automated all-of-document table of contents,
-or tables of other entities.
+As of this writing, variant titles are not used to generate the automated
+all-of-document table of contents, or tables of other entities.
 
