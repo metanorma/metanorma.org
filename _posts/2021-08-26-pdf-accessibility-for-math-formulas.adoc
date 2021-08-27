@@ -24,12 +24,10 @@ excerpt: >-
 
 Metanorma generates PDFs with using of Apache FOP (Formatting Objects Processor). Apache FOP is a print formatter driven by XSL formatting objects (XSL-FO). 
 Apache FOP renders math formulas in SVG (Scalable Vector Graphics) format with using of JEuclid library, and users can't use search feature in PDF readers (for example Adobe Reader or Preview tool on Mac) 
-to find the characters in math formulas, and also text cannot be selected from math formulas from PDF and pasted to another destination (e.g. text editor).
+to find the characters in math formulas, and also text cannot be selected from math formulas from PDF and pasted into another destination (e.g. text editor).
 In the BIPM SI Brochure we introduce a few features that allow to bypass these restrictions.
 
-The BIPM SI Brochure utilizes several advanced PDF techniques for accessibility, not only using PDF/UA features but also making math formulas accessible for non-Adobe PDF viewers.
-
-They include:
+The BIPM SI Brochure utilizes several advanced PDF techniques that making math formulas accessible for non-Adobe PDF viewers. They include:
 
 * Embedding MathML formulas as attachments
 * Techniques to render AsciiMath/LaTeX Math as PDF content to allow copy/pasting for non-Adobe readers (PDF Content tree)
@@ -47,7 +45,7 @@ NOTE: MacOS applications Preview and Skim don't support PDF attachments.
 === Techniques to render AsciiMath/LaTeX Math as PDF content to allow copy/pasting for non-Adobe readers (PDF Content tree)
 
 In order to allow user to find math character and copy/pasting math formulas in PDF, we added non-visible text behind SVG math formulas.
-To do this we use Apache FOP Intermediate Format that allow to change at low-level add some features that now allowable by standard way in XSL-FO into resulted PDF.
+To do this we use Apache FOP Intermediate Format that allows to make changes at low-level and add some features that now allowable by standard way in XSL-FO into resulted PDF.
 How we did it:
 * in Metanorma xml added additional AsciiMath markup as comment in mathml tag
 * determine position and bounding box (width and height) of SVG math formula
