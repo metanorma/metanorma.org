@@ -179,7 +179,8 @@ EXAMPLE:
 === Submitters
 
 "`Submitters`" are entered using a table, contained in a section with the title "`Submitters`".
-Any table included in a Submitters section is automatically 
+
+NOTE: Any table included in a Submitters section is automatically
 unnumbered [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.1]
 
 EXAMPLE:
@@ -255,10 +256,43 @@ Text
 ====
 ----
 
+
 == Glossary
 
-A glossary in OGC is an annex with the same content as a Terms and definitions section,
-but with informative rather than normative effect. Glossaries are recognised as annexes
-with the title "Glossary", or marked up 
-with `[heading=glossary]` [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.1]. 
+A glossary in an OGC document is an annex with the same content as a
+"`Terms and definitions`" section, but with informative rather than normative
+effect.
 
+Glossaries are recognised as annexes with the title "`Glossary`", or marked up
+with `[heading=glossary]` [added in
+https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.1].
+
+EXAMPLE:
+
+[source,adoc]
+----
+[appendix]
+== Glossary
+
+=== geospatial
+
+relating to geographic and spatial information
+
+[.source]
+<<OGC21-017,clause="4.3">>
+----
+
+EXAMPLE:
+
+[source,adoc]
+----
+[appendix,heading=glossary]
+== Customized glossary section
+
+=== geospatial
+
+relating to geographic and spatial information
+
+[.source]
+<<OGC21-017,clause="4.3">>
+----
