@@ -29,10 +29,12 @@ This is #text to be highlighted#.
 
 == Sections
 
+=== References 
+
 The Normative References section may be named just "`References`", reflecting
 OGC practice.
 
-== Preliminary elements
+== Preliminary sections
 
 === General
 
@@ -242,26 +244,11 @@ EXAMPLE:
 
 ----
 
-
-== Examples
-
-Unlike the normal case in Metanorma, examples can have captions:
-
-[source,asciidoc]
-----
-[example]
-.Example caption
-====
-Text
-====
-----
-
-
-== Glossary
+=== Glossary
 
 A glossary in an OGC document is an annex with the same content as a
 "`Terms and definitions`" section, but with informative rather than normative
-effect.
+effect. 
 
 Glossaries are recognised as annexes with the title "`Glossary`", or marked up
 with `[heading=glossary]` [added in
@@ -296,3 +283,25 @@ relating to geographic and spatial information
 [.source]
 <<OGC21-017,clause="4.3">>
 ----
+
+== Blocks
+
+=== Examples
+
+Unlike the normal case in Metanorma, examples can have captions:
+
+[source,asciidoc]
+----
+[example]
+.Example caption
+====
+Text
+====
+----
+
+=== Tables
+
+Table cells under OGC always have a vertical alignment of `middle` [added in
+https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.1]. Any
+markup instructions to set cell alignment to a different vertical alignment
+are ignored.
