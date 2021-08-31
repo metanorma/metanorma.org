@@ -181,7 +181,8 @@ See Clause 4.5, Recommendation 1, in particular Clause 4.5, Recommendation 1 B.
 ____
 
 As in the rest of Metanorma, attributes can also be expressed as a `[%metadata]`
-definition list within the requirement:
+definition list within the requirement. In addition, the entries `test-purpose`, `test-method`,
+`conditions`, and `part` will be recognised as components of those types [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2].
 
 [source,asciidoc]
 .An exhaustive attribute example
@@ -204,6 +205,11 @@ classification:: priority:P0
 classification:: domain:Hydrology,Groundwater
 classification:: control-class:Technical
 obligation:: recommendation,requirement
+conditions::
+. Candidate test subject is a witch
+. Widget has been suitably calibrated for aerodynamics
+part:: Determine travel distance by flight path
+part:: Widget has been suitably calibrated for aerodynamics
 
 Logical models encoded as XSDs should be faithful to the original UML conceptual
 models.
