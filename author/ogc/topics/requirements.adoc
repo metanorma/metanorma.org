@@ -91,7 +91,7 @@ type of conformance test suite (see https://portal.ogc.org/files/?artifact_id=34
 while an abstract conformance test is called an "`abstract test`".
 
 * A "`Test suite`" is "`a collection of identifiable conformance classes`"
-(see OGC 08-131r3, 6.4)
+(see https://portal.ogc.org/files/?artifact_id=34762[OGC 08-131r3], 6.4)
 
 ** A "`Conformance test suite`" contains only "`Conformance classes`" of the
 "`concrete`" kind. Such conformance class can only contain "`concrete`"
@@ -175,7 +175,7 @@ models.
 [source,asciidoc]
 .ModSpec requirement in attribute list syntax
 ----
-[requirement,type=general,label=ogc/spec/waterml/2.0/req/xsd-xml-rules,subject="system"]
+[requirement,type="general",label="ogc/spec/waterml/2.0/req/xsd-xml-rules",subject="system"]
 .Encoding of logical models
 ====
 
@@ -524,13 +524,13 @@ attributes:
 * `subject`. Associated Requirement class. May be encoded as a cross-reference
 or as plain text. Rendered as _Requirement Class_.
 
-* Name. Specified as the block caption.
+* `name`. Specified as the block caption.
 
 * `inherit` (optional). Dependencies of the conformance class. Accepts multiple
 semicolon-delimited values, which each could be a cross-reference to another
 conformance class or plain text.
 
-* Nesting (optional). Conformance tests contained in a conformance class are
+* `nesting` (optional). Conformance tests contained in a conformance class are
 encoded as conformance tests within the conformance class block.
 
 NOTE: Conformance classes do not have a Target Type (as specified in ModSpec).
@@ -565,7 +565,7 @@ ____
 === Conformance test and Abstract test
 
 A "`Conformance test`" can be "`concrete`" or "`abstract`" depending on the type
-of conformance test suite (ModSpec, 6.4).
+of conformance test suite (see https://portal.ogc.org/files/?artifact_id=34762[OGC 08-131r3], 6.4).
 
 The OGC author should identify whether a standard requires an "`Abstract test
 suite`" or a "`Conformance test suite`" in order to decide the encoding of
@@ -588,7 +588,7 @@ base ModSpec attributes:
 plain text. Multiple semicolon-delimited values may be provided. Rendered as
 _Requirement_.
 
-* Name. Specified as the requirement's block caption.
+* `name`. Specified as the requirement's block caption.
 
 * `inherit` (optional). Dependencies. Accepts multiple semicolon-delimited
 values. Each may be a cross-reference or in plain text.
