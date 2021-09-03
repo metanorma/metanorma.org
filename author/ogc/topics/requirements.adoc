@@ -524,14 +524,15 @@ attributes:
 * `subject`. Associated Requirement class. May be encoded as a cross-reference
 or as plain text. Rendered as _Requirement Class_.
 
-* `name`. Specified as the block caption.
-
 * `inherit` (optional). Dependencies of the conformance class. Accepts multiple
 semicolon-delimited values, which each could be a cross-reference to another
 conformance class or plain text.
 
-* `nesting` (optional). Conformance tests contained in a conformance class are
-encoded as conformance tests within the conformance class block.
+Conformance classes also feature:
+
+* Name (optional). Specified as the block caption.
+
+* Nesting (optional). Conformance tests contained in a conformance class are encoded as conformance tests within the conformance class block.
 
 NOTE: Conformance classes do not have a Target Type (as specified in ModSpec).
 If one must be encoded, it should be encoded as a Classification key-value
@@ -588,8 +589,6 @@ base ModSpec attributes:
 plain text. Multiple semicolon-delimited values may be provided. Rendered as
 _Requirement_.
 
-* `name`. Specified as the requirement's block caption.
-
 * `inherit` (optional). Dependencies. Accepts multiple semicolon-delimited
 values. Each may be a cross-reference or in plain text.
 
@@ -606,6 +605,10 @@ Method_ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2
 ** `reference` (optional). Purpose of the test. Rich text. Presented as _Reference_.
 
 * Test type of a Conformance test is encoded as a `classification` key-value pair.
+
+Conformance tests also feature:
+
+* Name (optional). Specified as the requirement's block caption.
 
 NOTE: Conformance Tests are excluded from the "`Table of Requirements`" in Word
 output [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.10].
