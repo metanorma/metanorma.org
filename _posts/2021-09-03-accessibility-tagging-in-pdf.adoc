@@ -1,0 +1,87 @@
+---
+layout: post
+title: "Accessibility tagging in PDF"
+date: 2021-09-03
+categories: documentation
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+  -
+    name: Alexander Dyuzhev
+    email: dyuzhev@gmail.com
+    social_links:
+      - https://www.linkedin.com/in/alexander-dyuzhev/
+      - https://github.com/Intelligent2013/
+
+excerpt: >-
+    Metanorma creates a tagged PDF with logical structure derived from the structure of the input XML file.
+---
+
+== What is tagging in PDF?
+
+Document's structure tags (or logical tagged structure tree) in a PDF is used to provide a meaningful reading order and allow to 
+identify headers, paragraphs, lists, and another document's elements in the page. 
+The tags also enable to document resizing/reflowing for viewing in another font-size or smaller screens. 
+Each tag defines structural elements role (the type of content). Tagged structure tree (tag tree) forms the logical structure of the document, i.e. determines relationship to page content.
+
+Main requirement for screen reader (text-to-speech tool, or another assistive technologies (AT)) is that the document should be structured. 
+Document's structure tags make PDF documents accessible. Tag tree determines the reading order of the document for AT tools.
+
+== Document structure tags in a Metanorma PDF
+
+Metanorma generates PDFs with using of Apache FOP (Formatting Objects Processor). Apache FOP is a print formatter driven by XSL formatting objects (XSL-FO). 
+Apache FOP has a default mapping of Formatting Objects to PDF tags:
+
+* `fo:page-sequence` is mapped to tag `Part`
+* `fo:block-container` is mapped to tag `Div`
+* `fo:block` is mapped to tag `P`
+
+.Tags in a PDF document are similar to HTML code.
+image::/assets/blog/2021-09-03_1.png[Tags in a PDF document are similar to HTML code]
+
+* `fo:list-block` mapped to tag `L`
+* `fo:list-item` mapped to tag `LI`
+
+.Tags `L` and `LI` for list and list items
+image::/assets/blog/2021-09-03_2.png[Tags L and LI for list and list items]
+
+=== Mapping customization
+
+We've customized the mapping to more accuracy of the tagging:
+
+* added tags `H1` to `H6` for headers:
+
+.Tags `H1` to `H6` for headers
+image::/assets/blog/2021-09-03_3.png[Tags 'H1' to 'H6' for headers]
+
+* added tags `TOC` and `TOCI` for Table of Contents:
+
+.Tags `TOC` and `TOCI` for Table of Contents
+image::/assets/blog/2021-09-03_4.png[Tags 'TOC' and 'TOCI' for Table of Contents]
+
+* added tag `BlockQuote` for quotes:
+
+.Tag `BlockQuote` for quotes
+image::/assets/blog/2021-09-03_5.png[Tag 'BlockQuote' for quotes]
+
+* added tag `Index` for document's Index content:
+
+.Tag `Index` for document's Index
+image::/assets/blog/2021-09-03_6.png[Tag 'Index' for document's Index]
+
+* added tag `Code` for source code:
+
+.Tag `Code` for source code
+image::/assets/blog/2021-09-03_7.png[Tag 'Code' for source code]
+
+
+== References
+
+* www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf[ISO 32000:2008]
+
+* https://www.adobe.com/accessibility/pdf/pdf-accessibility-overview.html
+
+* https://xmlgraphics.apache.org/fop/2.5/accessibility.html#customTags
