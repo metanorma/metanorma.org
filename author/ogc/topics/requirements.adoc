@@ -134,11 +134,13 @@ The extension of the definition lists syntax to components is specific to the OG
 
 In Metanorma, the following two encoding syntaxes are considered equivalent.
 
-* In definition list syntax, a `[%metadata]` definition list within a ModSpec
-model provides the necessary information for the specified model.
-
 * In block attributes syntax, the necessary information is provided as an
-attribute list to the block.
+attribute list to the block. This follows the usual norms for Asciidoctor syntax, 
+but it restricts attribute values to be plain text.
+
+* In definition list syntax, a `[%metadata]` definition list within a ModSpec
+model provides the necessary information for the specified model. The values given 
+in the definition list syntax can be fully formatted Metanorma text.
 
 Attributes that can take Rich textual input, such as `part` and `conditions`, are
 components of requirements in Metanorma: these are
@@ -449,6 +451,9 @@ inherit:: <<rc_construction,/req/req-class-construction>>
 ====
 ----
 
+Note that in this example, both block attributes and definition list syntax is used;
+the `inherit` attribute has two hyperlink values, which are expressed in the definition list.
+
 // TODO: Add rendering example
 
 A requirements class can contain multiple requirements, specified with embedded
@@ -464,9 +469,11 @@ EXAMPLE:
 .Example from OGC GroundWaterML 2.0 (block attributes)
 [source,asciidoc]
 ----
-[requirement,type="class",label="http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]",obligation="requirement",subject="Encoding of logical models",inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used"]
+[requirement,type="class",obligation="requirement",subject="Encoding of logical models",inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used"]
 .GWML2 core logical model
 ====
+[%metadata]
+label:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
 
 [requirement,type="general",label="/req/core/encoding"]
 ======
@@ -477,6 +484,8 @@ EXAMPLE:
 ======
 ====
 ----
+
+(Again, note that the hyperlink in the `label` attribute needs to be given as a definition list value.)
 
 .Example from OGC GroundWaterML 2.0 (definition list)
 [source,asciidoc]
@@ -599,8 +608,10 @@ EXAMPLE:
 
 [source,asciidoc]
 ----
-[requirement,type="conformanceclass",label="http://www.opengis.net/spec/ogcapi-features-2/1.0/conf/crs",subject="<<rc_crs,Requirements Class 'Coordinate Reference Systems by Reference'>>",inherit="http://www.opengis.net/doc/IS/ogcapi-features-1/1.0#ats_core",classification="Target Type:Web API"]
+[requirement,type="conformanceclass",label="http://www.opengis.net/spec/ogcapi-features-2/1.0/conf/crs",inherit="http://www.opengis.net/doc/IS/ogcapi-features-1/1.0#ats_core",classification="Target Type:Web API"]
 ====
+[%metadata]
+subject:: <<rc_crs,Requirements Class 'Coordinate Reference Systems by Reference'>>
 ====
 ----
 
@@ -689,8 +700,11 @@ EXAMPLE:
 [source,adoc]
 ----
 [[ats_core_classes]]
-[requirement,type="abstracttest",label="/ats/core/classes",subject='<<req_core_classes,/req/core/classes>>']
+[requirement,type="abstracttest",label="/ats/core/classes"]
 ====
+[%metadata]
+subject:: <<req_core_classes,/req/core/classes>>
+
 [.component,class=test-purpose]
 --
 To validate that the Implementation Specification correctly implements the UML Classes defined in the Conceptual Model.
@@ -736,8 +750,13 @@ part:: Validate that the data element has the same relationships with other elem
 .Example of Abstract test from DGGS (block attributes)
 [source,asciidoc]
 ----
-[requirement,type="abstracttest",label="/conf/crs/crs-uri",subject="<<req_crs_crs-uri,/req/crs/crs-uri>>,<<req_crs_fc-md-crs-list_A,/req/crs/fc-md-crs-list A>>,<<req_crs_fc-md-storageCrs,/req/crs/fc-md-storageCrs>>,<<req_crs_fc-md-crs-list-global,/req/crs/fc-md-crs-list-global>>",classification="Test Type:Basic"]
+[requirement,type="abstracttest",label="/conf/crs/crs-uri",classification="Test Type:Basic"]
 ====
+[%metadata]
+subject:: <<req_crs_crs-uri,/req/crs/crs-uri>>
+subject:: <<req_crs_fc-md-crs-list_A,/req/crs/fc-md-crs-list A>>
+subject:: <<req_crs_fc-md-storageCrs,/req/crs/fc-md-storageCrs>>
+subject:: <<req_crs_fc-md-crs-list-global,/req/crs/fc-md-crs-list-global>>"
 
 [.component,class=test-purpose]
 --
