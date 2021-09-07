@@ -165,6 +165,46 @@ EXAMPLE:
 `droploc%` serves as an indication for Metanorma not to prepend
 the number with the location type of "`Clause`".
 
+=== Complex definitions
+
+It is possible for a term to have multiple definitions, each of them with its own source.
+This more complex structure is marked up by embedding each distinct definition within an open
+block, with a `[.definition]` role attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]:
+
+[source,asciidoc]
+----
+=== widget
+
+alt:[doohickey]
+
+[.definition]
+--
+device performing an unspecified function
+
+[.source]
+<<ISO2382,clause 2121372>>
+--
+
+[.definition]
+--
+general metasyntactic variable
+
+[.source]
+<<ISO2382,clause 2121373>>
+--
+----
+
+Multiple definitions are rendered in Metanorma as an ordered list of definitions:
+
+____
+*widget*
+
+_doohickey_
+
+. device performing an unspecified function [SOURCE: ISO 2382, 2121372]
+. general metasyntactic variable [SOURCE: ISO 2382, 2121373]
+____
+
 
 === Predefined text / Boilerplate
 
