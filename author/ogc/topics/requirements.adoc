@@ -145,7 +145,7 @@ in the definition list syntax can be fully formatted Metanorma text.
 Attributes that can take Rich textual input, such as `part` and `conditions`, are
 components of requirements in Metanorma: these are
 encoded in the block attributes syntax using the `[.component]` role within the
-ModSpec model block, as in:
+ModSpec model block, on open blocks or example blocks, as in:
 
 [source,adoc]
 ----
@@ -154,6 +154,15 @@ ModSpec model block, as in:
 --
 Part A of the requirement.
 --
+----
+
+[source,adoc]
+----
+[[part_a_of_requirement]]
+[.component,class=part]
+====
+Part A of the requirement.
+====
 ----
 
 Conversely, in definition list syntax, not only components such as `part` and
