@@ -1091,23 +1091,24 @@ ____
 
 The following rendering options are defined for concept mentions.
 
-`ital`:: italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
-
-`ref`:: provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
-
-`noital`:: do not italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
-
-`noref`:: do not provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+* `ital`:: italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+* `ref`:: provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+* `noital`:: do not italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+* `noref`:: do not provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
+* `linkmention`:: hyperlink the rendered term to a term definition [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
+* `nolinkmention`:: do not hyperlink the rendered term to a term definition [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
+* `linkref`:: hyperlink the reference for the term to a term definition [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
+* `nolinkref`:: do not hyperlink the reference for the term to a term definition [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
 
 If these options are missing, Metanorma applies the defaults for the current
 flavour.
 
-The default behaviour in Metanorma is `ital,ref` for all terms, `noital,noref`
+The default behaviour in Metanorma is `ital,ref,nolinkmention,linkref` for all terms, `noital,noref,nolinkmention,nolinkref`
 for acronyms.
 
-In ISO, the default behaviour for terms is refined: `noital,noref` for terms
-outside the "`Terms and definitions`" section; `ital,ref` for the first mention
-of a term within the "`Terms and definitions`" section; `ital,noref` for all
+In ISO, the default behaviour for terms is refined: `noital,noref,nolinkmention,nolinkre` for terms
+outside the "`Terms and definitions`" section; `ital,ref,nolinkmention,linkref` for the first mention
+of a term within the "`Terms and definitions`" section; `ital,noref,nolinkmention,linkref` for all
 subsequent mentions within the "`Terms and definitions`" section.
 
 [source,asciidoc]
