@@ -344,7 +344,7 @@ levels deep.
 In some flavours, a separate table of contents is inserted for figures, tables,
 and recommendations.
 
-=== Manual compilation
+=== Manual compilation, macro
 
 A manual table of contents command has been added to
 Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.5].
@@ -383,6 +383,32 @@ toc:["//clause[@id = 'clause1'\]/clause/title","//clause[@id = 'clause1'\]/claus
 This means that the table of contents will have of the first-level clause with
 ID `clause1`, running three levels deep.
 
+=== Manual compilation, clause
+
+As an alternative to the foregoing, a manual table of contents can also be provided
+as a clause of type `toc` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.7].
+Any table of contents entries within that manual table of contents
+are expected to be provided as cross-references within unordered lists. The table of contents
+can contain subclauses, each with its own list of cross-references, and other text:
+
+[source,adoc]
+----
+[type=toc]
+=== Table of contents
+
+This is a table of contents
+
+==== First subsection
+
+* <<xref1>>
+* <<xref2,This is a modified title>>
+
+==== Second subsection
+
+* <<xref3>>
+* <<xref4>>
+----
+
 
 === Variant titles
 
@@ -405,9 +431,11 @@ This is the variant title
 Text of section.
 ----
 
-Variant titles of type `toc` are not rendered in the body of the text, 
-but are used instead of the title as the entry text for a
-manual table of contents.
+Variant titles are not rendered in the body of the text. However, any variant
+titles of type `toc`, generated through either of the methods above,
+are used instead of the title as the entry text for a
+manual table of contents. (Of course, if an explicit cross-reference text is given
+in a `toc` clause, that takes priority.)
 
 As of this writing, variant titles are not used to generate the automated
 all-of-document table of contents, or tables of other entities.
