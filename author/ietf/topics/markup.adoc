@@ -174,12 +174,12 @@ begin() {
 ----
 ====
 --
-<1> `figure/@anchor`
-<2> `figure/name`
-<3> `figure/sourcecode/@anchor`
-<4> `figure/sourcecode/@name`
-<5> `figure/sourcecode/@type`, `figure/sourcecode/@src`, `figure/sourcecode/@markers`, `figure/sourcecode/@name`. If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute.
-<6> `figure/sourcecode`
+<1> `t/@anchor`
+<2> `t`
+<3> `sourcecode/@anchor`
+<4> `sourcecode/@name`
+<5> `sourcecode/@type`, `sourcecode/@src`, `sourcecode/@markers`, `sourcecode/@name`. If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute.
+<6> `sourcecode`
 
 
 === ASCII Art and Images
@@ -467,7 +467,7 @@ This is a ((primary:primary index term)) <3>, and so is
 --
 <1> `<iref item="indexterm">indexterm</iref>`
 <2> `<iref item="indexterm" subitem="index-subterm"/>`
-<3> `<iref item="indexterm" primary="true">primary index term</iref>` [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.2.9]
+<3> `primary index term<iref item="indexterm" primary="true"/>` [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.2.9]
 <4> `<iref item="indexterm" subitem="index-subterm"/>` [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v2.2.9]
 
 
@@ -526,13 +526,13 @@ the Metanorma default, naming and numbering the referenced object.
 
 [source,asciidoc]
 ----
-<<crossreference,(of|comma|parens|bare)>> <1>
+<<crossreference>> <1>
 <<crossreference,(of|comma|parens|bare),section=4.3>> <2>
 <<crossreference,(of|comma|parens|bare),section-4.3: text>> <3>
 <<crossreference#fragment,section_number (of|comma|parens|bare)>> <4>
 <<crossreference#fragment,section_number (of|comma|parens|bare): text>> <5>
 ----
-<1> `<relref displayFormat="of|comma|parens|bare" target="crossreference"/>`
+<1> `<relref target="crossreference"/>`
 <2> `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>`
 <3> `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>`
 <4> `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>`
