@@ -926,7 +926,7 @@ of the resulting structure (e.g. XML) is retained.
 
 Passthrough intended to be rendered in a target format must be specified with
 a format indication corresponding to one or more of the existing output formats
-of Metanorma in a comma delimited manner
+of Metanorma in a comma-delimited manner
 (not limited to: `html`, `doc`, `pdf`, `rfc`, `sts`).
 
 [source,asciidoc]
@@ -938,6 +938,17 @@ of Metanorma in a comma delimited manner
 ++++
 --
 
+For inline rendering, Metanorma XML can be specified as normal in Asciidoctor, with
+`+...+`, `+++...+++`, or `pass:[...]`. (XML tags will require `pass:c[...]` for special character
+processing.) If code is to be rendered in a target format, that needs to be specified with the macro
+`pass-mn:FORMAT[...]`, with FORMAT comma-delimited as with passthrough 
+blocks [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.7], e.g. 
+
+[source,asciidoc]
+--
+[format=rfc]
+pass-mn:rfc[<u format="num-lit">ᏚᎢᎵᎬᎢᎬᏒ</u>]
+--
 
 
 == Source code
