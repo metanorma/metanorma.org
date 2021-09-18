@@ -184,10 +184,6 @@ begin() {
 
 === ASCII Art and Images
 
-In RFC XML, `artwork` elements only occur within a
-`figure` wrapper; Metanorma-IETF supplies that wrapper if it is not provided
-explicitly.
-
 All ASCII art is assigned the type `ascii-art`.
 Only SVG images are supported in `xml2rfc`; metanorma will issue a warning for any other image type.
 
@@ -301,11 +297,11 @@ sqrt(4) = 2
 --
 <1> `ul/@anchor`
 <2> `ul/@empty`, `ul/@spacing`
-<3> `ul/li`
-<4> `ul/li/ul/li`
+<3> `ul/li/t`
+<4> `ul/li/t/ul/li/t`
 <5> `ol/@anchor`
 <6> `ol/@spacing`, `ol/@start`, `ol/@group`, `ol/@type = "#%d", `ol/@type` (for arabic|loweralpha|upperralpha|lowerroman|upperroman)
-<7> `ol/li`
+<7> `ol/li/t`
 
 === Definition Lists
 
@@ -317,7 +313,7 @@ A:: B <3>
 --
 <1> `dl/@anchor`
 <2> `dl/@newline`, `dl/@spacing`, `dl/@indent`
-<3> `dl/dt`, `dl/dd`
+<3> `dl/dt`, `dl/dd/t`
 
 Metanorma-IETF permits anchors on definition list terms and definition list definitions,
 whereas other flavours treat them as bookmarks (which are otherwise ignored in Metanorma-IETF):
