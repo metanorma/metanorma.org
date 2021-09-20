@@ -219,12 +219,47 @@ list values; but this is not recommended, as it makes documents harder to mainta
 
 A ModSpec model encoding requires specifying the following attributes:
 
-* `type` (optional). One of:
+* `type` (optional). One of the following:
 ** `general` for Requirement, Recommendation or Permission (default value)
 ** `class` for Requirements class
 ** `verification` for Conformance test
 ** `conformanceclass` for Conformance class
 ** `abstracttest` for Abstract test
+
+The foregoing values are consistent with Metanorma's general design of requirements,
+and can be used in any flavour of Metanorma.
+The `type` attribute can also use the following values specific to metanorma-ogc as synomyms:
+these values are more closely aligned
+to ModSpec [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.3]:
+
+* `type` (optional). One of the following:
+** `requirement` for Requirement
+** `recommendation` for Recommendation
+** `permission` for Permission
+** `requirement_class` for Requirements class
+** `conformance_test` for Conformance test
+** `conformance_class` for Conformance class
+** `abstract_test` for Abstract test
+
+In addition, these values can be used instead of the Metanorma style labels, 
+to label requirement blocks. Again this is only valid within metanorma-ogc. So the
+following three
+encodings are equivalent:
+
+[source,asciidoc]
+----
+[.requirement,type=verification]
+----
+
+[source,asciidoc]
+----
+[.requirement,type=conformance_test]
+----
+
+[source,asciidoc]
+----
+[.conformance_test]
+----
 
 * `label` (mandatory). Label of the model, typically a URI. This must be unique
 in the document (as required by ModSpec), and is also used for referencing.
@@ -246,7 +281,7 @@ Differentiated types of ModSpec models allow additional attributes.
 === Requirement, recommendation, permission
 
 A Requirement (or Recommendation, Permission) is encoded by setting `type` to
-`general` (or by omitting the `type`).
+`general`, `requirement`, `recommendation`, or `permission` (or by omitting the `type`).
 
 It supports the following attributes in addition to base ModSpec attributes:
 
@@ -425,7 +460,8 @@ Logical Model UML defined in Section 8.
 [[reqt_class]]
 === Requirements class
 
-A "`Requirements class`" is encoded using `type` equals to `class`.
+A "`Requirements class`" is encoded using `type` equals to `class` or `requirement_class`,
+or by setting the block style attribute to `requirement_class`.
 
 A Requirements class is cross-referenced and captioned as a
 "`{Requirement} class {N}`" [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.11].
@@ -452,7 +488,7 @@ EXAMPLE:
 .Example from OGC CityGML 3.0
 [source,asciidoc]
 ----
-[requirement,type="class",label="http://www.opengis.net/spec/CityGML-1/3.0/req/req-class-building",subject="Implementation Specification"]
+[requirement_class,label="http://www.opengis.net/spec/CityGML-1/3.0/req/req-class-building",subject="Implementation Specification"]
 ====
 [%metadata]
 inherit:: <<rc_core,/req/req-class-core>>
@@ -478,7 +514,7 @@ EXAMPLE:
 .Example from OGC GroundWaterML 2.0 (block attributes)
 [source,asciidoc]
 ----
-[requirement,type="class",obligation="requirement",subject="Encoding of logical models",inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used"]
+[requirement,type="requirement_class",obligation="requirement",subject="Encoding of logical models",inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used"]
 .GWML2 core logical model
 ====
 [%metadata]
@@ -546,7 +582,7 @@ same label [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.
 
 [source,asciidoc]
 ----
-[requirement,type="class",label="/req/conceptual"]
+[requirement_class,label="/req/conceptual"]
 .GWML2 core logical model
 ====
 
@@ -587,7 +623,7 @@ ____
 
 === Conformance class
 
-Specified using `type` as `conformanceclass`.
+Specified using `type` as `conformanceclass` or `conformance_class`, or by setting the block style attribute to `conformance_class`.
 
 A Conformance class is cross-referenced and captioned as
 "`Conformance class {N}`", and is otherwise rendered identically to a
@@ -617,7 +653,7 @@ EXAMPLE:
 
 [source,asciidoc]
 ----
-[requirement,type="conformanceclass",label="http://www.opengis.net/spec/ogcapi-features-2/1.0/conf/crs",inherit="http://www.opengis.net/doc/IS/ogcapi-features-1/1.0#ats_core",classification="Target Type:Web API"]
+[conformance_class,label="http://www.opengis.net/spec/ogcapi-features-2/1.0/conf/crs",inherit="http://www.opengis.net/doc/IS/ogcapi-features-1/1.0#ats_core",classification="Target Type:Web API"]
 ====
 [%metadata]
 subject:: <<rc_crs,Requirements Class 'Coordinate Reference Systems by Reference'>>
@@ -629,7 +665,7 @@ subject:: <<rc_crs,Requirements Class 'Coordinate Reference Systems by Reference
 [requirement]
 ====
 [%metadata]
-type:: conformanceclass
+type:: conformance_class
 label:: http://www.opengis.net/spec/ogcapi-features-2/1.0/conf/crs
 subject:: <<rc_crs,Requirements Class 'Coordinate Reference Systems by Reference'>>
 inherit:: http://www.opengis.net/doc/IS/ogcapi-features-1/1.0#ats_core
@@ -662,11 +698,13 @@ The OGC author should identify whether a standard requires an "`Abstract test
 suite`" or a "`Conformance test suite`" in order to decide the encoding of
 "`Conformance tests`" (concrete tests) versus "`Abstract tests`".
 
-* A conformance test is specified using `type` as `verification`, and
-cross-referenced as "`Conformance test {N}`"
+* A conformance test is specified using `type` as `verification` or `conformance_test`, or
+by setting its style attribute to `conformance_test`.
+It is cross-referenced as "`Conformance test {N}`"
 
-* An abstract test is specified using `type` as `abstracttest`, and
-cross-referenced as "`Abstract test {N}`" [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.4].
+* An abstract test is specified using `type` as `abstracttest` or `abstract_test`, or
+by setting its style attribute to `abstract_test`.
+It is cross-referenced as "`Abstract test {N}`" [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.4].
 
 // NOTE: Verifications for Recommendations will be captioned as
 // Recommendation Tests, similarly for Requirement Tests and
@@ -709,7 +747,7 @@ EXAMPLE:
 [source,adoc]
 ----
 [[ats_core_classes]]
-[requirement,type="abstracttest",label="/ats/core/classes"]
+[abstract_test,label="/ats/core/classes"]
 ====
 [%metadata]
 subject:: <<req_core_classes,/req/core/classes>>
@@ -745,7 +783,7 @@ Validate that the data element has the same relationships with other elements as
 [requirement]
 ====
 [%metadata]
-type:: abstracttest
+type:: abstract_test
 label:: /ats/core/classes
 subject:: <<req_core_classes,/req/core/classes>>
 test-purpose:: To validate that the Implementation Specification correctly implements the UML Classes defined in the Conceptual Model.
@@ -794,10 +832,9 @@ https://tools.ietf.org/html/rfc3986#section-3[RFC 3986, section 3].
 .Example of Abstract test from DGGS (definitions list)
 [source,asciidoc]
 ----
-[requirement]
+[abstract_test]
 ====
 [%metadata]
-type:: abstracttest
 label:: /conf/crs/crs-uri
 subject:: <<req_crs_crs-uri,/req/crs/crs-uri>>
 subject:: <<req_crs_fc-md-crs-list_A,/req/crs/fc-md-crs-list A>>
