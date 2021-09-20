@@ -170,6 +170,9 @@ Conversely, in definition list syntax, not only components such as `part` and
 in the definition list. (In block attributes syntax, descriptive text is left
 as normal text.)
 
+The definition list may contain embedded levels [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.3];
+this is needed specifically for steps embedded within a test method.
+
 If you need to insert a cross-reference to a component, for example referencing
 a specific part of a requirement elsewhere, you can only use the block
 attributes sequence (as illustrated above).
@@ -191,6 +194,12 @@ subject:: system
 part:: Metadata models faithful to the original UML model.
 description:: Logical models encoded as XSDs should be faithful to the original UML conceptual
 models.
+test-method::
+step::: Step 1
+step::: Step 2
+step:::: Step 2a
+step:::: Step 2b
+step::: Step 3
 ====
 ----
 
@@ -729,6 +738,10 @@ Purpose_ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.
 
 ** `test-method` (optional). Method of the test. Rich text. Presented as _Test
 Method_ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2]
+
+** `step` (optional). Step of the test method. Is expected to be embedded within `test-method`,
+and may contain substeps of its own. Rich text. Presented as a numbered list.
+added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2]
 
 ** `test-method-type` (optional). Method of the test. Rich text. Presented as _Test
 Method Type_ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.3]
