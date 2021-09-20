@@ -730,6 +730,9 @@ Purpose_ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.
 ** `test-method` (optional). Method of the test. Rich text. Presented as _Test
 Method_ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2]
 
+** `test-method-type` (optional). Method of the test. Rich text. Presented as _Test
+Method Type_ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.3]
+
 ** `reference` (optional). Purpose of the test. Rich text. Presented as _Reference_.
 
 * Test type of a Conformance test is encoded as a `classification` key-value pair.
@@ -757,7 +760,7 @@ subject:: <<req_core_classes,/req/core/classes>>
 To validate that the Implementation Specification correctly implements the UML Classes defined in the Conceptual Model.
 --
 
-[.component,class=test-method]
+[.component,class=test-method-type]
 --
 Manual Inspection
 --
@@ -787,7 +790,7 @@ type:: abstract_test
 label:: /ats/core/classes
 subject:: <<req_core_classes,/req/core/classes>>
 test-purpose:: To validate that the Implementation Specification correctly implements the UML Classes defined in the Conceptual Model.
-test-method:: Manual Inspection
+test-method-type:: Manual Inspection
 description:: For each UML class defined or referenced in the Core Package:
 part:: Validate that the Implementation Specification contains a data element which represents the same concept as that defined for the UML class.
 part:: Validate that the data element has the same relationships with other elements as those defined for the UML class. Validate that those relationships have the same source, target, direction, roles, and multiplicities as those documented in the Conceptual Model.
@@ -942,7 +945,7 @@ These are divided into two categories:
 extracted in order, with the class name normalised (title case), followed by the component contents.
 So a component with a `class` attribute of `conditions` will be rendered as
 _Conditions_ followed by the component contents. In the foregoing, we have seen components defined 
-in ModSpec: `test-purpose, test-method, conditions, reference`. However the block attribute
+in ModSpec: `test-purpose, test-method, test-method-type, conditions, reference`. However the block attribute
 syntax allows open-ended component names.
 
 *** Components with the `class` attribute `part` are extracted and presented in
