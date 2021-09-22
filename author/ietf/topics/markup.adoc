@@ -426,7 +426,7 @@ in RFC XML.
 
 ==== Editorial Notes
 
-RFC XML provides for editorial comments which may optionally appear
+RFC XML provides for editorial comments as blocks, which may optionally appear
 in the published text (subject to either the `cref/@display`
 attribute, or the `comments` processing instruction). As with the rest
 of Metanorma, such editorial comments will only be included in the Metanorma
@@ -447,6 +447,27 @@ Profile?!
 <2> `cref/@source`, `cref/@display`
 <3> `cref/name`
 
+==== Inline comments
+
+To generate an editorial comment inline in RFC XML, notate an editorial comment as a block,
+and then indicate the insertion point for the editorial comment inline with the macro
+`cref:[id]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2],
+where `id` is the identifier of the editorial comment:
+
+[source,asciidoc]
+--
+This is a paragraph containing{blank}cref:[id] an editorial comment.
+
+[[id]] <1>
+[reviewer="Nick Nicholas",display=true] <2>
+.Note Title <3>
+****
+Profile?!
+****
+--
+<1> `cref/@anchor`
+<2> `cref/@source`, `cref/@display`
+<3> `cref/name`
 
 === Inline markup
 
