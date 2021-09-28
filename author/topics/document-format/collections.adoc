@@ -233,7 +233,15 @@ The bibliographic reference for another document in the same collection is:
 * [[[myanchor,repo:(current-metanorma-collection/docid)]]]
 ----
 
-where `docid` is the document identifier as it appears in the collection manifest.
+where `docid` is the document identifier as it appears in the collection manifest. 
+
+If no such anchor is given in the document, but the document identifier in the collection manifest matches a
+document identifier in the bibliography, then collection processing will still recognise that the document
+is referencing that other document [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.12]. So
+for example if the manifest includes an instance of `identifier: ISO 44001`, and the bibliographic reference
+of another document includes `* [[[myanchor,ISO 44001]]]`, then collection processing will automatically
+link all references to ISO 44001 to the collection instance of the document. This allows documents to be included
+in a collection, without requiring their references to be edited.
 
 The location to link to in the target document can be specified as a clause number, as is normal in citations:
 e.g. `\<<myanchor,clause=3.1>>`.
