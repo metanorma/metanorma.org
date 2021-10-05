@@ -218,43 +218,68 @@ following the specification in the `manifest` field of the collection manifest.
 
 === Direct cross-references
 
-A source document can link to a target document in the same collection, or a specific location within the target
-document. Documents are processed one document at a time; so such a link is encoded as a bibliographical reference,
-to an external document, as described in link:/author/topics/document-format/bibliography[Bibliography].
-That means that we need to define a bibliographic entry for each hyperlinked document in the same collection;
-those bibliographic entries will be suppressed from display in the collection. (If the documents are to be used
-in isolation, those bibliographic entries still need to be displayed: otherwise, the reference cannot be made
-sense of.)
+A source document can link to a target document in the same collection, or a
+specific location within the target document.
 
-The bibliographic reference for another document in the same collection is:
+Documents are processed one document at a time; so such a link is encoded as a
+bibliographical reference, to an external document, as described in
+link:/author/topics/document-format/bibliography[Bibliography].
+
+This means that an author needs to define a bibliographic entry for each
+hyperlinked document in the same collection; those bibliographic entries will be
+suppressed from display in the collection.
+
+NOTE: If the documents are to be used in isolation, those bibliographic entries
+still need to be displayed: otherwise, the reference cannot be made sense of.
+
+The bibliographic reference for another document in the same collection is
+specified using the following syntax.
 
 [source,asciidoc]
 ----
 * [[[myanchor,repo:(current-metanorma-collection/docid)]]]
 ----
 
-where `docid` is the document identifier as it appears in the collection manifest. 
+where `docid` is the document identifier as it appears in the collection
+manifest.
 
-If no such anchor is given in the document, but the document identifier in the collection manifest matches a
-document identifier in the bibliography, then collection processing will still recognise that the document
-is referencing that other document [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.12]. So
-for example if the manifest includes an instance of `identifier: ISO 44001`, and the bibliographic reference
-of another document includes `* [[[myanchor,ISO 44001]]]`, then collection processing will automatically
-link all references to ISO 44001 to the collection instance of the document. This allows documents to be included
-in a collection, without requiring their references to be edited.
+If no such anchor is given in the document, but the document identifier in the
+collection manifest matches a document identifier in the bibliography, then
+collection processing will still recognise that the document is referencing that
+other document [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.12].
 
-The location to link to in the target document can be specified as a clause number, as is normal in citations:
-e.g. `\<<myanchor,clause=3.1>>`.
+For instance, if the manifest includes an instance of `identifier: ISO 44001`,
+and the bibliographic reference of another document includes
+`* [[[myanchor,ISO 44001]]]`, then collection processing will automatically link
+all references to ISO 44001 to the collection instance of the document.
 
-The processor will then navigate the target document, to try to resolve the reference. (Currently only one
-level of nesting of locations is implemented: the processor will not resolve references like `clause=3.1,note-3`.)
+This allows documents to be included in a collection, without requiring their
+references to be edited.
 
-Alternatively, the location can be specified as an anchor, e.g. `\<<myanchor,anchor=ident>>`. The hyperlink
-will then be made directly to the element with anchor `ident` in the the target document. That approach is to be
+The location to link to in the target document can be specified as a clause
+number, as in a typical citation:
+
+EXAMPLE:
+
+[source,asciidoc]
+----
+<<myanchor,clause=3.1>>
+----
+
+The processor will then navigate the target document, to try to resolve the
+reference.
+
+NOTE: Currently only one level of nesting of locations is implemented: the
+processor will not resolve references like `clause=3.1,note-3`.
+
+Alternatively, the location can be specified as an anchor, e.g.
+`\<<myanchor,anchor=ident>>`. The hyperlink will then be made directly to the
+element with anchor `ident` in the the target document. That approach is to be
 preferred as simpler.
 
-For example, we wish to link from the French BIPM Brochure to the English BIPM Brochure, and specifically to
-an example in the English document. We start by assigning the target document example an anchor identifier:
+For instance, we wish to link from the French BIPM Brochure to the English BIPM
+Brochure, and specifically to an example in the English document. We start by
+assigning the target document example an anchor identifier:
 
 [source,asciidoc]
 ----
@@ -279,7 +304,8 @@ applique les règles grammaticales ordinaires (voir un exemple en anglais page
 <<english-doc,anchor=english_example>>).
 ----
 
-Finally, we define a bibliographic entry in the source document for the English-language target document:
+Finally, we define a bibliographic entry in the source document for the
+English-language target document:
 
 [source,asciidoc]
 ----
@@ -289,7 +315,8 @@ Finally, we define a bibliographic entry in the source document for the English-
 * [[[english-doc,repo:(current-metanorma-collection/si-brochure-en)]]] (Version anglaise de la brochure BIPM).
 ----
 
-The identifier given to the target document needs to match that given in the collection manifest:
+The identifier given to the target document needs to match that given in the
+collection manifest:
 
 [source,yaml]
 ----
