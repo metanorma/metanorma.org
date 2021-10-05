@@ -178,7 +178,9 @@ begin() {
 <2> `t`
 <3> `sourcecode/@anchor`
 <4> `sourcecode/@name`
-<5> `sourcecode/@type`, `sourcecode/@src`, `sourcecode/@markers`, `sourcecode/@name`. If `src` is present, the listing is not expected to have any content: content is taken from the hyperlink in the attribute.
+<5> `sourcecode/@type`, `sourcecode/@src`, `sourcecode/@markers`, `sourcecode/@name`.
+If `src` is present, the listing is not expected to have any content: content is
+taken from the hyperlink in the attribute.
 <6> `sourcecode`
 
 
@@ -427,12 +429,14 @@ in RFC XML.
 ==== Editorial Notes
 
 RFC XML provides for editorial comments as blocks, which may optionally appear
-in the published text (subject to either the `cref/@display`
-attribute, or the `comments` processing instruction). As with the rest
-of Metanorma, such editorial comments will only be included in the Metanorma
-XML output, let alone the RFC XML output, if the AsciiDoc `:draft:`
-document attribute is present. Unlike in RFC XML v2,
-editorial notes are marked up as AsciiDoc sidebars.
+in the published text (subject to either the `cref/@display` attribute, or the
+`comments` processing instruction).
+
+As with the rest of Metanorma, such editorial comments will only be included in
+the Metanorma XML output, let alone the RFC XML output, if the AsciiDoc
+`:draft:` document attribute is present.
+
+NOTE: Unlike in RFC XML v2, editorial notes are marked up as AsciiDoc sidebars.
 
 [source,asciidoc]
 --
@@ -449,10 +453,13 @@ Profile?!
 
 ==== Inline comments
 
-To generate an editorial comment inline in RFC XML, notate an editorial comment as a block,
-and then indicate the insertion point for the editorial comment inline with the macro
+To generate an editorial comment inline in RFC XML, notate an editorial comment
+as a block, and then indicate the insertion point for the editorial comment
+inline with the command
 `cref:[id]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2],
-where `id` is the identifier of the editorial comment:
+where `id` is the identifier of the editorial comment.
+
+EXAMPLE:
 
 [source,asciidoc]
 --
@@ -508,16 +515,23 @@ _Italic_ <2>
 <5> `<sub>subscript</sub>`
 <6> `<sup>superscript</sup>`
 <7> `<bcp14>MUST NOT</bcp14>`
-<8> if document flag `:no-rfc-bold-bcp14:` is present, then `<strong>MUST NOT</strong>`, else (by default) any BCP14/RFC2119 phrase in boldface and capitals is assumed to be intended to be tagged in `<bcp14>`.
+<8> if document flag `:no-rfc-bold-bcp14:` is present, then
+`<strong>MUST NOT</strong>`, else (by default) any BCP 14 / RFC 2119 phrase in
+boldface and capitals is assumed to be intended to be tagged in `<bcp14>`.
 
-NOTE: The delimiters must occur within the one line; the following is invalid in Metanorma AsciiDoc:
-[source,asciidoc]
+[NOTE]
 --
+The delimiters must occur within the one line; the following is invalid in
+Metanorma AsciiDoc.
+
+[source,asciidoc]
+----
 *WOULD
 PROBABLY*
+----
 --
 
-=== Cross-References
+=== Cross-references
 
 [source,asciidoc]
 ----
@@ -532,12 +546,13 @@ http://example.com/[linktext] <4>
 <3> `<xref format="counter|title|none|default" target="crossreference">text</xref>`
 <4> `<eref href="http://example.com/">linktext</eref>`
 
-Note that fragments (e.g. `crossreference#fragment`) are not supported on the `xref/@target` attribute:
-the RFC XML specification requires that the `xref/@target` attribute equals
-the value of an anchor attribute elsewhere in the document.
+Note that fragments (e.g. `crossreference#fragment`) are not supported on the
+`xref/@target` attribute: the RFC XML specification requires that the
+`xref/@target` attribute equals the value of an anchor attribute elsewhere in
+the document.
 
-If cross-reference text is not supplied, it is populated with
-the Metanorma default, naming and numbering the referenced object.
+If cross-reference text is not supplied, it is populated with the Metanorma
+default, naming and numbering the referenced object.
 
 === Citations
 
@@ -555,14 +570,16 @@ the Metanorma default, naming and numbering the referenced object.
 <4> `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>`
 <5> `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>`
 
-Localities other than `clause` and `section` are ignored in the generated RFC XML v3.
+Localities other than `clause` and `section` are ignored in the generated
+RFC XML v3.
 
 === Footnotes
 
-Footnotes in text are rendered as a separate "`Endnotes`" appendix,
-with each endnote rendered as a paragraph prefixed by an incrementing numeric counter in brackets.
-The footnote reference in the main text is replaced by the same counter in brackets.
+Footnotes in text are rendered as a separate "`Endnotes`" appendix, with each
+endnote rendered as a paragraph prefixed by an incrementing numeric counter in
+brackets. The footnote reference in the main text is replaced by the same
+counter in brackets.
 
-Footnotes in tables and figures, similar to the rest of Metanorma, are rendered as `aside`
-elements, with an incrementing alphabetic counter in brackets.
+Footnotes in tables and figures, similar to the rest of Metanorma, are rendered
+as `aside` elements, with an incrementing alphabetic counter in brackets.
 
