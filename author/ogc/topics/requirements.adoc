@@ -127,29 +127,32 @@ but some authors may prefer specifying attributes in the header.
 
 NOTE: These two methods originate from Metanorma's general support of the
 alternative syntaxes for specifying a block attribute list as a definition list.
-The extension of the definition lists syntax to components is specific to the OGC flavour.
+The extension of the definition lists syntax to components is specific to
+Metanorma OGC.
 
 
 === Specifying using definition lists or block attributes
 
 In Metanorma, the following two encoding syntaxes are considered equivalent.
 
-* In block attributes syntax, the necessary information is provided as an
-attribute list to the block. This follows the usual norms for Asciidoctor syntax, 
-but it restricts attribute values to be plain text.
+* In the *block attributes* syntax, the necessary information is provided as an
+attribute list to the block.
+Values contained in the attribute list must be in plain text.
 
-* In definition list syntax, a `[%metadata]` definition list within a ModSpec
-model provides the necessary information for the specified model. The values given 
-in the definition list syntax can be fully formatted Metanorma text.
+* In the *definition list* syntax, a `[%metadata]` definition list within a
+ModSpec model provides the necessary information for the specified model.
+Values given in the definition list syntax can be fully-formatted Metanorma
+AsciiDoc text.
 
-Attributes that can take Rich textual input, such as `part` and `conditions`, are
-components of requirements in Metanorma: these are
+Attributes that can take rich textual input (Metanorma AsciiDoc input), such as
+`part` and `conditions`, are components of requirements in Metanorma: these are
 encoded in the block attributes syntax using the `[.component]` role within the
-ModSpec model block, on open blocks or example blocks, as in:
+ModSpec model block, on open blocks or example blocks.
+
+EXAMPLE:
 
 [source,adoc]
 ----
-[[part_a_of_requirement]]
 [.component,class=part]
 --
 Part A of the requirement.
@@ -158,7 +161,6 @@ Part A of the requirement.
 
 [source,adoc]
 ----
-[[part_a_of_requirement]]
 [.component,class=part]
 ====
 Part A of the requirement.
@@ -188,12 +190,12 @@ identically in output).
 .Encoding of logical models
 ====
 [%metadata]
-type:: general
 label:: ogc/spec/waterml/2.0/req/xsd-xml-rules
 subject:: system
 part:: Metadata models faithful to the original UML model.
-description:: Logical models encoded as XSDs should be faithful to the original UML conceptual
-models.
+description:: Logical models encoded as XSDs should be faithful to the original
+UML conceptual models.
+
 test-method::
 step::: Step 1
 step::: Step 2
@@ -204,9 +206,9 @@ step::: Step 3
 ----
 
 [source,asciidoc]
-.ModSpec requirement in attribute list syntax
+.ModSpec requirement in block attributes syntax
 ----
-[requirement,type="general",label="ogc/spec/waterml/2.0/req/xsd-xml-rules",subject="system"]
+[requirement,label="ogc/spec/waterml/2.0/req/xsd-xml-rules",subject="system"]
 .Encoding of logical models
 ====
 
@@ -215,59 +217,69 @@ step::: Step 3
 Metadata models faithful to the original UML model.
 --
 
+[.component,class=test-method]
+-----
+[.component,class=step]
+------
+Step 1
+------
+
+[.component,class=step]
+------
+Step 2
+
+[.component,class=step]
+-------
+Step 2a
+-------
+
+[.component,class=step]
+-------
+Step 2b
+-------
+------
+
+[.component,class=step]
+------
+Step 3
+------
+-----
+
 Logical models encoded as XSDs should be faithful to the original UML conceptual
 models.
 ====
 ----
 
-The two syntaxes can be mixed, with the definition list values following the block attribute
-list values; but this is not recommended, as it makes documents harder to maintain.
+These two syntaxes can be mixed.
 
 
-=== Base ModSpec model attributes
+=== ModSpec model attributes
 
-A ModSpec model encoding requires specifying the following attributes:
+A ModSpec model is encoded with one of these block types:
 
-* `type` (optional). One of the following:
-** `general` for Requirement, Recommendation or Permission (default value)
-** `class` for Requirements class
-** `verification` for Conformance test
-** `conformanceclass` for Conformance class
-** `abstracttest` for Abstract test
+* `[requirement]` for Requirement
+* `[recommendation]` for Recommendation
+* `[permission]` for Permission
+* `[requirements_class]` for Requirements class
+* `[conformance_test]` for Conformance test
+* `[conformance_class]` for Conformance class
+* `[abstract_test]` for Abstract test
 
-The foregoing values are consistent with Metanorma's general design of requirements,
-and can be used in any flavour of Metanorma.
-The `type` attribute can also use the following values specific to metanorma-ogc as synomyms:
-these values are more closely aligned
-to ModSpec [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.3]:
+NOTE: These ModSpec types are available from [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.3]
 
-* `type` (optional). One of the following:
-** `requirement` for Requirement
-** `recommendation` for Recommendation
-** `permission` for Permission
-** `requirements_class` for Requirements class
-** `conformance_test` for Conformance test
-** `conformance_class` for Conformance class
-** `abstract_test` for Abstract test
+In addition, if the Metanorma generic `[requirements]` block is used, these
+values are to be used in the `type` attribute.
 
-In addition, these values can be used instead of the Metanorma style labels, 
-to label requirement blocks. Again this is only valid within metanorma-ogc. So the
-following three
-encodings are equivalent:
+The following two encodings are equivalent:
 
 [source,asciidoc]
 ----
-[.requirement,type=verification]
+[conformance_test]
 ----
 
 [source,asciidoc]
 ----
-[.requirement,type=conformance_test]
-----
-
-[source,asciidoc]
-----
-[.conformance_test]
+[requirement,type=conformance_test]
 ----
 
 * `label` (mandatory). Label of the model, typically a URI. This must be unique
@@ -281,20 +293,19 @@ Plain text.
 ** `recommendation`
 ** `permission`
 
-* `model` (optional when using Metanorma OGC). Type of model. The value of `ogc`
-means using OGC ModSpec models.
+// * `model` (optional when using Metanorma OGC). Type of model. The value of `ogc`
+// means using OGC ModSpec models.
 
 Differentiated types of ModSpec models allow additional attributes.
 
 [[general]]
 === Requirement, recommendation, permission
 
-A Requirement (or Recommendation, Permission) is encoded by setting `type` to
-`general`, `requirement`, `recommendation`, or `permission` (or by omitting the `type`).
+A Requirement (or Recommendation, Permission) is encoded as a `requirement`,
+`recommendation`, or `permission` block or by setting `type` to `requirement`,
+`recommendation`, or `permission`.
 
 It supports the following attributes in addition to base ModSpec attributes:
-
-* `type` specified as `general`
 
 * `conditions` (optional). Conditions on where this requirement applies. Accepts
 rich text.
@@ -303,10 +314,10 @@ rich text.
 sub-requirements. Accepts rich text.
 
 * `inherit` (optional). A requirement can inherit from one or more requirements.
-Accepts cross-references to other requirement models, or plain text.
-In block attributes syntax, accepts multiple
-semicolon-delimited values, which each could be a cross-reference to another
-conformance class or plain text. Can be repeated in definition list syntax.
+Accepts cross-references to other requirement models, or plain text. In block
+attributes syntax, accepts multiple semicolon-delimited values, which each could
+be a cross-reference to another conformance class or plain text. Can be repeated
+in definition list syntax.
 
 * `classification` (optional). Classification of this requirement.
 The `classification` attribute is marked up as in the rest of Metanorma:
@@ -320,7 +331,7 @@ EXAMPLE:
 [source,asciidoc]
 .OGC CityGML 3.0 sample requirement with two parts (block attributes)
 ----
-[requirement,type="general",label="/req/relief/classes"]
+[requirement,label="/req/relief/classes"]
 ====
 For each UML class defined or referenced in the Relief Package:
 
@@ -344,7 +355,6 @@ source, target, direction, roles, and multiplicities as those of the UML class.
 [requirement]
 ====
 [%metadata]
-type:: general
 label:: /req/relief/classes
 description:: For each UML class defined or referenced in the Relief Package:
 part:: The Implementation Specification SHALL contain an element which represents the
@@ -357,7 +367,7 @@ source, target, direction, roles, and multiplicities as those of the UML class.
 [source,asciidoc]
 .OGC GroundWaterML 2.0 sample requirement
 ----
-[requirement,type="general",id="/req/core/encoding",label="/req/core/encoding"]
+[requirement,id="/req/core/encoding",label="/req/core/encoding"]
 ====
 All target implementations SHALL conform to the appropriate GroundWaterML2
 Logical Model UML defined in Section 8.
@@ -469,8 +479,8 @@ Logical Model UML defined in Section 8.
 [[reqt_class]]
 === Requirements class
 
-A "`Requirements class`" is encoded using `type` equals to `class` or `requirements_class`,
-or by setting the block style attribute to `requirements_class`.
+A "`Requirements class`" is encoded as a block of `requirements_class` or using
+`type` equals to `requirements_class`.
 
 A Requirements class is cross-referenced and captioned as a
 "`{Requirement} class {N}`" [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.11].
@@ -497,15 +507,17 @@ EXAMPLE:
 .Example from OGC CityGML 3.0
 [source,asciidoc]
 ----
-[requirements_class,label="http://www.opengis.net/spec/CityGML-1/3.0/req/req-class-building",subject="Implementation Specification"]
+[requirements_class]
 ====
 [%metadata]
+label:: http://www.opengis.net/spec/CityGML-1/3.0/req/req-class-building
+subject:: Implementation Specification
 inherit:: <<rc_core,/req/req-class-core>>
 inherit:: <<rc_construction,/req/req-class-construction>>
 ====
 ----
 
-Note that in this example, both block attributes and definition list syntax is used;
+NOTE: In this example, both block attributes and definition list syntax is used;
 the `inherit` attribute has two hyperlink values, which are expressed in the definition list.
 
 // TODO: Add rendering example
@@ -523,32 +535,32 @@ EXAMPLE:
 .Example from OGC GroundWaterML 2.0 (block attributes)
 [source,asciidoc]
 ----
-[requirement,type="requirements_class",obligation="requirement",subject="Encoding of logical models",inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used"]
+[requirements_class,inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used"]
 .GWML2 core logical model
 ====
 [%metadata]
+subject:: Encoding of logical models
 label:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
 
-[requirement,type="general",label="/req/core/encoding"]
+[requirement,label="/req/core/encoding"]
 ======
 ======
 
-[requirement,type="general",label="/req/core/quantities-uom"]
+[requirement,label="/req/core/quantities-uom"]
 ======
 ======
 ====
 ----
 
-(Again, note that the hyperlink in the `label` attribute needs to be given as a definition list value.)
+//NOTE: The hyperlink in the `label` attribute needs to be given as a definition list value.
 
 .Example from OGC GroundWaterML 2.0 (definition list)
 [source,asciidoc]
 ----
-[requirement]
+[requirements_class]
 .GWML2 core logical model
 ====
 [%metadata]
-type:: class
 label:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
 obligation:: requirement
 subject:: Encoding of logical models
@@ -595,13 +607,13 @@ same label [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.
 .GWML2 core logical model
 ====
 
-[requirement,type="general",label="/req/core/encoding"]
+[requirement,label="/req/core/encoding"]
 ======
 ======
 
 ====
 
-[requirement,type="general",label="/req/core/encoding"]
+[requirement,label="/req/core/encoding"]
 ====
 Encoding requirement
 ====
@@ -632,7 +644,8 @@ ____
 
 === Conformance class
 
-Specified using `type` as `conformanceclass` or `conformance_class`, or by setting the block style attribute to `conformance_class`.
+Specified by setting the block as `conformance_class` or by using `type` as
+`conformance_class`.
 
 A Conformance class is cross-referenced and captioned as
 "`Conformance class {N}`", and is otherwise rendered identically to a
@@ -641,8 +654,8 @@ A Conformance class is cross-referenced and captioned as
 Conformance classes support the following attributes in addition to base ModSpec
 attributes:
 
-* `subject`. Associated Requirement class. May be encoded as a cross-reference
-or as plain text. Rendered as _Requirement Class_.
+* `subject`. Associated Requirements class. May be encoded as a cross-reference
+or as plain text. Rendered as _Requirements Class_.
 
 * `inherit` (optional). Dependencies of the conformance class. Accepts multiple
 values, which each could be a cross-reference to another
@@ -652,10 +665,12 @@ Conformance classes also feature:
 
 * Name (optional). Specified as the block caption.
 
-* Nesting (optional). Conformance tests contained in a conformance class are encoded as conformance tests within the conformance class block. See <<reqt_class,Requirements class>>.
+* Nesting (optional). Conformance tests contained in a conformance class are
+encoded as conformance tests within the conformance class block.
+See <<reqt_class,Requirements class>>.
 
 NOTE: Conformance classes do not have a Target Type (as specified in ModSpec).
-If one must be encoded, it should be encoded as a Classification key-value
+If one must be encoded, it should be encoded as a classification key-value
 pair.
 
 EXAMPLE:
@@ -671,10 +686,9 @@ subject:: <<rc_crs,Requirements Class 'Coordinate Reference Systems by Reference
 
 [source,asciidoc]
 ----
-[requirement]
+[conformance_class]
 ====
 [%metadata]
-type:: conformance_class
 label:: http://www.opengis.net/spec/ogcapi-features-2/1.0/conf/crs
 subject:: <<rc_crs,Requirements Class 'Coordinate Reference Systems by Reference'>>
 inherit:: http://www.opengis.net/doc/IS/ogcapi-features-1/1.0#ats_core
@@ -707,12 +721,13 @@ The OGC author should identify whether a standard requires an "`Abstract test
 suite`" or a "`Conformance test suite`" in order to decide the encoding of
 "`Conformance tests`" (concrete tests) versus "`Abstract tests`".
 
-* A conformance test is specified using `type` as `verification` or `conformance_test`, or
-by setting its style attribute to `conformance_test`.
+* A conformance test is specified by creating a `conformance_test` block or
+using `type` as `conformance_test`.
 It is cross-referenced as "`Conformance test {N}`"
 
-* An abstract test is specified using `type` as `abstracttest` or `abstract_test`, or
-by setting its style attribute to `abstract_test`.
+* An abstract test is specified by creating an `abstract_test` block or using
+`type` as `abstract_test`, or `conformance_test` together with
+`abstract=true`.
 It is cross-referenced as "`Abstract test {N}`" [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.4].
 
 // NOTE: Verifications for Recommendations will be captioned as
@@ -726,7 +741,8 @@ base ModSpec attributes:
 plain text. Multiple semicolon-delimited values may be provided. Rendered as
 _Requirement_.
 
-* `inherit` (optional). Dependencies. Accepts multiple values. Each may be a cross-reference or in plain text.
+* `inherit` (optional). Dependencies. Accepts multiple values.
+Each may be a cross-reference or in plain text.
 See <<general,Requirement, recommendation, permission>>.
 
 * Components (optional). Components of the conformance test. Accepts rich
@@ -762,7 +778,6 @@ EXAMPLE:
 .Example of Abstract test from CityGML 3.0 (block attributes)
 [source,adoc]
 ----
-[[ats_core_classes]]
 [abstract_test,label="/ats/core/classes"]
 ====
 [%metadata]
@@ -770,7 +785,8 @@ subject:: <<req_core_classes,/req/core/classes>>
 
 [.component,class=test-purpose]
 --
-To validate that the Implementation Specification correctly implements the UML Classes defined in the Conceptual Model.
+To validate that the Implementation Specification correctly implements the UML
+Classes defined in the Conceptual Model.
 --
 
 [.component,class=test-method-type]
@@ -782,12 +798,16 @@ For each UML class defined or referenced in the Core Package:
 
 [.component,class=part]
 --
-Validate that the Implementation Specification contains a data element which represents the same concept as that defined for the UML class.
+Validate that the Implementation Specification contains a data element which
+represents the same concept as that defined for the UML class.
 --
 
 [.component,class=part]
 --
-Validate that the data element has the same relationships with other elements as those defined for the UML class. Validate that those relationships have the same source, target, direction, roles, and multiplicities as those documented in the Conceptual Model.
+Validate that the data element has the same relationships with other elements as
+those defined for the UML class. Validate that those relationships have the same
+source, target, direction, roles, and multiplicities as those documented in the
+Conceptual Model.
 --
 ====
 ----
@@ -795,25 +815,34 @@ Validate that the data element has the same relationships with other elements as
 .Example of Abstract test from CityGML 3.0 (definition list)
 [source,adoc]
 ----
-[[ats_core_classes]]
-[requirement]
+[abstract_test]
 ====
 [%metadata]
-type:: abstract_test
 label:: /ats/core/classes
+
 subject:: <<req_core_classes,/req/core/classes>>
-test-purpose:: To validate that the Implementation Specification correctly implements the UML Classes defined in the Conceptual Model.
+
+test-purpose:: To validate that the Implementation Specification correctly
+implements the UML Classes defined in the Conceptual Model.
+
 test-method-type:: Manual Inspection
+
 description:: For each UML class defined or referenced in the Core Package:
-part:: Validate that the Implementation Specification contains a data element which represents the same concept as that defined for the UML class.
-part:: Validate that the data element has the same relationships with other elements as those defined for the UML class. Validate that those relationships have the same source, target, direction, roles, and multiplicities as those documented in the Conceptual Model.
+
+part:: Validate that the Implementation Specification contains a data element
+which represents the same concept as that defined for the UML class.
+
+part:: Validate that the data element has the same relationships with other
+elements as those defined for the UML class. Validate that those relationships
+have the same source, target, direction, roles, and multiplicities as those
+documented in the Conceptual Model.
 ====
 ----
 
 .Example of Abstract test from DGGS (block attributes)
 [source,asciidoc]
 ----
-[requirement,type="abstracttest",label="/conf/crs/crs-uri",classification="Test Type:Basic"]
+[abstract_test,label="/conf/crs/crs-uri",classification="Test Type:Basic"]
 ====
 [%metadata]
 subject:: <<req_crs_crs-uri,/req/crs/crs-uri>>
@@ -900,27 +929,27 @@ ____
 
 == Rendering of ModSpec models
 
-OGC ModSpec models are generally rendered as tables.
+OGC ModSpec models are rendered as tables.
 
 NOTE: This rendering method is consistent with prior OGC practice.
 
-* For HTML rendering, the CSS class of the requirement table is the `type`
-attribute of the requirement.
+* For HTML rendering, the CSS class of the ModSpec specification table is the
+`type` attribute of the requirement.
 +
 --
 The following types are recognised:
 
 ** No value for Requirements
-** `verification` for Conformance tests
-** `abstracttest` for Abstract tests
-** `class` for Requirements classes
-** `conformanceclass` for Conformance classes
+** `conformance_test` for Conformance tests
+** `abstract_test` for Abstract tests
+** `requirements_class` for Requirements classes
+** `conformance_class` for Conformance classes
 
 The default CSS class currently assigned for HTML rendering is `recommend`.
 --
 
 * The heading of the table (spanning two columns) is its name (the role
-or style of the requirement, e.g. `[.permission]` or `[permission]`), optionally
+or style of the requirement, e.g. `[permission]` or `[.permission]`), optionally
 followed by its title (the caption of the requirement, e.g. `.Title`).
 
 * The title of the table (spanning two columns) is its `label` attribute.
@@ -957,7 +986,7 @@ These are divided into two categories:
 *** Components with a `class` attribute other than `part` are
 extracted in order, with the class name normalised (title case), followed by the component contents.
 So a component with a `class` attribute of `conditions` will be rendered as
-_Conditions_ followed by the component contents. In the foregoing, we have seen components defined 
+_Conditions_ followed by the component contents. In the foregoing, we have seen components defined
 in ModSpec: `test-purpose, test-method, test-method-type, conditions, reference`. However the block attribute
 syntax allows open-ended component names.
 
@@ -1013,3 +1042,13 @@ the document SHOULD conform to the
 |===
 ----
 ====
+
+== Legacy ModSpec type keywords
+
+These values for the ModSpec model type have been deprecated:
+
+* `general` for Requirement, Recommendation or Permission (now `requirement`, `recommendation` or `permission`)
+* `class` for Requirements class (now `requirements_class`)
+* `verification` for Conformance test (now `conformance_test`)
+* `conformanceclass` for Conformance class (now `conformance_class`)
+* `abstracttest` for Abstract test (now `abstract_test`)
