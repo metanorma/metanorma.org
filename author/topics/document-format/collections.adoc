@@ -407,24 +407,42 @@ that narrows down our search while generating the collection. The `basic` collec
 optional; but if you don't provide it, you will need to put `[type=express]` on any cross-reference target,
 and collection processing will be more expensive.
 
+
 == Multilingual documents
 
-Metanorma currently supports multilingual documents in its PDF output, as document collections. By default,
-Metanorma treats multilingual documents as a concatenation of documents, each in its own language. However,
-Metanorma also supports rendering multilingual documents as parallel columns of aligned text.
+Metanorma currently supports multilingual documents in its PDF output, as
+document collections.
 
-In order to control such alignment, Metanorma supports the following 
+* By default, Metanorma treats multilingual documents as a concatenation of
+  documents, each in its own language;
+* Metanorma also supports rendering multilingual documents as parallel columns
+  of aligned text.
+
+In order to control such alignment, Metanorma supports the following
 markup [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.8]:
 
-* An attribute `tag` can be added to any block. This is used to indicate that blocks with the same tag value
-across documents in different languages are to be aligned in parallel columns, subject to the `multilingual-rendering`
-attribute.
-* An attribute `multilingual-rendering` can be added to any block. This indicates how that block is to be rendered
-in a multilingual columnar text. The options are:
+* An attribute `tag` can be added to any block.
++
+This is used to indicate that blocks with the same tag value across documents
+in different languages are to be aligned in parallel columns, subject to the
+`multilingual-rendering` attribute.
+
+* An attribute `multilingual-rendering` can be added to any block.
++
+This indicates how that block is to be rendered in a multilingual columnar text.
++
+The options are:
+
 ** `common` for blocks that are shared across all languages;
-** `all-columns` for blocks that span all columns of text, and are displayed consecutively;
-** `parallel` for a block that is to be aligned to the block occupying the same position in the document hierarchy in each language; 
+
+** `all-columns` for blocks that span all columns of text, and are displayed
+  consecutively;
+
+** `parallel` for a block that is to be aligned to the block occupying the same
+  position in the document hierarchy in each language;
+
 ** `tag` for all blocks sharing the same `tag` attribute as the current block.
 
-In addition, the document attribute `align-cross-elements` indicates the Metanorma XML elements that are always
-to be aligned in multilingual text. It consists of a comma-delimited list of Metanlorma XML tags; e.g. `p,note,term`.
+* The document attribute `align-cross-elements` indicates the Metanorma XML
+  elements that are always to be aligned in multilingual text. It consists of a
+  comma-delimited list of Metanlorma XML tags; e.g. `p,note,term`.
