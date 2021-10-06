@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Accessibility tagging in PDF"
+title: "Accessibility tagging in Metanorma PDFs"
 date: 2021-09-03
 categories: documentation
 authors:
@@ -17,71 +17,244 @@ authors:
       - https://github.com/Intelligent2013/
 
 excerpt: >-
-    Metanorma creates a tagged PDF with logical structure derived from the structure of the input XML file.
+  Metanorma-generated PDFs utilize advanced tagging structures provided by the
+  ISO 32000:2008 PDF standard to best facilitate usage of assistive
+  technologies.
 ---
 
-== What is tagging in PDF?
+== Accessibility tagging in Metanorma PDFs
 
-Document's structure tags (or logical tagged structure tree) in a PDF is used to provide a meaningful reading order and allow to 
-identify headers, paragraphs, lists, and another document's elements in the page. 
-The tags also enable to document resizing/reflowing for viewing in another font-size or smaller screens. 
-Each tag defines structural elements role (the type of content). Tagged structure tree (tag tree) forms the logical structure of the document, i.e. determines relationship to page content.
+=== Need for accessibility tagging
 
-Main requirement for screen reader (text-to-speech tool, or another assistive technologies (AT)) is that the document should be structured. 
-Document's structure tags make PDF documents accessible. Tag tree determines the reading order of the document for AT tools.
+https://www.atia.org/home/at-resources/what-is-at/[Assistive technologies (AT)]
+in general and screen readers are important tools for the visually impaired
+to read documents, and that also applies to standardization documents prepared
+using Metanorma.
 
-== Document structure tags in a Metanorma PDF
+Many organizations that utilize the Metanorma suite are legally required
+to provide "`accessible`" output, in other words, additional information that
+ensures content to be useable by AT tools.
 
-Metanorma generates PDFs with using of Apache FOP (Formatting Objects Processor). Apache FOP is a print formatter driven by XSL formatting objects (XSL-FO). 
-Apache FOP has a default mapping of Formatting Objects to PDF tags:
+Metanorma is committed to supporting the population that utilize assistive
+technologies. In this post we introduce Metanorma PDF accessibility features
+that are built into every PDF generated using Metanorma.
 
-* `fo:page-sequence` is mapped to tag `Part`
-* `fo:block-container` is mapped to tag `Div`
-* `fo:block` is mapped to tag `P`
+NOTE: Common legal requirements include the US Federal Government's
+https://www.section508.gov[Section 508] and the
+https://ec.europa.eu/social/main.jsp?catId=1202[European Accessibility Act].
 
-.Tags in a PDF document are similar to HTML code.
-image::/assets/blog/2021-09-03_1.png[Tags in a PDF document are similar to HTML code]
 
-* `fo:list-block` mapped to tag `L`
-* `fo:list-item` mapped to tag `LI`
+=== Introducing the PDF tag tree
 
-.Tags `L` and `LI` for list and list items
-image::/assets/blog/2021-09-03_2.png[Tags L and LI for list and list items]
+Those who have read the previous post about
+link:/blog/2021-08-26/pdf-accessibility-for-math-formulas/[PDF math accessibility]
+will know that the PDF format provides two kinds of information hierarchies,
+namely:
 
-=== Mapping customization
+* the content tree is the representation of the layout of content, providing a
+  hierarchy of data elements that reflect the selectable text of a PDF file;
+
+* the tag tree is the representation of the logical structure of the document
+  and its content, providing a hierarchy of data elements intended for
+  accessibility applications.
+
+Accessibility features in PDF commonly rely on information embedded in the tag
+tree.
+
+The PDF tag tree is implemented as a hierarchy of tags with metadata that each
+relate to a visual element on the page, in effect "tagging" a content
+element with additional information.
+Each tag defines the structural role of the content element, such as whether it
+is a section title, or a list label, etc.
+
+In fact, a correctly populated and structured tag tree is a main requirement for
+screen readers and other assistive technologies to work properly with a PDF
+document.
+
+Tags are immensely useful for accessibility experiences, they:
+
+* allow the identification of document elements and their roles, such as
+  headers, paragraphs, lists, and external elements (outside of the PDF file)
+  on a PDF page, in effect making the content accessible;
+
+* provide a meaningful reading order for screen readers, text-to-speech tools
+  and other assistive technology tools;
+
+* facilitate document resizing/reflowing for viewing with non-default
+  font-size or smaller screens.
+
+NOTE: Specification of PDF tags are defined in the PDF 1.7 standard,
+https://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf[ISO 32000:2008].
+
+
+=== Basic structural tagging
+
+As described in the previous post,
+Metanorma generates PDFs through `mn2pdf`, a Java PDF processor based on the
+open-source
+http://xmlgraphics.apache.org/fop/[Apache FOP (Formatting Objects Processor)],
+a print formatter driven by
+https://www.w3.org/TR/xsl/[XSL formatting objects (XSL-FO)] technology.
+
+While Apache FOP provides a default mapping for Formatting Objects (FO) to
+PDF tags, the mapping is basic and does not fully meet the needs of modern
+assistive technologies.
+
+In the following sections we illustrate how Metanorma performs tagging.
+
+.Metanorma formatting object mapping to PDF tags (identical to Apache FOP)
+[cols="a,a,a",options="header"]
+|===
+| Meaning | Formatting object element | PDF tag value
+
+| Major division, clause/section | `fo:page-sequence`   | `Part`
+| Block          | `fo:block-container` | `Div`
+| Paragraph      | `fo:block`           | `P`
+
+|===
+
+.The ISO Rice document with an accurately populated tag tree
+image::/assets/blog/2021-09-03_1.png[The ISO Rice document with an accurately populated tag tree]
+
+
+=== Detailed structural tagging
+
+==== Lists and list items
+
+The PDF standard also provides the list and list item tags to identify those
+roles within rendered content, in Metanorma we extend the mapping to them.
+
+.List-related mapping to PDF tags
+[cols="a,a,a",options="header"]
+|===
+| Meaning | Formatting object element | PDF tag value
+
+| List      | `fo:list-block` | `L`
+| List item | `fo:list-item`  | `LI`
+
+|===
+
+The following example demonstrates the tagged list and list items in a
+generated PDF document.
+
+.Tags with `L` and `LI` for list and list items in the ISO Rice document
+image::/assets/blog/2021-09-03_2.png[Tags with `L` and `LI` for list and list items in the ISO Rice document]
+
 
 We've customized the mapping to more accuracy of the tagging:
 
-* added tags `H1` to `H6` for headers:
+==== Headings, sub-headings and more
 
-.Tags `H1` to `H6` for headers
-image::/assets/blog/2021-09-03_3.png[Tags 'H1' to 'H6' for headers]
+The PDF standard provides a series of heading tags to identify the
+differentiation of importance amongst headings, and they are automatically
+supported by the Metanorma PDF generation engine.
 
-* added tags `TOC` and `TOCI` for Table of Contents:
+These tags are not mapped from Formatting Objects but directly set by
+the generation engine in output.
 
-.Tags `TOC` and `TOCI` for Table of Contents
-image::/assets/blog/2021-09-03_4.png[Tags 'TOC' and 'TOCI' for Table of Contents]
+.Heading mapping to PDF tags
+[cols="a,a",options="header"]
+|===
+| Meaning | PDF tag value
 
-* added tag `BlockQuote` for quotes:
+| Header 1, clause heading  | `H1`
+| Header 2, sub-clause heading  | `H2`
+| Header 3, second-level sub-clause  | `H3`
+| Header 4, third-level sub-clause | `H4`
+| Header 5, fourth-level sub-clause | `H5`
+| Header 6, fifth-level sub-clause | `H6`
 
-.Tag `BlockQuote` for quotes
-image::/assets/blog/2021-09-03_5.png[Tag 'BlockQuote' for quotes]
+|===
 
-* added tag `Index` for document's Index content:
+.Tags `H1` to `H6` for clause and sub-clause headings
+image::/assets/blog/2021-09-03_3.png[Tags `H1` to `H6` for clause and sub-clause headings]
 
-.Tag `Index` for document's Index
-image::/assets/blog/2021-09-03_6.png[Tag 'Index' for document's Index]
+==== Table of contents
 
-* added tag `Code` for source code:
+The PDF standard provides the `TOC` and `TOCI` tags for the "Table of Contents"
+section and each individual entry within the table of contents.
 
-.Tag `Code` for source code
-image::/assets/blog/2021-09-03_7.png[Tag 'Code' for source code]
+.Table of contents mapping to PDF tags
+[cols="a,a",options="header"]
+|===
+| Meaning | PDF tag value
+
+| Table of contents section          | `TOC`
+| Table of contents individual entry | `TOCI`
+
+|===
+
+.Tags `TOC` and `TOCI` for the Table of Contents
+image::/assets/blog/2021-09-03_4.png[Tags `TOC` and `TOCI` for the Table of Contents]
 
 
-== References
+==== Block quotes
 
-* www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf[ISO 32000:2008]
+The `BlockQuote` tag is provided by the PDF standard to tag quotations in block
+form.
 
-* https://www.adobe.com/accessibility/pdf/pdf-accessibility-overview.html
+.Block quote mapping to PDF tags
+[cols="a,a",options="header"]
+|===
+| Meaning | PDF tag value
 
-* https://xmlgraphics.apache.org/fop/2.5/accessibility.html#customTags
+| Block quote | `BlockQuote`
+
+|===
+
+.Tag `BlockQuote` for block quotations
+image::/assets/blog/2021-09-03_5.png[Tag `BlockQuote` for block quotations]
+
+
+==== Index
+
+While not every document contains an index, the PDF standard helpfully provides
+a special tag `Index` to indicate a document's index content.
+
+.Index section mapping to PDF tags
+[cols="a,a",options="header"]
+|===
+| Meaning | PDF tag value
+
+| Index section | `Index`
+| Index individual entry | `P`
+
+|===
+
+.Tag `Index` for the document's Index
+image::/assets/blog/2021-09-03_6.png[Tag `Index` for the document's Index]
+
+==== Source code
+
+The PDF standard provides the `Code` tag to indicate that the tagged content
+is software source code.
+
+.Source code mapping to PDF tags
+[cols="a,a",options="header"]
+|===
+| Meaning | PDF tag value
+
+| Source code inline or block | `Code`
+
+|===
+
+.Tag `Code` to indicate source code
+image::/assets/blog/2021-09-03_7.png[Tag `Code` to indicate source code]
+
+
+=== Summary
+
+Metanorma provides excellent support of PDF accessibility features out of the
+box, and particularly provides an accurate and fully structured tag tree in
+generated PDFs to facilitate usage of assistive technologies.
+
+If you have any further accessibility needs with Metanorma, please do not
+hesitate to contact us!
+
+=== References
+
+* https://www.iso.org/standard/51502.html[ISO 32000:2008], the PDF 1.7 standard
+
+* https://www.adobe.com/accessibility/pdf/pdf-accessibility-overview.html[Adobe PDF accessibility overview]
+
+* https://xmlgraphics.apache.org/fop/2.6/accessibility.html#customTags[Apache FOP: Custom tagging]
