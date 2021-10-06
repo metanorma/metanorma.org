@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "PDF accessibility for math formulas"
+title: "Making math accessible in PDFs"
 date: 2021-08-26
 categories: documentation
 authors:
@@ -17,109 +17,372 @@ authors:
       - https://github.com/Intelligent2013/
 
 excerpt: >-
-    The BIPM SI Brochure utilizes several advanced PDF techniques for accessibility, not only using PDF/UA features but also making math formulas accessible for non-Adobe PDF viewers.
+    The BIPM SI Brochure utilizes several advanced PDF techniques for
+    accessibility, not only using PDF/UA features but also making math formulas
+    accessible for non-Adobe PDF viewers.
 ---
 
-== PDF accessibility for math formulas
+== Making math accessible in PDFs
 
-Metanorma generates PDFs with using of Apache FOP (Formatting Objects Processor). Apache FOP is a print formatter driven by XSL formatting objects (XSL-FO). 
-Apache FOP renders math formulas in SVG (Scalable Vector Graphics) format with using of JEuclid library, and users can't use search feature in PDF readers (for example Adobe Reader or Preview tool on Mac) 
-to find the characters in math formulas, and also text cannot be selected from math formulas from PDF and pasted into another destination (e.g. text editor).
-In the BIPM SI Brochure we introduce a few features that allow to bypass these restrictions.
+=== Background
 
-The BIPM SI Brochure utilizes several advanced PDF techniques that making math formulas accessible for non-Adobe PDF viewers. They include:
+Math is a fundamental part of life -- and the publication of them inside
+documents are too.
 
-* Embedding MathML formulas as attachments
-* Techniques to render AsciiMath/LaTeX Math as PDF content to allow copy/pasting for non-Adobe readers (PDF Content tree)
-* Using PDF/UA features such as "Actual Text" and "Alternate Text" for tag readers (PDF Tag tree)
+While math formulas are often embedded in academic papers or books published
+in PDF, the accessibility of those formulas is largely an ignored question.
+
+Ever tried to copy out a math formula from a PDF? Typically the frustration
+cycle reads like:
+
+. Attempt to highlight the math formula with a horizontal selection
+. Failing that, attempt to "block select" the math formula
+. Copy and pasting the selected text leads to broken Unicode symbols
+. Frustrated mumbling about that things do not work "out of the box"
+  and the compromise of manually crafting that formula, again.
+
+BIPM (Bureau International des Poids et Mesures, International Bureau of Weights and Measures),
+the international treaty organization that manages the International System of Units,
+commonly called the "`SI system`" or the "`metric system`", had exactly that
+need of making math formulas accessible.
+
+In collaboration with the BIPM to publish a digitally-native, semantic
+version of the SI Brochure using Metanorma, one of the goals is to make math
+formulas published in PDF as accessible as possible. The nearly 3,000 math
+formulas in the SI Brochure define the basis of the International System of
+Units, provide an important trove of information for scientists in their usage
+of units.
+
+=== How Metanorma publishes math in PDF
+
+Metanorma generates PDFs through `mn2pdf`, a Java PDF processor based on the
+open-source
+http://xmlgraphics.apache.org/fop/[Apache FOP (Formatting Objects Processor)],
+a print formatter driven by
+https://www.w3.org/TR/xsl/[XSL formatting objects (XSL-FO)] technology.
+
+In Metanorma, math formulas are encoded in https://www.w3.org/TR/MathML3/[MathML v3],
+and then rendered in PDF using the
+https://www.w3.org/TR/SVG2/[SVG (Scalable Vector Graphics)] format through the
+http://jeuclid.sourceforge.net[JEuclid] library.
+
+The traditional way of handling math as SVG will present a pretty rendering
+of math, but not necessarily reuseable:
+
+* Characters embedded in math formulas cannot be searched within PDF readers,
+  since SVG is a vector graphics format;
+
+* Text cannot be selected from math formulas from PDF and then pasted into
+  another destination (e.g. text editor).
+
+Math accessibility is not currently addressed in the PDF standard suite:
+
+* https://www.iso.org/standard/51502.html[ISO 32000:2008], the PDF 1.7 standard; or
+
+* https://www.iso.org/standard/64599.html[ISO 14289-1:2014], the PDF/UA (PDF universal accessibility) standard.
 
 
-=== Embedding MathML formulas as attachments
+=== Making math accessible in PDFs
 
-BIPM PDF includes the attachment file (with .mml extension) for each math formula:
+In the BIPM SI Brochure we introduce several math accessibility features that
+allow us to bypass these restrictions.
 
-.'Attachments' pane in Acrobat
-image::/assets/blog/2021-08-26_1.png['Attachments' pane in Acrobat]
+We have to first recognize that there is a spectrum of PDF readers that
+offer different levels of support to PDF features, despite requirements stated
+in the PDF standards. While Adobe Reader generally provides good support of
+standard requirements and some PDF/UA features, PDF readers such as Preview or
+Skim may only implement a subset of the standard without PDF/UA support.
 
-So if your PDF reader application (e.g. Adobe Reader) supports PDF attachments feature, you can click on the math formula and 
-MathML file will be opened in the associated application or text editor as you choose:
+When devising these techniques we adopt a "highest bar" approach where
+there is a base level of access to all, and additional accessibility features
+become available for PDF readers that support them.
 
-.MathML file opened in the Notepad
-image::/assets/blog/2021-08-26_2.png[MathML file opened in the Notepad]
+These advanced PDF techniques include:
 
+. Embedding MathML formulas as PDF attachments;
+
+. Techniques to render AsciiMath/LaTeX Math as PDF content to allow copy/pasting
+  for non-Adobe readers (PDF content tree)
+
+. Using PDF/UA features such as "Actual Text" and "Alternate Text" for tag
+  readers (PDF tag tree)
+
+These techniques are described below.
+
+
+=== Technique 1: Embed MathML formulas as attachments
+
+https://www.w3.org/TR/MathML3/[MathML] is the the industry standard in
+representing math formulas, now at version 3, with
+https://w3c.github.io/mathml/[version 4] in the making. MathML is an XML-based
+language that offers both semantic and presentation formats, where the
+presentation format is most commonly used.
+
+Metanorma supports multiple math input mechanisms, including MathML,
+LaTeX math (https://en.wikibooks.org/wiki/LaTeX/Mathematics[Wikibooks]) and
+http://asciimath.org[AsciiMath], and standardizes on storing math in the
+canonical MathML format.
+
+Interoperable re-use of math formulas can be best facilitated by offering a math
+formula's MathML form from within the PDF. Since PDF supports embedding of
+attachment files, here we describe the technique of embedding MathML files as
+PDF attachments.
+
+The established way of storing individual MathML formulas is with files that end
+in the `.mml` extension (the
+https://www.iana.org/assignments/media-types/application/mathml+xml[IANA-registered]
+extension for MathML documents).
+
+The general process goes like this:
+
+1. For every MathML formula, we create a corresponding `.mml` file
+2. In the PDF, we link every rendered math formula (which is rendered into SVG)
+  to the corresponding `.mml` file as a PDF attachment.
+
+The result is that every math formula is linked to a MathML file that includes
+its MathML representation.
+
+NOTE: Not every PDF reader supports PDF attachments!
+
+.MathML attachments within the PDF (Adobe Acrobat "Attachments" pane)
+image::/assets/blog/2021-08-26_1.png[MathML attachments in Adobe Acrobat's "Attachments" pane]
+
+If the PDF reader (e.g. https://get.adobe.com/reader/[Adobe Reader DC]) supports
+PDF attachments, a click on the math formula will open (or at least, present a
+prompt) the corresponding MathML file.
+
+.Viewing the corresponding MathML source in Notepad
+image::/assets/blog/2021-08-26_2.png[Viewing the corresponding MathML source in Notepad]
+
+.PDF attachment support in PDF readers on different platforms
+[cols="a,a,a",options="header"]
+|===
+| Support | Platform | Application
+
+| ✓ | Windows | Adobe Reader
+| ✓ | macOS | Adobe Reader
+| ✗ | macOS | Preview
+| ✗ | macOS | Skim
+
+|===
 
 [NOTE]
 ====
-Windows OS doesn't have the file association (by default) for .mml file extension. You need to set default application (Notepad for example) to open files with .mml extension:
-. find any .mml file on the disk, or create an empty file, for example, by the command `notepad sample.mml`
-. select the .mml file in Explorer, right-click on it, select `Open with` and choose the program or select `Choose another app`, then check the box next to `Always use this app to open .mml files` (more information about how to do this you can find https://www.online-tech-tips.com/windows-10/how-to-change-file-associations-in-windows-10/[here])
-. re-run Acrobat might be required
+Microsoft Windows, by default, does not recognize the extension `.mml` mapping
+to the MathML format (or XML, for that matter).
+
+When opening an `.mml` file for the first time, you will need to set the default
+application to open files with .mml extension, for example, to Notepad.
+
+Steps to register `.mml` on Windows:
+
+. Find any `.mml` file on disk, or create an empty `.mml` file (for example,
+  with the command `notepad sample.mml`)
+
+. Select the `.mml` file in Windows Explorer, right-click to open the context
+  menu, select "Open with" and choose the desired program to open with. If the
+  desired application is not shown, select "Choose another app". Once an
+  application is selected, check the box next to "Always use this app to open
+  .mml files".
+
+. Close and re-open the PDF reader application.
+
+See this
+https://www.online-tech-tips.com/windows-10/how-to-change-file-associations-in-windows-10/[link]
+for further information.
 ====
 
-NOTE: MacOS applications Preview and Skim don't support PDF attachments.
+
+=== Technique 2: Embed human-readable math in the PDF content tree to allow copy/pasting
+
+While MathML fully expresses the intent of a math formula, being an XML language
+it is not superbly readable by humans (with exceptions, of course...).
+
+We define "human-readable math" as a math formula that can be easily typed
+and understood by humans, and the two leading formats are:
+
+* LaTeX math, which dictates a format that has been in use for years in the
+  TeX ecosystem;
+
+* AsciiMath, a math representation format that only uses ASCII characters.
+
+Both of these formats can be losslessly transformed into MathML.
+
+For example, the "lowercase phi" (ɸ) character, of which entry would require
+some keystroke gymastics on a normal machine, can be represented simply with:
+
+* LaTeX math: `\phi`
+* AsciiMath: `phi`
+
+Providing human-readable math in the PDF enables the following:
+
+* Finding math symbols within the PDF;
+
+* Copy/pasting and selection of math symbols from the PDF
+
+We utilize the insight that a PDF file actually contains two types of content,
+the content tree and the tag tree. The content tree provides a hierarchy of
+data elements that represent the selectable text of a PDF file. The tag tree
+provides a hierarchy of data elements intended for accessibility applications.
+
+Ever wonder how a scanned PDF file treated with OCR allows you to select text on
+top of a scan? That's the PDF content tree being layered behind the scanned
+image.
+
+This technique involves inserting "non-visible text" behind SVG math formulas.
+"Non-visible" means that we insert the human-readable math formulas in the PDF
+content tree, but place them behind the rendered math formulas and blend them
+into the background.
+
+To achieve this, mn2pdf directly edits the
+https://xmlgraphics.apache.org/fop/2.6/intermediate.html[Apache FOP Intermediate Format]
+allowing the insertion of low-level changes within XSL-FO layout processing.
+
+This involves the following steps:
+
+. In the data source, embed the additional human-readable math markup;
++
+NOTE: In the Metanorma SI Brochure, human-readable math markup is embedded
+in Metanorma presentation XML as comments in the MathML `<math>` tag.
+
+. Determine position and bounding box (width and height) of the rendered SVG
+  math formula;
+
+. Determine font size of the human-readable math to fit into bounding box;
+
+. Insert the human-readable math as text under the rendered math formula SVG in
+  the background color (white in the case of the SI Brochure).
+
+As shown in the screenshot below, the human-readable math markup (here
+AsciiMath) is inserted into the Content tree.
+
+.Human-readable math inserted into the PDF Content tree (Adobe Acrobat "Navigation > Content" pane)
+image::/assets/blog/2021-08-26_3.png[Human-readable math inserted into the PDF Content tree shown in Adobe Acrobat's "Navigation > Content" pane]
+
+To select the human-readable math markup of formula, the user only needs to
+click and drag the cursor from the left edge of the formula to its right edge.
+The selected text can then be copied and pasted into any application of choice.
+
+NOTE: If you click on the formula, the MathML PDF attachment will be opened as per
+technique 1.
+
+.Human-readable math copied from PDF
+image::/assets/blog/2021-08-26_4.png[Human-readable math copied from PDF]
+
+Math formulas can be a lot more complex than the above sample. In the screenshot
+below, notice that to fully copy the human-readable math it is necessary to
+select the text a few characters early and then end the selection a few
+characters after the visible formula. This is an issue with the PDF reader's
+selection implementation, but at least allows the formula to be copied out in
+full.
+
+.Complex human-readable math copied from PDF
+image::/assets/blog/2021-08-26_5.png[Complex human-readable math copied from PDF]
+
+NOTE: The light blue highlight at the bottom part of the rendered formula
+reflects where the inserted non-visible text (AsciiMath) is located.
+
+This functionality is available on most PDF readers.
+
+.Human-readable math selection support in PDF readers on different platforms
+[cols="a,a,a",options="header"]
+|===
+| Support | Platform | Application
+
+| ✓ | Windows | Adobe Reader
+| ✓ | macOS | Adobe Reader
+| ✓ | macOS | Preview
+| ✓ | macOS | Skim
+
+|===
 
 
-=== Techniques to render AsciiMath/LaTeX Math as PDF content to allow copy/pasting for non-Adobe readers (PDF Content tree)
+=== Technique 3: Embed human-readable formulas for tag readers using PDF/UA features (PDF Tag tree)
 
-In order to allow user to find math character and copy/pasting math formulas in PDF, we added non-visible text behind SVG math formulas.
-To do this we use Apache FOP Intermediate Format that allows to make changes at low-level and add some features that now allowable by standard way in XSL-FO into resulted PDF.
-How we did it:
-* in Metanorma xml added additional AsciiMath markup as comment in mathml tag
-* determine position and bounding box (width and height) of SVG math formula
-* determine font size of the AsciiMath text to fit into bounding box
-* insert white-color AsciiMath text under math formula
+The PDF standards provide two sets of accessibility mechanisms:
 
-As you can see on the screenshot below, each formula has AsciiMath markup representation in the Content tree.
+* https://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf[ISO 32000:2008] PDF specifies "alternate text";
 
-.Navigation pane 'Content'
-image::/assets/blog/2021-08-26_3.png[Navigation pane 'Content']
+* https://www.iso.org/standard/64599.html[ISO 14289-1:2014] PDF/UA specifies
+"actual text" or "replacement text".
 
-To select the text of formula, place the mouse cursor the left edge of formula, press left button, and move cursor until right edge (if you click on the formula, 
-then MathML file will be opened), press Ctrl-C, and then Ctrl-V in the destination application:
+"Alternate text" functionality is similar to the `alt` tag in HTML where a piece
+of text is used to provide human-readable information that provides an alternative
+representation of a content element, such as text description for a figure
+or a media file. This is commonly used by text-to-speech engines to vocalize
+text for users with visual impairments. For example:
 
-.Copied formula from PDF
-image::/assets/blog/2021-08-26_4.png[Copied text from PDF]
+* An image about a cat is tagged with alternative text "A cat staring into the
+  night sky";
 
-Sometimes, the formulas are more complex, like on the screenshot below, and for select the text (that actually placed in one line behind the formula) 
-you need to start select the text from a few preceding characters and until the following characters after the formula:
+* An embedded speech recording tagged with alternative text of its speech
+  content.
 
-.Copied complex formula from PDF
-image::/assets/blog/2021-08-26_5.png[Copied complex formula from PDF]
+"Actual text" (also called "replacement text") is used for entering textual
+replacements for images and other items that do not translate naturally into
+text, or for textual content that is represented in a non-standard manner.
+This is used to by screen readers to describe the element as a replacement
+description when applied to text.
+For example:
 
-NOTE: blue box in the bottom part of formula is the place of hidden text (AsciiMath)
+* An acronym can be tagged with an actual text of its expansion;
 
+* A link with text of http://www.example.org could be tagged with "An example
+  web site".
 
+In the SI Brochure, we embed the following content in these tags:
 
-=== Using PDF/UA features such as "Actual Text" and "Alternate Text" for tag readers (PDF Tag tree)
+* human-readable math markup in alternate text (PDF "Alt"), and
+* MathML in actual text (PDF "Actual Text").
 
-Regarding www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf[ISO 32000:2008], PDF can contain such Accessibility features as:
+Both Adobe Reader and Adobe Acrobat Pro can read the content of alternate text via the "`Read Out Loud`" function (available at the menu bar "`View > Read Out Load`").
 
-* Alternate Descriptions (or Alternate Text), Alt entry in PDF, are human-readable text that could, for example, be vocalized by a text-to-speech engine for the benefit of users with visual impairments.
-* Replacement Text (or Actual Text), Actual Text entry in PDF, can be provided for images and other items that do not translate naturally into text (as described in the preceding sub-clause), replacement text can be specified for content that does translate into text but that is represented in a nonstandard way.
+Adobe Acrobat Pro has additional features to inspect alternate text and actual
+text tags:
 
-In the PDF for the BIPM SI Brochure we put:
-
-* AsciiMath in Alt entry, and
-* MathML in Actual Text entry.
-
-Adobe Acrobat Reader and Acrobat Pro can read the content of Alt entry via "Read Out Loud" function (available via menu View -> Read Out Load).
-
-Adobe Acrobat Pro has additional features to see Alt and Actual entries texts:
-
-* open "Accessibility" pane, click "Set Alternate Text" and navigate through entries to see Alternate text
-
-.View 'Alternate text' via 'Accessibility' pane
+* open the "Accessibility" pane, click on "Set Alternate Text" and navigate
+through entries to see alternate text.
++
+.View 'Alternate Text' via the Adobe Acrobat Pro "Accessibility" pane
 image::/assets/blog/2021-08-26_6.png[View 'Alternate text' via 'Accessibility' pane]
 
-* open Tags pane via menu "View > Show/Hide > Navigation Pane > Tags", and then manually drill down to the document structure, then right-click the object, then "Object Properties", in order to see the Actual Text and Alternate Text
-
-.View 'Actual' and 'Alternate' texts via 'Tag' pane
+* open the "`Tags`" pane via the menu bar "View > Show/Hide > Navigation Pane >
+Tags", then manually drill down to the document structure, then right-click
+the object, then "Object Properties", in order to see the Actual Text and
+Alternate Text
++
+.View 'Actual Text' and 'Alternate Text' via the Adobe Acrobat Pro "Tags" pane
 image::/assets/blog/2021-08-26_7.png[.View 'Actual' and 'Alternate' texts via 'Tag' pane]
 
+These accessibility features are essential for visually impaired readers and
+satisfy accessibility requirements that many organizations face with, including
+the US government's https://www.section508.gov[Section 508] and the principles
+described in
+https://www.w3.org/WAI/WCAG21/Techniques/[Techniques for WCAG 2.1 in PDF].
 
-NOTE: Acrobat Reader, and MacOS applications Preview and Skim, can't a way to see Alt and Actual Text entries text.
+NOTE: Users without screen readers and accessibility tools may not be able to
+inspect the implementation of these additional PDF accessibility features.
+
+.Alternate text and actual text support in PDF readers on different platforms
+[cols="a,a,a",options="header"]
+|===
+| Support | Platform | Application
+
+| ✓✓ | Windows | Adobe Acrobat Pro (text to speech, alternate text, actual text)
+| ✓ | Windows | Adobe Reader (only text to speech)
+| ✓✓ | macOS | Adobe Acrobat Pro (text to speech, alternate text, actual text)
+| ✓ | macOS | Adobe Reader (only text to speech)
+| ✗ | macOS | Preview
+| ✗ | macOS | Skim
+
+|===
+
+NOTE: Acrobat Reader, and macOS applications Preview and Skim, do not have a way
+to see alternate text and actual text.
 
 
 == References
 
-* www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf[ISO 32000:2008]
+* https://www.iso.org/standard/51502.html[ISO 32000:2008], the PDF 1.7 standard; or
+
+* https://www.iso.org/standard/64599.html[ISO 14289-1:2014], the PDF/UA (PDF universal accessibility) standard.
