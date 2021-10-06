@@ -21,10 +21,7 @@ excerpt: >-
   ISO 32000:2008 PDF standard to best facilitate usage of assistive
   technologies.
 ---
-
-== Accessibility tagging in Metanorma PDFs
-
-=== Need for accessibility tagging
+== Need for accessibility tagging
 
 https://www.atia.org/home/at-resources/what-is-at/[Assistive technologies (AT)]
 in general and screen readers are important tools for the visually impaired
@@ -44,7 +41,7 @@ https://www.section508.gov[Section 508] and the
 https://ec.europa.eu/social/main.jsp?catId=1202[European Accessibility Act].
 
 
-=== Introducing the PDF tag tree
+== Introducing the PDF tag tree
 
 Those who have read the previous post about
 link:/blog/2021-08-26/pdf-accessibility-for-math-formulas/[PDF math accessibility]
@@ -87,7 +84,7 @@ NOTE: Specification of PDF tags are defined in the PDF 1.7 standard,
 https://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf[ISO 32000:2008].
 
 
-=== Basic structural tagging
+== Basic structural tagging
 
 As described in the previous post,
 Metanorma generates PDFs through `mn2pdf`, a Java PDF processor based on the
@@ -117,9 +114,9 @@ In the following sections we illustrate how Metanorma performs tagging.
 image::/assets/blog/2021-09-03_1.png[The ISO Rice document with an accurately populated tag tree]
 
 
-=== Detailed structural tagging
+== Detailed structural tagging
 
-==== Lists and list items
+=== Lists and list items
 
 The PDF standard also provides the list and list item tags to identify those
 roles within rendered content, in Metanorma we extend the mapping to them.
@@ -143,7 +140,7 @@ image::/assets/blog/2021-09-03_2.png[Tags with `L` and `LI` for list and list it
 
 We've customized the mapping to more accuracy of the tagging:
 
-==== Headings, sub-headings and more
+=== Headings, sub-headings and more
 
 The PDF standard provides a series of heading tags to identify the
 differentiation of importance amongst headings, and they are automatically
@@ -169,7 +166,7 @@ the generation engine in output.
 .Tags `H1` to `H6` for clause and sub-clause headings
 image::/assets/blog/2021-09-03_3.png[Tags `H1` to `H6` for clause and sub-clause headings]
 
-==== Table of contents
+=== Table of contents
 
 The PDF standard provides the `TOC` and `TOCI` tags for the "Table of Contents"
 section and each individual entry within the table of contents.
@@ -188,7 +185,7 @@ section and each individual entry within the table of contents.
 image::/assets/blog/2021-09-03_4.png[Tags `TOC` and `TOCI` for the Table of Contents]
 
 
-==== Block quotes
+=== Block quotes
 
 The `BlockQuote` tag is provided by the PDF standard to tag quotations in block
 form.
@@ -206,7 +203,7 @@ form.
 image::/assets/blog/2021-09-03_5.png[Tag `BlockQuote` for block quotations]
 
 
-==== Index
+=== Index
 
 While not every document contains an index, the PDF standard helpfully provides
 a special tag `Index` to indicate a document's index content.
@@ -224,7 +221,7 @@ a special tag `Index` to indicate a document's index content.
 .Tag `Index` for the document's Index
 image::/assets/blog/2021-09-03_6.png[Tag `Index` for the document's Index]
 
-==== Source code
+=== Source code
 
 The PDF standard provides the `Code` tag to indicate that the tagged content
 is software source code.
@@ -242,7 +239,7 @@ is software source code.
 image::/assets/blog/2021-09-03_7.png[Tag `Code` to indicate source code]
 
 
-=== Summary
+== Summary
 
 Metanorma provides excellent support of PDF accessibility features out of the
 box, and particularly provides an accurate and fully structured tag tree in
@@ -251,7 +248,7 @@ generated PDFs to facilitate usage of assistive technologies.
 If you have any further accessibility needs with Metanorma, please do not
 hesitate to contact us!
 
-=== References
+== References
 
 * https://www.iso.org/standard/51502.html[ISO 32000:2008], the PDF 1.7 standard
 
