@@ -13,16 +13,13 @@ jobs:
     name: Build site
     runs-on: ubuntu-latest
     steps:
-    - name: Setup prerequisites
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y curl make libxml2-dev libxslt-dev openssl
     - uses: actions/checkout@v2
-    - name: Use Ruby
-      uses: ruby/setup-ruby@v1
+
+    - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7
+        ruby-version: 3.0
         bundler-cache: true
+
     - name: Build site
       run: |
         make _site

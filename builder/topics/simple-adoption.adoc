@@ -311,7 +311,7 @@ gem configuration. That is done using a `:customize:` document attribute. [added
 Metanorma Generic also supports configuration via Ruby code.
 By following the steps below you can create your own Ruby Gem for your Metanorma flavour.
 
-NOTE: Examples are borrowed from https://github.com/metanorma/metanorma-rsd repository.
+NOTE: Examples are borrowed from https://github.com/metanorma/metanorma-ribose repository.
 
 
 ==== Step 1: Create an empty Gem
@@ -326,7 +326,7 @@ bundle init
 Then add `metanorma-generic` as a dependency in your `{gem-name}.gemspec` file.
 
 `{gem-name}` is typically `metanorma-{your-flavor-name}`.
-For example, for Metanorma RSD, it is `metanorma-rsd`.
+For example, for Metanorma Ribose, it is `metanorma-ribose`.
 
 
 ==== Step 2: Create your Metanorma configuration in Ruby
@@ -337,23 +337,23 @@ In this step you will create:
 
 `lib/metanorma-{your-flavor-name}.rb` is the entry point for your gem.
 
-For example, this is `lib/metanorma-rsd.rb`:
+For example, this is `lib/metanorma-ribose.rb`:
 
 [source,ruby]
 --
 Metanorma::Generic.configure do |config|
   config.organization_name_long = 'Ribose Inc.'
   config.organization_name_short = 'Ribose'
-  config.document_namespace = 'https://open.ribose.com/standards/rsd'
+  config.document_namespace = 'https://open.ribose.com/standards/ribose'
 
   isodoc_rsd_html_folder = File.join(
-    File.expand_path('isodoc', __dir__), 'rsd', 'html'
+    File.expand_path('isodoc', __dir__), 'ribose', 'html'
   )
 
   config.wordstylesheet = File.join(
     isodoc_rsd_html_folder, 'wordstyle.scss'
   )
-  config.standardstylesheet = File.join(isodoc_rsd_html_folder, 'rsd.scss')
+  config.standardstylesheet = File.join(isodoc_rsd_html_folder, 'ribose.scss')
   config.header = File.join(isodoc_rsd_html_folder, 'header.html')
   config.wordcoverpage = File.join(
     isodoc_rsd_html_folder, 'word_rsd_titlepage.html'
@@ -368,17 +368,17 @@ Metanorma::Generic.configure do |config|
                                    'html_rsd_intro.html')
   config.scripts = File.join(isodoc_rsd_html_folder, 'scripts.html')
   config.logo_path = File.join(isodoc_rsd_html_folder, 'logo.png')
-  config.xml_root_tag = 'rsd-standard'
+  config.xml_root_tag = 'ribose-standard'
 
-  rsd_rng_folder = File.join(File.expand_path('asciidoctor', __dir__), 'rsd')
-  config.validate_rng_file = File.join(rsd_rng_folder, 'rsd.rng')
+  rsd_rng_folder = File.join(File.expand_path('asciidoctor', __dir__), 'ribose')
+  config.validate_rng_file = File.join(rsd_rng_folder, 'ribose.rng')
 end
 
-require 'metanorma/rsd'
+require 'metanorma/ribose'
 require 'isodoc/generic'
 
 require 'asciidoctor' unless defined? Asciidoctor::Converter
-require 'asciidoctor/rsd'
+require 'asciidoctor/ribose'
 --
 
 In this configuration, you have to provide paths to your style definitions:
@@ -407,17 +407,17 @@ And these files:
 * `lib/asciidoctor/{your-flavor-name}.rb`
 * `lib/asciidoctor/{your-flavor-name}/converter.rb`
 
-For example, in `metanorma-rsd`, you would have these files:
+For example, in `metanorma-ribose`, you would have these files:
 
-* `lib/metanorma/rsd.rb`
-* `lib/metanorma/rsd/processor.rb`
-* `lib/metanorma/rsd/version.rb`
-* `lib/isodoc/rsd.rb`
-* `lib/isodoc/rsd/metadata.rb`
-* `lib/isodoc/rsd/html_converter.rb`
-* `lib/isodoc/rsd/word_converter.rb`
-* `lib/asciidoctor/rsd.rb`
-* `lib/asciidoctor/rsd/converter.rb`
+* `lib/metanorma/ribose.rb`
+* `lib/metanorma/ribose/processor.rb`
+* `lib/metanorma/ribose/version.rb`
+* `lib/isodoc/ribose.rb`
+* `lib/isodoc/ribose/metadata.rb`
+* `lib/isodoc/ribose/html_converter.rb`
+* `lib/isodoc/ribose/word_converter.rb`
+* `lib/asciidoctor/ribose.rb`
+* `lib/asciidoctor/ribose/converter.rb`
 
 
 The first file `lib/metanorma/{your-flavor-name}.rb` defines your module,
@@ -425,9 +425,9 @@ and links your flavor's processor to the Metanorma processor framework.
 
 [source,ruby]
 --
-# lib/metanorma/rsd.rb
+# lib/metanorma/ribose.rb
 require "metanorma"
-require "metanorma/rsd/processor"
+require "metanorma/ribose/processor"
 
 module Metanorma
   module Rsd
@@ -444,7 +444,7 @@ to IsoDoc by inheriting the `IsoDoc::Generic::Metadata` class:
 
 [source,ruby]
 --
-# lib/isodoc/rsd/metadata.rb
+# lib/isodoc/ribose/metadata.rb
 require "isodoc"
 
 module IsoDoc
@@ -463,16 +463,16 @@ Inherit `IsoDoc::Generic` convertors depending on the types of outputs
 your flavour wishes to support, using the previously created `Metadata`
 file.
 
-The following code from `lib/isodoc/rsd/html_convert.rb` shows an example
-where the HTML convertor is inherited to provide HTML output for RSD,
+The following code from `lib/isodoc/ribose/html_convert.rb` shows an example
+where the HTML convertor is inherited to provide HTML output for Ribose,
 and to read in `IsoDoc::Generic::Metadata`.
 
 [source,ruby]
 --
-# lib/isodoc/rsd/html_convert.rb
+# lib/isodoc/ribose/html_convert.rb
 require "isodoc"
 require "isodoc/generic/html_convert"
-require "isodoc/rsd/metadata"
+require "isodoc/ribose/metadata"
 
 module IsoDoc
   module Rsd
@@ -495,7 +495,7 @@ This is the entry point for content processing.
 
 [source,ruby]
 --
-# lib/metanorma/rsd/processor.rb
+# lib/metanorma/ribose/processor.rb
 require "metanorma/processor"
 
 module Metanorma
@@ -503,9 +503,9 @@ module Metanorma
     class Processor < Metanorma::Processor
 
       def initialize
-        @short = :rsd
+        @short = :ribose
         @input_format = :asciidoc
-        @asciidoctor_backend = :rsd
+        @asciidoctor_backend = :ribose
       end
 
       def output_formats
@@ -546,8 +546,8 @@ Create the version file indicating your flavor's gem version at
 
 [source,ruby]
 --
-# lib/metanorma/rsd/version.rb
-require "metanorma/rsd"
+# lib/metanorma/ribose/version.rb
+require "metanorma/ribose"
 
 module Metanorma
   module Rsd
@@ -562,9 +562,9 @@ input converters.
 
 [source,ruby]
 --
-# lib/asciidoctor/rsd.rb
-require "metanorma/rsd/version"
-require_relative "rsd/converter"
+# lib/asciidoctor/ribose.rb
+require "metanorma/ribose/version"
+require_relative "ribose/converter"
 
 module Asciidoctor
   module Rsd
@@ -579,17 +579,17 @@ registers your new flavour to be used in `Metanorma::Cli`.
 
 [source,ruby]
 --
-# lib/asciidoctor/rsd/converter.rb
+# lib/asciidoctor/ribose/converter.rb
 require "asciidoctor/standoc/converter"
 require 'asciidoctor/generic/converter'
 
 module Asciidoctor
   module Rsd
-    # A {Converter} implementation that generates RSD output, and a document
+    # A {Converter} implementation that generates Ribose output, and a document
     # schema encapsulation of the document for validation
     #
     class Converter < Asciidoctor::Generic::Converter
-      register_for "rsd"
+      register_for "ribose"
     end
   end
 end

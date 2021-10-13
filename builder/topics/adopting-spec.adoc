@@ -9,8 +9,8 @@ layout: builder-docs
 [TIP]
 ====
 .Summary
-Copy the RSD schema
-from https://github.com/metanorma/metanorma-model-iso/blob/main/grammars/rsd.rng.
+Copy the Ribose schema
+from https://github.com/metanorma/metanorma-model-iso/blob/main/grammars/ribose.rng.
 You may need to adapt some of the enums in the model, or in the ISO Standards model that it inherits;
 but in the first instance, you can just ignore the differences—and ignore the validation feedback
 that the toolset gives.
@@ -45,7 +45,7 @@ To adapt the schema for your publication set,
 
 == Schema customization
 
-For example, the `rsd.rnc` schema, expressed in RelaxNG Compact, is specific to Ribose Standard documents: it inherits from the ISO Standards model, modifying 10 elements, and adding five. As an example of modifying elements, RSD permits preformatted text (Ascii art) in figures, which ISO does not:
+For example, the `ribose.rnc` schema, expressed in RelaxNG Compact, is specific to Ribose Standard documents: it inherits from the ISO Standards model, modifying 10 elements, and adding five. As an example of modifying elements, Ribose permits preformatted text (Ascii art) in figures, which ISO does not:
 
 .ISO
 [source,asciidoc]
@@ -59,7 +59,7 @@ figure =
   }
 ----
 
-.RSD
+.Ribose
 [source,asciidoc]
 ----
 figure =
@@ -71,17 +71,17 @@ figure =
   }
 ----
 
-The preformatted text tag `pre` is an addition to the RSD specification, which is why it lies outside the `include "isostandard.rnc {}"` container:
+The preformatted text tag `pre` is an addition to the Ribose specification, which is why it lies outside the `include "isostandard.rnc {}"` container:
 
-.RSD
+.Ribose
 [source,asciidoc]
 ----
 pre = element pre { text }
 ----
 
-As another instance of customization, the `BibItemType` enumeration of permissible bibliographical item types is extended in RSD to include the document types specific to RSD:
+As another instance of customization, the `BibItemType` enumeration of permissible bibliographical item types is extended in Ribose to include the document types specific to Ribose:
 
-.RSD
+.Ribose
 [source,asciidoc]
 ----
 BibItemType |=
