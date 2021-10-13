@@ -305,3 +305,91 @@ Table cells under OGC always have a vertical alignment of `middle` [added in
 https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.1]. Any
 markup instructions to set cell alignment to a different vertical alignment
 are ignored.
+
+
+=== Unnumbering
+
+Almost any block that receive a numbering sequence can be unnumbered via `[%unnumbered]` attribute. +
+Specifically figures, examples, equations, sources and tables.
+
+In principle, we can prepend `[%unnumbered]` attribute to the block to get it out from the numbering sequence:
+
+.Unnumbering blocks by prepending `[%unnumbered]` attribute. (It works for almost any block.)
+[source]
+--
+// Unnumbered figure
+[%unnumbered]
+image::images/fig1.png[]
+
+// Unnumbered example
+[%unnumbered]
+[example]
+Example content
+
+// Unnumbered equation
+[%unnumbered]
+[stem]
+++++
+x = y + z
+++++
+
+// Unnumbered source
+[%unnumbered]
+[source,json]
+----
+{
+  "title": "Buildings in Bonn",
+  "description": "Access to data about buildings in the city of Bonn via a Web API."
+}
+----
+
+// Unnumbered table
+[%unnumbered]
+[cols="2",options="header"]
+|===
+| header 1 | header 2
+| cell 1 | cell 2
+|===
+--
+
+
+Now, there is a more estetic way to apply this attribute.
+
+Depending of the block, we can append `%unnumbered` to the name of the block and get the same result, e.g.: +
+`[example%unnumbered]`, `[stem%unnumbered,json]`, etc.
+
+For tables, we can add `unnumbered` attribute as an option, e.g.: `[cols="...",options="header,unnumbered"]`
+
+So:
+
+.Unnumbering blocks by appending `%unnumbered` to its name.
+[source]
+--
+// Unnumbered example
+[example%unnumbered]
+Example content
+
+// Unnumbered equation
+[stem%unnumbered]
+++++
+x = y + z
+++++
+
+// Unnumbered source
+[source%unnumbered,json]
+----
+{
+  "title": "Buildings in Bonn",
+  "description": "Access to data about buildings in the city of Bonn via a Web API."
+}
+----
+
+// Unnumbered table
+[cols="2",options="header,unnumbered"]
+|===
+| header 1 | header 2
+| cell 1 | cell 2
+|===
+--
+
+As a rule of thumb, if you don't remember how to unnumber a certain block, just prepend `[%unnumbered]`, it works for any block that supports unnumbering.
