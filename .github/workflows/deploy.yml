@@ -34,19 +34,19 @@ jobs:
       name: ${{ needs.set_environment.outputs.my_env }}
       url: ${{ needs.set_environment.outputs.my_url }}
     steps:
-    - name: Setup prerequisites
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y curl make libxml2-dev libxslt-dev openssl
-    - name: Setup snaps
-      run: |
-        sudo snap install aws-cli --classic
     - uses: actions/checkout@v2
-    - name: Use Ruby
-      uses: ruby/setup-ruby@v1
+
+    - uses: unfor19/install-aws-cli-action@v1
+
+    - uses: actions/setup-node@v2
       with:
-        ruby-version: '2.7'
+        node-version: '14'
+
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.0
         bundler-cache: true
+
     - name: Build site
       run: |
         make _site
