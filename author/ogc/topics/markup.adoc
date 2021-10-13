@@ -307,14 +307,14 @@ markup instructions to set cell alignment to a different vertical alignment
 are ignored.
 
 
-=== Unnumbering
+=== Remove numbering
 
 Almost any block that receive a numbering sequence can be unnumbered via `[%unnumbered]` attribute. +
 Specifically figures, examples, equations, sources and tables.
 
 In principle, we can prepend `[%unnumbered]` attribute to the block to get it out from the numbering sequence:
 
-.Unnumbering blocks by prepending `[%unnumbered]` attribute. (It works for almost any block.)
+.Remove numbering of blocks by prepending `[%unnumbered]` attribute
 [source]
 --
 // Unnumbered figure
@@ -353,7 +353,7 @@ x = y + z
 --
 
 
-Now, there is a more estetic way to apply this attribute.
+Now, there is a more esthetic way to apply this attribute.
 
 Depending of the block, we can append `%unnumbered` to the name of the block and get the same result, e.g.: +
 `[example%unnumbered]`, `[stem%unnumbered,json]`, etc.
@@ -362,7 +362,7 @@ For tables, we can add `unnumbered` attribute as an option, e.g.: `[cols="...",o
 
 So:
 
-.Unnumbering blocks by appending `%unnumbered` to its name.
+.Remove numbering of blocks by appending `%unnumbered` attribute
 [source]
 --
 // Unnumbered example
@@ -392,4 +392,4 @@ x = y + z
 |===
 --
 
-As a rule of thumb, if you don't remember how to unnumber a certain block, just prepend `[%unnumbered]`, it works for any block that supports unnumbering.
+As a rule of thumb, if you are not sure how to (esthetically) remove the numbering of a certain block, just prepend `[%unnumbered]` to it. It works for any block that supports `unnumbered` attribute.
