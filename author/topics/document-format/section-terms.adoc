@@ -165,6 +165,44 @@ EXAMPLE:
 `droploc%` serves as an indication for Metanorma not to prepend
 the number with the location type of "`Clause`".
 
+=== Complex designations
+*Designation* is the cover term for names of concepts that are included in terms;
+it covers the _preferred_ name (which is marked up as the subheading for the term);
+the _alternative_ or _admitted_ names (marked up as `admitted:[]`), and the
+_deprecated_ names (marked up as `deprecated:[]`). Each designation in Metanorma Asciidoc
+must appear in its own paragraph.
+
+Metanorma allows multiple preferred designations [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0],
+although many Standards Defining Organisations do not. In case you need to specify multiple designations,
+use `preferred:[]` for the second and subsequent designations. By default, they will be rendered in the
+same term title as the first preferred designation, delimited by semicolons.
+
+Metadata about designations can be given in a definition list, after the designation
+(including the term subheading), marked with option attribute
+`[%metadata]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0].
+The following keys are allowed:
+
+language:: the language of the designation (ISO-639 code)
+script:: the language of the designation (ISO-15924 code)
+type:: type of expression used as designation; legal values are `prefix`, `suffix`, `abbreviation`, and `full`.
+
+[source,asciidoc]
+----
+== Terms and definitions
+=== Term 1
+
+[%metadata]
+language:: eng
+
+admitted:[Alternative term name]
+
+[%metadata]
+script:: Hans
+
+deprecated:[Deprecated term name]
+type:: full
+----
+
 === Complex definitions
 
 It is possible for a term to have multiple definitions, each of them with its
@@ -656,6 +694,9 @@ term:[term,display-text]
 // If a specific version of the cross-reference text is required.
 {{term,display-text,cross-reference-text}}
 ----
+
+`term` in concept syntax is matched against any of the preferred terms
+in the document, but the wording of `term` is expected to be an exact match.
 
 NOTE: Metanorma automatically creates anchor references for every concept
 from the document, which is used when referencing by term.
