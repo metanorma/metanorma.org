@@ -165,6 +165,33 @@ EXAMPLE:
 `droploc%` serves as an indication for Metanorma not to prepend
 the number with the location type of "`Clause`".
 
+=== Complex terms
+Terms can be provided with extended metadata in a definition list,
+after the term subheading,  marked with option attribute
+`[%metadata]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0].
+The following keys are allowed:
+
+domain:: The domain of the term
+subject:: The subject of the term
+usageinfo:: Usage information about the term
+
+[source,asciidoc]
+----
+== Terms and definitions
+=== Term 1
+
+[%metadata]
+domain:: hydraulics
+subject:: pipes
+usageinfo::
++
+---
+Usage depends on precedent.
+
+Refer to your local standards body.
+---
+----
+
 === Complex designations
 *Designation* is the cover term for names of concepts that are included in terms;
 it covers the _preferred_ name (which is marked up as the subheading for the term);
@@ -189,6 +216,17 @@ isInternational:: designation is valid across languages and country; value is bo
 abbreviationType:: type of abbreviation used; legal values are `truncation`, `acronym`, and `initialism`
 pronunciation:: guide to pronunciation for designation
 
+Grammar is encoded as keys within `grammar`:
+
+grammar:gender:: the gender of the designation; legal values are `masculine`, `feminine`, `neuter`, `common`. Multiple values are allowed, comma delimited
+grammar:isPreposition:: the designation is a preposition; value is boolean
+grammar:isParticiple:: the designation is a participle; value is boolean
+grammar:isAdjective:: the designation is an adjective; value is boolean
+grammar:isVerb:: the designation is a verb; value is boolean
+grammar:isAdverb:: the designation is an adverb; value is boolean
+grammar:isNoun:: the designation is a noun; value is boolean
+grammar:grammarValue:: other miscellaneous grammatical information
+
 [source,asciidoc]
 ----
 == Terms and definitions
@@ -203,8 +241,15 @@ admitted:[Alternative term name]
 script:: Hans
 
 deprecated:[Deprecated term name]
+
+[%metadata]
 type:: full
+:language: fre
+:grammar:gender: masculine, feminine
 ----
+
+The metadata for a term, discussed immediately above, is given in the same definition list
+as the metadata about the first preferred designation, which is given in the term header.
 
 === Complex definitions
 
