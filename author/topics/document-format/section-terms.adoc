@@ -216,16 +216,17 @@ isInternational:: designation is valid across languages and country; value is bo
 abbreviationType:: type of abbreviation used; legal values are `truncation`, `acronym`, and `initialism`
 pronunciation:: guide to pronunciation for designation
 
-Grammar is encoded as keys within `grammar`:
+Grammar is encoded as keys within the tag `grammar`:
 
-grammar:gender:: the gender of the designation; legal values are `masculine`, `feminine`, `neuter`, `common`. Multiple values are allowed, comma delimited
-grammar:isPreposition:: the designation is a preposition; value is boolean
-grammar:isParticiple:: the designation is a participle; value is boolean
-grammar:isAdjective:: the designation is an adjective; value is boolean
-grammar:isVerb:: the designation is a verb; value is boolean
-grammar:isAdverb:: the designation is an adverb; value is boolean
-grammar:isNoun:: the designation is a noun; value is boolean
-grammar:grammarValue:: other miscellaneous grammatical information
+grammar::
+gender::: the gender of the designation; legal values are `masculine`, `feminine`, `neuter`, `common`. Multiple values are allowed, comma delimited
+isPreposition::: the designation is a preposition; value is boolean
+isParticiple::: the designation is a participle; value is boolean
+isAdjective::: the designation is an adjective; value is boolean
+isVerb::: the designation is a verb; value is boolean
+isAdverb::: the designation is an adverb; value is boolean
+isNoun::: the designation is a noun; value is boolean
+grammarValue::: other miscellaneous grammatical information
 
 [source,asciidoc]
 ----
@@ -244,8 +245,9 @@ deprecated:[Deprecated term name]
 
 [%metadata]
 type:: full
-:language: fre
-:grammar:gender: masculine, feminine
+language: fre
+grammar::
+gender::: masculine, feminine
 ----
 
 The metadata for a term, discussed immediately above, is given in the same definition list
