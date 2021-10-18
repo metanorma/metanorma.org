@@ -296,6 +296,35 @@ _doohickey_
 . general metasyntactic variable [SOURCE: ISO 2382, 2121373]
 ____
 
+=== Complex sources
+
+By default, term sources are considered authoritative, and are of either `identical` or
+`modified` status, depending on whether modification text is provided after a citation.
+Both can be overridden [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0],
+by adding explicit `status` and `type` attributes:
+
+`status`::
+`identical`::: The managed term in the present context is identical to the term as found in the bibliographic source.
+`modified`::: The managed term in the present context has been modified from the term as found in the bibliographic source.
+`restyled`::: The managed term in the present context has been restyled from the term as found in the bibliographic source.
+`context-added`::: The managed term in the present context has had context added to it, relative to the term as found in the bibliographic source.
+`generalisation`::: The managed term in the present context is a generalisation of the term as found in the bibliographic source.
+`specialisation`::: The managed term in the present context is a specialisation of the term as found in the bibliographic source.
+`unspecified`::: The managed term in the present context is in an unspecified relation to the term as found in the bibliographic source.
+`type`::
+`authoritative`::: The managed term is authoritative in the present context.
+`lineage`::: The managed term constitutes lineage in the present context.
+
+[source,asciidoc]
+----
+=== widget
+
+device performing an unspecified function
+
+[.source,type=lineage,status=generalisation]
+<<ISO2382,clause 2121372>>
+----
+
 
 === Predefined text / Boilerplate
 
