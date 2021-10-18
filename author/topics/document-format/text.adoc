@@ -820,15 +820,46 @@ image::rice_images/rice_image3_3.png[]
 
 === Image size
 
-The value `auto` is accepted for image width and height attributes. It is only passed on
-to HTML output; if the output is to Word, both the width and height attributes are stripped
-from the image.
+The default size of an image can be modified via `height` and `width` attributes, specified in pixels `px`.
 
+====
+.Image resizing specifying `height` and `width` attributes in pixels
+[source]
+----
+[height=150px,width=100px]
+image::logo.jpg[]
+----
+====
+
+Being the pixel the only supported unit, `px` suffix may be omitted.
+
+====
+.Image resizing without including `px` suffix; values are interpreted as pixels regardless
 [source,asciidoc]
 --
-[height=90,width=auto]
-image::logo.jpg
+[height=150,width=100]
+image::logo.jpg[]
 --
+====
+
+Image resizing in HTML is processed differently to Word/PDF output.
+
+In HTML, the aspect ratio of the image will try to be maintained in despite of the `height` and `width` values if these are too different from each other. While in Word/PDF the `height` and `width` will be respected no matter its specifications.
+
+The value `auto` is accepted for both width and height attributes to maintain aspect ratio in relation to one parameter value. But it is only passed on to HTML output; if the output is to Word, both the width and height attributes are stripped from the image.
+
+
+====
+.Image resizing specifying `width` in `auto` to maintain aspect ratio based on height parameter
+[source,asciidoc]
+--
+[height=150,width=auto]
+image::logo.jpg[]
+--
+====
+
+Unspecified sizing attributes are default to `auto`.
+
 
 === Captions and titles
 
