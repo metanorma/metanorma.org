@@ -1,0 +1,42 @@
+---
+layout: docs-base
+html-class: docs-page
+title: Run Metanorma on Linux
+redirect_from:
+  - /setup/linux
+---
+
+[[snap]]
+== Using https://snapcraft.io[Snap]
+
+The easiest way is to install the https://snapcraft.io/metanorma[Metanorma Snap]
+with a single command:
+
+[source,sh]
+----
+sudo snap install metanorma
+----
+
+If `snapd` isn't available on your distribution, use the all-in-one install script
+described below for various platforms.
+
+== Install script for Ubuntu
+
+[source,sh]
+----
+sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/ubuntu.sh | bash"
+curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/install-gems.sh | bash
+----
+
+
+== Install script for CentOS
+
+[source,sh]
+----
+sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/centos.sh | bash"
+curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/install-gems.sh | bash
+----
+
+TIP: You will need to have `curl` installed beforehand.
+
+TIP: For details, please see the https://github.com/metanorma/metanorma-linux-setup[metanorma-linux-setup] repository.
