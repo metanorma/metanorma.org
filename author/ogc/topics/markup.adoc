@@ -34,6 +34,142 @@ This is #text to be highlighted#.
 The Normative References section may be named just "`References`", reflecting
 OGC practice.
 
+=== Terms and definitions
+
+NOTE: This subsection supplements
+link:/author/topics/document-format/section-terms[Terms and definitions] in
+general Metanorma documentation.
+
+"Terms and definitions" in OGC documents will follow link:https://www.metanorma.org/author/iso/topics/markup/#terms-and-definitions[ISO practice] in most cases, so part of the predefined features in ISO flavour are inherited in OGC.
+
+This enables link:https://www.metanorma.org/author/iso/topics/markup/#combined-terms-and-definitions[combined terms and definitions] feature, which populates the top-level title automatically according to the subclauses contained. In such case, an actual "Terms and definitions" subclause must be added (as depicted below).
+
+So depending on the content of the clause, the top-level title is overriden to:
+
+* "`__Terms and definitions__`" if the clause contains only terms and definitions.
++
+--
+[example]
+====
+.Markup structure of "Terms and definitions" clause with no symbols or abbreviations
+[source,asciidoc]
+----
+== Terms and definitions
+
+=== term 1
+...
+
+=== term 2
+...
+----
+====
+--
+
+* "`__Terms, definitions and symbols__`" if the clause contains "Terms and definitions" and "Symbols" subclauses.
++
+--
+[example]
+====
+.Markup structure of "Terms and definitions" clause including symbols
+[source,asciidoc]
+----
+== Terms, definitions and symbols
+
+=== Terms and definitions
+...
+
+=== Symbols
+...
+----
+====
+--
+
+* "`__Terms, definitions and abbreviated terms__`" if the clause contains "Terms and definitions" and "Abbreviated terms" subclauses.
++
+--
+[example]
+====
+.Markup structure of "Terms and definitions" clause including abbreviations
+[source,asciidoc]
+----
+== Terms, definitions and abbreviated terms
+
+=== Terms and definitions
+...
+
+=== Abbreviated terms
+...
+----
+====
+--
+
+* "`__Terms, definitions, symbols and abbreviated terms__`", if the clause contains "Terms and definitions", "Symbols" and "Abbreviated terms" subclauses.
++
+--
+[example]
+====
+.Markup structure of "Terms and definitions" clause including symbols and abbreviations
+[source,asciidoc]
+----
+== Terms, definitions, symbols and abbreviated terms
+
+=== Terms and definitions
+...
+
+=== Symbols
+...
+
+=== Abbreviated terms
+...
+----
+====
+--
+
+Note that in every case section titles are given in sentence case, i.e. only the first letter of the first word is uppercased.
+
+On the ohter hand, a boilerplate text is introduced at the beginning of the clause in accordance to OGC ModSpec requirements. And, as pointed in link:https://www.metanorma.org/author/topics/document-format/section-terms/[Terms and definitions], this can be overridden by using `[.boilerplate]` attribute applied to the first subclause:
+
+[example]
+====
+.Markup practice to override boilerplate content in "Terms and definitions" section
+[source,asciidoc]
+----
+== Terms and definitions
+
+[.boilerplate]
+=== My predefined text
+
+Predefined content that overwrites the default one taking into
+account that:
+
+* The title "My predefined text" will not be shown in the output.
+* This practice does not follow OGC requirements.
+----
+====
+
+Finally, there will be documents that include a "Glossary" appendix for terms and definitions
+used in the document (with no symbols or abbreviations) having this structure:
+
+[example]
+====
+.Markup structure of a Glossary appendix containing terms and definitions
+[source,asciidoc]
+----
+[appendix,obligation="informative"]
+== Glossary
+
+=== term 1
+...
+
+=== term 2
+...
+----
+====
+
+
+These terms will follow the same format as "Terms and definitions" section. 
+
+
 == Preliminary sections
 
 === General
