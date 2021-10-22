@@ -211,10 +211,13 @@ The following keys are allowed:
 
 language:: the language of the designation (ISO-639 code)
 script:: the language of the designation (ISO-15924 code)
+geographicArea:: the geographic area of the designation (ISO-3166 code)
 type:: type of expression used as designation; legal values are `prefix`, `suffix`, `abbreviation`, and `full`.
 isInternational:: designation is valid across languages and country; value is boolean
 abbreviationType:: type of abbreviation used; legal values are `truncation`, `acronym`, and `initialism`
 pronunciation:: guide to pronunciation for designation
+absent:: the designation is absent
+letter-symbol:: the designation is not a linguistic expression, but a letter or symbol; value is boolean
 
 Grammar is encoded as keys within the tag `grammar`:
 
@@ -252,6 +255,37 @@ gender::: masculine, feminine
 
 The metadata for a term, discussed immediately above, is given in the same definition list
 as the metadata about the first preferred designation, which is given in the term header.
+
+A designation can be empty:
+
+[source,asciidoc]
+----
+== Terms and definitions
+=== {blank}
+
+admitted:[]
+----
+
+A figure or formula can be used instead of a verbal expression, provided it
+immediately follows a blank designation, before any metadata definition list.
+
+[source,asciidoc]
+----
+== Terms and definitions
+=== {blank}
+
+[stem]
+++++
+t_90
+++++
+
+admitted:[]
+
+....
+ASCII ART
+....
+----
+
 
 === Complex definitions
 
@@ -318,6 +352,25 @@ by adding explicit `status` and `type` attributes:
 [source,asciidoc]
 ----
 === widget
+
+device performing an unspecified function
+
+[.source,type=lineage,status=generalisation]
+<<ISO2382,clause 2121372>>
+----
+
+Term sources may apply designations instead of the entire term. This is done by placing the term source
+after the designation, and any metadata definition list describing the designation. Term sources applying to
+the entire term are placed at the end of the term clause.
+
+[source,asciidoc]
+----
+=== widget
+
+alt:[doohickey]
+
+[.source]
+<<ISO2382,clause 3>>
 
 device performing an unspecified function
 
