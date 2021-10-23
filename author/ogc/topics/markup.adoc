@@ -29,7 +29,7 @@ This is #text to be highlighted#.
 
 == Sections
 
-=== References 
+=== References
 
 The Normative References section may be named just "`References`", reflecting
 OGC practice.
@@ -248,7 +248,7 @@ EXAMPLE:
 
 A glossary in an OGC document is an annex with the same content as a
 "`Terms and definitions`" section, but with informative rather than normative
-effect. 
+effect.
 
 Glossaries are recognised as annexes with the title "`Glossary`", or marked up
 with `[heading=glossary]` [added in
@@ -286,9 +286,9 @@ relating to geographic and spatial information
 
 == Blocks
 
-=== Examples
+=== Example blocks
 
-Unlike the normal case in Metanorma, examples can have captions:
+Unlike typical Metanorma, examples can have captions:
 
 [source,asciidoc]
 ----
@@ -299,9 +299,164 @@ Text
 ====
 ----
 
-=== Tables
+=== Table blocks
 
 Table cells under OGC always have a vertical alignment of `middle` [added in
-https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.1]. Any
-markup instructions to set cell alignment to a different vertical alignment
+https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.1].
+
+Any markup instructions to set cell alignment to a different vertical alignment
 are ignored.
+
+
+=== Unnumbered blocks
+
+In Metanorma for OGC, all block elements are auto-numbered in order to
+facilitate unique referencing.
+
+Each block label is unique and typically composed of the block type with a
+sequence number. For instance, "`Table 3`" or "`Figure 5`".
+
+In some cases, the author may want to remove the unique label and the numbering
+applied to a block, for example, when inserting short source code blocks
+within text that have no need of being uniquely referenced.
+
+All auto-numbered blocks can be marked to not be labelled via the `unnumbered`
+attribute option.
+
+These block types include:
+
+* Figure
+* Example
+* Equation
+* Source code
+* Table
+
+The `unnumbered` attribute can be used in the following ways, in equal effect.
+
+For blocks without the explicit block type defined, prepend with the
+`[%unnumbered]` attribute right before the block definition.
+
+[example]
+====
+.Unnumbered figure using "[%unnumbered]"
+[source]
+--
+[%unnumbered]
+image::images/fig1.png[]
+--
+====
+
+[example]
+====
+.Unnumbered example using "[%unnumbered]"
+[source]
+--
+[%unnumbered]
+[example]
+Example content
+--
+====
+
+[example]
+====
+.Unnumbered equation using "[%unnumbered]"
+[source]
+--
+[%unnumbered]
+[stem]
+++++
+x = y + z
+++++
+--
+====
+
+[example]
+====
+.Unnumbered source using "[%unnumbered]"
+[source]
+--
+[%unnumbered]
+[source,json]
+----
+{
+  "title": "Buildings in city",
+  "description": "Access to data about buildings in the city via a Web API."
+}
+----
+--
+====
+
+[example]
+====
+.Unnumbered table using "[%unnumbered]"
+[source]
+--
+[%unnumbered]
+[cols="2",options="header"]
+|===
+| header 1 | header 2
+| cell 1 | cell 2
+|===
+--
+====
+
+For blocks with their types defined explicitly that do not have the `options`
+attribute list, insert "%unnumbered" right after the block type, before
+the block type separator, e.g.: `[example%unnumbered]`, `[stem%unnumbered]`, etc.
+
+[example]
+====
+.Unnumbered example by appending "%unnumbered" to block type
+[source]
+--
+[example%unnumbered]
+Example content
+--
+====
+
+[example]
+====
+.Unnumbered equation by appending "%unnumbered" to block type
+[source]
+--
+[stem%unnumbered]
+++++
+x = y + z
+++++
+--
+====
+
+[example]
+====
+.Unnumbered source by appending "%unnumbered" to block type
+[source]
+--
+[source%unnumbered,json]
+----
+{
+  "title": "Buildings in city",
+  "description": "Access to data about buildings in the city via a Web API."
+}
+----
+--
+====
+
+For tables, we can add the `unnumbered` attribute as an option,
+e.g.: `[cols="...",options="header,unnumbered"]`
+
+[example]
+====
+.Unnumbered table by adding "unnumbered" in the "options" attribute list
+[source]
+--
+[cols="2",options="header,unnumbered"]
+|===
+| header 1 | header 2
+| cell 1 | cell 2
+|===
+--
+====
+
+As a rule of thumb, if you are unsure how to remove the numbering of a block,
+just prepend `[%unnumbered]` to it. It works for any block that supports
+the `unnumbered` attribute.
