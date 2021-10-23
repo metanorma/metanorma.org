@@ -330,6 +330,36 @@ _doohickey_
 . general metasyntactic variable [SOURCE: ISO 2382, 2121373]
 ____
 
+This notation can also be used to incorporate non-verbal representations of terms,
+including tables, formulas, and figures, which can be given after or instead of
+a verbal definition [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0].
+Verbal definitions and non-verbal representations can be given term sources separately:
+
+[source,asciidoc]
+----
+=== widget
+
+alt:[doohickey]
+
+[.definition]
+--
+device performing an unspecified function
+
+[.source]
+<<ISO2382,clause 2121372>>
+
+|===
+| A | B
+
+| C | D
+|===
+
+[.source]
+<<ISO2382,clause 2121373>>
+--
+----
+
+
 === Complex sources
 
 By default, term sources are considered authoritative, and are of either `identical` or
