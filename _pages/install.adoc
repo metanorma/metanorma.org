@@ -8,32 +8,52 @@ redirect_from:
 
 = Setting up Metanorma
 
-To build documents with Metanorma, you need to have the Metanorma
-command-line toolchain installed.
+The Metanorma command-line toolchain can be installed with any of the following
+installation methods suitable for your platform.
 
-The toolchain consists of `metanorma-cli` Ruby gem and its dependencies.
+== Platform-specific installation
 
-In general, these installation methods are recommended.
+Choose your platform:
 
-Platform-specific methods:
+* link:/setup/macos/[macOS]
+* link:/setup/windows/[Windows]
+* link:/setup/linux/[Linux]
 
-* link:/setup/macos/[macOS via our Homebrew formula] 
-* link:/setup/linux/[Linux via our Snapcraft package]
-* link:/setup/windows/[Windows via our Chocolatey package]
+== Platform-independent installation
 
-Platform-independent methods:
+The following installation methods are intended for skilled Metanorma experts
+who develop on Metanorma or require automated actions.
 
 * link:/setup/docker/[Docker]
-* link:/software/metanorma-cli/[Ruby: install the native Ruby `metanorma-cli` gem]
-
++
 [TIP]
+.Installing via Docker
 ====
-.Full manual
+Docker is a platform-independent container engine. The official
+https://hub.docker.com/u/metanorma[Metanorma Docker containers on Docker Hub]
+provide a simple and consistent to run Metanorma, especially on
+continuous integration (CI) environments.
+====
 
-Assuming you know what you’re doing, you can manually install the `metanorma-cli` gem.
+* link:/software/metanorma-cli/[Ruby gem]
++
+[TIP]
+.Manual installation
+====
+Assuming you know what you’re doing, the
+https://rubygems.org/gems/metanorma-cli[metanorma-cli] gem can be manually
+installed.
+
 You will have to take care of dependencies: an appropriate Ruby version,
 plus other software depending on the end documents you’re building.
 
 Refer to link:/software/metanorma-cli/docs/installation/[Metanorma CLI installation docs]
 for details.
 ====
+
+== Continuous delivery environments
+
+Metanorma is often run on continuous integration (CI) and continuous deployment
+(CD) environments.
+
+* link:/setup/cicd[Using Metanorma with CI/CD at GitHub and GitLab]

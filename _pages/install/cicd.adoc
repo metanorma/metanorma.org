@@ -1,20 +1,41 @@
 ---
 layout: docs-base
 html-class: docs-page
-title: Run Metanorma in CI/CD environemnt
+title: Running Metanorma in CI/CD environments
 redirect_from:
   - /setup/cicd
 ---
+Metanorma is often run on continuous integration (CI) and continuous deployment
+(CD) environments.
 
-Because `metanorma` provides packages for different platform, which can be installed in non-interactive mode (via terminal). Check link:/install/[list of supported platfoms]
+== Running on CI/CD platforms
 
-== GitHub Actions
+We currently support the following CI/CD platforms:
 
-Also we provide several of GitHub Actions to simplify CI workflow:
+* GitHub Actions
+* GitLab CI
 
-* link:https://github.com/actions-mn/setup[`actions-mn/setup@v2`] - for installation metanorma
-* link:https://github.com/actions-mn/cli/tree/main/site-gen[`actions-mn/cli/site-gen@main`] - for site generation
 
-== GitLab CI
+=== Installation
 
-Also we have link:https://github.com/metanorma/metanorma-build-scripts/blob/master/cimas-config/gh-actions/samples/.gitlab-ci.yml[example how you can use our docker image in GitLab CI]
+Metanorma provides native packages installable on most major platforms and
+these packages can be installed through a non-interactive console/terminal.
+The full list is available link:/install/[here].
+
+Metanorma also provides additional automated actions for the setup and running
+of Metanorma on CI/CD testers.
+
+=== GitHub Actions
+
+The following GitHub Actions can be used to simplify a Metanorma CI workflow:
+
+* Installing Metanorma: link:https://github.com/actions-mn/setup[`actions-mn/setup@v2`]
+
+* Generate a Metanorma site: link:https://github.com/actions-mn/cli/tree/main/site-gen[`actions-mn/cli/site-gen@main`]
+
+=== GitLab CI
+
+For GitLab CI, Metanorma provides a sample `.gitlab-ci.yml` workflow file
+that demonstrates how to use the Metanorma docker container in the environment.
+
+* https://github.com/metanorma/metanorma-build-scripts/blob/master/cimas-config/gh-actions/samples/.gitlab-ci.yml[Sample `.gitlab-ci.yml`]
