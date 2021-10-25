@@ -48,6 +48,8 @@ jobs:
         bundler-cache: true
 
     - name: Build site
+      env:
+        JEKYLL_ENV: production
       run: |
         make _site
 
