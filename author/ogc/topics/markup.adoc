@@ -29,29 +29,44 @@ This is #text to be highlighted#.
 
 == Sections
 
+
 === References
 
-The Normative References section may be named just "`References`", reflecting
+The Normative References section can be named just "`References`", reflecting
 OGC practice.
+
 
 === Terms and definitions
 
-NOTE: This subsection supplements
+==== General
+
+The "Terms and definitions" clause for current OGC documents adhere mostly to
+the link:/author/iso/topics/markup/#terms-and-definitions[ISO terms and definitions]
+practices.
+
+An OGC "Terms and definitions" section can be specified in the following ways:
+
+* Standalone terms and definitions
+* Combined terms, definitions and symbols
+* Combined terms, definitions and abbreviated terms
+* Combined terms, definitions, symbols and abbreviated terms
+
+NOTE: The combined clauses feature is similar to that of the
+link:/author/iso/topics/markup/#combined-terms-and-definitions[ISO combined terms and definitions]
+clauses.
+
+NOTE: This section supplements
 link:/author/topics/document-format/section-terms[Terms and definitions] in
 general Metanorma documentation.
 
-"Terms and definitions" in OGC documents will follow link:https://www.metanorma.org/author/iso/topics/markup/#terms-and-definitions[ISO practice] in most cases, so part of the predefined features in ISO flavour are inherited in OGC.
+==== Standalone terms and definitions
 
-This enables link:https://www.metanorma.org/author/iso/topics/markup/#combined-terms-and-definitions[combined terms and definitions] feature, which populates the top-level title automatically according to the subclauses contained. In such case, an actual "Terms and definitions" subclause must be added (as depicted below).
+If the clause contains only terms and definitions.
+The clause title will be set to "`__Terms and definitions__`".
 
-So depending on the content of the clause, the top-level title is overriden to:
-
-* "`__Terms and definitions__`" if the clause contains only terms and definitions.
-+
---
+.Markup of simple "Terms and definitions" clause
 [example]
 ====
-.Markup structure of "Terms and definitions" clause with no symbols or abbreviations
 [source,asciidoc]
 ----
 == Terms and definitions
@@ -63,75 +78,124 @@ So depending on the content of the clause, the top-level title is overriden to:
 ...
 ----
 ====
---
 
-* "`__Terms, definitions and symbols__`" if the clause contains "Terms and definitions" and "Symbols" subclauses.
-+
---
+==== Combined terms, definitions and symbols
+
+If the clause contains terms and definitions, together with
+a list of symbols.
+
+The clause title will be set to "`__Terms, definitions and symbols__`".
+
+.Markup of "Terms and definitions" clause with symbols
 [example]
 ====
-.Markup structure of "Terms and definitions" clause including symbols
 [source,asciidoc]
 ----
 == Terms, definitions and symbols
 
 === Terms and definitions
+
+==== term 1
+
+...
+
+==== term 2
 ...
 
 === Symbols
+
+stem:[x + y]:: Notation one
+stem:[x - y]:: Notation two
 ...
 ----
 ====
---
 
-* "`__Terms, definitions and abbreviated terms__`" if the clause contains "Terms and definitions" and "Abbreviated terms" subclauses.
-+
---
+==== Combined terms, definitions and abbreviated terms
+
+If the clause contains terms and definitions, together with
+a list of abbreviated terms.
+
+The clause title will be set to "`__Terms, definitions and abbreviated terms__`".
+
+.Markup of "Terms and definitions" clause with abbreviated terms
 [example]
 ====
-.Markup structure of "Terms and definitions" clause including abbreviations
 [source,asciidoc]
 ----
 == Terms, definitions and abbreviated terms
 
 === Terms and definitions
+
+==== term 1
+
+...
+
+==== term 2
 ...
 
 === Abbreviated terms
+
+OGC:: Open Geospatial Consortium
+ISO:: International Organisation for Standardisation
 ...
 ----
 ====
---
 
-* "`__Terms, definitions, symbols and abbreviated terms__`", if the clause contains "Terms and definitions", "Symbols" and "Abbreviated terms" subclauses.
-+
---
+==== Combined terms, definitions, symbols and abbreviated terms
+
+If the clause contains a subclause named "Terms and definitions", "Symbols"
+and "Abbreviated terms", then the clause title will be set to
+"`__Terms, definitions, symbols and abbreviated terms__`".
+
+.Markup of "Terms and definitions" clause with symbols and abbreviated terms
 [example]
 ====
-.Markup structure of "Terms and definitions" clause including symbols and abbreviations
 [source,asciidoc]
 ----
 == Terms, definitions, symbols and abbreviated terms
 
 === Terms and definitions
-...
+
+==== term 1
+
+Definition 1
+
+==== term 2
+
+Definition 2
 
 === Symbols
+
+stem:[x + y]:: Notation one
+stem:[x - y]:: Notation two
 ...
 
 === Abbreviated terms
+
+OGC:: Open Geospatial Consortium
+ISO:: International Organisation for Standardisation
 ...
+
 ----
 ====
---
 
-Note that in every case section titles are given in sentence case, i.e. only the first letter of the first word is uppercased.
+NOTE: Section titles are rendered in sentence-case, i.e. only the first letter
+of the first word is capitalized.
 
-On the ohter hand, a boilerplate text is introduced at the beginning of the clause in accordance to OGC ModSpec requirements. And, as pointed in link:https://www.metanorma.org/author/topics/document-format/section-terms/[Terms and definitions], this can be overridden by using `[.boilerplate]` attribute applied to the first subclause:
 
+==== Modifying introductory text in "Terms and definitions"
+
+A default OGC introductory text is inserted at the beginning of the clause in
+accordance to OGC policies.
+
+As described in
+link:/author/topics/document-format/section-terms/[generic terms and definitions]
+documentation, this text can be overridden by using the `[.boilerplate]`
+attribute applied to the first subclause.
+
+.Overriding introductory content in the "Terms and definitions" section
 [example]
 ====
-.Markup practice to override boilerplate content in "Terms and definitions" section
 [source,asciidoc]
 ----
 == Terms and definitions
@@ -147,12 +211,21 @@ account that:
 ----
 ====
 
-Finally, there will be documents that include a "Glossary" appendix for terms and definitions
-used in the document (with no symbols or abbreviations) having this structure:
 
+==== Adding an informative glossary
+
+OGC documents are allowed to contain an informative "Glossary" as an appendix.
+This section is to contain terms and definitions that are purely of informative
+content, for example, terms imported from other documents meant only for illustration purposes.
+
+The "Glossary" appendix does not support symbols, abbreviations or other
+sections. Only terms and definitions are allowed.
+
+The "Glossary" appendix can be created as follows.
+
+.Markup structure of a Glossary appendix containing terms and definitions
 [example]
 ====
-.Markup structure of a Glossary appendix containing terms and definitions
 [source,asciidoc]
 ----
 [appendix,obligation="informative"]
@@ -166,8 +239,8 @@ used in the document (with no symbols or abbreviations) having this structure:
 ----
 ====
 
-
-These terms will follow the same format as "Terms and definitions" section. 
+These terms will be rendered in the same format as in the
+"Terms and definitions" clause.
 
 
 == Preliminary sections
