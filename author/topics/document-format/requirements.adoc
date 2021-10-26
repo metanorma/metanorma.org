@@ -4,25 +4,36 @@ layout: author-docs
 
 = Requirement, Recommendation, and Permission blocks
 
-Requirements, Recommendations, and Permissions are encoded using AsciiDoc markup
-for example blocks, prepended with an role attribute containing the type of the block
-(i.e., its obligation)—one of “requirement”, “recommendation”, or “permission”. For example:
+Metanorma supports encoding of machine-readable requirements, recommendations,
+and permissions.
 
-[source,asciidoc]
+The encoding utilizes the AsciiDoc "example" block markup together with a role
+attribute containing the type of the block.
+
+Supported types are:
+
+* `requirement`
+* `recommendation`
+* `permission`.
+
+[example]
 .Most basic example
------
+======
+[source,asciidoc]
+----
 [.permission]
 ====
 I recommend this
 ====
------
+----
+======
 
-(Below, "requirement" is used to refer to any of these three block types.)
+NOTE: Below, the term "requirement" is used to refer to any of these three block
+types.
 
 == Attributes
 
-In addition to block type described above,
-following attributes are supported (see usage example below):
+The following attributes are supported in these block types:
 
 `subject`:: Indicates the subject of the requirement.
 Does not get rendered in final output (although this may be overridden in flavours).
@@ -48,34 +59,37 @@ Multiple instances of `inherit` can also be expressed with the `inherit` macro,
 which can contain markup including
 cross-references [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21]. +
 +
-EXAMPLE: `inherit:[<<ref1>>]`
+[example]
+====
+[source,adoc]
+--
+inherit:[<<ref1>>]
+--
+====
 
 `:model`:: The specific data model followed by the requirement.
 
 `:type`:: The applicable subclass of requirement.
 
-[source,asciidoc]
-.An exhaustive attribute example
------
-[requirement,model=ogc,type="class",label="http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]",subject="Encoding of logical models",inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used",classification="priority:P0;domain:Hydrology,Groundwater;control-class:Technical",obligation="recommendation,requirement"]
-====
-inherit:[<<ref2>>]
-inherit:[<<ref3>>]
-I recommend this
-====
------
 
-As can be seen, the foregoing syntax can get quite awkward. For that reason, Metanorma also supports
-using a definition list, marked with option attribute `[%metadata]`, within the requirement,
-to enter the attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4],
-including `label`, `subject`, `inherit`, `classification`, `obligation`, `model`, and `type`.
-All attributes have the same syntax as above. That also allows `subjects` as well as `inherit` to
-be marked up as cross-references, and it allows multiple instances of an attribute to be marked up
-separately. So the foregoing example can also be marked up as:
+== Specifying attributes for requirement blocks
 
+Metanorma supports two types of entry methods for specifying attributes.
+
+=== Via a definition list
+
+Within the requirement block, a definition list marked with attribute
+`[%metadata]` can be used to enter
+attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4].
+
+This method allows specifying `subjects` and `inherit` as cross-references,
+and it allows multiple instances of an attribute to be marked up separately.
+
+[example]
+.Attributes specified in a definition list
+======
 [source,asciidoc]
-.An exhaustive attribute example
------
+----
 [requirement]
 ====
 [%metadata]
@@ -97,18 +111,46 @@ obligation:: recommendation,requirement
 
 I recommend this
 ====
+----
+======
+
+
+=== Via an attribute list
+
+Metanorma allows encoding of the attribute list as options following the
+definition of the requirement block.
+
+This generally works well for shorter attribute lists with shorter values.
+
+NOTE: The length can be a concern!
+
+[example]
+.Attributes specified in an option list
+=====
+[source,asciidoc]
 -----
+[requirement,model=ogc,type="class",label="http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]",subject="Encoding of logical models",inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used",classification="priority:P0;domain:Hydrology,Groundwater;control-class:Technical",obligation="recommendation,requirement"]
+====
+inherit:[<<ref2>>]
+inherit:[<<ref3>>]
+I recommend this
+====
+-----
+=====
 
 
 == Nested blocks
 
-Requirements can be nested (as is the case with any delimited block AsciiDoc),
-by adding one more delimiter symbol than its containing block; that means that
-nested requirements are marked up as nested examples.
+Metanorma requirements can be nested by adding one more delimiter symbol than
+its containing block.
 
+NOTE: Therefore nested requirements are marked up just like nested examples.
+
+[example]
+.Nested recommendations
+======
 [source,asciidoc]
-.Nesting example
------
+----
 [.permission]
 ====
 I permit this
@@ -120,31 +162,35 @@ Example 2
 I also permit this
 =====
 ====
------
+----
+======
+
 
 == Named blocks and descriptions
 
-You can mark up the internal structure of a requirement to make it machine-readable,
-although this is not expected to be reflected in rendering.
+The internal structure of a requirement can be encoded in order to make it
+machine-readable, although this is not expected to be reflected in rendering.
 
-The internal structure of requirements is marked up with open blocks,
-or [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6] example blocks,
+The internal structure of requirements is encoded using open blocks,
+or [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
+example blocks,
 which are marked up with a succession of two or more hyphens, rather than equals signs.
+
 Each block needs to be named with the kind of component it contains
 as a role attribute; the recognised values for Metanorma are:
 
-* specification (a formal statement, which may be considered
+* `specification` (a formal statement, which may be considered
 the object of the requirement)
-* measurement-target  (for quantitative requirements)
-* verification (verification steps for the requirement)
-* import (code stubs)
-* component (generic component of requirement) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4]
+* `measurement-target`  (for quantitative requirements)
+* `verification` (verification steps for the requirement)
+* `import` (code stubs)
+* `component` (generic component of requirement) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4]
 
-For example:
-
-[source,asciidoc]
+[example]
 .An example of a requirement with four components
------
+======
+[source,asciidoc]
+----
 [.requirement]
 ====
 [.specification]
@@ -168,12 +214,15 @@ This is a code stub
 --
 
 ====
------
+----
+======
 
-The component value is associated with an additional `class` attribute, to 
+The component value is associated with an additional `class` attribute, to
 specify the particular kind of component; if no such attribute is given,
-the default value is "component".
+the default value is `component`.
 
+[example]
+=====
 [source,asciidoc]
 ----
 [.requirement]
@@ -185,12 +234,15 @@ The following conditions need to be fulfilled...
 --
 ====
 ----
+=====
 
 The combination of example markup and open block markup  allows us to combine
 nested requirements with internal structure for the nested requirements:
 
-[source,asciidoc]
+[example]
 .An example of nested requirements with components
+======
+[source,asciidoc]
 -----
 [.requirement,label="requirement A"]
 ====
@@ -217,6 +269,7 @@ This is a measurement target
 
 ====
 -----
+======
 
 Any text not wrapped in a named open block is considered to be part of a description.
 
@@ -225,8 +278,10 @@ subpart of the requirement. These blocks can have types, referring to the conven
 or computer frameworks that they follow. They are given by setting the `type` attribute
 on the open block:
 
-[source,asciidoc]
+[example]
 .An example of mixed descriptions and typed open blocks
+=====
+[source,asciidoc]
 -----
 [.requirement,label="requirement A"]
 ====
@@ -242,6 +297,7 @@ This is some more descriptive text.
 
 ====
 -----
+=====
 
 
 Text in a named open block may be include or consist of machine-readable code; any such
@@ -253,8 +309,10 @@ that the code is to be run under.)
 The language of a source code block is likely to be distinct from the type of named block
 it is contained in.
 
-[source,asciidoc]
+[example]
 .An example of machine-readable code in a specification
+=====
+[source,asciidoc]
 -----
 [.requirement,label="requirement A"]
 ====
@@ -273,6 +331,7 @@ end
 
 ====
 -----
+=====
 
 
 By default, both named blocks and descriptions will be included in final output.
@@ -280,8 +339,10 @@ Often, though not always, named blocks contain machine-readable code which is no
 intended to be included in the output, but is supplemental to the human-readable
 description. That is signalled through the options attribute `exclude` on the named block.
 
-[source,asciidoc]
+[example]
 .An example of a complex recommendation with named blocks
+=====
+[source,asciidoc]
 -----
 [.recommendation,label="/ogc/recommendation/wfs/2",subject="user"]
 ====
@@ -324,4 +385,5 @@ success-response()
 --
 ====
 -----
+=====
 
