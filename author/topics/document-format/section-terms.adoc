@@ -4,9 +4,406 @@ layout: author-docs
 
 == Concepts, designations, terms and definitions
 
-=== Defining terms and definitions
+=== General
 
-The "`Terms and definitions`" sections follow a strict data input scheme:
+In many standards organizations, a dedicated "Terms and definitions" section is
+included in their documents in order to provide a local dictionary containing
+definitions for terms used within a document.
+
+This dictionary can be considered a "concept collection" or a "concept
+dictionary".
+
+Some organizations allow the specification of more than one "terms and
+definitions" section, for example, in order to separate normative and
+informative concepts.
+
+There are multiple possibilities when managing these concepts:
+
+* all concepts are defined locally in the document;
+
+* some concepts are locally defined while some are externally sourced
+
+* all concepts are sourced from one or more external entries
+  (e.g. a termbase, a document)
+
+Working with a concept collection within Metanorma requires understanding
+the following topics that are explained below:
+
+. How to work with a concept collection;
+
+. How to work with individual concepts.
+
+
+=== Working with a concept collection
+
+==== Basics
+
+To create a concept collection, commonly understood as a "terms and definitions
+section" within Metanorma, all you need is to apply the correct title for a
+section heading. Metanorma will be able to insert that in the correct location
+in the resulting document.
+
+Take ISO for example, its "`Terms and definitions`" clause is always at
+Clause 3 according to the ISO DIR 2.
+Regardless where the "Terms and definitions" clause is defined, it will always
+be rendered at Clause 3.
+
+.Creating a terms and definitions clause in Metanorma ISO
+[example]
+====
+[source,asciidoc]
+--
+== Terms and Definitions
+--
+
+renders as
+
+____
+*3. Terms and definitions*
+
+ISO and IEC maintain terminological databases for use in
+standardization at the following addresses:
+
+* ISO Online browsing platform: available at http://www.iso.org/obp[]
+* IEC Electropedia: available at http://www.electropedia.org[]
+____
+====
+
+Notice that in Metanorma ISO, there is predefined text that is automatically
+generated, not entered by the user. This is also the case for many standards
+bodies that specify rules for document structure.
+
+
+==== Clause title
+
+A terms and definitions clause will be recognized if either title below is given
+regardless of case:
+
+* _Terms and definitions_;
+* _Terms, definitions and symbols_;
+* _Terms, definitions and abbreviated terms_; or
+* _Terms, definitions, symbols and abbreviated terms_
+
+NOTE: This behavior differs across standard flavors; please refer to specific
+documentation for a particular flavor.
+
+[[source]]
+==== Concept source
+
+If the concepts of a standard are partly or fully sourced from an external
+document or collection, that external item is cited in a `source` attribute
+to the section.
+
+The syntax to apply one or more concept sources is as follows:
+
+[source,adoc]
+----
+[source=REFERENCE_ANCHOR]
+== Terms and definitions
+----
+
+Where the `REFERENCE_ANCHOR` is the reference anchor of the cited item.
+The definition of this cited reference item is typically entered under the
+"Normative references" clause.
+
+NOTE: The `source` attribute needs to be applied to the top-level clause, if
+there are subclauses.
+
+Any predefined text of the terms and definitions section is adjusted
+accordingly.
+
+.Setting ISO 712 as a terminology source for the concepts collection
+[example]
+====
+[source,asciidoc]
+--
+[source=ISO712]
+== Terms and Definitions
+--
+
+renders as
+
+.Illustration of predefined text of the Terms and Definitions section adjusted with a single source ("`ISO 712`").
+image::/assets/author/topics/document-format/section-terms/fig-terms-boilerplate-single-source.png[Illustration of predefined text of the Terms and Definitions section adjusted with a single source ("ISO 712")]
+====
+
+
+Multiple sources are allowed. The sources are to be quoted into a single value,
+and delimited by commas.
+
+[source,adoc]
+----
+[source="REFERENCE_ANCHOR1,REFERENCE_ANCHOR_2"]
+== Terms and definitions
+----
+
+.Setting multiple terminology sources for the terms and definitions clause
+[example]
+====
+[source,asciidoc]
+--
+[source="ISO712,ISO24333"]
+== Terms and Definitions
+--
+
+which renders as
+
+.Illustration of predefined text of the Terms and Definitions section adjusted with two sources ("`ISO 712 and ISO 24333:2009`").
+image::/assets/author/topics/document-format/section-terms/fig-terms-boilerplate-multiple-sources.png[Illustration of predefined text of the Terms and Definitions section adjusted with two sources]
+====
+
+==== Predefined text / Boilerplate
+
+===== Appending to predefined text
+
+The "`terms and definitions`" clause is often prefixed with _predefined text_
+automatically before any terms are listed.
+
+Such predefined text typically serve the following purposes:
+
+* indicate provenance of definitions (see <<source>>); and
+* provide the location where definitions may be consulted,
+  depending on the flavour.
+
+[example]
+For ISO documents, a reference to the ISO Online Browsing Platform and to the
+IEC Electropedia is provided in the predefined text.
+
+Any paragraphs or lists in the input before the first term
+are appended to the flavour's defined predefined text, in the
+intermediate XML format [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
+
+NOTE: Behavior prior to release `metanorma-standoc` 1.7.0 was for any such text
+to be overwritten by the flavour's defined predefined text.
+
+In the following example the Metanorma ISO flavor is used to demonstrate the
+behavior.
+
+Input:
+
+[example]
+.Appended predefined text
+====
+[source,asciidoc]
+--
+== Terms and definitions
+
+This is some random text I have inserted in this document.
+
+* It does not follow ISO requirements
+* Nor does it follow IEC requirements
+
+=== Term 1
+--
+
+In the rendering, the text between the title and the first
+term definition is appended to the predefined text required by ISO:
+
+____
+*3. Terms and definitions*
+
+ISO and IEC maintain terminological databases for use in
+standardization at the following addresses:
+
+* ISO Online browsing platform: available at http://www.iso.org/obp[]
+* IEC Electropedia: available at http://www.electropedia.org[]
+
+This is some random text I have inserted in this document.
+
+* It does not follow ISO requirements
+* Nor does it follow IEC requirements
+
+*3.1 Term 1*
+____
+====
+
+
+===== Overriding predefined text
+
+If there are no terms and definitions from the document,
+no terms should be included in the clause body (it should be blank).
+The predefined text at the start of the clause is adjusted to
+reflect both possibilities.
+
+In order to replace (override) the predefined text with custom
+content, an initial subclause with the style attribute
+`[.boilerplate]` can be used to do
+so [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
+
+Input:
+
+[example]
+.Overridden predefined text
+====
+[source,asciidoc]
+--
+== Terms and definitions
+
+[.boilerplate]
+=== My predefined text (<<<=== this will be stripped)
+
+This is predefined text that overwrites the default.
+
+* No, it does not follow ISO requirements
+* And no, it does not follow IEC requirements either
+
+=== Term 1
+--
+
+Where:
+
+* The title of the predefined text clause will be stripped (so you could equally
+  use `=== {blank}`);
+
+* The custom predefined text is encoded as a subclause, so that
+  its extent can be made unambiguous in initial processing.
+
+The example above will be rendered as:
+
+.Rendering of overriden predefined text
+____
+*3. Terms and definitions*
+
+This is predefined text that overwrites the default.
+
+* No, it does not follow ISO requirements
+* And no, it does not follow IEC requirements either
+
+*3.1 Term 1*
+____
+====
+
+
+===== Emptying predefined text
+
+If you want to prevent the default predefined text from
+appearing, you can do so by providing an empty
+predefined text subclause.
+
+[example]
+.Emptying predefined text
+====
+[source,asciidoc]
+--
+== Terms and definitions
+
+[.boilerplate]
+=== {blank}
+
+=== Term 1
+--
+====
+
+==== Subclauses
+
+===== Concept grouping subclauses
+
+Any clause within a "`Terms and definitions`" section which is a non-terminal
+subclause (has child nodes) is automatically considered a terms (or definitions)
+section.
+
+On the other hand, any descendant of a `nonterm` clause is also a `nonterm`
+clause.
+
+Informative clauses are indicated with the attribute `[obligation=informative]`;
+clauses are normative by default.
+
+===== Introductory non-term clause
+
+All terminal subclauses of a term section (i.e. clauses that have no subclauses
+of their own) are treated as term definitions.
+
+We have already seen one exception to this, in `[.boilerplate]` clauses. More
+generally, an introductory section can be treated as a subclause instead of a
+term (and will retain its status as a subclause), by prefixing it with the style
+attribute `[.nonterm]`:
+
+[example]
+.Providing an introductory non-term clause
+====
+[source,asciidoc]
+--
+== Terms and definitions
+
+[.nonterm]
+=== Terms from ISO 10303-1
+
+For the purpose of this part of ISO 10303, the following terms
+from ISO 10303-1 apply:
+
+* integrated resource
+
+[.nonterm]
+=== Terms from ISO 10303-11
+
+For the purposes of this document, the following terms from
+ISO 10303-11 apply.
+
+* entity;
+* entity data type;
+--
+
+.Inclusion of non-term subclauses using the `[.nonterm]` attribute
+image::/assets/author/topics/document-format/section-terms/fig-terms-non-clause-section.png[Inclusion of non-term subclauses]
+====
+
+
+The `[.nonterm]` attribute must only be used in subclauses that do
+not contain any terms underneath (like the example above).
+Otherwise, these terms will not be processed following the
+corresponding formatting rules.
+
+.Non-term attribute wrongly applied to a term-containing subclause
+[example]
+======
+If the `[.nonterm]` attribute is applied to a term-containing subclause, the
+wrong rendering will occur:
+
+[source,asciidoc]
+----
+== Terms and definitions
+
+[.nonterm]
+=== Terms from ISO 10303-1
+
+For the purpose of this part of ISO 10303, the following terms
+from ISO 10303-1 apply:
+
+==== actual function range
+mathematical space containing precisely the tuples of outputs from
+the function which are related to some tuple of inputs
+----
+
+.Incorrect rendering of a term subclause due to wrong application of `[.nonterm]`
+image::/assets/author/topics/document-format/section-terms/fig-term-clause-incorrect.png[Incorrect rendering of a term subclause]
+
+Therefore the `[.nonterm]` attribute must be removed:
+
+[source,asciidoc]
+----
+== Terms and definitions
+
+=== Terms from ISO 10303-1
+
+For the purpose of this part of ISO 10303, the following terms
+from ISO 10303-1 apply:
+
+==== actual function range
+mathematical space containing precisely the tuples of outputs from
+the function which are related to some tuple of inputs
+----
+
+.Proper rendering of a term subclause
+image::/assets/author/topics/document-format/section-terms/fig-term-clause-correct.png[Proper rendering of a term subclause]
+======
+
+
+=== Working with individual concepts
+
+==== General
+
+Concepts entered within "`terms and definitions`" sections follow a strict data
+input scheme:
 
 * The term is given as a *subheading* at the appropriate level
   (three equal signs, unless there are subsections in the "`Terms and definition`"
@@ -96,101 +493,7 @@ image::/assets/author/topics/document-format/section-terms/fig-term-paddy.png[Ex
 ====
 
 
-=== Modification of sourced concepts
-
-A trailing comma after the source reference can indicate that the
-term or definition was "`modified`", but with no further detail:
-
-[example]
-.Indicating a modified definition without further qualification
-====
-[source,asciidoc]
---
-[.source]
-<<ISO7301,section 3.2>>,
---
-
-renders as
-
-.Example of a single source tagged as "`modified`".
-image::/assets/author/topics/document-format/section-terms/fig-term-single-source.png[Example of a single source tagged as modified]
-====
-
-A term and definition can be sourced from multiple sources (in accordance with
-ISO 10241-1). In this case each source should be entered in a separate
-`[.source]` paragraph.
-
-[example]
-.A term and definition originating from multiple sources
-====
-[source,asciidoc]
---
-[.source]
-<<ISO7301,section 3.2>>,
-
-[.source]
-<<ISO7302,section 3.10>>,
---
-====
-
-
-=== Source concepts from a termbase
-
-The requirement that the source of a term be given in a citation also applies
-when the source is a termbase, such as the
-http://www.electropedia.org[International Electrotechnical Vocabulary (IEV)].
-Formally, IEV references should be cited as `IEC 60050-nnn:20xx`, where `n` is
-the top-level clause, and `20xx` is the year when that particular specification
-was published.
-
-[example]
-.An IEC Electropedia (IEV) reference
-====
-IEC 60050-113:2011, 113-01-07
-====
-
-In some cases,
-like link:https://www.iso.org/obp/ui/#iso:std:iso-iec:2382:ed-1:v1:en[ISO/IEC 2382],
-terminological clauses are numbered as plain numbers
-without character separators (dashes or periods).
-
-In ISO, terminological entries are technically identified by identifiers, not
-clauses.
-
-However, when the location is cited as a number, Metanorma will consider
-the location a top-level clause, which will be represented in the
-ISO style "`Clause X`", instead of the desired "`X`".
-
-[example]
-.Indicating a modified definition with qualification
-====
-[source,asciidoc]
---
-[.source]
-<<ISO2382,clause 2121372>>, Notes to entry and accepted term
-"`computer program`" have been omitted.
---
-====
-
-In this case, we will have to apply additional markup to indicate
-the number is not a top-level clause using the `droploc%` flag.
-
-[example]
-.Dropping the "clause" keyword for non-clause
-====
-[source,asciidoc]
---
-[.source]
-<<ISO2382,droploc%clause 2121372>>, Notes to entry and accepted term
-"`computer program`" have been omitted.
---
-====
-
-`droploc%` serves as an indication for Metanorma not to prepend
-the number with the location type of "`Clause`".
-
-
-=== Specifying concept domain, subject and usage information
+==== Domain, subject and usage information
 
 Domain, subject and usage information apply to concepts as described
 in ISO 10241-1.
@@ -226,9 +529,9 @@ Refer to your local standards body.
 ----
 ====
 
-=== Designations
+==== Designations
 
-==== General
+===== General
 
 A *designation* is the cover term for names of concepts that are included in
 terms.
@@ -240,7 +543,7 @@ It covers:
 * the _deprecated_ names (specified as `deprecated:[...]`).
 
 
-==== Preferred designations
+===== Preferred designations
 
 The first preferred designation is specified as a section heading under
 the "`Terms and definitions`" clause.
@@ -286,7 +589,7 @@ one or more processes creating or using product data
 ====
 
 
-==== Admitted designations
+===== Admitted designations
 
 Admitted designations, also called alternative designations, are entered using
 the command `admitted:[...]` (or `alt:[...]`).
@@ -304,7 +607,7 @@ the requirements of an application reference model
 ----
 ====
 
-==== Deprecated designations
+===== Deprecated designations
 
 Deprecated designations are entered using the `deprecated:[...]` command.
 
@@ -321,7 +624,7 @@ single integrated information model for the scope of an AP
 ====
 
 
-==== Designation metadata
+===== Designation metadata
 
 Metadata about designations can be given in a definition list,
 _immediately after the definition of the designation_
@@ -416,7 +719,7 @@ The metadata for a term, discussed immediately above, is given in the same
 definition list as the metadata about the first preferred designation, which is
 given in the term header.
 
-==== Empty designations
+===== Empty designations
 
 A designation can be empty:
 
@@ -434,7 +737,7 @@ admitted:[]
 
 NOTE: This is supported in ISO 10241-1.
 
-==== Non-verbal designations / representations
+===== Non-verbal designations / representations
 
 A figure or formula can be used instead of a verbal expression, provided it
 immediately follows a blank designation, before any metadata definition list.
@@ -463,9 +766,9 @@ ASCII ART
 NOTE: This is supported in ISO 10241-1.
 
 
-=== Definitions
+==== Definitions
 
-==== Multiple definitions
+===== Multiple definitions
 
 A term may have multiple definitions, where each definition could have its own
 source.
@@ -515,7 +818,7 @@ ____
 ====
 
 
-==== Non-verbal representation of definitions
+===== Non-verbal representation of definitions
 
 This notation can also be used to incorporate non-verbal representations of terms,
 including tables, formulas, and figures, which can be given after or instead of
@@ -553,14 +856,145 @@ device performing an unspecified function
 =====
 
 
-=== Sources
+==== Sourcing individual concepts
+
+===== General
 
 By default, term sources are considered authoritative, and are of either
 `identical` or `modified` status, depending on whether modification text is
 provided after a citation.
 
-Both can be overridden [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0],
-by adding explicit `status` and `type` attributes.
+
+===== Modifying sourced concepts
+
+A trailing comma after the source reference can indicate that the
+term or definition was "`modified`", but with no further detail:
+
+[example]
+.Indicating a modified definition without further qualification
+====
+[source,asciidoc]
+--
+[.source]
+<<ISO7301,section 3.2>>,
+--
+
+renders as
+
+.Example of a single source tagged as "`modified`".
+image::/assets/author/topics/document-format/section-terms/fig-term-single-source.png[Example of a single source tagged as modified]
+====
+
+A term and definition can be sourced from multiple sources (in accordance with
+ISO 10241-1). In this case each source should be entered in a separate
+`[.source]` paragraph.
+
+[example]
+.A term and definition originating from multiple sources
+====
+[source,asciidoc]
+--
+[.source]
+<<ISO7301,section 3.2>>,
+
+[.source]
+<<ISO7302,section 3.10>>,
+--
+====
+
+
+===== Sourcing concepts from termbases
+
+The requirement that the source of a term be given in a citation also applies
+when the source is a termbase, such as the
+http://www.electropedia.org[International Electrotechnical Vocabulary (IEV)].
+Formally, IEV references should be cited as `IEC 60050-nnn:20xx`, where `n` is
+the top-level clause, and `20xx` is the year when that particular specification
+was published.
+
+[example]
+.An IEC Electropedia (IEV) reference
+====
+IEC 60050-113:2011, 113-01-07
+====
+
+In some cases,
+like link:https://www.iso.org/obp/ui/#iso:std:iso-iec:2382:ed-1:v1:en[ISO/IEC 2382],
+terminological clauses are numbered as plain numbers
+without character separators (dashes or periods).
+
+In ISO, terminological entries are technically identified by identifiers, not
+clauses.
+
+However, when the location is cited as a number, Metanorma will consider
+the location a top-level clause, which will be represented in the
+ISO style "`Clause X`", instead of the desired "`X`".
+
+[example]
+.Indicating a modified definition with qualification
+====
+[source,asciidoc]
+--
+[.source]
+<<ISO2382,clause 2121372>>, Notes to entry and accepted term
+"`computer program`" have been omitted.
+--
+====
+
+In this case, we will have to apply additional markup to indicate
+the number is not a top-level clause using the `droploc%` flag.
+
+[example]
+.Dropping the "clause" keyword for non-clause
+====
+[source,asciidoc]
+--
+[.source]
+<<ISO2382,droploc%clause 2121372>>, Notes to entry and accepted term
+"`computer program`" have been omitted.
+--
+====
+
+`droploc%` serves as an indication for Metanorma not to prepend
+the number with the location type of "`Clause`".
+
+
+===== Grouping IEV references
+
+For convenience, Metanorma requires all IEV references to be to a single
+reference, named `IEV` in the normative references. During the rendering of
+Metanorma AsciiDoc into Metanorma XML, this reference will be replaced by the
+various required "`IEC 60050-nnn:20xx`" references.
+
+NOTE: That means that you should not insert your own instances of IEC 60050
+references for IEV citations; they will be duplicated by the automatically
+generated references.
+
+[source,asciidoc]
+--
+[.source]
+<<ievtermbank,clause="103-01-02">>
+
+...
+
+[bibliography]
+* [[[ievtermbank,IEV]]], _IEV: Electropedia_
+// will be excluded from HTML and Word output. Will be replaced by a canonical reference in XML output.
+--
+
+Note that, for IEV entries to be validated, the IEV reference must be given as a Clause,
+and in quotes (otherwise the locality syntax would be interpreted as a range);
+so `\<<ievtermbank,clause="103-01-02">>` for IEV 103-01-02.
+
+
+
+===== Complex source attributes
+
+Concept sources can be further qualified other than the simple `identical` or
+`modified` statuses by adding explicit `status` and `type`
+attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0].
+
+The following attributes are supported for a concept source entry.
 
 `status`::
 `identical`::: The managed term in the present context is identical to the term as found in the bibliographic source.
@@ -624,235 +1058,9 @@ device performing an unspecified function
 =====
 
 
-=== Predefined text / Boilerplate
 
-==== Appending to predefined text
 
-The "`terms and definitions`" clause is often prefixed with _predefined text_
-automatically before any terms are listed.
-
-Such predefined text typically serve the following purposes:
-
-* indicate provenance of definitions (see <<source>>); and
-* provide the location where definitions may be consulted,
-  depending on the flavour.
-
-[example]
-For ISO documents, a reference to the ISO Online Browsing Platform and to the
-IEC Electropedia is provided in the predefined text.
-
-Any paragraphs or lists in the input before the first term
-are appended to the flavour's defined predefined text, in the
-intermediate XML format [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
-
-NOTE: Behavior prior to release `metanorma-standoc` 1.7.0 was for any such text
-to be overwritten by the flavour's defined predefined text.
-
-In the following example the Metanorma ISO flavor is used to demonstrate the
-behavior.
-
-Input:
-
-[example]
-.Appended predefined text
-====
-[source,asciidoc]
---
-== Terms and definitions
-
-This is some random text I have inserted in this document.
-
-* It does not follow ISO requirements
-* Nor does it follow IEC requirements
-
-=== Term 1
---
-
-In the rendering, the text between the title and the first
-term definition is appended to the predefined text required by ISO:
-
-____
-*3. Terms and definitions*
-
-ISO and IEC maintain terminological databases for use in
-standardization at the following addresses:
-
-* ISO Online browsing platform: available at http://www.iso.org/obp[]
-* IEC Electropedia: available at http://www.electropedia.org[]
-
-This is some random text I have inserted in this document.
-
-* It does not follow ISO requirements
-* Nor does it follow IEC requirements
-
-*3.1 Term 1*
-____
-====
-
-
-==== Overriding predefined text
-
-If there are no terms and definitions from the document,
-no terms should be included in the clause body (it should be blank).
-The predefined text at the start of the clause is adjusted to
-reflect both possibilities.
-
-In order to replace (override) the predefined text with custom
-content, an initial subclause with the style attribute
-`[.boilerplate]` can be used to do
-so [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
-
-Input:
-
-[example]
-.Overridden predefined text
-====
-[source,asciidoc]
---
-== Terms and definitions
-
-[.boilerplate]
-=== My predefined text (<<<=== this will be stripped)
-
-This is predefined text that overwrites the default.
-
-* No, it does not follow ISO requirements
-* And no, it does not follow IEC requirements either
-
-=== Term 1
---
-
-Where:
-
-* The title of the predefined text clause will be stripped (so you could equally
-  use `=== {blank}`);
-
-* The custom predefined text is encoded as a subclause, so that
-  its extent can be made unambiguous in initial processing.
-
-The example above will be rendered as:
-
-.Rendering of overriden predefined text
-____
-*3. Terms and definitions*
-
-This is predefined text that overwrites the default.
-
-* No, it does not follow ISO requirements
-* And no, it does not follow IEC requirements either
-
-*3.1 Term 1*
-____
-====
-
-
-==== Emptying predefined text
-
-If you want to prevent the default predefined text from
-appearing, you can do so by providing an empty
-predefined text subclause.
-
-[example]
-.Emptying predefined text
-====
-[source,asciidoc]
---
-== Terms and definitions
-
-[.boilerplate]
-=== {blank}
-
-=== Term 1
---
-====
-
-
-=== Grouping IEV references
-
-For convenience, Metanorma requires all IEV references to be to a single
-reference, named `IEV` in the normative references. During the rendering of
-Metanorma AsciiDoc into Metanorma XML, this reference will be replaced by the
-various required "`IEC 60050-nnn:20xx`" references.
-
-NOTE: That means that you should not insert your own instances of IEC 60050
-references for IEV citations; they will be duplicated by the automatically
-generated references.
-
-[source,asciidoc]
---
-[.source]
-<<ievtermbank,clause="103-01-02">>
-
-...
-
-[bibliography]
-* [[[ievtermbank,IEV]]], _IEV: Electropedia_
-// will be excluded from HTML and Word output. Will be replaced by a canonical reference in XML output.
---
-
-Note that, for IEV entries to be validated, the IEV reference must be given as a Clause,
-and in quotes (otherwise the locality syntax would be interpreted as a range);
-so `\<<ievtermbank,clause="103-01-02">>` for IEV 103-01-02.
-
-
-=== Title
-
-A terms and definitions clause will be recognized if either title below is given
-regardless of case:
-
-* _Terms and definitions_;
-* _Terms, definitions and symbols_;
-* _Terms, definitions and abbreviated terms_; or
-* _Terms, definitions, symbols and abbreviated terms_
-
-
-[[source]]
-=== Source
-
-If the terms and definitions of a standard are partly or fully sourced from
-another standard, that standard is cited in a “source” attribute to the section:
-e.g., `source=STANDARD_IDENTIFIER`, where standard identifier
-is the reference anchor of the cited standard as given under the Normative
-References.
-(The attribute needs to be applied to the top-level clause, if there are subclauses.)
-
-Any predefined text of the terms and definitions section is adjusted accordingly.
-
-.Setting a terminology source for the terms and definitions clause
-[example]
-====
-[source,asciidoc]
---
-[source=ISO712]
-== Terms and Definitions
---
-
-renders as
-
-.Illustration of predefined text of the Terms and Definitions section adjusted with a single source ("`ISO 712`").
-image::/assets/author/topics/document-format/section-terms/fig-terms-boilerplate-single-source.png[Illustration of predefined text of the Terms and Definitions section adjusted with a single source ("ISO 712")]
-====
-
-
-Multiple sources are allowed, and need to be quoted and comma-delimited:
-
-.Setting multiple terminology sources for the terms and definitions clause
-[example]
-====
-[source,asciidoc]
---
-[source="ISO712,ISO24333"]
-== Terms and Definitions
---
-
-which renders as
-
-.Illustration of predefined text of the Terms and Definitions section adjusted with two sources ("`ISO 712 and ISO 24333:2009`").
-image::/assets/author/topics/document-format/section-terms/fig-terms-boilerplate-multiple-sources.png[Illustration of predefined text of the Terms and Definitions section adjusted with two sources]
-====
-
-
-=== Markup within term commands
+==== Rich-text within term commands
 
 The commands `+alt:[...]+`, `+deprecated:[...]+` and `+domain:[...]+`
 can contain their own markup.
@@ -913,113 +1121,11 @@ image::/assets/author/topics/document-format/section-terms/fig-term-stem.png[Ill
 ====
 
 
-=== Subclauses
-
-==== Concept grouping subclauses
-
-Any clause within a "`Terms and definitions`" section which is a non-terminal
-subclause (has child nodes) is automatically considered a terms (or definitions)
-section.
-
-On the other hand, any descendant of a `nonterm` clause is also a `nonterm`
-clause.
-
-Informative clauses are indicated with the attribute `[obligation=informative]`;
-clauses are normative by default.
-
-==== Introductory non-term clause
-
-All terminal subclauses of a term section (i.e. clauses that have no subclauses
-of their own) are treated as term definitions.
-
-We have already seen one exception to this, in `[.boilerplate]` clauses. More
-generally, an introductory section can be treated as a subclause instead of a
-term (and will retain its status as a subclause), by prefixing it with the style
-attribute `[.nonterm]`:
-
-[example]
-.Providing an introductory non-term clause
-====
-[source,asciidoc]
---
-== Terms and definitions
-
-[.nonterm]
-=== Terms from ISO 10303-1
-
-For the purpose of this part of ISO 10303, the following terms
-from ISO 10303-1 apply:
-
-* integrated resource
-
-[.nonterm]
-=== Terms from ISO 10303-11
-
-For the purposes of this document, the following terms from
-ISO 10303-11 apply.
-
-* entity;
-* entity data type;
---
-
-.Inclusion of non-term subclauses using the `[.nonterm]` attribute
-image::/assets/author/topics/document-format/section-terms/fig-terms-non-clause-section.png[Inclusion of non-term subclauses]
-====
-
-
-The `[.nonterm]` attribute must only be used in subclauses that do
-not contain any terms underneath (like the example above).
-Otherwise, these terms will not be processed following the
-corresponding formatting rules.
-
-.Non-term attribute wrongly applied to a term-containing subclause
-[example]
-======
-If the `[.nonterm]` attribute is applied to a term-containing subclause, the
-wrong rendering will occur:
-
-[source,asciidoc]
-----
-== Terms and definitions
-
-[.nonterm]
-=== Terms from ISO 10303-1
-
-For the purpose of this part of ISO 10303, the following terms
-from ISO 10303-1 apply:
-
-==== actual function range
-mathematical space containing precisely the tuples of outputs from
-the function which are related to some tuple of inputs
-----
-
-.Incorrect rendering of a term subclause due to wrong application of `[.nonterm]`
-image::/assets/author/topics/document-format/section-terms/fig-term-clause-incorrect.png[Incorrect rendering of a term subclause]
-
-Therefore the `[.nonterm]` attribute must be removed:
-
-[source,asciidoc]
-----
-== Terms and definitions
-
-=== Terms from ISO 10303-1
-
-For the purpose of this part of ISO 10303, the following terms
-from ISO 10303-1 apply:
-
-==== actual function range
-mathematical space containing precisely the tuples of outputs from
-the function which are related to some tuple of inputs
-----
-
-.Proper rendering of a term subclause
-image::/assets/author/topics/document-format/section-terms/fig-term-clause-correct.png[Proper rendering of a term subclause]
-======
 
 [[citeterms]]
-== Referencing concepts
+=== Referencing concepts
 
-=== General
+==== General
 
 Instances of terms, symbols or abbreviations used in the document can be marked
 up to indicate the semantic meaning of the concept. [added in
@@ -1099,9 +1205,9 @@ the canonical form of the term name, and the text to be displayed for the term
 in that instance.
 
 
-=== Concepts defined within current document
+==== Concepts defined within current document
 
-==== Reference by term
+===== Reference by term
 
 To cite a concept defined within a document the following syntax can be used.
 
@@ -1296,7 +1402,7 @@ lorem
 ----
 --
 
-==== Reference by symbol
+===== Reference by symbol
 
 Symbols and abbreviated terms defined in the document can also be cited as
 concepts [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1].
@@ -1335,7 +1441,7 @@ ____
 ====
 
 
-==== Reference by anchor
+===== Reference by anchor
 
 In certain cases it is more appropriate to reference a concept (defined
 in the current document) by anchor, instead of by term, e.g.:
@@ -1391,7 +1497,7 @@ the literature.
 ====
 
 
-=== Concepts from external documents
+==== Concepts from external documents
 
 To refer to concepts from an external document requires a corresponding
 bibliographic anchor for that document. The identifier for the concept
@@ -1498,7 +1604,7 @@ ____
 ====
 
 
-=== Concepts from external termbase
+==== Concepts from external termbase
 
 To refer to a concept from an external termbase, the termbase
 identifier and the concept identifier within that termbase are needed.
@@ -1570,7 +1676,7 @@ literature.
 ____
 ====
 
-=== Rendering options
+==== Rendering options
 
 The following rendering options, introduced with `options="..."`, are defined
 for concept mentions.
