@@ -206,6 +206,7 @@ The following keys are allowed:
 `usageinfo`:: Usage information about the term
 
 [example]
+.Concept with domain, subject and usage information
 ====
 [source,asciidoc]
 ----
@@ -245,6 +246,7 @@ The first preferred designation is specified as a section heading under
 the "`Terms and definitions`" clause.
 
 [example]
+.A single preferred designation
 ====
 [source,adoc]
 ----
@@ -270,6 +272,7 @@ By default, they will be rendered in the same term title as the first preferred
 designation, delimited by semicolons.
 
 [example]
+.Applying multiple preferred designations
 ====
 [source,adoc]
 ----
@@ -289,6 +292,7 @@ Admitted designations, also called alternative designations, are entered using
 the command `admitted:[...]` (or `alt:[...]`).
 
 [example]
+.Example from ISO 10303-2
 ====
 [source,adoc]
 ----
@@ -305,6 +309,7 @@ the requirements of an application reference model
 Deprecated designations are entered using the `deprecated:[...]` command.
 
 [example]
+.Example from ISO 10303-2
 ====
 [source,adoc]
 ----
@@ -325,41 +330,41 @@ _immediately after the definition of the designation_
 
 The following keys are supported:
 
-language:: the language of the designation. Specified as an ISO 639-* code.
+`language`:: the language of the designation. Specified as an ISO 639-* code.
 
-script:: the script of the designation. Specified as an ISO 15924 code.
+`script`:: the script of the designation. Specified as an ISO 15924 code.
 
-geographicArea:: the geographic area of the designation. Specified as an ISO 3166-1 code.
+`geographicArea`:: the geographic area of the designation. Specified as an ISO 3166-1 code.
 
-type:: type of expression used as designation; supported values are
+`type`:: type of expression used as designation; supported values are
 
 *** `prefix`
 *** `suffix`
 *** `abbreviation`
 *** `full`
 
-isInternational:: designation is valid across languages and country; value is
+`isInternational`:: designation is valid across languages and country; value is
 boolean
 
-abbreviationType:: type of abbreviation used; supported values are:
+`abbreviationType`:: type of abbreviation used; supported values are:
 
 *** `truncation`
 *** `acronym`
 *** `initialism`
 
-pronunciation:: guide to pronunciation for designation; accepts a string value
+`pronunciation`:: guide to pronunciation for designation; accepts a string value
 
-absent:: the designation is absent; value is boolean
+`absent`:: the designation is absent; value is boolean
 
-letter-symbol:: the designation is not a linguistic expression, but a letter or
+`letter-symbol`:: the designation is not a linguistic expression, but a letter or
 symbol; value is boolean
 
 
 Grammar of the designation is encoded as keys within the tag `grammar`:
 
-grammar::
+`grammar`::
 
-gender::: the gender of the designation. Multiple values are allowed, comma
+`gender`::: the gender of the designation. Multiple values are allowed, comma
 delimited. Supported values are:
 
 * `masculine`
@@ -367,21 +372,22 @@ delimited. Supported values are:
 * `neuter`
 * `common`.
 
-isPreposition::: the designation is a preposition; value is boolean
+`isPreposition`::: the designation is a preposition; value is boolean
 
-isParticiple::: the designation is a participle; value is boolean
+`isParticiple`::: the designation is a participle; value is boolean
 
-isAdjective::: the designation is an adjective; value is boolean
+`isAdjective`::: the designation is an adjective; value is boolean
 
-isVerb::: the designation is a verb; value is boolean
+`isVerb`::: the designation is a verb; value is boolean
 
-isAdverb::: the designation is an adverb; value is boolean
+`isAdverb`::: the designation is an adverb; value is boolean
 
-isNoun::: the designation is a noun; value is boolean
+`isNoun`::: the designation is a noun; value is boolean
 
-grammarValue::: other miscellaneous grammatical information
+`grammarValue`::: other miscellaneous grammatical information
 
 [example]
+.Encoding designation metadata for multiple designations
 ====
 [source,asciidoc]
 ----
@@ -415,6 +421,7 @@ given in the term header.
 A designation can be empty:
 
 [example]
+.Providing an empty designation
 ====
 [source,asciidoc]
 ----
@@ -433,6 +440,7 @@ A figure or formula can be used instead of a verbal expression, provided it
 immediately follows a blank designation, before any metadata definition list.
 
 [example]
+.Providing one or more non-verbal designations
 ====
 [source,asciidoc]
 ----
@@ -724,6 +732,7 @@ Where:
 
 The example above will be rendered as:
 
+.Rendering of overriden predefined text
 ____
 *3. Terms and definitions*
 
@@ -849,6 +858,7 @@ The commands `+alt:[...]+`, `+deprecated:[...]+` and `+domain:[...]+`
 can contain their own markup.
 
 [example]
+.Encoding markup within term commands
 ====
 [source,asciidoc]
 --
@@ -871,8 +881,8 @@ as an admitted term, is considered illegal.
 NOTE: The use of stem expressions as preferred terms is not a problem,
 because the macro appears as a header.
 
-.Bad `stem` example
 [example]
+.Bad `stem` example
 ====
 [source,asciidoc]
 --
@@ -886,8 +896,8 @@ Time to launch.
 However, Metanorma will treat any standalone paragraph in a term section,
 consisting of just a stem macro, as an admitted term:
 
-.Good `stem` example
 [example]
+.Good `stem` example
 ====
 [source,asciidoc]
 --
@@ -1192,6 +1202,7 @@ the term:[time axis], one instant being chosen as the origin
 
 In the rendering, the display text is used instead of the referenced term:
 
+.Rendering of ISO 8601:2019, 3.1.1.5
 ____
 system of ordered marks which can be attributed to _instants_ (3.7) on
 the _time axis_ (3.9), one instant being chosen as the origin
@@ -1221,6 +1232,7 @@ as the origin
 
 Renders into:
 
+.Rendering of ISO 8601:2019, 3.1.1.5 with custom text
 ____
 system of ordered marks which can be attributed to _instants_ (3.7) on the
 _time axis_ (see the preceding discussion), one instant being chosen as the
