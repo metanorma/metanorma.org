@@ -206,7 +206,9 @@ If the "`Foreword`" does not contain subclauses, it is considered
 a simple foreword clause.
 
 The Foreword of a standard is detected as any text between the document header
-and the first section header.
+and the first section header. The simple foreword syntax should *not* be used
+if there are other prefatory clauses expected to precede the foreword;
+the Full foreword clause should be used instead.
 
 The example below specifies the `.Foreword` title
 to the foreword in the source. (Strictly speaking, this is the caption of the
@@ -228,7 +230,8 @@ user-centric systems and applications...
 
 ===== Full foreword clause
 
-If the "`Foreword`" contains subclauses, it needs to be encoded as
+If the "`Foreword`" contains subclauses, or if an explicit AsciiDoc section is preferable
+(e.g. there are preceding clauses such as Abstracts), it is encoded as
 a full foreword clause.
 
 A full foreword clause is recognized as a full Metanorma AsciiDoc section, with the
