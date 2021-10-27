@@ -195,20 +195,32 @@ an explicit number also needs to be given to those clauses separately.
 
 === Foreword
 
-==== General
+===== Full foreword clause
 
-The "`Foreword`" can be specified in two ways, depending on whether
-it is a "`simple clause`", or a "`full clause`".
+A foreword is a full Metanorma AsciiDoc section, with the
+title "`Foreword`"; this can be overruled in different flavours.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
+A foreword may contain subclauses.
 
-==== Simple foreword clause
+[source,asciidoc]
+--
+[[foreword]]
+== Foreword
+The Calendaring and Scheduling Consortium ("`CalConnect`") is a global non-profit
+organization with the aim to facilitate interoperability of technologies across
+user-centric systems and applications...
 
-If the "`Foreword`" does not contain subclauses, it is considered
-a simple foreword clause.
+=== Foreword subclause
 
-The Foreword of a standard is detected as any text between the document header
-and the first section header. The simple foreword syntax should *not* be used
-if there are other prefatory clauses expected to precede the foreword;
-the Full foreword clause should be used instead.
+More foreword...
+--
+
+[NOTE]
+====
+Metanorma AsciiDoc also supports a simple foreword clause syntax, using
+the AsciiDoc preamble (any text between the document header
+and the first section header). This syntax is restrictive (it requires there to be
+no preceding clauses and no subclauses), and is now deprecated.
 
 The example below specifies the `.Foreword` title
 to the foreword in the source. (Strictly speaking, this is the caption of the
@@ -226,33 +238,7 @@ The Calendaring and Scheduling Consortium ("`CalConnect`") is a global non-profi
 organization with the aim to facilitate interoperability of technologies across
 user-centric systems and applications...
 --
-
-
-===== Full foreword clause
-
-If the "`Foreword`" contains subclauses, or if an explicit AsciiDoc section is preferable
-(e.g. there are preceding clauses such as Abstracts), it is encoded as
-a full foreword clause.
-
-A full foreword clause is recognized as a full Metanorma AsciiDoc section, with the
-title "`Foreword`"; this can be overruled in different flavours.
-Simple foreword content can also be encoded this way.
- [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
-
-
-[source,asciidoc]
---
-[[foreword]]
-== Foreword
-The Calendaring and Scheduling Consortium ("`CalConnect`") is a global non-profit
-organization with the aim to facilitate interoperability of technologies across
-user-centric systems and applications...
-
-=== Foreword subclause
-
-More foreword...
---
-
+====
 
 === Arbitrary prefatory clauses
 
