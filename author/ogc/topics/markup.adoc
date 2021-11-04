@@ -268,7 +268,7 @@ by default [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.
 Additional preliminary sections are *allowed* but not encouraged.
 There are two mechanisms for adding additional content as preliminary elements:
 
-. Add their content in the <<ogc-full-preface,Full Preface>> as additional sub-sections
+. Add their content in the <<ogc-preface,Full Preface>> as additional sub-sections
 . Add them as <<ogc-additional-prelim,additional preliminary elements>>
 --
 
@@ -286,11 +286,11 @@ This standard describes a conceptual and logical model for the exchange
 of groundwater data, as well as a GML/XML encoding with examples.
 ----
 
-[[ogc-full-preface]]
+[[ogc-preface]]
 === Preface
 
-A preface clause is recognized as a full Metanorma AsciiDoc section, with the
-title "`Preface`". Such a clause can contain subclauses.
+A preface clause is recognized as a full section, with the title "`Preface`".
+The Preface clause may contain subclauses.
 \[added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.1]
 
 [source,asciidoc]
@@ -305,6 +305,12 @@ Your preface text...
 
 More preface text...
 ----
+
+NOTE: Previously, the Preface section can be specified by text entered after a
+`.Preface` label, which has to be placed between the AsciiDoc document
+attributes and the first AsciiDoc section title.
+This behavior is now deprecated in favor of specifying the Preface as a real
+section to allow better reflection of content order.
 
 === Keywords
 
@@ -411,7 +417,7 @@ EXAMPLE:
 
 [source,adoc]
 ----
-.Preface
+== Preface
 
 ...
 
