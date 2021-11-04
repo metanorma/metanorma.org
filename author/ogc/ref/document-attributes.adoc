@@ -69,6 +69,8 @@ Document status/stage. Synonym: `:docstage:`.
 Choices:
 +
 --
+* `draft`: Draft.
+* `work-item-draft`: Work item draft.
 * `swg-draft`: Candidate SWG Draft. This is the draft created after the TC approval and PC approval votes.
 * `oab-review`: Candidate OAB Review Draft. This is the intended draft for the "`OAB + OGC-NA Review`".
 * `public-rfc`: Public RFC. This is the draft for the (30 days) public comment period.
@@ -77,8 +79,19 @@ Choices:
   This status is to be set after comments are handled with the TC chair (after `tc-vote`).
   `published` is an allowed synonym of `approved` [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.5].
 * `deprecated`: Deprecated. This document has been deprecated.
+* `rescinded`: Rescinded. This document has been rescinded as inaccurate. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.1].
 * `retired`: Retired. This document has been retired and no longer considered normative.
 --
+
+Not all statuses apply to all types of document; the following table maps the acceptable statuses [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.1].
+
+|===
+| | draft | work-item-draft | swg-draft | oab-review | public-rfc | tc-vote | approved (published) | deprecated | rescinded | retired
+
+h| standard, abstract-specification-topic |   |   | x | x | x | x | x | x | x | x 
+h| community-standard                     |   | x |   | x | x | x | x | x | x | x 
+h| _all other types_ | x |   |   |   |   |   | x |   |   | x
+|===
 
 `:edition:`::
 The version number of the document. Dot-delimited, consists of a major version number, a minor version number,
