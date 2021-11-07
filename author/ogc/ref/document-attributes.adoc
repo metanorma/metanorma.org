@@ -64,34 +64,47 @@ Choices:
 ** `profile-with-extension`: Profile with extension
 --
 
-`:status:`::
-Document status/stage. Synonym: `:docstage:`.
-Choices:
+`:status:`:: Document status/stage. Synonym: `:docstage:`.
 +
 --
-* `draft`: Draft.
-* `work-item-draft`: Work item draft.
-* `swg-draft`: Candidate SWG Draft. This is the draft created after the TC approval and PC approval votes.
+Choices:
+
+* `draft`: Draft. This is the only draft stage for document types that are not
+  `standard`, `abstract-specification-topic` and `community-standard`.
+
+* `work-item-draft`: Work item draft. This is the first stage for a
+  `community-standard`.
+
+* `swg-draft`: Candidate SWG Draft. This is the first stage for a
+  `standard`.
+
 * `oab-review`: Candidate OAB Review Draft. This is the intended draft for the "`OAB + OGC-NA Review`".
+
 * `public-rfc`: Public RFC. This is the draft for the (30 days) public comment period.
+
 * `tc-vote`: Candidate TC Vote Draft. This is the intended draft for the TC adoption and PC adoption votes.
+
 * `approved`: Published. This is the document intended to be published.
   This status is to be set after comments are handled with the TC chair (after `tc-vote`).
   `published` is an allowed synonym of `approved` [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.5].
-* `deprecated`: Deprecated. This document has been deprecated.
-* `rescinded`: Rescinded. This document has been rescinded as inaccurate. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.1].
-* `retired`: Retired. This document has been retired and no longer considered normative.
---
 
-Not all statuses apply to all types of document; the following table maps the acceptable statuses [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.1].
+* `deprecated`: Deprecated. This document has been deprecated.
+
+* `rescinded`: Rescinded. This document has been rescinded as inaccurate. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.1].
+
+* `retired`: Retired. This document has been retired and no longer considered normative.
+
+The following table shows the available statuses for each document
+type [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.1].
 
 |===
 | | draft | work-item-draft | swg-draft | oab-review | public-rfc | tc-vote | approved (published) | deprecated | rescinded | retired
 
-h| standard, abstract-specification-topic |   |   | x | x | x | x | x | x | x | x 
-h| community-standard                     |   | x |   | x | x | x | x | x | x | x 
+h| standard, abstract-specification-topic |   |   | x | x | x | x | x | x | x | x
+h| community-standard                     |   | x |   | x | x | x | x | x | x | x
 h| _all other types_ | x |   |   |   |   |   | x |   |   | x
 |===
+--
 
 `:edition:`::
 The version number of the document. Dot-delimited, consists of a major version number, a minor version number,
