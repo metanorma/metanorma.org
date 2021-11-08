@@ -1,0 +1,193 @@
+---
+layout: post
+title: "How to use .mml files from PDF accessibility for MathML"
+date: 2021-11-08
+categories: documentation
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+  -
+    name: Alexander Dyuzhev
+    email: dyuzhev@gmail.com
+    social_links:
+      - https://www.linkedin.com/in/alexander-dyuzhev/
+      - https://github.com/Intelligent2013/
+
+excerpt: >-
+  In the BIPM SI Brochure every math formula is linked to a MathML file that includes
+  its MathML representation.
+---
+== Background
+
+Math is a fundamental part of life -- and the publication of them inside
+documents are too.
+
+While math formulas are often embedded in academic papers or books published
+in PDF, the accessibility of those formulas is largely an ignored question.
+
+Ever tried to copy out a math formula from a PDF? Typically the frustration
+cycle reads like:
+
+. Attempt to highlight the math formula with a horizontal selection
+. Failing that, attempt to "block select" the math formula
+. Copy and pasting the selected text leads to broken Unicode symbols
+. Frustrated mumbling about that things do not work "out of the box"
+  and the compromise of manually crafting that formula, again.
+
+The https://www.bipm.org[Bureau International des Poids et Mesures]
+(BIPM; English: International Bureau of Weights and Measures) is
+the international treaty organization that defines and manages the
+https://www.bipm.org/measurement-units[International System of Units],
+commonly called the "`SI system`" or the "`metric system`", had exactly that
+need of making math formulas accessible.
+
+In collaboration with the BIPM to publish a digitally-native, semantic
+version of the
+https://www.bipm.org/publications/si-brochure[SI Brochure] using Metanorma,
+one of the goals is to make math formulas published in PDF as accessible as
+possible.
+
+The nearly 3,000 math formulas in the SI Brochure define the basis of the
+International System of Units, provide an important trove of information for
+scientists in their usage of units.
+
+== How Metanorma publishes math in PDF
+
+Metanorma generates PDFs through `mn2pdf`, a Java PDF processor based on the
+open-source
+http://xmlgraphics.apache.org/fop/[Apache FOP (Formatting Objects Processor)],
+a print formatter driven by
+https://www.w3.org/TR/xsl/[XSL formatting objects (XSL-FO)] technology.
+
+In Metanorma, math formulas are encoded in https://www.w3.org/TR/MathML3/[MathML v3],
+and then rendered in PDF using the
+https://www.w3.org/TR/SVG2/[SVG (Scalable Vector Graphics)] format through the
+http://jeuclid.sourceforge.net[JEuclid] library.
+
+The traditional way of handling math as SVG will present a pretty rendering
+of math, but not necessarily reuseable:
+
+* Characters embedded in math formulas cannot be searched within PDF readers,
+  since SVG is a vector graphics format;
+
+* Text cannot be selected from math formulas from PDF and then pasted into
+  another destination (e.g. text editor).
+
+Math accessibility is not currently addressed in the PDF standard suite:
+
+* https://www.iso.org/standard/51502.html[ISO 32000:2008], the PDF 1.7 standard; or
+
+* https://www.iso.org/standard/64599.html[ISO 14289-1:2014], the PDF/UA (PDF universal accessibility) standard.
+
+
+== Making math accessible in PDFs
+
+In the BIPM SI Brochure we introduce several math accessibility features that
+allow us to bypass these restrictions.
+
+We have to first recognize that there is a spectrum of PDF readers that
+offer different levels of support to PDF features, despite requirements stated
+in the PDF standards. While Adobe Reader generally provides good support of
+standard requirements and some PDF/UA features, PDF readers such as Preview or
+Skim may only implement a subset of the standard without PDF/UA support.
+
+When devising these techniques, we adopt a "highest bar" approach where
+there is a base level of access to all, and additional accessibility features
+become available for PDF readers that support them.
+
+These advanced PDF techniques include:
+
+. Embedding MathML formulas as PDF attachments (described below);
+
+. Techniques to render AsciiMath/LaTeX Math as PDF content to allow copy/pasting
+  for non-Adobe readers (PDF content tree, described in ../2021-08-26-pdf-accessibility-for-math-formulas#technique-2-embed-human-readable-math-in-the-pdf-content-tree-to-allow-copypasting[Embed human-readable math in the PDF content tree to allow copy/pasting])
+
+. Using PDF/UA features such as "Actual Text" and "Alternate Text" for tag
+  readers (PDF tag tree, described in ../2021-08-26-pdf-accessibility-for-math-formulas#technique-3-embed-human-readable-formulas-for-tag-readers-using-pdfua-features-pdf-tag-tree[Embed human-readable formulas for tag readers using PDF/UA features])
+
+
+==  Embed MathML formulas as attachments
+
+https://www.w3.org/TR/MathML3/[MathML] is the the industry standard in
+representing math formulas, now at version 3, with
+https://w3c.github.io/mathml/[version 4] in the making. MathML is an XML-based
+language that offers both semantic and presentation formats, where the
+presentation format is most commonly used.
+
+Metanorma supports multiple math input mechanisms, including MathML,
+LaTeX math (https://en.wikibooks.org/wiki/LaTeX/Mathematics[Wikibooks]) and
+http://asciimath.org[AsciiMath], and standardizes on storing math in the
+canonical MathML format.
+
+Interoperable re-use of math formulas can be best facilitated by offering a math
+formula's MathML form from within the PDF. Since PDF supports embedding of
+attachment files, here we describe the technique of embedding MathML files as
+PDF attachments.
+
+The established way of storing individual MathML formulas is with files that end
+in the `.mml` extension (the
+https://www.iana.org/assignments/media-types/application/mathml+xml[IANA-registered]
+extension for MathML documents).
+
+The general process goes like this:
+
+1. For every MathML formula, we create a corresponding `.mml` file
+2. In the PDF, we link every rendered math formula (which is rendered into SVG)
+  to the corresponding `.mml` file as a PDF attachment.
+
+The result is that every math formula is linked to a MathML file that includes
+its MathML representation.
+
+NOTE: Not every PDF reader supports PDF attachments!
+
+.MathML attachments within the PDF (Adobe Acrobat "Attachments" pane)
+image::/assets/blog/2021-11-08_1.png[MathML attachments in Adobe Acrobat's "Attachments" pane]
+
+If the PDF reader (e.g. https://get.adobe.com/reader/[Adobe Reader DC]) supports
+PDF attachments, a click on the math formula will open (or at least, present a
+prompt) the corresponding MathML file.
+
+.Viewing the corresponding MathML source in Notepad
+image::/assets/blog/2021-11-08_2.png[Viewing the corresponding MathML source in Notepad]
+
+.PDF attachment support in PDF readers on different platforms
+[cols="a,a,a",options="header"]
+|===
+| Support | Platform | Application
+
+| ✓ | Windows | Adobe Reader
+| ✓ | macOS | Adobe Reader
+| ✗ | macOS | Preview
+| ✗ | macOS | Skim
+
+|===
+
+[NOTE]
+====
+Microsoft Windows, by default, does not recognize the extension `.mml` mapping
+to the MathML format (or XML, for that matter).
+
+When opening an `.mml` file for the first time, you will need to set the default
+application to open files with .mml extension, for example, to Notepad.
+
+Steps to register `.mml` on Windows:
+
+. Find any `.mml` file on disk, or create an empty `.mml` file (for example,
+  with the command `notepad sample.mml`)
+
+. Select the `.mml` file in Windows Explorer, right-click to open the context
+  menu, select "Open with" and choose the desired program to open with. If the
+  desired application is not shown, select "Choose another app". Once an
+  application is selected, check the box next to "Always use this app to open
+  .mml files".
+
+. Close and re-open the PDF reader application.
+
+See this
+https://www.online-tech-tips.com/windows-10/how-to-change-file-associations-in-windows-10/[link]
+for further information.
+====
+
