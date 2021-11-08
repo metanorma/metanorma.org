@@ -205,15 +205,20 @@ Identifier embedded into a document type-specific external URL.
 URI of previous version of the document.
 
 `:docnumber:`::
-The document number assigned to the OGC document (without the "`OGC`" prefix). +
+The document number assigned to the OGC document (without the "`OGC`" prefix).
+A new document number is obtained through the
+https://portal.ogc.org/?m=public&subtab=instructions&tab=1["`OGC Pending Documents`"] page at the
+OGC portal.
 +
-The number is formulated following the following rules:
+The number is of the pattern `YY-NNN{rM}` formulated following the following rules:
 +
-* The final two digits of the year are used at the start of the number (`YY`).
-* A three digit number is assigned sequentially for each document in the year (`NNN`).
-* The first edition of a document has the document number `YY-NNN`; for example, `00-027` is OGC document 027 first published in 2000.
-* Minor editorial changes and corrigenda do not result in a change to the document number
-* The `YY-NNN` identifier for a document (the document number root) is maintained if the document undergoes content changes (revisions). These revisions are numbered sequentially, and are indicated with `r` followed by the revision number. So `05-020r27` is revision 27 of OGC document 020 first published in 2005. (Revision 27 may appear years later than 2005.)
+* `YY` represents the final two digits of the year this document number was first reserved.
+* `NNN` is a three digit number is assigned sequentially for each document in the year.
+* `{rM}` is only for revisions:
+** The first edition of a document has the document number `YY-NNN`. e.g., `00-027` is OGC document 027 first published in 2000.
+** Minor editorial changes and corrigenda do not result in a change to the document number.
+** The `YY-NNN` identifier portion is maintained if the document undergoes content changes (revisions).
+** A revised document will have its identifier suffixed with `r` followed by the revision number `M`, a sequential number indicating the number of revisions. So `05-020r27` is revision 27 of OGC document 020 first published in 2005. (Revision 27 may appear years later than 2005.)
 * A new major version of a document receives a new document number, including likely a new year.
 
 
