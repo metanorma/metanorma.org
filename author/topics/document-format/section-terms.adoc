@@ -445,7 +445,13 @@ point on the term:[time axis]
 NOTE: An instantaneous event occurs at a specific instant.
 
 [.source]
-<<IEV,clause "113-01-08">>
+<<ievtermbank,clause "113-01-08">>
+
+....
+
+[bibliography]
+== Normative References
+* [[[ievtermbank,IEV]]]
 ----
 ====
 
@@ -910,10 +916,19 @@ when the source is a termbase, such as the
 http://www.electropedia.org[International Electrotechnical Vocabulary (IEV)].
 Formally, IEV references should be cited as `IEC 60050-nnn:20xx`, where `n` is
 the top-level clause, and `20xx` is the year when that particular specification
-was published.
+was published. As discussed below, Metanorma automatically converts citations of
+IEV (via References) to citations of the appropriate IEC 60050 standards.
+
+So:
 
 [example]
-.An IEC Electropedia (IEV) reference
+====
+<<ievtermbank,clause=113-01-07>>
+====
+
+will be rendered as:
+
+[example]
 ====
 IEC 60050-113:2011, 113-01-07
 ====
@@ -986,7 +1001,8 @@ Note that, for IEV entries to be validated, the IEV reference must be given as a
 and in quotes (otherwise the locality syntax would be interpreted as a range);
 so `\<<ievtermbank,clause="103-01-02">>` for IEV 103-01-02.
 
-
+In the foregoing, we use `ievtermbank` as the anchor for IEV; any anchor can be used, so long
+as it is mapped to the IEV reference code in the bibliography.
 
 ===== Complex source attributes
 
