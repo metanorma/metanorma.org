@@ -2,23 +2,40 @@
 layout: iec-flavor
 ---
 
-= Circulation cover page
+= Circulation cover page for IEC
 
-The circulation cover page for FDIS drafts is populated only for PDF, and not for HTML or DOC.
+== Usage
 
-Most information in the circulation cover page is populated from document attributes. Exceptionally,
-the _Note from TC/SC Officers_ is potentially multi-paragraph text, and is extracted from the
-document body: it is any note with the title 
-"Note from TC/SC Officers" [added in https://github.com/metanorma/metanorma-iec/releases/tag/v1.2.12]:
+The circulation cover page for FDIS drafts is populated only for PDF, and not
+for HTML or DOC.
+
+== Data input
+
+=== General
+
+Most information in the circulation cover page is populated from document
+attributes.
+
+Only the _Note from TC/SC Officers_ is populated from document content as
+specified below.
+
+=== Note from TC/SC Officers
+
+The _Note from TC/SC Officers_ is potentially multi-paragraph
+text, and is extracted from the document body.
+
+The method of supplying this text is with any note with the title
+"`Note from TC/SC Officers`" [added in https://github.com/metanorma/metanorma-iec/releases/tag/v1.2.12], as follows.
 
 [source,asciidoc]
 ----
 [NOTE]
 .Note from TC/SC Officers
 ====
-This FDIS is the result of the discussion between the IEC SC21A experts WG 3 during the meeting held in
-Chicago (USA) on April 9th
+This FDIS is the result of the discussion between the IEC SC21A experts WG 3
+during the meeting held in Chicago (USA) on April 9th.
 
-This document is also of interest for ISO/ TC114/ WG1 Requirements for Watch batteries
+This document is also of interest for ISO/TC 114/WG 1 Requirements for Watch
+batteries.
 ====
 ----

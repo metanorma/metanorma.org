@@ -2,17 +2,20 @@
 layout: iec-flavor
 ---
 
-= Metanorma-IEC output formats
+= Output formats for IEC
 
-In addition to the normal output formats of Metanorma (`html`, `doc`, `pdf`),
-Metanorma-IEC also supports the following output formats:
+Metanorma for IEC supports the general Metanorma output formats (`html`, `doc`, `pdf`),
+and also supports these IEC-specific output formats:
 
 `sts`:: NISO STS XML [added in https://github.com/metanorma/metanorma-iec/releases/tag/v1.4.3]
 `isosts`:: ISO STS XML [added in https://github.com/metanorma/metanorma-iec/releases/tag/v1.4.3]
 
-EXAMPLE:
 
+NOTE: IEC uses NISO STS in production.
+
+====
 [source,console]
 ----
 metanorma -t iec -x html,sts,isosts test.adoc
 ----
+====
