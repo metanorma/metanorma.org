@@ -311,7 +311,12 @@ It supports the following attributes in addition to base ModSpec attributes:
 rich text.
 
 * `part` (optional). A requirement can contain multiple parts of
-sub-requirements. Accepts rich text.
+sub-requirements. Accepts rich text. Labelled with a capital alphabetic letter.
+
+NOTE:: A part is distinct from a step
+(as appears in <<conftest>>): a part is a component of a requirement, which is itself
+a requirement. A step is a stage in a process of testing a requirement: it only
+makes sense within a test method.
 
 * `inherit` (optional). A requirement can inherit from one or more requirements.
 Accepts cross-references to other requirement models, or plain text. In block
@@ -364,6 +369,8 @@ source, target, direction, roles, and multiplicities as those of the UML class.
 ====
 ----
 
+image::/assets/author/ogc/reqt1.png[Rendering]
+
 [source,asciidoc]
 .OGC GroundWaterML 2.0 sample requirement
 ----
@@ -373,6 +380,8 @@ All target implementations SHALL conform to the appropriate GroundWaterML2
 Logical Model UML defined in Section 8.
 ====
 ----
+
+image::/assets/author/ogc/reqt2.png[Rendering]
 
 
 // The entries `test-purpose`, `test-method`, `conditions`, and `part` will
@@ -516,6 +525,8 @@ inherit:: <<rc_core,/req/req-class-core>>
 inherit:: <<rc_construction,/req/req-class-construction>>
 ====
 ----
+
+image::/assets/author/ogc/reqt3.png[Rendering]
 
 NOTE: In this example, both block attributes and definition list syntax is used;
 the `inherit` attribute has two hyperlink values, which are expressed in the definition list.
@@ -712,6 +723,7 @@ ____
 ____
 
 
+[[conftest]]
 === Conformance test and Abstract test
 
 A "`Conformance test`" can be "`concrete`" or "`abstract`" depending on the type
@@ -757,7 +769,8 @@ Method_ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2
 
 ** `step` (optional). Step of the test method. Is expected to be embedded within `test-method`,
 and may contain substeps of its own. Rich text. Presented as a numbered list.
-added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2]
+added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2]. Steps can be
+nested; the nested list order is arabic, then alphabetic, then roman.
 
 ** `test-method-type` (optional). Method of the test. Rich text. Presented as _Test
 Method Type_ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.3]
@@ -838,6 +851,8 @@ have the same source, target, direction, roles, and multiplicities as those
 documented in the Conceptual Model.
 ====
 ----
+
+image::/assets/author/ogc/reqt4.png[Rendering]
 
 .Example of Abstract test from DGGS (block attributes)
 [source,asciidoc]
