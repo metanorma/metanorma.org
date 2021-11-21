@@ -6,9 +6,9 @@ There are two AsciiDoc image macro types, block and inline.
 
 == Block image
 tag::tutorial[]
-A block image is displayed as a discrete element, i.e., on its own line, in a document. A block image is designated by image macro name and followed by two colons (`::`) It’s preceded by a blank line, entered on a line by itself, and then followed by a blank line.
+A block image is displayed as a discrete element, i.e., on its own line, in a document. A block image is designated by image macro name and followed by two colons (`image::PATH[]`). It’s preceded by a blank line, entered on a line by itself, and then followed by a blank line.
 
-However, in standard documents images don’t just decorate text, but rather show important features. You might want to reference that image in the text, which you need an anchor for. You can also explain a graphic by adding a key. The entries of the key follow the syntax of a definition list (`key::Explanation`).
+In standard documents images are informative and you might want to reference an image in the text. As with all references, you need to define an anchor. You can also explain a graphic by adding a key. The entries of the key follow the syntax of a definition list (`key::Explanation`).
 
 [source, AsciiDoc]
 ----
@@ -32,63 +32,11 @@ end::tutorial[]
 
 An inline image is displayed in the flow of another element, such as a paragraph. This is useful when you want to incorporate buttons or other icons into the text flow. 
 
-The inline image macro is almost identical to the block image macro, except its macro name is followed by a single colon (:). For more information refer to the https://docs.asciidoctor.org/asciidoc/latest/macros/images/[AsciiDoc documentation]. 
+The inline image macro is almost identical to the block image macro, except its macro name is followed by a single colon (image:PATH[]). For more information refer to the https://docs.asciidoctor.org/asciidoc/latest/macros/images/[AsciiDoc documentation]. 
 
+== Subfigures
 
-
-
-//Old content:
-
-== Figures
-
-Like formulae, figures can be followed by a definition list for the variables used in the figure;
-the definition list is either preceded by the paragraph `+*Key*+` (in English),
-or [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3] is marked up with `[%key]`.
-For example:
-
-[source,asciidoc]
---
-[[figureC-1]]
-.Typical gelatinization curve
-image::rice_images/rice_image2.png[alt text]
-footnote:[The time stem:[t_90] was estimated to be 18,2 min for this example.]
-
-[%key]
-stem:[w]:: mass fraction of gelatinized kernels, expressed in per cent
-stem:[t]:: cooking time, expressed in minutes
-stem:[t_90]:: time required to gelatinize 90 % of the kernels
-P:: point of the curve corresponding to a cooking time of stem:[t_90]
-
-NOTE: These results are based on a study carried out on three different types of kernel.
---
-
-[source,asciidoc]
---
-[[figureC-1]]
-.Typical gelatinization curve
-image::rice_images/rice_image2.png[alt text]
-footnote:[The time stem:[t_90] was estimated to be 18,2 min for this example.]
-
-[%key]
-stem:[w]:: mass fraction of gelatinized kernels, expressed in per cent
-stem:[t]:: cooking time, expressed in minutes
-stem:[t_90]:: time required to gelatinize 90 % of the kernels
-P:: point of the curve corresponding to a cooking time of stem:[t_90]
-
-NOTE: These results are based on a study carried out on three different types of kernel.
---
-
-As an extension to AsciiDoc syntax, Metanorma allows Data URLs as the URL for an image:
-
-[source,asciidoc]
---
-image::data:image/png;base64,ivBO[alt text]
---
-
-=== Subfigures
-
-Subfigures (which appear in ISO formats, for example)
-are entered by including images in AsciiDoc examples.
+If you want to include a figure that consists of several images, you create an https://docs.asciidoctor.org/asciidoc/latest/blocks/example-blocks/#delimited[example block] and include the images as block images.
 
 [source,asciidoc]
 --
@@ -107,10 +55,35 @@ image::rice_images/rice_image3_3.png[]
 ====
 --
 
+== Pre-formatted blocks
+
+Figures can include pre-formatted blocks, as well as images.
+
+For accessibility, pre-formatted blocks can be provided with an alt text attribute
+[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+
+[source,asciidoc]
+--
+[alt=ASCII art of a dog]
+....
+     ___^_
+   /    | \__/\
+    \   /  ^ ^|
+   / \_/   0  0_
+  /             \
+ /     ___     0 |
+/      /  \___ _/
+....
+--
+
+== Metanorma-specific image attributes
+
+NOTE: For all image attributes, please refer to the https://docs.asciidoctor.org/asciidoc/latest/macros/image-ref/[AsciiDoc image documentation]. The following paragraphs describe Metanorma-specific behavior. 
+
 === Image size
 
-The value `auto` is accepted for image width and height attributes. It is only passed on
-to HTML output; if the output is to Word, both the width and height attributes are stripped
+When you assign the value `auto` for an image width and height, it is only applied
+to HTML output. When the output is to Word, both the width and height attributes are stripped
 from the image.
 
 [source,asciidoc]
@@ -119,26 +92,8 @@ from the image.
 image::logo.jpg
 --
 
-=== Captions and titles
-
-As elsewhere in Metanorma, the caption of an image (of the figure containing the image)
-is set with a line prefixed with dot above the image.
-
-[source,asciidoc]
---
-.Caption
-image::logo.jpg[]
---
-
-[source,asciidoc]
---
-image::logo.jpg[title=Caption]
---
-
-NOTE: Similar to Asciidoctor AsciiDoc, the `title` attribute is treated as
-identical to the dot-prefixed caption.
-
-
+=== Title attribute 
+// clarify why/When to use titleattr and why not alt --> Wait for Nicks response.
 Metanorma supports a `title` attribute on images for accessibility, which is
 distinct from the figure caption.
 This is entered in Metanorma as the `titleattr` attribute:
@@ -147,12 +102,7 @@ This is entered in Metanorma as the `titleattr` attribute:
 --
 [titleattr=Title Attribute]
 image::logo.jpg
---
-
 Or
-
-[source,asciidoc]
---
 image::logo.jpg[titleattr=Title Attribute]
 --
 
@@ -170,28 +120,14 @@ by the caption.
 Word's description of "`Alt Text`" is:
 "`How would you describe this object and its context to someone who is blind?`".
 
-
-== Preformatted blocks
-
-Figures can include preformatted blocks, as well as images.
-
-For accessibility, preformatted blocks can be provided with an alt text attribute
-[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+=== Data URLs as Image paths
+As an extension to AsciiDoc syntax, Metanorma allows https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs[Data URLs] as the URL for an image:
 
 [source,asciidoc]
 --
-[alt=ASCII art of a dog]
-....
-     ___^_
-   /    | \__/\
-    \   /  ^ ^|
-   / \_/   0  0_
-  /             \
- /     ___     0 |
-/      /  \___ _/
-....
+image::data:image/png;base64,ivBO[alt text]
 --
 
 
-// Say something about imagesdir attribute
+// Say something about imagesdir attribute (?)
 // https://docs.asciidoctor.org/asciidoc/latest/macros/images-directory/
