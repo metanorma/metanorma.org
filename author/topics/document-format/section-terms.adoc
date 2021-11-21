@@ -518,10 +518,9 @@ image::/assets/author/topics/document-format/section-terms/fig-term-paddy.png[Ex
 ====
 
 
-==== Domain, subject and usage information
+==== Domain and subject
 
-Domain, subject and usage information apply to concepts as described
-in ISO 10241-1.
+Domain and subject apply to concepts as described in ISO 10241-1.
 
 Concepts can be provided with extended metadata in a definition list,
 after the term subheading, marked with the option attribute
@@ -531,7 +530,6 @@ The following keys are allowed:
 
 `domain`:: The domain of the term
 `subject`:: The subject of the term
-`usageinfo`:: Usage information about the term
 
 [example]
 .Concept with domain, subject and usage information
@@ -544,13 +542,6 @@ The following keys are allowed:
 [%metadata]
 domain:: hydraulics
 subject:: pipes
-usageinfo::
-+
----
-Usage depends on precedent.
-
-Refer to your local standards body.
----
 ----
 ====
 
@@ -662,6 +653,14 @@ The following keys are supported:
 
 `script`:: the script of the designation. Specified as an ISO 15924 code.
 
+`fieldOfApplication`:: text indicating the field of application of the term (typically the domain),
+and used to disambiguate the designation from other designations identical in the current language.
+The fieldOfApplication in ISO/IEC appears in angle brackets, after the designation
+itself [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.2].
+
+`usageInfo`:: text used to disambiguate the designation from other designations identical in the current language,
+but not relating to the field of application of the term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.2].
+
 `geographicArea`:: the geographic area of the designation. Specified as an ISO 3166-1 code.
 
 `type`:: type of expression used as designation; supported values are
@@ -725,10 +724,11 @@ delimited. Supported values are:
 [%metadata]
 language:: eng
 
-admitted:[Alternative term name]
+admitted:[Alternative]
 
 [%metadata]
 script:: Hans
+fieldOfAppplication: to conventional procedure
 
 deprecated:[Deprecated term name]
 
