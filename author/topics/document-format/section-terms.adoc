@@ -653,13 +653,55 @@ The following keys are supported:
 
 `script`:: the script of the designation. Specified as an ISO 15924 code.
 
-`field-of-application`:: text indicating the field of application of the term (typically the domain),
-and used to disambiguate the designation from other designations identical in the current language.
-The field-of-application in ISO/IEC appears in angle brackets, after the designation
+`field-of-application`:: text indicating the field of application of the designation (typically the domain),
+and used to disambiguate from other designations identical in the current language.
+The "field of application" in ISO/IEC appears in angle brackets, after the designation
 itself [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.2].
++
+--
+[example]
+.IEV 102-05-28 designation (from ISO/IEC DIR IEC SUP:2021 SK.5)
+====
+Laplacian, <of a scalar field>
+====
 
-`usage-info`:: text used to disambiguate the designation from other designations identical in the current language,
-but not relating to the field of application of the term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.2].
+[example]
+.IEV 102-03-22 designation
+====
+component, <of a vector quantity>
+====
+
+NOTE: The "`field of application`" refers to the IEC terminology attribute of
+"`specific use`", which contrasts against the ISO use of "`domain`".
+While they are similar in subtle ways, the "`domain`" applies to a concept, where
+"`specific use`" applies to a designation.
+The concept "specific use" is used in IEC, heavily within IEV (the IEC 60050
+series); it is not used in ISO.
+
+NOTE: Refer to https://www.iec.ch/members_experts/refdocs/[ISO/IEC Directives, IEC Supplement:2021], Annex SK "Rules for terminology work",
+for more information on "`specific use`". Further details are also available in ISO 10241-1.
+--
+
+`usage-info`:: usage information, which is text used to disambiguate the
+designation from other designations identical in the current language,
+but not relating to the field of application of the designation. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.2].
++
+--
+[example]
+.IEV 112-02-11 designation (from ISO/IEC DIR IEC SUP:2021 SK.5)
+====
+deci, <prefix>
+====
+
+[example]
+.IEV 102-04-14 designation
+====
+angle, <between two straight lines>
+====
+
+NOTE: Refer to https://www.iec.ch/members_experts/refdocs/[ISO/IEC Directives, IEC Supplement:2021], Annex SK "Rules for terminology work",
+on the usage of "`usage information`". Further details can be found in ISO 10241-1.
+--
 
 `geographic-area`:: the geographic area of the designation. Specified as an ISO 3166-1 code.
 
