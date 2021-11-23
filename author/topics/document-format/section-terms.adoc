@@ -434,13 +434,32 @@ reference mechanism or by assigning an *anchor*.
 
 
 [example]
-.Defining a term
+.Defining a term "approximate date" (ISO 8601-2, 3.1.1.1)
+====
+[source,adoc]
+----
+=== approximate date
+
+calendar date which is an estimate whose value is asserted to be possibly correct
+
+NOTE: The degree of confidence in approximation depends on the application.
+----
+
+renders as
+
+.Rendering of term "approximate date"
+image::/assets/author/topics/document-format/section-terms/fig-term-approx-date.png[Rendering of term "approximate date"]
+====
+
+
+[example]
+.Defining a term "instant" (ISO 8601-1, 3.1.1.3)
 ====
 [source,adoc]
 ----
 === instant
 
-point on the term:[time axis]
+point on the {{time axis}}
 
 NOTE: An instantaneous event occurs at a specific instant.
 
@@ -453,12 +472,12 @@ NOTE: An instantaneous event occurs at a specific instant.
 == Normative References
 * [[[ievtermbank,IEV]]]
 ----
-====
 
 renders as
 
-.Example of a single term.
-image::/assets/author/topics/document-format/section-terms/fig-term-instant.png[Example of a single term]
+.Rendering of term "instant"
+image::/assets/author/topics/document-format/section-terms/fig-term-instant.png[Rendering of term "instant"]
+====
 
 NOTE: An unmodified term and definition does not require any text after
 the source reference.
@@ -468,7 +487,7 @@ deprecated terms, domain, examples and a definition modified
 from its original source.
 
 [example]
-.Using many term options, with examples, notes and source
+.Defining a term with additional options, with examples, notes and source
 ====
 [source,asciidoc]
 --
@@ -741,7 +760,7 @@ admitted:[]
 ----
 ====
 
-NOTE: This is supported in ISO 10241-1.
+NOTE: The "empty designation" is explicitly supported by ISO 10241-1.
 
 ===== Non-verbal designations / representations
 
@@ -769,7 +788,7 @@ ASCII ART
 ----
 ====
 
-NOTE: This is supported in ISO 10241-1.
+NOTE: Multiple non-verbal designations are supported by ISO 10241-1.
 
 
 ==== Definitions
@@ -914,32 +933,114 @@ ISO 10241-1). In this case each source should be entered in a separate
 The requirement that the source of a term be given in a citation also applies
 when the source is a termbase, such as the
 http://www.electropedia.org[International Electrotechnical Vocabulary (IEV)].
-Formally, IEV references should be cited as `IEC 60050-nnn:20xx`, where `n` is
-the top-level clause, and `20xx` is the year when that particular specification
-was published. As discussed below, Metanorma automatically converts citations of
-IEV (via References) to citations of the appropriate IEC 60050 standards.
 
-So:
+As with other information source types, the termbase must be first defined
+in a references section.
+
+The IEV is handled specially in Metanorma due to its frequency of use and
+usage of a specific citation practice as advised by the IEC.
+
+Metanorma requires all IEV references to be to a single reference, named "IEV".
+
+In order to source an IEV term, you would need to:
+
+. Add the "IEV" entry to your reference section using an anchor of your choice;
++
+[example]
+====
+This example adds the "IEV" termbase with a chosen anchor `ievtermbank`.
+
+[source,adoc]
+----
+* [[[ievtermbank,IEV]]], _IEV: Electropedia_
+----
+====
+
+. Add the `[.source]` block at the end of the terminology entry.
++
+[example]
+====
+[source,asciidoc]
+--
+[.source]
+<<ievtermbank,clause="103-01-02">>
+--
+====
+
+Formally, in accordance with IEC/TC 1 advised practice, IEV references should be
+cited as `IEC 60050-nnn:yyyy`, where `n` is the top-level clause, and `yyyy` is
+the year when that particular specification was published.
+
+Metanorma automatically converts citations of IEV to citations of the
+appropriate IEC 60050 standards according to the correct practice. The "IEV"
+entry will be replaced by the appropriate IEC 60050 series references in all
+outputs, including the canonical XML.
 
 [example]
 ====
+The following source:
+
+[source,adoc]
+----
 <<ievtermbank,clause=113-01-07>>
-====
+----
 
 will be rendered as:
 
-[example]
-====
+____
 IEC 60050-113:2011, 113-01-07
+____
 ====
+
+NOTE: Do not insert instances of IEC 60050 references for IEV citations; they
+will be duplicated by the automatically generated references.
+
+If a terminology entry is sourced from the IEV, Metanorma automatically performs
+validation of the sourced entry to detect any modifications.
+For IEV entries to be validated, the IEV reference must be given as a `clause`,
+and in quotes (otherwise the locality syntax would be interpreted as a range).
+
+[example]
+A terminology entry that sources IEV 103-01-02 would use something like
+`\<<ievtermbank,clause="103-01-02">>`.
+
+A complete example is given below.
+
+[example]
+.Definition of "functional" sourced from the IEV
+====
+[source,asciidoc]
+--
+== Terms and definitions
+
+=== functional
+
+function for which the argument is a function and the value a number
+
+NOTE: An example of a functional of the function stem:[f(t)] is
+stem:[int_(t_2)^(t_1) bb(d) t]
+
+[.source]
+<<ievtermbank,clause="103-01-02">>
+
+...
+
+[bibliography]
+== Bibliography
+
+* [[[ievtermbank,IEV]]], _IEV: Electropedia_
+--
+====
+
+===== Citing terminological entries with numeric identifiers
+
+In ISO and IEC, terminological entries are technically identified by
+"identifiers", not "clauses", even though they may be similar in format.
 
 In some cases,
 like link:https://www.iso.org/obp/ui/#iso:std:iso-iec:2382:ed-1:v1:en[ISO/IEC 2382],
 terminological clauses are numbered as plain numbers
 without character separators (dashes or periods).
-
-In ISO, terminological entries are technically identified by identifiers, not
-clauses.
 
 However, when the location is cited as a number, Metanorma will consider
 the location a top-level clause, which will be represented in the
@@ -974,35 +1075,6 @@ the number is not a top-level clause using the `droploc%` flag.
 the number with the location type of "`Clause`".
 
 
-===== Grouping IEV references
-
-For convenience, Metanorma requires all IEV references to be to a single
-reference, named `IEV` in the normative references. During the rendering of
-Metanorma AsciiDoc into Metanorma XML, this reference will be replaced by the
-various required "`IEC 60050-nnn:20xx`" references.
-
-NOTE: That means that you should not insert your own instances of IEC 60050
-references for IEV citations; they will be duplicated by the automatically
-generated references.
-
-[source,asciidoc]
---
-[.source]
-<<ievtermbank,clause="103-01-02">>
-
-...
-
-[bibliography]
-* [[[ievtermbank,IEV]]], _IEV: Electropedia_
-// will be excluded from HTML and Word output. Will be replaced by a canonical reference in XML output.
---
-
-Note that, for IEV entries to be validated, the IEV reference must be given as a Clause,
-and in quotes (otherwise the locality syntax would be interpreted as a range);
-so `\<<ievtermbank,clause="103-01-02">>` for IEV 103-01-02.
-
-In the foregoing, we use `ievtermbank` as the anchor for IEV; any anchor can be used, so long
-as it is mapped to the IEV reference code in the bibliography.
 
 ===== Complex source attributes
 
