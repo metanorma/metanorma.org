@@ -1,0 +1,209 @@
+---
+layout: builder-docs
+---
+
+
+== Quick Start
+
+Metanorma enables you to create your complex large standard documents in readable WYSIWYM formats. To start using Metanorma, you need to perform just these four steps–
+* Install Metanorma to import content in the form of a Word doc, XML file, or Template
+* Convert the existing source into your standard format 
+* Edit the Ascii document
+* Compile the output
+
+
+== Installation
+
+To build your documents using Metanorma, you have to install the Metanorma command line(CLI) toolchain. Follow the pre-requisites and the steps to install the Metanorma-CLI toolchain. 
+
+[NOTE,keep-separate=true]
+====
+We prefer you use the Terminal, only if you are proficient with it. If not, use Docker. 
+====
+
+
+=== Pre-requisites
+
+Before you begin installing Metanorma, install the packages for each OS to simplify downloading Metanorma. The prerequisites for installing the Metanorma tool for respective platforms are:
+
+==== macOS
+For macOS, install Homebrew by running this command on your terminal :
+
+[source,console]
+----
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+----
+
+===
+To update Metanorma Installation
+==={blank}
+
+==== Windows
+For Windows, install the Chocolatey package by following these steps:
+1. Open the command prompt, right-click, and click Run as an administrator.
+2. Install with Powershell.exe.
+3. Copy this command, paste it to your terminal, and run:
+[source,console]
+----
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+----
+[NOTE,keep-separate=true]
+====
+You need to verify the Execution Policy once before installing the package. To know more read the
+link:/blog/12-25-2018/metanorma-on-windows-via-chocolatey[Chocolatey package's] documentation.
+====
+
+==== Linux
+For Linux, install snapd package onto your local or install curl. 
+[[snap]]
+=== Using https://snapcraft.io[Snap]
+
+The easiest way is to install the https://snapcraft.io/metanorma[Metanorma Snap]
+with a single command:
+
+[source,sh]
+----
+sudo snap install metanorma
+----
+
+If `snapd` isn't available on your distribution, use the all-in-one install script
+described below for various platforms.
+You will need to have `curl` installed beforehand.
+
+TIP: For details, please see the https://github.com/metanorma/metanorma-linux-setup[metanorma-linux-setup] repository.
+
+
+=== Install script for Ubuntu
+
+The `curl` command must be installed.
+
+[source,sh]
+----
+sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/ubuntu.sh | bash"
+curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/install-gems.sh | bash
+----
+
+
+=== Install script for CentOS
+
+The `curl` command must be installed.
+
+[source,sh]
+----
+sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/centos.sh | bash"
+curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/install-gems.sh | bash
+----
+
+
+==== Docker
+Download docker before running Metanorma.
+Also, if you have AWS’ECR then you need to create your own Metanorma container, then use Makefile:
+
+[source,console]
+----
+export NS_REMOTE=${account-id}.dkr.ecr.${region}.amazonaws.com/${account-name}
+export DOCKER_LOGIN_CMD='aws ecr get-login --no-include-email \
+  --region=${region} --registry-ids=${ecr-registry-id}'
+----
+
+=== Use-cases
+If you are a first-time user and wish to create your Metanorma flavor or edit the one you already have, follow these steps:
+
+1. Choose your platform-specific installation format–
+==== macOS
+If you have macOS, then open the terminal and install Metanorma using homebrew:
+[source,console]
+----
+brew tap metanorma/metanorma
+brew install metanorma
+----
+
+OR
+[source,console]
+----
+brew install metanorma/metanorma/metanorma
+----
+
+[NOTE,keep-separate=true]
+====
+If homebrew is not installed, check the prerequisites to install it. We need to install homebrew before running this command. 
+====
+
+==== Windows
+If you have Windows OS, open Command Prompt, and install Metanorma using Chocolaty package:
+[source,console]
+----
+choco install metanorma -y
+----
+[NOTE,keep-separate=true]
+====
+If a chocolaty package is not installed, check the prerequisites to install it. We need to install the package before running this command. 
+====
+
+==== Linux
+If you have Linux OS, open Terminal, and install Metanorma using Snapcraft package:
+[source,console]
+----
+sudo snap install metanorma
+----
+If you do not have snapd and wish to install it, then install curl, and run just one command for these distributions–
+Ubuntu
+[source,console]
+----
+sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/ubuntu.sh | bash"
+curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/install-gems.sh | bash
+----
+
+CentOS
+[source,console]
+----
+
+sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/centos.sh | bash"
+curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/install-gems.sh | bash
+----
+
+But if you wish to download a platform-independent Metanormal-CLI toolchain for cross-browser testing, then you have two ways to go:
+
+==== Ruby Gem
+Install all the Metanorma dependencies like isodoc, along with the standards like ISO, OGC, etc. Run this command:
+[source,ruby]
+----
+gem install metanorma-cli
+----
+==== Docker
+Install the Metanorma toolchain by following these steps:
+. Install Docker:
+
+[source,console]
+----
+docker pull metanorma/metanorma
+----
+
+. Now, pull the Metanorma container using this command:
+[source,console]
+----
+docker pull metanorma/metanorma
+----
+
+. After this, compile a Metanorma document by running this command:
+For macOS–
+
+[source,console]
+----
+docker run -v "$(pwd)":/metanorma/ metanorma/metanorma metanorma compile -t {flavor} -x {extensions} {my-document-file}
+----
+
+where, 
+flavor: the SDO you are using like ISO, OGC, IETF, etc.
+output-formats: the output format you need for your document like xml, pdf, html etc. 
+my-document-file: name of the Metanorma file. Ex. iso-123.doc
+
+For Windows:
+[source,console]
+----
+docker run -v "%cd%":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t {flavor} -x {output-formats} {my-document-file}
+----
+
+
+
+
