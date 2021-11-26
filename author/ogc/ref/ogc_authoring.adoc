@@ -1,0 +1,537 @@
+---
+layout: ogc-flavor
+---
+
+= Authoring guide for OGC authors
+
+////
+Draft content structure:
+
+Scope
+References
+T&D
+Quick start, using basic templates
+How to: Metadata
+How to: Basic Metanorma AsciiDoc
+How to: References
+How to: Terms and definitions, and Glossary
+How to: Content
+How to: ModSpec
+Bibliography
+////
+
+
+== Scope
+
+// The scope contains introductory content of the standard naming the areas where the rules and guidance of the standard are focused. This clause is usually the first in every standard.
+
+== References
+
+* OGC ModSpec (08-131r3): link:https://portal.ogc.org/files/?artifact_id=34762[].
+
+
+== Terms and definitions
+
+=== clause
+
+Content separator, numerically identified in ascending order. Also known as _section_.
+
+=== subclause
+
+Content separator embedded recursively in clauses, numerically identified in ascending order until certain level depending of the flavor. Also known as _subsection_.
+
+=== lists
+
+List of text contents related to a common subject.
+
+=== boilerplate
+
+Predefined content inserted automatically in output in accordance to flavor requirements.
+
+=== template
+
+AsciiDoc file(s) that serve as guidance to author a specific document type in OGC flavor.
+
+=== flavor
+
+Formatting required to author a specific standard. It receives the name of the non-profit organization in charge of publishing. E.g.: OGC, ISO, IEC, ITU, etc.
+
+=== metanorma asciidoc
+
+Modified version of AsciiDoc markup language designed to ease the authoring of standards.
+
+=== document attribute
+
+Name-value pair (`:name: value`) used as a mean of configuring the AsciiDoc processor. +
+Source: link:https://docs.asciidoctor.org/asciidoc/latest/attributes/document-attributes/[].
+
+=== admonition
+
+Statement used to draw the attention of the reader by labeling it with a priority tag.
+
+=== attribute
+
+Name-value pair separated by an equal sign  (`=`) to configure a localized part of the document.
+
+=== cross-reference
+
+Direct link to an internal location within the current AsciiDoc document or to another external AsciiDoc document. +
+Source: link:https://docs.asciidoctor.org/asciidoc/latest/macros/xref/[].
+
+
+== Quick start, using basic templates
+
+Metanorma has a link:https://github.com/metanorma/mn-samples-ogc[GitHub repository] dedicated to gather a set of templates of different OGC document types.
+Aiming to provide a starting point on the authoring of OGC standards.
+
+You can download the repository with the following cli command:
+
+[source,asciidoc]
+----
+git clone https://github.com/metanorma/mn-samples-ogc.git
+----
+
+These templates hold a predefined structure with placeholders that serve as guidance to new authors using Metanorma.
+
+The idea is that the user select a template according with the type of document required and fill up the template with customized content.
+
+Basically, all template files are arranged in the same manner: an _images_ folder for the images files, a _sections_ folder for the text content, and a root _document.adoc_ for the preamble (title and metadata) and inclusion of the text content (`include` directives).
+
+
+== How to: Metadata
+
+The metadata of the document is expressed using _document attributes_.
+Which sets pertinent properties and information that will fill-up the document with
+certain metadata info and make it look of a certain manner in output.
+
+With document attibutes we can set metadata information like: edition, document type,
+document sub-type, authors info, document identifier, publication date, language, and a bunch of et ceteras.
+
+To declare a document attribute we use this simple structure: `:attribute: value`.
+
+They go listed right after the main title of the document:
+
+[source,asciidoc]
+----
+= Document title
+
+:attribute_1: value_1
+:attribute_2: value_2
+...
+:attribute_n: value_n
+----
+
+A dedicated guide in document attributes is given in link:https://www.metanorma.org/author/ogc/ref/document-attributes/[OGC document attributes].
+
+
+== How to: Basic Metanorma AsciiDoc
+
+Metanorma AsciiDoc resembles in high porcentage to classic AsciiDoc, but not 100%.
+In fact, the resemblance becomes more diffuse as we are in the need of
+expressing more involved content.
+
+At a base level, the elements that you are likely going to use every
+time you write a standard in Metanorma are:
+
+* Clauses and subclauses
+* Lists
+* Admonitions (Example and note blocks)
+* Figures
+* Tables
+* Links and cross-references
+* Footnotes
+* AsciiMath
+* Source code
+
+
+=== Clauses and subclauses
+
+Clauses and suclauses are the main separator of content in the standards.
+In Metanorma they can be embedded until seven levels of deepness, being
+level 1 the first separator right after the main title
+of the document. Separators from level 2 onwards are considered subclauses.
+
+
+Clauses are typeset using double equal signs followed by the title (e.g. `== Clause title`), while
+subclauses use the same structure but with three to six equal signs.
+
+When a subclause is depper than 5 levels, a `[level=]` attribute
+must be applied using six equal signs as shown below:
+
+
+[source,asciidoc]
+----
+== Clause 1 (separator level 1)
+...
+
+=== Subclause 1.1 (separator level 2)
+...
+
+==== Subclause 1.1.1 (separator level 3)
+...
+
+===== Subclause 1.1.1.1 (separator level 4)
+...
+
+====== Subclause 1.1.1.1.1 (separator level 5)
+...
+
+[level=6]
+====== Subclause 1.1.1.1.1.1 (separator level 6)
+...
+
+[level=7]
+====== Subclause 1.1.1.1.1.1.1 (separator level 7)
+...
+----
+
+
+=== Lists
+
+List separated piece of contents that are related to a common subject.
+They can be ordered (numerically or alphabetically) or unordered.
+
+Ordered lists are marked up by placing dots at the beginning of each list item line.
+
+[source,asciidoc]
+----
+. List item 1
+. List item 2
+...
+. List item n
+----
+
+The numbering character is predefined by Metanorma according to flavor requirements.
+
+On the other side, unordered lists are typeset by placing asterisks (*) or dashes (-) at the beginning of each list item line.
+
+[source,asciidoc]
+----
+* List item 1
+* List item 2
+...
+* List item n
+----
+
+[source,asciidoc]
+----
+- List item 1
+- List item 2
+...
+- List item n
+----
+
+==== Embedded lists
+
+We can embed lists by increasing the number of list item indicators.
+For example for unordered lists:
+
+[source,asciidoc]
+----
+* List item 1
+** List item 1.1
+*** List item 1.1.1
+* List item 2
+** List item 2.1
+...
+* List item n
+----
+
+The level of deepness is proportional to the number of item indicators, in this case, an asterisk.
+Same applies for ordered lists.
+
+
+For more information about the basics of AsciiDoc, visit https://docs.asciidoctor.org/asciidoc/latest/[AsciiDoc documentation] and link:https://www.metanorma.org/author/topics/document-format/text/[Metanorma text formatting].
+
+
+<<cls_references>>
+== How to: References
+
+References clause contains the list of cited references that the standard use as base to support the subject in treatment.
+
+This clause has special treatment in Metanorma output, so the markup must follow certain rules
+in order to be recognized in compilation.
+
+The clause must be tagged with `[bibliography]` attribute. The used title is ussually "Normative references" or just "References".
+
+.Reference clause must be prepended by `[bibliography]` attribute.
+[source,asciidoc]
+----
+[bibliography]
+== Normative references
+...
+----
+
+Following boilerplate text is added at the beginning of the clause:
+
+____
+The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.
+____
+
+Such text can be overridden by using following markup:
+
+[source,asciidoc]
+----
+[NOTE,type=boilerplate]
+====
+Replacement text
+====
+----
+
+Practice that is not recommended because it doesn't follow the formatting terms of OGC authoring. See link:https://www.metanorma.org/author/ogc/topics/markup/#modifying-introductory-text-in-terms-and-definitions[Modifying introductory text in "Terms and definitions"].
+
+List of references can contain standard references, web resource references and bibliographic references.
+
+Standard references can be auto-fetch using the proper markup, meaning that the content of the
+reference will be downloaded and attached automatically (the content of the markup will be overridden).
+
+The markup structure for a reference is:
+
+.Markup structure of a bibliographic reference
+[source,asciidoc]
+----
+* [[[anchor,id]]], Reference content.
+----
+
+Where:
+
+anchor:: is the string of characters used to cite the reference anywhere inside the standard (i.e. as a cross-reference).
+id:: is the string of characters used as identifier of the reference in the output. For standard references,
+it serves to look-up for online bibliographic sources and fetch them down to the local directory if the proper structure is met. See link:https://www.metanorma.org/author/topics/building/reference-lookup/[Automatic reference lookup].
+
+
+As an example of a bibliographic reference we have:
+
+[source,asciidoc]
+----
+* [[[GeoRSS,GeoRSS]]], GeoRSS Geographically Encoded Objects for RSS Feeds. (http://www.georss.org/)
+----
+
+it will render
+
+____
+GeoRSS Geographically Encoded Objects for RSS Feeds. (http://www.georss.org/)
+____
+
+
+For a standard reference:
+
+[source,asciidoc]
+----
+* [[[OGC12-080r2,OGC 12-080r2]]], OGC OWS Context Conceptual Model, 2013-09-01, https://portal.opengeospatial.org/files/?artifact_id=55182
+----
+
+it will render
+
+____
+Roger Brackin, Pedro Gonçalves : OGC 12-080r2, OGC OWS Context Conceptual Model. Open Geospatial Consortium (2014). https://portal.ogc.org/files/?artifact_id=55182
+____
+
+Note that the content of the reference is diferent in output because it corresponds to the fetched data.
+If fetching is not successful, the content of the markup is used.
+
+
+== How to: Terms and definitions, and Glossary
+
+=== "Terms and definitions" clause
+
+This clause contains the terms used within the document and has special treatment in output.
+
+A "Terms and definitions" clause doesn't limit to have only terms and definitions.
+It can also contain abbreviations and list of symbols.
+
+In order to be recognized in compilation, the title of the clause must be either of these options:
+
+* "Terms and definitions"
+* "Terms, definitions and symbols"
+* "Terms, definitions and abbreviated terms"
+* "Terms, definitions, symbols and abbreviated terms"
+
+Nonetheless, writing "Terms and definitions" is enough in any case since the title
+will be renamed in output accordingly if the clause contains symbols and/or abbreviations.
+
+Further info about combined content in "Terms and definitions" section is given in link:https://www.metanorma.org/author/ogc/topics/markup/#terms-and-definitions[OGC Terms and definitions].
+
+To look for general concepts on Terms and defintions, see link:https://www.metanorma.org/author/topics/document-format/section-terms/[Terms and definitions].
+
+
+=== "Glossary" clause
+
+In OGC flavor, a glossary is an annex that involves terms and definitions for information purposes
+rather than normative. And it follows the same markup structure of the authentic "Terms and definitions" clause.
+The only difference that it is marked up as an annex:
+
+[source,asciidoc]
+----
+[appendix]
+== Glossary
+
+=== geospatial
+
+relating to geographic and spatial information
+
+[.source]
+<<OGC21-017,clause="4.3">>
+----
+
+If the title of the clause shall be different from "Glossary",
+a `[headding=glossary]` attribute must be added:
+
+[source,asciidoc]
+----
+== Customized glossary title
+
+=== geospatial
+
+relating to geographic and spatial information
+
+[.source]
+<<OGC21-017,clause="4.3">>
+----
+
+
+== How to: Content
+
+Knowing the basics of Metanorma AsciiDoc, we can start to write our customized content for the standard.
+
+In general terms, the content of an OGC standard have this structure:
+____
+Document title -> Document attribute collection (metadata) -> Prefactory content -> Main content
+____
+
+=== Prefatory content
+
+The prefatory content is the part of the document that contains clauses like:
+Abstract, Preface, Submitting organizations, Authors information, and other clauses that may be particular to the standard.
+
+Prefatory content has its own clause numbering style totally detached from the main content,
+and its own particuar ordering according to OGC standard requirements.
+
+In order to place any clause inside the prefatory content, a `[.preface]` tag
+must be added to the clause:
+
+[source,asciidoc]
+----
+[.preface]
+== Customized clause title
+This clause is set to be placed in the prefactory area of the document.
+And it will be numbered with Roman numbers in output.
+----
+
+==== "Abstract" clause
+
+The markup of the Abstract clause is:
+
+[source,asciidoc]
+----
+[abstract]
+== Abstract
+Abtract content...
+----
+
+==== "Keywords" clause
+
+The content of the _keywords_ clause is entered in comma-separate list directly in the document attribute collection, by the key: `:keywords:`.
+
+For example:
+
+[source,asciidoc]
+----
+:keywords: standard, Metanorma, AsciiDoc, WYSIWYM, authoring, OGC, markup. 
+----
+
+This content will be shown as prefatory clause in output.
+
+
+==== "Preface" clause
+
+The markup of the preface clause is declared as follows:
+
+[source,asciidoc]
+----
+.Preface
+Preface content...
+----
+
+==== "Submitting organizations" clause
+
+As _Keywords_ clause, the content of _Sumitting organizations_ is entered directly in the
+document attribute collection by the key: `:submitting-organizations`.
+This time listed by using semi-colon character.
+
+[source,asciidoc]
+----
+submitting-organizations: Organization_1; Organization_2; Organization_3; ...; Organization_n
+----
+
+=== Main content
+
+The clause numbering of the main content is independent of the prefactory area. There are particular clauses that are always present
+in most of document types and get a fixed position in the document no matter their position in the markup.
+These are:
+* _Scope_, first position.
+* _Conformance_, second position.
+* _Normative references_, third position.
+* _Terms and definitions_, fourth position.
+* _Author customized clauses_, fith position
+* _Annex clauses_, sixth position.
+* _Bibliography_. seventh position.
+
+
+==== Annexes
+
+Annex clauses are declared by prepending the `[appendix]` tag to the clause.
+They can be _Normative_ or _Informative_. Where _Normative_ is the default case.
+
+In order to declare an _Informative_ appendix, we use the _obligation_ attribute in
+the following manner: `[appendix,obligation=informative]`
+
+[source,asciidoc]
+----
+// Default case; "obligation=normative" markup can be omitted.
+[appendix,obligation=normative]
+== Normative appendix title
+...
+
+[appendix,obligation=informative]
+== Informative appendix title
+...
+----
+
+Annex clauses allocate in the last position of the main content right before the bibliography clause.
+
+
+==== "Bibliography" clause
+
+The bibliography clause follows the exact same format as <<cls_references,Normative references>> clause,
+hence, it is declared in the same way:
+
+[source,asciidoc]
+----
+[bibliography]
+== Bibliography
+
+* [[[anchor,id]]], _Reference content_.
+----
+
+It is also valid to include the bibliography into the appendix collection:
+
+[source,asciidoc]
+----
+[appendix]
+[bibliography]
+== Bibliography
+...
+----
+
+
+== How to: ModSpec
+
+See link:https://www.metanorma.org/author/ogc/topics/requirements/[ModSpec recommendations, requirements, and permissions], for a dedicated treatment of the subject.
+
+
+== Bibliography
+
+* AsciiDoc Language Documentation: link:https://docs.asciidoctor.org/asciidoc/latest/[]
+
+* AsciiMath markup reference: link:http://asciimath.org/[]
