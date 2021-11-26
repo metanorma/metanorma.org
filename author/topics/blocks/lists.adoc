@@ -37,9 +37,8 @@ Ordered lists are invoked by beginning the line with a dot `.`. The list items a
 == Definition lists
 
 Definition lists (also called https://docs.asciidoctor.org/asciidoc/latest/lists/description/[description lists] pair a term and a description together. They are often used in a "Definitions" section to define units or terms. Definition lists can appear in other sections as well, *except* for the Terms section, which provides a special syntax for defining terms. 
-Definition lists follow the syntax of `term:: Definition`. The following example defines units that are used in the document.
 
-NOTE: `\stem:[]` is used for mathematical formatting, and results in italics. So `stem:[w]` is an italic w, _w_; `\stem:[m_D]` is an italic m with a D subscript: _m~D~_.
+Definition lists follow the syntax of `term:: Definition`. The following example defines units that are used in the document.
 
 // In Metanorma PDFs stem:[w] compiled to a lowercase omega. How to determine which alphabet to use?
 
@@ -49,7 +48,21 @@ stem:[w]:: is the mass fraction of grains with a particular defect in the test s
 stem:[m_D]:: is the mass, in grams, of grains with that defect;
 stem:[m_S]:: is the mass, in grams, of the test sample.
 ----
+
+NOTE: `\stem:[]` is used for mathematical formatting, and results in italics. So `stem:[w]` is an italic w, _w_; `\stem:[m_D]` is an italic m with a D subscript: _m~D~_.
 end::tutorial[]
+
+== Referencing a list item
+
+You can reference a single list item using the link:author/topics/inline_markup/links.adoc[internal references] mechanism. Simply assign an anchor before the list item:
+
+.Example of list items that can be referenced
+[source,asciidoc]
+--
+. Ordered list
+.. [[id1]] This is the first list item
+... [[id2]] This is a list sub-item
+--
 
 == List styling
 

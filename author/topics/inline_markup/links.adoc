@@ -2,49 +2,42 @@
 layout: author-docs
 title: Links and Cross-references
 ---
-//Move bibliography part in extra place; don't forget to include in tutorials
-
-//Old content File links
-
-Links to other Metanorma documents are expected to change their suffix depending on whether
-they are rendered as HTML, PDF, or DOC. To make this happen, you can add the option
-`updatetype=true` 
-to any links you create to Metanorma documents [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.4],
-so long as the link is relative and not absolute, and it does not have a file suffix:
-
-[source,asciidoc]
---
-link:../parent[updatetype=true]
-link:../child[This Is The Child Document,updatetype=true]
---
-
-This will link to `../parent.html` and `../child.html` in HTML, and to
- `../parent.pdf` and `../child.pdf` in PDF.
-
-
-
-
-//----
-
 tag::tutorial[]
 References are an integral part of standards. The main mechanism for references are anchors and destinations. There are four types of references:
 
 * Hyperlinks to an external source, for example a link to a website
 * Metadata references
 * Internal references to a section, image, table, etc.
-* Bibliographic entries
+* link:author/topics/sections/entering_bib.adoc[Bibliographic entries]
 
-*Hyperlinks*
+== Hyperlinks
 
-AsciiDoc lets you include links to external sources by pasting the URL into the document, and optionally appending the link text in square brackets `[Link text]`. 
+AsciiDoc lets you include links to external sources, and sources to files within the same project.
 
-.Example of a link
+To reference an *internal* source:
+
+. Use the https://docs.asciidoctor.org/asciidoc/latest/macros/link-macro/[link macro] to include a link to a file. The syntax looks like this: `\link:PATH[]`.
+. Add link text in square brackets after the path.
++
+.Example of an internal link
+[source, AsciiDoc]
+----
+Download the latest link:downloads/report.pdf[Report]!
+----
+
+To reference an *external* source:
+
+. Paste the URL into the document.
+. Add link text in square brackets after the URL (optional) `URL[Link text]`. 
++
+.Example of an external link
 [source, AsciiDoc]
 ----
 http://www.iso.org/[International Organization for Standardization].
 ----
 
-*Metadata references*
+
+== Metadata references
 
 Every document contains a set of metadata to describe the document. You can insert a metadata reference by putting the attribute in curly braces `{attribute}`. The reference will be replaced with the value in the rendered output. 
 
@@ -58,255 +51,49 @@ Every document contains a set of metadata to describe the document. You can inse
 This document was prepared by Technical Committee ISO/TC {technical-committee-number}, _{technical-committee}_, Subcommittee SC {subcommittee-number}, _{subcommittee}_.
 ----
 
-*Internal references*
+== Internal references
 
-To link to an important place in your document, you need to set an anchor using double square brackets `[[anchor]]`. Metanorma automatically numbers and names these references; because they are autonumbered, they will be renumbered automatically if you insert any new text of the same type. Since the markup will be converted into XML, the anchor must follow the https://www.w3.org/TR/xml-names11/[XML namespace conventions]. Therefore, an anchor name name must not contain: 
-colons
-whitespaces
-words starting with numbers.
+To link to an important section, table, figure, formula, or list item in your document:
 
+. Set an anchor using double square brackets before the content you want to reference: `\[[anchor]]`. 
++
+.Example for an anchor preceding an image
 [source, AsciiDoc]
 ----
 [[figureC-1]]
 .Typical gelatinization curve 
 image::images/rice_image2.png[Image of the gelatinization curve] 
 ----
-
++
+.Rendered image caption
 image::../assets/author/tutorials/references_img_anchor.jpg[]
 
-To reference an anchor, type the anchor name like this `<<anchor>>`.
+. To reference an anchor, type the anchor name like this `\<<anchor>>`.
++
 [source, AsciiDoc]
 ----
  <<figureC-1>> gives an example of a typical gelatinization curve.
 ----
-
++
+.Rendered reference
 image::../assets/author/tutorials/references_img_target.jpg[]
 
-If you want to display text other than the anchor text, you just have to append the text inside the brackets using a comma.
- 
+. To set an alternative text other than the anchor text, append the text inside the brackets using a comma.
++
 [source, AsciiDoc]
 ----
  <<figureC-1, The diagram>> gives an example of a typical gelatinization curve.
 ----
 
-*Bibliographic entries*
+// Include in Auto Numbering topic??
+=== Auto-numbering of references
+Metanorma automatically numbers and names references; because they are autonumbered, they will be renumbered automatically if you insert any new text of the same type. 
 
-In standard documents typically there are two types of references, namely the “normative references” and the “bibliography” (informative references).
-Every bibliographic section must be preceded by the style attribute `[bibliography]` so that bibliographic references are recognized as such. 
-
-A reference entry is usually part of an unordered list (`*`). The bibliographic entry is enclosed in triple square brackets (`[[[]]]`) and contains:
-
-. The anchor name used to reference this entry
-. A document identifier
-
-After the reference, you may include the reference text in italics, for example the title of the document. If the document identifier is recognised by Metanorma, however, its bibliographic description is fetched automatically from the SDO web site, and will overwrite any title you provide with the authoritative title of the reference.
-
-[source, AsciiDoc]
-----
-* [[[anchor,document identifier or reference tag]]], _reference list text_
-----
-
-.Example for a bibliography section
-[source, AsciiDoc]
-----
-[bibliography]
-== Normative references
-
-* [[[ISO20483,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
-* [[[ISO6540,ISO 6540:1980]]]. _Maize -- Determination of moisture content (on milled grains and on whole grains)_
-----
-Gets rendered as:
-* ISO 20483:2013. _Cereals and cereal products — Determination of moisture content — Reference method_
-* ISO 6540:1980. _Maize — Determination of moisture content (on milled grains and on whole grains)_
-
-To cite an entry from your bibliography you type the anchor name like this `<<ISO20483>>`.
-If you want to specify a location within the cited document, you can add https://www.metanorma.org/author/topics/document-format/bibliography/#localities[localities] in the brackets like so: `<<ISO20483, part=IV,chapter=3,paragraph=12>>`.
-
-
-end::tutorial[]
-
-
-//Old content from xrefs.adoc
-
-
-== Cross-references
-
-=== General
-
-Cross-references are realized in Metanorma AsciiDoc by assigning an anchor
-to the block to be referenced, and writing a cross-reference containing
-that anchor ID:
-
-[source,asciidoc]
---
-[[anchor-id]]
-== Target clause
-
-The requirements are...
-
-== Reference clause
-
-As seen in <<anchor-id>>...
---
-
-WARNING: See <<text-ref-allowed-anchors>> for allowed characters in anchor IDs.
-
-NOTE: Cross-reference text in Metanorma adheres to guidance given in
-ISO/IEC DIR 2 for internal cross-references, in order to guarantee
-unambiguous referencing.
-
-In particular, if a formula, example, figure, list, list item or table is cross-referenced
-outside its (sub)clause, the clause containing the item is always given in the cross-reference,
-unless the item is being referenced in the same clause.
-
-In the case of notes, the containing clause is extended to containing example, figure or table.
-
-[example]
-====
-For example, in the Metanorma ISO Rice model sample document
-formula B.1 is defined in Annex B.6, and is referenced in B.6 and B.7.
-
-In the Rice model document published by ISO, both instances are cited as "`Formula (B.1)`".
-However, Metanorma follows ISO/IEC DIR 2 in citing the former
-as "`Formula (B.1)`", but the latter as "`B.6, Formula (B.1)`".
-
-In this sense, Metanorma is "`more royalist than the king`" in applying formatting rules and
-validation—which is what you would want of a computer-based tool.
-====
-
-The label of the item cross-referenced, the use of brackets, and the containing reference
-are all taken care of by Metanorma; the document author needs only give the item identifier
-in the AsciiDoc source
-(e.g. `\<<``formulaB-1``>>` generates either "`Formula (B.1)`" or "`B.6, Formula (B.1)`",
-depending on where in the document it occurs.)
-
-If the cross-reference is given with `droploc%` as its text, then the label and prefix
-are dropped: the cross-reference value is given in
-isolation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.4].
-
-This can be done for example for ranges:
-
-[source,asciidoc]
-----
-Clauses <<context,droploc%>> to <<improvement,droploc%>>
-----
-
-to be rendered as e.g.
-
-____
-Clauses 7 to 9
-____
-
-
-[[text-ref-allowed-anchors]]
-=== Anchor ID syntax
-
-Anchor IDs of any type (cross-references, items, bibliographies, etc.) are directly
-converted into XML, and therefore *must not* contain the following:
+Since the markup will be converted into XML, the anchor must follow the https://www.w3.org/TR/xml-names11/[XML namespace conventions]. Therefore, an anchor name name must not contain:
 
 * colons
-* whitespaces or;
-* words starting with numbers.
+* whitespaces
+* words starting with numbers
 
-These cases are not supported in XML; permitted characters are specified by the link:https://www.w3.org/TR/xml-names11/#NT-NCName[NCName attribute for Namesapece Declaration].
-
-Colons in cross-references are used for
-link:/author/topics/document-format/collections#indirect-xrefs[indirect cross-references between files in the same collection],
-to delimit namespaces and containers from anchor IDs [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.4].
-
-=== Localities
-
-Normally in AsciiDoc, any text in a cross-reference that follows a comma
-constitutes custom text for the cross-reference.
-
-So a cross-reference `\<<ISO7301,the foregoing reference>>`
-would be rendered as "`the foregoing reference`", and hyperlinked to the `ISO7301` reference.
-
-In Metanorma AsciiDoc cross-references, bibliographic localities
-(e.g. page numbers, clause numbers) can be added directly after the comma,
-as part of the cross-reference text.
-
-NOTE: This differs from the normal AsciiDoc treatment of custom text.
-
-[example]
-====
-EXAMPLE: "`ISO 7301, Clause 2, Table 1a, pp. 7-9`" would be expressed as:
-
-[source,asciidoc]
---
-<<ISO7301,clause=2,table=1a,page=7-9>>
---
-====
-
-See link:/author/topics/document-format/bibliography#localities[localities and locality values].
-
-=== List items
-
-List items can be cross-referenced by inserting a bookmark at the very start of the list item:
-
-[source,asciidoc]
---
-. Ordered list
-.. [[id1]] This is the first list item
-... [[id2]] This is a list sub-item
---
-
-=== Definition List Terms
-
-Definition list terms can be cross-referenced by inserting a bookmark at the very start
-of the term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.0]:
-
-[source,asciidoc]
---
-[[id1]]Term 1:: Definition
-[[id2]]Term 2::: Another Definition
---
-
-=== Hyperlinks
-
-Hyperlinks to URIs can have alt text, which is used in accessibility (corresponding to the HTML
-`a@title` attribute). This is specified by appending `,title=...` after the text in the
-URL macro in AsciiDoc:
-
-[example]
-====
-[source,asciidoc]
---
-http://www.example.com[text to go into the hyperlink]
-
-http://www.example2.com[text to go into the second hyperlink,title=This is a tooltip for the link]
---
-====
-
-=== Cross-references to external documents
-
-In link:/author/topics/document-format/bibliography#localities[localities and locality values],
-anchor can be integrated in citations of documents via references; for example:
-
-[source,asciidoc]
---
-<<ISO7301,anchor=xyz>>
---
-
-will generate a hyperlink to the element with ID `xyz` in document `ISO7301`. This convention
-is necessary for cross-references between documents in a Metanorma document collection.
-
-Outside of that, Metanorma will process cross-references to anchors within
-external documents just like typical AsciiDoc.
-
-EXAMPLE:
-
-[source,asciidoc]
---
-<<document1.adoc#b>>
---
-
-will be processed as a link to anchor `#b` in document `document1.adoc`.
-
-If the reference uses the `.adoc` suffix, as in the example above, it is stripped in Metanorma XML
-and substituted with the extension of the current document type during document generation.
-
-The above example is rendered in Metanorma XML as `<xref target="document1#b">`,
-in HTML as `<a href="document1.html#b">`, and in PDF as `<a href="document1.pdf#b">`.
-
+end::tutorial[]
 

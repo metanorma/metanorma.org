@@ -1,0 +1,53 @@
+---
+layout: author-docs
+title: Entering a bibliographic entry
+---
+tag::tutorial[]
+Most standard documents contain two sections with bibliographic references, namely the “normative references” and the “bibliography” (informative references).
+Every bibliographic section must be preceded by the style attribute `[bibliography]` so that bibliographic references are recognized as such. 
+
+== Entering a bibliographic entry
+To enter a reference entry:
+
+. Start a new unordered list (`*`) item. 
+. Enter triple square brackets (`[[[]]]`) which contain:
++
+* The anchor name used to reference this entry
+* A document identifier
+
++
+.Syntax for a bibliographic entry
+[source, AsciiDoc]
+----
+* [[[anchor,document identifier or reference tag]]], _reference list text_
+----
+
+. After the triple brackets, you may include the reference text in italics, for example the title of the document. 
++
+NOTE: Metanorma uses https://www.relaton.org/[Relaton] to automatically fetch resource descriptions from the SDO's web site. If Metanorma recognizes a document identifier, it will overwrite any title you provide with the authoritative title of the reference. 
+
+== Referencing a bibliographic entry
+To cite an entry from your bibliography:app-name: 
+
+. Enter the anchor name like this: `\<<ISO20483>>`.
+. To specify a location within the cited document, you can add https://www.metanorma.org/author/topics/document-format/bibliography/#localities[localities] in the brackets like so: `\<<ISO20483, part=IV,chapter=3,paragraph=12>>`.
+
+== Bibliography example
+
+The following code sample illustrates how a bibliography section looks like in AsciiDoc Metanorma. 
+
+.Example for a bibliography section
+[source, AsciiDoc]
+----
+[bibliography]
+== Normative references
+
+* [[[ISO20483,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,ISO 6540:1980]]]. _Maize -- Determination of moisture content (on milled grains and on whole grains)_
+----
+Gets rendered as:
+
+* ISO 20483:2013. _Cereals and cereal products — Determination of moisture content — Reference method_
+* ISO 6540:1980. _Maize — Determination of moisture content (on milled grains and on whole grains)_
+
+end::tutorial[]
