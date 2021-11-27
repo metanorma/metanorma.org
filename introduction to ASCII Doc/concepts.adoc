@@ -1,0 +1,140 @@
+---
+layout: flavor
+
+docs_title: Metanorma for ISO
+title: Quickstart with ISO standards using Metanorma
+
+iso_flavor:
+  implemented_by: metanorma-iso
+  title: ISO
+  markup_name: Metanorma for ISO
+  build:
+    cli_flags: "--type iso -x html,doc,xml"
+  sample:
+    title: Rice
+    repo_url: https://github.com/metanorma/mn-samples-iso
+    rendered_url: https://metanorma.github.io/mn-samples-iso/
+  docs_entry_points:
+    - path: ./topics/
+      title: topics
+
+navigation:
+  items:
+  - title: Get started
+    path: /
+  - title: Sample
+    path: /sample/
+  - title: Usage
+    path: /topics/
+    items:
+    - title: Markup
+      path: /topics/markup/
+    - title: Output formats
+      path: /topics/formats/
+    - title: Style validation
+      path: /topics/content-validation/
+  - title: Reference guides
+    path: /ref/
+    items:
+      - title: Document attributes
+        path: /ref/document-attributes/
+
+base_url: /author/iso
+---
+
+
+== Concepts
+=== Auto-numbering
+In Metanorma, we provide the system of automatically assigning numbers to the various elements in a document to refrain the users from manually updating them. The elements in a document that are auto-numbered are:
+ * Figures
+ * Tables
+ * Examples
+ * Formulas
+ * Sourcecode, Psudeocode
+ * Permissions, Recommendations, and requirements
+ 
+[NOTE]
+The conventions for auto-numbering differ from flavor to flavor. But the underlying concept of numbering each element consecutively in the main document by default and separately in each Appendix, remains the same. 
+
+==== Multi-level Numbering
+To add multiple levels of numbers to an element in the document, you can use the subsequence  attribute. 
+For instance, 
+[source,console]
+----
+[stem,subsequence=A]
+++++
+A
+++++
+
+[stem,subsequence=A]
+++++
+B
+++++
+
+[stem,subsequence=B]
+++++
+C
+++++
+
+[stem,subsequence=B]
+++++
+D
+++++
+
+[stem]
+++++
+E
+++++
+
+----
+
+This renders as:
+A (1a)
+B (1b)
+C (2a)
+D (2b)
+E (3)
+
+==== Unnumbered Elements
+If you wish to exclude a few elements in the document from auto-numbering, then use 
+[source,console]
+----
+%unnumbered
+----
+
+For instance, 
+[source,console]
+----
+[[figureC-1]]
+[%unnumbered]
+.Typical gelatinization curve
+image::rice_images/rice_image2.png[]
+----
+
+For excluding numbers from sourcecode and psuedocode that automatically get numbered is by adding [sourcecode%unnumbered] before the code. 
+For instance, 
+
+[sourcecode%unnumbered]
+----
+for (i = 0; i < n; i++) { bounce(v[i], wall) }
+----
+
+// This is also unnumbered
+[%unnumbered]
+[pseudocode]
+----
+stem:[forall v_{i}] *bounce* stem:[v_{i}] off the wall
+----
+
+The two use-cases where auto-numbering might not work: 
+
+.Blocking auto numbering– 
+If the element is already included in a block type subject to numbering, it will not be applicable for auto-numbering. So, if you define elements like tables, figures, sourcecode, and pseudocode within other elements (tables, figures, requirements, recommendations, source code, pseudocode, or permissions), then they will not be auto-numbered. 
+
+.Override numbering––
+But when you update a document and want to provide numbers manually over auto-numbering, you can specify the number by giving an optional attribute number. 
+
+[sourcecode,number=7]
+----
+for (i = 0; i < n; i++) { bounce(v[i], wall) }
+----

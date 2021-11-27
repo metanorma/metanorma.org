@@ -1,0 +1,215 @@
+---
+layout: flavor
+
+docs_title: Metanorma for ISO
+title: Quickstart with ISO standards using Metanorma
+
+iso_flavor:
+  implemented_by: metanorma-iso
+  title: ISO
+  markup_name: Metanorma for ISO
+  build:
+    cli_flags: "--type iso -x html,doc,xml"
+  sample:
+    title: Rice
+    repo_url: https://github.com/metanorma/mn-samples-iso
+    rendered_url: https://metanorma.github.io/mn-samples-iso/
+  docs_entry_points:
+    - path: ./topics/
+      title: topics
+
+navigation:
+  items:
+  - title: Get started
+    path: /
+  - title: Sample
+    path: /sample/
+  - title: Usage
+    path: /topics/
+    items:
+    - title: Markup
+      path: /topics/markup/
+    - title: Output formats
+      path: /topics/formats/
+    - title: Style validation
+      path: /topics/content-validation/
+  - title: Reference guides
+    path: /ref/
+    items:
+      - title: Document attributes
+        path: /ref/document-attributes/
+
+base_url: /author/iso
+---
+
+== ISO Rice Model
+
+Creating a new document from scratch can be tedious. We understand. 
+Therefore, we have created a template for generating ISO docs using Metanorma. For this, we have generated the link:https://www.iso.org/publication/PUB100407.html[‘Model for International Standards’] document using the Rice Model in Metanorma. 
+=== What is a Rice Model?
+Rice is a permanent host to a considerable microflora, from which some are innocuous but some produce harmful by-products. When the rice is harvested, it is invaded by storage microorganisms and the field microflora gradually dies out. If the mass fraction is >18%, the microflora multiplies. Depending on the ecological factors, additions to the microfloral population occur during transport and storage.
+
+Owing to the grave storage problem, ISO draws attention with this document specifying the minimum requirements for the rice traded internationally, since most commercial bulks of grain, which have not been screened or aspirated, contain a proportion of other grains, weed seeds, chaff, straw, stones, sand, etc.
+To dig deeper into the problem, read the link:https://github.com/metanorma/mn-samples-iso/blob/main/sources/international-standard/sections-en/00-introduction.adoc[Rice Model Specifications]. 
+
+Now, let's look at the steps to re-use and edit the template for your own purposes.
+
+=== Step1: Fetching the document
+
+.Clone the GitHub repo by this command to copy the ISO sample files:
+[source,sh]
+----
+git clone https://github.com/metanorma/mn-samples-iso/
+----
+
+.Download Atom with Asciidoctor plugins as a code editor. 
+.Open it on your Visual Studio with Asciidoc extension for live preview.
+Or
+If you don’t like to deal with local dependencies, then run this on Docker(learn installing Docker from the installation guide):
+[source,sh]
+----
+docker run -v "$(pwd)":/metanorma -w /metanorma -it metanorma/mn metanorma site generate
+----
+.Open the generated document in your code editor.
+
+=== Step2: Building the document
+1. Run this command on your local machine after installation of Metanorma.
+[source,sh]
+----
+metanorma site generate
+----
+
+The source files that you get after running this command:
+ * iso-rice-en.adoc: Metanorma-ISO source document file in English language
+ * sections/*: Metanorma-ISO source document for Rice file, broken into separate files for each section.
+ * Iso-rice-en-sections.adoc: Metanorma-ISO file that reference each individual file in sections/*
+ * iso-rice-zh.adoc: Metanorma-ISO source document file in Chinese language
+The other generated file names for output generation are:
+
+* {filename}-{lang}.xml:  Metanorma-ISO XML output file 
+* {filename}-{lang}.html: Metanorma-ISO HTML output file
+
+=== Step3: Managing the ISO doc
+The source files come in two ways:
+ * A single-source file
+ * Source file separated into various files corresponding to each section.
+
+.Single File
+The single ISO file (iso-rice-en.adoc or iso-rice-zh.adoc) contains:
+ * Document header: iso-rice-{lang}.adoc
+ * Content body: body/body-{lang}.adoc
+Where {lang} can be either en (for English) or zh (for Chinese).
+
+.Multiple Files
+The multiple files are in the sections/* source file. This contains the following sections as separate files:
+ * 00-foreword.adoc: Foreword
+ * 00-introduction.adoc: Introduction
+ * 01-scope.adoc: Scope
+ * 02-normref.adoc: Normative references
+ * 03-termdef.adoc: Terms and definitions
+ * 04-specifications.adoc: Clause 4: Specifications
+ * 05-sampling.adoc: Clause 5: Sampling
+ * 06-testmethods.adoc: Clause 6: Test Methods
+ * 07-testreport.adoc: Clause 7: Test Report
+ * 08-packaging.adoc: Clause 8: Packaging
+ * 09-marking.adoc: Clause 9: Marking
+ * aa-annex-a.adoc: Annex A
+ * ab-annex-b.adoc: Annex B
+ * ac-annex-c.adoc: Annex C
+ * ad-annex-d.adoc: Annex D
+ * ae-annex-e.adoc: Annex E (not in original Rice document, included to illustrate further formatting options)
+ * b0-bibliography.adoc: Bibliography
+
+== Markup for Metanorma-ISO
+With Rice document you can have all the formatting options available inside the Tutorials.
+source: link:https://docs.asciidoctor.org/asciidoc/latest/document/header/[Asciidoc]
+
+=== Document Header
+Attribites of document that appear on the coverpage. You can read the list of permissible attributes in the ISO flavor model documentation. 
+[source,sh]
+----
+= Rice model
+:docnumber: 17301
+:tc-docnumber: 17301
+:ref-docnumber: ISO 17301-1:2016(E)
+...
+----
+
+==== Inline Formatting
+To annotate single words we use inline formatting. 
+We can add the following as inline formatting markups:
+ * Italics/blod/monospace/subscript/superscript
+ * Anchors(internal cross-referencing): Add links (anchors) to internal sections/blocks  (e.g. B.6, Formula (B.1) for a formula in an annex)
+[source, console]
+----
+  The International Organization for Standardization (ISO) draws attention to the fact that it is claimed that compliance with this document may involve the use of a patent concerning sample dividers given in <<AnnexA>> and shown in <<figureA-1>>.
+…
+[[figureA-1]]
+.Split-it-right sample divider
+image::images/rice_image1.png[]
+----
+
+ * External referencing: You can also add external links to your document and appending the text to the link in square brackets.
+
+Ex. http://www.iso.org/obp[OBP]
+ * STEM support: Mathematical formulae in ISO can be added both as inline or block formatting. For this Asciidoctor has Asciimath for understanding its mathematical expression done using :stem: document attribute. Ex.
+
+[source,sh]
+----
+[[formulaA-1,A.1]]
+[stem]
+++++
+w = (m_D) / (m_s)
+++++
+---- 
+where
+
+stem:[w]:: is the mass fraction of grains with a particular defect in the test sample;
+ * Footnotes: Footnotes cannot be more than a paragraph. In ISO, adding footnotes within figures and tables can only be done inside their blocks. Ex.
+
+[source, console]
+---- 
+containing a mass fraction of 4,1 % iodine and 6,3 % potassium iodide in deionized water such as Lugols.footnote:[Lugols is an example of a suitable product available commercially. This information is given for the convenience of users of this document and does not constitute an endorsement by ISO of this product.]
+----
+
+==== Blocks
+Information that forms a logical segment, such as a paragraph or a list, is called a block.
+A block starts and ends with a delimiter, which is a sequence of characters. The delimiters tell the compiler that the following input belongs together. 
+
+I’m a paragraph and I don’t need a block delimiter. 
+<1>
+. I’m a list item and also do not need a delimiter
+. I’m the second list item
+. I'm list item number three
+//// <2>
+I’m a comment.
+
+
+[source, python]
+----
+print("Hello World!")
+----
+Apart from the blocks shown in the example, there are many types of blocks in AsciiDoc, such as:
+ * Paragraphs
+ * Lists
+ * Tables
+ * Images
+ * Admonitions (Note, Caution, Warning, etc.)
+ * Code samples
+ * Term definitions
+ * Comments
+ * Review Notes
+Read more in the Tutorials <Link it to tutorials>
+
+==== Sections
+The Asciidoctor specifies sections for corresponding ISO clauses. Each discrete chapter corresponds to a section. 
+== Sampling
+Sampling shall be carried out in accordance with <<ISO24333,clause 5>>
+
+== Test methods
+
+=== Moisture content
+
+Determine the mass fraction of moisture in accordance with the method specified in <<ISO712>>.
+...
+The heading is preceded with == (double equal signs). The number of double equal signs specifies the level of  nesting in sections.

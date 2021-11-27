@@ -1,0 +1,88 @@
+---
+layout: flavor
+
+docs_title: Metanorma for OGC
+title: Author OGC documents using Metanorma
+
+ogc_flavor:
+  implemented_by: metanorma-ogc
+  data_models: metanorma-model-ogc
+  title: OGC
+  title_org: OGC
+  title_org_full: Open Geospatial Consortium
+  markup_name: Metanorma for OGC
+  build:
+    cli_flags: "--type ogc --extensions pdf,html"
+  sample:
+    repo_url: https://github.com/metanorma/mn-samples-ogc
+    rendered_url: https://metanorma.github.io/mn-samples-ogc/
+    title: OGC Web Feature Service 3.0 in Metanorma
+  docs_entry_points:
+    - path: ./topics/markup/
+      title: general guide
+    - path: ./topics/requirements/
+      title: guide to encoding requirements
+
+base_url: /author/ogc
+
+navigation:
+  items:
+  - title: Get started
+    path: /
+  - title: Sample
+    path: /sample/
+  - title: Usage
+    path: /topics/
+    items:
+    - title: Markup
+      path: /topics/markup/
+    - title: ModSpec requirements
+      path: /topics/requirements/
+  - title: Reference guides
+    path: /ref/
+    items:
+      - title: Document attributes
+        path: /ref/document-attributes/
+---
+
+== OGC Web Feature Service 3.0 Sample
+
+Creating a new document from scratch can be tedious and getting a hold on all the attributes with formatting might need some initial training. We understood the problem and therefore provide an OGC WFS template to test out Metanorma capabilities and re-use it based on your requirements.
+We will convert two OGC documents to Metanorma–
+.OGC Web Feature Services 3.0 (WFS)
+.Technical Committee Policies and Procedures
+
+.Step1: Fetching the document
+Clone the GitHub repo by this command to copy the OGC sample files:
+[source,console]
+----
+git clone https://gitlab.com/metanorma/ogc-wfs/
+----
+Download Atom with Asciidoctor plugins as a code editor. 
+Open it on your Visual Studio with Asciidoc extension for live preview.
+Or
+If you don’t like to deal with local dependencies, then run this on Docker(learn to install Docker from the installation guide):
+[source,console]
+----
+export METANORMA_DOCKER=1
+----
+The Makefile will automatically choose the proper command to execute.
+
+.Step2: Building the document
+Run this command on your local machine after the installation of Metanorma.
+[source,console]
+----
+make clean all
+----
+After running this command, you get the following output files:
+ * OGC XML link:https://github.com/metanorma/metanorma-model-ogc[filename.xml]
+ * HTML [filename].html
+ * PDF ([filename].pdf)
+ * DOC ([filename].doc)
+In case, you need to re-use the template, use:
+[source,console]
+----
+make html
+open ogc-*.html
+----
+This renders as link:https://metanorma.github.io/ogc-wfs/[OGC WFS] in Metanorma.

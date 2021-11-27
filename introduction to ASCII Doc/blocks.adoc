@@ -1,0 +1,78 @@
+---
+layout: flavor
+
+docs_title: Metanorma for ISO
+title: Quickstart with ISO standards using Metanorma
+
+iso_flavor:
+  implemented_by: metanorma-iso
+  title: ISO
+  markup_name: Metanorma for ISO
+  build:
+    cli_flags: "--type iso -x html,doc,xml"
+  sample:
+    title: Rice
+    repo_url: https://github.com/metanorma/mn-samples-iso
+    rendered_url: https://metanorma.github.io/mn-samples-iso/
+  docs_entry_points:
+    - path: ./topics/
+      title: topics
+
+navigation:
+  items:
+  - title: Get started
+    path: /
+  - title: Sample
+    path: /sample/
+  - title: Usage
+    path: /topics/
+    items:
+    - title: Markup
+      path: /topics/markup/
+    - title: Output formats
+      path: /topics/formats/
+    - title: Style validation
+      path: /topics/content-validation/
+  - title: Reference guides
+    path: /ref/
+    items:
+      - title: Document attributes
+        path: /ref/document-attributes/
+
+base_url: /author/iso
+---
+
+== Blocks
+
+=== Admonitions
+Admonitions (“NOTE”, “IMPORTANT”, “WARNING”, “CAUTION”) are warnings or friendly reminders provided in documents to alert the user of any changes or updates. 
+Admonitions can be added to various sections of the document as mentioned–
+ * Document Body: Add beforeclauses=true for adding an admonition before the main sequence of clauses to apply their effect on the entire document. Ex. 
+ [source,console]
+----
+ == Scope
+[IMPORTANT,beforeclauses=true]
+====
+This important notice applies to the entire document.
+====
+My scope text...
+----
+
+* Preface: Add [source,console]
+----beforeclauses=true ---- for adding an admonition before the foreword to apply their effect on the entire preface. Ex.
+[source,console]
+----
+= Document title
+:document-attribute: XXXX
+
+[IMPORTANT,beforeclauses=true]
+====
+This important notice applies to the entire document.
+====
+
+== Foreword
+
+My foreword text...
+----
+
+=== Code Samples

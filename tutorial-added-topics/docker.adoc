@@ -1,0 +1,89 @@
+---
+layout: docs-base
+html-class: docs-page
+title: Running Metanorma with Docker
+redirect_from:
+  - /setup/docker
+---
+
+== Installing Metanorma via Docker
+
+Instead of "installing", the Metanorma Docker container makes running Metanorma
+a breeze for those that already run Docker.
+
+Docker is a platform-independent container engine that allows one to run
+packaged software easily as all dependencies are bundled within a container
+image.
+
+[TIP]
+.Possible reasons to _avoid_ running in Docker
+====
+* Performance. Using Metanorma inside Docker container is likely to be be
+  slower.
+
+* Windows. Docker on Windows require an explicit folder sharing settings in
+  order to share a local filesystem (e.g. a Metanorma document directory) to the
+  container.
+====
+
+The steps are straightforward.
+
+== Pulling the Metanorma Docker container
+
+. Pull the container:
++
+[source,sh]
+----
+docker pull metanorma/metanorma
+----
++
+or
++
+[source,sh]
+----
+docker pull metanorma/mn
+----
+
+== Running Metanorma using the Docker container
+
+. Specify the `:local-cache-only:` Metanorma attribute in the AsciiDoc document
+header to cache bibliographic entries in the local directory (where the command
+was run) (optional).
+
+. To render a Metanorma document into its intended outputs, execute from within
+the directory containing the Metanorma document (replacing `{my-document-path}`
+with your actual document's filename):
++
+.Running the Metanorma container on macOS and Linux
+[source,console]
+----
+docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t {flavor} -x {output-formats} {my-document-path}
+----
++
+or for documents with a Metanorma manifest file:
++
+[source,console]
+----
+docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma site generate {my-document-dir} -o {output-directory} -c {manifest-yml} --agree-to-terms
+----
++
+.Running the Metanorma container on Windows
+[source,console]
+--
+docker run -v "%cd%":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t {flavor} -x {output-formats} {my-document-path}
+--
+
+. You can speedup document compilation by caching fonts between docker runs by
+passing extra docker volume. More information on font caching is found on
+link:/author/topics/building/font-management[the Font Management page].
+
+NOTE: Commands other than `metanorma compile ...` are also available on the Docker
+containers.
+See the link:/software/metanorma-cli/docs/usage/[Usage page of Metanorma CLI]
+for more details.
+
+[TIP]
+====
+See the https://github.com/metanorma/metanorma-docker[metanorma-docker]
+repository for more information.
+====

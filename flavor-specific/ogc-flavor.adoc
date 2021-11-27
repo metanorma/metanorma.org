@@ -1,0 +1,322 @@
+---
+layout: flavor
+
+docs_title: Metanorma for OGC
+title: Author OGC documents using Metanorma
+
+ogc_flavor:
+  implemented_by: metanorma-ogc
+  data_models: metanorma-model-ogc
+  title: OGC
+  title_org: OGC
+  title_org_full: Open Geospatial Consortium
+  markup_name: Metanorma for OGC
+  build:
+    cli_flags: "--type ogc --extensions pdf,html"
+  sample:
+    repo_url: https://github.com/metanorma/mn-samples-ogc
+    rendered_url: https://metanorma.github.io/mn-samples-ogc/
+    title: OGC Web Feature Service 3.0 in Metanorma
+  docs_entry_points:
+    - path: ./topics/markup/
+      title: general guide
+    - path: ./topics/requirements/
+      title: guide to encoding requirements
+
+base_url: /author/ogc
+
+navigation:
+  items:
+  - title: Get started
+    path: /
+  - title: Sample
+    path: /sample/
+  - title: Usage
+    path: /topics/
+    items:
+    - title: Markup
+      path: /topics/markup/
+    - title: ModSpec requirements
+      path: /topics/requirements/
+  - title: Reference guides
+    path: /ref/
+    items:
+      - title: Document attributes
+        path: /ref/document-attributes/
+---
+
+== OGC
+
+OGC is a standard organization for creating output files in PDF or HTML formats in compliance with the OGC standards. We use OGC Feature Services 3.0 as a sample template to check out Metanorma’s capabilities with OGC. 
+[NOTE]
+You can read more about the document generation process in the tutorials.
+
+=== How do we generate documents?
+You can generate any OGC deliverable using Metanorma following these steps:
+
+.Create a deliverable– 
+  Start from scratch: To start building a document from scratch, create an AsciiDoc file (`.adoc`) in the desired folder. 
+  Or
+  Use an existing template: Currently, Metanorma provides a template for link:/metanorma/mn-templates-ogc[OGC international-standard documents] only. The only input supported is 
+Asciidoctor
+  Or
+  Import from Word: Importing from Word/HTML can be done using the link:https://github.com/metanorma/reverse_adoc[‘Reverse Asciidoctor’] tool. This tool converts your Word document into XML. Although, it isn’t easy and needs extensive knowledge of Metanorma to resolve issues that occur. 
+
+.Edit the document
+To edit the document, you can use any text editor like Atom with Asciidoctor plugins or Visual Code with Asciidoc extension. 
+.Validation 
+The first document generated is in Metanorma-OGC XML format that checks the document against the OGC standard document, registers the errors, and allows you to make changes to the components if any.
+.Output Generation
+Metanorma-OGC XML doc is then converted into the desired output formats: 
+ * Primary XML file: The representation document for the Metanorma-OGC document
+ * Secondary Output files: The end deliverables
+  - HTML
+  - PDF
+  - Word
+
+
+=== Metanorma processor for OGC standards
+To start writing OGC standards, use the link:/metanorma/metanorma-iso/blob/main/Gemfile[gem file] that processes Metanorma documents into flavor-specific documents. The basis of generating documents using this gem is the link:/metanorma/metanorma-standoc[Metanorma StandardDocument].
+Run this Metanorma script on your machine to install the gem:
+[source,sh]
+----
+$ bash <(curl -s https://raw.githubusercontent.com/metanorma/metanorma-macos-setup/master/metanorma-setup)
+$ gem install metanorma-cli
+$ gem install metanorma-ogc
+----
+Then use the Metanorma CLI for generating outputs:
+[source,sh]
+----
+$ metanorma --type ogc a.adoc                   # output HTML
+$ metanorma --type ogc --extensions html a.adoc # output just HTML
+$ metanorma --type ogc --extensions xml a.adoc  # output Metanorma XML
+
+----
+
+=== Sample Workflow
+:sectnums: |,all|
+It might get a bit difficult at times to start from scratch, so you can have a look at a trial example. We used the capabilities of OGC Feature Service 3.0 in Metanorma to generate a sample document. 
+To build a sample OGC document in Metanorma, follow these steps:
+
+.Clone the sample repository and change the directory locally: 
+[source,console]
+----
+git clone https://github.com/metanorma/ogc-wfs
+cd /sources/core/standard/
+----
+.If you have Metanorma installed, simply run this command to generate OGC document in PDF and HTML formats:
+[source,console]
+----
+metanorma --type ogc --extensions pdf,html 17-069.adoc
+----
+OR
+If you are using Docker, run this:
+[source,console]
+----
+docker run \
+    -v "$(pwd)":/metanorma/ \
+    -w /metanorma metanorma/metanorma \
+    metanorma --type ogc --extensions pdf,html 17-069.adoc
+----
+OR
+If you don’t have Metanorma installed yet, follow the installation steps for your OS.
+
+=== Document attributes
+Over these years, the formatting of OGC documents has drastically changed. Metanorma keeps up with the changes and formats the OGC document wrt the current formats–
+ * All body text is left justified, with no exceptions allowed.
+ * The bibliographic terms in annexes are only termed as “normative” or “informative”. NO exceptions are allowed.
+ * Ordered lists follow ISO style numbering, i.e. “a), b), c) …​”, with no exceptions allowed.
+
+Let’s dig deeper into all the formatting styles supported by OGC
+==== Inline formatting
+.Highlighting: 
+You can highlight any text in OGC documents using #:
+[source,console]
+----
+This is #text to be highlighted#.
+----
+
+==== Section Formatting
+
+.References: 
+According to OGC best practices, you can name the ‘Normative Reference’ section as just ‘References’.
+
+.Terms & Definitions: 
+OGC follows ISO’s standard for generating terms and definitions. The distinction in OGC’s standard for defining terms and definitions is as follows:
+Standalone Terms and Definitions: When the clause only has Terms and Definitions. 
+[source,console]
+----
+== Terms and definitions
+
+=== term 1
+...
+
+=== term 2
+...
+----
+
+Combined Terms, Definitions, and Symbols: When the clause has terms and definitions along with a list of symbols.
+[source,console]
+----
+== Terms, definitions and symbols
+
+=== Terms and definitions
+
+==== term 1
+
+...
+
+==== term 2
+...
+
+=== Symbols
+
+stem:[x + y]:: Notation one
+stem:[x - y]:: Notation two
+...
+----
+Combined Terms, Definitions, and Abbreviations: When the clause has terms and definitions along with a few abbreviations.
+[source,console]
+----
+== Terms, definitions, and abbreviated terms
+
+=== Terms and definitions
+
+==== term 1
+
+...
+
+==== term 2
+...
+
+=== Abbreviated terms
+
+OGC:: Open Geospatial Consortium
+ISO:: International Organisation for Standardisation
+...
+----
+.Boilerplate: 
+By default in OGC standards, the introductory text is added at the beginning of a clause. In case, you need to modify the text content, you can add [.boilerplate] to the initial subclause to override the default content.
+[source,console]
+----
+== Terms and definitions
+
+[.boilerplate]
+=== My predefined text
+
+Predefined content that overwrites the default one taking into
+account that:
+
+* The title "My predefined text" will not be shown in the output.
+* This practice does not follow OGC requirements.
+
+----
+.Glossary: 
+To define the terms and their definitions used in the document for informative purposes, we define a glossary.
+[source,console]
+----
+[appendix,obligation="informative"]
+== Glossary
+
+=== term 1
+...
+
+=== term 2
+...
+----
+[NOTE]
+Note: We don’t use symbols or abbreviations in a glossary. 
+
+==== Preliminary Section
+All the elements defined now are marked mandatory by the OGC team to be included in their documents (following the order):
+.Abstract: 
+The first clause explains a concise sneak peek into the purpose of the document. So, add [abstract] style attribute to define it:
+[source,console]
+----
+[abstract]
+== Abstract
+
+This standard describes a conceptual and logical model for the exchange
+of groundwater data, as well as a GML/XML encoding with examples.
+----
+
+.Executive Summary: 
+This section is added to provide a comprehensive context of the document especially in Engineering Reports. 
+[source,console]
+----
+== Executive Summary
+
+This is the executive summary...
+----
+
+.Keywords: 
+Some major keywords are added as a comma-separated list.
+[source,console]
+----
+:keywords: ogcdoc, OGC document, groundwater, hydrogeology, GWML2
+----
+.Preface: 
+To provide an introduction to the document, add the preface style attribute.
+[source,console]
+----
+:received-date: 2019-01-01
+
+== Preface
+
+Your preface text...
+
+=== Preface sub-clause
+
+More preface text...
+----
+
+.Security Considerations: 
+To warn the readers of any security considerations to be followed, the text is added with [security consideration] attribute.
+[source,console]
+----
+​​== Security Considerations
+
+The following security considerations apply...
+----
+
+.Submitting Orgs: 
+The organizations who submitted the document are added in a comma-separated list:
+[source,console]
+----
+:submitting-organizations: Geological Survey of Canada (GSC), Canada; U.S. Geological Survey (USGS), United States of America
+----
+
+.Submitters: 
+The authors of the document are added with their name, affiliation to which organization, and OGC member[YES/NO]
+[source,console]
+----
+== Submitters
+
+|===
+|Name |Affiliation |OGC member
+
+|Steve Liang | University of Calgary, Canada / SensorUp Inc. | Yes
+|===
+----
+.Block Formatting
+Captions: Unlike Metanorma, you can add captions to examples in OGC:
+[source,console]
+----
+[example]
+.Example caption
+====
+Text
+====
+----
+.Tables: 
+Table cells under OGC always have a vertical alignment of middle
+.Unnumbered: 
+In Metanorma for OGC, all block elements are auto-numbered in order to facilitate unique referencing.
+All auto-numbered blocks can be marked to not be labeled via the unnumbered attribute option.
+These block types include:
+ * Figure
+ * Example
+ * Equation
+ * Source code
+ * Table
+

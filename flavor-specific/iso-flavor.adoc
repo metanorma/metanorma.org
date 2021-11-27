@@ -1,0 +1,158 @@
+---
+layout: flavor
+
+docs_title: Metanorma for ISO
+title: Quickstart with ISO standards using Metanorma
+
+iso_flavor:
+  implemented_by: metanorma-iso
+  title: ISO
+  markup_name: Metanorma for ISO
+  build:
+    cli_flags: "--type iso -x html,doc,xml"
+  sample:
+    title: Rice
+    repo_url: https://github.com/metanorma/mn-samples-iso
+    rendered_url: https://metanorma.github.io/mn-samples-iso/
+  docs_entry_points:
+    - path: ./topics/
+      title: topics
+
+navigation:
+  items:
+  - title: Get started
+    path: /
+  - title: Sample
+    path: /sample/
+  - title: Usage
+    path: /topics/
+    items:
+    - title: Markup
+      path: /topics/markup/
+    - title: Output formats
+      path: /topics/formats/
+    - title: Style validation
+      path: /topics/content-validation/
+  - title: Reference guides
+    path: /ref/
+    items:
+      - title: Document attributes
+        path: /ref/document-attributes/
+
+base_url: /author/iso
+---
+
+== ISO
+
+ISO is one of the most popular standard organizations where the need to constantly generate any standard deliverable like these arises:
+* International Standard
+* Technical Specification
+* Technical Report
+* Publicly Available Specification
+* Workshop Agreement
+* Guides
+
+Therefore, Metanorma makes it easier for you to generate the aforementioned ISO standard documents using Metanorma toolchains in simple Asciidoc format. 
+[NOTE]
+You can read more about the document generation process in the tutorials.
+
+=== How do we generate documents?
+You can generate any ISO deliverable by following these steps:
+. Create a deliverable– 
+  Start from scratch: To start building a document from scratch, create an AsciiDoc file (`.adoc`) in the desired folder. 
+  Or
+  Use an existing template: Currently, Metanorma provides a template for link:/metanorma/mn-templates-iso[ISO international-standard documents] only. The only input supported is 
+Asciidoctor (The Asciidoc syntax for writing ISO standards is called AsciiISO).
+  Or
+  Import from Word: Importing from Word/HTML can be done using the link:https://github.com/metanorma/reverse_adoc[‘Reverse Asciidoctor’] tool. This tool converts your Word document into XML. Although, it isn’t easy and needs extensive knowledge of Metanorma to resolve issues that occur. 
+
+. Edit the document: To edit the document, you can use any text editor like Atom with Asciidoctor plugins or Visual Code with Asciidoc extension. 
+. Validation: The first document generated is an ISO XML file that checks the document against the ISO standard document, registers the errors, and allows you to make changes to the components if any.
+. Output Generation: ISO doc generates the following files: 
+ * XML file: The representation document for the ISO document
+ * Microsoft .doc file: A file that follows the style conventions of the link:https://www.iso.org/iso-templates.html[ISO Standard Word Template].
+ * Two HTML files: A .html file that is quite similar to the word document and an -alt-HTML file that contains richer styling. 
+
+
+=== Workflow
+To start working with Metanorma for generating ISO deliverables, follow the quick start steps to first download Metanorma-cli. Once done, run this command:
+[source,console]
+----
+metanorma --type iso -x html,doc,xml {my-document-filename.adoc}
+----
+Metanorma Sample
+It might get a bit difficult at times to start from scratch, so you can have a look at a trial example. We used Metanorma for ISO using the link:https://docs.google.com/document/d/1luIXBP_9o9bHW6lpQKBPmkr6JfB65QixenyhfKwrvK0/edit#[Rice Model].
+
+
+=== Metanorma processor for ISO standards
+To start writing ISO standards, use the link:https://github.com/metanorma/metanorma-iso/blob/main/Gemfile[gem file] that processes Metanorma documents into ISO standard documents. The basis of generating documents using this gem is the Metanorma StandardDocument. 
+
+==== Invoke the gem
+To invoke the gem, first install metanorma-cli to run the scripts:
+[source,sh]
+----
+$ bash <(curl -s https://raw.githubusercontent.com/metanorma/metanorma-macos-setup/master/metanorma-setup)
+$ gem install metanorma-iso
+$ gem install metanorma-cli
+----
+
+Once done, use the metanorma script:
+[source,sh]
+----
+$ metanorma --type iso a.adoc                   # output HTML and DOC
+$ metanorma --type csd --extensions html a.adoc # output just HTML
+$ metanorma --type csd --extensions doc a.adoc  # output just DOC
+$ metanorma --type csd --extensions xml a.adoc  # output CSD XML
+----
+
+Use the script for the specific output that you’d want.
+Once you run the script, it translates the document into ISO XML format, validates it against the ISO XML document model, registers the errors, and generates the output file. 
+
+
+=== ISO Cheatsheet
+
+ * Metanorma creates any document compliant with the ISO standards in Microsoft Word and HTML.
+ * For creating ISO documents, we use AsciiISO using Ascii syntax.
+ * Process? 
+ * Or start by installing ruby gem and all its dependencies for asciidoctor:
+[source, console]
+----
+gem install asciidoctor-iso
+----
+Or from GitHub
+[source, console]
+----
+git clone https://github.com/metanorma/metanorma-iso.git
+cd asciidoctor-iso
+gem build *.gemspec
+gem install *.gem
+----
+[NOTE]
+.NOTE
+Asciidoctor-ISO uses Ruby 2.4.0 so keep it updated to this version.
+
+ * After installation, create a new project:
+ [source, console]
+----
+ mkdir new_standard
+cd new_standard
+vi new_standard.adoc
+----
+And compile it by:
+[source, console]
+----
+asciidoctor --trace -b iso -r 'asciidoctor-iso' new_standard.adoc
+----
+
+ * You will generate two outputs from new-standard.adoc: An HTML file and a Word file. 
+ * Create a ISO doc using a template?
+ Re-use ISO’s Rice Model in Metanorma to create link:https://www.iso.org/publication/PUB100407.html[‘Model document of an International Standard’]. This way you get to know the various formatting styles used.
+ To re-use:
+* Clone this GitHub repo: git clone https://github.com/metanorma/mn-samples-iso/
+* Start editing the document header which is inside: iso-rice-en.adoc
+And body inside 
+[source, console]
+----
+body/body-en.adoc
+----
+Read more about the standards in the ISO document or <link to tutorials>Tutorials.

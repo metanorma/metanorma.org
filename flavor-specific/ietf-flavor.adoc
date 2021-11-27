@@ -1,0 +1,111 @@
+---
+layout: flavor
+
+docs_title: Metanorma for ISO
+title: Quickstart with ISO standards using Metanorma
+
+iso_flavor:
+  implemented_by: metanorma-iso
+  title: ISO
+  markup_name: Metanorma for ISO
+  build:
+    cli_flags: "--type iso -x html,doc,xml"
+  sample:
+    title: Rice
+    repo_url: https://github.com/metanorma/mn-samples-iso
+    rendered_url: https://metanorma.github.io/mn-samples-iso/
+  docs_entry_points:
+    - path: ./topics/
+      title: topics
+
+navigation:
+  items:
+  - title: Get started
+    path: /
+  - title: Sample
+    path: /sample/
+  - title: Usage
+    path: /topics/
+    items:
+    - title: Markup
+      path: /topics/markup/
+    - title: Output formats
+      path: /topics/formats/
+    - title: Style validation
+      path: /topics/content-validation/
+  - title: Reference guides
+    path: /ref/
+    items:
+      - title: Document attributes
+        path: /ref/document-attributes/
+
+base_url: /author/iso
+---
+
+== IETF
+
+Internet Engineering Task Force (IETF) is a group that creates working documents called Internet-Drafts. Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."
+The list of current internet drafts lies here. 
+
+Metanorma-IETF adheres to AsciiRFC syntax, an AsciiDoc syntax for writing IETF documents developed by the Metanorma team.
+
+In this section, you can learn how to document Internet-Draft and RFC series using Metanorma in Asciidoc. 
+
+
+=== How do we generate documents?
+To start working with Metanorma for generating IETF deliverables, follow the quick start steps to first download Metanorma-cli. Once done, run this command:
+[source,console]
+----
+metanorma -t ietf -x html,txt {my-document-filename.adoc}
+----
+
+=== Sample Project
+We will now test out the Metanorma capabilities with IETF by implementing The Holy Hand Grenade of Antioch sample project.
+
+.Pre-requisites:
+Make sure to install Metanorma-cli, xml2rfc, and idnits before running these commands. For macOS users:
+[source,console]
+----
+brew install idnits
+brew install python
+easy_install pip
+pip install -r requirements.txt
+gem install bundler
+bundle install
+----
+To build a sample IETF project, follow these steps:
+
+.Clone the sample project by running this command:
+[source,console]
+----
+​​git clone https://github.com/metanorma/rfc-camelot-holy-grenade
+----
+.Once the project has been cloned, start building the document:
+[source,console]
+----
+. `bundle update`
+. `bundle exec metanorma site generate`
+----
+.Check: 
+To avoid errors from idnits complaining about the location of the document, we run this command where make finds the name of the document and places it in the right folder
+[source,console]
+----
+export ID_NAME=asciirfc-minimal
+make draft-${ID_NAME}.nits
+To re-use the template:
+export ID_NAME=asciirfc-minimal
+make clean all; open draft-${ID_NAME}.txt
+----
+
+=== Metanorma processor for IETF standards
+To start writing IETF standards, use the link:/metanorma/metanorma-ietf[gem file] that processes Metanorma documents into flavor-specific documents. The basis of generating documents using this gem is the link:https://www.metanorma.org/specs/draft-ribose-asciirfc/[Metanorma StandardDocument].
+
+Invoke the gem:
+[source,sh]
+----
+$ metanorma --type rfc3 a.adoc                     # output RFC XML v3
+$ metanorma --type rfc3 --extensions xmlrfc a.adoc # output RFC XML v3
+----
+
+The gem translates the document into IETF XML RFC format.
+

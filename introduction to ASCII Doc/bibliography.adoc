@@ -1,0 +1,232 @@
+---
+layout: flavor
+
+docs_title: Metanorma for ISO
+title: Quickstart with ISO standards using Metanorma
+
+iso_flavor:
+  implemented_by: metanorma-iso
+  title: ISO
+  markup_name: Metanorma for ISO
+  build:
+    cli_flags: "--type iso -x html,doc,xml"
+  sample:
+    title: Rice
+    repo_url: https://github.com/metanorma/mn-samples-iso
+    rendered_url: https://metanorma.github.io/mn-samples-iso/
+  docs_entry_points:
+    - path: ./topics/
+      title: topics
+
+navigation:
+  items:
+  - title: Get started
+    path: /
+  - title: Sample
+    path: /sample/
+  - title: Usage
+    path: /topics/
+    items:
+    - title: Markup
+      path: /topics/markup/
+    - title: Output formats
+      path: /topics/formats/
+    - title: Style validation
+      path: /topics/content-validation/
+  - title: Reference guides
+    path: /ref/
+    items:
+      - title: Document attributes
+        path: /ref/document-attributes/
+
+base_url: /author/iso
+---
+
+
+== Bibliography
+=== Entering Bibliographic Terms
+A bibliography/informative reference is added to a document to state all the external references that were referred to for the creation of the document. 
+To add a bibliography in Metanorma documents, you need to add the style attribute [bibliography] before mentioning the references. For ex.
+
+[source,console]
+----
+[bibliography]
+== Bibliography
+* [[[id1,1]]] _First reference_
+* [[[id2,2]]] _Second reference_
+* [[[id3,3]]] _Third reference_
+----
+
+In the standard document, we also have normative references that are stated to provide additional information to determine whether a certain organization complies with the standard or not.
+Ex. In ISO, the “Normative references” clause is stated in Clause 3 (ISO Directives Part 2, Clause 15), while the “Bibliography” section is set as the last unnumbered section at the end of the document (ISO Directives Part 2, Clause 21). It should be typeset as the following:
+
+[source,console]
+----
+...
+// This is clause 3
+[bibliography]
+== Normative references
+
+* [[[ISO8601-1,ISO 8601-1:2019]]] _First normative reference_
+* [[[ISO8601-2,ISO 8601-2:2019]]] _Second normative reference_
+
+...
+
+// This is the last section
+[bibliography]
+== Bibliography
+
+* [[[ISO10241-1,ISO 10241-1]]] _First bibliographic reference_
+...
+
+----
+
+To introduce normative reference, use [bibliography,normative=true].
+To use informative reference, use [bibliography,normative=false].
+You can add subsections to the bibliographic sections. If you add subsections, add [bibliography] as a predecessor before mentioning the references. 
+
+[source,console]
+----
+== Bibliography
+
+[bibliography]
+=== Part 1
+
+* [[[id1,1]]] _First reference_
+* [[[id2,2]]] _Second reference_
+* [[[id3,3]]] _Third reference_
+
+[bibliography]
+=== Part 2
+
+* [[[id4,4]]] _Fourth reference_
+* [[[id5,5]]] _Fifth reference_
+* [[[id6,6]]] _Sixth reference_
+----
+
+[NOTE]
+If you add [bibliography] before == Bibliography, you will receive a warning. Therefore, make sure to add it only before mentioning the references. 
+
+=== Properties
+==== Numbering
+In Metanorma, the numbers of the bibliographic entries are ordered incrementally. If you update a single reference number, the citations of that reference will get automatically updated.
+[NOTE]
+For different flavors, the reordering of numbers may take place wrt document requirements. 
+
+==== Predefined Text
+In Metanorma, the initial text before mentioning the normative reference is already pre-defined. In order to replace the text, you need to provide the replacement text with the [type= boilerplate].
+
+[source,console]
+----
+== Normative references
+
+[NOTE,type=boilerplate]
+--
+The following contract document is referred to in the text in such a
+way that some or all of its content constitutes requirements of this
+document.
+--
+----
+
+=== References
+Bibliographic references are generally specified as unordered lists. A typical entry looks like: 
+[source,console]
+----
+* [[[{anchor},{document identifier or reference tag}]]], _{reference list text}_
+----
+where,
+Anchor: Standard value 
+Document Identifier: Either provide a document identifier (number, alphanumeric label, or standard reference identifier) or a reference tag
+
+==== Implied
+Implied reference means providing references of the standard codes as document identifiers in the bibliographic syntax mentioned above. For ex. We could use ISO standard ISO 20483:2013 as a document identifier. 
+
+[source,console]
+----
+* [[[ISO20483,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,ISO 6540:1980]]]. _Maize -- Determination of moisture content (on milled grains and on whole grains)_
+----
+This renders as:
+
+ * ISO 20483:2013. Cereals and cereal products — Determination of moisture content — Reference method
+ * ISO 6540:1980. Maize — Determination of moisture content (on milled grains and on whole grains)
+[NOTE]
+Note: You can also auto-fetch a well-defined standards code as the item label and state it as the default reference value in the bibliographic entry.  To <automatic fetching>auto-fetch values, you need to define auto-fetching for that class of standard.
+
+==== Numeric
+You can add numbers for generic references in bibliography by adding numbers with the anchor value in square brackets. 
+
+* [[[{anchor},{number}]]], _{reference list text}_
+
+For ex.
+[source,console]
+----
+* [[[ISO20483,1]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,1]]]. _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
+---- 
+
+This renders as:
+----
+ [1] ISO 20483:2013 Cereals and cereal products — Determination of moisture content — Reference method
+ [2] ISO 6540:1980 Maize — Determination of moisture content (on milled grains and on whole grains)
+
+[NOTE]
+Note: To indicate usage of the numeric reference system, any number can be entered into the reference tag field. All references are automatically re-sorted and auto-incremented during compilation.
+
+==== Named
+You can provide alphanumeric labels for the reference value along with the anchor in the square brackets separated by a comma. 
+[source,console]
+----
+* [[[{anchor},({reference tag})]]], _{reference list text}_
+----
+For example,
+[source,console]
+----
+* [[[ISO20483,(CerMoist)]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,(MaiMoist)]]]. _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
+----
+
+This renders as:
+[CerMoist] ISO 20483:2013 Cereals and cereal products — Determination of moisture content — Reference method
+[MaiMoist] ISO 6540:1980 Maize — Determination of moisture content (on milled grains and on whole grains)
+
+[NOTE]
+Note: You cannot add auto-fetch for alphanumeric values. 
+
+==== Automatic
+As mentioned above we could automatically-fetch reference labels and add it to anchor tags. We can also auto-fetch bibliographic entries for any standard which has an online bibliographic database using Relaton. 
+Any bibliographic entry recognized through its document identifier prefix will by default have its bibliographic entry fetched by that gem.
+The fetched data overrides any content about the item provided in the document, since the online bibliography is treated as the source of truth for that standard document.
+The format of the standard identifier required for automatic lookup is documented at Automatic reference lookup.
+For example,
+[source,console]
+----
+* [[[ref1,ISO 20483]]]
+----
+Triggers automatic fetching and renders as:
+
+ISO 20483:2013. Cereals and cereal products — Determination of moisture content — Reference method
+[NOTE]
+Note: Currently Metanorma supports auto-fetching document identifiers from: ISO, IEC, IETF, GB, NIST, OGC, CalConnect.
+
+
+Other Databases
+Metanorma allows bibliographic entries to be specified for retrieval from arbitrary databases:
+[source,console]
+----
+* [[[anchor,repo:(repository-name/document-entry,document-identifier)]]]
+----
+
+This syntax retrieves document-entry from repository repository-name . 
+
+HTML links
+Metanorma allows bibliographic entries to be specified by either relative or absolute hyperlink.
+[source,console]
+----
+* [[[anchor,path:(hyperlink,document-identifier)]]]
+----
+
+As with repo:() bibliographic entries, the document identifier document-identifier is retained for well-formed citations.
+Bibliographical information about the entry is not auto-fetched via Relaton. Instead, if the hyperlink is local, Metanorma will look for an XML (Metanorma XML) or RXL (Relaton XML) file at the nominated location with the same filename, and read in the bibliographic metadata from there.
+All citations of this entry in the document (referencing anchor) will be rendered with the hyperlink in HTML.
+----
