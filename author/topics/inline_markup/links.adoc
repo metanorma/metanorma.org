@@ -1,6 +1,6 @@
 ---
 layout: author-docs
-title: Links and Cross-references
+title: Adding links and cross-references
 ---
 tag::tutorial[]
 References are an integral part of standards. The main mechanism for references are anchors and destinations. There are four types of references:
@@ -24,7 +24,26 @@ To reference an *internal* source:
 ----
 Download the latest link:downloads/report.pdf[Report]!
 ----
+end::tutorial[]
 
+*Updating file extension automatically*
+
+Links to other Metanorma documents are expected to change their suffix depending on whether they are rendered as HTML, PDF, or DOC. 
+
+To update file extensions automatically, add `updatetype=true` into the square brackets. 
+The link path must be https://www.w3schools.com/html/html_filepaths.asp[relative] and can not contain a file suffix.
+
+.Example of how to use the `updatetype` option
+[source,asciidoc]
+--
+link:../parent[updatetype=true]
+link:../child[This Is The Child Document,updatetype=true]
+--
+
+This will link to `../parent.html` and `../child.html` in HTML, and to
+ `../parent.pdf` and `../child.pdf` in PDF.
+
+tag::tutorial[]
 To reference an *external* source:
 
 . Paste the URL into the document.
@@ -35,8 +54,21 @@ To reference an *external* source:
 ----
 http://www.iso.org/[International Organization for Standardization].
 ----
+end::tutorial[]
+*Adding acessibility in URIs* 
 
+To add acessibility URIs, use the `,title=...` option in the square brackets. 
+The option corresponds to HTML's alt text `a@title` attribute. 
 
+[example]
+====
+[source,asciidoc]
+--
+http://www.iso.org[International Organization for Standardization,title=This is a tooltip for the link]
+--
+====
+
+tag::tutorial[]
 == Metadata references
 
 Every document contains a set of metadata to describe the document. You can insert a metadata reference by putting the attribute in curly braces `{attribute}`. The reference will be replaced with the value in the rendered output. 
@@ -97,3 +129,4 @@ Since the markup will be converted into XML, the anchor must follow the https://
 
 end::tutorial[]
 
+If you want to learn more about the technical aspects of cross-references, read link:author/concepts/deep-dive-cross-references.adoc[Deep-dive into cross-references].

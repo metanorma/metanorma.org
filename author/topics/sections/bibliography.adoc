@@ -1,9 +1,7 @@
 ---
 layout: author-docs
 ---
-// Content from tutorials
-
-
+// Check with content from tutorials; remove sections that are discussed in entering_bib.adoc; Put relaton info into relaton concept
 
 = References & Bibliography
 
@@ -408,6 +406,41 @@ internal identifier given for the bibliographic entry (`ref1` in the examples ab
 In typical AsciiDoc, any text in a cross-reference that follows a comma constitutes custom text for the cross-reference.
 So a cross-reference `\<<ISO7301,the foregoing reference>>` will be rendered as
 "`the foregoing reference`", and hyperlinked to the `ISO7301` reference.
+
+////
+This is from xrefs. Check how to incorporate into bibliography
+=== Cross-references to external documents
+
+In link:/author/topics/sections/bibliography#localities[localities and locality values],
+anchors can be integrated in citations of documents via references; for example:
+
+[source,asciidoc]
+--
+<<ISO7301,anchor=xyz>>
+--
+
+will generate a hyperlink to the element with ID `xyz` in document `ISO7301`. This convention
+is necessary for cross-references between documents in a Metanorma document collection.
+
+Outside of that, Metanorma will process cross-references to anchors within
+external documents just like typical AsciiDoc.
+
+EXAMPLE:
+
+[source,asciidoc]
+--
+<<document1.adoc#b>>
+--
+
+will be processed as a link to anchor `#b` in document `document1.adoc`.
+
+If the reference uses the `.adoc` suffix, as in the example above, it is stripped in Metanorma XML
+and substituted with the extension of the current document type during document generation.
+
+The above example is rendered in Metanorma XML as `<xref target="document1#b">`,
+in HTML as `<a href="document1.html#b">`, and in PDF as `<a href="document1.pdf#b">`.
+////
+
 
 [[localities]]
 === Localities

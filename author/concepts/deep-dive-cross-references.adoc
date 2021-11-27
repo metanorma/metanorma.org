@@ -1,0 +1,108 @@
+---
+layout: author-docs
+title: Deep-dive into cross-references
+description: This article looks at the technical details of cross-references in Metanorma AsciiDoc. If you want to learn how to insert cross-references, read link:author/topics/inline_markup/links.adoc[Adding links and cross-references]
+---
+== Basic anchor syntax
+
+The basic mechanism for cross-references is setting anchors to place that should be referenced.  
+
+.Example of an anchor and a reference
+[source,asciidoc]
+--
+[[anchor-id]]
+== Target clause
+
+The requirements are...
+
+== Reference clause
+
+As seen in <<anchor-id>>...
+--
+
+=== Valid anchor IDs
+
+Anchor IDs of any type (cross-references, items, bibliographies, etc.) are directly
+converted into XML, and therefore *must not* contain the following:
+
+* colons
+* whitespaces or;
+* words starting with numbers.
+
+These cases are not supported in XML; permitted characters are specified by the link:https://www.w3.org/TR/xml-names11/#NT-NCName[NCName attribute for Namesapece Declaration].
+
+Colons in cross-references are used for
+link:/author/topics/document-format/collections#indirect-xrefs[indirect cross-references between files in the same collection],
+to delimit namespaces and containers from anchor IDs [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.4].
+
+== Unambiguous referencing
+
+Cross-reference text in Metanorma adheres to guidance given in
+*ISO/IEC DIR 2* for internal cross-references, in order to guarantee unambiguous referencing.
+
+In particular, if a formula, example, figure, list, list item or table is cross-referenced outside its (sub)clause, the clause containing the item is always given in the cross-reference, unless the item is being referenced in the same clause.
+
+In the case of notes, the containing clause is extended to containing example, figure or table.
+
+NOTE: 
+[example]
+====
+For example, in the Metanorma ISO Rice model sample document
+formula B.1 is defined in Annex B.6, and is referenced in B.6 and B.7.
+
+In the Rice model document published by ISO, both instances are cited as "`Formula (B.1)`".
+However, Metanorma follows ISO/IEC DIR 2 in citing the former
+as "`Formula (B.1)`", but the latter as "`B.6, Formula (B.1)`".
+====
+
+In this sense, Metanorma is "`more royalist than the king`" in applying formatting rules and
+validation—which is what you would want of a computer-based tool.
+
+The label of the item cross-referenced, the use of brackets, and the containing reference
+are all taken care of by Metanorma; the document author needs only give the item identifier
+in the AsciiDoc source
+(e.g. `\<<``formulaB-1``>>` generates either "`Formula (B.1)`" or "`B.6, Formula (B.1)`",
+depending on where in the document it occurs.)
+
+=== Dropping cross-reference labels and prefixes
+
+If the cross-reference is given with `droploc%` as its text, then the label and prefix
+are dropped: the cross-reference value is given in
+isolation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.4].
+
+This can be done for example for ranges:
+
+[source,asciidoc]
+----
+Clauses <<context,droploc%>> to <<improvement,droploc%>>
+----
+
+to be rendered as e.g.
+
+____
+Clauses 7 to 9
+____
+
+== Localities in Metanorma AsciiDoc
+
+In vanilla AsciiDoc, any text in a cross-reference that follows a comma constitutes custom text for the cross-reference.
+
+So a cross-reference `\<<ISO7301,the foregoing reference>>` would be rendered as "`the foregoing reference`", and hyperlinked to the `ISO7301` reference.
+
+In *Metanorma AsciiDoc cross-references*, bibliographic localities
+(e.g. page numbers, clause numbers) can be added directly after the comma,
+as part of the cross-reference text.
+
+[example]
+====
+EXAMPLE: "`ISO 7301, Clause 2, Table 1a, pp. 7-9`" would be expressed as:
+
+[source,asciidoc]
+--
+<<ISO7301,clause=2,table=1a,page=7-9>>
+--
+====
+
+Read more about link:/author/topics/sections/bibliography#localities[localities and locality values] in the Bibliography documentation.
+
+//Write a short summary of the article?
