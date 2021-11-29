@@ -1,0 +1,4920 @@
+---
+layout: iso-flavor
+---
+
+= Metanorma presentation XML and ISO/NISO STS mapping
+
+== General
+
+This set of mapping rules is realized in the
+https://github.com/metanorma/mnconvert/[mnconvert] command-line tool.
+
+`mnconvert` is based on https://www.w3.org/TR/xslt-10/[XSLT 1.0] (with
+https://xalan.apache.org[Apache Xalan extensions]) and allows to convert data:
+
+* from Metanorma presentation XML to ISO/NISO STS XML (module `mn2sts.xsl`)
+* from ISO/NISO STS XML to Metanorma AsciiDoc (module `sts2mn.adoc.xsl`)
+* from ISO/NISO STS XML to Metanorma presentation XML (module `sts2mn.xsl`)
+
+Stages of conversion from ISO/NISO STS XML to Metanorma AsciiDoc (`sts2mn.adoc.xsl`):
+
+* XML linearization – replace all line breaks (except text in the tags `code`,
+`preformat` and `mml:`) to space, replace sequence of spaces into one space
+
+* replace `bold`, `italic`, `underline`, `sup` and `sub` tags to `bold2`,
+`italic2`, `underline2`, `sup2` and `sub2` for
+https://docs.asciidoctor.org/asciidoc/latest/text/#unconstrained[unconstrained formatting pair]
+for further processing
+
+* reference`s id normalization in the elements `ref` and `std`
+
+** replacing a space, non-break space, colon to  low line char `_` (U+5F)
+** replacing non-breaking hyphen minus to hyphen minus char `-` (U+2D)
+** adding `low line` char `_` (U+5F) prefix if `id` starts with digit
+
+* conversion from ISO/NISO STS XML to Metanorma AsciiDoc
+* checking for repeated bibliography references
+* copy images from the folder, specified by `imagesdir` (command line parameter,
+default value `images`), to the output folder
+
+[NOTE,keep-separate=true]
+====
+First page data and each section (first level clause/annex) saves in a
+standalone `.adoc` file.
+====
+
+Stages of conversion from ISO/NISO STS XML to Metanorma presentation XML (sts2mn.xsl):
+
+* conversion from ISO/NISO STS XML to Metanorma presentation XML
+
+* if non-processed elements in front page (bibliographic) data found, then it
+will be added at the end of the `<bibdata>` element with message
+_'WARNING! There are unprocessed elements in 'front''_
+
+* if non-processed elements found, then such element's names will be added in
+comments at the end of XML file
+
+* checking on repeated bibliography references
+
+* copy images from the folder, setup by `imagesdir` (command line parameter,
+default value `images`), to the output folder
+
+Stages of conversion from Metanorma presentation XML to ISO/NISO STS XML to
+(`mn2sts.xsl`):
+
+* conversion from Metanorma presentation XML to ISO/NISO STS XML
+* if non-processed elements in front page (bibliographic) data found, then it
+will be added at the end of the `<bibdata>` element with message
+_'WARNING! There are unprocessed elements in bibdata'_
+
+Legend:
+
+* *`< >`* - bidirectional rule (Metanorma presentationXML to and from STS NISO/ISO XML)
+* *`<`* - unidirectional rule, from Metanorma presentation XML to STS NISO/ISO XML
+* *`>`* - unidirectional rule, from STS NISO/ISO XML to Metanorma presentation XML
+
+[NOTE]
+====
+This mapping is not a full ISO/NISO STS schema comparison and based on 30 XML
+samples only:
+
+* BSI ISOSTS sample XMLs
+* ISOSTS: `C070907e.xml`, `C070908e.xml`
+====
+
+NOTE: The corresponding ISO STS mapping rule is not given if it is identical to
+NISO STS structure.* *`>`* - unidirectional rule, from STS NISO/ISO XML to Metanorma presentation XML
+
+
+[NOTE]
+The NISO STS schema is available at https://www.niso-sts.org/TagLibrary/niso-sts-TL-1-0-html/chapter/modules.html[NISO's tag library].
+
+NOTE: In the mapping tables the value '*indirect*' is used to indicate that
+there is no one-to-one mapping from an ISOSTS element to a corresponding
+Metanorma presentation XML element. This does not mean that the data is ignored,
+instead it means that the text inside this element will be copied into the
+resulting Metanorma XML, or that its internal elements is processed into
+alternative elements.
+
+
+
+== Main parts (front page, body, annexes)
+
+=== Root element
+
+NISO STS: `<standard>`, `<adoption>`
+
+Metanorma: `<abc-standard xmlns="https://www.metanorma.org/ns/abc">`,
+where `abc` stands for the type of standard: `iso` or `bsi`.
+
+Determined automatically in `sts2mn.xsl`:
+
+* if `/standard/front/nat-meta/@originator` = `BSI` or `/standard/front/iso-meta/secretariat` = `BSI`, then `bsi`
+
+* else `iso`,
+
+OR can be set up any value in the command line via parameter `--type iso`.
+
+=== Sections
+
+[%unnumbered,options="header"]
+|===
+| ISO/NISO STS | | Metanorma presentation XML | Metanorma AsciiDoc
+
+a|
+`front/sec[@sec-type="intro"]`
+| *`< >`*
+| `preface/introduction` | `\[[introduction]]`
+a|
+`front/sec[@sec-type="foreword"]`
+| *`< >`*
+| `preface/foreword` | `[.preface]` +
+`\[[foreword]]`
+a|
+`front/sec[@sec-type]`
+| *`< >`*
+| `preface/clause` | `[.preface]` +
+`\[[id]]` +
+if `@sec-type` = `amendment`, then `[.preface,type=corrigenda]`
+
+a|
+`front/sec`
+| *`< >`*
+| `preface/clause` | `[.preface]`
+a|
+`front//sec`
+| *`< >`*
+| `preface/clause` | `\[[id]]`
+
+a|
+`front//sec/@sec-type`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<sec sec-type="foreword_publishing" id="sec_foreword_1">
+----
+====
+
+| *`< >`*
+
+a|
+`preface/clause/@sec-type`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<clause id="sec_foreword_1" type="foreword_publishing">
+----
+====
+
+NOTE: Metanorma presentation XML model doesn't have `sec-type` attribute. It is added for round-trip conversion.
+|
+
+a|
+`front/sec[@id="sec_pub_info_nat" @sec-type="publication_info"]`
+
+NOTE: Publishing and copyright information block
+
+| *`<`*
+a|
+
+`boilerplate/ copyright-statement` +
+`+ docidentifier[@type = 'ISBN']` +
+`+ ext/ics` +
+`+ preface/clause[ @type = 'related-refs']` +
+`+ preface/clause[ @type = 'corrigenda']`
+|
+
+a|
+`front/sec[@sec-type="publication_info" and node()/@content-type = 'ace-table']`
+| *`>`*
+|
+a|
+
+`[.preface,type=corrigenda]` +
+`== node() @content-type = 'ace-table']/caption/title`
+
+a|
+`body`
+| *`< >`*
+| `sections`
+|
+
+a|
+`body/sec` +
+`[@sec-type="intro"]` +
+
+if there is `/standard/front/nat-meta` and there isn't `iso-meta` or `reg-meta`
+| *`< >`*
+a|
+`preface/introduction` a|
+`\[[introduction]]`
+
+a|
+`body/sec` +
+`[@sec-type="intro"]`
+| *`< >`*
+| `sections/clause[@type="intro"]`
+a|
+`\[[introduction]]`
+
+a|
+`body//sec[term-sec]`
+| *`< >`*
+| `terms`
+|
+
+a|
+`body//sec[term-sec]/@id`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<sec id="sec_3" sec-type="terms">
+<label>3</label><title>Terms and definitions</title>
+<p>For the purposes of this document...</p>
+...
+<term-sec id="sec_3.1"><label>3.1</label>
+...
+----
+====
+
+| *`< >`*
+a|
+`terms/@id`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<terms id="sec_3">
+<title>3<tab/>Terms and definitions</title>
+<p>For the purposes of this document</p>
+...
+<term id="term_3.1">
+<name>3.1</name>
+...
+----
+====
+
+| `\[[id]]`
+
+a|
+`body//sec[array[count(table/col) = 2]]` | a|
+`definitions` |
+a|
+`body/sec[@sec-type=“scope"]`
+| *`< >`*
+| `sections/clause[@type="scope"]` |
+a|
+`sec/@id`
+| *`< >`*
+| `clause \| introduction \| foreword \| terms \| indexsect \| references \| definitions /@id` | `\[[id]]`
+a|
+`sec/label` (if there isn't 'title')
+| *`>`*
+| `clause[@inline-header="true"]/name` | `==== \{blank}`
+a|
+`sec/title` a| *`< >`*
+a|
+`clause/title`
+
+NOTE: title=sec/label<tab/>sec/name a|
+`=== ...`
+
+NOTE: count of === depends of section's depth.
+a|
+`sec[@sec-type = 'norm-refs']`
+| *`< >`*
+a|
+`bibliography/references[@normative="true"]`
+a|
+`[bibliography]` +
+`[NOTE,type=boilerplate]` +
+`--` +
+`..` +
+`--`
+a|
+`back/ref-list` +
+no nested `ref-list`
+| *`< >`*
+| `bibliography/references[@normative="false"]` a|
+`[bibliography]`
+a|
+`back/ref-list/@id` +
+no nested `ref-list` +
+| *`< >`*
+| `bibliography/references[@normative="false"]/@id` |
+a|
+`back/ref-list` +
+with nested `ref-list`
+| *`< >`*
+| `bibliography/clause/references[@normative="false"]` | `[bibliography]`
+a|
+`back/ref-list/@id` +
+with nested `ref-list`
+| *`< >`*
+| `bibliography/clause/@id` | `\[[id]]`
+a|
+`back/ref-list/@content-type`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+content-type="bibl"
+----
+====
+
+| *`>`*
+| *indirect* |
+a|
+`back/ref-list/title`
+| *`< >`*
+| `references/title` a|
+`=== ...`
+
+NOTE: count of === depends of section's depth.
+a|
+`back/ref-list/ref-list`
+| *`< >`*
+| `bibliography/clause/references[@normative="false"]` |
+a|
+`back/ref-list/ref-list/@id`
+| *`< >`*
+| `bibliography/clause/references[@normative="false"]/@id` |
+a|
+`sec[@sec-type = 'index']`
+| *`< >`*
+| `indexsect` |
+a|
+`back/sec[@id = 'ind']`
+| *`>`*
+| `indexsect` |
+a|
+`back`
+| *`< >`*
+a| *_skip processing_*
+
+NOTE: see nested elements processing |
+a|
+`app-group`
+| *`< >`*
+a| *_skip processing_*
+
+NOTE: see nested elements processing |
+a|
+`app`
+| *`< >`*
+| `annex` | `[appendix]`
+| `app/@id`
+| *`< >`*
+| `annex/@id` | `\[[id]]`
+a|
+`app/@content-type`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+content-type="inform-annex"
+----
+====
+
+| *`>`*
+| *indirect* |
+| `app/@content-type="inform-annex"`
+| *`<`*
+| *indirect* |
+a|
+`app/@content-type=" norm-annex"`
+
+NOTE: for BSI only
+| *`<`*
+| *indirect* |
+a|
+`app/annex-type`
+| *`< >`*
+a| annex/@obligation +
+(without '()') a|
+`[appendix, obligation=...]`
+
+NOTE: if `annex-type` != normative
+a|
+`app/@content-type=inform-annex`
+| *`<`*
+| annex/@obligation = informative |
+| `app/@content-type`
+| *`<`*
+| annex/@obligation |
+a|
+`app//sec`
+| *`< >`*
+| `annex//clause` |
+a|
+`sec/@sec-type="titlepage","endorsement"` +
+[NOTE]
+====
+*conversion gap* +
+https://github.com/metanorma/mn-samples-bsi/issues/34
+====
+
+| *`>`*
+| *indirect* |
+a| *indirect*
+| *`<`*
+| `foreword/review` |
+| `sec[@sec-type="appendix"]`
+| *`<`*
+a|
+`annex/appendix`
+
+NOTE: for more info, see https://github.com/metanorma/mn2sts/issues/10
+
+|
+a| sub-part
+
+NOTE: realized partially yet (for ADOC output only)
+| *`>`*
+
+a|
+`metanorma-collection`
+
+NOTE: to do https://github.com/metanorma/mnconvert/issues/6
+
+a| YAML collection document +
+
+[%unnumbered]
+[source,yaml]
+----
+directives:
+  - documents-inline
+bibdata:
+  type: collection
+  docid:
+    type: bsi
+...
+----
+
+see  https://github.com/metanorma/sts2mn/issues/33
+
+a| *indirect*
+| *`<`*
+a|
+`clause/@obligation` +
+`foreword/@obligation` +
+`introduction/@obligation` +
+`terms/@obligation`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+obligation="informative"
+obligation="normative"`
+----
+====
+|
+
+|===
+
+== Front page (bibliographic) data
+
+STS XML can contains nat-meta, iso-meta, reg-meta and std-meta at the same time. The conversion rules are:
+
+* if there is `nat-meta`, then
+** `nat-meta` goes to `bibdata`
+** `iso-meta` goes to `bibdata/relation[@type = 'adopted-from']/bibitem/contributor[role/@type = 'publisher']/organization[abbreviation = 'xxx']` (xxx = ISO or IEC)
+** `reg-meta` goes to `bibdata/relation[@type = 'adopted-from']/bibitem/contributor[role/@type = 'publisher']/organization[abbreviation = 'xxx']` (xxx = CEN or CENELEC)
+** `std-meta` goes to `bibdata/relation[@type = 'adopted-from']/bibitem/contributor[role/@type = 'publisher']/organization[abbreviation = 'xxx']` (xxx != ISO, IEC, CEN, CENELEC)
+* if there isn't `nat-meta`, then
+** `iso-meta` goes to `bibdata`
+** `reg-meta` goes to `bibdata/relation[@type = 'adopted-from']/bibitem/contributor[role/@type = 'publisher']/organization[abbreviation = 'xxx']` (xxx = CEN or CENELEC)
+** `std-meta` goes to `bibdata/relation[@type = 'adopted-from']/bibitem/contributor[role/@type = 'publisher']/organization[abbreviation = 'xxx']` (xxx != ISO, IEC, CEN, CENELEC)
+
+In STS->Metanorma AsciiDoc conversion, only first (by priority `nat`-, `iso-`,
+`reg-`, `std-meta`) element is using for destination Metanorma AsciiDoc, for all
+another elements – only document number is populating into '`:adopted-from:...`'
+(see
+https://github.com/metanorma/sts2mn/issues/31[https://github.com/metanorma/sts2mn/issues/31])
+
+[%unnumbered,options="header"]
+|===
+| ISO/NISO STS a| | Metanorma presentation XML | Metanorma AsciiDoc
+
+a|
+`xxx-meta`
+
+`(nat-, iso-, reg-, std-meta)`
+
+| *`>`*
+
+| `bibdata[@type="standard"]`
+a|
+
+| `title-wrap/@xml:lang`
+| *`< >`*
+| `title/@language`
+a|
+| `title-wrap/full`
+| *`>`*
+| `title[@format="text/plain" @type="main"]`
+a|
+a|
+`title-wrap/full`
+
+NOTE: values, separated by ' — '
+
+| *`<`*
+a|
+`title[*]`
+a|
+
+| `title-wrap/intro`
+| *`< >`*
+| `title[@format="text/plain" @type="title-intro"]`
+| `:title-intro-<@xml:lang>: ...`
+
+| `title-wrap/main`
+| *`<`*
+a|
+`title[@format="text/plain" @type="title-intro"]`
+
+NOTE: if `title[@type="main"] is empty`
+a|
+
+| `title-wrap/main`
+| *`< >`*
+| `title[@format="text/plain" @type="title-main"]`
+| `:title-main-<@xml:lang>: ...`
+
+a|
+`title-wrap/compl`
+
+NOTE: For BSI, in source STS XML not all title components are available as
+standalone elements (`full`, `intro`, `main` or `compl`), therefore the XSLT
+conversion tries to separate title by 'dash' char (decimal 8212) into components
+(see `'mode="bibdata_title_full"'` templates).
+
+| *`< >`*
+| `title[@format="text/plain" @type="title-part"]`
+
+| `:title-part-<@xml:lang>: ...`
+a|
+`title-wrap/compl`
+
+NOTE: amendment title puts after '—'
+| *`<`*
+| `title[@type="title-amd"]`
+a|
+
+| `std-ref[@type='dated']`
+| *`>`*
+a|
+`docidentifier[@type="iso"]` +
+`docidentifier[@type="iso-with-lang"] + (first upper-cased char from doc-ident/language)docidentifier[@type="iso-reference"] + (first upper-cased char from doc-ident/language)`
+a|
+| `std-ref[@type='dated']`
+| *`<`*
+| `docidentifier[1]`
+a|
+| `std-ref[@type='undated']`
+| *`>`*
+| *indirect*
+a|
+| `std-ref[@type='undated']`
+| *`<`*
+| docidentifier[1], before ':'
+a|
+| `doc-ref`
+| *`>`*
+| `docidentifier[@type="iso-reference"]`
+a|
+| `doc-ref`
+| *`<`*
+a|
+`docidentifier[@type='iso-reference'][last()]` +
+or +
+` docidentifier@type='iso-with-lang']`
+a|
+a|
+`custom-meta-group/` +
+`custom-meta[meta-name = 'ISBN']/` +
+`meta-value`
+| *`< >`*
+| `docidentifier[@type="ISBN"]` | `:isbn: ...`
+a|
+`custom-meta-group/custom-meta` +
+`[meta-name != 'ISBN']`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<custom-meta>
+<meta-name>price-ref-pages</meta-name>
+<meta-value>38</meta-value>
+</custom-meta>
+<custom-meta>
+<meta-name>generation-date</meta-name>
+<meta-value>2018-10-29 11:07:31</meta-value>
+</custom-meta>
+----
+====
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<custom-meta-group>
+  <custom-meta>
+    <meta-name>Perinorm ID</meta-name>
+    <meta-value>000000000030387671</meta-value>
+  </custom-meta>
+  <custom-meta>
+     <meta-name>UPI</meta-name>
+    <meta-value>000000000030387671</meta-value>
+  </custom-meta>
+...
+</custom-meta-group>
+----
+====
+
+NOTE: *conversion gap* +
+https://github.com/metanorma/mn-samples-bsi/issues/20[https://github.com/metanorma/mn-samples-bsi/issues/20]
+| *`>`*
+| *indirect*
+a|
+| `std-ident`
+| *`< >`*
+a| _skip processing_
+
+NOTE: see nested elements processing | `= originator doc-number-part-number`
+| `std-ident/doc-number`
+| *`< >`*
+| `docnumber` | `:docnumber: ...`
+a|
+`pub-date`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<pub-date>2019-03-15</pub-date>
+----
+====
+
+[NOTE]
+====
+Comment from `NISO-STS-common-metadata1.ent`:
+
+* The `<pub-date>` was used in ISO STS to name the date this standard was (or
+was to be) published. This element has been superseded by `<release-date>` but
+may still appear in documents for backward compatibility with ISO STS.
+
+* Remarks: While this element may still be used, for better JATS compatibility,
+the date of initial publication should be recorded using `<release-date>` with
+the appropriate attributes.
+
+* Remarks: For ISO STS published standards, the `<pub-date>` recorded the date
+on whichthe project reached ISO stage 60, and the IS was first published. For
+the initial publication, the `<pub-date>` and the `<release-date>` were the
+same. For later ISO publications (corrections, new editions,versions in other
+languages), the `<pub-date>` would be earlier than the `<release-date>` (and was
+be the same across all versions of a given standard).
+====
+
+| *`< >`*
+| `date[@type="published"]/on` | `:published-date: ...`
+a|
+`release-date`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<release-date>2018-10-31</release-date>
+----
+====
+
+| *`>`*
+| `date[@type="release"]/on` | `:date: release ...`
+a|
+`release-date`
+
+NOTE: if output format is STS NISO
+| *`<`*
+| `date[@type="release"]/on`
+a|
+a|
+`release-date` +
+or empty: +
+`<release-date/>`
+
+NOTE: if output format is STS ISO
+| *`<`*
+| `date[@type="release"]/on[last()]`
+a|
+| `doc-ident/sdo`
+| *`< >`*
+| `contributor[role type="author"]/organization/abbreviation` a|
+`:mn-document-class: ...` +
+`or iso`
+| `std-ident/originator`
+| *`< >`*
+| `contributor[role type="publisher"]/ organization/abbreviation`
+a|
+| `std-ident/edition`
+| *`< >`*
+| `edition` | `:edition: ...`
+a|
+`std-ident/version` +
+[NOTE]
+====
+conversion gap
+
+https://github.com/metanorma/mn-samples-bsi/issues/22[https://github.com/metanorma/mn-samples-bsi/issues/22]
+====
+
+| *`>`*
+| `version`
+| *indirect*
+a|
+`std-ident/version` +
+[NOTE]
+====
+conversion gap
+
+https://github.com/metanorma/mn-samples-bsi/issues/22[https://github.com/metanorma/mn-samples-bsi/issues/22]
+====
+
+| *`<`*
+| `version/revision-date`
+a|
+| `content-language`
+| *`< >`*
+| `language`
+a|
+| `doc-ident/language`
+| *`<`*
+| `language`
+a|
+| `doc-ident/language`
+| *`>`*
+| _skip processing_ | `:language: ...`
+| `doc-ident/release-version`
+| *`>`*
+a|
+`status` +
+`stage:` +
+WD – 20 +
+CD – 30 +
+DIS – 40 +
+FDIS – 50 +
+IS – 60 +
+`substage:` +
+WD or CD or DIS or FDIS – 00 +
+ IS – 60
+a| WD: +
+`:docstage: 20` +
+`:docsubstage: 00` +
+CD: +
+`:docstage: 30` +
+`:docsubstage: 00` +
+DIS: +
+`:docstage: 40` +
+`:docsubstage: 00` +
+FDIS: +
+`:docstage: 50` +
+`:docsubstage: 00` +
+IS: +
+`:docstage: 60` +
+`:docsubstage: 60` +
+doctype=standard:
+`:docstage: 60` +
+`:docsubstage: 60` +
+else:
+`:docstage:` +
+`:docsubstage:`
+| `doc-ident/release-version`
+| *`< >`*
+| `status/stage/@abbreviation`
+a|
+| `doc-ident/release-version`
+| *`>`*
+| `ext/stagename`
+a|
+a|
+`std-xref [@type= "isPublishedFormatOf"]`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<std-xref type= "isPublishedFormatOf"><std-ref>20/30387670 DC</std-ref></std-xref>
+----
+====
+
+NOTE: for BSI only.
+| *`< >`*
+a|
+`relation[@type="related"]/bibitem/` +
+`title: --` +
+`docidentifier: Draft for comment 'std-ref'`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<relation type="related">
+<bibitem>
+<title>--</title>
+<docidentifier>Draft for comment
+20/30387670 DC</docidentifier>
+</bibitem></relation>
+----
+====
+| `:bsi-related: Draft for comment 'std-ref'`
+a|
+`comm-ref`
+
+NOTE: for BSI only.
+| *`< >`*
+a|
+`relation[@type="related"]/bibitem/title: --` +
+`docidentifier: Committee reference 'text'.`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<relation type="related"><bibitem>
+<title>--</title>
+<docidentifier>Committee reference
+DEF/1</docidentifier>
+</bibitem>
+</relation>
+----
+====
+| `:bsi-related: Committee reference 'text'`
+a|
+`comm-ref` +
+NOTE: not for BSI.
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<comm-ref>ISO/TC 154</comm-ref>
+----
+====
+
+| *`< >`*
+a| tries to extract 'TC', 'SC', 'WG` values and put them into: +
+`ext/editorialgroup/technical-committee \| subcommittee \| workgroup / @number` +
+or +
+`ext/editorialgroup/technical-committee/@number` a|
+`:technical-committee-type: TC` +
+`:technical-committee-number: ...` +
+`:subcommittee-type: SC` +
+`:subcommittee-number: ...` +
+`:workgroup-type: WG` +
+`:workgroup-number: ...` +
+`:technical-committee-code: ...` +
+`:technical-committee-name: ...`
+a|
+`secretariat`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<secretariat>SAC</secretariat>
+----
+====
+
+| *`< >`*
+| `editorialgroup/secretariat` | `:secretariat: ...`
+| `std-xref`
+| *`>`*
+| `relation`
+a|
+a|
+`std-xref/@type`
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/8[https://github.com/metanorma/mn-samples-bsi/issues/8]
+a|
+a|
+`relation/@type`
+
+NOTE: value copied for round-trip conversion, in Metanorma presentation XML there aren't these types.
+a|
+a|
+`std-xref/std-ref`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<std-xref type="informativelyReferences">
+<std-ref type="dated">BS EN ISO 19011:2018</std-ref></std-xref>
+----
+====
+
+| *`< >`*
+a|
+`relation/bibitem`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<relation type="informativelyReferences">
+<bibitem>BS EN ISO 19011:2018</bibitem></relation>
+----
+====
+
+a|
+a|
+`reg-meta` +
+`iso-meta` +
+`std-meta`
+| *`< >`*
+| `relation[@type="adopted-from"]` | `:adopted-from: std-ident/originator std-ident/doc-number - std-ident/ part-number`
+| `permissions`
+| *`< >`*
+| `copyright`
+a|
+| `permissions/copyright-year`
+| *`< >`*
+| `copyright/from` | `:copyright-year: ...`
+a|
+`permissions/copyright-holder` +
+(if there is space)
+| *`< >`*
+| `copyright/owner/organization/name`
+a|
+a|
+`permissions/copyright-holder` +
+(if there isn't space)
+| *`< >`*
+| `copyright/owner/organization/abbreviation`
+a|
+| `permissions`
+| *`< >`*
+| `boilerplate/copyright-statement/clause`
+a|
+a|
+`permissions/copyright-year` +
+`permissions/copyright-holder`
+| *`>`*
+| `boilerplate/copyright-statement/clause / p[@id="boilerplate-year"]© {copyright-holder} {copyright-year}`
+a|
+| `permissions/copyright-statement`
+| *`>`*
+| `boilerplate/copyright-statement/clause / p[@id="boilerplate-message"]` a| NOTE: *conversion gap* (ADOC->XML) https://github.com/metanorma/mn-samples-bsi/issues/9[https://github.com/metanorma/mn-samples-bsi/issues/9]
+| `permissions/copyright-statement`
+| *`<`*
+| `boilerplate/copyright-statement//title`
+a|
+| `permissions/copyright-statement`
+| *`<`*
+| `boilerplate/copyright-statement//p[@id!="boilerplate-year"]`
+a|
+a|
+`std-ident/doc-type` +
+`depends on` +
+`std-ident/originator`
+
+NOTE: for BSI documents
+| *`>`*
+a|
+`ext/doctype` +
+`originator` starts with 'BS' and 'standard' -> standard +
+`originator` starts with 'PAS' and 'publicly available specification' or 'standard' -> publicly-available-specification +
+`originator starts` with 'PD' and 'published document' -> published-document +
+else value 'as-is' | `:doc-type: <see rules in left next one column>`
+| `std-ident/doc-type`
+| *`>`*
+a|
+`ext/doctype` +
+'is' -> 'international-standard' +
+'r' -> 'recommendation' +
+'spec' -> 'spec' +
+else value 'as-is' | `:doc-type: ...`
+| `std-ident/doc-type`
+| *`<`*
+a|
+`ext/doctype` +
+`- international-standard -> IS` +
+`- if BSI document -> capitalized value`
+`- in another cases – value as is`
+a|
+a|
+`ics`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<ics>01.140.30</ics>
+----
+====
+
+| *`< >`*
+| `ext/ics/code` | `:library-ics: ...`
+a| *indirect*
+
+NOTE: commented in mn->sts conversion.
+| *`<`*
+| `ext/subdoctype`
+a|
+a|
+`std-ident/part-number`
+
+NOTE: not for BSI.
+| *`< >`*
+| `ext/structuredidentifier/project-number/@part` | `:partnumber: ...`
+a|
+`std-ident/originator` +
+`std-ident/doc-number`
+
+NOTE: not for BSI.
+a|
+| `ext/structuredidentifier/project-number/ {originator} {doc-number}`
+a|
+| `std-ident/part-number`
+| *`< >`*
+| `ext/structuredidentifier/partnumber` | `:partnumber: ...`
+| `doc-ident/proj-id`
+| *`< >`*
+| `ext/structuredidentifier/project-number`
+a|
+a|
+`doc-ident/urn`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<urn>iso:std:iso-iec:29151:ed-1:v1:en</urn>
+----
+====
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/21[https://github.com/metanorma/mn-samples-bsi/issues/21]
+a|
+| *indirect*
+a|
+| *indirect*
+a|
+| `status/iteration`
+a|
+| *indirect*
+a|
+| `ext/structuredidentifier/docnumber`
+a|
+| *indirect*
+a|
+| `ext/updates-document-type`
+a|
+a|
+`wi-number`
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/12[https://github.com/metanorma/mn-samples-bsi/issues/12]
+a|
+| *indirect*
+a|
+a|
+`release-version-id`
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/12[https://github.com/metanorma/mn-samples-bsi/issues/12]
+a|
+| *indirect*
+a|
+a|
+`page-count`
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/23[https://github.com/metanorma/mn-samples-bsi/issues/23]
+a|
+| *indirect*
+a|
+a|
+`std-ident/suppl-type` +
+`std-ident/suppl-number` +
+`std-ident/suppl-version`
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/27[https://github.com/metanorma/mn-samples-bsi/issues/27]
+a|
+| *indirect*
+a|
+a|
+`meta-date` +
+`meta-date/@type`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<meta-date type="DOR">2019-10-27</meta-date>
+<meta-date type="DOW">2020-07-31</meta-date>
+<meta-date type="DOP">2020-07-31</meta-date>
+<meta-date type="DOA">2020-04-30</meta-date>
+----
+====
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<meta-date type="vote-start">2018-10-31</meta-date>
+<meta-date type="vote-end">2018-12-26</meta-date>
+----
+====
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/32[https://github.com/metanorma/mn-samples-bsi/issues/32]
+a|
+| *indirect*
+a|
+| `permissions/license`
+| *`<`*
+| `boilerplate/license-statement`
+a|
+| `permissions/license/@xlink:title`
+| *`<`*
+| `boilerplate/license-statement/clause[1]/title`
+a|
+a| *indirect* +
+see nested elements processing
+| *`<`*
+| `boilerplate/license-statement/clause`
+a|
+| `permissions/license/license-p`
+| *`<`*
+| `boilerplate/license-statement/clause/p`
+a|
+a|
+`permissions/license/license-p/@id`
+
+NOTE: the attribute @id isn'r defined in ISO STS DTD
+| *`<`*
+| `boilerplate/license-statement/clause/p/@id` | `\[[id]]`
+| `license[@specific-use="legal"]`
+| *`<`*
+| `boilerplate/legal-statement`
+a|
+| `license[@specific-use="legal"]/@xlink:title`
+| *`<`*
+| `boilerplate/legal-statement /clause[1]/title`
+a|
+| `license-p`
+| *`<`*
+| `boilerplate/legal-statement/clause`
+a|
+a|
+`license-p/@id`
+
+NOTE: the attribute @id isn'r defined in ISO STS DTD
+| *`<`*
+| `boilerplate/legal-statement/clause/@id` | `\[[id]]`
+| *indirect*
+a|
+a|
+`script`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<script current="true">Latn</script>
+----
+====
+
+a|
+a|
+a|
+a|
+a| fixed: +
+`:mn-output-extensions: XML,html` +
+`:local-cache-only:` +
+`:data-uri-image:`
+a|
+a|
+a|
+| `:imagesdir: value imagesdir from command line parameter (default 'images'`
+a|
+a|
+a|
+a|
+`:coverpage-image: images/ coverpage.X.png`
+
+NOTE: only if doc-type = publicly-available-specification
+|===
+
+
+=== Section title
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`sec/label`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<label>6.2.2.3</label>
+----
+====
+
+| *`< >`*
+a|
+`title`
+
+[example%unnumbered]
+====
+* if there is 'title', then put it before 'tab': +
+`<title>6.2.2.3<tab/> ... </title>`
+* if there isn't title:
+`<title>10.1</title> +
+and add `inline-header="true"` to parent clause: +
+`<clause inline-header="true"...`
+====
+
+a|
+a|
+`sec/title`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<title>Prototype design</title>
+----
+====
+
+| *`< >`*
+a|
+`title` (after `tab`)
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<title>...<tab/>Prototype design</title>
+----
+====
+
+a|
+`=== ...`
+
+NOTE: count of === depends of section's depth.
+| _skip processing_
+| *`<`*
+| `title/@tab`
+a|
+| _skip processing_
+| *`<`*
+| `title/@depth`
+a|
+
+|===
+
+== Terms
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+| `sec[@sec-type = 'terms']//title`
+| *`>`*
+a|
+a|
+`[.boilerplate]` +
+`== ...`
+
+If there is no child `p`: +
+`\{blank}` +
+else: +
+`My predefined text`
+
+NOTE: count of `==` depends on clause depth.
+a|
+`term-sec`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<term-sec id="sec_3.1">
+----
+====
+
+| *`>`*
+a| _skip processing_
+
+NOTE: `sec 'sec[term-sec]' above`
+a|
+a|
+a|
+a|
+a|
+a|
+a|
+a|
+a|
+| `term-sec/@id`
+| *`>`*
+| *indirect*
+a|
+| `term-sec`
+| *`<`*
+| term
+a|
+a|
+`term-sec/@id`
+
+NOTE: id=sec_ term/name
+| *`<`*
+| term
+a|
+a|
+`term-sec/label`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<label>3.1</label>
+----
+====
+
+| *`< >`*
+a|
+`term/name`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<name>3.1</name>
+----
+====
+
+a|
+a|
+`tbx:termEntry`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:termEntry ...>
+----
+====
+
+| *`< >`*
+a|
+`term`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<term ...>
+----
+====
+
+a|
+`=== ...`
+
+NOTE: count of === depends of section's depth.
+
+a|
+`tbx:termEntry/@id`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:termEntry id="term_3.1">
+----
+====
+
+| *`< >`*
+a|
+`term/@id`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<term id="term_3.1">
+----
+====
+
+| `\[[id]]`
+| `tbc:termEntry/tbx:langSet`
+| *`< >`*
+| *indirect*
+a|
+a|
+`tbc:termEntry/tbx:langSet/@xml:lang`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:langSet XML:lang="en">
+----
+====
+
+NOTE: in all STS examples XML:lang="en"
+| *`< >`*
+| *indirect*
+a|
+a|
+`tbx:langSet/tbx:tig`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:tig>
+----
+====
+
+| *`>`*
+a| _skip processing_
+
+NOTE: see nested elements processing
+a|
+a|
+`tbx:tig/tbx:term` +
+`[../tbx:normativeAuthorization/ @value = 'preferredTerm']`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:tig>
+<tbx:term>geometrical product specification</tbx:term>
+...
+<tbx:normativeAuthorization value="preferredTerm"/>
+</tbx:tig>
+----
+====
+
+| *`< >`*
+a|
+`preferred`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<preferred>geometrical product specification</preferred>
+----
+====
+
+a|
+a|
+`tbx:tig/tbx:term[../tbx:normativeAuthorization/ @value = 'admittedTerm']`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:tig><tbx:term>GPS</tbx:term>
+...<tbx:normativeAuthorization value="admittedTerm"/></tbx:tig>
+----
+====
+
+| *`< >`*
+a|
+`admitted`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<admitted>GPS</admitted>
+----
+====
+
+| `\alt:[...]`
+| `tbx:tig/tbx:term[../tbx:normativeAuthorization/ @value = 'deprecatedTerm']`
+| *`< >`*
+| `deprecates` | `\deprecated:[...]`
+| `tbx:tig/tbx:term (without ../tbx:normativeAuthorization)`
+| *`< >`*
+| `preferred`
+a|
+a|
+`tbx:tig/tbx:definition`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:definition>aspect of ...
+----
+====
+
+| *`>`*
+a|
+`definition/p`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<definition><p>aspect of ...
+----
+====
+
+a|
+| `tbx:tig/tbx:definition`
+| *`<`*
+| `definition`
+a|
+a|
+`tbx:entailedTerm`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:entailedTerm target="term_3.8">objectives (3.8)</tbx:entailedTerm>
+----
+====
+
+| *`< >`*
+a|
+`<em>term without (x.y)</em> (<xref target="@target"><strong>x.y if substring in @target after _term equal to x.y</strong></xref>)`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<em>objectives</em> (<xref target="term_3.8"><strong>3.8</strong></xref>)
+----
+====
+
+a|
+`\term:[term]` +
+`\term:[term_real,term]` +
+if cited and referenced terms are different, for example: +
+`\term:[systems,system]`
+a|
+`tbx:normativeAuthorization`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:normativeAuthorization value="preferredTerm"/>
+<tbx:normativeAuthorization value="admittedTerm"/>
+----
+====
+
+| *`>`*
+| see above
+a|
+a|
+`tbx:partOfSpeech`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:partOfSpeech value="noun"/>
+----
+====
+
+NOTE: in all STS examples `'value="noun"'`. Always creates.in mn->sts conversion.
+| *`< >`*
+| *indirect*
+a|
+a|
+`tbx:example`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:example>Product, service,
+----
+====
+
+| *`< >`*
+a|
+`termexample`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<termexample>Product, service,
+----
+====
+| `[example]`
+a|
+`tbx:source`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:source>BS EN ISO 14044:2006+A1:2018, <bold>3.1</bold>, modified</tbx:source>
+----
+====
+
+| *`< >`*
+a|
+`termsource/origin/@citeas`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<termsource><origin citeas="BS EN ISO 14044:2006+A1:2018, 3.1, modified"/></termsource>
+----
+====
+
+a|
+`[.source]` +
+`\<<value1, value2,..>>, modified`
+
+NOTE: `value1`, `value2`, - extracted values from text +
+To do: +
+https://github.com/metanorma/%20mnconvert/issues/7[https://github.com/metanorma/ mnconvert/issues/7] +
+| `tbx:source`
+| *`<`*
+| `termsource/origin/localityStack`
+a|
+| `tbx:source`
+| *`<`*
+a|
+`termsource/origin/localityStack/locality`
+a|
+| `tbx:source`
+| *`<`*
+a|
+`termsource/origin/localityStack/locality/@type`
+a|
+| `tbx:source`
+| *`<`*
+a|
+`termsource/origin/localityStack/locality/referenceFrom`
+a|
+| `tbx:source`
+
+[example%unnumbered]
+`, modified — ...`
+| *`<`*
+| `termsource/modification`
+a|
+a|
+a|
+a|
+a|
+a|
+`tbx:note`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:note>For the definition of
+----
+====
+
+| *`>`*
+a|
+`termnote/p`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<termnote><p>For the definition of
+----
+====
+
+a|
+`NOTE:` +
+`...`
+| `tbx:note`
+| *`<`*
+| `termnote`
+a|
+a|
+`tbx:termType`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbx:termType value="abbreviation"/>
+----
+====
+
+NOTE: in all examples `'value="abbreviation"/>'`
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/19[https://github.com/metanorma/mn-samples-bsi/issues/19]
+| *`< >`*
+a|
+`<!--STS: <tbx:termType value="abbreviation"/>-->`
+
+NOTE: commented for round-trip conversion
+a|
+a|
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<term-sec id="sec_3.1.1.1"><label>3.1.1.1</label>
+<tbx:termEntry id="term_3.1.1.1"><tbx:langSet XML:lang="en">
+<tbx:definition>
+<tbx:entailedTerm
+target="term_3.1.1.2">time (3.1.1.2)</tbx:entailedTerm> on the
+<tbx:entailedTerm
+target="term_3.1.1.18">calendar (3.1.1.18)</tbx:entailedTerm>
+</tbx:definition>
+<tbx:note>Common forms of date include <tbx:entailedTerm
+target="term_3.1.2.7">calendar date (3.1.2.7)</tbx:entailedTerm>, <tbx:entailedTerm
+target="term_3.1.2.8">ordinal date (3.1.2.8)</tbx:entailedTerm> or <tbx:entailedTerm
+target="term_3.1.2.9">week date (3.1.2.9)</tbx:entailedTerm>.</tbx:note>
+<tbx:tig id="term_3.1.1.1-1">
+<tbx:term>date</tbx:term>
+<tbx:partOfSpeech value="noun"/>
+</tbx:tig>
+</tbx:langSet>
+</tbx:termEntry>
+</term-sec>
+----
+====
+
+a|
+a|
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<term id="term_3.1.1.1">
+<name>3.1.1.1</name>
+<preferred>date</preferred>
+<definition>
+<p>
+<em>time</em> (<xref
+target="term_3.1.1.2">
+<strong>3.1.1.2</strong></xref>) on the
+<em>calendar</em> (<xref
+target="term_3.1.1.18">
+<strong>3.1.1.18</strong></xref>)
+<em>time scale</em> (<xref target="term_3.1.1.5">
+<strong>3.1.1.5</strong></xref>)
+</p>
+</definition>
+<termnote>
+<p>Common forms of date include
+<em>calendar date</em> (<xref
+target="term_3.1.2.7">
+<strong>3.1.2.7</strong></xref>),
+<em>ordinal date</em> (<xref target="term_3.1.2.8">
+<strong>3.1.2.8</strong></xref>) or
+<em>week date</em> (<xref target="term_3.1.2.9"> <strong>3.1.2.9</strong></xref>).</p></termnote></term>
+----
+====
+
+a|
+
+|===
+
+
+== Text formatting elements
+
+Note for NISO STS->Metanorma AsciiDoc conversion: is some cases unconstrained
+formatting pair used, see
+https://docs.asciidoctor.org/asciidoc/latest/text/#unconstrained[AsciiDoc unconstrained text].
+
+=== Paragraph
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+| `p`
+| *`>`*
+| `p`
+a|
+| `p`
+| *`<`*
+a|
+`p`
+
+NOTE: don't create in output, if parent element is `'termexample'`, `'definition'`, `'termnote'`, `'modification'` or `'dd'`
+a|
+| `p/@id`
+| *`>`*
+| `p/@id` | `\[[id]]`
+a|
+`p/@id`
+
+NOTE: if not BSI. (BSI doesn't use `@id` for paragraphs)
+| *`<`*
+| `p/@id`
+a|
+a|
+`p/@style-type`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<p style-type="indent">...
+----
+====
+
+| *`< >`*
+a|
+`p/@style-type`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<p style-type="indent">...
+----
+====
+
+NOTE: in Metanorma presentation XML model there isn't the attribute @style-type. It's added for round-trip conversion.
+a|
+a|
+`p/@specific-use`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<p specific-use="indent">...
+----
+====
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/14[https://github.com/metanorma/mn-samples-bsi/issues/14]
+| *`< >`*
+a|
+`p/@specific-use`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<p specific-use="indent">...
+----
+====
+
+NOTE: in Metanorma presentation XML model there isn't the attribute @specific-use. It's added for round-trip conversion.
+a|
+| *indirect*
+| *`<`*
+| `p/@align`
+a|
+
+|===
+
+=== Boldface text
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`bold`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<bold>core</bold>
+----
+====
+
+| *`< >`*
+a|
+`strong`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<strong>core</strong>
+----
+====
+
+a|
+`\*...*` +
+or +
+`\\**...**`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+*core*
+----
+====
+
+|===
+
+NOTE: For NISO STS->Metanorma presentation XML conversion: in case of 'bold' inside 'std', then 'bold' will be moved outside 'std'.
+
+NISO STS: `<std><bold><std-ref>ISO 10667 series</std-ref></bold></std>`
+
+Metanorma: `<strong><eref citeas="ISO 10667 series" type="inline">ISO 10667 series</eref></strong>`
+
+=== Italic text
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`italic`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<italic>security</italic>
+----
+====
+
+| *`< >`*
+a|
+`em`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<em>security</em>
+----
+====
+
+a|
+`\_..._` +
+or +
+`\\__...__`
+
+|===
+
+NOTE: For NISO STS->Metanorma presentation XML conversion: in case of 'italic` inside 'std', then 'italic` will be moved outside std.
+
+NISO STS: `<std><italic><std-ref>BS 5839-1:2013</std-ref></italic></std>`
+
+Metanorma: `<em><eref citeas="BS 5839-1:2013" type="inline">BS 5839-1:2013</eref></em>`
+
+=== Underlined text
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`underline`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<underline>top</underline>
+----
+====
+
+| *`< >`*
+a|
+`underline`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<underline>top</underline>
+----
+====
+
+| `[underline]\#...#`
+|===
+
+=== Subscript formatting
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`sub`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<sub>t</sub>
+----
+====
+
+| *`< >`*
+a|
+`sub`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<sub>t</sub>
+----
+====
+
+a|
+`\~...~` +
+or +
+`\~~...~~`
+|===
+
+=== Superscript formatting
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`sup`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<sup>a</sup>
+----
+====
+
+| *`< >`*
+a|
+`sup`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<sup>a</sup>
+----
+====
+
+a|
+`\^...^` +
+or +
+`\^^...^^`
+a| *skip*
+
+NOTE: nested elements will be processed
+| *`<`*
+| `sup[stem]`
+a|
+
+|===
+
+NOTE: For NISO STS->Metanorma presentation XML conversion: `sup` formatting will be ignored if it contains `xref[@ref-type='fn']` inside.
+
+NISO STS: `<sup><xref ref-type="fn" rid="fn_1"><sup>1)</sup></xref></sup>`
+
+Metanorma: `<fn reference="1"><p><eref citeas="BS 8889" type="inline" bibitemid="BS_8889">BS 8889</eref> was in development at the time of publication.</p></fn>`
+
+=== Monospaced text
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`monospace`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<monospace>.tbx.</monospace>
+----
+====
+
+| *`< >`*
+a|
+`tt`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tt>.tbx.</tt>
+----
+====
+
+a| \`...` +
+or +
+\\``...``
+
+|===
+
+=== Small caps text
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`sc`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+P<sc>ublishers</sc>
+----
+====
+
+| *`< >`*
+a|
+`smallcap`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+P<smallcap>ublishers</smallcap>
+----
+====
+
+| `[smallcap]\#...#`
+
+|===
+
+=== Line break
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`break`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<break/>
+----
+====
+
+| *`< >`*
+a|
+`br`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<br/>
+----
+====
+
+a| +
+|===
+
+=== Source code, pre-formatted text
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`code`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<code language="ruby">puts "Hello, world."
+----
+====
+
+NOTE: in ISO STS DTD this element isn't defined
+| *`< >`*
+a|
+`sourcecode`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<sourcecode lang="ruby">puts "Hello, world."
+----
+====
+
+a|
+`[source, language]` +
+`--` +
+`...` +
+`--`
+| `code/@language`
+| *`< >`*
+| `sourcecode/@lang` | `[_source_, language]`
+a|
+`preformat`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<preformat>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+----
+====
+
+| *`< >`*
+a|
+`sourcecode`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<sourcecode>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+----
+====
+
+a|
+`[source]` +
+`--` +
+`...` +
+`--`
+a|
+`preformat/@preformat-type`
+
+NOTE: for ISO STS only
+| *`<`*
+| `sourcecode/@lang`
+a|
+
+|===
+
+=== Note
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`non-normative-note`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<non-normative-note>
+<label>NOTE 1</label>
+<p>Continuous improvement
+----
+====
+
+| *`< >`*
+a|
+`note`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<note>
+<name>NOTE 1</name>
+<p>Continuous improvement
+----
+====
+
+a|
+`NOTE:` +
+`...` +
+a few nested elements: +
+`[NOTE]` +
+`====` +
+`...` +
+`====` +
+in a list item: +
+`+` +
+`--` +
+`NOTE:` +
+`...` +
+`--`
+a|
+`non-normative-note/label`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<non-normative-note><label>NOTE 1</label>...
+----
+====
+
+| *`< >`*
+a|
+`note/name`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<note><name>NOTE 1</name>...
+----
+====
+
+a|
+| `non-normative-note/label NOTE ...`
+| *`<`*
+| `note[not(name)]`
+a|
+| `non-normative-note/p`
+| *`< >`*
+| `note/p`
+a|
+| `non-normative-note`
+| *`<`*
+a|
+`admonition`
+
+NOTE: for more information, see https://github.com/metanorma/mn2sts/issues/8[https://github.com/metanorma/mn2sts/issues/8]
+a|
+| `non-normative-note/@id`
+| *`<`*
+| `admonition/@id`
+a|
+| `non-normative-note/label`
+| *`<`*
+a|
+`admonition/@type` +
+(@type="danger", "caution", "warning", "important", "safty_precautions")
+
+NOTE: uppercased
+a|
+
+|===
+
+=== Example
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`non-normative-example`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<non-normative-example><label>EXAMPLE</label><p>The ...
+----
+====
+
+| *`< >`*
+a|
+`example`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<example><p>The ...
+----
+====
+| `[example]`
+a|
+`non-normative-example/label`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<non-normative-example ><label> EXAMPLE </label>...
+----
+====
+
+| *`>`*
+| *indirect*
+a|
+a|
+`non-normative-example` +
+`/label: EXAMPLE ...`
+| *`<`*
+| `example/name`
+a|
+| `element-citation`
+a|
+| *indirect*
+a|
+
+|===
+
+=== Link
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`ext-link`
+| *`< >`*
+| `link[text()]`
+a|
+| `ext-link/text()`
+| *`< >`*
+| `link/text()`
+a|
+a|
+`ext-link/@xlink:type`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+xlink:type="simple"
+----
+====
+
+NOTE: conversion gap, fixed value in mn->sts conversion https://github.com/metanorma/mn-samples-bsi/issues/24[https://github.com/metanorma/mn-samples-bsi/issues/24]
+| *`< >`*
+| *indirect*
+a|
+a|
+`ext-link/@ext-link-type`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<ext-link ext-link-type="uri" xlink:href="http://www.iso.org/directives"> www.iso.org/directives</ext-link>
+----
+====
+
+| *`>`*
+| *indirect*
+a|
+a|
+`ext-link/@xlink:href`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<ext-link xlink:type="simple" xlink:href="http://bsigroup.com/standards"> bsigroup.com/standards</ext-link>
+----
+====
+
+| *`< >`*
+a|
+`link/@target`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<link target="http://bsigroup.com/standards">
+bsigroup.com/standards</link>
+----
+====
+
+a|
+`@x\link:href[@xlink:href]`
+
+NOTE: for BSI documents, non-hyphen minus (U+2011) replaces by minus.
+a|
+`uri`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<uri>http://www.iso.org/obp</uri>
+----
+====
+
+| *`< >`*
+a|
+`link[no text()]/@target`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<link target="http://www.iso.org/obp"/>
+----
+====
+| `uri[uri]`
+|===
+
+=== Reference
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+| `xref[@ref-type != 'fn' and @ref-type != table-fn']`
+| *`< >`*
+| `xref` a| if @ref-type = 'other': +
+`<..>`
+
+if @ref-type = 'sec' and reference to 'term-sec': +
+`\term:[term name from term-sec]`
+
+`else:` +
+`<<@rid>>`
+| `xref[@ref-type != 'fn' and @ref-type != table-fn']/@rid`
+| *`< >`*
+| `xref/@target`
+a|
+a|
+`xref/@ref-type`
+| *`>`*
+| *indirect*
+a|
+a|
+`xref/@ref-type`
+
+NOTE: evaluate by xslt, depends on 'referenced to' element (`fig`, `table`, `app`, `fn`, `bibr` or `sec`(default))
+| *`<`*
+| *indirect*
+a|
+| `named-content`
+| *`>`*
+| `xref` a|
+`term:[` +
+IF `@content-type = term` and points to `term-sec` or `termEntry`, then put `term` +
+if `text` different than `term`, then put also `text` before `term`
+
+ELSE +
+put `xlink:href` and `text` +
+`]`
+| `named-content`
+| *`<`*
+| `xref[not contains digits or Annex]`
+a|
+| `named-content/@content-type`
+| *`>`*
+a|
+`xref/@content-type`
+
+NOTE: In Metanorma presentation XML model there isn't the attribute `@content-type`. It is added for round-trip conversion.
+
+a|
+a|
+`named-content/@content-type` +
+`- abbrev, if `@target` starts-with 'abbrev'` +
+`- term`
+| *`<`*
+a|
+`xref[not contains digits or Annex]/@content-type`
+a|
+a|
+`named-content/@xlink:href`
+
+NOTE: if empty, then get text content of named-content
+| *`>`*
+| `xref/@target`
+a|
+| `named-content/@xlink:href`
+| *`<`*
+| `xref[not contains digits or Annex]/@target`
+a|
+a|
+`named-content[@content-type="ace-tag"]`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<named-content content-type="ace-tag" specific-use="A1_start"/>
+----
+====
+
+NOTE: *conversion gap* +
+https://github.com/metanorma/mn-samples-bsi/issues/31
+| *`>`*
+| *indirect*
+| `\add:[]`
+| `std`
+| *`< >`*
+| `eref` a|
+`\<<id,locality,name>>` +
+where +
+`- id – id` of `ref` item in bibliography, found by `@std-id` +
+`- locality, name –` parsed values from `@std-id`
+
+[example%unnumbered]
+====
+XML:
+
+[source,xml]
+----
+<std std-id="iso:std:iso:guide:73:ed-1:en:clause:3.5.1.3" type="dated"><std-ref>ISO Guide 73:2009</std-ref>, 3.5.1.3</std>
+----
+
+ADoc:
+[source,adoc]
+----
+<<ref_3,clause=3.5.1.3>>
+----
+====
+
+| `std/std-ref`
+| *`>`*
+| `eref/@citeas`
+a|
+| `std/std-ref`
+| *`<`*
+a|
+`eref/@citeas`
+
+[NOTE]
+--
+Preliminary processing:
+
+* replace double `--` to `8212`(decimal) dash
+* remove '[' and ']' around
+--
+
+NOTE: for BSI documents, replaces space to non-break space (`A0`(hex))
+
+a|
+a|
+`std/@std-id`
+
+NOTE: *conversion gap* in `@std-id` format https://github.com/metanorma/mn-samples-bsi/issues/37[https://github.com/metanorma/mn-samples-bsi/issues/37] +
+`(PAS_2035_2019 vs. PAS 2035:2019)`
+
+| *`>`*
+| `eref/@bibitemid`
+a|
+a|
+`std/@std-id`
+| *`<`*
+| `eref/@bibitemid`
+
+NOTE: instead of `@bibitemid` tries to get `bibliography//bibitem[@id = @bibitemid]/urn` if exist
+a|
+| `std`
+| *`<`*
+a|
+`eref/localityStack`
+
+NOTE: get text from nested locality elements
+a|
+| `, modified —`
+| *`<`*
+| `eref/localityStack/locality/modification`
+a|
+a|
+`std/@std-id` points to non-existing elements with `@id=@std-id`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<std std-id="BS 0:2011" type="dated">
+  <std-ref>BS 0:2011</std-ref>
+</std>
+----
+there isn't any entity with id="BS 0:2011".
+====
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/41[https://github.com/metanorma/mn-samples-bsi/issues/41] a| *`>`*
+| `xref` +
+(adoc->mn conversion) a|
+`Example:` +
+`\<<BS_0_2011,BS 0:2011>>`
+a|
+`std/@type`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+type="dated"
+type="undated"
+----
+====
+
+| *`>`*
+| *indirect*
+a|
+a|
+`std/@type`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+type="dated"
+type="undated"
+----
+====
+
+| *`<`*
+a|
+`eref/@citeas`
+
+NOTE: Determined programmatically, see template `setDatedUndatedType` in the module `mn2sts.xsl`
+a|
+a|
+`std/std-ref/processing-instruction('doi')`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<std std-id="iso:std:iso:44001:en" type="undated">
+  <std-ref>ISO 44001<?doi https://doi.org/10.3403/30353016U?></std-ref>
+</std>
+----
+====
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/28[https://github.com/metanorma/mn-samples-bsi/issues/28]
+| *`>`*
+| *indirect*
+a|
+| `xref[@ref-type="other"]`
+| *`<`*
+| `callout`
+a|
+| `xref[@ref-type="other"]/@rid`
+| *`<`*
+| `callout/@target`
+a|
+
+|===
+
+=== Formula
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+| `disp-formula`
+| *`< >`*
+| `formula/stem` | `stem:[...]`
+| `mml:*`
+| *`< >`*
+| `* XMLns="http://www.w3.org/1998/Math/MathML"` | as is in MathML
+| `mml:math/@id`
+| *`>`*
+| `formula/@id` | `\[[id]]`
+| `disp-formula/@id`
+| *`<`*
+| `formula/@id`
+a|
+a|
+[example%unnumbered]
+====
+[source,xml]
+----
+<disp-formula><mml:math id="mml_m1">...
+----
+====
+
+a|
+a|
+[example%unnumbered]
+====
+[source,xml]
+----
+<formula id="mml_m1">
+<stem type="MathML">
+<math XMLns="http://www.w3.org/1998/Math/MathML">...
+----
+====
+
+a|
+a|
+`inline-formula`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<inline-formula>
+<mml:math id="mml_m1"><mml:mrow>
+----
+====
+
+a|
+a|
+`stem`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<stem type="MathML">
+<math XMLns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+----
+====
+
+*NO id*
+| `\stem:[...]`
+
+|===
+
+=== Quote
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+| `disp-quote`
+| *`< >`*
+| `quote` a|
+`[quote, _related-object_]` +
+`\_\___` +
+`...` +
+`\____`
+| `disp-quote`
+| *`<`*
+| `quote/@id`
+a|
+| `disp-quote/related-object`
+| *`< >`*
+| `quote/source` | `[_quote_, related-object]`
+| `disp-quote/related-object/ text value`
+| *`<`*
+| `quote/source/@citeas`
+a|
+| *indirect*
+| *`<`*
+| `quote/source/@type`
+a|
+| *indirect*
+| *`<`*
+| `quote/source/@bibitemid`
+a|
+| `disp-quote/related-object`
+| *`<`*
+| `quote/author`
+a|
+| `disp-quote/p`
+| *`< >`*
+| `quote/p` | `...`
+a|
+[example%unnumbered]
+====
+[source,xml]
+----
+<disp-quote>
+<p>This International Standard ...</p>
+<related-object>ISO, ISO 7301:2011, Clause 1</related-object>
+</disp-quote>
+----
+====
+
+| *`>`*
+a|
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<quote>
+<source>ISO, ISO 7301:2011, Clause 1</source>
+<p> This International Standard ...</p>
+</quote>
+----
+====
+
+a|
+a| _skip processing_
+
+NOTE: see nested elements processing
+| *`<`*
+| `quote/localityStack`
+a|
+a| _skip processing_
+
+NOTE: see nested elements processing
+| *`<`*
+| `quote/localityStack/locality`
+a|
+a|
+`disp-quote/related-object/` +
+Clause +
+Annex +
+text value (delimited by ';')
+| *`<`*
+a|
+`quote/localityStack/locality/@type='clause'` +
+`quote/localityStack/locality/@type=annex` +
+`quote/localityStack/locality/@type`
+a|
+| `disp-quote/related-object/ text value`
+| *`<`*
+| `quote/localityStack/locality/referenceFrom`
+a|
+a|
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<disp-quote id="...">
+<p id="...">This International Standard ...</p>
+<related-object>ISO, ISO 7301:2011, Clause 1</related-object>
+</disp-quote>
+----
+====
+
+| *`<`*
+a|
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<quote id="...">
+<source type="inline" bibitemid="ISO7301"
+citeas="ISO 7301:2011"><localityStack><locality type="clause">
+<referenceFrom>1</referenceFrom></locality>
+</localityStack></source>
+<author>ISO</author>
+<p id="...">This International Standard ...</p>
+</quote>
+----
+====
+
+a|
+
+|===
+
+=== Footnote
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+| `fn`
+| *`< >`*
+| `fn` | `\footnote:[...]`
+| `fn/@id`
+| *`< >`*
+| *indirect*
+a|
+| `fn/label`
+| *`< >`*
+| *indirect*
+a|
+| `xref[@ref-type = "fn"][following-sibling::*[fn][@id = xref/@rid]]/text()`
+| *`< >`*
+| `fn/@reference`
+a|
+a|
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<xref ref-type="fn" rid="fn_1"><sup>1</sup></xref>
+<fn id="fn_1"><label>1</label><p>The Fire...</p></fn>
+----
+====
+
+a|
+a|
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<fn reference="1"><p>The Fire ...</p></fn>
+----
+====
+
+a|
+a|
+`table-wrap-foot/fn`
+
+NOTE: moving up to the text
+| *`>`*
+| `fn` | `\footnote:[...]`
+a|
+`back/fn-group`
+
+NOTE: moving up to the text (possible conversion gap https://github.com/metanorma/mn-samples-bsi/issues/18[https://github.com/metanorma/mn-samples-bsi/issues/18])
+| *`>`*
+| `fn` | `\footnote:[...]`
+| `xref[@ref-type="fn"]`
+| *`< >`*
+| `fn` | `\footnote:[...]`
+a|
+`xref[@ref-type="fn"]/text()`
+
+NOTE:removing ')'
+| *`< >`*
+| `fn/@reference`
+a|
+a|
+`If xref[@ref-type="fn"] in table-wrap:` +
+`table-wrap//fn[@id = xref/@rid]/*`
+| *`< >`*
+| `fn/*`
+a|
+| `else: //fn-group/fn[@id = xrefrid]/*`
+| *`< >`*
+| `fn/*`
+a|
+| `xref[@ref-type="table-fn"]`
+| *`< >`*
+| `fn`
+a|
+a|
+`xref[@ref-type="table-fn"]/text()`
+
+NOTE: removing ')'
+| *`< >`*
+| `fn/@reference`
+a|
+| `table-wrap//fn[@id = xref/@rid]/*`
+| *`< >`*
+| `fn/*`
+a|
+a|
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<thead>...
+<xref ref-type="table-fn"
+rid="table-fn_1.1">
+<sup>A)</sup>
+</xref>...
+</thead>
+...
+<table-wrap-foot>
+<fn id="table-fn_1.1">
+<label><sup>A)</sup></label>
+<p>These items shall appear in every design brief.</p>
+</fn></table-wrap-foot></table-wrap>
+----
+====
+
+a|
+a|
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<thead>
+...
+<fn reference="A"><p>These items shall appear in every design brief.</p></fn>
+...
+</thead>
+----
+====
+
+a|
+a|
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<list-item>
+...
+<xref ref-type="fn" rid="fn_1">
+<sup>1)</sup>
+</xref>
+...
+</body>
+...
+<fn-group>
+<fn id="fn_1">
+<label>1)</label>
+<p>Marking...</p>
+</fn-group>
+</back>
+----
+====
+
+a|
+a|
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<fn reference="1"><p>Marking...</p></fn>
+----
+====
+
+a|
+
+|===
+
+=== Amendment
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a| *indirect* +
+see nested elements processing
+| *`<`*
+| `amend`
+a|
+a|
+`editing-instruction`
+
+NOTE: this rule for NISO STS only.
+| *`<`*
+| `amend/description`
+a|
+a|
+`editing-instruction/@id`
+
+NOTE: this rule for NISO STS only.
+| *`<`*
+| `amend/@id`
+a|
+a|
+`editing-instruction/@content-type`
+
+NOTE: this rule for NISO STS only.
+| *`<`*
+| `amend/@change`
+a|
+a|
+`editing-instruction/p`
+
+NOTE: this rule for NISO STS only.
+| *`<`*
+| `amend/description/p`
+a|
+| `p`
+| *`<`*
+| `amend/description/p`
+a|
+a|
+`p/@content-type`
+
+NOTE: this rule for ISO STS only.
+| *`<`*
+| `amend/@change`
+a|
+a| *indirect* +
+see nested elements processing
+| *`<`*
+| `amend/newcontent`
+a|
+| `p`
+| *`<`*
+| `amend/newcontent/p`
+a|
+a|
+`label`
+
+NOTE: adding suffix to label for element `@type`
+| *`<`*
+| `amend/autonumber/@type`
+a|
+a|
+a|
+a|
+a|
+
+|===
+
+=== Annotation
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+
+a|
+`element-citation`
+
+NOTE: this rule for ISO STS only
+| *`<`*
+| `annotation`
+a|
+a|
+`element-citation/@id`
+
+NOTE: this rule for ISO STS only
+| *`<`*
+| `annotation/@id`
+a|
+a|
+`element-citation/annotation`
+
+NOTE: this rule for NISO STS only
+| *`<`*
+| `annotation`
+a|
+a|
+`element-citation/ annotation/@id`
+
+NOTE: this rule for NISO STS only
+| *`<`*
+| `annotation/@id`
+a|
+a|
+`element-citation/ annotation/@id`
+| *`>`*
+a|
+| `<text from node with @rid = annotation/@id>`
+
+|===
+
+=== Other
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+
+a|
+`styled-content`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<styled-content style-type="normal">(This annex forms an integral part of this
+Recommendation \| International Standard.)</styled-content>
+
+<styled-content style="color:#009fe3;">•</styled-content>
+----
+====
+
+| *`< >`*
+a|
+
+[source,xml]
+----
+<!--STS: <styled-content ...> -->...<!--STS: </styled-content> -->
+----
+
+NOTE: Tags commented for round-trip conversion.
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<!--STS: <styled-content style-type="normal">-->(This annex forms an integral
+part of this Recommendation | International Standard.)<!--STS: </styled-content>-->
+
+<!--STS: <styled-content style="color:#009fe3;">-->•<!--STS: </styled-content>-->
+----
+====
+
+| *indirect*
+a|
+`boxed-text`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<boxed-text>
+  <p>Objective: To provide management direction... </p>
+</boxed-text>
+----
+====
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/38[https://github.com/metanorma/mn-samples-bsi/issues/38]
+a|
+| *indirect*
+a|
+| `th/break th/strong`
+| *`<`*
+| `th//br/strong`
+a|
+
+|===
+
+== Tables
+
+NOTE: In Metanorma presentation XML there aren't elements for NISO/ISO STS XML
+elements `'table-wrap'`, `'table-wrap/label'`, `'table-wrap/caption'`, therefore
+they transform to data inside Metanorma presentation XML element `'table'`.
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`table-wrap`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table-wrap ...>
+----
+====
+
+| *`< >`*
+a| _skip processing_
+
+NOTE: see nested elements processing
+a|
+a|
+`table-wrap/@id`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table-wrap id="tab_D.1" ...>
+----
+====
+
+| *`< >`*
+a|
+`table/@id`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table id="tab_D.1" ...>
+----
+====
+
+| `\[[id]]`
+a|
+`table-wrap/@content-type`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+content-type="ace-table"
+----
+====
+
+NOTE: *conversion gap* +
+https://github.com/metanorma/mn-samples-bsi/issues/39[https://github.com/metanorma/mn-samples-bsi/issues/39]
+| *`>`*
+a| *indirect*
+| `options="unnumbered"`
+a|
+`table-wrap/@position`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+position="float"
+----
+====
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/35[https://github.com/metanorma/mn-samples-bsi/issues/35]
+a|
+a| *indirect*
+a|
+a|
+`table-wrap/@orientation`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+orientation="landscape"
+----
+====
+
+| *`< >`*
+a|
+`<pagebreak orientation="..."/>` +
+`...` +
+`<pagebreak orientation="portrait"/>`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<pagebreak orientation="landscape"/>
+...
+<pagebreak orientation="portrait"/>
+----
+====
+
+a| before table: +
+`[%...]` +
+`<<<`
+
+after table: +
+`[%portrait]` +
+`<<<`
+a|
+`table-wrap/label`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<label>Table D.1</label>
+----
+====
+
+| *`< >`*
+a|
+`table/name`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<name>Table D.1 — ...</name>
+----
+====
+
+a|
+a|
+`table-wrap/caption`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<caption>
+----
+====
+
+a|
+a| _skip processing_
+
+NOTE: see nested elements processing
+a|
+a|
+`table-wrap/caption/title`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<title>Table of requirements</title>
+----
+====
+
+| *`< >`*
+a|
+`table/name`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<name>...Table of requirements</name>
+----
+====
+| `. ...`
+a|
+`table`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table ...>
+----
+====
+
+| *`< >`*
+a|
+`table`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table ...>
+----
+====
+
+a| if parent is `array`: +
+`[[array_ + array/@id]]` +
+`[%unnumbered]` +
+`[...]` +
+`\|===` +
+`...` +
+`\|===`
+| `array/table`
+| *`<`*
+| `figure//table`
+a|
+a|
+`table/@id`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table id="calendar">
+----
+====
+
+| *`< >`*
+a|
+`table/@id`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table id="calendar">
+----
+====
+
+NOTE: if there isn't source STS `table/@id`, then it populates from STS `table-wrap/@id` or `array/@id` | `\[[id]]`
+a|
+`table/@width`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table width="650">
+<table width="80%">
+<table width="500px">
+----
+====
+
+| *`< >`*
+a|
+`table/@width`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table width="650px">
+<table width="80%">
+<table width="500px">
+----
+====
+
+NOTE: if in source STS `table/@width` there isn't 'px' or '%', then 'px' will be added. a|
+`width=...`
+
+NOTE: if value doesn't contain '%' or 'px', then 'px' will be added.
+a|
+`table-wrap/table-wrap-foot`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+</table>
+<table-wrap-foot>
+  <p>
+    <non-normative-note>
+      <label>NOTE</label>
+      <p>Actual sensitivity might vary by activity or partner.</p>
+    </non-normative-note>
+  </p>
+</table-wrap-foot>
+</table-wrap>
+----
+====
+
+| *`< >`*
+a|
+`</tbody> content of table-wrap-foot </table>`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+</tbody>
+<p>
+<note>
+<name>NOTE</name>
+<p>Actual sensitivity might vary by activity or partner.</p>
+</note>
+</p>
+</table>
+----
+====
+
+| `options="footer"`
+a|
+`table/@style`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table style="border-collapse:collapse;border-color:#009fe3;">
+----
+====
+
+NOTE: conversion gap, https://github.com/metanorma/mn-samples-bsi/issues/11[https://github.com/metanorma/mn-samples-bsi/issues/11]
+| *`< >`*
+a|
+`table/@style`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table style="border-collapse:collapse;border-color:#009fe3;">
+----
+====
+
+NOTE: in Metanorma presentation XML model there isn't the attribute `@style`. It adds for round-trip conversion.
+| *indirect*
+a|
+`table/@frame`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table frame="hsides">
+----
+====
+
+NOTE: conversion gap, https://github.com/metanorma/mn-samples-bsi/issues/11[https://github.com/metanorma/mn-samples-bsi/issues/11]
+| *`< >`*
+a|
+`table/@frame`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table frame="hsides">
+----
+====
+
+NOTE: in Metanorma presentation XML model there isn't the attribute `@frame`. It added for round-trip conversion.
+| *indirect*
+a|
+`table/@rules`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table rules="rows">
+----
+====
+
+NOTE: conversion gap, https://github.com/metanorma/mn-samples-bsi/issues/11[https://github.com/metanorma/mn-samples-bsi/issues/11]
+| *`< >`*
+a|
+`table/@rules`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<table rules="rows">
+----
+====
+
+NOTE: in Metanorma presentation XML model there isn't the attribute `@rules`. It added for round-trip conversion.
+| *indirect*
+a|
+`thead`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<thead>
+----
+====
+
+| *`< >`*
+a|
+`thead`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<thead>
+----
+====
+
+a|
+`options="header",` +
+`headerrows=count(tr)`
+a|
+`tbody`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbody>
+----
+====
+
+| *`< >`*
+a|
+`tbody`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tbody>
+----
+====
+
+a|
+| `tfoot`
+| *`<`*
+| `tfoot`
+a|
+a|
+`colgroup`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<colgroup>
+----
+====
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/26[https://github.com/metanorma/mn-samples-bsi/issues/26]
+| *`< >`*
+a|
+`colgroup`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<colgroup>
+----
+====
+
+NOTE: In some STS XML documents there isn't `'colgroup'` element, but in Metanorma presentation XML it adds always.
+a|
+a|
+`col`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<col ...>
+----
+====
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/26[https://github.com/metanorma/mn-samples-bsi/issues/26]
+| *`< >`*
+a|
+`col`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<col ...>
+----
+====
+
+a|
+a|
+`col/@width`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<col width="11%"/>
+----
+====
+
+| *`< >`*
+a|
+`col/@width`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<col width="11%"/>
+----
+====
+
+a|
+`[cols="..."]`
+
+NOTE: comma separated widths
+
+NOTE: removes %, cm, and multiply by 100
+a|
+`tr`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tr>
+----
+====
+
+| *`< >`*
+a|
+`tr`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<tr>
+----
+====
+
+a|
+a|
+`th,td`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<th ...>
+----
+====
+
+| *`< >`*
+a|
+`th,td`
+
+[example%unnumbered]
+`<th ...` | `\|`
+a|
+`th,td/@align`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<th align="center">
+----
+====
+
+| *`< >`*
+a|
+`th,td/@align`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<th align=" center ">
+----
+====
+
+a|
+`^` +
+`>`
+a|
+`th,td/@valign`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<th valign="middle">
+----
+====
+
+| *`< >`*
+a|
+`th,td/@valign`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<th valign="middle">
+----
+====
+
+a|
+`.^` +
+`.>`
+a|
+`th,td/@style`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<th style="background-color:#009fe3;">
+----
+====
+
+NOTE: there is conversion gap +
+https://github.com/metanorma/mn-samples-bsi/issues/11[https://github.com/metanorma/mn-samples-bsi/issues/11]
+| *`< >`*
+a|
+`th,td /@style`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<th style="background-color:#009fe3;">
+----
+====
+
+NOTE: in Metanorma presentation XML model there isn't the attribute `@style`. It added for round-trip conversion.
+a|
+a|
+`th,td/@rowspan`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<th rowspan="6">
+----
+====
+
+| *`< >`*
+a|
+`th,td/@rowspan`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<th rowspan="6">
+----
+====
+
+| `.x+`
+a|
+`th,td/@colspan`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<th colspan="3">
+----
+====
+
+| *`< >`*
+a|
+`th,td/@colspan`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<th colspan="3">
+----
+====
+| `x+`
+a|
+`th,td/@scope`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<th scope="row">
+----
+====
+
+| *`< >`*
+a|
+`th,td/@scope`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<th scope="row">
+----
+====
+
+NOTE: in Metanorma presentation XML model there isn't the attribute `@scope`. It is added for round-trip conversion.
+a|
+
+|===
+
+== List
+
+[%unnumbered]
+|===
+
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+| `list[@list-type = 'bullet' or @list-type = 'simple']`
+| *`< >`*
+| `ul`
+a|
+| `list[@list-type = 'bullet']`
+| *`<`*
+| `ul[not(@list-type)]`
+a|
+| `list[not (@list-type = 'bullet' or @list-type = 'simple')]`
+| *`>`*
+| `ol`
+a|
+| `list[@list-type = 'alpha-lower']`
+| *`<`*
+| `ol[not(@list-type)]`
+a|
+| `list/@list-type='alpha-lower'`
+| *`< >`*
+| `ol/@type="alphabet"]`
+a|
+| `list/@list-type='alpha-upper'`
+| *`< >`*
+| `ol/@type="alphabet_upper"` | `[upperalpha]`
+| `list/@list-type='roman-lower'`
+| *`< >`*
+| `ol/@type="roman"` | `[lowerroman]`
+| `list/@list-type='roman-upper'`
+| *`< >`*
+| `ol/@type="roman_upper"` | `[upperroman]`
+| `list/@list-type=' arabic'`
+| *`>`*
+| `ol/@type="arabic"` | `[arabic]`
+| `list/ first char of list/label[1] in 1234567890]`
+| *`>`*
+| `ol/@type="arabic"` | `[arabic]`
+| `list/@list-type='order'`
+| *`<`*
+| `ol/@type="arabic"`
+a|
+| `list/ first char of list/label[1] in ixvcm]`
+| *`>`*
+| `@type="roman"` | `[lowerroman]`
+| `list first char of list/label[1] in IXVCM]`
+| *`>`*
+| `@type="roman_upper"` | `[upperroman]`
+| `list/ first char of list/label[1] in a-z]`
+| *`>`*
+| `@type="alphabet"`
+a|
+| `first char of list/label[1] in A-Z`
+| *`>`*
+| `@type="alphabet_upper"` | `[upperalpha]`
+| `list/@list-type`
+| *`< >`*
+| `@type`
+a|
+a|
+`list/@list-type="simple"`
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/40[https://github.com/metanorma/mn-samples-bsi/issues/40]
+a|
+| *indirect*
+| *indirect*
+| `first char of list/label[1] != 1 or a or A or i or I`
+| *`>`*
+a|
+`@start` +
+`decimal number for start value determines in the Java function org.metanorma.utils.Util.getListStartValue` a| *indirect* +
+*To do:* +
+https://github.com/metanorma/mnconvert/issues/24[https://github.com/metanorma/mnconvert/issues/24]
+| `list-item`
+| *`< >`*
+| `li` a| if list/@list-type = 'bullet' 'dash' or simple: +
+`* ...`
+
+else +
+`. ...`
+
+NOTE: count of '*' and ',' depends on level depth
+| `list-item/label`
+| *`>`*
+| *indirect*
+a|
+a|
+`list-item/label`
+
+NOTE: Evaluate in xslt type of list (ul or ol), @type and @start values.See <xsl:template match="*[local-name() = 'li']"> for rules.
+| *`<`*
+a| Evaluate by ul,ol/@type, @start
+a|
+
+|===
+
+== Definitions list
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`def-list`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<def-list ...>
+----
+====
+
+| *`>`*
+a|
+`dl`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<dl>
+----
+====
+
+a|
+| `def-list/title`
+| *`>`*
+| *indirect*
+| `\*...*`
+a|
+`def-list/def-item`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<def-item ...>
+----
+====
+
+| *`>`*
+a| _skip processing_
+
+NOTE: see nested elements processing
+a|
+a|
+`def-item/term`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<term>CBRMS</term>
+----
+====
+
+| *`>`*
+a|
+`dt`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<dt> CBRMS</dt>
+----
+====
+| `...::`
+a|
+`def-list/def-item/id`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<def-item id="abbrev_1">
+----
+====
+
+| *`>`*
+a|
+`dt/@id`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<dt id="abbrev_1">...
+----
+====
+| `\[[id]]`
+a|
+`def-item/def`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<def>
+<p>intellectual property right</p>
+</def>
+----
+====
+
+| *`>`*
+a|
+`dd`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<dd>
+<p>intellectual property right</p>
+</dd>
+----
+====
+
+| `text`
+a|
+`array [count of table/col =2 or count of table/colgroup/col = 2]`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<array id="tab_a">
+<table>
+<tbody>
+<tr>
+<td valign="top" scope="row" align="left">cent</td>
+<td valign="top" align="left">time scale component century
+</td>
+</tr>
+</tr>
+<tr>
+<td align="left" valign="top">
+<italic>C</italic><sub>dev</sub>
+</td>
+<td align="left" valign="top">is the cost of developing
+the product (for total anticipated quantity);</td>
+</tr>....
+----
+====
+
+NOTE: this rule is not applicable for BSI documents
+| *`< >`*
+a|
+`dl` +
+`@key = 'true' if STS `label` = 'Key'`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<dl id="tab_a">
+<dt>cent</dt>
+<dd>
+<p id="...">time scale component century</p>
+</dd>
+----
+====
+
+| `tr/td[1]::tr/td[2]`
+| `array [count of table/col =2 or count of table/colgroup/col = 2]/@id`
+| *`< >`*
+| `dl/@id`
+a|
+| `array [count of table/col =2 or count of table/colgroup/col = 2]/label = 'Key'`
+| *`>`*
+| `dl/@key="true"` | `\*label*`
+
+|===
+
+== Image
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+| `fig`
+| *`>`*
+| `figure` a|
+`====` +
+`...` +
+`====`
+| `fig/@id`
+| *`>`*
+| `figure/@id` | `\[[id]]`
+a|
+`fig`
+
+NOTE: for BSI only
+| *`<`*
+| `figure[figure]`
+a|
+a|
+`fig/@id`
+
+NOTE: for BSI only
+| *`<`*
+| `figure[figure]/@id`
+a|
+| `fig-group`
+| *`<`*
+| `figure[figure]`
+a|
+| `fig-group/@id`
+| *`<`*
+| `figure[figure]/@id`
+a|
+a|
+`fig-group/@content-type=figures`
+| *`<`*
+| `figure[figure]`
+a|
+a|
+`fig/@fig-type`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<fig fig-type="figure"
+----
+====
+
+a|
+| *indirect*
+a|
+a|
+`fig/label`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<label>Figure 1</label>
+----
+====
+
+| *`< >`*
+a|
+`figure/name`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<name>Figure 1 — ...
+----
+====
+
+a| if starts with 0: +
+`[number=...]`
+a|
+`fig/caption`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<caption><title>Multidimensional relationships</title></caption>
+----
+====
+
+| *`< >`*
+a| figure/name
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<name>... Multidimensional relationships</name>
+----
+====
+| `. ...`
+| `fig-group`
+| *`>`*
+| `figure` a|
+`====` +
+`...` +
+`====`
+| `fig-group/@id`
+| *`>`*
+| `figure/@id` | `\[[id]]`
+a|
+`graphic[caption]`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<graphic xlink:type="simple"
+xlink:href="30238432_FigA01a">
+<label>a)</label><caption>
+<title>Imposed loads for treads
+with a span of up to 1 200 mm
+</title> </caption></graphic>
+----
+====
+
+| *`< >`*
+| `figure` a|
+`====` +
+`...` +
+`====`
+| `graphic/label (if there isn't graphic/caption/title)`
+| *`< >`*
+| `figure/name` | `. ...`
+a|
+`graphic/label`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<label>a)</label><caption>...
+----
+====
+
+| *`< >`*
+a|
+`figure/name`
+
+[example%unnumbered]
+`<name>a) &#160; ... </name)`
+a|
+a|
+`graphic/caption/title`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<label>a)</label><caption>
+<title>Imposed loads for treads
+with a span of up to 1 200 mm
+</title></caption>
+----
+====
+
+| *`< >`*
+a|
+`figure/name`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<name>... Imposed loads for treads with a span of up to 1 200 mm
+----
+====
+| `. ...`
+a|
+`graphic`
+| *`< >`*
+| `image height="auto" width="auto"` | `image:: ...`
+| `inline-graphic`
+| *`>`*
+| `image height="auto" width="auto"` | `image:: ...`
+| *indirect*
+a|
+a|
+`image/@height`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+height="auto"
+----
+====
+
+a|
+| *indirect*
+a|
+a|
+`image/@width`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+width="auto"
+----
+====
+
+a|
+a|
+`inline-graphic \| graphic/@xlink:href and not processing-instruction('isoimg-id')`
+
+NOTE: if there isn't `processing-instruction('isoimg-id'`), then `@xlink:href` contains image file name.
+| *`>`*
+a|
+`image/@src` +
+`string in base64 encoding OR` +
+`imagedir path + @xlink:href + .png(optional, if @xlink:href doesn't have file extension)` | `image:: ...`
+a|
+`graphic/processing-instruction('isoimg-id')`
+
+NOTE: if there is this PI, then it contains image file name (but not `@xlink:href`)
+
+NOTE: `graphic/@xlink:href` +
+*conversion gap* +
+https://github.com/metanorma/mn-samples-bsi/issues/25[https://github.com/metanorma/mn-samples-bsi/issues/25]
+| *`>`*
+a|
+`image/@src` +
+`imagedir path + value from 'isoimg-id'` | `image:: ...`
+| `graphic/@xlink:href`
+| *`<`*
+| `image/@id`
+a|
+| `graphic/alt-textinline-graphic/alt-text`
+| *`< >`*
+| `image/@alt` | `image:: ... [alt-text]`
+| *indirect*
+a|
+| `image/@mimetype`
+a|
+a|
+`graphic/object-id[@pub-id-type = 'publisher-id']`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<object-id pub-id-type="fpi">
++//ISO 9070/RA::A00007::GE::DIN German
+Institute for Standardization::Standards
+//NONSGML ISO 13849-1:2006-11-00::Figure 1
+//EN</object-id> <object-id pub-id-type=
+"publisher-id">fig-1</object-id>
+----
+====
+
+| *`>`*
+| *indirect*
+| `image:: ... [object-id]`
+|===
+
+== Bibliography
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+| `ref`
+| *`< >`*
+| `bibitem` a|
+`* [\[[id,(ref)label]]], title` +
+or +
+`* [\[[id,ref]]], title`
+
+NOTE: see below for component's source data.
+| `ref/@id`
+| *`< >`*
+| `bibitem/@id` a|
+`* [[[*id*,(ref)label]]]`
+| `ref/std/@std-id`
+| *`>`*
+a|
+a|
+`* [[[*id*,(ref)label]]]`
+| `ref/std/@std-ref`
+| *`>`*
+a|
+a|
+`* [[[*id*,(ref)label]]]`
+| `ref/std/@std-ref`
+| *`>`*
+a|
+a|
+`* [\[[id,(*ref*)label]]]`
+| `ref/std//title`
+| *`>`*
+a|
+a|
+`* [\[[id,(ref)label]]], *\_title_*`
+| `ref/@content-type`
+| *`< >`*
+| `bibitem/@type`
+a|
+| `ref/label`
+| *`< >`*
+| `docidentifier[@type="metanorma"]` | `* [\[[id,(ref)**label**]]]`
+a|
+`mixed-citation`
+
+NOTE: there is a conversion gap for sub-elements, see https://github.com/metanorma/mn-samples-bsi/issues/10[https://github.com/metanorma/mn-samples-bsi/issues/10]
+| *`< >`*
+| `bibitem/title`
+a|
+| `mixed-citation/std`
+| *`>`*
+a|
+a|
+`* [\[[id,(*ref*)label]]]`
+a|
+`mixed-citation/@publication-type`
+
+NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/30[https://github.com/metanorma/mn-samples-bsi/issues/30]
+| *`>`*
+| *indirect*
+a|
+| `ref-list/ref/std/@std-id`
+| *`< >`*
+| `bibitem/docidentifier[@type="URN"]`
+a|
+| *indirect*
+a|
+| `bibitem/fetched`
+a|
+| *indirect*
+a|
+| `bibitem/title/@type`
+a|
+| *indirect*
+a|
+| `bibitem/title/@format`
+a|
+| *indirect*
+a|
+| `bibitem/title/@language`
+a|
+| *indirect*
+a|
+| `bibitem/title/script`
+a|
+| *indirect*
+a|
+| `bibitem/uri`
+a|
+| *indirect*
+a|
+| `bibitem/uri/@type`
+a|
+a| *indirect*
+
+NOTE: commented
+| *`<`*
+| `bibitem/docnumber`
+a|
+a| *indirect*
+
+NOTE: commented
+| *`<`*
+| `bibitem/date`
+a|
+| *indirect*
+
+NOTE: commented
+| *`<`*
+| `bibitem/date/@type`
+a|
+| *indirect*
+
+NOTE: commented
+| *`<`*
+| `bibitem/date/on`
+a|
+| *indirect*
+
+NOTE: commented
+| *`<`*
+| `bibitem/contributor`
+a|
+| *indirect*
+
+NOTE: commented
+| *`<`*
+| `bibitem/contributor/role`
+a|
+| *indirect*
+
+NOTE: commented
+| *`<`*
+| `bibitem/contributor/role/@type`
+a|
+| *indirect*
+
+NOTE: commented
+| *`<`*
+| `bibitem/contributor/organization`
+a|
+| *indirect*
+
+NOTE: commented
+| *`<`*
+| `bibitem/contributor/organization/name`
+a|
+| *indirect*
+
+NOTE: commented
+| *`<`*
+| `bibitem/contributor/organization/abbreviation`
+a|
+| *indirect*
+
+NOTE: commented
+| *`<`*
+| `bibitem/contributor/organization/uri`
+a|
+| *indirect*
+a|
+| `bibitem/edition`
+a|
+| *indirect*
+a|
+| `bibitem/language`
+a|
+| *indirect*
+a|
+| `bibitem/script`
+a|
+| *indirect*
+a|
+| `bibitem/abstract`
+a|
+| *indirect*
+a|
+| `bibitem/abstract/@format`
+a|
+| *indirect*
+a|
+| `bibitem/abstract/@language`
+a|
+| *indirect*
+a|
+| `bibitem/abstract/@script`
+a|
+| *indirect*
+a|
+| `bibitem/status`
+a|
+| *indirect*
+a|
+| `bibitem/status/stage`
+a|
+| *indirect*
+a|
+| `bibitem/status/substage`
+a|
+| *indirect*
+a|
+| `bibitem/copyright`
+a|
+| *indirect*
+a|
+| `bibitem/copyright/from`
+a|
+| *indirect*
+a|
+| `bibitem/copyright/owner`
+a|
+| *indirect*
+a|
+| `bibitem/copyright/owner/organization`
+a|
+| *indirect*
+a|
+| `bibitem/copyright/owner/organization/name`
+a|
+| *indirect*
+a|
+| `bibitem/relation`
+a|
+| *indirect*
+a|
+| `bibitem/relation/@type`
+a|
+| *indirect*
+a|
+| `bibitem/relation/bibitem /...`
+a|
+| *indirect*
+a|
+| `bibitem/place`
+a|
+a|
+`ref/std/xref` +
+`ref/std/fn`
+| *`<`*
+| `bibitem/note`
+a|
+| *indirect*
+a|
+| `bibitem/note/@format`
+a|
+| `ref/title`
+| *`<`*
+| `bibitem/formattedref`
+a|
+| *indirect*
+a|
+| `bibitem/formattedref/@format`
+a|
+| see rules for text formatting elements
+a|
+| `bibitem/formattedref/ formatted text`
+a|
+
+|===
+
+== Processing instructions
+
+[%unnumbered]
+|===
+h| ISO/NISO STS a| h| Metanorma presentation XML h| Metanorma AsciiDoc
+a|
+`<?foreward ...`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<?foreward metadata-error?>
+----
+====
+
+| *`>`*
+| *indirect*, ignores
+a|
+a|
+`<?doi ...`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<?doi https://doi.org/10.3403/30130607?>
+----
+====
+
+| *`< >`*
+| copy 'as is', for round-trip conversion
+a|
+a|
+`<?QAout ...` +
+`<?QA ...`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<?QAout enhancements="En-2 En-3 En-4"?>
+<?QA valid="true" features="E-1 E-3 M-13 M-15 F-6 En-1" release-version="v2.1"?>
+----
+====
+
+| *`< >`*
+| copy 'as is', for round-trip conversion
+a|
+a|
+`<?... Page_Break?>` +
+`<?... Page-Break?>`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<?Para Page_Break?>
+<?Table Page_Break?>
+<?Table Page-Break?>
+----
+====
+
+| *`>`*
+| `<pagebreak />` a|
+`<<<` +
+[NOTE]
+====
+*conversion gap* +
+for page break between table's rows: +
+https://github.com/metanorma/mn-samples-bsi/issues/47[https://github.com/metanorma/mn-samples-bsi/issues/47]
+====
+| `<?Para Page_Break?>`
+| *`<`*
+a|
+`<pagebreak />`
+
+NOTE: for pagebreak before table, see rule for `<pagebreak orientation="..."/>`
+a|
+a|
+`<?isoimg-id ...`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<?isoimg-id 44001_ed1fig1.eps?>
+----
+====
+
+| *`>`*
+a|
+`image/@src` +
+`.eps, .EPS extensions replacing by .png`
+
+[example%unnumbered]
+====
+[source,xml]
+----
+<image src="images/44001_ed1fig1.png"...
+----
+====
+| `image::...`
+|===
