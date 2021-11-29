@@ -713,7 +713,7 @@ on the usage of "`usage information`". Further details can be found in ISO 10241
 *** `full`
 
 `isInternational`:: designation is valid across languages and country; value is
-boolean
+boolean (`true` or `false`)
 
 `abbreviation-type`:: type of abbreviation used; supported values are:
 
@@ -723,43 +723,43 @@ boolean
 
 `pronunciation`:: guide to pronunciation for designation; accepts a string value
 
-`absent`:: the designation is absent; value is boolean
+`absent`:: the designation is absent; value is boolean (`true` or `false`)
 
 `letter-symbol`:: the designation is not a linguistic expression, but a letter or
-symbol; value is boolean
+symbol; value is boolean (`true` or `false`)
 
 
 Grammar of the designation is encoded as keys within the tag `grammar`:
 
 `grammar`::
 
-`gender`::: the gender of the designation. Multiple values are allowed, comma
-delimited. Supported values are:
+`gender`::: the gender of the designation. Multiple values are allowed,
+comma-delimited. Supported values are:
 
-* `masculine`
-* `feminine`
-* `neuter`
-* `common`
+**** `masculine`
+**** `feminine`
+**** `neuter`
+**** `common`
 
-`number`::: the number of the 
-designation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.2]. 
-Multiple values are allowed, comma delimited. Supported values are:
+`number`::: the number of the
+designation. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.2]
+Multiple values are allowed, comma-delimited. Supported values are:
 
-* `singular`
-* `dual`
-* `plural`
+**** `singular`
+**** `dual`
+**** `plural`
 
-`isPreposition`::: the designation is a preposition; value is boolean
+`isPreposition`::: the designation is a preposition; value is boolean (`true` or `false`)
 
-`isParticiple`::: the designation is a participle; value is boolean
+`isParticiple`::: the designation is a participle; value is boolean (`true` or `false`)
 
-`isAdjective`::: the designation is an adjective; value is boolean
+`isAdjective`::: the designation is an adjective; value is boolean (`true` or `false`)
 
-`isVerb`::: the designation is a verb; value is boolean
+`isVerb`::: the designation is a verb; value is boolean (`true` or `false`)
 
-`isAdverb`::: the designation is an adverb; value is boolean
+`isAdverb`::: the designation is an adverb; value is boolean (`true` or `false`)
 
-`isNoun`::: the designation is a noun; value is boolean
+`isNoun`::: the designation is a noun; value is boolean (`true` or `false`)
 
 `grammar-value`::: other miscellaneous grammatical information
 
@@ -778,7 +778,7 @@ admitted:[Alternative]
 
 [%metadata]
 script:: Hans
-field-of-appplication: to conventional procedure
+field-of-application: to conventional procedure
 
 deprecated:[Deprecated term name]
 
@@ -790,9 +790,10 @@ gender::: masculine, feminine
 ----
 ====
 
-The metadata for a term, discussed immediately above, is given in the same
-definition list as the metadata about the first preferred designation, which is
-given in the term header.
+The metadata for a designation, presented immediately above, is given in the
+same definition list as the metadata about the first preferred designation,
+which is given in the term header.
+
 
 ===== Empty designations
 
