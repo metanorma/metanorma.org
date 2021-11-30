@@ -130,9 +130,28 @@ For example, `metanorma -t {short name} document.adoc` or `:mn-document-class: {
 
 `validate_rng_file`:: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-generic/blob/main/lib/asciidoctor/generic/generic.rng for example. This and all other file directory paths are relative to the gem root.
 
-`htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts`:: paths used for styling html output files, for examples see https://github.com/metanorma/metanorma-generic/tree/main/lib/isodoc/generic/html.
+`htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts`::
+paths used for styling HTML output files.
+Accepts a path to a CSS (`.css`) or SASS/SCSS (`.sass`, `.scss`) file.
 +
-NOTE:: *.scss stylesheets (which can include variables like `html_bodyfont` and `html_headerfont`) require the `scss` gem to be compiled into *.scss; you will need to add `gem "sassc"` to your Gemfile. (Alternatively, used pure .css stylesheets instead, with any `$` variables filled in with values.)
+[example]
+====
+See
+https://github.com/metanorma/metanorma-generic/tree/main/lib/isodoc/generic/html
+for examples.
+====
++
+[NOTE]
+--
+In order to use SASS/SCSS stylesheets (`.sass`, `.scss`), which can include
+variables like `html_bodyfont` and `html_headerfont`, require the `sassc` gem to
+compile such files into normal CSS (`.css`). You will need to add the line `gem
+"sassc"` to your `Gemfile` to achieve this.
+
+Alternatively, you can provide a pure CSS (`.css`) stylesheet by resolving all
+variables inside a SASS/SCSS stylesheet. e.g. resolve all the `$` variables by
+filling in CSS-compliant values.
+--
 
 `wordcoverpage`/`wordintropage`/`wordstylesheet`/`header`:: paths used for styling word output files, for examples see https://github.com/metanorma/metanorma-generic/tree/main/lib/isodoc/generic/html
 
