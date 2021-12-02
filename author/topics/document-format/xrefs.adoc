@@ -61,7 +61,7 @@ was to carry Excalibur (((Sword, Broadsword, Excalibur))).
 --
 
 
-=== Rich-text formatting
+=== Rich-text formatting in index terms
 
 Rich-text formatting in index terms is
 supported [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
@@ -77,7 +77,8 @@ NOTE: Formatting of index terms is ignored in IETF rendering.
 
 === Entry ranges
 
-Metanorma supports index entries that involve ranges [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0],
+Metanorma supports index entries that involve
+ranges [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0],
 using the command `index-range:to[...]`.
 
 The command itself accepts an AsciiDoc index entry, such as
@@ -140,25 +141,31 @@ ____
 
 === Index placement
 
-If any index terms are present in a document, and the current flavour supports indexes,
-then an index section will be automatically generated and appended to the end of the document.
-In order to override the title of the index section, or where it will be placed, use the
-index section markup provided for by Asciidoctor; any index will be appended after any content
-you may choose to place in the index section, but indexes typically appear with no preface.
+If any index terms are present in a document, and the current flavour supports
+indexes, then an index section will be automatically generated and appended to
+the end of the document.
+
+To override the title of the index section, or indicate where it should be
+placed, use the index section markup shown below.
 
 [source,adoc]
 --
 [index]
 == Index
-
 --
+
+Any index will be appended after any content you may choose to place in the
+index section, but indexes typically appear with no preface.
+
 
 [[auto-index-terms]]
 === Automated index terms
 
 If the document attribute `:index-terms:` is used, all terms (and symbols) are
-indexed automatically in postprocessing: the document does not need to include
-explicit index terms for them [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.3].
+indexed automatically in postprocessing.
+
+The document does not need to include explicit index terms for
+them [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.3].
 
 
 [[text-cross-refs]]
