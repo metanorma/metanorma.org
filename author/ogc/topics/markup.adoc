@@ -1,8 +1,7 @@
 ---
 layout: ogc-flavor
+:title: Metanorma for OGC markup
 ---
-
-= Metanorma for OGC markup
 
 == General
 
@@ -20,12 +19,14 @@ following current practice:
 
 == Inline formatting
 
+tag::inline-ogc[]
 Metanorma-OGC supports highlighting of text [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.16]:
 
 [source,asciidoc]
 ----
 This is #text to be highlighted#.
 ----
+end::inline-ogc[]
 
 == Sections
 
@@ -43,6 +44,7 @@ OGC practice.
 The "Terms and definitions" clause for current OGC documents adhere mostly to
 the link:/author/iso/topics/markup/#terms-and-definitions[ISO terms and definitions]
 practices.
+
 tag::term-def-ogc[]
 An OGC "Terms and definitions" section can be specified in the following ways:
 
@@ -54,11 +56,15 @@ An OGC "Terms and definitions" section can be specified in the following ways:
 NOTE: The combined clauses feature is similar to that of the
 link:/author/iso/topics/markup/#combined-terms-and-definitions[ISO combined terms and definitions]
 clauses.
+
 end::term-def-ogc[]
+
 NOTE: This section supplements
 link:/author/topics/document-format/section-terms[Terms and definitions] in
 general Metanorma documentation.
+
 tag::term-def-ogc[]
+
 ==== Standalone terms and definitions
 
 If the clause contains only terms and definitions.
@@ -242,7 +248,7 @@ The "Glossary" appendix can be created as follows.
 These terms will be rendered in the same format as in the
 "Terms and definitions" clause.
 
-
+tag::preliminary-ogc[]
 == Preliminary sections
 
 === General
@@ -485,6 +491,7 @@ relating to geographic and spatial information
 [.source]
 <<OGC21-017,clause="4.3">>
 ----
+end::preliminary-ogc[]
 
 == Blocks
 
@@ -502,16 +509,17 @@ Text
 ----
 
 === Table blocks
-
+tag::tables-ogc[]
 Table cells under OGC always have a vertical alignment of `middle` [added in
 https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.1].
 
 Any markup instructions to set cell alignment to a different vertical alignment
 are ignored.
-
+end::tables-ogc[]
 
 === Unnumbered blocks
 
+tag::unnumbered-ogc[]
 In Metanorma for OGC, all block elements are auto-numbered in order to
 facilitate unique referencing.
 
@@ -547,6 +555,7 @@ For blocks without the explicit block type defined, prepend with the
 image::images/fig1.png[]
 --
 ====
+end::unnumbered-ogc[]
 
 [example]
 ====
@@ -602,6 +611,7 @@ x = y + z
 --
 ====
 
+tag::unnumbered-ogc[]
 For blocks with their types defined explicitly that do not have the `options`
 attribute list, insert "%unnumbered" right after the block type, before
 the block type separator, e.g.: `[example%unnumbered]`, `[stem%unnumbered]`, etc.
@@ -615,6 +625,7 @@ the block type separator, e.g.: `[example%unnumbered]`, `[stem%unnumbered]`, etc
 Example content
 --
 ====
+end::unnumbered-ogc[]
 
 [example]
 ====
