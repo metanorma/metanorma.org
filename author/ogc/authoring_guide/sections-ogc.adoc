@@ -4,8 +4,62 @@ title: Typical sections in OGC
 ---
 The easiest way to ensure that you are following the document structure that OGC demands, is to use a Metanorma template. 
 
-If you need to author a document type that doesn't have one, make sure to include the following preliminary chapters. 
+If you author a document type that doesn't have a template, you can look at a https://github.com/metanorma/mn-samples-ogc[sample document] for better understanding how to structure that document.
 
-It also helps to look at a https://github.com/metanorma/mn-samples-ogc[sample document].
+Typically, an OGC document contains:
 
+* <<preliminary,Preliminary sections>>
+* <<terms,Terms and definitions>> 
+* <<refs,References>>
+* <<content,Content sections>>
+* <<annex,Annex sections>>
+
+[[preliminary]]
 include::../topics/markup.adoc[tag=preliminary-ogc]
+
+[[terms]]
+== Terms and definitions 
+
+The terms and definitions is used to define important terms and cite them throughout the standard.
+
+link:author/ogc/authoring_guide/terms_definitions.adoc[Learn how to enter terms and definitions.]
+
+[[refs]]
+== References
+
+The refernces section contains normative references, also known as a bibliography section. 
+
+link:author/ogc/authoring_guide/bibliography.adoc[Learn how to enter bibliographic entries]
+
+[[content]]
+== Content sections
+
+After all the preliminary sections, and the terms and definitions section, you may add as many content sections as you need. 
+
+[[annex]]
+== Annex
+
+Annex clauses are declared by prepending the `[appendix]` tag to the clause.
+You can add as many annexes as you need. 
+An annex can either be _normative_ or _informative_ and _normative_ is the default case.
+
+In order to declare an _informative_ appendix, we use the _obligation_ attribute in
+the following manner: `[appendix,obligation=informative]`
+
+[source,asciidoc]
+----
+// Default case; "obligation=normative" markup can be omitted.
+[appendix,obligation=normative]
+== Normative appendix title
+...
+
+[appendix,obligation=informative]
+== Informative appendix title
+...
+----
+
+The annex clauses allocate in the last position of the main content right before the bibliography clause.
+
+=== Glossary as an appendix
+
+include::../topics/markup.adoc[tag=glossary]

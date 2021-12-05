@@ -3,12 +3,127 @@ layout: ogc-flavor
 title: Asciidoc markup on the inline-level
 ---
 ////
-include::/author/topics/inline_markup.adoc[tag=tutorial]
+include::author/topics/inline_markup.adoc[tag=tutorial]
 == Text markup
-include::/author/topics/inline_markup/text_formatting.adoc[tag=tutorial,leveloffset=+1]
+include::author/topics/inline_markup/text_formatting.adoc[tag=text-markup]
+include::author/ogc/topics/markup/[tag=inline-ogc]
+include::author/topics/inline_markup/text_formatting.adoc[tag=char-subs]
 == Footnotes
-include::/author/topics/inline_markup/footnotes.adoc[tag=tutorial]
+include::author/topics/inline_markup/footnotes.adoc[tag=tutorial]
 
+If OGC produces an Index, include this section, too
 == Index Terms
-include::/author/topics/inline_markup/index.adoc[tag=tutorial]
+include::author/topics/inline_markup/index.adoc[tag=tutorial]
 ////
+
+// Include 1: inline_markup.adoc
+To annotate single words, you use inline markup. The markup encloses the word(s) and you do not need to begin a new line. Inline markup allows you to:
+
+* Emphasize text
+* Link to external resources with hyperlinks
+* Create internal cross-references
+* Create index entries
+* Create Bibliographic entries
+
+
+== Text markup
+// Include 2: text_formatting.adoc
+=== General text markup
+The simplest form of inline markup is to emphasize text. 
+AsciiDoc allows you to:
+
+* Make words *bold* using asterisks 
+* _Italicise_ words with underscores 
+* Apply `monospacing` using backticks
+* Superscript and subscript characters (like CO~2~ or x^4^)
+
+[source, AsciiDoc]
+---- 
+*bold*
+_italic_
+`monospace`
+^superscript^
+~subscript~
+----
+
+Metanorma extends these simple formats with:
+
+* Strikethrough text ([strike]#strike through text#)
+* Smallcaps text ([smallcap]#small caps text#)
+* Underline text ([underline]#underline text#)
+
+[source, AsciiDoc]
+---- 
+[strike]#strike through text#
+[smallcap]#small caps text#
+[underline]#underline text#
+----
+
+//Images don't render. Check locations?
+//renders as:
+////
+.Illustration of strikethrough text in Metanorma.
+image::/assets/author/topics/inline_formatting/fig-strikethrough.png[Illustration of strikethrough text in Metanorma,width=500]
+
+
+.Illustration of small caps text in Metanorma.
+image::/assets/author/topics/inline_markup/fig-smallcaps.png[Illustration of small caps text in Metanorma,width=500]
+
+.Illustration of underlined text in Metanorma.
+image::/assets/author/topics/inline_markup/fig-underline.png[Illustration of underlined text in Metanorma,width=500]
+////
+//Include 3: markup.adoc
+
+== OGC specific text markup
+
+include::../topics/markup.adoc[tag=inline-ogc]
+
+//Include 4: text_formatting.adoc
+== Character substitutions
+
+Metanorma also supports automatic character replacements, for example the copyright symbol © can be entered using `(C)`. Metanorma AsciiDoc also recognises HTML and XML character references,
+and decimal and hexadecimal Unicode code points.
+
+For more information about automatic character replacements, see https://docs.asciidoctor.org/asciidoc/latest/subs/replacements/[the AsciiDoc documentation]. 
+
+//Inlcude 5: footnotes.adoc
+== Footnotes
+
+Footnotes are a great option to add a remark to your content without disturbing the reading flow. AsciiDoc allows you to enter single line footnotes. Metanorma extends this functionality and provides the option to enter multi-paragraph footnotes.
+
+
+== Single-line footnotes
+You can add footnotes to your document using the footnote macro (`footnote:[]`). Just add the footnote where you want it to appear, like this:
+
+[source,Asciidoc]
+====
+Oryza sativafootnote:[Sativa means "cultivated"], is rice that is farmed commercially.
+====
+
+
+== Multi-paragraph footnotes
+
+Native Asciidoctor supports only single-paragraph
+footnotes through its `footnote` macro
+(which can only contain a single line of text).
+
+Metanorma introduces a footnote macro `footnoteblock:[id]` which allows multi-paragraph notes to be treated as footnotes.
+
+Multi-paragraph footnotes can be entered using the macro `footnoteblock:[id]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.4],
+where `id` is the identifier of a note containing the contents of the footnote:
+
+.Example of a multi-paragraph footnote
+[source,asciidoc]
+----
+This is a paragraph.footnoteblock:[id1] This continues the paragraph.
+
+[[id]]
+[NOTE]
+--
+This is
+
+a multi-paragraph
+
+footnote
+--
+----
