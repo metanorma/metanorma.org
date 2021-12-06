@@ -1,0 +1,305 @@
+---
+layout: post
+title: "Metanorma now offers PDF protection mechanisms!"
+date: 2021-12-04
+categories: documentation
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+  -
+    name: Alexander Dyuzhev
+    email: dyuzhev@gmail.com
+    social_links:
+      - https://www.linkedin.com/in/alexander-dyuzhev/
+      - https://github.com/Intelligent2013/
+
+excerpt: >-
+  Metanorma-generated PDFs now support encryption and other PDF protection
+  features.
+---
+== Introduction
+
+There are times when a Metanorma document needs to be protected, such as:
+
+* when sharing confidential information;
+* to prevent simplistic copy and pasting of content;
+* to prevent printing the document; or
+* to prevent high quality print reproduction of a document.
+
+https://www.iso.org/standard/51502.html[ISO 32000-1:2008]
+(free copy at https://www.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf[Adobe])
+defines PDF 1.7 which specifies several PDF protection mechanisms.
+
+As several SDOs that use Metanorma requested such functionality, we are happy to
+announce that the following Metanorma PDF protection features are now generally
+available:
+
+* PDF whole-document encryption, only unlocked with a password;
+* PDF protection against copy and paste of content;
+* PDF protection against printing;
+* PDF protection against high quality printing.
+
+WARNING: Not all PDF protection features are implemented in PDF viewers! See below.
+
+
+== Protection measures supported by Metanorma
+
+=== Whole PDF encryption
+
+Metanorma implements the PDF encryption mechanism specified in ISO 32000-1, 7.6,
+originally from PDF 1.1.
+
+This is the most popular protection measure where the entire PDF is
+"`protected`", the reader cannot open the PDF file without the password given.
+
+Typically, the PDF viewer will prompt the user to enter the password on loading
+the PDF file. If the password entered is correct, the PDF loads. Otherwise,
+the PDF load fails.
+
+PDF encryption nowadays often relies on the AES algorithm, with either 256-bit
+or 128-bit security.
+
+While the PDF standard originally allows for both RC4 and AES encryption
+algorithms, Metanorma only supports AES, as RC4 has been shown have a number of
+weaknesses (https://en.wikipedia.org/wiki/RC4[Wikipedia]).
+
+Metanorma also defaults to using 256-bit for superior security. But you may find
+legacy PDF readers only supporting 128-bit due to US export restrictions
+previously in place.
+
+In order to generate a encrypted Metanorma PDF output, you will need to provide
+an "owner password" and "user password" (which may be identical) in your
+Metanorma document as document attributes.
+
+[example]
+====
+[source,adoc]
+----
+= My Confidential Document
+:pdf-encrypt: true
+:pdf-encryption-length: 128
+:pdf-owner-password: D0nt700k4tM3
+:pdf-user-password: C4nt0p3nW1th0utTh1s
+...
+----
+====
+
+
+=== PDF protection against copy and paste of content
+
+A PDF file that is marked for copy and paste production means its content is not
+to be copied from the reader view. Commercial publishers typically apply this
+for copyright and content protection concerns (other than DRM).
+
+Sort of as a "`your eyes only`" document, where you can read but not copy out
+content.
+
+[example]
+====
+[source,adoc]
+----
+= Copy Pasta
+:pdf-disable-copy-paste: true
+...
+----
+====
+
+
+
+=== PDF protection against printing
+
+A PDF file marked "`not for printing`" means exactly that, the PDF content
+cannot be printed on a printer.
+
+Compliant PDF readers will block not only printing directly to a physical
+printer, they would also block printing to files (e.g. features like "`print to
+PDF`" or "`save as image`").
+
+
+[example]
+====
+[source,adoc]
+----
+= Print Me, Will You?
+:pdf-allow-print: false
+...
+----
+====
+
+
+
+=== PDF protection against high quality printing
+
+For these PDFs, low quality prints are allowed, but not high resolution prints.
+The intent for this limitation is to prevent an accurate physical reproduction
+of documents that could potentially mislead someone that a print out (from this
+file) was authentic.
+
+The resulting print out is supposed to look like the original PDF but blurred
+and of poor resolution.
+
+[example]
+====
+[source,adoc]
+----
+= Visual Transparency
+:pdf-allow-print: only-low-quality
+...
+----
+====
+
+
+
+=== Other
+
+Other protection measures exist, but they are not addressed in this post.
+
+* Other measures described in the PDF standard, such as
+  "allowing edit of content", "allowing assembly of document",
+  "encrypting metadata"
+
+* Non-standard PDF measures like DRM, which are popular with digital publishers.
+
+
+== Compatibility concerns and caveats
+
+=== Potential caveats
+
+The aforementioned features come with a caveat -- not all PDF viewers today
+fully support these standard PDF features.
+
+A sobering fact: out of the implemented PDF protection features, only
+whole-document encryption works across all the popular PDF viewers we tested.
+
+This is a limitation of the PDF standard and technology itself -- the protection
+measures against content extraction and printing relies solely on the
+implementation of a PDF viewer. If a PDF viewer can view a document, a
+non-compliant viewer that did not implement protection would definitely be able
+to print it (screen rendering is by nature similar to printing).
+
+=== Testing popular PDF viewers
+
+In order to determine current compatibility of PDF protection measures against
+popular PDF viewers, we have run several tests against these applications.
+
+PDF reader applications: standalone software applications that displays PDF files.
+
+* https://get.adobe.com/reader/[Adobe Reader]. The authoritative implementation for PDF, since PDF was
+  originally an Adobe proprietary format until they opened the specification to
+  ISO. Available on Windows and macOS.
+* https://support.apple.com/en-gb/guide/preview/welcome/mac[Preview]. The default PDF viewer on macOS and iOS.
+* https://www.foxit.com/pdf-reader/[Foxit PDF Reader]. A popular cross-platform reader.
+* https://skim-app.sourceforge.io[Skim]. A popular, open-source PDF viewer on macOS.
+
+PDF reading browsers: web browser implementations that support reading of PDF
+files. Sounds strange but many modern browsers today support reading PDFs,
+especially since the advent of JavaScript PDF rendering engines.
+
+* https://www.mozilla.org/firefox/[Mozilla Firefox]. The popular open-source,
+cross-platform browser known for its stability.
+https://www.thunderbird.net/[Mozilla Thunderbird] also uses the Firefox PDF
+component, so PDF behavior in Thunderbird should also offer the same results.
+
+* https://www.apple.com/safari/[Safari]. The macOS default web browser, which relies on Preview for PDF viewing.
+
+Import readers: these are applications that can "import" PDFs but are not native PDF readers.
+
+* https://www.office.com/[Microsoft Word]. The Microsoft word processor.
+
+
+=== Test results
+
+Here are the results.
+
+.Compatibility of PDF protection measures across popular PDF readers
+|===
+| PDF viewer application | Note | Compatible?
+
+3+| *Option*: Whole PDF encryption with user-password (setting a user password)
+| Adobe Reader      | Prompts for password | ✅
+| Foxit PDF Reader  | Prompts for password | ✅
+| Preview (macOS)   | Prompts for password | ✅
+| Skim (macOS)      | Prompts for password | ✅
+| Firefox (browser) | Prompts for password | ✅
+| Safari (browser)  | Prompts for password | ✅
+| Microsoft Word    | Prompts for password | ✅
+
+3+| *Option*: Disable copying of content
+| Adobe Reader      | Text cannot be copied; does not prompt password from user to unblock 'nocopy' feature | ✅
+| Foxit PDF Reader  | Text cannot be copied; does not prompt password from user to unblock 'nocopy' feature | ✅
+| Preview (macOS)   | Text cannot be copied | ✅
+| Skim (macOS)      | Text can be copied | ❌
+| Firefox (browser) | Text can be copied | ❌
+| Safari (browser)  | Text cannot be copied | ✅
+| Microsoft Word    | Unable to open PDF (_"We're sorry, the author of this document has set permissions that don't allow the content to be re-used in other application"_) | ✅
+
+3+| *Option*: Disallow printing
+| Adobe Reader      | 'Print' inactive, cannot be printed, does not prompt password from user | ✅
+| Foxit PDF Reader  | 'Print' inactive, cannot be printed, does not prompt password from user | ✅
+| Preview (macOS)   | Prints properly | ❌
+| Skim (macOS)      | Prints properly | ❌
+| Firefox (browser) | 'Print' is active and can be printed, moreover user can choose 'Save to PDF' and resulted PDF will be re-saved without any security features (Firefox uses an internal PDF printer) | ❌
+| Safari (browser)  | Prints properly | ❌
+| Microsoft Word    | Opens PDF file and converts into Microsoft Word DOCX | N/A
+
+3+| *Option*: Disallow high-quality printing
+| Adobe Reader      | Prints properly, resulting print out with reduced resolution | ✅
+| Foxit PDF Reader  | Prints properly, in high quality | ❌
+| Preview (macOS)   | Prints properly, in high quality | ❌
+| Skim (macOS)      | Prints properly, in high quality | ❌
+| Firefox (browser) | Prints properly, in high quality | ❌
+| Safari (browser)  | Prints properly, in high quality | ❌
+| Microsoft Word    | Opens PDF file and converts into Microsoft Word DOCX | N/A
+
+|===
+
+
+This means:
+
+* The only protection measure that works across the board is
+  "`whole PDF encryption`".
+* Adobe Reader implements all PDF protection mechanisms properly, but not the
+  other popular viewers.
+* This means that other than "`whole PDF encryption`", all other PDF protection
+  mechanisms can be circumvented easily by switching to another PDF viewer.
+
+
+// === PDF encryption
+// encryption-length: 128
+// owner-password: mypass
+// user-password: userpass
+// allow-print: false
+// allow-copy-content: true
+// allow-edit-content: false
+// allow-edit-annotations: true
+// allow-fill-in-forms: false
+// allow-access-content: true
+// allow-assemble-document: false
+// allow-print-hq: true
+// encrypt-metadata: true
+
+== Summary
+
+Metanorma now provides various protection mechanisms for PDF outputs.
+
+However, TL;DR:
+
+* The only protection measure that works across the board is
+  "`whole PDF encryption`".
+
+* Except for "`whole PDF encryption`", all other PDF protection
+  mechanisms can be circumvented easily by switching to another PDF viewer.
+
+When applying these PDF protection measures, please also be aware of their
+impact towards PDF accessibility.
+
+Until next time!
+
+
+== References
+
+* https://www.iso.org/standard/51502.html[ISO 32000:2008], the PDF 1.7 standard
+
