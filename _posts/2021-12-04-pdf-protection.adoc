@@ -37,17 +37,19 @@ As several SDOs that use Metanorma requested such functionality, we are happy to
 announce that the following Metanorma PDF protection features are now generally
 available:
 
-* PDF whole-document encryption, only unlocked with a password;
-* PDF protection against copy and paste of content;
-* PDF protection against printing;
-* PDF protection against high quality printing.
+* Require password to open document (PDF whole-document encryption);
+* Disallow copying text or graphics;
+* Disallow inserting, deleting or rotating pages;
+* Disallow adding annotations or signatures;
+* Disallow printing;
+* Disallow high quality printing.
 
 WARNING: Not all PDF protection features are implemented in PDF viewers! See below.
 
 
-== Protection measures supported by Metanorma
+== PDF whole document protection
 
-=== Whole PDF encryption
+=== Require password to open document
 
 Metanorma implements the PDF encryption mechanism specified in ISO 32000-1, 7.6,
 originally from PDF 1.1.
@@ -71,8 +73,15 @@ legacy PDF readers only supporting 128-bit due to US export restrictions
 previously in place.
 
 In order to generate a encrypted Metanorma PDF output, you will need to provide
-an "owner password" and "user password" (which may be identical) in your
-Metanorma document as document attributes.
+the following document attributes:
+
+* `:pdf-encrypt: true` to specify encryption of PDF output
+
+* `:pdf-encryption-length: {128,256}` to specify encryption strength
+  (128-bit or 256-bit AES keys)
+
+* `:pdf-user-password: {password}` to specify the "user password" needed to
+  open the encrypted PDF document.
 
 [example]
 ====
@@ -80,36 +89,129 @@ Metanorma document as document attributes.
 ----
 = My Confidential Document
 :pdf-encrypt: true
-:pdf-encryption-length: 128
-:pdf-owner-password: D0nt700k4tM3
+:pdf-encryption-length: 256
 :pdf-user-password: C4nt0p3nW1th0utTh1s
 ...
 ----
 ====
 
 
-=== PDF protection against copy and paste of content
+== PDF permissions
 
-A PDF file that is marked for copy and paste production means its content is not
-to be copied from the reader view. Commercial publishers typically apply this
-for copyright and content protection concerns (other than DRM).
+=== General and the "Owner Password"
 
-Sort of as a "`your eyes only`" document, where you can read but not copy out
-content.
+PDF permissions are actions normally allowed with unprotected PDFs, but these
+actions can be selectively restricted by the author with a "`owner password`".
+
+If the reader enters the designated "`owner password`", these restrictions can
+be bypassed.
+
+The owner password is set by the following document attribute:
+
+* `:pdf-owner-password: {password}` specifies the PDF "owner password".
 
 [example]
 ====
 [source,adoc]
 ----
 = Copy Pasta
-:pdf-disable-copy-paste: true
+:pdf-allow-copy-content: false
+:pdf-owner-password: D0nt700k4tM3
 ...
 ----
 ====
 
 
+=== Disallow copying text or graphics
 
-=== PDF protection against printing
+A PDF file that is marked for copy production means its content is not
+to be copied from the reader view. Commercial publishers typically apply this
+for copyright and content protection concerns (other than DRM).
+
+Sort of as a "`your eyes only`" document, where you can read but not copy out
+content.
+
+This permission can be disallowed using the following document attribute:
+
+* `:pdf-allow-copy-content: false` specifies that copying of content is
+disallowed.
+
+[example]
+====
+[source,adoc]
+----
+= Copy Pasta
+:pdf-allow-copy-content: false
+:pdf-owner-password: D0nt700k4tM3
+...
+----
+====
+//:pdf-allow-edit-content: false
+
+
+=== Disallow editing of content
+
+Editing of PDF content can be disallowed to ensure that the document content remains as when it was originally published.
+
+This permission can be disallowed using the following document attribute:
+
+* `:pdf-allow-assemble-document: false` specifies that editing of PDF content is disallowed.
+
+[example]
+====
+[source,adoc]
+----
+= No Edit
+:pdf-allow-edit-content: false
+:pdf-owner-password: D0nt700k4tM3
+...
+----
+====
+
+=== Disallow inserting, deleting or rotating pages
+
+A PDF file that is marked to disallow page modification means an unauthorized
+user cannot modify its content by inserting, deleting or rotating pages.
+
+This permission can be disallowed using the following document attribute:
+
+* `:pdf-allow-assemble-document: false` specifies that copying of content is
+disallowed.
+
+[example]
+====
+[source,adoc]
+----
+= No Page Shuffle
+:pdf-allow-assemble-document: false
+:pdf-owner-password: D0nt700k4tM3
+...
+----
+====
+
+
+=== Disallow adding annotations or signatures
+
+Annotations and signatures are content that can be added to a PDF file.
+A PDF file can be marked to prevent annotating and signatures.
+
+This permission can be disallowed using the following document attribute:
+
+* `:pdf-allow-edit-annotations: false` specifies that annotations and signatures cannot be added.
+
+[example]
+====
+[source,adoc]
+----
+= Copy Pasta
+:pdf-allow-edit-annotations: false
+:pdf-owner-password: D0nt700k4tM3
+...
+----
+====
+
+
+=== Disallow printing
 
 A PDF file marked "`not for printing`" means exactly that, the PDF content
 cannot be printed on a printer.
@@ -118,6 +220,10 @@ Compliant PDF readers will block not only printing directly to a physical
 printer, they would also block printing to files (e.g. features like "`print to
 PDF`" or "`save as image`").
 
+This permission can be disallowed using the following document attribute:
+
+* `:pdf-allow-print: false` specifies that the PDF document cannot be printed.
+
 
 [example]
 ====
@@ -125,10 +231,10 @@ PDF`" or "`save as image`").
 ----
 = Print Me, Will You?
 :pdf-allow-print: false
+:pdf-owner-password: D0nt700k4tM3
 ...
 ----
 ====
-
 
 
 === PDF protection against high quality printing
@@ -141,27 +247,74 @@ file) was authentic.
 The resulting print out is supposed to look like the original PDF but blurred
 and of poor resolution.
 
+This permission can be disallowed using the following document attribute:
+
+* `:pdf-allow-print-hq: true` specifies that the PDF document can only be printed in low resolution.
+
+
 [example]
 ====
 [source,adoc]
 ----
 = Visual Transparency
-:pdf-allow-print: only-low-quality
+:pdf-allow-print-hq: true
+:pdf-owner-password: D0nt700k4tM3
 ...
 ----
 ====
 
 
-
 === Other
 
-Other protection measures exist, but they are not addressed in this post.
+Other protection measures are also supported by Metanorma but they are not
+further described in this post.
 
-* Other measures described in the PDF standard, such as
-  "allowing edit of content", "allowing assembly of document",
-  "encrypting metadata"
+* `:pdf-allow-fill-in-forms: false` specifies that the forms within the PDF document cannot be filled in;
 
-* Non-standard PDF measures like DRM, which are popular with digital publishers.
+* `:pdf-allow-access-content: false` disables text and graphics extraction for accessibility purposes;
+
+* `:pdf-encrypt-metadata: true` specifies the encryption of the metadata stream.
+
+[example]
+====
+[source,adoc]
+----
+= Visual Transparency
+:pdf-allow-fill-in-forms: false
+:pdf-allow-access-content: false
+:pdf-encrypt-metadata: true
+...
+----
+====
+
+Non-standard PDF measures like DRM, which are popular with digital publishers
+are also not described here.
+
+=== Preparing a fully "locked-down" document
+
+The following example is a good profile to create a fully locked-down document
+(encrypted or not).
+
+[example]
+====
+[source,adoc]
+----
+= Very Well Protected Document
+:pdf-owner-password: 0wnerP4ss
+:pdf-user-password: D0cR04d0n1y
+:pdf-allow-print: false
+:pdf-allow-copy-content: false
+:pdf-allow-edit-content: false
+:pdf-allow-edit-annotations: false
+:pdf-allow-fill-in-forms: false
+:pdf-allow-access-content: false
+:pdf-allow-assemble-document: false
+:pdf-allow-print-hq: false
+:pdf-allow-fill-in-forms: false
+:pdf-allow-access-content: false
+:pdf-encrypt-metadata: true
+----
+====
 
 
 == Compatibility concerns and caveats
@@ -187,11 +340,15 @@ popular PDF viewers, we have run several tests against these applications.
 
 PDF reader applications: standalone software applications that displays PDF files.
 
-* https://get.adobe.com/reader/[Adobe Reader]. The authoritative implementation for PDF, since PDF was
-  originally an Adobe proprietary format until they opened the specification to
-  ISO. Available on Windows and macOS.
-* https://support.apple.com/en-gb/guide/preview/welcome/mac[Preview]. The default PDF viewer on macOS and iOS.
+* https://get.adobe.com/reader/[Adobe Reader]. The authoritative implementation
+  for PDF, since PDF was originally an Adobe proprietary format until they
+  opened the specification to ISO. Available on Windows and macOS.
+
+* https://support.apple.com/en-gb/guide/preview/welcome/mac[Preview]. The
+default PDF viewer on macOS and iOS.
+
 * https://www.foxit.com/pdf-reader/[Foxit PDF Reader]. A popular cross-platform reader.
+
 * https://skim-app.sourceforge.io[Skim]. A popular, open-source PDF viewer on macOS.
 
 PDF reading browsers: web browser implementations that support reading of PDF
@@ -203,9 +360,11 @@ cross-platform browser known for its stability.
 https://www.thunderbird.net/[Mozilla Thunderbird] also uses the Firefox PDF
 component, so PDF behavior in Thunderbird should also offer the same results.
 
-* https://www.apple.com/safari/[Safari]. The macOS default web browser, which relies on Preview for PDF viewing.
+* https://www.apple.com/safari/[Safari]. The macOS default web browser, which
+relies on Preview for PDF viewing.
 
-Import readers: these are applications that can "import" PDFs but are not native PDF readers.
+Import readers: these are applications that can "import" PDFs but are not native
+PDF readers.
 
 * https://www.office.com/[Microsoft Word]. The Microsoft word processor.
 
@@ -261,31 +420,22 @@ This means:
 
 * The only protection measure that works across the board is
   "`whole PDF encryption`".
+
 * Adobe Reader implements all PDF protection mechanisms properly, but not the
   other popular viewers.
+
 * This means that other than "`whole PDF encryption`", all other PDF protection
   mechanisms can be circumvented easily by switching to another PDF viewer.
 
 
-// === PDF encryption
-// encryption-length: 128
-// owner-password: mypass
-// user-password: userpass
-// allow-print: false
-// allow-copy-content: true
-// allow-edit-content: false
-// allow-edit-annotations: true
-// allow-fill-in-forms: false
-// allow-access-content: true
-// allow-assemble-document: false
-// allow-print-hq: true
-// encrypt-metadata: true
 
 == Summary
 
-Metanorma now provides various protection mechanisms for PDF outputs.
+Metanorma now provides a full set of protection mechanisms for PDF outputs.
+These PDF protection measures support all Metanorma flavors and are generally
+available from Metanorma release 1.5.4 onwards.
 
-However, TL;DR:
+TL;DR:
 
 * The only protection measure that works across the board is
   "`whole PDF encryption`".
@@ -302,4 +452,3 @@ Until next time!
 == References
 
 * https://www.iso.org/standard/51502.html[ISO 32000:2008], the PDF 1.7 standard
-
