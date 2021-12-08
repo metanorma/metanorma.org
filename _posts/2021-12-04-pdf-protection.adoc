@@ -24,10 +24,10 @@ excerpt: >-
 
 NOTE: Features in this blog post are available *from* Metanorma v1.5.3.
 
-There are times when a Metanorma document needs to be protected, such as:
+There are times when a Metanorma PDF document needs to be protected, such as:
 
 * when sharing confidential information;
-* to prevent simplistic copy and pasting of content;
+* to prevent direct copy and pasting of content;
 * to prevent printing the document; or
 * to prevent high quality print reproduction of a document.
 
@@ -35,7 +35,7 @@ https://www.iso.org/standard/51502.html[ISO 32000-1:2008]
 (free copy at https://www.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf[Adobe])
 defines PDF 1.7 which specifies several PDF protection mechanisms.
 
-As several SDOs that use Metanorma requested such functionality, we are happy to
+As several SDOs that use Metanorma have requested such functionality, we are happy to
 announce that the following Metanorma PDF protection features are now generally
 available:
 
@@ -161,9 +161,9 @@ NOTE: User access permissions can be circumvented by non-conformant PDF readers!
 
 A PDF file that is marked for copy production means its content is not
 to be copied from the reader view. Commercial publishers typically apply this
-for copyright and content protection concerns (other than DRM).
+out of concerns for copyright and content protection (other than DRM).
 
-Sort of as a "`your eyes only`" document, where you can read but not copy out
+This makes the PDF generated something of a "`your eyes only`" document, where you can read but not copy out
 content.
 
 This permission can be disallowed using the following document attribute:
@@ -187,7 +187,7 @@ disallowed.
 
 Editing of PDF content can be disallowed to ensure that the document content remains as when it was originally published.
 
-This permission can be disallowed using the following document attribute:
+Editing can be disallowed using the following document attribute:
 
 * `:pdf-allow-assemble-document: false` specifies that editing of PDF content is disallowed.
 
@@ -281,9 +281,9 @@ file) was authentic.
 The resulting print out is supposed to look like the original PDF but blurred
 and of poor resolution.
 
-This permission can be disallowed using the following document attribute:
+This feature can be enabled using the following document attribute:
 
-* `:pdf-allow-print-hq: true` specifies that the PDF document can only be printed in low resolution.
+* `:pdf-allow-print-hq: false` specifies that the PDF document can only be printed in low resolution.
 
 To disallow high quality printing, the "allow print" action must still be allowed.
 
@@ -292,7 +292,7 @@ To disallow high quality printing, the "allow print" action must still be allowe
 [source,adoc]
 ----
 = Visual Transparency
-:pdf-allow-print-hq: true
+:pdf-allow-print-hq: false
 :pdf-owner-password: D0nt700k4tM3
 
 // :pdf-allow-print: defaults to true
@@ -362,7 +362,7 @@ The aforementioned features come with a caveat -- not all PDF viewers today
 fully support these standard PDF features.
 
 A sobering fact: out of the implemented PDF protection features, only
-whole-document encryption works across all the popular PDF viewers we tested.
+whole-document encryption works across all the popular PDF viewers we have tested.
 
 This is a limitation of the PDF standard and technology itself -- the protection
 measures against content extraction and printing relies solely on the
@@ -458,8 +458,8 @@ This means:
 * The only protection measure that works across the board is
   "`<<require-password>>`".
 
-* Adobe Reader implements all PDF protection mechanisms properly, but not the
-  other popular viewers.
+* Adobe Reader implements all PDF protection mechanisms properly, but the
+  other popular viewers do not.
 
 * This means that other than "`<<require-password>>`", all other PDF protection
   mechanisms can be circumvented easily by switching to another PDF viewer.
