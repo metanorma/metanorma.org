@@ -1,18 +1,24 @@
 ---
 layout: ogc-flavor
-title: Assigning metadata in the document header
+title: Document header and metadata attributes
 ---
 //General info about metadata
 //include::/author/topics/metadata.adoc[tag=metadata-intro]
 
-The header contains information about the document (metadata). You specify these metadata by using predefined document attributes, that look like this: `:document-attribute:`. Most of the attributes take a value, while others are simple flags without a value, like `:draft:`. 
+== General
+
+The header contains information about the document (metadata). You specify these metadata by using predefined document attributes, that look like this: `:document-attribute:`. Most of the attributes take a value, while others are simple flags without a value, like `:draft:`.
 
 Some of the metadata will be visible in your document, such as `:title:`, while others are not visible but still affect how your document is generated. The order of attributes doesn’t matter to Metanorma.
+
 You can specify metadata about:
 
 * Authors: Issuing organization, authors, and their location
+
 * Document info: Language, document stages (draft, published, etc.) copyright holder, etc.
-* Dates: Draft dates, revision dates, publishing date, copyright year, etc. 
+
+* Dates: Draft dates, revision dates, publishing date, copyright year, etc.
+
 * Identifiers: Document numbers, ISBNs, URIs (Uniform Resource Identifiers)
 
 NOTE: Other metadata influence how the document is generated and should only be used by advanced users. Often, they will require familiarity with your organization's structures and processes.
@@ -20,11 +26,14 @@ NOTE: Other metadata influence how the document is generated and should only be 
 // OGC example
 == Metadata for OGC documents
 
-The following example demonstrates what a header in OGC can contain. Check out our reference documentation to see a full list of link:author/ogc/ref/document-attributes/[OGC-specific document attributes].
+The following example demonstrates what a header in OGC can contain. Refer to
+reference documentation to see the full list of
+link:author/ogc/ref/document-attributes/[OGC-specific document attributes].
 
 .Example header for a technical standard
-[source, AsciiDoc]
 ====
+[source,adoc]
+----
 :doctype: standard
 :docsubtype: implementation
 :edition: 1.0
@@ -42,11 +51,10 @@ The following example demonstrates what a header in OGC can contain. Check out o
 :role: editor
 :keywords: ogcdoc, OGC document, OGC API, ISO, ISO/TC 211, geographic information, Geospatial API, Web Feature Service, WFS, feature, features, property, geographic information, spatial data, spatial things, dataset, distribution, API, OpenAPI, GeoJSON, GML, HTML, schema.org
 :submitting-organizations: CubeWerx Inc.; Heazeltech LLC; Hexagon; interactive instruments GmbH; Ordnance Survey; Planet Labs; US Army Geospatial Center (AGC)
-:docfile: document.adoc
 :mn-document-class: ogc
 :mn-output-extensions: xml,html,doc,pdf,rxl
 :local-cache-only:
-:data-uri-image:
+----
 ====
 
-Source: https://github.com/metanorma/mn-samples-ogc/blob/c19e2fe8354ea331c25b28b32294394bfdf38161/sources/17-069r3/document.adoc[Document 17-069r3]
+Source: https://github.com/metanorma/mn-samples-ogc/blob/c19e2fe8354ea331c25b28b32294394bfdf38161/sources/17-069r3/document.adoc[OGC 17-069r3]

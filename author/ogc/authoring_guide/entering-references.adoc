@@ -22,7 +22,7 @@ To reference an *internal* source:
 . Add link text in square brackets after the path.
 +
 .Example of an internal link
-[source, AsciiDoc]
+[source,adoc]
 ----
 Download the latest link:downloads/report.pdf[Report]!
 ----
@@ -30,19 +30,19 @@ Download the latest link:downloads/report.pdf[Report]!
 To reference an *external* source:
 
 . Paste the URL into the document.
-. Add link text in square brackets after the URL (optional) `URL[Link text]`. 
+. Add link text in square brackets after the URL (optional) `URL[Link text]`.
 +
 .Example of an external link
-[source, AsciiDoc]
+[source,adoc]
 ----
 http://www.iso.org/[International Organization for Standardization].
 ----
 
 == Metadata references
 
-Every document contains a set of metadata to describe the document. You can insert a metadata reference by putting the attribute in curly braces `{attribute}`. The reference will be replaced with the value in the rendered output. 
+Every document contains a set of metadata to describe the document. You can insert a metadata reference by putting the attribute in curly braces `{attribute}`. The reference will be replaced with the value in the rendered output.
 
-[source, AsciiDoc]
+[source,adoc]
 ----
 :technical-committee-number: 2
 :technical-committee: Fasteners
@@ -56,14 +56,14 @@ This document was prepared by Technical Committee ISO/TC {technical-committee-nu
 
 To link to an important section, table, figure, formula, or list item in your document:
 
-. Set an anchor using double square brackets before the content you want to reference: `\[[anchor]]`. 
+. Set an anchor using double square brackets before the content you want to reference: `\[[anchor]]`.
 +
 .Example for an anchor preceding an image
-[source, AsciiDoc]
+[source,adoc]
 ----
 [[figureC-1]]
-.Typical gelatinization curve 
-image::images/rice_image2.png[Image of the gelatinization curve] 
+.Typical gelatinization curve
+image::images/rice_image2.png[Image of the gelatinization curve]
 ----
 +
 .Rendered image caption
@@ -71,7 +71,7 @@ image::../assets/author/tutorials/references_img_anchor.jpg[]
 
 . To reference an anchor, type the anchor name like this `\<<anchor>>`.
 +
-[source, AsciiDoc]
+[source,adoc]
 ----
  <<figureC-1>> gives an example of a typical gelatinization curve.
 ----
@@ -81,13 +81,14 @@ image::../assets/author/tutorials/references_img_target.jpg[]
 
 . To set an alternative text other than the anchor text, append the text inside the brackets using a comma.
 +
-[source, AsciiDoc]
+[source,adoc]
 ----
  <<figureC-1, The diagram>> gives an example of a typical gelatinization curve.
 ----
 
 === Auto-numbering of references
-Metanorma automatically numbers and names references; because they are autonumbered, they will be renumbered automatically if you insert any new text of the same type. 
+
+Metanorma automatically numbers and names references; because they are autonumbered, they will be renumbered automatically if you insert any new text of the same type.
 
 Since the markup will be converted into XML, the anchor must follow the https://www.w3.org/TR/xml-names11/[XML namespace conventions]. Therefore, an anchor name name must not contain:
 
