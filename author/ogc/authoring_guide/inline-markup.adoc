@@ -1,6 +1,6 @@
 ---
 layout: ogc-flavor
-title: Asciidoc markup on the inline-level
+title: Inline markup
 ---
 ////
 include::author/topics/inline_markup.adoc[tag=tutorial]
@@ -17,7 +17,11 @@ include::author/topics/inline_markup/index.adoc[tag=tutorial]
 ////
 
 // Include 1: inline_markup.adoc
-To annotate single words, you use inline markup. The markup encloses the word(s) and you do not need to begin a new line. Inline markup allows you to:
+
+To annotate single words, you use inline markup. The markup encloses the word(s)
+and you do not need to begin a new line.
+
+Inline markup allows you to:
 
 * Emphasize text
 * Link to external resources with hyperlinks
@@ -27,24 +31,30 @@ To annotate single words, you use inline markup. The markup encloses the word(s)
 
 
 == Text markup
+
 // Include 2: text_formatting.adoc
 === General text markup
-The simplest form of inline markup is to emphasize text. 
+
+The simplest form of inline markup is to emphasize text.
 AsciiDoc allows you to:
 
-* Make words *bold* using asterisks 
-* _Italicise_ words with underscores 
-* Apply `monospacing` using backticks
+* *Bold* text by wrapping text with asterisks (`*`)
+* _Italicise_ words by wrapping text with underscores (`_`)
+* Apply `monospace` formatting by wrapping text with backticks
 * Superscript and subscript characters (like CO~2~ or x^4^)
 
-[source, AsciiDoc]
----- 
+.Example of general text markup syntax
+[example]
+====
+[source,adoc]
+----
 *bold*
 _italic_
 `monospace`
 ^superscript^
 ~subscript~
 ----
+====
 
 Metanorma extends these simple formats with:
 
@@ -52,26 +62,25 @@ Metanorma extends these simple formats with:
 * Smallcaps text ([smallcap]#small caps text#)
 * Underline text ([underline]#underline text#)
 
-[source, AsciiDoc]
----- 
+[source,adoc]
+----
 [strike]#strike through text#
 [smallcap]#small caps text#
 [underline]#underline text#
 ----
 
-//Images don't render. Check locations?
 //renders as:
-////
+
 .Illustration of strikethrough text in Metanorma.
-image::/assets/author/topics/inline_formatting/fig-strikethrough.png[Illustration of strikethrough text in Metanorma,width=500]
+image::/assets/author/topics/document-format/text/fig-strikethrough.png[Illustration of strikethrough text in Metanorma,width=500]
 
 
 .Illustration of small caps text in Metanorma.
-image::/assets/author/topics/inline_markup/fig-smallcaps.png[Illustration of small caps text in Metanorma,width=500]
+image::/assets/author/topics/document-format/text/fig-smallcaps.png[Illustration of small caps text in Metanorma,width=500]
 
 .Illustration of underlined text in Metanorma.
-image::/assets/author/topics/inline_markup/fig-underline.png[Illustration of underlined text in Metanorma,width=500]
-////
+image::/assets/author/topics/document-format/text/fig-underline.png[Illustration of underlined text in Metanorma,width=500]
+
 //Include 3: markup.adoc
 
 == OGC specific text markup
@@ -81,10 +90,15 @@ include::../topics/markup.adoc[tag=inline-ogc]
 //Include 4: text_formatting.adoc
 == Character substitutions
 
-Metanorma also supports automatic character replacements, for example the copyright symbol © can be entered using `(C)`. Metanorma AsciiDoc also recognises HTML and XML character references,
-and decimal and hexadecimal Unicode code points.
+Metanorma also supports automatic character replacements, for example the
+copyright symbol © can be entered using `(C)`.
 
-For more information about automatic character replacements, see https://docs.asciidoctor.org/asciidoc/latest/subs/replacements/[the AsciiDoc documentation]. 
+Metanorma also recognizes HTML and XML character references, as well as decimal
+and hexadecimal Unicode code points.
+
+For more information about automatic character replacements, see
+https://docs.asciidoctor.org/asciidoc/latest/subs/replacements/[the AsciiDoc documentation].
+
 
 //Inlcude 5: footnotes.adoc
 == Footnotes
@@ -92,27 +106,32 @@ For more information about automatic character replacements, see https://docs.as
 Footnotes are a great option to add a remark to your content without disturbing the reading flow. AsciiDoc allows you to enter single line footnotes. Metanorma extends this functionality and provides the option to enter multi-paragraph footnotes.
 
 
-== Single-line footnotes
-You can add footnotes to your document using the footnote macro (`footnote:[]`). Just add the footnote where you want it to appear, like this:
+=== Single-line footnotes
 
-[source,Asciidoc]
+You can add footnotes to your document using the footnote command (`footnote:[]`).
+Just add the footnote where you want it to appear, like this:
+
+[source,adoc]
 ====
 Oryza sativafootnote:[Sativa means "cultivated"], is rice that is farmed commercially.
 ====
 
 
-== Multi-paragraph footnotes
+=== Multi-paragraph footnotes
 
-Native Asciidoctor supports only single-paragraph
-footnotes through its `footnote` macro
-(which can only contain a single line of text).
+Metanorma provides the footnote command `footnoteblock:[id]` which allows
+multi-paragraph notes to be treated as footnotes.
 
-Metanorma introduces a footnote macro `footnoteblock:[id]` which allows multi-paragraph notes to be treated as footnotes.
+NOTE: The popular AsciiDoc processor, Asciidoctor, supports only
+single-paragraph footnotes through its `footnote` command (which can only
+contain a single line of text).
 
-Multi-paragraph footnotes can be entered using the macro `footnoteblock:[id]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.4],
-where `id` is the identifier of a note containing the contents of the footnote:
+Multi-paragraph footnotes can be entered using the command
+`footnoteblock:[id]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.4],
+where `id` is the identifier of a note containing the contents of the footnote.
 
 .Example of a multi-paragraph footnote
+====
 [source,asciidoc]
 ----
 This is a paragraph.footnoteblock:[id1] This continues the paragraph.
@@ -127,3 +146,4 @@ a multi-paragraph
 footnote
 --
 ----
+====
