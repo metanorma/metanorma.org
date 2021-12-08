@@ -1,29 +1,31 @@
 ---
 layout: ogc-flavor
-title: Asciidoc markup on the block-level
+title: Block syntax
 ---
 ////
-include::/author/topics/blocks/[tag=tutorial]
+include::author/topics/blocks/[tag=tutorial]
 == Lists
-include::/author/topics/blocks/lists/[tags=tutorial,leveloffset=+1]
+include::author/topics/blocks/lists/[tags=tutorial,leveloffset=+1]
 == Tables
-include::/author/topics/blocks/tables/[tag=tutorial]
+include::author/topics/blocks/tables/[tag=tutorial]
 == Images
-include::/author/topics/blocks/images/[tag=tutorial]
+include::author/topics/blocks/images/[tag=tutorial]
 == Admonitions
-include::../../topics/blocks/admonitions/[tag=tutorial,leveloffset=+1]
+include::author/ogc/topics/blocks/admonitions/[tag=tutorial,leveloffset=+1]
 == Code Samples
-include::../author/topics/blocks/code_samples.adoc[tag=tutorial]
+include::author/topics/blocks/code_samples.adoc[tag=tutorial]
 ////
+
 Information that forms a logical segment, such as a paragraph or a list, is called a block.
+
 Most blocks start and end with a https://asciidoctor.org/docs/asciidoc-writers-guide/#delimited-blocks[delimiter] which is a matching sequence of characters. The delimiters tell the compiler that the text they contain belongs together.
 
 .Examples for different blocks
 ====
 [source,adoc]
 ------
-I’m a paragraph and I don’t need a block delimiter.
-<1>
+I’m a paragraph and I don’t need a block delimiter. <1>
+
 . I’m a list item and also do not need a delimiter
 . I’m the second list item
 . I'm list item number three
@@ -40,11 +42,12 @@ print("Hello World!")
 
 <1> Paragraphs and lists are types of blocks that do not need any delimiters. They are separated by a blank line in between blocks.
 <2> Comments use four slashes as a delimiter `////`. No other block uses slashes to begin and end a block.
-<3> All other types of blocks rely on delimiters, such as four dashes `----` or four equal signs `====`. This block contains a code sample written in python.
+<3> All other types of blocks rely on delimiters. Source code blocks use four dashes `----`, example blocks use four equal signs `====`. This particular block contains a source code snippet written in python.
 ====
 
 
 There are many types of blocks in AsciiDoc, such as:
+
 * Paragraphs
 * Lists
 * Tables
@@ -56,11 +59,15 @@ There are many types of blocks in AsciiDoc, such as:
 * Term definitions
 * Comments
 * Reviewer Notes
+
 // Include ends here
 
 Let's look at the most common blocks.
 
 == Lists
+
+=== General
+
 Metanorma AsciiDoc supports three types of lists:
 
 * Unordered lists
@@ -69,7 +76,9 @@ Metanorma AsciiDoc supports three types of lists:
 
 === Unordered lists
 
-Unordered lists are bulleted and can be nested by adding asterisks. They look like this:
+Unordered lists are bulleted and can be nested by adding asterisks.
+
+They look like this:
 
 [source,adoc]
 ----
@@ -83,7 +92,11 @@ The main changes compared to the previous edition are:
 
 === Ordered lists
 
-Ordered lists are invoked by beginning the line with a dot `.`. The list items are numbered automatically. The default list arabic numbers but can vary depending on the stylesheet of your organization.
+Ordered lists are invoked by beginning the line with a dot `.`.
+
+List items are numbered automatically.
+
+NOTE: The exact style of
 
 [source,adoc]
 ----
@@ -94,11 +107,17 @@ Ordered lists are invoked by beginning the line with a dot `.`. The list items a
 
 === Definition lists
 
-Definition lists (also called https://docs.asciidoctor.org/asciidoc/latest/lists/description/[description lists] pair a term and a description together. They are often used in a "Definitions" section to define units or terms. Definition lists can appear in other sections as well, *except* for the Terms section, which provides a special syntax for defining terms.
+Definition lists (also called https://docs.asciidoctor.org/asciidoc/latest/lists/description/[description lists]) pair a term and a description together.
+
+Occasionally they are used in a "Definitions" section to define units or terms.
+Definition lists can appear in other sections as well, *except* for the Terms
+section, which provides a special syntax for defining terms.
 
 Definition lists follow the syntax of:
+
+[souce,adoc]
 ----
-`term:: Definition`
+{term}:: {definition}
 ----
 
 // In Metanorma PDFs stem:[w] compiled to a lowercase omega. How to determine which alphabet to use?
@@ -115,6 +134,7 @@ NOTE: `\stem:[]` is used for mathematical formatting, and results in italics. So
 == Tables
 
 Tables are a useful tool to collect and display measured data. As AsciiDoc is all text input, it uses specific symbols to determine where new table rows and columns begin. A simple table looks like this:
+
 [source,adoc]
 ----
 [cols="1,1"] <1>
@@ -126,18 +146,27 @@ Tables are a useful tool to collect and display measured data. As AsciiDoc is al
 |Cell in column 2, row 2 <5>
 |=== <6>
 ----
+
 <1> Attribute that specifies the table. `cols=”x,x”` tells the compiler that there are two columns. `[cols="1,1"]` The numbers specify the amount of spacing. For example, `[cols="4,2,4"]` would define three columns. The first and last column’s width would be four times the relative width and the middle column would be half as broad. This attribute is optional.
-NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to
-`[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.
+
 <2> You can add a table title by beginning the line with a dot `.`. Make sure that there is no space between the dot and the first word of the heading.
+
 <3> Starting delimiter `|===`
+
 <4> The first line after the delimiter is the header row. To add a column, add a vertical bar `|` before the text that should be in the column.
+
 <5> When you use the `[cols]` attribute, columns in the same row can appear on different lines of AsciiDoc text; otherwise, they need to all be on the same line of text, like in <4>.
+
 <6> Closing delimiter `|===`
 
-include::../topics/markup.adoc[tag=tables-ogc]
+NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to
+`[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.
+
+
+include::author/ogc/topics/markup.adoc[tag=tables-ogc]
 
 == Images
+
 A block image is displayed as a discrete element, i.e., on its own line, in a document. A block image is designated by image macro name and followed by two colons (`image::PATH[]`). It’s preceded by a blank line, entered on a line by itself, and then followed by a blank line.
 
 In standard documents images are informative and you might want to reference an image in the text. As with all references, you need to define an anchor. You can also explain a graphic by adding a key. The entries of the key follow the syntax of a definition list (`key::Explanation`).
@@ -207,26 +236,32 @@ DANGER: Do perform maintenance tasks while the machine is still operating.
 
 == Source code
 
-AsciiDoc supports code samples using the `[source]` attribute before a new block. If you specify the coding language, the sample will be highlighted correctly in HTML output. Unlike other blocks in Asciidoc, line breaks and space indentations are preserved. Have a look at the example:
+Metanorma supports adding source code using the `[source]` attribute before a
+new block. If you specify the coding language, the sample will be highlighted
+correctly in HTML output.
+
+Within the source code block, line breaks and space indentations are preserved.
+Have a look at the example:
 
 [source,adoc]
 ------
 .Sample Code <1>
 [source,ruby] <2>
-==== <3>
+---- <3>
 puts "Hello, world." <4>
 %w{a b c}.each do |x|
   puts x
 end
-==== <5>
+---- <5>
 ------
-
 <1> Title for your code sample (optional)
-<2> `[source]` specifies that the block contains code. `ruby` is the coding language. The block will highlight keywords depending on the coding language.
+<2> `[source]` specifies that the block contains code. `ruby` is the language
+used by the code block. The block will highlight keywords depending on the
+language.
 <3> Starting delimiter
 <4> Sample code
 <5> Ending delimiter
 
 == Removing auto-numbering from blocks
 
-include::../topics/markup.adoc[tag=unnumbered-ogc]
+include::author/ogc/topics/markup.adoc[tag=unnumbered-ogc]

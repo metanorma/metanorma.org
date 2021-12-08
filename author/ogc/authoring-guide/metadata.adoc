@@ -1,0 +1,207 @@
+---
+layout: ogc-flavor
+title: Document header and metadata
+---
+//General info about metadata
+//include::/author/topics/metadata.adoc[tag=metadata-intro]
+
+== General
+
+The header contains information about the document (metadata). You specify these
+metadata by using predefined document attributes, that look like this:
+
+[source,adoc]
+----
+:document-attribute: some-value
+----
+
+Most of the attributes take a value, while others are simple flags without a
+value, like:
+
+[source,adoc]
+----
+:draft:
+----
+
+Some of the metadata will be visible in your document, such as `:title:`, while
+others are not visible but still affect how your document is generated.
+
+
+The order of attributes does not matter to Metanorma.
+
+You can specify metadata about:
+
+* Authors: issuing organization, authors, and their location
+
+* Document info: language, document stages (draft, published, etc.) copyright holder, etc.
+
+* Dates: draft dates, revision dates, publishing date, copyright year, etc.
+
+* Identifiers: document numbers, ISBNs, URIs (Uniform Resource Identifiers)
+
+NOTE: Other metadata influence how the document is generated and should only be
+used by advanced users. Please refer to the OGC document attributes.
+
+At a minimum, you will need to specify:
+
+* Title
+* Metanorma document class as `ogc`
+* Document number
+* Document type, and optionally subtype
+* Document stage
+* Committee
+* Author or editor
+
+NOTE: Please refer to reference documentation to see the full list of
+link:author/ogc/ref/document-attributes/[OGC-specific document attributes].
+
+NOTE: In this section we use the document header from
+https://github.com/metanorma/mn-samples-ogc/blob/c19e2fe8354ea331c25b28b32294394bfdf38161/sources/17-069r3/document.adoc[OGC 17-069r3] to explain.
+
+// OGC example
+== Document-specific attributes and basic operations
+
+These are the basic document attributes for OGC.
+
+----
+= API - Features - Part 1: Core <1>
+:docnumber: 17-069r3 <2>
+:external-id: http://www.opengis.net/doc/IS/ogcapi-features-1/1.0 <4>
+----
+<1> OGC document title.
+<2> OGC document number.
+<4> OGC External ID for this deliverable.
+
+
+These are operational concerns that are useful for the author.
+
+* `:mn-document-class:` must be set in order to set the flavor to OGC.
+
+* `:mn-output-extensions:` determines what output to be produced.
+
+----
+:mn-document-class: ogc <1>
+:mn-output-extensions: xml,html,doc,pdf,rxl <2>
+:local-cache-only: <3>
+----
+<1> Metanorma flavor. For OGC, enter `ogc`.
+<2> Metanorma output formats. For OGC, supported formats are `xml`, `html`, `pdf`, `doc` and `rxl`.
+<3> Metanorma option to store data cache in the current directory.
+
+
+
+== Document types and subtypes
+
+OGC offers many different types of deliverables that differ in the level of
+consensus.
+
+Some types, such as `standard` and `best-practice` have subtypes that must be
+set.
+
+The list includes:
+
+* `standard`: Standard (a document subtype is necessary) (_default_)
+* `abstract-specification-topic`: Abstract Specification
+* `best-practice`: Best Practice (a document subtype is necessary)
+* `change-request-supporting-document`: Change Request Supporting Document
+* `community-practice`: Community Practice
+* `community-standard`: Community Standard
+* `discussion-paper`: Discussion Paper
+* `engineering-report`: Engineering Report
+* `other`: Note, Primer, etc.
+* `policy`: Policy, Policy -- Name Type Specification
+* `reference-model`: Reference Model
+* `release-notes`: Release Notes
+* `test-suite`: Test Suite
+* `user-guide`: User Guide
+* `white-paper`: White Paper
+
+Subtypes include:
+
+* For `doctype` set to `standard`:
+** `implementation`: Implementation (_default_)
+** `conceptual-model`: Conceptual model
+** `conceptual-model-and-encoding`: Conceptual model and encoding
+** `conceptual-model-and-implementation`: Conceptual model and implementation
+** `encoding`: Encoding
+** `extension`: Extension
+** `profile`: Profile
+** `profile-with-extension`: Profile with extension
+
+* For `doctype` set to `best-practice`:
+** `general`: General (_default_)
+** `encoding`: Encoding
+** `extension`: Extension
+** `profile`: Profile
+** `profile-with-extension`: Profile with extension
+
+----
+:doctype: standard <1>
+:docsubtype: implementation <2>
+----
+<1> OGC document type.
+<2> OGC document subtype. Not all OGC deliverables have subtype.
+
+== Document stages and progress dates
+
+OGC deliverables go through various stages of consensus building.
+
+For an OGC standard and an abstract specification topic, it goes through the
+stages of: `swg-draft`, `oab-review`, `public-rfc`, `tc-vote` and `approve`.
+
+An OGC community standard goes through the same stages as a normal standard,
+except `swg-draft` is replaced with `work-item-draft`.
+
+All other types only have one `draft` stage and then goes to `approved`.
+
+OGC deliverables can also be `rescinded` or `retired` but it will not be
+discussed here.
+
+----
+:edition: 1.0 <1>
+:status: approved <2>
+:received-date: 2019-07-11 <3>
+:issued-date: 2019-09-09 <4>
+:published-date: 2019-10-14 <5>
+----
+<1> OGC document edition. This is optional.
+<2> OGC document status.
+<3> OGC date of receipt.
+<4> OGC date of issuance.
+<5> OGC date of publication.
+
+
+== Authorship and other preface information
+
+----
+:committee: technical <1>
+:fullname: Clemens Portele <2>
+:fullname_2: Panagiotis (Peter) A. Vretanos
+:fullname_3: Charles Heazel
+:role: editor <3>
+:role_3: editor
+:keywords: OGC API, ISO, ISO/TC 211, geographic information, Geospatial API <4>
+:submitting-organizations: CubeWerx Inc.; Heazeltech LLC; Hexagon; ... <4>
+----
+<1> OGC committee. Typically `technical` for standards.
+<2> Name of author or editor.
+<3> Role of author or editor. To set role of a `:fullname_2:` use `:role_2:`.
+<4> List of OGC keywords, comma-delimited.
+<5> List of OGC members submitting this deliverable, semicolon-delimited.
+
+
+== Metadata references
+
+Metadata defined as document attributes can be used to substitute values defined
+by putting the attribute in curly braces `{attribute}`. The reference will be
+replaced with the value in the rendered output.
+
+[source,adoc]
+----
+:technical-committee-number: 2
+:technical-committee: Fasteners
+:subcommittee-number: 11
+:subcommittee: Fasteners with metric external thread
+
+This document was prepared by Technical Committee ISO/TC {technical-committee-number}, _{technical-committee}_, Subcommittee SC {subcommittee-number}, _{subcommittee}_.
+----
