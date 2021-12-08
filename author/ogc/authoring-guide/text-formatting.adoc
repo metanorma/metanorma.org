@@ -1,6 +1,6 @@
 ---
 layout: ogc-flavor
-title: Inline markup
+title: Text formatting
 ---
 ////
 include::author/topics/inline_markup.adoc[tag=tutorial]
@@ -35,8 +35,8 @@ Inline markup allows you to:
 // Include 2: text_formatting.adoc
 === General text markup
 
-The simplest form of inline markup is to emphasize text.
-AsciiDoc allows you to:
+The simplest form of inline markup is to emphasize text. typical AsciiDoc allows
+you to:
 
 * *Bold* text by wrapping text with asterisks (`*`)
 * _Italicise_ words by wrapping text with underscores (`_`)
@@ -85,35 +85,44 @@ image::/assets/author/topics/document-format/text/fig-underline.png[Illustration
 
 == OGC specific text markup
 
-include::../topics/markup.adoc[tag=inline-ogc]
+include::author/ogc/topics/markup.adoc[tag=inline-ogc]
 
 //Include 4: text_formatting.adoc
 == Character substitutions
 
-Metanorma also supports automatic character replacements, for example the
+Metanorma supports automatic character replacements, for example the
 copyright symbol © can be entered using `(C)`.
 
 Metanorma also recognizes HTML and XML character references, as well as decimal
 and hexadecimal Unicode code points.
 
-For more information about automatic character replacements, see
-https://docs.asciidoctor.org/asciidoc/latest/subs/replacements/[the AsciiDoc documentation].
+NOTE: For more information about automatic character replacements, see
+https://docs.asciidoctor.org/asciidoc/latest/subs/replacements/[AsciiDoc documentation].
 
 
 //Inlcude 5: footnotes.adoc
 == Footnotes
 
-Footnotes are a great option to add a remark to your content without disturbing the reading flow. AsciiDoc allows you to enter single line footnotes. Metanorma extends this functionality and provides the option to enter multi-paragraph footnotes.
+=== General
 
+Footnotes are a great option to add a remark to your content without disturbing
+reading flow.
+
+In standards however, footnotes are discouraged as they hide potentially
+important information in the footer. It also becomes unclear whether the
+footnote is normative or informative in nature.
 
 === Single-line footnotes
 
-You can add footnotes to your document using the footnote command (`footnote:[]`).
+Footnotes can be added to the document using the footnote command
+(`footnote:[]`).
+
 Just add the footnote where you want it to appear, like this:
 
 [source,adoc]
 ====
-Oryza sativafootnote:[Sativa means "cultivated"], is rice that is farmed commercially.
+Oryza sativa footnote:[Sativa means "cultivated"], is rice that is farmed
+commercially.
 ====
 
 
@@ -121,10 +130,6 @@ Oryza sativafootnote:[Sativa means "cultivated"], is rice that is farmed commerc
 
 Metanorma provides the footnote command `footnoteblock:[id]` which allows
 multi-paragraph notes to be treated as footnotes.
-
-NOTE: The popular AsciiDoc processor, Asciidoctor, supports only
-single-paragraph footnotes through its `footnote` command (which can only
-contain a single line of text).
 
 Multi-paragraph footnotes can be entered using the command
 `footnoteblock:[id]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.4],
@@ -147,3 +152,8 @@ footnote
 --
 ----
 ====
+
+NOTE: The popular AsciiDoc processor, Asciidoctor, supports only
+single-paragraph footnotes through its `footnote` command (which can only
+contain a single line of text).
+

@@ -1,0 +1,168 @@
+---
+layout: ogc-flavor
+title: Bibliographic references
+---
+//General Bibliography
+//include::/author/topics/sections/entering_bib.adoc[tag=tutorial]
+
+== General
+
+Standard documents typically contain bibliographic references, and those
+references are usually presented in two categories:
+
+* Normative references
+* Informative references
+
+In OGC deliverables, bibliographic references are put into these two sections:
+
+* "`Normative references`", contain normative references, located at Clause 3;
+* "`Bibliography`", contain informative references, placed as the last Annex.
+
+== Creating a bibliographic section
+
+Every bibliographic section must be preceded by the style attribute
+`[bibliography]` so that bibliographic references are recognized as such.
+
+Place them into the Normative references if they are a required part of this
+standard.
+
+[source,adoc]
+----
+[bibliography]
+== Normative references
+
+* [[[OGC_07-011,OGC 07-011]]], OGC: The OGC Abstract Specification Topic 6: Schema for coverage
+geometry and functions, OGC Document 07-011, 2006. (Also available as ISO 19123)
+http://portal.opengeospatial.org/files/?artifact_id=19820
+----
+
+Or if the references are informative,
+
+[source,adoc]
+----
+[appendix]
+[bibliography]
+== Bibliography
+
+* [[[OGC_08-094,OGC 08-094r1]]], OGC: OGC SWE Common Data Model Encoding Standard, OGC
+Document 08-094r1, version 2.0, 2011 http://portal.opengeospatial.org/files/?artifact_id=41157
+----
+
+
+== Entering a bibliographic entry
+
+Bibliographic references (citations) are entered using a specialized list syntax.
+
+. Starts with a list item indicator (`*`).
+
+. Followed by a pair of triple square brackets (`[[[ ... ]]]`) which contains
+
+** A unique anchor name used to reference this entry. This anchor has to be unique per document.
+
+** A document identifier (also called the "`reference label`") that identifies
+this reference to the reader. If the cited document is a standard, it is likely
+that Metanorma can link:/author/concepts/automatic-reference-lookup[automatically fetch bibliographic information] for it via https://www.relaton.org/[Relaton].
++
+NOTE: If Metanorma recognizes a document identifier, it will overwrite any title
+you provide with the authoritative title of the reference.
+
+. After the triple brackets, the citation text is entered manually. OGC uses
+the
+https://www.springer.com/gp/computer-science/lncs/conference-proceedings-guidelines[Springer LNCS bibliographic style],
+which is now officially called the "Springer MathPhys style"
+(https://www.springer.com/gp/authors-editors/book-authors-editors/manuscript-preparation/5636[guidelines]).
+
+.Syntax for a bibliographic entry
+[source,adoc]
+----
+* [[[{anchor},{document identifier}]]], _citation text_
+----
+
+.Example of an auto-fetched entry
+====
+The following two statements will create identical outputs.
+
+[source,adoc]
+----
+* [[[OGC_08-094,OGC 08-094r1]]]
+----
+
+[source,adoc]
+----
+* [[[OGC_08-094,OGC 08-094r1]]], OGC: OGC SWE Common Data Model Encoding Standard, OGC
+Document 08-094r1, version 2.0, 2011 http://portal.opengeospatial.org/files/?artifact_id=41157
+----
+====
+
+== Referencing a bibliographic entry
+
+There are two ways to cite a bibliography entry entered in the bibliography
+sections.
+
+. Cite the whole document, by cross-referencing the anchor name like this: `\<<OGC_08-094>>`.
+
+. Cite a particular locality of the document, by cross-referencing the anchor name but additionally specify a link:/author/topics/document-format/bibliography/#localities[locality] as the second argument, like this: `\<<OGC_08-094,part=IV,chapter=3,paragraph=12>>`.
+
+
+== Bibliography example
+
+The following source code illustrates how a bibliography section looks like in
+Metanorma AsciiDoc.
+
+.Example for a bibliography section
+====
+[source,adoc]
+----
+[bibliography]
+== Normative references
+
+* [[[ISO20483,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+
+* [[[ISO6540,ISO 6540:1980]]]. _Maize -- Determination of moisture content (on milled grains and on whole grains)_
+----
+
+Gets rendered as:
+
+* ISO 20483:2013. _Cereals and cereal products — Determination of moisture content — Reference method_
+* ISO 6540:1980. _Maize — Determination of moisture content (on milled grains and on whole grains)_
+
+====
+
+
+//OGC specific
+== Auto-fetching OGC references
+
+Relaton fetches bibliographic entries for OGC documents, when the syntax matches the following:
+
+//Line 62 stems from https://www.metanorma.org/author/topics/building/reference-lookup/. To me, the parenthesis are a bit confusing. In which context do we use it?
+`OGC(identifier)` (e.g. `OGC(14-083r2)`, `OGC 14-083r2`), or any identifier prefixed with `OGC`.
+
+* If Relaton *can* resolve the reference, the bibliographic information from the database will be rendered.
++
+.Example of a OGC standard reference
+====
+[source,asciidoc]
+----
+* [[[OGC12-080r2,OGC 12-080r2]]], OGC OWS Context Conceptual Model.
+----
+
+will render:
+____
+Roger Brackin, Pedro Gonçalves : OGC 12-080r2, OGC OWS Context Conceptual Model. Open Geospatial Consortium (2014). https://portal.ogc.org/files/?artifact_id=55182
+____
+====
+
+* If Relaton *can not* resolve the reference, the provided description will be rendered.
++
+.Another example
+====
+[source,asciidoc]
+----
+* [[[GeoRSS,GeoRSS]]], GeoRSS Geographically Encoded Objects for RSS Feeds. (http://www.georss.org/)
+----
+
+will render:
+____
+GeoRSS Geographically Encoded Objects for RSS Feeds. (http://www.georss.org/)
+____
+====
