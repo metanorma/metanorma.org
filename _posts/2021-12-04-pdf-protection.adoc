@@ -22,6 +22,8 @@ excerpt: >-
 ---
 == Introduction
 
+NOTE: Features in this blog post are available *from* Metanorma v1.5.3.
+
 There are times when a Metanorma document needs to be protected, such as:
 
 * when sharing confidential information;
@@ -47,12 +49,44 @@ available:
 WARNING: Not all PDF protection features are implemented in PDF viewers! See below.
 
 
-== PDF whole document protection
-
-=== Require password to open document
+== PDF owner and user passwords
 
 Metanorma implements the PDF encryption mechanism specified in ISO 32000-1, 7.6,
 originally from PDF 1.1.
+
+There are two passwords used in PDF protection mechanisms, namely:
+
+* the "`owner password`", where when given, the conforming PDF reader
+application has unlimited access;
+
+* the "`user password`", where when given, the conforming PDF reader application
+can access the contents of the PDF according to the "`user access permissions`"
+defined in the PDF file.
+
+All PDF protection measures require the setting of these two passwords,
+and when unspecified, will be considered as empty (the default password).
+
+
+The passwords are set by the following document attributes:
+
+* `:pdf-owner-password: {password}` specifies the PDF "owner password".
+
+* `:pdf-user-password: {password}` specifies the PDF "user password".
+
+[example]
+====
+[source,adoc]
+----
+= Please Don't Change Things
+:pdf-allow-copy-content: false
+:pdf-user-password: JustR34d4t
+:pdf-owner-password: D0ntCh4ng3Th1ngs
+...
+----
+====
+
+[[require-password]]
+== PDF access permission: Require password to open document
 
 This is the most popular protection measure where the entire PDF is
 "`protected`", the reader cannot open the PDF file without the password given.
@@ -91,35 +125,36 @@ the following document attributes:
 :pdf-encrypt: true
 :pdf-encryption-length: 256
 :pdf-user-password: C4nt0p3nW1th0utTh1s
+:pdf-owner-password: ...
 ...
 ----
 ====
 
 
-== PDF permissions
+== PDF user access permissions
 
-=== General and the "Owner Password"
+=== General
 
-PDF permissions are actions normally allowed with unprotected PDFs, but these
-actions can be selectively restricted by the author with a "`owner password`".
+Introduced in PDF 1.5, "user access permissions" are actions normally allowed
+with unprotected PDFs, but these actions can be selectively restricted by the
+author with a "`owner password`".
 
-If the reader enters the designated "`owner password`", these restrictions can
+From ISO 32000-1:2008, 7.6.3.1 NOTE 2:
+
+____
+This enables limited access to a document when a user is not able to respond to
+a prompt for a password.
+____
+
+If the reader enters the designated "`owner password`", all restrictions can
 be bypassed.
 
-The owner password is set by the following document attribute:
+These user access permissions do not require encryption of the document.
 
-* `:pdf-owner-password: {password}` specifies the PDF "owner password".
+NOTE: Functionality permitted by particular permissions described in
+ISO 32000-1:2008, Table 22.
 
-[example]
-====
-[source,adoc]
-----
-= Copy Pasta
-:pdf-allow-copy-content: false
-:pdf-owner-password: D0nt700k4tM3
-...
-----
-====
+NOTE: User access permissions can be circumvented by non-conformant PDF readers!
 
 
 === Disallow copying text or graphics
@@ -146,7 +181,6 @@ disallowed.
 ...
 ----
 ====
-//:pdf-allow-edit-content: false
 
 
 === Disallow editing of content
@@ -237,7 +271,7 @@ This permission can be disallowed using the following document attribute:
 ====
 
 
-=== PDF protection against high quality printing
+=== Disallow high quality printing
 
 For these PDFs, low quality prints are allowed, but not high resolution prints.
 The intent for this limitation is to prevent an accurate physical reproduction
@@ -251,6 +285,7 @@ This permission can be disallowed using the following document attribute:
 
 * `:pdf-allow-print-hq: true` specifies that the PDF document can only be printed in low resolution.
 
+To disallow high quality printing, the "allow print" action must still be allowed.
 
 [example]
 ====
@@ -259,6 +294,8 @@ This permission can be disallowed using the following document attribute:
 = Visual Transparency
 :pdf-allow-print-hq: true
 :pdf-owner-password: D0nt700k4tM3
+
+// :pdf-allow-print: defaults to true
 ...
 ----
 ====
@@ -419,12 +456,12 @@ Here are the results.
 This means:
 
 * The only protection measure that works across the board is
-  "`whole PDF encryption`".
+  "`<<require-password>>`".
 
 * Adobe Reader implements all PDF protection mechanisms properly, but not the
   other popular viewers.
 
-* This means that other than "`whole PDF encryption`", all other PDF protection
+* This means that other than "`<<require-password>>`", all other PDF protection
   mechanisms can be circumvented easily by switching to another PDF viewer.
 
 
@@ -438,17 +475,20 @@ available from Metanorma release 1.5.4 onwards.
 TL;DR:
 
 * The only protection measure that works across the board is
-  "`whole PDF encryption`".
+  "`<<require-password>>`".
 
-* Except for "`whole PDF encryption`", all other PDF protection
+* Except for "`<<require-password>>`", all other PDF protection
   mechanisms can be circumvented easily by switching to another PDF viewer.
 
-When applying these PDF protection measures, please also be aware of their
-impact towards PDF accessibility.
+* When applying these PDF protection measures, please keep in mind:
+
+** whether your content risks are met by selected protection measures;
+
+** whether the protection measures impact accessibility.
 
 Until next time!
 
 
 == References
 
-* https://www.iso.org/standard/51502.html[ISO 32000:2008], the PDF 1.7 standard
+* https://www.iso.org/standard/51502.html[ISO 32000-1:2008], the PDF 1.7 standard
