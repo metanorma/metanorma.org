@@ -23,7 +23,7 @@ Instructs Metanorma to not generate Word and HTML output, means only XML output 
 Suppress document validation.
 
 `:index-terms:`::
-Terms (and symbols) are indexed automatically in postprocessing. 
+Terms (and symbols) are indexed automatically in postprocessing.
 See link:/author/topics/document-format/xrefs/#auto-index-terms[automatic reference lookup]. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.3]
 
 == Reference lookup
@@ -533,15 +533,16 @@ in the same directory as the source Metanorma AsciiDoc file, and the media file
 paths are given as relative and not absolute file locations (and are not
 encoded as data URIs, via `:data-uri-image:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.7].
 
-== PDF protection
+== PDF protection and permissions
 
-All the following attributes relate to PDF protection from copying [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.3].
+All the following attributes relate to PDF protection from
+copying [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.3].
 
 `:pdf-encrypt:`::
-Specify encryption of PDF output. (`true, false`, default `false`.)
+Specify encryption of PDF output. (Allowed values: `true`, `false`. Default `false`.)
 
 `:pdf-encryption-length:`::
-Specify encryption strength. (`128, 256`, corresponding to 128-bit or 256-bit AES keys.)
+Specify encryption strength. (Allowed values: `256`, `128`, corresponding to 256-bit or 128-bit AES keys. Default `256`)
 
 `:pdf-user-password:`::
 Specify user password needed to open the encrypted PDF document.
@@ -550,28 +551,28 @@ Specify user password needed to open the encrypted PDF document.
 Specify owner password to bypass restrictions on encrypted PDF document.
 
 `:pdf-allow-copy-content:`::
-Allow content to be copy-pasted from the PDF document. (`true, false`, default `true`.)
+Allow content to be copy-pasted from the PDF document. (Allowed values: `true`, `false`. Default `true`.)
 
 `:pdf-allow-edit-content:`::
-Allow content of the PDF document to be edited. (`true, false`, default `true`.)
+Allow content of the PDF document to be edited. (Allowed values: `true`, `false`. Default `true`.)
 
 `:pdf-allow-assemble-document:`::
-Allow inserting, deleting, or rotating pages in the PDF document. (`true, false`, default `true`.)
+Allow inserting, deleting, or rotating pages in the PDF document. (Allowed values: `true`, `false`. Default `true`.)
 
 `:pdf-allow-edit-annotations:`::
-Allow annotations and signatures to be added to the PDF document. (`true, false`, default `true`.)
+Allow annotations and signatures to be added to the PDF document. (Allowed values: `true`, `false`. Default `true`.)
 
 `:pdf-allow-print:`::
-Allow PDF document to be printed, physically or to file. (`true, false`, default `true`.)
+Allow PDF document to be printed, physically or to file. (Allowed values: `true`, `false`. Default `true`.)
 
 `:pdf-allow-print-hq:`::
-Allow PDF document to be printed in high quality. (`true, false`, default `true`.)
+Allow PDF document to be printed in high quality. (Allowed values: `true`, `false`. Default `true`.)
 
 `:pdf-allow-fill-in-forms:`::
-Allow forms to be filled in the PDF document. (`true, false`, default `true`.)
+Allow forms to be filled in the PDF document. (Allowed values: `true`, `false`. Default `true`.)
 
 `:pdf-allow-access-content:`::
-Allow text and graphics extraction from the PDF document for accessibility purposes. (`true, false`, default `true`.)
+Allow text and graphics extraction from the PDF document for accessibility purposes. (Allowed values: `true`, `false`. Default `true`.)
 
 `:pdf-encrypt-metadata:`::
-Specify encryption of the metadata stream. (`true, false`, default `false`.)
+Specify encryption of the metadata stream. (Allowed values: `true`, `false`. Default `false`.)
