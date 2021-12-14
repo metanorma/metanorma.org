@@ -841,6 +841,50 @@ ASCII ART
 
 NOTE: Multiple non-verbal designations are supported by ISO 10241-1.
 
+==== Related concepts
+
+A term may be related to other terms; those relations are expressed in Metanorma
+in a syntax similar to that for concept cross-references
+(<<citeterms>>) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0].
+
+The term relations that can be expressed are:
+
+* `related:relation[<<id>>, term]`, for a concept `term` defined in the same document or in a bibliographic reference (`<<id>>`).
+* `related:relation[<<termbase:id>>, term]`, for a concept `term` defined in a termbase (`<<termbase:id>>`).
+* `related:relation[term]`, for a concept `term` defined in the same document -- equivalent to a crossreference to `term:[term]`.
+
+In all these expressions, `relation` is one of the defined relations between the current concept and the nominated concept:
+
+`deprecates`:: the current concept deprecates the nominated concept
+`supersedes`:: the current concept supersedes the nominated concept
+`narrower`:: the current concept is narrower than the nominated concept
+`broader`:: the current concept is broader than the nominated concept
+`equivalent`:: the current concept is equivalent to the nominated concept
+`compare`:: the current concept should be compared to the nominated concept, in order to be better understood
+`contrast`:: the current concept should be contrasted to the nominated concept, in order to be better understood
+`see`:: the current concept should be referred the nominated concept, in order to be better understood
+
+[example]
+====
+[source,asciidoc]
+----
+== Terms and definitions
+=== mammoth
+
+extinct woolly pachyderm
+
+=== elephant
+
+animal with a trunk and tusks
+
+related:supersedes[mammoth]
+
+related:narrower[<<linnaean:mammalia>>, mammal]
+
+related:contrast[<<mus_musculus>>, mouse]
+----
+====
+
 
 ==== Definitions
 
