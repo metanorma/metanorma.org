@@ -841,32 +841,20 @@ ASCII ART
 
 NOTE: Multiple non-verbal designations are supported by ISO 10241-1.
 
-==== Related concepts
+==== Relations
 
-A term may be related to other terms; those relations are expressed in Metanorma
-in a syntax similar to that for concept cross-references
+===== General
+
+In Metanorma, a concept relation is to be made between the current concept and a
+target concept. Concept relations are specified in a syntax similar to that for
+concept cross-references
 (<<citeterms>>) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0].
 
-The term relations that can be expressed are:
-
-* `related:relation[\<<id>>, term]`, for a concept `term` defined in the same document or in a bibliographic reference (`\<<id>>`).
-* `related:relation[\<<termbase:id>>, term]`, for a concept `term` defined in a termbase (`\<<termbase:id>>`).
-* `related:relation[term]`, for a concept `term` defined in the same document -- equivalent to a crossreference to `term:[term]`.
-
-In all these expressions, `relation` is one of the defined relations between the current concept and the nominated concept:
-
-`deprecates`:: the current concept deprecates the nominated concept
-`supersedes`:: the current concept supersedes the nominated concept
-`narrower`:: the current concept is narrower than the nominated concept
-`broader`:: the current concept is broader than the nominated concept
-`equivalent`:: the current concept is equivalent to the nominated concept
-`compare`:: the current concept should be compared to the nominated concept, in order to be better understood
-`contrast`:: the current concept should be contrasted to the nominated concept, in order to be better understood
-`see`:: the current concept should be referred the nominated concept, in order to be better understood
+Target concepts from various sources can be referenced, as described below.
 
 [example]
 ====
-[source,asciidoc]
+[source,adoc]
 ----
 == Terms and definitions
 === mammoth
@@ -884,6 +872,86 @@ related:narrower[<<linnaean:mammalia>>, mammal]
 related:contrast[<<mus_musculus>>, mouse]
 ----
 ====
+
+
+===== Concept defined in same document
+
+If the target concept is defined in the same document
+
+[source,adoc]
+----
+related:RELATION[term]
+----
+
+Where:
+
+* `RELATION` is the type of concept relation (<<concept-relation-types>>)
+* `term` is the designation of the target concept
+
+NOTE: This is equivalent to a cross-reference to `term:[term]`.
+
+
+===== Concept defined in external document
+
+If the target concept is defined in an external document (or the same document).
+
+[source,adoc]
+----
+related:RELATION[<<id>>, term]
+----
+
+Where:
+
+* `id` is a bibliographic reference anchor for an external document, or an
+anchor within the current document
+* `RELATION` is the type of concept relation (<<concept-relation-types>>)
+* `term` is the designation of the target concept
+
+
+===== Concept defined in termbase
+
+If the target concept is defined in a termbase.
+
+[source,adoc]
+----
+related:RELATION[<<termbase:id>>, term]
+----
+
+Where:
+
+* `termbase` is the termbase reference anchor
+* `id` is the identifier of the target concept within the specified termbase
+* `RELATION` is the type of concept relation (<<concept-relation-types>>)
+* `term` is the designation of the target concept
+
+
+[[concept-relation-types]]
+===== Relation types
+
+The following concept relations can be specified
+
+`deprecates`:: the current concept deprecates the nominated concept.
+
+`supersedes`:: the current concept supersedes the nominated concept.
+
+`narrower`:: the current concept is narrower than the nominated concept.
++
+NOTE: This is similar to the `skos:narrower` property in SKOS.
+
+`broader`:: the current concept is broader than the nominated concept.
++
+NOTE: This is similar to the `skos:broader` property in SKOS.
+
+`equivalent`:: the current concept is equivalent to the nominated concept.
+
+`compare`:: in order to better understand the current concept, compare it with
+the nominated concept.
+
+`contrast`:: in order to better understand the current concept, contrast it with
+the nominated concept.
+
+`see`:: in order to better understand the current concept, refer to the
+nominated concept.
 
 
 ==== Definitions
