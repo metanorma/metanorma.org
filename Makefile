@@ -3,7 +3,8 @@ SHELL := /bin/bash
 all: _site
 
 clean:
-	rm -rf _site
+	bundle exec jekyll clean
+	rm -rf _site _software/*/.git _software/*/docs _software/*/_*_repo parent-hub
 
 bundle:
 	bundle
@@ -14,4 +15,4 @@ _site:
 serve:
 	bundle exec jekyll serve --trace
 
-.PHONY: bundle all open serve distclean clean
+.PHONY: bundle all open serve clean
