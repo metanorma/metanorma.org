@@ -9,21 +9,29 @@ layout: ogc-flavor
 [[note_general_doc_ref_doc_attrib_ogc]]
 [NOTE]
 ====
-Document attributes listed below are unique to the processing of OGC documents in Metanorma.
+Document attributes listed below are unique to the processing of OGC documents
+in Metanorma.
 
-For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author’s documentation. That page describes attributes that apply to all Metanorma flavors, not just OGC.
+For _common document attributes_, see
+link:/author/ref/document-attributes/[Document attributes reference] which
+describes attributes that apply across all Metanorma flavors.
 
-For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
+For an _introduction to Metanorma document attributes_ and how Metanorma uses
+them, see
+link:/author/topics/document-format/meta-attributes/[the corresponding topic].
 ====
 
 `:abbrev:`::
 The standard abbreviation of the document, used e.g. in URIs
 
+[[ogc-doctype]]
 `:doctype:`::
 *Mandatory.*
-Document type. Choices:
+Document type.
 +
 --
+Values:
+
 * `standard`: Standard (a document subtype is necessary, see <<ogc-docsubtype>>) (_default_)
 * `abstract-specification-topic`: Abstract Specification
 * `best-practice`: Best Practice (a document subtype is necessary, see <<ogc-docsubtype>>)
@@ -38,9 +46,13 @@ Document type. Choices:
 * `release-notes`: Release Notes
 * `test-suite`: Test Suite
 * `user-guide`: User Guide
-* `white-paper`: White Paper (for documents before 2021-12-16)
-* `technical-paper`: Technical Paper (for documents before 2021-12-16) [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.5]. The two document types are treated identically, and are rendered differently depending on the date published or issued.
+* `technical-paper`: Technical Paper
+  (for documents issued/published on or after 2021-12-16) [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.5].
 
+Deprecated values:
+
+* `white-paper`: White Paper. Superseded by the "`Technical Paper`" document
+  type for a publication date on and after 2021-12-16. See <<legacy-ogc-whitepaper>> for further information.
 --
 
 [[ogc-docsubtype]]
@@ -88,7 +100,7 @@ Choices:
 
 * `approved`: Published. This is the document intended to be published.
   This status is to be set after comments are handled with the TC chair (after `tc-vote`).
-  `published` is an allowed synonym of `approved` [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.5].
+  `published` is an allowed synonym of `approved`. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.5]
 
 * `deprecated`: Deprecated. This document has been deprecated.
 
@@ -96,9 +108,11 @@ Choices:
 
 * `retired`: Retired. This document has been retired and no longer considered normative.
 
+[NOTE]
 The following table shows the available statuses for each document
 type [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.1].
 
+.Document statuses for OGC document types
 |===
 | | draft | work-item-draft | swg-draft | oab-review | public-rfc | tc-vote | approved (published) | deprecated | rescinded | retired
 
@@ -109,8 +123,11 @@ h| _all other types_ | x |   |   |   |   |   | x |   |   | x
 --
 
 `:edition:`::
-The version number of the document. Dot-delimited, consists of a major version number, a minor version number,
-and an optional patch version number; e.g. `2.3.1`: major version 2, minor version 3, patch version 1.
+The version number of the document. Dot-delimited, consists of a major version
+number, a minor version number, and an optional patch version number.
++
+[example]
+`2.3.1` means: major version 2, minor version 3, patch version 1.
 
 `:keywords:`::
 Comma-delimited list of the keywords associated with the document.
@@ -147,7 +164,9 @@ list:
 "`Retired`" Retired document:: This is a document stage indicated `:docstage: retired`.
 "`SAP`" Standard Application Profile:: Now `:doctype: standard`, `:docsubtype: profile`.
 "`TS`":: Test Suite (TBD)
-"`WhitePaper`" Whitepaper:: Now `:doctype: white-paper`.
+"`WhitePaper`" Whitepaper:: Was `:doctype: white-paper`, but now `:doctype:
+technical-paper`.
+Please refer to the description of `technical-paper` in <<ogc-doctype>>.
 --
 
 == Author info
@@ -234,7 +253,23 @@ The number is of the pattern `YY-NNN{rM}` formulated following the following rul
 --
 
 
-== Legacy identity design
+== Legacy information
+
+[[legacy-ogc-whitepaper]]
+=== OGC White Paper now renamed as Technical Paper
+
+The OGC Planning Committee at the 121st OGC Member Meeting has approved the
+rename of the document type "`White Paper`" to "`Technical Paper`".
+
+All documents issued or published before 2021-12-16 will remain with the
+document type "`White Paper`", and documents published on or after that date
+will have the document type "`Technical Paper".
+
+The two document types are treated identically, and are rendered differently
+depending on the date published or issued.
+
+
+=== OGC identity design
 
 OGC has launched its current identity together with its new logo and color
 scheme on 2021-11-08.
@@ -253,9 +288,7 @@ of an OGC deliverable:
 
 * a deliverable dated prior to 2021-11-08 will utilize the previous branding.
 
-
-
-== Mapping to OGC legacy AsciiDoc
+=== Mapping to OGC legacy AsciiDoc
 
 Metanorma-OGC permits legacy OGC AsciiDoc template attributes,
 and are treated as synonyms of the corresponding Metanorma attributes:
