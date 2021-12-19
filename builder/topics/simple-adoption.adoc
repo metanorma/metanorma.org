@@ -58,13 +58,13 @@ logo_paths: []
 validate_rng_file: lib/metanorma/generic/generic.rng
 htmlcoverpage: lib/isodoc/generic/html/html_generic_titlepage.html
 htmlintropage: lib/isodoc/generic/html/html_generic_intro.html
-htmlstylesheet: lib/isodoc/generic/html/htmlstyle.scss
+htmlstylesheet: lib/isodoc/generic/html/htmlstyle.css
 scripts: lib/isodoc/generic/html/scripts.html
-standardstylesheet: lib/isodoc/generic/html/generic.scss
+standardstylesheet: lib/isodoc/generic/html/generic.css
 header: lib/isodoc/generic/html/header.html
 wordcoverpage: lib/isodoc/generic/html/word_generic_titlepage.html
 wordintropage: lib/isodoc/generic/html/word_generic_intro.html
-wordstylesheet: lib/isodoc/generic/html/wordstyle.scss
+wordstylesheet: lib/isodoc/generic/html/wordstyle.css
 i18nyaml: lib/isodoc/generic/html/i18n-en.yml
 boilerplate: lib/metanorma/generic/boilerplate.xml
 docid_template: "{{ organization_name_short }} {{ docnumeric }}"
@@ -372,9 +372,9 @@ Metanorma::Generic.configure do |config|
   )
 
   config.wordstylesheet = File.join(
-    isodoc_rsd_html_folder, 'wordstyle.scss'
+    isodoc_rsd_html_folder, 'wordstyle.css'
   )
-  config.standardstylesheet = File.join(isodoc_rsd_html_folder, 'ribose.scss')
+  config.standardstylesheet = File.join(isodoc_rsd_html_folder, 'ribose.css')
   config.header = File.join(isodoc_rsd_html_folder, 'header.html')
   config.wordcoverpage = File.join(
     isodoc_rsd_html_folder, 'word_rsd_titlepage.html'
@@ -382,7 +382,7 @@ Metanorma::Generic.configure do |config|
   config.wordintropage = File.join(isodoc_rsd_html_folder,
                                    'word_rsd_intro.html')
   config.htmlstylesheet = File.join(isodoc_rsd_html_folder,
-                                    'htmlstyle.scss')
+                                    'htmlstyle.css')
   config.htmlcoverpage = File.join(isodoc_rsd_html_folder,
                                    'html_rsd_titlepage.html')
   config.htmlintropage = File.join(isodoc_rsd_html_folder,
