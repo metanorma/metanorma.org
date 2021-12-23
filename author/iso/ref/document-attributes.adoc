@@ -242,3 +242,27 @@ In the case of multiple responsible groups (technical committees, subcommittees,
 the `:technical-committee:`, `:subcommittee:` and `:workgroup:` attributes can be used to encode multiple groups by suffixing `_n` to the attribute where `n` is a sequential number after 1.
 
 EXAMPLE: `:technical-committee_2:` and `:technical-committee-number_2:`; `:subcommittee:` and `:subcommittee-number_2:`.
+
+== Document relations
+
+The following document relations have been introduced for compatibility with ISO STS [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.10.4]. They are populated as with other document relation attributes;
+see link:/author/ref/document-attributes/#document-relations[Document relations].
+
+`revises`:: STS `revises`
+`replaces`:: STS `replaces`
+`amends`:: STS `amends`
+`corrects`:: STS `corrects` 
+`informatively-cited-in`:: STS `informativelyReferencedBy`
+`informatively-cites`:: STS `informativelyReferences`
+`normatively-cited-in`:: STS `normativelyReferencedBy`
+`normatively-cites`:: STS `normativelyReferences`
+`identical-adopted-from`:: STS `isIdenticalNationalStandardOf`
+`modified-adopted-from`:: STS `isModifiedNationalStandardOf`
+`successor-of`:: STS `isProgressionOf`
+`manifestation-of`:: STS `isPublishedFormatOf`
+`related-directive`:: STS `relatedDirective`
+`related-mandate`:: STS `relatedMandate`
+`supersedes`:: STS  `supersedes`
+`related`::  STS  `""` (empty value)
+
+EXAMPLE: `:informatively-cited-in: ISO 639;IEC 60050-112;W3C XML,Extensible Markup Language (XML)`
