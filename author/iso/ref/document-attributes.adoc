@@ -14,9 +14,9 @@ For _common document attributes_, see link:/author/ref/document-attributes[Docum
 For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
 ====
 
-== Document info
+== Document information
 
-`:tc-docnumber:`:: The document number assigned by the Technical committee
+`:tc-docnumber:`:: The document number assigned by the Technical Committee.
 
 `:partnumber:`:: The ISO document part number. This can be "`part-subpart`" if this is an ISO/IEC or IEC document.
 
@@ -215,55 +215,81 @@ in the drafting stage.
 `:technical-committee-number:`:: The number of the relevant ISO technical
 committee.
 
-`:technical-committee-type:`:: The type of the relevant technical committee. Defaults
-to `TC` if not supplied. Typical values: `TC`, `PC`, `JTC`, `JPC`.
+`:technical-committee-type:`:: The type of the relevant technical committee.
+Defaults to `TC` if not supplied.
+Typical values: `TC`, `PC`, `JTC`, `JPC`.
 
 `:technical-committee:`:: The name of the relevant ISO technical committee
 (mandatory)
 
 `:subcommittee-number:`:: The number of the relevant ISO subcommittee.
 
-`:subcommittee-type:`:: The type of the relevant ISO subcommittee. Defaults to
-`SC` if not supplied. Typical values: `SC`, `JSC`.
+`:subcommittee-type:`:: The type of the relevant ISO subcommittee.
+Defaults to `SC` if not supplied.
+Typical values: `SC`, `JSC`.
 
 `:subcommittee:`:: The name of the relevant ISO subcommittee
 
 `:workgroup-number:`:: The number of the relevant ISO working group
 
-`:workgroup-type:`:: The type of the relevant ISO working group. Defaults to `WG` if
-not supplied. +
+`:workgroup-type:`:: The type of the relevant ISO working group.
+Defaults to `WG` if not supplied. +
 +
-EXAMPLE: `JWG`, `JAG`, `AG` (advisory group), `AHG`, `SWG`,
-`SG`, `MA` (maintenance agency), `CORG`, `JCG`, `CAG`
+--
+[example]
+EXAMPLE: `JWG` (joint working group), `JAG` (joint advisory group), `AG` (advisory group),
+`AHG` (ad-hoc group), `SWG` (pecial working group), `SG` (strategic/steering group),
+`MA` (maintenance agency), `CORG` (co-ordination group),
+`JCG` (joint co-ordination group), `CAG` (chair advisory group).
+--
 
 `:workgroup:`:: The name of the relevant ISO working group
 
-In the case of multiple responsible groups (technical committees, subcommittees, working groups),
-the `:technical-committee:`, `:subcommittee:` and `:workgroup:` attributes can be used to encode multiple groups by suffixing `_n` to the attribute where `n` is a sequential number after 1.
 
-EXAMPLE: `:technical-committee_2:` and `:technical-committee-number_2:`; `:subcommittee:` and `:subcommittee-number_2:`.
+In the case of multiple responsible groups (technical committees, subcommittees,
+working groups), the `:technical-committee:`, `:subcommittee:` and `:workgroup:`
+attributes can be used to encode multiple groups by suffixing `_n` to the
+attribute where `n` is a sequential number after 1.
+
+====
+EXAMPLE:
+`:technical-committee_2:` and `:technical-committee-number_2:`; `:subcommittee:` and `:subcommittee-number_2:`.
+====
+
 
 == Document relations
 
-The following document relations have been introduced for compatibility with ISO STS [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.10.4]. They are populated as with other document relation attributes;
-see link:/author/ref/document-attributes/#document-relations[Document relations].
+Metanorma allows for encoding of document relations supported by ISOSTS.
 
-`revises`:: STS `revises`
-`replaces`:: STS `replaces`
-`amends`:: STS `amends`
-`corrects`:: STS `corrects` 
-`informatively-cited-in`:: STS `informativelyReferencedBy`
-`informatively-cites`:: STS `informativelyReferences`
-`normatively-cited-in`:: STS `normativelyReferencedBy`
-`normatively-cites`:: STS `normativelyReferences`
-`identical-adopted-from`:: STS `isIdenticalNationalStandardOf`
-`modified-adopted-from`:: STS `isModifiedNationalStandardOf`
-`successor-of`:: STS `isProgressionOf`
-`manifestation-of`:: STS `isPublishedFormatOf`
-`related-directive`:: STS `relatedDirective`
-`related-mandate`:: STS `relatedMandate`
-`supersedes`:: STS  `supersedes`
-`annotation-of`:: STS  `commentOn`
-`related`::  STS  `""` (empty value)
+They are populated in the same manner of other document relation attributes.
+Please refer to link:/author/ref/document-attributes/#document-relations[Document relations]
+for details.
 
-EXAMPLE: `:informatively-cited-in: ISO 639;IEC 60050-112;W3C XML,Extensible Markup Language (XML)`
+The following document relations are compatible with ISOSTS with their
+individual mappings shown [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.10.4].
+
+`revises`:: ISOSTS `revises`
+`replaces`:: ISOSTS `replaces`
+`amends`:: ISOSTS `amends`
+`corrects`:: ISOSTS `corrects`
+`informatively-cited-in`:: ISOSTS `informativelyReferencedBy`
+`informatively-cites`:: ISOSTS `informativelyReferences`
+`normatively-cited-in`:: ISOSTS `normativelyReferencedBy`
+`normatively-cites`:: ISOSTS `normativelyReferences`
+`identical-adopted-from`:: ISOSTS `isIdenticalNationalStandardOf`
+`modified-adopted-from`:: ISOSTS `isModifiedNationalStandardOf`
+`successor-of`:: ISOSTS `isProgressionOf`
+`manifestation-of`:: ISOSTS `isPublishedFormatOf`
+`related-directive`:: ISOSTS `relatedDirective`
+`related-mandate`:: ISOSTS `relatedMandate`
+`supersedes`:: ISOSTS  `supersedes`
+`annotation-of`:: ISOSTS  `commentOn`
+`related`::  ISOSTS  `""` (empty value)
+
+====
+EXAMPLE:
+[source,adoc]
+----
+:informatively-cited-in: ISO 639;IEC 60050-112;W3C XML,Extensible Markup Language (XML)
+----
+====
