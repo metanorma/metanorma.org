@@ -214,6 +214,19 @@ A well-defined standards code as the item label will by default result in the re
 bibliographic entry being auto-fetched, provided that auto-fetching has been defined for that class of
 standard (<<autofetch>>).
 
+=== Overriding fetching
+
+If an individual reference identifier is wrapped in `nofetch()`, the reference details for that
+item are not looked up, though other items still will be:
+
+[source,asciidoc]
+--
+[bibliography]
+== Bibliography
+
+* [[[ref1,nofetch(ISO 639-1)]]], ISO 639-1.
+* [[[ref2,ISO 639-2]]], ISO 639-2.
+--
 
 === Numeric reference tags
 
@@ -396,6 +409,20 @@ docid::
 type:: standard
 --
 
+=== Suppressing display
+
+It is expected that if a citation is made in the main body of the document, its corresponding reference
+will be included in the bibliography. It is however possible to suppress display of that reference in the
+bibliography, by wrapping it in `hidden()` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.4].
+
+[source,asciidoc]
+--
+[bibliography]
+== Bibliography
+
+* [[[ref1,hidden(ISO 639-1)]]], ISO 639-1.
+* [[[ref2,ISO 639-2]]], ISO 639-2.
+--
 
 == Citations
 
