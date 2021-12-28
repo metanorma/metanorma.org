@@ -1,4 +1,4 @@
-name: link_checker
+name: links
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
 
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.0
+        ruby-version: '3.1'
         bundler-cache: true
 
     - name: Build site
@@ -30,3 +30,10 @@ jobs:
         fail: true
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      # - name: Create Issue From File
+      #   uses: peter-evans/create-issue-from-file@v2
+      #   with:
+      #     title: Link Checker Report
+      #     content-filepath: ./lychee/out.md
+      #     labels: report, automated issue
