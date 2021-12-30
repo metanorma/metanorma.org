@@ -26,7 +26,7 @@ jobs:
     - name: Link Checker
       uses: lycheeverse/lychee-action@v1.2.0
       with:
-        args: --no-progress --exclude assets --exclude-file .lycheeignore -- _site/**/*.html
+        args: --verbose --no-progress --exclude-file .lycheeignore -- _site/**/*.html
         fail: true
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
