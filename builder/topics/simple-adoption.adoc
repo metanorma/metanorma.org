@@ -55,7 +55,7 @@ document_namespace: https://www.metanorma.org/standards/generic
 xml_root_tag: 'generic-standard'
 logo_path: lib/isodoc/generic/html/logo.jpg
 logo_paths: []
-validate_rng_file: lib/asciidoctor/generic/generic.rng
+validate_rng_file: lib/metanorma/generic/generic.rng
 htmlcoverpage: lib/isodoc/generic/html/html_generic_titlepage.html
 htmlintropage: lib/isodoc/generic/html/html_generic_intro.html
 htmlstylesheet: lib/isodoc/generic/html/htmlstyle.scss
@@ -66,7 +66,7 @@ wordcoverpage: lib/isodoc/generic/html/word_generic_titlepage.html
 wordintropage: lib/isodoc/generic/html/word_generic_intro.html
 wordstylesheet: lib/isodoc/generic/html/wordstyle.scss
 i18nyaml: lib/isodoc/generic/html/i18n-en.yml
-boilerplate: lib/asciidoctor/generic/boilerplate.xml
+boilerplate: lib/metanorma/generic/boilerplate.xml
 docid_template: "{{ organization_name_short }} {{ docnumeric }}"
 published_stages: ["published", "withdrawn"]
 committees: []
@@ -128,7 +128,7 @@ For example, `metanorma -t {short name} document.adoc` or `:mn-document-class: {
 ----
 --
 
-`validate_rng_file`:: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-generic/blob/main/lib/asciidoctor/generic/generic.rng for example. This and all other file directory paths are relative to the gem root.
+`validate_rng_file`:: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-generic/blob/main/lib/metanorma/generic/generic.rng for example. This and all other file directory paths are relative to the gem root.
 
 `htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts`::
 paths used for styling HTML output files.
@@ -391,7 +391,7 @@ Metanorma::Generic.configure do |config|
   config.logo_path = File.join(isodoc_rsd_html_folder, 'logo.png')
   config.xml_root_tag = 'ribose-standard'
 
-  rsd_rng_folder = File.join(File.expand_path('asciidoctor', __dir__), 'ribose')
+  rsd_rng_folder = File.join(File.expand_path('metanorma', __dir__), 'ribose')
   config.validate_rng_file = File.join(rsd_rng_folder, 'ribose.rng')
 end
 
@@ -399,7 +399,7 @@ require 'metanorma/ribose'
 require 'isodoc/generic'
 
 require 'asciidoctor' unless defined? Asciidoctor::Converter
-require 'asciidoctor/ribose'
+require 'metanorma/ribose'
 --
 
 In this configuration, you have to provide paths to your style definitions:
@@ -415,40 +415,39 @@ In this step you will create these folders:
 
 * `lib/metanorma/{your-flavor-name}/`
 * `lib/isodoc/{your-flavor-name}/`
-* `lib/asciidoctor/{your-flavor-name}/`
 
 And these files:
 
 * `lib/metanorma/{your-flavor-name}.rb`
 * `lib/metanorma/{your-flavor-name}/processor.rb`
 * `lib/metanorma/{your-flavor-name}/version.rb`
+* `lib/metanorma/{your-flavor-name}/converter.rb`
 * `lib/isodoc/{your-flavor-name}.rb`
 * `lib/isodoc/{your-flavor-name}/metadata.rb`
 * `lib/isodoc/{your-flavor-name}/{converter-type}.rb` (one converter per output format)
-* `lib/asciidoctor/{your-flavor-name}.rb`
-* `lib/asciidoctor/{your-flavor-name}/converter.rb`
 
 For example, in `metanorma-ribose`, you would have these files:
 
 * `lib/metanorma/ribose.rb`
 * `lib/metanorma/ribose/processor.rb`
 * `lib/metanorma/ribose/version.rb`
+* `lib/metanorma/ribose/converter.rb`
 * `lib/isodoc/ribose.rb`
 * `lib/isodoc/ribose/metadata.rb`
 * `lib/isodoc/ribose/html_converter.rb`
 * `lib/isodoc/ribose/word_converter.rb`
-* `lib/asciidoctor/ribose.rb`
-* `lib/asciidoctor/ribose/converter.rb`
 
 
 The first file `lib/metanorma/{your-flavor-name}.rb` defines your module,
-and links your flavor's processor to the Metanorma processor framework.
+and links your flavor's processor to the Metanorma processor framework, and
+also your input converters.
 
 [source,ruby]
 --
 # lib/metanorma/ribose.rb
 require "metanorma"
 require "metanorma/ribose/processor"
+require "metanorma/ribose/converter"
 
 module Metanorma
   module Rsd
@@ -578,38 +577,21 @@ end
 --
 
 
-Create `lib/asciidoctor/{your-flavor-name}.rb` to house your
-input converters.
-
-[source,ruby]
---
-# lib/asciidoctor/ribose.rb
-require "metanorma/ribose/version"
-require_relative "ribose/converter"
-
-module Asciidoctor
-  module Rsd
-
-  end
-end
---
-
-
-`lib/asciidoctor/{your-flavor-name}/converter.rb`
+`lib/metanorma/{your-flavor-name}/converter.rb`
 registers your new flavour to be used in `Metanorma::Cli`.
 
 [source,ruby]
 --
-# lib/asciidoctor/ribose/converter.rb
-require "asciidoctor/standoc/converter"
-require 'asciidoctor/generic/converter'
+# lib/metanorma/ribose/converter.rb
+require "metanorma/standoc/converter"
+require 'metanorma/generic/converter'
 
-module Asciidoctor
+module Metanorma
   module Rsd
     # A {Converter} implementation that generates Ribose output, and a document
     # schema encapsulation of the document for validation
     #
-    class Converter < Asciidoctor::Generic::Converter
+    class Converter < Metanorma::Generic::Converter
       register_for "ribose"
     end
   end
