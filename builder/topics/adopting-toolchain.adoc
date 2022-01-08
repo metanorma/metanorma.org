@@ -26,7 +26,7 @@ To customise behaviour further than Simple Adoption, you need to create a custom
 
 ** Change the root tag and namespace to a namespace specific to
   your organization's document standard
-  (`XML_ROOT_TAG` and `XML_NAMESPACE` located in `.../lib/asciidoctor/{flavour}/converter.rb`)
+  (`XML_ROOT_TAG` and `XML_NAMESPACE` located in `.../lib/metanorma/{flavour}/converter.rb`)
 
 * Change any references to `ribose` or `Ribose`
   in the gem to your organization's document standard.
@@ -46,13 +46,13 @@ The toolchains currently available proceed in two steps:
 
 Running the `metanorma` CLI tool involves a third step, of exposing the capabilities available in the first two in a consistent format.
 
-These two steps are represented as three separate modules, which are included in the same gem; for the Generic gem, they are `Asciidoctor::Generic`, `Isodoc::Generic`, and `Metanorma::Generic`.
+These two steps are represented as three separate modules, which are included in the same gem; for the Generic gem, they are `Isodoc::Generic`, and `Metanorma::Generic`.
 
 Your adaptation of the toolchain will need to instantiate these three modules. The connection between the two first steps is taken care of in the toolchain, and metanorma explicitly invokes the two steps, feeding the XML output of the first step as input into the second. The metanorma-sample gem outputs both Word and HTML; you can choose to output only Word, or only HTML, and you can choose to generate PDF as well.
 
-The modules involve classes which rely on inheritance from other classes; the current gems use `Asciidoctor::{Standoc, ISO, Generic}::Converter`, `Isodoc::{Metadata, HtmlConvert, WordConvert}`, and `Metanorma::Processor` as their base classes. This allows the standards-specific classes to be quite succinct, as most of their behaviour is inherited from other classes; but it also means that you need to be familiar with the underlying gems, in order to do most customization.
+The modules involve classes which rely on inheritance from other classes; the current gems use `Metanorma::{Standoc, ISO, Generic}::Converter`, `Isodoc::{Metadata, HtmlConvert, WordConvert}`, and `Metanorma::Processor` as their base classes. This allows the standards-specific classes to be quite succinct, as most of their behaviour is inherited from other classes; but it also means that you need to be familiar with the underlying gems, in order to do most customization.
 
-In the case of `Asciidoctor::X` classes, the changes you will need to make involve the intermediate XML representation of your document, which is built up through Nokogiri Builder; e.g. adding different enums, or adding new elements. The adaptations in `Asciidoctor::Generic::Converter` are limited (and are almost all to do with reading in properties from a config file), and most projects can take them across as is.
+In the case of `Metanorma::X` classes, the changes you will need to make involve the intermediate XML representation of your document, which is built up through Nokogiri Builder; e.g. adding different enums, or adding new elements. The adaptations in `Metanorma::Generic::Converter` are limited (and are almost all to do with reading in properties from a config file), and most projects can take them across as is.
 
 The customizations needed for `Metanorma::Sample::Processor` are minor, and involve invoking methods specific to the gem for document generation.
 
@@ -74,7 +74,7 @@ See link:/builder/topics/metadata-and-boilerplate/[Metadata and Predefined text]
 
 The `Isodoc::HtmlConvert` and `Isodoc::WordConvert` are expected to be near-identical, since any rendering differences between the two are addressed in the HTML CSS stylesheet. The `Isodoc::HtmlConvert` and `Isodoc::WordConvert` overlap substantially, as both use variants of HTML. However there is no reason not to make substantially different rendering choices in the HTML and Word branches of the code.
 
-=== Asciidoctor::Standoc customization examples
+=== Metanorma::Standoc customization examples
 
 In the following snippets, the parameter `node` represents the current node of the AsciiDoc document, and `xml` represents the Nokogiri Builder node of the XML output.
 
@@ -206,7 +206,7 @@ end
 [source,ruby]
 --
 def version
-  "Asciidoctor::Sample #{Asciidoctor::Sample::VERSION}"
+  "Metanorma::Sample #{Metanorma::Sample::VERSION}"
 end
 --
 
