@@ -1,0 +1,62 @@
+---
+layout: post
+title: "Migrating existing identifiers to the new 'NIST PubID' scheme"
+date: 2022-01-09
+categories: documentation
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+  -
+    name: Artur Komarov
+
+excerpt: >-
+  Migrating existing identifiers to the new 'NIST PubID' scheme.
+---
+== Introduction
+
+In order to adopt the NIST PubID scheme one important aspect is to be able to retroactively apply the scheme to previously published documents, so that the users of the new scheme can identify old documents using the new scheme.
+
+To assess the impact of the change and demonstrate the visual differences between the pre-PubID and post-PubID identifiers, a conversion and bulk comparison tool is necessary.
+
+To generate the new NIST PubIDs for existing documents, since the required data elements required in the new PubID scheme are not consistently provided in current NIST document identifiers, it is necessary to utilize the full metadata information of those documents.
+
+We implemented a conversion tool that extracts the required PubID data elements from existing NIST Tech Pubs metadata, such as the old identifier, DOI, edition and publication date information, to generate the new PubID.
+
+This tool is implemented as a Ruby gem, called `nist-pubid`. It can be installed as follows.
+
+[source,sh]
+----
+$ gem install nist-pubid
+Fetching nist-pubid-0.1.5.gem
+Successfully installed nist-pubid-0.1.5
+Parsing documentation for nist-pubid-0.1.5
+Installing ri documentation for nist-pubid-0.1.5
+Done installing documentation for nist-pubid after 0 seconds
+1 gem installed
+----
+
+The `nist-pubid` gem provides the `nist-pubid` command, which provides a full list of new PubIDs from the full NIST Tech Pubs metadata file published by the NIST Library (published on https://github.com/usnistgov/NIST-Tech-Pubs:[usnistgov GitHub]).
+
+[source,sh]
+----
+$ nist-pubid -s
+Current document ID | DOI | Title | Final PubID
+
+NBS BH 1 | NBS.BH.1 | Recommended minimum requirements for small dwelling construction : report of Building Code Committee July 20, 1922 | NBS BH 1
+NBS BH 10 | NBS.BH.10 | A city planning primer by the advisory committee on zoning appointed by Secretary Hoover | NBS BH 10
+NBS BH 11 | NBS.BH.11 | A standard city planning enabling act by the advisory committee on city planning and zoning appointed by secretary Hoover | NBS BH 11
+NBS BH 12 | NBS.BH.12 | Present home financing methods | NBS BH 12
+NBS BH 13 | NBS.BH.13 | Recommended minimum requirements for plumbing : report of subcommittee on plumbing of the building code committee revised August 30, 1928 | NBS BH 13
+NBS BH 14 | NBS.BH.14 | Recommended minimum requirements for fire resistance in buildings : report of the Department of Commerce building code committee | NBS BH 14
+NBS BH 15 | NBS.BH.15 | Care and repair of the house including minor improvements | NBS BH 15
+NBS BH 16 | NBS.BH.16 | The preparation of zoning ordinances : a guide for municipal officials and others in the arrangement of provisions in zoning regulations | NBS BH 16
+NBS BH 17 | NBS.BH.17 | How to own your home : a handbook for prospective home owners (2d edition, August 1931) | NBS BH 17
+----
+
+
+== References
+
+* https://www.iso.org/standard/51502.html[ISO 32000-1:2008], the PDF 1.7 standard
