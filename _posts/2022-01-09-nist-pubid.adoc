@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Migrating existing identifiers to the new 'NIST PubID' scheme"
+title: "Introducing NIST PubID, and the migration of publication identifiers"
 date: 2022-01-09
 categories: documentation
 authors:
@@ -11,52 +11,502 @@ authors:
       - https://github.com/ronaldtse
   -
     name: Artur Komarov
+    email: artur.komarov@gmail.com
+    social_links:
+      - https://github.com/mico
 
 excerpt: >-
-  Migrating existing identifiers to the new 'NIST PubID' scheme.
+  Brief introduction to the NIST PubID, the latest human-readable publication
+  identifier syntax at NIST, and the effort behind to migrate existing
+  identifiers.
 ---
-== Introduction
+== Summary
 
-In order to adopt the NIST PubID scheme one important aspect is to be able to retroactively apply the scheme to previously published documents, so that the users of the new scheme can identify old documents using the new scheme.
+This article introduces the NIST PubID and describes the `nist-pubid` conversion
+tool for migrating existing NIST publication identifiers to the NIST PubID
+scheme.
 
-To assess the impact of the change and demonstrate the visual differences between the pre-PubID and post-PubID identifiers, a conversion and bulk comparison tool is necessary.
 
-To generate the new NIST PubIDs for existing documents, since the required data elements required in the new PubID scheme are not consistently provided in current NIST document identifiers, it is necessary to utilize the full metadata information of those documents.
+== Publication identifiers
 
-We implemented a conversion tool that extracts the required PubID data elements from existing NIST Tech Pubs metadata, such as the old identifier, DOI, edition and publication date information, to generate the new PubID.
+=== Purpose
 
-This tool is implemented as a Ruby gem, called `nist-pubid`. It can be installed as follows.
+Publication identifiers are used to uniquely identifying publications,
+and they are everywhere.
+
+Take the ISBN for example. The ISBN (International Standard Book Number),
+amongst a family of identifiers created by
+https://www.iso.org/committee/48750.html[ISO/TC 46],
+provides a unique number for every title. The ISBN number is a numeric
+identifier of 10- or 13-digits, such as 978-0691097503 (ISBN-13) or 069109750X
+(ISBN-10).
+
+The DOI (Digital Object Identifier) is another identification scheme (also by
+ISO/TC 46) that is commonly used for digital publications because of its PURL
+(Persistent URL) properties.
+A DOI identifier takes a form of such: `10.6028/NIST.SP.800-116r1`, where the
+portion before the slash is a registered namespace (10.6028 represents NIST),
+and the portion after the slash is the publication identifier within the namespace.
+The DOI can be used as a PURL through the official DOI website, which provides a
+redirect of a DOI to a full URL.
+
+[example]
+The DOI URL of https://doi.org/10.6028/NIST.SP.800-116r1 redirects to the full
+URL https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-116r1.pdf.
+
+
+=== Publication identifiers for standards
+
+Some identifier schemes not only provide a unique reference to a publication,
+they also allow conveying additional information about the publication itself.
+
+* The ISBN identifier is a series of numbers that while are
+easily readable, a series of 10 or 13 digits are difficult to remember.
+The ISBN identifier is not meant to convey any information about the book
+itself other than providing a unique reference.
+
+* The DOI identifier is a string of characters. While the scheme does not
+require any further information than a random string of characters, many
+publishers have tried adding meaning to that particular string.
+For example, in the case of `10.6028/NIST.SP.800-116r1`, one might be able to
+tell that this identifier is for the publication
+"`NIST Special Publication 800-116 Revision 1`" given some knowledge about
+the NIST SP series (even without knowing `10.6028` stands for NIST).
+
+Standards organizations typically use organization-specific publication
+identifiers that convey additional information about their own publications such
+as:
+
+* the type of the standard
+* the development stage of the standard
+* obligation or the normative status of the standard
+* edition and/or publication date of the standard
+* revision information
+
+For example, an ISO publication identifier like "ISO/DIS 34000:2021",
+describes that the standard is published by ISO, its number is "34000", the
+developmental stage is "DIS" (Draft International Standard), and published in
+2021.
+
+There are many complex standards identifiers that can be saved for another post!
+
+Today we focus on the NIST PubID, which is a standard identifier for NIST
+Tech Pubs.
+
+
+== NIST PubID
+
+=== Background
+
+NIST has recently published a draft of their
+http://www.nist.gov/system/files/documents/2021/08/26/Publication-ID-Proposal_26Aug21.pdf["`Publication Identifier Syntax for NIST Technical Series Publications`"],
+issued by the NIST Information Services Office.
+
+This document describes a new syntax called "`PubID`" that can uniquely identify
+individual publications within the NIST Technical Series Publications (commonly
+referred to as "`NIST Tech Pubs`").
+
+NOTE: Hereinafter we refer to this syntax as the "NIST PubID".
+
+The PubID scheme is jointly developed by the
+https://www.nist.gov/associate-director-management-resources/staff-offices/information-services-office[NIST Information Services Office]
+and the
+https://www.nist.gov/itl/csd[NIST Computer Security Division].
+
+A public comment period was held by NIST on PubID that concluded late 2021,
+and the Ribose/Metanorma team has had a chance to submit a formal response to
+the request for comments.
+
+NOTE: The Ribose/Metanorma response is openly published
+at https://riboseinc.github.io/report-nist-pubid/
+(https://github.com/riboseinc/report-nist-pubid[source at GitHub]).
+
+
+
+Prior to PubID, identifiers of NIST Tech Pubs had some conventional structure
+but were not formally defined. Given that the National Bureau of Standards,
+the predecessor of NIST, first published what is now called the
+NIST Tech Pubs series of documents in 1901, there is a long history of
+inconsistent and specially assigned identifiers that did not fulfill the roles
+needed for an identifier for standards.
+
+In addition, with the increased expectation in public transparency of standards
+in development, NIST is trying to publish and circulate earlier drafts outside
+of NIST and to the public for comments. Given that there are multiple
+development stages, it is important that every iteration of a standard document
+is uniquely referable and can be differentiated amongst its stages.
+
+
+=== Purpose
+
+The NIST PubID intends to consolidate all NIST Tech Pubs with a unified
+identification scheme that can convey standardization status information
+to its readers.
+
+Based on the existing NIST publication identifier convention, the PubID team
+took inspiration from the ISO and IEC standard identifiers.
+
+The eventual PubID scheme should work not only with newly created publications,
+but also the full collection of Tech Pubs -- the full NIST Library catalog of
+19,333 NIST Tech Publications dating from 1901 to 2022.
+
+NOTE: The 19,333 figure is as of 2022-01-10 according to the NIST Tech Pubs
+XML metadata records published on GitHub.
+
+
+=== Scenarios
+
+The NIST PubID addresses four aspects of document identifiers used in NIST Tech
+Pubs.
+
+A traditional NIST Tech Pub practice is to provide variants of the publication
+identifier inside the document itself:
+
+* Full form, used in the title and the bibliography for citations
++
+====
+"National Institute of Standards and Technology Special Publication 800-27, Revision A"
+====
+
+* Abbreviated form, used in the "Authority" section
++
+====
+"Natl. Inst. Stand. Technol. Spec. Publ. 800-57 Part 1, Revision 4"
+====
+
+* Short form, used for inline citations
++
+====
+"In Section 3.2 of SP 800-187..."
+====
+
+In recent years, NIST Tech Pubs have been assigned individual DOIs, and
+the newly published documents often have their own DOI embedded within the
+documents. So we have a fourth variant:
+
+* Machine-readable form, used for the DOI and the DOI URL
++
+====
+"NIST.SP.800-116r1"
+====
+
+One important goal of the NIST PubID is to be able to automatically generate and
+interchange any given variant into another, through a defined set of metadata
+data models.
+
+This particular usage can be seen in the diagram from our response to NIST in
+their PubID comments solicitation period
+(Comments on the "`Publication Identifier Syntax for NIST Technical Series Publications`").
+
+.PubID core data elements and its rendered outputs
+image::/assets/blog/2022-01-09_1.svg[PubID interchange and outputs]
+
+
+=== Core data elements
+
+The PubID is an advanced attempt in encoding metadata that can be embedded
+within a human-readable identifier but also allow the machine extraction of
+them.
+
+In order to make this happen, a core set of data elements are defined that are
+used to build the PubID.
+
+These data elements include:
+
+*Publisher*:: NIST and its predecessor NBS have published documents under its own
+abbreviation.
+
+*Series*:: The publication series. There are at least 53 publication series in
+NIST Tech Pubs.
+
+*Stage*:: Some groups within NIST, such as the Computer Security Division,
+publish early drafts for external circulation and public preview/review.
+Having the standardization stage encoded allows reviewers to uniquely identify
+drafts for citations as well as prevent misidentification with final
+publications.
+
+*Report number*:: The identification of a publication within a NIST series.
+
+*Part*:: There are standards that are of multiple parts or volumes, and they
+should be identified as such.
+
+*Edition*:: Publications get revised and often get published in multiple
+editions. This element supports revision numbers, publication dates and
+versions.
+
+*Translation*:: Publications that are published in the non-English languages get
+assigned a specific code.
+
+*Update*:: The update number indicates that a publication has been updated since
+its first publication. In NIST Tech Pubs, an "updated" publication means it
+incorporates changes from previously published errata.
++
+NOTE: In contrast with ISO or IEC, NIST typically does not publish
+individual corrigendum or errata Tech Pubs, instead, "updated" Tech Pubs that
+incorporate corrections are published.
+
+Detailed information on these elements can be found at:
+https://github.com/metanorma/nist-pubid
+
+
+== Planning the migration to NIST PubIDs
+
+=== Historic compatibility and testing
+
+In order to adopt the NIST PubID scheme, one important aspect is to be able to
+retroactively apply the scheme to previously published documents, so that the
+users of the new scheme can identify legacy documents using the new scheme.
+That's converting a total of 19,333 identifiers!
+
+The NIST Library (thanks to Kathryn and Kate) has very helpfully published the
+raw data they have of the NIST Tech Pubs in XML format on GitHub (link:
+https://github.com/usnistgov/NIST-Tech-Pubs).
+
+While data elements in the XML do not fully cover those needed for the NIST
+PubID scheme (it is a new scheme after all!), we can extract information from
+the existing publication identifiers and corresponding DOIs for the missing
+values.
+
+=== Assessing migration impact
+
+To assess the impact of the change and demonstrate the visual differences
+between the pre-PubID and post-PubID identifiers, a conversion and bulk
+comparison tool is necessary.
+
+In particular, we wish to do the following:
+
+. Parse a NIST publication identifier into a NIST PubID object;
+. If the NIST publication identifier does not contain sufficient information,
+  parse the DOI and supplement that information into the PubID.
+
+We also wish to generate a comparison table (e.g. CSV) to allow easy comparison
+between legacy and new PubID identifiers.
+
+
+== A conversion tool for NIST PubIDs: `nist-pubid`
+
+=== Introduction
+
+To generate the new NIST PubIDs for existing documents, since the required data
+elements required in the new PubID scheme are not consistently provided in
+current NIST document identifiers, it is necessary to utilize the full metadata
+information of those documents.
+
+We implemented an open-source conversion tool that extracts the required PubID
+data elements from existing NIST Tech Pubs metadata, such as the legacy identifier,
+DOI, edition and publication date information, to generate the new PubID.
+
+This tool is realized as a Ruby gem called https://github.com/metanorma/nist-pubid[`nist-pubid`].
+
+https://github.com/metanorma/nist-pubid[`nist-pubid`] provides a CLI
+(Command-Line Interface) and a Ruby library that can be used to create and
+manipulate PubID objects.
+
+In this post we will show how to generate and convert NIST PubIDs through the
+CLI.
+
+=== Installation
+
+The only prerequisite is to have Ruby installed. Please refer to the
+https://www.ruby-lang.org/en/documentation/installation/[official Ruby installation guide].
+
+The `nist-pubid` tool can be installed as follows.
 
 [source,sh]
 ----
 $ gem install nist-pubid
-Fetching nist-pubid-0.1.5.gem
-Successfully installed nist-pubid-0.1.5
-Parsing documentation for nist-pubid-0.1.5
-Installing ri documentation for nist-pubid-0.1.5
-Done installing documentation for nist-pubid after 0 seconds
-1 gem installed
 ----
 
-The `nist-pubid` gem provides the `nist-pubid` command, which provides a full list of new PubIDs from the full NIST Tech Pubs metadata file published by the NIST Library (published on https://github.com/usnistgov/NIST-Tech-Pubs:[usnistgov GitHub]).
+Now you should be able to use the `nist-pubid` command.
+
+When called without arguments (or as `nist-pubid help`) the help screen will
+be shown.
 
 [source,sh]
 ----
-$ nist-pubid -s
-Current document ID | DOI | Title | Final PubID
-
-NBS BH 1 | NBS.BH.1 | Recommended minimum requirements for small dwelling construction : report of Building Code Committee July 20, 1922 | NBS BH 1
-NBS BH 10 | NBS.BH.10 | A city planning primer by the advisory committee on zoning appointed by Secretary Hoover | NBS BH 10
-NBS BH 11 | NBS.BH.11 | A standard city planning enabling act by the advisory committee on city planning and zoning appointed by secretary Hoover | NBS BH 11
-NBS BH 12 | NBS.BH.12 | Present home financing methods | NBS BH 12
-NBS BH 13 | NBS.BH.13 | Recommended minimum requirements for plumbing : report of subcommittee on plumbing of the building code committee revised August 30, 1928 | NBS BH 13
-NBS BH 14 | NBS.BH.14 | Recommended minimum requirements for fire resistance in buildings : report of the Department of Commerce building code committee | NBS BH 14
-NBS BH 15 | NBS.BH.15 | Care and repair of the house including minor improvements | NBS BH 15
-NBS BH 16 | NBS.BH.16 | The preparation of zoning ordinances : a guide for municipal officials and others in the arrangement of provisions in zoning regulations | NBS BH 16
-NBS BH 17 | NBS.BH.17 | How to own your home : a handbook for prospective home owners (2d edition, August 1931) | NBS BH 17
+$ nist-pubid
+Commands:
+  nist-pubid convert         # Convert legacy NIST Tech Pubs ID to NIST PubID
+  nist-pubid help [COMMAND]  # Describe available commands or one specific command
+  nist-pubid report          # Create report for NIST Tech Pubs database (fetches from GitHub)
 ----
+
+=== Converting a legacy identifier to NIST PubID
+
+The command `nist-pubid` provides a `convert` subcommand that converts a legacy
+Nist Tech Pubs identifier into the NIST PubID format.
+
+Here's how it can be used:
+
+[source,sh]
+----
+$ nist-pubid help convert
+Usage:
+  nist-pubid convert
+
+Options:
+  -s, [--style=STYLE]    # Convert to PubID style (short|long|mr|abbrev)
+                         # Default: short
+  -f, [--format=FORMAT]  # Render in format (JSON, string)
+                         # Default: string
+
+Convert legacy NIST Tech Pubs ID to NIST PubID
+----
+
+[source,sh]
+----
+$ nist-pubid convert "NIST SP 800-53a"
+NIST SP 800-53A
+$ nist-pubid convert "NIST SP 800-57p1r3"
+NIST SP 800-57pt1r3
+----
+
+The `convert` command also supports DOI conversion.
+
+[source,sh]
+----
+$ nist-pubid convert "NIST.SP.800-57p1r3"
+NIST SP 800-57pt1r3
+----
+
+In addition to outputting PubID short style, we can also output other styles
+and formats of the resulting PubID.
+
+[source,sh]
+----
+$ nist-pubid convert -s mr "NIST SP 800-53a"
+NIST.SP.800-53A
+$ nist-pubid convert -s long -f json "NIST SP 800-53a" | jq
+{
+  "styles": {
+    "short": "NIST SP 800-53A",
+    "abbrev": "Natl. Inst. Stand. Technol. Spec. Publ. 800-53A",
+    "long": "National Institute of Standards and Technology Special Publication 800-53A",
+    "mr": "NIST.SP.800-53A"
+  },
+  "publisher": "NIST",
+  "serie": "NIST SP",
+  "code": "800-53A"
+}
+----
+
+=== Generating the bulk NIST Tech Pubs migration report
+
+This is the nice part -- a single command that generates the full table of
+converted PubIDs from the NIST Tech Pubs database, comprising of 19,333
+entries.
+
+The `report` command can be used as follows:
+
+[source,sh]
+----
+$ nist-pubid help report
+Usage:
+  nist-pubid report
+
+Options:
+  [--csv], [--no-csv]  # Export to CSV format
+
+Create report for NIST Tech Pubs database (fetches from GitHub)
+----
+
+The purpose of this command is to aid the NIST PubID team in assessing the
+impact and type of changes to be made in enacting this new scheme.
+
+By default, the `report` command generates a table to indicate which migrated
+identifiers have changed, focusing on changes of two styles:
+
+* PubID in short style vs legacy publication ID
+* PubID in machine-readable style vs legacy DOI
+
+As seen in the following output, a `✅` or a `-` will be shown in the appropriate
+column of change.
+
+[source,sh]
+----
+$ nist-pubid report
+ID changed? | New PubID | Document ID | DOI changed? | New PubID-MR | DOI | Title
+ - | NBS BH 1 | NBS BH 1 |  - | NBS.BH.1 | NBS.BH.1 | Recommended minimum requirements for small dwelling construction : report of Building Code Committee July 20, 1922
+ - | NBS BH 10 | NBS BH 10 |  - | NBS.BH.10 | NBS.BH.10 | A city planning primer by the advisory committee on zoning appointed by Secretary Hoover
+ ...
+✅ | NBS BH 3A | NBS BH 3a | ✅ | NBS.BH.3A | NBS.BH.3a | A zoning primer by the advisory committee on zoning appointed by Secretary Hoover (Revised)
+ - | NBS BH 4 | NBS BH 4 |  - | NBS.BH.4 | NBS.BH.4 | How to own your home : a handbook for prospective home owners
+✅ | NBS BH 5A | NBS BH 5a | ✅ | NBS.BH.5A | NBS.BH.5a | A standard state zoning enabling act under which municipalities may adopt zoning regulations by the advisory committee on zoning appointed by Secretary Hoover (revised edition 1926)
+...
+✅ | NBS RPT 2751 | NBS report ; 2751 |  - | NBS.RPT.2751 | NBS.RPT.2751 | Stochastic search for the maximum of a function
+ ...
+✅ | NBS RPT 2831 | NBS report ; 2831 |  - | NBS.RPT.2831 | NBS.RPT.2831 | Error bounds for eigenvalues of symmetric integral equations
+----
+
+
+Better yet, the `report` command supports CSV output. The "changes" fields
+will display `true` or `false` accordingly.
+
+[source,sh]
+----
+$ nist-pubid report --csv
+ID changed?,New PubID,Document ID,DOI changed?,New PubID-MR,DOI,Title
+false,NBS BH 1,NBS BH 1,false,NBS.BH.1,NBS.BH.1,"Recommended minimum requirements for small dwelling construction : report of Building Code Committee July 20, 1922"
+false,NBS BH 10,NBS BH 10,false,NBS.BH.10,NBS.BH.10,A city planning primer by the advisory committee on zoning appointed by Secretary Hoover
+false,NBS BH 11,NBS BH 11,false,NBS.BH.11,NBS.BH.11,A standard city planning enabling act by the advisory committee on city planning and zoning appointed by secretary Hoover
+...
+true,NIST SP 260-214,NIST SP 260-14,false,NIST.SP.260-214,NIST.SP.260-214,"Analysis of Seafood Reference Materials: RM 8256, RM 8257, RM 8258 and RM 8259, Wild-Caught Coho Salmon (RM 8256), Aquacultured Coho Salmon (RM 8257), Wild-Caught Shrimp (RM 8258), Aquacultured Shrimp (RM 8259)"
+false,NIST SP 260-14,NIST SP 260-14,false,NIST.SP.260-14,NIST.SP.260-14,"Analysis of Seafood Reference Materials: RM 8256, RM 8257, RM 8258 and RM 8259, Wild-Caught Coho Salmon (RM 8256), Aquacultured Coho Salmon (RM 8257), Wild-Caught Shrimp (RM 8258), Aquacultured Shrimp (RM 8259)"
+true,NIST IR 8379,NISTIR 8379,false,NIST.IR.8379,NIST.IR.8379,Summary Report for the Virtual Workshop Addressing Public Comment on NIST Cybersecurity for IoT Guidance
+----
+
+
+The best part is that this CSV will work properly with spreadsheet editors like
+Excel and Pages.
+All you need is to export the CSV values to a CSV file, and open it in your
+favorite program.
+
+[source,sh]
+----
+$ nist-pubid report --csv > myreport.csv
+----
+
+It is easy to filter these columns in Microsoft Excel with the following steps:
+
+. Open the CSV file in Excel
+. Convert the header row into a filter row:
+  first highlight the header row, then click on "Data > Filter"
+. Filter the columns accordingly
+
+.PubID conversion report, showing mapping between legacy publication identifiers and NIST PubIDs
+image::/assets/blog/2022-01-09_2.png[PubID conversion report, showing mapping between legacy publication identifiers and NIST PubIDs]
+
+Now it's easy to screen through the anomalies and surface the data issues!
+
+
+== Conclusion
+
+NIST has taken an innovative first step in formalizing a standards publication
+identification scheme.
+
+NIST PubID is a very well thought-out approach for implementing a
+standards publication identifier that works well for humans and machines.
+And we hope that it sets precedence for other SDOs to build their own documented
+identifier scheme based on the NIST experience.
+
+We look forward to its finalization in 2022, and let's see if other SDOs follow
+suit!
+
+== Special thanks
+
+Special thanks to https://www.nist.gov/people/james-foti[Jim Foti]
+of the https://www.nist.gov/itl/csd[CSD, ITL], and
+https://www.nist.gov/people/kathryn-miller[Kathryn Miller] and
+https://www.nist.gov/people/kate-bucher[Kate Bucher] of the
+https://www.nist.gov/associate-director-management-resources/staff-offices/information-services-office[ISO],
+Management Resources for developing the PubID scheme,
+and really appreciate the mention in the acknowledgments section!
 
 
 == References
 
-* https://www.iso.org/standard/51502.html[ISO 32000-1:2008], the PDF 1.7 standard
+* http://www.nist.gov/system/files/documents/2021/08/26/Publication-ID-Proposal_26Aug21.pdf[NIST: Publication Identifier Syntax for NIST Technical Series Publications]
+
+* https://github.com/usnistgov/NIST-Tech-Pubs[NIST Tech Pubs metadata on GitHub (usnistgov)]
+
+* https://github.com/metanorma/nist-pubid[Metanorma `nist-pubid` PubID conversion tool]
