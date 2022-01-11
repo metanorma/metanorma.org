@@ -139,9 +139,13 @@ https://github.com/metanorma/mn-samples-itu[mn-samples-itu].
 Given that Docker containers are transient, non-default fonts installed on
 the container will disappear on the next run.
 
-The official Metanorma Docker images (`metanorma/mn` and `metanorma/metanorma`)
-provide a mechanism for font caching to avoid fonts being re-downloaded on each
-Docker run.
+The official Metanorma Docker images (the release image `metanorma/metanorma`
+and development image `metanorma/mn`) provide a mechanism for font caching to
+avoid fonts being re-downloaded on each Docker run.
+
+NOTE: The `metanorma/mn` image is intended for development only, and is not
+*guaranteed* to work. Please use the `metanorma/metanorma` image unless you
+absolutely need unreleased features of Metanorma.
 
 The Metanorma Docker images expose a separate volume `/config/fonts` to
 store non-default fonts.
@@ -158,7 +162,7 @@ docker run \
   -v "$(pwd)":/metanorma \
   -v "${HOME}/.fontist/fonts":/config/fonts \
   -w /metanorma \
-  metanorma/mn \
+  metanorma/metanorma \
   metanorma metanorma site generate --agree-to-terms
 ----
 
@@ -173,7 +177,7 @@ docker run ^
   -v %USERPROFILE%\.fontist\fonts:/config/fonts ^
   -w /metanorma ^
   -it ^
-  metanorma/mn ^
+  metanorma/metanorma ^
   metanorma site generate --agree-to-terms
 ----
 
@@ -186,9 +190,16 @@ docker run `
   -v ${env:USERPROFILE}/.fontist/fonts:/config/fonts `
   -w /metanorma `
   -it `
-  metanorma/mn `
+  metanorma/metanorma `
   metanorma site generate --agree-to-terms
 ----
+
+
+WARNING: The Metanorma containers are currently only published using the x86-64
+architecture. If you are on an ARM-based platform such as Apple Silicon, you
+will have to add the `--platform linux/amd64` argument for these commands to
+work.
+
 
 
 == Questions and feedback
