@@ -169,6 +169,20 @@ The value must provide the exact draft iteration in _X.Y_ format
 If present, link:/author/topics/document-format/reviewer-notes[reviewer notes]
 will be rendered (otherwise those are suppressed).
 
+== Generic metadata
+
+Metanorma allows generic metadata to be passed to the generated document in key/value form, for downstream
+use [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.1].
+This metadata needs to be indicated as either semantic, or presentation-related. The name of the metadata
+value is included in the document attribute:
+
+`:semantic-metadata-{name}:`::
+Comma-delimited list of values, relating to `name` as semantic metadata about the document.
+Stored in the document under `//misc-container/semantic-metadata/{name}`, with repeating tags for each value.
+
+`:presentation-metadata-{name}:`::
+Comma-delimited list of values, relating to `name` as presentation metadata about the document.
+Stored in the document under `//misc-container/presentation-metadata/{name}`, with repeating tags for each value.
 
 == Document relations
 
