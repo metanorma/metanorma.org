@@ -1,0 +1,37 @@
+---
+layout: tutorial
+title: Index terms
+---
+:page-liquid:
+//include::/author/topics/inline_markup/index.adoc[tag=tutorial]
+
+Before you define an index term, your document needs a section where the index terms can appear. To create an index, define a level 1 section (==) marked with the style index at the end of your document.
+
+[source, AsciiDoc]
+----
+[index]
+== Index
+----
+Index entries can consist of up to three levels using a comma to separate the terms. Metanorma provides two options to create an index entry:
+
+* Visible index terms are words within the text that are annotated with an index entry using double parentheses. `\((Level 1 index term))`
+* Hidden index terms are index entries that are not visible in the final output and are generated using triple parentheses. `(\((Level 1 index term, Level 2 index term, Level 3 index term)))`. These allow the index to include optional subterms and sub-subterms; they also allow the index term to differ from what actually appears in the text.
+
+Let’s have a look at an example:
+
+[source, AsciiDoc]
+----
+The Lady of the Lake, her arm clad in the purest shimmering samite,
+held aloft Excalibur from the bosom of the water,
+signifying by divine providence that I, ((Arthur)), <1>
+was to carry Excalibur (((Sword, Broadsword, Excalibur))). <2>
+----
+<1> `\((Arthur))` will be displayed as `Arthur` in the text and carries a first level index entry
+<2> `(\((Sword, Broadsword, Excalibur)))` will not appear in the text, but a three level index entry will be generated.
+
+=== Practice time
+
+{% include_relative /exercises.adoc content="exercise-2-4-2" %}
+
+In the next lesson, we will cover references and links.
+//Button
