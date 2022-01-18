@@ -1,0 +1,274 @@
+////
+Case construct, see:
+https://shopify.github.io/liquid/tags/control-flow/
+////
+:page-liquid:
+
+The code for this exercise is available on https://github.com/metanorma/metanorma-tutorial/tree/master/sources/standard[GitHub]. 
+
+The corresponding file is named `{{include.content}}.adoc`
+
+{% case {{include.content}} %}
+  {% when "exercise-2-1" %}
+Now it’s your turn. Fill the document with the following attributes: 
+
+[%interactive]
+* [ ] Document title
+* [ ] Your name
+* [ ] Your organization using the `:publisher:` attribute
+* [ ] Your organization's address
+* [ ] The document class: `standoc`
+* [ ] The document type: `document`
+* [ ] The language
+* [ ] The copyright year
+
+.Hint
+[%collapsible]
+====
+To declare an attribute, follow the syntax `:attribute: value`. 
+
+For example: `:publisher: Ribose Inc.`
+==== 
+
+  {% when "exercise-2-2" %}
+Look at the prepopulated Metanorma document. 
+There are many clauses describing the content but there are sections missing to form a correct standard document. 
+Add the following sections:
+
+[%interactive]
+* [ ] Foreword on line 13
+* [ ] Introduction on line 21
+* [ ] Terms and definitions on line 27
+* [ ] Bibliography on line 60
+
+  {% when "exercise-2-3-1" %}
+Add lists to the prepopulated document.
+
+[%interactive]
+* [ ] Add an ordered list in lines 17-24.
+* [ ] Add an unordered list in lines 36-40.
+* [ ] Add a definition list in lines 46-48.
+
+.Hint
+[%collapsible]
+====
+Ordered list items start with a dot, followed by a blank: `. List item`.
+
+Unordered list items start with an asterisk, followed by a blank: `* List item`. 
+
+To write a definition list, follow the syntax: 
+`term:: Definition`
+====
+
+  {% when "exercise-2-3-2" %}
+Create a term definition entry for the term "immature kernel":
+[%interactive]
+* [ ] Add an alternative term ("unripe kernel")
+* [ ] Add a deprecated term ("raw kernel")
+* [ ] Add a definition: kernel, whole or broken, which is unripe and/or underdeveloped.
+
+.Hint
+[%collapsible]
+======
+The structure for a term definition looks like this:
+[source, AsciiDoc]
+----
+=== Term
+alt:[alternative term]
+deprecated:[deprecated term]
+
+definition
+----
+======
+
+  {% when "exercise-2-3-3" %}
+Let's compare rice against wheat in a table:
+[%interactive]
+* [ ] Create an empty three column table with seven rows.
+* [ ] Add a table title: "Nutrient profile of rice vs. wheat"
+* [ ] Let's make the first column a bit wider than the other two colums in the ratio 3:2:2 by using the `cols` attribute.
+* [ ] Populate the table like this: +
+
+[cols="3,2,2"]
+.Nutrient profile of rice vs. wheat
+|===
+|Nutrient | Rice| Wheat
+|Energy (kJ)| 1736 | 1574
+|Protein (g)| 8.1 | 14.5
+|Fat (g)| 0.8 | 1.8
+|Carbohydrates (g)| 91 | 82
+|Fiber (g) | 1.5 | 14
+|Sugar (g)|0.1 | 0.5
+|===
+
+
+.Hint
+[%collapsible]
+======
+The structure for a three column table looks like this:
+[source, AsciiDoc]
+----
+|===
+|||
+|||
+|||
+|===
+----
+======
+  {% when "exercise-2-3-4" %}
+Insert an image of a rice plant in line 17 by following the steps below:
+[%interactive]
+* [ ] Add an image macro.  
+* [ ] Populate the `image::` macro with this link: +
+----
+ https://upload.wikimedia.org/wikipedia/commons/2/27/Oryza_sativa_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-232.jpg
+----
+[%interactive]
+* [ ] Add a picture title (Oryza sativa)
+* [ ] Create a key with three entries +
+----
+A:: Rice - A flowering specimen of the variety _melanoceras_ Alef.
+B:: blossom panicle
+C:: crop panicle
+----
+
+.Hint
+[%collapsible]
+====
+The syntax for images is: `image::URL[]`. 
+
+Make sure to include the square brackets after the link.
+====
+
+  {% when "exercise-2-3-5" %}
+Turn the existing text into admonitions:
+[%interactive]
+* [ ] Turn the text in line 15 into an `IMPORTANT` admonition.
+* [ ] Turn the text in lines 17-19 into a `WARNING` admonition.
+* [ ] Turn the text in line 21 into a `NOTE` admonition.
+
+.Hint
+[%collapsible]
+======
+To create admonitions that span several lines, you need to declare a block.
+[source, AsciiDoc]
+----
+[NOTE]
+====
+This is a long note. 
+It contains three lines.
+Line three.
+====
+----
+======
+
+  {% when "exercise-2-3-6" %}
+There are some code samples in the document but they are not neatly packed into `source` blocks, so they cause trouble. 
+
+[%interactive]
+* [ ] Create a source block with the attribute `ruby` for the code in lines 14-29.
+* [ ] Create a source block with the attribute `python` for the code in line 32
+* [ ] Create a source block with the attribute `java` for the code in lines 35-39.
+
+.Hint
+[%collapsible]
+======
+Source code blocks look like this:
+
+[source, Asciidoc]
+----
+[source, language]
+====
+Code
+====
+----
+======
+
+  {% when "exercise-2-4-1" %}
+Format the text using the following formatting:
+[%interactive]
+* [ ] Add underline formatting to "Earth institute" in line 18
+* [ ] Add bold formatting to "from Africa, for Africa" in line 20
+* [ ] Add italic formatting to _The New York times_ and _International Herald Tribune_ in line 21
+* [ ] Add smallcaps formatting to all instances of "NERICA"
+* [ ] Add a footnote on line 22 explaining the term "perennial". Footnote text: A perennial plant lives more than two years.
+
+  {% when "exercise-2-4-2" %}
+Let's add some index entries to the text. 
+[%interactive]
+* [ ] Add a visible index entry to "UN Millennium Development project" in line 17
+* [ ] Add an invisible three level index entry after NERICA in line 21: NERICA, economy, Green revolution
+* [ ] Add an invisible two level index entry in line 22 after rice: rice, perennial
+* [ ] Create a new index section at the bottom of the document
+
+.Hint
+[%collapsible]
+====
+Visible index terms: `\((Level 1 index term))`
+
+Hidden index terms: `(\((Level 1 index term, Level 2 index term, Level 3 index term)))`
+====
+
+  {% when "exercise-2-4-3" %}
+Let's add some references to the sample document.
+
+Internal references: 
+[%interactive]
+* [ ] Create an anchor for the table called `table1`
+* [ ] Reference the table in lines 30 and 36.
+
+Bibliographic references: 
+The text references some standards which don't have a matching entry in the bibliography section. Add the following references: 
+[%interactive]
+* [ ] ISO712, ISO712:2009, _Cereals and cereal products — Determination of moisture content — Reference method_
+* [ ] ISO7301, ISO 7301:2011, _Rice -- Specification_
+* [ ] IEC61010-2, IEC 61010-2:1998, _Safety requirements for electric equipment for measurement, control, and laboratory use -- Part 2: Particular requirements for laboratory equipment for the heating of material_
+
+.Hint
+[%collapsible]
+====
+Setting an anchor: `\[[anchor]]`
+
+Referencing an anchor: `\<<anchor>>`
+====
+
+  {% when "exercise-3-1" %}
+The text contains some typos. Mark the errors using comments.
+[%interactive]
+* [ ] Line 16: weter
+* [ ] Line 18: exseed
+* [ ] Line 20: eyes
+
+  {% when "exercise-3-2" %}
+Enter the command `metanorma document.adoc` into the terminal and see what happens.
+
+  {% when "exercise-4-2" %}
+The following document doesn't compile because there are some errors. 
+
+. Enter `metnanorma exercise-4.adoc` to trigger the build process
+. Have a look at the error messages
+. Try to debug the document. If you get stuck, have a look at the hints. 
+. Once you solved the errors, run `metanorma exercise-4.adoc` again to see if the document compiles.
+
+.Hint Error 1
+[%collapsible]
+====
+Lines 12 and 43: Both sections have the anchor `\[[prefatory-clause]]` assigned.
+You can solve this error by renaming the anchors. 
+====
+
+.Hint Error 2
+[%collapsible]
+====
+Line 76: The file that should be included cannot be found.
+Since the scope section already contains text, you can delete the reference. 
+====
+
+.Hint Error 3
+[%collapsible]
+====
+Line 420: The image attribute contains a whitespace after `image::`, so the path is invalid. Delete the whitespace. 
+====
+  {% else %}
+     Couldn't load exercise.
+{% endcase %}
