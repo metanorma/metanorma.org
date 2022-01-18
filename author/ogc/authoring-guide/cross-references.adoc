@@ -103,3 +103,57 @@ To reference an *external* source:
 ----
 http://www.iso.org/[International Organization for Standardization].
 ----
+<<<<<<< HEAD
+=======
+
+== Internal references
+
+To link to an important section, table, figure, formula, or list item in your document:
+
+. Set an anchor using double square brackets before the content you want to reference: `\[[anchor]]`.
++
+.Example for an anchor preceding an image
+[source,adoc]
+----
+[[figureC-1]]
+.Typical gelatinization curve
+image::images/rice_image2.png[Image of the gelatinization curve]
+----
++
+.Rendered image caption
+image::/assets/author/tutorials/references_img_anchor.jpg[]
+
+. To reference an anchor, type the anchor name like this `\<<anchor>>`.
++
+[source,adoc]
+----
+<<figureC-1>> gives an example of a typical gelatinization curve.
+----
++
+.Rendered reference
+image::/assets/author/tutorials/references_img_target.jpg[]
+
+. To set an alternative text other than the anchor text, append the text inside the brackets using a comma.
++
+[source,adoc]
+----
+<<figureC-1, The diagram>> gives an example of a typical gelatinization curve.
+----
+
+=== Auto-numbering of references
+
+Metanorma automatically numbers and names references; because they are
+auto-numbered, they will be renumbered automatically if you insert any new text
+of the same type.
+
+Metanorma markup is serialized into XML, hence the anchor should follow the https://www.w3.org/TR/xml-names11/[XML namespace conventions].
+
+i.e., an anchor name name must not contain:
+
+* colons
+* whitespaces
+* words starting with numbers
+
+If you want to learn more about the technical aspects of cross-references, read
+link:/author/concepts/deep-dive-cross-references[Deep-dive into cross-references].
+>>>>>>> 76f8cb6 (fixed file paths)
