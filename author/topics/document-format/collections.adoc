@@ -481,3 +481,90 @@ The options are:
 * The document attribute `align-cross-elements` indicates the Metanorma XML
   elements that are always to be aligned in multilingual text. It consists of a
   comma-delimited list of Metanlorma XML tags; e.g. `p,note,term`.
+
+
+== Document embedding
+
+It is possible to embed Metanorma documents within other Metanorma documents,
+using the `embed:[]` macro [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.2].
+The `embed:[]` macro acts like the Asciidoctor `:include:[]` macro, taking as its argument
+the name of the file to be included. The named file is included at the location of the `embed:[]`
+macro, with the following provisos:
+
+* The document header of the included document is ignored.
+* If any top-level headings of the included document are identical to headings in the including document,
+the entire clause in the included document is skipped. For example, if
+
+[source,asciidoc]
+----
+= Document 1
+Local Secretariat
+:docnumber: 123A
+
+[[id2]]
+[language=en-UK]
+== Introduction
+
+This is an introduction added to the Received document
+
+embed:[received.adoc]
+
+== Colophon
+----
+
+embeds the document
+
+[source,asciidoc]
+----
+= Document 1
+Central Secretariat
+:no-pdf:
+:docnumber: 123
+:issued-date: 2017-06-29
+
+== Foreword
+
+This is the foreword
+
+[[id2]]
+== Introduction
+
+Original introduction
+
+=== Introduction Subclause
+
+Introduction subclause
+
+== Content
+
+This is content
+----
+
+then the resulting document uses the including document header (so the `:docnumber:` value will be _123A_ instead
+of _123_, and the `:issued-date:` value will be ignored). In addition, since both documents have a top-level clause
+labelled `Introduction`, the matching clause in the included document, and all its subclauses, are ignored.
+The resulting document is:
+
+[source,asciidoc]
+----
+= Document 1
+Local Secretariat
+:docnumber: 123A
+
+[[id2]]
+[language=en-UK]
+== Introduction
+
+This is an introduction added to the Received document
+
+== Foreword
+
+This is the foreword
+
+== Content
+
+This is content
+
+== Colophon
+----
+
