@@ -5,11 +5,26 @@ title: Summary of lesson 4
 
 Let's summarize what we've learnt in this lesson:
 
-* To generate a Metanorma document, enter the following command: +
+* To generate a Metanorma document, enter the following command: 
++
+.Local installation
 [source, shell]
 ----
-Metanorma document.adoc
+metanorma document.adoc
 ----
++
+.Using Docker on Linux/ macOS
+[source, shell]
+----
+docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma document.adoc
+----
++
+.Using Docker on Windows
+[source, shell]
+----
+docker run -v "%cd%":/metanorma/ -w /metanorma metanorma/metanorma metanorma document.adoc
+----
+
 
 * More often than not, we encounter errors that we need to fix:
 
