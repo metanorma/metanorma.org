@@ -3,45 +3,41 @@ layout: tutorial
 title: Term definitions
 ---
 :page-liquid:
-//Revise whole section
+
 If you want to cite a term throughout the standard, include it in the terms and definitions section. Term definitions vary from definition lists, as they are more granular and provide metadata to mark features such as alternative terms or deprecated terms. 
 Let’s have a look at a term entry:
 
 [source, AsciiDoc]
 ----
-== Terms and definitions <1>
+== Terms and Definitions <1>
 
-=== husked rice <2>
-deprecated:[cargo rice] <3>
+=== dataset <2>
 
-Paddy from which the husk only has been removed. <4>
+collection of data, published or curated by a single agent, and available for access or download in one or more formats <3>
 
-[.source] <5>
-<<ISO7301,clause 3.2>>, The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here
+=== feature 
+alt:[characteristic] <4>
+deprecated:[character] <5>
+domain:[software] <6>
 
-=== milled rice
-alt:[white rice] <6>
+abstraction of real world phenomena 
 
-term:[husked rice] from which almost all of the bran and embryo have been removed by milling. <7>
+[.source] <7>
+<<dcat>>
 
-=== extraneous matter
-alt:[EM]
-domain:[rice] <8>
-
-organic and inorganic components other than whole or broken kernels
-
-[example] <9>
-Foreign seeds, husks, bran, sand, dust.
+[example] <8>
+a downloadable file, an RSS feed or an API.
+term:[dataset] which contains GPS coordinates. <9>
 ----
 <1> The start of the terms and definitions section
 <2> The term that should be defined is marked as a subheading using three equal signs. `===`.
-<3> The term `husked rice` supersedes `cargo rice`. To document the old term, use the annotation `deprecated:[term]`.
-<4> Definition for the term: the first paragraph of text after macros like `deprecated:[]` and `alt:[]`.
-<5> The `[.source]` attribute indicates that a citation follows, indicating where the term definition has been taken from. Make sure to include the dot `.` before source, so that the citation will be rendered correctly. 
-<6> `alt:[white rice]` indicates the alternative term for milled rice. 
-<7> `term:[husked rice]` cites the previously introduced term.
-<8> Terms that do not obviously belong to a certain domain can be annotated with `domain:[]` at the start of their definition.
-<9> If you provide an example, use the `[example]` attribute so that it renders according to the styling rules of your SDO. 
+<3> Definition for the term. If a term has macros, like `deprecated:[]`, the term definition is the first paragraph after the macros.
+<4> `alt:[]` indicates an alternative term. 
+<5> The term `feature` supersedes `character`. To document the old term, use the annotation `deprecated:[term]`.
+<6> Terms that do not obviously belong to a certain domain can be annotated with `domain:[]`.
+<7> The `[.source]` attribute indicates that a citation follows, indicating where the term definition has been taken from. Make sure to include the dot `.` before source, so that the citation will be rendered correctly. 
+<8> If you provide an example, use the `[example]` attribute so that it renders according to the styling rules of your SDO.
+<9> `term:[]` cites the previously introduced term.
 
 
 === Practice time
