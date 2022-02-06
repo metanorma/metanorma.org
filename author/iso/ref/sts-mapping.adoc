@@ -1728,7 +1728,7 @@ NOTE: in all examples `'value="abbreviation"/>'`
 NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/19[https://github.com/metanorma/mn-samples-bsi/issues/19]
 | *`< >`*
 a|
-`<!--STS: <tbx:termType value="abbreviation"/>-->`
+`<&#x200c;!--STS: <tbx:termType value="abbreviation"/>-->`
 
 NOTE: commented for round-trip conversion
 a|
@@ -3250,27 +3250,31 @@ Recommendation \| International Standard.)</styled-content>
 ====
 
 | *`< >`*
-a|
 
-[source,xml]
+a|
+[example%unnumbered]
+====
+[source,xml,subs=none]
 ----
-<!--STS: <styled-content ...> -->...<!--STS: </styled-content> -->
+<&#x200c;!--STS: <&#x200c;styled-content ...> -->...<&#x200c;!--STS: <&#x200c;/styled-content> -->
 ----
+====
 
 NOTE: Tags commented for round-trip conversion.
 
 [example%unnumbered]
 ====
-[source,xml]
+[source,xml,subs=none]
 ----
-<!--STS: <styled-content style-type="normal">-->(This annex forms an integral
-part of this Recommendation | International Standard.)<!--STS: </styled-content>-->
+<&#x200c;!--STS: <&#x200c;styled-content style-type="normal">-->(This annex forms an integral
+part of this Recommendation \| International Standard.)<&#x200c;!--STS: <&#x200c;/styled-content>-->
 
-<!--STS: <styled-content style="color:#009fe3;">-->•<!--STS: </styled-content>-->
+<&#x200c;!--STS: <&#x200c;styled-content style="color:#009fe3;">-->•<&#x200c;!--STS: <&#x200c;/styled-content>-->
 ----
 ====
 
 | *indirect*
+
 a|
 `boxed-text`
 
@@ -3288,6 +3292,7 @@ NOTE: *conversion gap* https://github.com/metanorma/mn-samples-bsi/issues/38[htt
 a|
 | *indirect*
 a|
+
 | `th/break th/strong`
 | *`<`*
 | `th//br/strong`
