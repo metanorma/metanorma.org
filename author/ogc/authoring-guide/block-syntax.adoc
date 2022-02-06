@@ -58,6 +58,8 @@ There are many types of blocks in AsciiDoc, such as:
 * Mathematic formulas
 * Term definitions
 * Comments
+* Literal (ASCII art)
+* Blockquotes
 * Reviewer Notes
 
 // Include ends here
@@ -261,6 +263,49 @@ language.
 <3> Starting delimiter
 <4> Sample code
 <5> Ending delimiter
+
+== Block quotes
+
+Metanorma supports block quotes, which are specified in AsciiDoc with a `____` delimiter,
+and the `[quote] attribute beforehand. An author and citation can be added beforehand
+as attributes after `quote`; the citation is processed as if it is contained in `<<...>>`,
+using a bibliographic anchor defined in a bibliography.
+
+[source,adoc]
+----
+[quote,ISO,"ISO7301,section=1"]
+____
+This is a block quotation.
+____
+----
+
+This is rendered as:
+
+____
+This is a block quotation.
+
+-- ISO, ISO:7301:2011, Section 1.
+____
+
+with `"ISO7301,section=1"` processed as if it is `<&#x200c;<ISO7301,section=1>>`.
+
+== ASCII Art
+
+Metanorma supports ASCII Art, corresponding to HTML preformatted text (`<pre>`),
+which is specified in AsciiDoc with a `..&#x200c..` delimiter:
+
+[source,adoc]
+----
+....
+/-\       ***
+| |  ==>  * *
+\-/       ***
+....
+----
+
+AsciiDoc with initial spaces, as a block indent, is processed as ASCII Art, and not as
+source code or a blockquote. If you require either, you will need to use the explicit
+required AsciiDoc markup.
 
 == Removing auto-numbering from blocks
 
