@@ -5,8 +5,8 @@ layout: ogc-flavor
 
 == General
 
-The rendering of OGC documents has changed over the years. Metanorma formats OGC documents
-following current practice:
+The rendering of OGC documents has changed over the years. Metanorma formats OGC
+documents following current practice:
 
 * All body text is left justified, with no exceptions allowed.
 
@@ -20,12 +20,14 @@ following current practice:
 == Inline formatting
 
 tag::inline-ogc[]
+
 Metanorma-OGC supports highlighting of text [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.16]:
 
 [source,asciidoc]
 ----
 This is #text to be highlighted#.
 ----
+
 end::inline-ogc[]
 
 == Sections
@@ -42,11 +44,12 @@ In legacy OGC documents, it can be named just "`References`".
 
 ==== General
 
-The "Terms and definitions" clause for current OGC documents adhere mostly to
+The "`Terms and definitions`" clause for current OGC documents adhere mostly to
 the link:/author/iso/topics/markup/#terms-and-definitions[ISO terms and definitions]
 practices.
 
 tag::term-def-ogc[]
+
 An OGC "Terms and definitions" section can be specified in the following ways:
 
 * Standalone terms and definitions
@@ -218,38 +221,72 @@ account that:
 ----
 ====
 
-end::term-def-ogc[]
-==== Adding an informative glossary
+==== Glossary for informative terms
 
-OGC documents are allowed to contain an informative "Glossary" as an appendix.
-This section is to contain terms and definitions that are purely of informative
-content, for example, terms imported from other documents meant only for illustration purposes.
+tag::glossary[]
 
-The "Glossary" appendix does not support symbols, abbreviations or other
-sections. Only terms and definitions are allowed.
+OGC documents can contain an optional "`Glossary`" as an annex that
+provides terminology for informative purposes.
 
-The "Glossary" appendix can be created as follows.
+[example]
+The Glossary section can contain terms imported from other documents only meant
+for illustrative purposes.
 
-.Markup structure of a Glossary appendix containing terms and definitions
+The Glossary section is recognised as an annex with the title "`Glossary`",
+or marked up with `[heading=glossary]` [added in
+https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.1].
+
+The "`Glossary`" annex does not support symbols, abbreviations or other
+sections. Only terms and definitions are allowed. The terms are rendered in the
+same format as in the "Terms and definitions" clause.
+
+The "`Glossary`" section, when exists, is placed as the last annex section
+before the "`Revision history`" section (if it exists).
+
+.Markup structure of a Glossary annex containing terms and definitions
 [example]
 ====
 [source,asciidoc]
 ----
-[appendix,obligation="informative"]
+[appendix]
 == Glossary
 
-=== term 1
-...
+=== geospatial
 
-=== term 2
+relating to geographic and spatial information
+
+[.source]
+<<OGC21-017,clause="4.3">>
+
+=== spatial
 ...
 ----
 ====
 
-These terms will be rendered in the same format as in the
-"Terms and definitions" clause.
+A glossary section with a customized name can be encoded as follows.
+
+.Example of Glossary annex with custom name
+====
+[source,adoc]
+----
+[appendix,heading=glossary]
+== Customized glossary section
+
+=== geospatial
+
+relating to geographic and spatial information
+
+[.source]
+<<OGC21-017,clause="4.3">>
+----
+====
+
+end::glossary[]
+
+end::term-def-ogc[]
 
 tag::preliminary-ogc[]
+
 == Preliminary sections
 
 === General
@@ -294,16 +331,16 @@ This standard describes a conceptual and logical model for the exchange
 of groundwater data, as well as a GML/XML encoding with examples.
 ----
 
-=== Executive Summary
+=== Executive summary
 
 The Executive Summary section is entered as a clause with the title
-"`Executive Summary`".
+"`Executive summary`".
 
 EXAMPLE:
 
 [source,adoc]
 ----
-== Executive Summary
+== Executive summary
 
 This is the executive summary...
 ----
@@ -351,26 +388,26 @@ EXAMPLE:
 :keywords: ogcdoc, OGC document, groundwater, hydrogeology, GWML2
 ----
 
-=== Security Considerations
+=== Security considerations
 
-The Security Considerations section is entered as a clause with the title
-"`Security Considerations`".
+The Security considerations section is entered as a clause with the title
+"`Security considerations`".
 
 EXAMPLE:
 
 [source,adoc]
 ----
-== Security Considerations
+== Security considerations
 
 The following security considerations apply...
 ----
 
-If the Security Considerations are not provided in the source document, the
+If the security considerations are not provided in the source document, the
 clause is inserted with the text "`No security considerations have been made for
 this standard.`"
 
 
-=== Submitting Organizations
+=== Submitting organizations
 
 "`Submitting Organizations`" are entered using the `:submitting-organizations:`
 document attribute.
@@ -452,50 +489,44 @@ EXAMPLE:
 ...
 
 ----
+
 end::preliminary-ogc[]
 
-=== Glossary
-tag::glossary[]
 
-A glossary in an OGC document is an annex with the same content as a
-"`Terms and definitions`" section, but with informative rather than normative
-effect.
+== Annex sections
 
-Glossaries are recognised as annexes with the title "`Glossary`", or marked up
-with `[heading=glossary]` [added in
-https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.1].
+=== Revision history
 
-EXAMPLE:
+tag::revision-history[]
 
+A "`Revision History`" is an optional section that contains description of
+changes per revision.
+
+It is always placed as the last annex section if it
+exists. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.0.1].
+
+NOTE: Currently, this section is not machine-readable. However, OGC has plans to
+make it so. For future compatibility, please encode the table in the format
+described in the example below.
+
+.Example of the "`Revision history`" section from OGC 20-010
+====
 [source,adoc]
 ----
-[appendix]
-== Glossary
+[appendix,obligation="informative"]
+== Revision history
 
-=== geospatial
-
-relating to geographic and spatial information
-
-[.source]
-<<OGC21-017,clause="4.3">>
+[options="header"]
+|===
+|Date |Release |Editor | Primary clauses modified |Description
+|2020-06-04 |0.9.0 |C. Heazel |all |Draft for review
+|2020-06-07 |0.9.1 |T. H. Kolbe |Chapter 10 |Bibliography was added
+...
+|===
 ----
+====
 
-EXAMPLE:
-
-[source,adoc]
-----
-[appendix,heading=glossary]
-== Customized glossary section
-
-=== geospatial
-
-relating to geographic and spatial information
-
-[.source]
-<<OGC21-017,clause="4.3">>
-----
-end::glossary[]
-
+end::revision-history[]
 
 == Blocks
 
@@ -527,6 +558,7 @@ end::tables-ogc[]
 === Unnumbered blocks
 
 tag::unnumbered-ogc[]
+
 In Metanorma for OGC, all block elements are auto-numbered in order to
 facilitate unique referencing.
 
@@ -562,6 +594,7 @@ For blocks without the explicit block type defined, prepend with the
 image::images/fig1.png[]
 ----
 ====
+
 end::unnumbered-ogc[]
 
 [example]
@@ -619,6 +652,7 @@ x = y + z
 ====
 
 tag::unnumbered-ogc[]
+
 For blocks with their types defined explicitly that do not have the `options`
 attribute list, insert "%unnumbered" right after the block type, before
 the block type separator, e.g.: `[example%unnumbered]`, `[stem%unnumbered]`, etc.
@@ -632,6 +666,7 @@ the block type separator, e.g.: `[example%unnumbered]`, `[stem%unnumbered]`, etc
 Example content
 --
 ====
+
 end::unnumbered-ogc[]
 
 [example]
