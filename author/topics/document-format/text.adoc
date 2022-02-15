@@ -393,40 +393,45 @@ supported in typical AsciiDoc.
 
 === Ordered lists
 
-Ordered list labels conform to rules specified in ISO/IEC DIR 2
-throughout Metanorma:
+Ordered list labels conform to rules specified in ISO/IEC DIR 2 throughout
+Metanorma:
 
-- level 1: _a), b), c)_ (`alphabetic`),
-- level 2: _1), 2), 3)_ (`arabic`),
-- level 3: _i), ii), iii)_ (`roman`),
-- level 4: _A), B), C)_ (`alphabetic_upper`),
-- level 5: _I), II), III)_ (`roman_upper`).
+* level 1: _a), b), c)_ (called `alphabetic`),
+* level 2: _1), 2), 3)_ (called `arabic`),
+* level 3: _i), ii), iii)_ (called `roman`),
+* level 4: _A), B), C)_ (called `alphabetic_upper`),
+* level 5: _I), II), III)_ (called `roman_upper`).
 
-NOTE: This labeling applies to all output formats, including
-PDF, HTML and Word.
-
-The `type` attribute, with acceptable values listed in the list above,
-could be used to allow specifying labels of an ordered
-list [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.0].
-We have retracted this ability [added in https://github.com/metanorma/isodoc/releases/tag/v2.0.3],
-because of the bugs it introduces with list cross-referencing and rendering.
-
-NOTE: In Word rendering the `type` attribute is always ignored in favor of
-ISO/IEC DIR 2 compliant labelling.
+NOTE: This labeling applies to all output formats, including PDF, HTML and Word.
 
 In certain flavours (NIST, ITU, OGC), `class=steps` is used to override this
 numbering, and use Arabic numbering as the base instead:
 
-- level 1: _1), 2), 3)_ 
-- level 2: _a), b), c)_
-- level 3: _i), ii), iii)_
-- level 4: _A), B), C)_ 
-- level 5: _I), II), III)_ 
+* level 1: _1), 2), 3)_
+* level 2: _a), b), c)_
+* level 3: _i), ii), iii)_
+* level 4: _A), B), C)_
+* level 5: _I), II), III)_
+
+The `start` attribute for ordered lists is only allowed by certain Metanorma
+flavors, such as BIPM.
 
 
+[NOTE]
+--
+This note applies to `isodoc` v1.3.0 to v2.0.2.
 
-The `start` attribute for ordered lists is only allowed by
-certain Metanorma flavors, such as BIPM.
+The `type` attribute, with acceptable values listed in the list above,
+could be used to allow specifying labels of an ordered
+list [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.0].
+
+In Word rendering the `type` attribute is always ignored in favor of
+ISO/IEC DIR 2 compliant labelling.
+
+As of v2.0.3, the ability to specify the `type` attribute has been
+retracted [added in https://github.com/metanorma/isodoc/releases/tag/v2.0.3],
+because of the bugs it introduces with list cross-referencing and rendering.
+--
 
 
 === List items with more than one paragraph
