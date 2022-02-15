@@ -8,11 +8,11 @@ title: Typical sections in OGC
 The easiest way to ensure that you are following the document structure that OGC
 demands, is to use a Metanorma template.
 
-If you author a document type that doesn't have a template, you can look at a
+If you author a document type that doesn't have a template, check a
 https://github.com/metanorma/mn-samples-ogc[sample document] for better
 understanding how to structure that document.
 
-Typically, an OGC document contains:
+Typically, an OGC document contains the following content order:
 
 * <<preliminary,Preliminary sections>>
 * <<terms,Terms and definitions>>
@@ -26,54 +26,76 @@ include::author/ogc/topics/markup.adoc[tag=preliminary-ogc]
 [[terms]]
 == Terms and definitions
 
-The terms and definitions is used to define important terms and cite them throughout the standard.
+The terms and definitions is used to define important terms and cite them
+throughout the standard.
 
-link:/author/ogc/authoring-guide/terms_definitions[Learn how to enter terms and definitions.]
+Learn how to
+link:/author/ogc/authoring-guide/terms-definitions[enter terms and definitions].
 
 [[refs]]
 == References
 
-The refernces section contains normative references, also known as a bibliography section.
+The references section contains normative references, it is considered a
+"`bibliography`" section.
 
-link:/author/ogc/authoring-guide/bibliography[Learn how to enter bibliographic entries]
+Learn how to
+link:/author/ogc/authoring-guide/bibliography[enter bibliographic entries].
+
+NOTE: In OGC there are commonly two "`bibliography`" sections. The
+"`References`" section for normative references, and the "`Bibliography`"
+section which is for informative references.
+
 
 [[content]]
 == Content sections
 
-After all the preliminary sections, and the terms and definitions section, you may add as many content sections as you need.
+After the sections above, any number of content sections can be added.
 
 [[annex]]
-== Annex
+== Annex sections
 
-Annex clauses are declared by prepending the `[appendix]` tag to the clause.
-You can add as many annexes as you need.
+=== General
+
+Annex sections are declared by prepending the `[appendix]` tag above the section
+declaration.
+Annexes can be added as necessary.
 
 An annex can either be _normative_ or _informative_. By default an annex is
-_informative_.
+marked _informative_.
 
-In order to declare a _normative_ appendix, we use the _obligation_ attribute in
+In order to declare a _normative_ annex, use the _obligation_ attribute in
 the following manner: `[appendix,obligation=normative]`
 
+.Example of creating a normative versus an information annex
+====
 [source,asciidoc]
 ----
-[appendix,obligation=normative]
-== Normative appendix title
+// Without declaration, an annex is informative.
+[appendix]
+== Informative annex title
 ...
 
-// Default case; "obligation=informative" markup can be omitted.
+// A normative annex.
+[appendix,obligation=normative]
+== Normative annex title
+...
+
+// A informative annex with explicit declaration
 [appendix,obligation=informative]
-== Informative appendix title
+== Informative annex title
 ...
 ----
+====
 
-The annex clauses allocate in the last position of the main content right before
-the bibliography clause.
+Annex clauses are placed after all content sections, right before the
+bibliography section.
 
-=== Glossary as an appendix
+
+=== Glossary
 
 include::author/ogc/topics/markup.adoc[tag=glossary]
 
-=== Annex ordering
 
-An annex titled "Revision History" is moved after all other annexes. A glossary annex
-is moved after all other annexes, except for the Revision History [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.0.1].
+=== Revision history
+
+include::author/ogc/topics/markup.adoc[tag=revision-history]
