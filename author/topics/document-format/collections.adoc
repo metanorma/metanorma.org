@@ -485,15 +485,31 @@ The options are:
 
 == Document embedding
 
-It is possible to embed Metanorma documents within other Metanorma documents,
-using the `embed::` macro [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.2].
-The `embed::` macro acts like the Asciidoctor `include::` macro, taking as its target argument
-the name of the file to be included (e.g. `embed::received.adoc[]`).
-The named file is included at the location of the `embed::` macro, with the following provisos:
+Metanorma documents supports embedding of a document within another Metanorma
+document, using the `embed::`
+command [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.2].
+
+The `embed::` command acts similar to the Asciidoctor `include::` macro, taking
+as its target argument the name of the file to be included.
+
+[example]
+====
+[source,adoc]
+----
+embed::received.adoc[]
+----
+====
+
+The named file is included at the location of the `embed::` command, with the
+following provisos:
 
 * The document header of the included document is ignored.
-* If any top-level headings of the included document are identical to headings in the including document,
-the entire clause in the included document is skipped. For example, if
+
+* If any top-level headings of the included document are identical to headings
+in the including document, the entire clause in the included document is
+skipped.
+
+For example, if
 
 [source,asciidoc]
 ----
@@ -540,9 +556,14 @@ Introduction subclause
 This is content
 ----
 
-then the resulting document uses the including document header (so the `:docnumber:` value will be _123A_ instead
-of _123_, and the `:issued-date:` value will be ignored). In addition, since both documents have a top-level clause
-labelled `Introduction`, the matching clause in the included document, and all its subclauses, are ignored.
+then the resulting document uses the including document header (so the
+`:docnumber:` value will be _123A_ instead of _123_, and the `:issued-date:`
+value will be ignored).
+
+In addition, since both documents have a top-level clause labelled
+`Introduction`, the matching clause in the included document, and all its
+subclauses, are ignored.
+
 The resulting document is:
 
 [source,asciidoc]
