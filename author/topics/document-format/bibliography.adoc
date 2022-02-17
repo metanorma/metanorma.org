@@ -2,7 +2,7 @@
 layout: author-docs
 ---
 
-= References & Bibliography
+= References and bibliography
 
 == General
 
@@ -22,7 +22,10 @@ Every bibliographic section must be preceded by the style attribute
 * [[[id3,3]]] _Third reference_
 --
 
-EXAMPLE: In ISO, the "`Normative references`" clause is stated in
+[example]
+.Example of creating the "`Normative references`" clause in an ISO deliverable
+====
+In ISO, the "`Normative references`" clause is stated in
 Clause 3 (ISO Directives Part 2, Clause 15), while the "`Bibliography`"
 section is set as the last unnumbered section at the end of document
 (ISO Directives Part 2, Clause 21). It should be typeset as the following:
@@ -46,6 +49,7 @@ section is set as the last unnumbered section at the end of document
 * [[[ISO10241-1,ISO 10241-1]]] _First bibliographic reference_
 ...
 ----
+====
 
 Normative and informative references are normally recognised by the
 distinct title given them, specific to the flavour; however, the normative
@@ -69,8 +73,9 @@ to be styled with `[bibliography]`, and raises an (ignorable)
 warning if the subsections are contained in a section itself
 styled with `[bibliography]`.
 
-EXAMPLE:
-
+[example]
+.Example of having multiple bibliography sub-sections
+====
 [source,asciidoc]
 --
 == Bibliography
@@ -89,6 +94,7 @@ EXAMPLE:
 * [[[id5,5]]] _Fifth reference_
 * [[[id6,6]]] _Sixth reference_
 --
+====
 
 NOTE: A warning will be raised if `== Bibliography` in the above EXAMPLE was
 preceded by `[bibliography]`.
@@ -143,7 +149,7 @@ Any initial text in a Normative Reference section (before the first
 reference) is replaced by predefined text specific to the Metanorma flavour.
 
 In order to override this, initial text can be provided by the user
-as a note of type "boilerplate" [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.2]:
+as a note of type "`boilerplate`" [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.2]:
 
 [source,asciidoc]
 ----
@@ -195,8 +201,9 @@ This is entered as:
 * [[[{anchor},{document identifier as reference tag}]]], _{reference list text}_
 --
 
-EXAMPLE:
-
+[example]
+.Example of implied reference tags
+====
 [source,asciidoc]
 --
 * [[[ISO20483,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
@@ -209,6 +216,7 @@ ____
 * ISO 20483:2013. _Cereals and cereal products -- Determination of moisture content -- Reference method_
 * ISO 6540:1980. _Maize -- Determination of moisture content (on milled grains and on whole grains)_
 ____
+====
 
 A well-defined standards code as the item label will by default result in the reference details for the
 bibliographic entry being auto-fetched, provided that auto-fetching has been defined for that class of
@@ -227,8 +235,9 @@ This is entered as:
 * [[[{anchor},{number}]]], _{reference list text}_
 --
 
-EXAMPLE:
-
+[example]
+.Example of specifying numeric reference tags
+====
 [source,asciidoc]
 --
 * [[[ISO20483,1]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
@@ -241,6 +250,7 @@ ____
 * [1] _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
 * [2] _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
 ____
+====
 
 NOTE: To indicate usage of the numeric reference system, any number
 can be entered into the reference tag field. All references are
@@ -277,8 +287,9 @@ using the following syntax:
 NOTE: These alphanumeric labels will not result in the bibliographic
 entry being auto-fetched.
 
-EXAMPLE:
-
+[example]
+.Sample named reference tag with fully specified bibliographic entry
+====
 [source,asciidoc]
 --
 * [[[ISO20483,(CerMoist)]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
@@ -291,7 +302,7 @@ ____
 * [CerMoist] _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
 * [MaiMoist] _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
 ____
-
+====
 
 
 ==== Named reference tag with automatic reference fetching
@@ -311,17 +322,34 @@ the named reference tag (in parentheses) to the document identifier:
 * [[[{anchor},({reference tag}){reference identification code}]]], _{reference list text}_
 --
 
-EXAMPLE:
-
-[source,asciidoc]
---
+[example]
+.Example of named reference tag fetched automatically
+====
+[source,adoc]
+----
 * [[[ISO20483,(CerMoist)ISO 20483]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
 * [[[ISO6540,(MaiMoist)ISO 6540]]]. _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
---
+----
+====
 
-Metanorma allows formatting within the named reference tag, even including 
-footnotes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.3]. However, we advise
-against using this functionality, as it can lead to unexpected results and problems with copy-pasting.
+Rich-text formatting is supported within the named reference tag, including
+footnotes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.3].
+
+This is useful for cases where a cited reference is out-of-date but unsuitable
+to be updated.
+
+[example]
+.Example of rich-text formatting in named reference tag
+====
+[source,adoc]
+----
+* [[[ISO9000,(ISO 9000:2005 footnote:[Superseded by ISO 9000:2015.])ISO 9000:2005]]]
+----
+====
+
+WARNING: It is strongly advised not to use rich-text formatting within named
+reference tags, as it can lead to unexpected results and problems with
+copy-pasting.
 
 == Alternate bibliography formats
 
@@ -337,7 +365,7 @@ See link:/author/topics/building/reference-lookup[Automatic reference lookup] to
 
 === Entering Relaton XML
 
-Bibliographic entries can also be given as raw https://www.relaton.com[Relaton XML],
+Bibliographic entries can also be given as raw https://www.relaton.org[Relaton XML],
 in an AsciiDoc passthrough block. Of course, any Relaton XML BibItem entries
 need to be valid, and using correct `id` attributes:
 
@@ -357,7 +385,7 @@ need to be valid, and using correct `id` attributes:
 === AsciiBib
 
 Finally, bibliographic entries can be entered as AsciiDoc definition lists, capturing the structure
-of Relaton XML. This approach is documented in https://www.relaton.com/specs/asciibib/[relaton.com].
+of Relaton XML. This approach is documented in https://www.relaton.org/specs/asciibib/[relaton.org].
 
 [source,asciidoc]
 --
@@ -403,6 +431,8 @@ type:: standard
 
 == Citations
 
+=== General
+
 Citations of references in Metanorma are formulated as cross-references; the ID cross-referenced is the
 internal identifier given for the bibliographic entry (`ref1` in the examples above).
 
@@ -422,80 +452,127 @@ Multiple instances of locality and reference can be provided, delimited by comma
 * By default, these are interpreted as hierarchically refining a single location in a text,
 through consecutive narrower localities +
 +
-EXAMPLE: "`Part IV, Chapter 3, paragraph 12`": `\<<ref1,part=IV,chapter=3,paragraph=12>>`
+[example]
+====
+"`Part IV, Chapter 3, paragraph 12`": `\<<ref1,part=IV,chapter=3,paragraph=12>>`
+====
 
 * Discontinuous localities can be named by repeating the same locality type +
 +
-EXAMPLE: "`page 4, page 7`": `\<<ref1,page=4,page=7>>`
+[example]
+====
+"`page 4, page 7`": `\<<ref1,page=4,page=7>>`
+====
 
 * Discontinuous references can also be be specified by delimiting sequences of localities
 with semicolon [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.24] +
 +
-EXAMPLE: "`Part IV, Chapter 3; Part VI, Chapter 9`": `\<<ref1,part=IV,chapter=3;part=VI,chapter=9>>`
+[example]
+====
+"`Part IV, Chapter 3; Part VI, Chapter 9`": `\<<ref1,part=IV,chapter=3;part=VI,chapter=9>>`
+====
 
 Any trailing text after the sequence of `locality=reference` (or `locality{space}reference`)
 is treated as custom text for the cross-reference, as would occur normally in a
 typical AsciiDoc cross-reference.
 
 The locality can appear in quotations if it contains special characters (like dashes or commas).
-For example:
 
+[example]
+.Example of referencing locality in Metanorma citations
+====
 [source,asciidoc]
---
+----
 <<ISO7301,clause=3.1-3.4>>
 
 NOTE: This table is based on <<ISO7301,table=1>>.
 
 Sampling shall be carried out in accordance with <<xxx,section="5-3-1,bis">>
---
+----
+====
 
-More examples:
-
+[example]
+.Example that renders a reference as free text
+====
 [source,asciidoc]
---
+----
 // renders as: "the foregoing reference"
 <<ISO712,the foregoing reference>>
+----
+====
 
+[example]
+.Example that renders the reference with (multiple) hierarchical localities
+====
+----
 // renders as: "ISO 712, Section 5, Page 8-10"
 <<ISO712,section=5, page 8-10>>
+----
+====
 
+[example]
+.Example of referencing locality with additional text
+====
+----
 // renders as "ISO 712, 5:8-10"
 // ("5:8-10" treated as replacement text for all the foregoing)
 <<ISO712,section=5, page=8-10: 5:8-10>>
+----
+====
 
+[example]
+.Example of referencing with a "whole" locality
+====
+----
 // renders as: "ISO 712, Whole of text"
 <<ISO712,whole>>
---
+----
+====
 
 The references cannot contain spaces. Any text following the sequence of localities
 will be displayed instead of the localities.
 
-A custom locality can be entered by prefixing it with `locality:`:
+A custom locality can be entered by prefixing it with `locality:`.
 
+[example]
+.Example of referencing a custom locality the `locality:` prefix
+====
 [source,asciidoc]
---
+----
 // renders as: "ISO 712, Frontispiece 5, Page 8-10"
 <<ISO712,locality:frontispiece=5, page=8-10>>
---
+----
+====
 
-Custom localities may not contain commas, colons, or space. Localities with the `locality:`
-prefix are recognized in internationalization configuration files.
+Custom localities may not contain commas, colons, or space.
+Localities with the `locality:` prefix are recognized in internationalization
+configuration files.
 
-Any text after the bibliographic localities is still treated as custom cross-reference text;
-for example:
+Any text after the bibliographic localities is still treated as custom
+cross-reference text.
 
+[example]
+.Example of referencing with bibliographic localities with additional custom text
+====
 [source,asciidoc]
---
+----
 <<ISO7301,clause=5,table=1,the foregoing reference>>
---
+----
+====
+
 
 ==== Anchors
 
 Exceptionally, the `anchor` locality is only used in HTML, to generate
 anchor links to other HTML pages [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
+
 It is intended for use with bibliographic anchors linking to URLs (`repo()`):
 see <<hyperlink-biblio>>.
 
+
+[example]
+.Example of using the `anchor` locality for rendering in HTML output
+====
 The following input:
 
 [source,asciidoc]
@@ -513,11 +590,14 @@ will render in HTML as:
 --
 <a href="./iso7301.html#xyz">ISO 7301, Clause 2, Table 1a, page 7-9</a>
 --
+====
 
 === Case and dropped locality labels
 
-The `capital%`, `lowercase%` and `droploc%` options used for internal crossreferences can also be used as prefixes to
-localities, modifying how those localities are rendered [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.9]
+The `capital%`, `lowercase%` and `droploc%` options used for internal
+cross-references can also be used as prefixes to localities, modifying how those
+localities are
+rendered [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.9].
 
 The following input:
 
@@ -542,24 +622,27 @@ ____
 
 === Relaton databases
 
-https://www.relaton.com/[Relaton] can fetch bibliographic entries
+https://www.relaton.org/[Relaton] can fetch bibliographic entries
 for any standards known to have online bibliographic databases.
 
 Any bibliographic entry recognized through its document identifier prefix
-will by default have its bibliographic entry fetched by that gem.
-
+will by default have its bibliographic entry fetched by the appropriate
+Relaton extension.
 
 The fetched data overrides any content about the item provided in the document,
-since the online bibliography is treated as the source of truth for that standards document.
+since the online bibliography is treated as the source of truth for that
+standards document.
 
 The format of the standard identifier required for automatic lookup is documented at
 link:/author/topics/building/reference-lookup/[Automatic reference lookup].
 
 NOTE: Currently Metanorma supports auto-fetching document identifiers
-from: ISO, IEC, IETF, GB, NIST, OGC, CalConnect.
+from: ISO, IEC, IETF, GB, NIST, OGC, CalConnect and many more.
 
-
-For example, the following will trigger auto-fetching:
+[example]
+.Example of specifying an auto-fetched reference
+====
+The following will trigger auto-fetching:
 
 [source,asciidoc]
 --
@@ -571,6 +654,7 @@ and gets rendered as:
 ____
 ISO 20483:2013. _Cereals and cereal products -- Determination of moisture content -- Reference method_
 ____
+====
 
 === Other databases
 
@@ -590,7 +674,7 @@ identifier "document-identifier" is retained in order for citations to remain we
 Bibliographical information about the entry is *not* auto-fetched via Relaton.
 
 By default, `repo:(repository-name/document-entry)` is left in the Metanorma XML as
-a document identifier, of type "repo"; it will typically be resolved in post-processing.
+a document identifier, of type `repo`; it will typically be resolved in post-processing.
 
 [[hyperlink-biblio]]
 === HTML links
