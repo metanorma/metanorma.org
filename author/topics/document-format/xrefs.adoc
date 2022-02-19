@@ -70,6 +70,41 @@ ____
 Clauses 7 to 9
 ____
 
+[[combined-xrefs]]
+== Combination of cross-references
+
+It is also possible to combine multiple cross-references into a single expression, which will be
+internationalised as appropriate [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.3].
+Multiple cross-references are separated by `;`. The connections recognised between cross-references 
+are `and`, `or`, `from`, and `to`, and these are prefixed to the cross-reference anchor, separated by `!`:
+
+[source,adoc]
+----
+<<context;to!improvement>>
+----
+
+rendered as
+
+____
+Clauses 7 to 9
+____
+
+[source,adoc]
+----
+<<context;and!improvement>>
+----
+
+rendered as
+
+____
+Clauses 7 and 9
+____
+
+Of the connectives, `from` and `to`
+are presumed to nest more closely than `and` or `or`, and there is no provision for complex nesting.
+If a connective is left out before `to`, `from` is presupposed; otherwise, `and` is presupposed.
+
+
 
 [[text-ref-allowed-anchors]]
 == Anchor ID syntax
