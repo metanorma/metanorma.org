@@ -472,6 +472,22 @@ with semicolon [added in https://github.com/metanorma/metanorma-standoc/releases
 "`Part IV, Chapter 3; Part VI, Chapter 9`": `\<<ref1,part=IV,chapter=3;part=VI,chapter=9>>`
 ====
 
+* More complex relation between discontinuous references can be specified by prefixing
+`and!`, `or!`, `from!` and `to!` to sequences of localities separated by 
+semicolon [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.3],
+as for link:/author/topics/document-format/xrefs/#combined-xrefs[Combination of cross-references].
+This will result in overt connectives between the references, which will be internationalised. +
++
+[example]
+====
+"`Part IV, Chapter 3 or Part VI, Chapter 9`": `\<<ref1,part=IV,chapter=3;or!part=VI,chapter=9>>`
+====
++
+[example]
+====
+"`Chapters 3 and 7`": `\<<chapter=3;and!chapter=7>>`
+====
+
 Any trailing text after the sequence of `locality=reference` (or `locality{space}reference`)
 is treated as custom text for the cross-reference, as would occur normally in a
 typical AsciiDoc cross-reference.
