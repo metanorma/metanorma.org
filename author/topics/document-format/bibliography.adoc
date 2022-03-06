@@ -362,6 +362,23 @@ The NIST flavour of Metanorma currently supports rendering of generic references
 
 See link:/author/topics/building/reference-lookup[Automatic reference lookup] topic.
 
+=== Hidden citations
+
+It is possible to add a citation to a document while suppressing its rendering in any output document.
+This is done so that the Semantic XML of Metanorma will still contain information about the
+citation, and can use it e.g. to populate cross-references to that document.
+
+A hidden citation can be added to a Metanorma document by wrapping the reference tag with
+`hidden(...)` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.0]:
+
+[source,asciidoc]
+--
+[bibliography]
+== Normative References
+
+* [[[ref1,hidden(ISO 123)]]]
+--
+
 
 === Entering Relaton XML
 
@@ -708,6 +725,35 @@ rendered [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v
 <<ISO7301,lowercase%clause=2>>
 --
 ====
+
+=== Link-only references
+
+A cross-reference can be entered in Metanorma to a standards document without that document
+appearing in the document references. That cross-reference is treated as equivalent to a cross-reference
+to a hidden citation, as documented in link:/author/topics/document-format/bibliography#hidden[Hidden citations].
+
+Link-only references can be added to Metanorma documents using the macro `++std-link:[...]++`,
+where the `std-link` macro contains the same text as a normal cross-reference to a standard, including
+localities and other directives -- but without
+the need for an explicit bibliographic entry. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
+So the following two documents are equivalent:
+
+[source,asciidoc]
+----
+std-link:[ISO 123,droploc%clause=3]
+----
+
+and:
+
+[source,asciidoc]
+----
+<<ref1,droploc%clause=3>>
+
+[bibliography]
+== Bibliography
+
+* [[[ref1,hidden(ISO 123)]]]
+----
 
 
 [[autofetch]]
