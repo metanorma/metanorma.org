@@ -1,0 +1,285 @@
+---
+layout: post
+title: 'Working with additional drafting requirements: the ISO 8000 series'
+date: 2022-03-09
+categories: documentation
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+
+excerpt: >-
+  Some ISO Technical Committees and Working Groups have additional requirements
+  how drafts are prepared on top of those from ISO DIR 2 and ISO House Style.
+  This blog post uses an example from the ISO 8000 series to demonstrate how it
+  works.
+---
+== Summary
+
+Some ISO Technical Committees and Working Groups have additional requirements
+how drafts are prepared on top of those from
+https://www.iso.org/sites/directives/current/part2/index.xhtml[ISO DIR 2] and
+https://www.iso.org/ISO-house-style.html[ISO House Style].
+
+This post provides a real world example from ISO 8000-114 to demonstrate how to
+comply with additional TC and WG requirements.
+
+
+== ISO draft preparation rules
+
+In ISO, all drafts prepared are required to be conformant to the
+https://www.iso.org/sites/directives/current/part2/index.xhtml[ISO/IEC Directives Part 2],
+commonly called the "ISO DIR 2".
+
+For a long time, the working rules of the ISO Editorial Program Managers (EPMs,
+or previously, "ISO editors") have been a mystery to standards authors. That
+changed in 2021 when ISO's editorial team published their internal editorial
+style guide publicly under the title of the
+https://www.iso.org/ISO-house-style.html[ISO House Style]. This guide provides a
+host of information that authors can take note (i.e. fix preemptively) to
+prevent ISO EPMs making additional edits to their drafts.
+
+In addition to these two official resources, some Technical Committees (TCs) and
+Working Groups (WGs) apply additional requirements on drafts. Some of these
+rules may or may not be fully aligned with the official resources.
+
+Since standards authors are required to work within such boundaries, Metanorma
+provides mechanisms (read: advanced usage) to comply with these
+requirements.
+
+NOTE: Such functionality is considered advanced usage -- please only use them
+when you need them!
+
+== Case study: the ISO 8000 series
+
+The ISO 8000 series is the "Data quality" series of standards, published
+by https://www.iso.org/committee/54158.html[ISO/TC 184/SC 4/WG 13],
+a working group of the most prolific (and the most awarded) ISO technical
+committee,
+https://www.iso.org/committee/54158.html[ISO/TC 184/SC 4].
+
+In order to manage its suite of over 20 ISO 8000 standards, WG 13 sets
+additional requirements on the drafts of the ISO 8000 series.
+
+The requirements are:
+
+. ISO 8000 standards must share a "Common Introduction" prior to a
+  document-specific introduction
+  (documented in ISO/TC 184/SC 4/WG 13 N 954)
+
+. ISO 8000 standards have to contain a set of mandatory bibliographic references
+  (documented in ISO/TC 184/SC 4/WG 13 N 954)
+
+. ISO 8000 standards must share the same vocabulary set published in ISO 8000-2,
+  which entails:
+
+.. Additional terms and definitions defined in ISO 8000 standards must be made
+  available in the latest edition of ISO 8000-2. This is a separate action
+  done by the project leader outside of the document.
+
+.. All drafts must contain this NOTE:	"Prior to publication of this document as
+an International Standard, the following terms and definitions will be published
+in ISO 8000-2 and removed from this document."
+
+The predefined texts for ISO/TC 184/SC 4 boilerplate content (predefined text)
+is available publicly at:
+
+* https://sd.iso.org/bitbucket-pilot/projects/ISOTC184SC4/repos/boilerplate/browse[ISO/TC 184/SC 4 official boilerplate repository]
+* https://github.com/metanorma/iso-tc184-sc4-boilerplate[Metanorma ISO/TC 184/SC 4 boilerplate repository (Metanorma format)]
+
+In addition, ISO/TC 184/SC 4 sets additional requirements on its publications
+that can be seen here:
+
+* https://metanorma.github.io/iso-tc184-sc4-directives/documents/supplementary-directives/document.html[ISO/TC 184/SC 4 Supplementary Directives]
+
+== Conforming to requirements that are aligned to official requirements
+
+The first two requirements of the ISO 8000 are easily implementable in a
+Metanorma document.
+
+The ISO/TC 184/SC 4 Quality Committee has provided a publicly accessible location
+for this boilerplate text, and the Metanorma versions of that content is available
+at the
+https://github.com/metanorma/iso-tc184-sc4-boilerplate[Metanorma ISO/TC 184/SC 4 boilerplate repository].
+
+
+For the common introduction, all we need to do is to include the text directly
+into the "Introduction" section.
+
+NOTE: The ISO 8000 common introduction is found at https://github.com/metanorma/iso-tc184-sc4-boilerplate/blob/main/iso-8000/sections/00-introduction.adoc[`iso-8000/sections/00-introduction.adoc`].
+
+
+[source,adoc]
+----
+== Introduction
+
+Digital data deliver value by enhancing all aspects of organizational
+performance including:
+
+* operational effectiveness and efficiency;
+* safety;
+* reputation with customers and the wider public;
+* compliance with statutory regulations;
+* innovation;
+* consumer costs, revenues and stock prices.
+
+In addition, many organizations are now addressing these considerations with
+reference to the United Nations Sustainable Development Goals
+footnote:[https://sdgs.un.org/goals].
+
+...
+----
+
+The common references are just inserted in any order within the (informative)
+bibliography section as follows.
+
+NOTE: The ISO 8000 boilerplate for references are found at
+https://github.com/metanorma/iso-tc184-sc4-boilerplate/blob/main/iso-8000/sections/02-norm-refs.adoc[`iso-8000/sections/02-norm-refs.adoc`]
+and
+https://github.com/metanorma/iso-tc184-sc4-boilerplate/blob/main/iso-8000/sections/99-bibliography.adoc[`iso-8000/sections/99-bibliography.adoc`].
+
+[source,adoc]
+----
+[bibliography]
+== Normative references
+
+* [[[ISO_8000-2,ISO 8000-2:2020]]]
+
+...
+
+[bibliography]
+== Bibliography
+
+* [[[ISO_8000-1,ISO 8000-1]]]
+* [[[ISO_8000-8, ISO 8000-8]]]
+* [[[ISO_8000-61, ISO 8000-61]]]
+* [[[ISO-TS_8000-81,ISO/TS 8000-81]]]
+* [[[ISO_8000-110, ISO 8000-110]]]
+* [[[ISO-TS_8000-311,ISO/TS 8000-311]]]
+* [[[ISO_9000,ISO 9000]]]]
+----
+
+
+== Conforming to requirements that exception to official requirements
+
+The third requirement requires inclusion of a NOTE in Clause 3 of all drafts for
+the ISO 8000 series. In particular, the introductory wording of Clause 3 needs
+to look like this:
+
+.Predefined content required for Clause 3 of ISO 8000 deliverables
+====
+____
+*3 Terms and definitions*
+
+For the purposes of this document, the terms and definitions given in
+ISO 8000-2:2020 and the following apply.
+
+NOTE:	Prior to publication of this document as an International Standard, the
+following terms and definitions will be published in ISO 8000-2 and removed from
+this document.
+
+ISO and IEC maintain terminological databases for use in standardization at the
+following addresses:
+
+* ISO Online browsing platform: available at
+  http://www.iso.org/obp[http://www.iso.org/obp]
+
+* IEC Electropedia: available at
+  http://www.electropedia.org[http://www.electropedia.org]
+____
+====
+
+The insertion of the NOTE is problematic because it is an exception to
+requirements stated in ISO DIR 2.
+
+Specifically, 16.5.3 "`Introductory wording`", ISO DIR 2 specifies that there are
+only 4 types of introductory wording content for ISO deliverables. There is no
+provision for inserting a NOTE within that introductory wording.
+
+Fortunately, Metanorma is flexible enough to provide a mechanism to do this.
+Given that ISO DIR 2 gets updated annually, there are quite some legacy ISO
+deliverables that are not conformant to the current ISO DIR 2.
+
+Metanorma allows such exception through the
+link:/author/topics/document-format/section-terms/#overriding-predefined-text["overriding predefined text" functionality].
+
+This is done by using the `[.boilerplate]` section override as follows.
+
+NOTE: The ISO 8000 common terminology header is found at
+https://github.com/metanorma/iso-tc184-sc4-boilerplate/blob/main/iso-8000/sections/03-terms.adoc[`iso-8000/sections/03-terms.adoc`].
+
+[source,adoc]
+----
+[source="ISO_8000-2"]
+== Terms and definitions
+
+[.boilerplate]
+=== WG13 intro
+
+For the purposes of this document, the terms and definitions given in
+ISO 8000-2:2020 and the following apply.
+
+NOTE:	Prior to publication of this document as an International Standard, the
+following terms and definitions will be published in ISO 8000-2 and removed from
+this document.
+
+ISO and IEC maintain terminological databases for use in standardization at the
+following addresses:
+
+* ISO Online browsing platform: available at
+  http://www.iso.org/obp[http://www.iso.org/obp]
+
+* IEC Electropedia: available at
+  http://www.electropedia.org[http://www.electropedia.org]
+
+=== (defined terms below...)
+
+----
+
+Notice that the reference to `ISO_8000-2` has to be manually encoded because
+the specified override completely overwrites the entire predefined content
+generation mechanism to provide full flexibility.
+
+The resulting rendering in <<fig>> satisfies the requirements from WG 13 on
+ISO 8000 series drafts.
+
+[[fig]]
+.ISO 8000-114 CD draft with WG 13 required NOTE at Clause 3
+image::/assets/blog/2022-03-09.png[ISO 8000-114 CD draft with WG 13 required NOTE at Clause 3]
+
+
+== Conclusion
+
+While Metanorma by default strictly adheres to SDO requirements such as those in
+ISO DIR 2 and ISO House Style, it also provides a corresponding set of features
+for legacy compatibility.
+
+The Metanorma team works closely with ISO TCs and WGs to address their specific
+needs and requirements.
+
+In the case of ISO/TC 184/SC 4, the Metanorma AsciiDoc versions of
+the required boilerplate content are provided at the
+https://github.com/metanorma/iso-tc184-sc4-boilerplate[Metanorma ISO/TC 184/SC 4 boilerplate Git repository].
+
+If you run into any enforcement exceptions that require additional handling or
+overriding, please do not hesitate to contact us at the
+https://github.com/metanorma/discussions/discussions[Discussions page].
+
+Until next time!
+
+
+== References
+
+* https://www.iso.org/sites/directives/current/part2/index.xhtml[ISO Directives, Part 2]
+
+* https://www.iso.org/ISO-house-style.html[ISO House Style]
+
+* https://metanorma.github.io/iso-tc184-sc4-directives/documents/supplementary-directives/document.html[ISO/TC 184/SC 4 Supplementary Directives]
+
+* https://sd.iso.org/documents/ui/#!/doc/736affc7-af80-41ba-ac16-9ca0b08ea1a0[ISO/TC 184/SC 4/WG 13 N 954: A common introduction for all parts of ISO 8000 (WG 13 internal access only)]
+
+* https://sd.iso.org/bitbucket-pilot/projects/ISOTC184SC4/repos/boilerplate/browse[ISO/TC 184/SC 4 boilerplate Git repository]
+
+* https://github.com/metanorma/iso-tc184-sc4-boilerplate[Metanorma ISO/TC 184/SC 4 boilerplate Git repository].
