@@ -429,70 +429,49 @@ type:: standard
 --
 
 
-== Citations
+[[localities]]
+== Citations and localities
 
 === General
 
-Citations of references in Metanorma are formulated as cross-references; the ID cross-referenced is the
-internal identifier given for the bibliographic entry (`ref1` in the examples above).
+Citations of references in Metanorma are formulated as cross-references.
 
-In typical AsciiDoc, any text in a cross-reference that follows a comma constitutes custom text for the cross-reference.
+The ID (the "anchor") cross-referenced is the internal identifier given for the
+bibliographic entry.
+
+[source,adoc]
+----
+<<ref1,part=IV,chapter=3,paragraph=12>>
+----
+
+Here, `ref1` in the examples above is the anchor.
+
+In typical AsciiDoc, any text in a cross-reference that follows a comma
+constitutes custom text for the cross-reference.
+
 So a cross-reference `\<<ISO7301,the foregoing reference>>` will be rendered as
 "`the foregoing reference`", and hyperlinked to the `ISO7301` reference.
 
-[[localities]]
+
 === Localities
 
-Citations can include details of where in the document the citation is located (or the word "`whole`");
-these are entered by suffixing the lowercase type of locality, then an equals sign,
-then the locality value or range of values.
+==== General
 
-Multiple instances of locality and reference can be provided, delimited by comma or colon.
+Citations can include details of where in the document the citation is located.
 
-* By default, these are interpreted as hierarchically refining a single location in a text,
-through consecutive narrower localities +
-+
-[example]
-====
-"`Part IV, Chapter 3, paragraph 12`": `\<<ref1,part=IV,chapter=3,paragraph=12>>`
-====
+These localities are entered by suffixing the lowercase type of locality, then
+an equals sign, then the locality value or range of values.
 
-* Discontinuous localities can be named by repeating the same locality type +
-+
-[example]
-====
-"`page 4, page 7`": `\<<ref1,page=4,page=7>>`
-====
+Multiple instances of locality and reference can be provided, delimited by comma
+or colon.
 
-* Discontinuous references can also be be specified by delimiting sequences of localities
-with semicolon [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.24] +
-+
-[example]
-====
-"`Part IV, Chapter 3; Part VI, Chapter 9`": `\<<ref1,part=IV,chapter=3;part=VI,chapter=9>>`
-====
+The references cannot contain spaces. Any text following the sequence of
+localities will be displayed instead of the localities.
 
-* More complex relation between discontinuous references can be specified by prefixing
-`and!`, `or!`, `from!` and `to!` to sequences of localities separated by 
-semicolon [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4],
-as for link:/author/topics/document-format/xrefs/#combined-xrefs[Combination of cross-references].
-This will result in overt connectives between the references, which will be internationalised. +
-+
-[example]
-====
-"`Part IV, Chapter 3 or Part VI, Chapter 9`": `\<<ref1,part=IV,chapter=3;or!part=VI,chapter=9>>`
-====
-+
-[example]
-====
-"`Chapters 3 and 7`": `\<<chapter=3;and!chapter=7>>`
-====
 
-Any trailing text after the sequence of `locality=reference` (or `locality{space}reference`)
-is treated as custom text for the cross-reference, as would occur normally in a
-typical AsciiDoc cross-reference.
+==== Simple locality
 
-The locality can appear in quotations if it contains special characters (like dashes or commas).
+A simple locality is specified with a unique location identifier or free text.
 
 [example]
 .Example of referencing locality in Metanorma citations
@@ -517,9 +496,37 @@ Sampling shall be carried out in accordance with <<xxx,section="5-3-1,bis">>
 ----
 ====
 
+To refer to the "`whole`" item, the keyword `whole` is used.
+
+[example]
+.Example of referencing with a "whole" locality
+====
+[source,asciidoc]
+----
+// renders as: "ISO 712, Whole of text"
+<<ISO712,whole>>
+----
+====
+
+
+==== Hierarchical locality
+
+A hierarchical location is specified through consecutive narrower localities.
+
+[example]
+.Example of referencing a hierarchical locality
+====
+[source,asciidoc]
+----
+// renders as "`Part IV, Chapter 3, paragraph 12`"
+<<ref1,part=IV,chapter=3,paragraph=12>>
+----
+====
+
 [example]
 .Example that renders the reference with (multiple) hierarchical localities
 ====
+[source,asciidoc]
 ----
 // renders as: "ISO 712, Section 5, Page 8-10"
 <<ISO712,section=5, page 8-10>>
@@ -529,6 +536,7 @@ Sampling shall be carried out in accordance with <<xxx,section="5-3-1,bis">>
 [example]
 .Example of referencing locality with additional text
 ====
+[source,asciidoc]
 ----
 // renders as "ISO 712, 5:8-10"
 // ("5:8-10" treated as replacement text for all the foregoing)
@@ -536,17 +544,81 @@ Sampling shall be carried out in accordance with <<xxx,section="5-3-1,bis">>
 ----
 ====
 
+==== Discontinuous locality
+
+Discontinuous localities can be named by repeating the same locality type.
+
 [example]
-.Example of referencing with a "whole" locality
+.Example of referencing a discontinuous locality
 ====
+[source,asciidoc]
 ----
-// renders as: "ISO 712, Whole of text"
-<<ISO712,whole>>
+// renders as "`page 4, page 7`"
+<<ref1,page=4,page=7>>
 ----
 ====
 
-The references cannot contain spaces. Any text following the sequence of localities
-will be displayed instead of the localities.
+Discontinuous localities can also be specified by delimiting sequences of
+localities with semicolon [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.24] +
+
+[example]
+.Example of referencing discontinuous hierarchical localities
+====
+[source,asciidoc]
+----
+// renders as "`Part IV, Chapter 3; Part VI, Chapter 9`"
+<<ref1,part=IV,chapter=3;part=VI,chapter=9>>
+----
+====
+
+==== Complex locality
+
+Complex relations between discontinuous references can be specified by
+prefixing conjoining verbs to sequences of localities separated
+by semicolon [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
+
+This will result in overt connectives between the references, which will be
+internationalised.
+
+Conjoining verbs include:
+
+* `and!`
+* `or!`
+* `from!`
+* `to!`
+
+[example]
+.Example of referencing a complex locality
+====
+[source,asciidoc]
+----
+// renders as: "`Chapters 3 and 7`"
+<<chapter=3;and!chapter=7>>
+----
+====
+
+[example]
+.Example of referencing a complex locality that contains a hierarchical locality
+====
+[source,asciidoc]
+----
+// renders as: "Part IV, Chapter 3 or Part VI, Chapter 9"
+<<ref1,part=IV,chapter=3;or!part=VI,chapter=9>>
+----
+====
+
+NOTE: This is similar to the behavior in
+link:/author/topics/document-format/xrefs/#combined-xrefs[Combination of cross-references].
+
+Any trailing text after the sequence of `locality=reference` (or
+`locality{space}reference`) is treated as custom text for the cross-reference,
+as would occur normally in a typical AsciiDoc cross-reference.
+
+The locality can appear in quotations if it contains special characters (like
+dashes or commas).
+
+
+==== Custom locality
 
 A custom locality can be entered by prefixing it with `locality:`.
 
@@ -561,6 +633,7 @@ A custom locality can be entered by prefixing it with `locality:`.
 ====
 
 Custom localities may not contain commas, colons, or space.
+
 Localities with the `locality:` prefix are recognized in internationalization
 configuration files.
 
@@ -577,7 +650,7 @@ cross-reference text.
 ====
 
 
-==== Anchors
+==== Anchor locality
 
 Exceptionally, the `anchor` locality is only used in HTML, to generate
 anchor links to other HTML pages [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
@@ -608,29 +681,33 @@ will render in HTML as:
 --
 ====
 
-=== Case and dropped locality labels
+==== Case and dropped locality labels
 
 The `capital%`, `lowercase%` and `droploc%` options used for internal
 cross-references can also be used as prefixes to localities, modifying how those
 localities are
 rendered [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.9].
 
-The following input:
 
+[example]
+.Example of using `droploc` in a citation locality
+====
 [source,asciidoc]
 --
+// renders as "ISO 7301, 2"
 <<ISO7301,droploc%clause=2>>
+--
+====
 
+[example]
+.Example of using `lowercase` in a citation locality
+====
+[source,asciidoc]
+--
+// renders as "ISO 7301, clause 2"
 <<ISO7301,lowercase%clause=2>>
 --
-
-will render as:
-
-____
-ISO 7301, 2
-
-ISO 7301, clause 2
-____
+====
 
 
 [[autofetch]]
