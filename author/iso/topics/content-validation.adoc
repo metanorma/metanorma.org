@@ -4,9 +4,9 @@ layout: iso-flavor
 
 = Content style validation
 
-Style rules are currently specific to content in English.
+== ISO/IEC DIR 2
 
-These try to impose rules on content taken from http://www.iec.ch/members_experts/refdocs/iec/isoiecdir-2%7Bed7.0%7Den.pdf[ISO/IEC DIR 2], including restrictions on where requirements may be stated, usage of decimal points, hanging clauses, and subclauses that are the only child of their parent clause. While the error detection is not infallible, they should be reviewed at least once. Where possible, the gem will give the ID or section heading associated with the error. For example:
+Metanorma tries to impose rules on content taken from http://www.iec.ch/members_experts/refdocs/iec/isoiecdir-2%7Bed7.0%7Den.pdf[ISO/IEC DIR 2], including restrictions on where requirements may be stated, usage of decimal points, hanging clauses, and subclauses that are the only child of their parent clause. While the error detection is not infallible, they should be reviewed at least once. Where possible, the gem will give the ID or section heading associated with the error. For example:
 
 [source,console]
 --
@@ -17,6 +17,8 @@ ISO style: AnnexA-4-1:Preparation of test sample: subsection is only child
 --
 
 If any content warnings are generated during build, you will see them prefixed with `ISO Style`.
+
+Style rules involving text are currently specific to content in English, except where otherwise noted.
 
 The style rules implemented include:
 
@@ -87,3 +89,43 @@ ISO/IEC DIR 2 is more strict than most standards about the order and contents of
 clauses. Many of these rules are realized through the XML schema of the Metanorma ISO
 flavour, and they are reported on through syntax validation. Users should pay particular
 attention to syntax errors in Metanorma ISO documents.
+
+== ISO house style
+
+Metanorma also takes the rules in the https://www.iso.org/ISO-house-style.html[ISO house style]
+into account [added in https://github.com/metanorma/isodoc/releases/tag/v2.0.5]. 
+Metanorma now validates against the following requirements:
+
+* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-r-ref_clause3[References in Clause 3 (Terms and definitions)]:
+Cross-references in terms clauses can only reference content within terms clauses.
+Cross-references outside of terms clauses can only reference content outside of terms clauses.
+So terms clauses and other content are self-contained in cross-referencing.
+* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-lists[Lists]:
+List punctuation needs to be consistent with that of the sentence preceding it.
++
+____
+* If the list comprises several sentences, then use the following list format.
+** The introductory sentence is a complete sentence and ends with a colon or a full stop.
+** The list items are complete sentences that start with a capital letter and end with a full stop.
+* If the list comprises one sentence broken into a list format, then:
+** the introductory sentence is a partial sentence and preferably ends with a colon;
+** the list items start in lower case and end with a semicolon (preferred) or a comma, used consistently;
+** the final list item ends with a full stop.
+____
+
+* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-lists[Lists]:
+There should not be more than one ordered list in a numbered clause.
+* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-lists[Lists]:
+No list should be more than four levels deep.
+* https://www.iso.org/ISO-house-style.html#iso-hs-s-formatting-r-vocabulary[Vocabulary documents]:
+Single terms clause in vocabulary document should have normal Terms and definitions heading.
+Multiple terms clauses in vocabulary document should be prefixed with "Terms related to".
+* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-n-numbers[Numbers]:
+The Unicode minus sign, U+2212, should be used instead of the hyphen.
+* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-and[And/Or]:
+The conjunction _and/or_ should be avoided.
+* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-andor[And or &]:
+Avoid ampersand in ordinary text
+* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-full[Full stops]:
+Do not use full stop at the end of a title or caption.
+
