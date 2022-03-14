@@ -17,30 +17,61 @@ therefore the `type` attribute is ignored in ordered lists.
 Admonitions can be applied to:
 
 * Document elements, by adding the block anywhere in the document;
-* To the document as a whole, by adding the block to before the first numbered clause.
 
-Metanorma AsciiDoc natively supports the ISO admonitions
-"`Caution`", "`Warning`", and "`Important`" through its
-admonition syntax.
+* To the document as a whole, by adding the block to before the first numbered
+clause.
 
-[source,asciidoc]
---
+Metanorma natively supports the ISO admonitions
+"`Caution`", "`Warning`", and "`Important`" through the
+admonition syntax using the corresponding type names.
+
+NOTE: These message types are referenced in ISO/IEC DIR 2 from
+https://www.iso.org/standard/53940.html[ISO/IEC Guide 51] and
+https://www.iso.org/standard/3726.html[ISO 78-2].
+
+* A "`Caution`" message can be specified using `CAUTION:` or `[CAUTION]`.
++
+[example]
+.Example of specifying Caution messages
+======
+[source,adoc]
+----
 CAUTION: This is a single-block caution.
 
+[CAUTION]
+====
+This is a caution
+
+in multiple blocks.
+====
+----
+======
+
+* A "`Warning`" message can be specified using `WARNING:` or `[WARNING]`.
++
+[example]
+.Example of specifying Warning messages
+======
+[source,adoc]
+----
 WARNING: This is a warning.
 
 [WARNING]
 ====
-This is a warning
+This is a warning too,
 
-spanning multiple-blocks.
+in multiple blocks.
 ====
---
+----
+======
 
 If the admonitions "`Danger`" and "`Safety Precaution`" are needed, they should
 be indicated through a `type` attribute, which will override the admonition type
-appearing in the AsciiDoc:
+appearing.
 
+[example]
+.Example of specifying Danger and Safety Precaution messages
+======
 [source,asciidoc]
 --
 [type=Danger]
@@ -53,6 +84,7 @@ This is a safety precaution
 spanning multiple-blocks.
 ====
 --
+======
 
 == Cross-references
 
@@ -262,11 +294,17 @@ https://www.iso.org/ISO-house-style.html[ISO house style]: [added in https://git
 
 === Vocabulary documents
 
+==== General
+
 The "`vocabulary`" document type is defined in the
 https://www.iso.org/ISO-house-style.html[ISO house style]
 and title requirements defined in the ISO/IEC Directives, Part 2, 2018, 11.5.2.
 
-According to the ISO House Rules:
+A vocabulary document differs from a normal ISO deliverable because it allows
+certain exceptions, but also restricts the type of content allowed in the
+deliverable.
+
+According to the https://www.iso.org/ISO-house-style.html[ISO House Style]:
 ____
 A vocabulary is the source document for the terms and definitions of
 a committee or subject. It is not a collection of terms used in the
@@ -282,44 +320,100 @@ documents of a committee. Therefore, it does not:
 
 A vocabulary is the only ISO document that can have terminological
 entries in clauses other than Clause 3. If terminological entries
-are given in other clauses, use a clause title starting “Terms
-related to”. Terminological entries are never included in annexes.
+are given in other clauses, use a clause title starting
+"`Terms related to`". Terminological entries are never included in annexes.
 ____
 
-In documents of subtype `:vocabulary:`, terminological entries are permitted
-outside of
-Clause 3 [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.8.3].
-Such sections still need indicated with the `heading` attribute set to `terms
-and definitions`:
+==== Setting a vocabulary document
 
+A vocabulary document is specified by setting the document header of
+`:docsubtype:` to the value `vocabulary`.
+
+[example]
+.Example of setting ISO 8000-2 as a vocabulary document
+====
+[source,adoc]
+----
+= ISO 8000-2
+:docsubtype: vocabulary
+----
+====
+
+==== Using terminological entries outside Clause 3
+
+Terminological entries are permitted outside of Clause 3 in vocabulary
+documents [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.8.3].
+
+Such clauses need to be indicated with the `heading` attribute set to
+`terms and definitions`.
+
+[example]
+.Using first level clauses for terminology entries in vocabulary documents
+====
 [source,adoc]
 ----
 :docsubtype: vocabulary
-
-....
+...
 
 [heading=terms and definitions]
-== Terms related to comedy
+== Terms related to comedy theatre
+...
 
-....
+[heading=terms and definitions]
+== Terms related to fantasy theatre
+...
 ----
+====
 
-Vocabulary documents usually do not contain a clause for Symbols and Abbreviated terms. 
-Preferably, those are included in term entries as preferred or admitted terms.
-Alternatively they can be listed in an annex:
+==== Handling Symbols and Abbreviated terms
 
+Content for "`Symbols`" and "`Abbreviated terms`" are not allowed in the main
+content body of vocabulary documents.
+
+NOTE: Information in this clause was provided directly by the ISO/CS Editing
+team. It is not explicitly documented in the ISO House Style reference.
+
+There are only two ways of handling symbols and abbreviated terms in a
+vocabulary document:
+
+. Included in term entries as preferred or admitted terms. This is the preferred
+manner by ISO/CS.
+
+. Listed in an annex named "`Symbols and abbreviated terms`". This is an
+accepted practice by ISO/CS.
+
+[example]
+.Providing symbols and abbreviated terms as an annex in a vocabulary document
+====
 [source,adoc]
 ----
 :docsubtype: vocabulary
+...
 
-....
+== Terms related to requirements
+=== abstract test suite
+alt:[ATS]
+
+collection of abstract conformance tests of which passing indicates compliance
+to the associated conformance class
+----
+====
+
+
+[example]
+.Providing symbols and abbreviated terms as an annex in a vocabulary document
+====
+[source,adoc]
+----
+:docsubtype: vocabulary
+...
 
 [appendix]
-== {blank}
-
-=== Symbols and abbreviated terms
-
+== Symbols and abbreviated terms
+ATS:: abstract test suite
 ----
+====
+
 
 == Annexes and appendices
 
