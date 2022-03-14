@@ -74,10 +74,10 @@ ____
 [[text-ref-allowed-anchors]]
 == Anchor ID syntax
 
-Anchor IDs of any type (cross-references, items, bibliographies, etc.) are directly
-converted into XML, and therefore *must not* contain the following:
+Anchor IDs of any type (cross-references, items, bibliographies, etc.) are
+directly converted into XML, and therefore *must not* contain the following:
 
-* colons
+* colons;
 * whitespaces or;
 * words starting with numbers.
 
@@ -88,14 +88,16 @@ Colons in cross-references are used for
 link:/author/topics/document-format/collections#indirect-xrefs[indirect cross-references between files in the same collection],
 to delimit namespaces and containers from anchor IDs [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.4].
 
-If an anchor is not assigned to an entity, Metanorma by default assigns GUIDs to be
-its identifier, prefixed with `_`; e.g. `_01234567-89ab-cdef-0123-456789abcdef`.
+If an anchor is not assigned to an entity, Metanorma by default assigns a GUID
+to be its identifier. Auto-generated identifiers are prefixed with `_`;
+e.g. `_01234567-89ab-cdef-0123-456789abcdef`.
+
 In order to keep anchors stable within a single version of the document,
-Metanorma calculates those GUIDs as an MD5 Hash of
-the XPath of the element, and its text content [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.8]. 
-So long as neither the text content
-nor the position in the document of the entity changes, it will retain the same
-GUID anchor.
+Metanorma calculates those GUIDs as an MD5 Hash of the XPath of the element, and
+its text content [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.8].
+
+So long as neither the text content nor the position in the document of the
+entity changes, an entity will retain the same GUID anchor.
 
 
 == Localities
