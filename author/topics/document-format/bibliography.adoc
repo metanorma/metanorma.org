@@ -13,14 +13,14 @@ Every bibliographic section must be preceded by the style attribute
 `[bibliography]` so that references they contain may be recognized as such:
 
 [source,asciidoc]
---
+----
 [bibliography]
 == Bibliography
 
 * [[[id1,1]]] _First reference_
 * [[[id2,2]]] _Second reference_
 * [[[id3,3]]] _Third reference_
---
+----
 
 [example]
 .Example of creating the "`Normative references`" clause in an ISO deliverable
@@ -33,7 +33,7 @@ section is set as the last unnumbered section at the end of document
 [source,asciidoc]
 ----
 ...
-// This is clause 3
+// This is Clause 3 of an ISO deliverable
 [bibliography]
 == Normative references
 
@@ -42,7 +42,7 @@ section is set as the last unnumbered section at the end of document
 
 ...
 
-// This is the last section
+// This is the last clause of an ISO deliverable
 [bibliography]
 == Bibliography
 
@@ -353,43 +353,59 @@ copy-pasting.
 
 == Alternate bibliography formats
 
-=== Entering formatted citations
+=== Entering pre-formatted citations
 
 For generic references, by default, Metanorma only supports formatted citations,
 which are given as such in the AsciiDoc source.
 
-The NIST flavour of Metanorma currently supports rendering of generic references, on an experimental basis.
+The NIST flavour of Metanorma currently supports rendering of generic
+references, on an experimental basis.
 
-See link:/author/topics/building/reference-lookup[Automatic reference lookup] topic.
+See the
+link:/author/topics/building/reference-lookup[Automatic reference lookup]
+topic for more details.
 
-=== Hidden citations
+[[hidden-citations]]
+=== Entering hidden citations
 
-It is possible to add a citation to a document while suppressing its rendering in any output document.
-This is done so that the Semantic XML of Metanorma will still contain information about the
-citation, and can use it e.g. to populate cross-references to that document.
+It is possible to add a citation to a document while suppressing its rendering
+in all rendered outputs.
 
-A hidden citation can be added to a Metanorma document by wrapping the reference tag with
-`hidden(...)` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.0]:
+This is done so that the Metanorma Semantic XML will still contain information
+about the citation, and can use it, for instance, to populate cross-references
+to that document.
 
+A hidden citation can be added to a Metanorma document by wrapping the reference
+tag in `hidden(...)`. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.0]
+
+[example]
+.Example of hiding a named reference (ISO 8601-1:2019)
+====
 [source,asciidoc]
 --
 [bibliography]
-== Normative References
+== Normative references
 
-* [[[ref1,hidden(ISO 123)]]]
+* [[[iso86011,hidden(ISO 8601-1:2019)]]]
 --
+====
 
 
-=== Entering Relaton XML
+=== Entering entries using Relaton XML
 
 Bibliographic entries can also be given as raw https://www.relaton.org[Relaton XML],
-in an AsciiDoc passthrough block. Of course, any Relaton XML BibItem entries
-need to be valid, and using correct `id` attributes:
+in an AsciiDoc passthrough block.
 
+Of course, any Relaton XML BibItem entries need to be valid, and using correct
+`id` attributes.
+
+[example]
+.Example of entering an entry using Relaton XML (ISO 1)
+====
 [source,asciidoc]
 --
 [bibliography]
-== Normative References
+== Normative references
 
 ++++
 <bibitem id="doc1">
@@ -398,16 +414,25 @@ need to be valid, and using correct `id` attributes:
 </bibitem>
 ++++
 --
+====
 
-=== AsciiBib
+=== Entering entries using AsciiBib
 
-Finally, bibliographic entries can be entered as AsciiDoc definition lists, capturing the structure
-of Relaton XML. This approach is documented in https://www.relaton.org/specs/asciibib/[relaton.org].
+Bibliographic entries can be entered in the AsciiBib format.
 
+AsciiBib is a bibliography entry format that uses AsciiDoc definition lists to
+capture the structure of Relaton XML.
+
+This approach is documented in
+https://www.relaton.org/specs/asciibib/[relaton.org].
+
+[example]
+.Example of entering an entry using AsciiBib (ISO 123) with an AsciiBib ID
+====
 [source,asciidoc]
 --
 [bibliography]
-== Normative References
+== Normative references
 
 [%bibitem]
 === Rubber latex -- Sampling
@@ -420,17 +445,25 @@ docid::
   id::: 32784
 type:: standard
 --
+====
 
-The `id` attribute of bibitem clauses (the anchor of the clause) can be overridden by an AsciiDoc
-anchor on the clause [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
-This can be required for AsciiDoc to process crossreferences correctly. Any such anchors must not be
-preceded by `_`, as AsciiDoc uses that to indicate anchors it inserts automatically, which are not
+The `id` attribute of `%bibitem` clauses (the anchor of the clause) can be
+overridden by a Metanorma AsciiDoc anchor on the
+clause [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
+
+This can be required for Metanorma AsciiDoc to process cross-references correctly.
+
+NOTE: Metanorma AsciiDoc anchors must not be preceded by `_`, as Metanorma
+AsciiDoc uses that to indicate anchors it inserts automatically, which are not
 supplied in the source.
 
+[example]
+.Example of entering an entry using AsciiBib (ISO 123) with an AsciiDoc anchor
+====
 [source,asciidoc]
 --
 [bibliography]
-== Normative References
+== Normative references
 
 [[iso123]]
 [%bibitem]
@@ -444,6 +477,7 @@ docid::
   id::: 32784
 type:: standard
 --
+====
 
 
 [[localities]]
@@ -453,20 +487,23 @@ type:: standard
 
 Citations of references in Metanorma are formulated as cross-references.
 
-The ID (the "anchor") cross-referenced is the internal identifier given for the
+The anchor cross-referenced is the internal identifier given for the
 bibliographic entry.
 
+[example]
+.Example of specifying a reference anchor (`ref1` is the anchor)
+====
 [source,adoc]
 ----
 <<ref1,part=IV,chapter=3,paragraph=12>>
 ----
+====
 
-Here, `ref1` in the examples above is the anchor.
+Metanorma AsciiDoc works in a similar way to typical AsciiDoc: any text in a
+cross-reference that follows a comma constitutes custom text for the
+cross-reference.
 
-In typical AsciiDoc, any text in a cross-reference that follows a comma
-constitutes custom text for the cross-reference.
-
-So a cross-reference `\<<ISO7301,the foregoing reference>>` will be rendered as
+A cross-reference `\<<ISO7301,the foregoing reference>>` will be rendered as
 "`the foregoing reference`", and hyperlinked to the `ISO7301` reference.
 
 
@@ -728,23 +765,37 @@ rendered [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v
 
 === Link-only references
 
-A cross-reference can be entered in Metanorma to a standards document without that document
-appearing in the document references. That cross-reference is treated as equivalent to a cross-reference
-to a hidden citation, as documented in link:/author/topics/document-format/bibliography#hidden[Hidden citations].
+A standards document can be cross-referenced in Metanorma without that document
+appearing in the document references.
 
-Link-only references can be added to Metanorma documents using the macro `++std-link:[...]++`,
-where the `std-link` macro contains the same text as a normal cross-reference to a standard, including
-localities and other directives -- but without
-the need for an explicit bibliographic entry. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
-So the following two documents are equivalent:
+Such cross-reference is treated as equivalent to a cross-reference
+to a hidden citation, as documented in <<hidden-citations>>.
 
+Link-only references can be added to Metanorma AsciiDoc using the following
+command:
+
+[source,adoc]
+----
+++std-link:[...]++
+----
+
+Where the `std-link` command contains the same text as a normal cross-reference
+to a standard, including localities and other directives.
+There is no need for an explicit bibliographic entry. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
+
+The following two examples are equivalent:
+
+[example]
+.Link-only reference of ISO 123 using `std-link`
+====
 [source,asciidoc]
 ----
 std-link:[ISO 123,droploc%clause=3]
 ----
+====
 
-and:
-
+.Link-only reference of ISO 123 using a hidden citation
+====
 [source,asciidoc]
 ----
 <<ref1,droploc%clause=3>>
@@ -754,6 +805,7 @@ and:
 
 * [[[ref1,hidden(ISO 123)]]]
 ----
+====
 
 
 [[autofetch]]
