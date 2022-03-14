@@ -126,7 +126,7 @@ to delimit namespaces and containers from anchor IDs [added in https://github.co
 If an anchor is not assigned to an entity, AsciiDoc by default assigns GUIDs to be
 its identifier, prefixed with `_`; e.g. `_01234567-89ab-cdef-0123-456789abcdef`.
 In order to keep anchors stable within a single version of the document,
-Metanorma replaces such GUIDs with a GUID calculated through an MD5 Hash of
+Metanorma calculates those GUIDs as an MD5 Hash of
 the XPath of the element, and its text content [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.8]. 
 So long as neither the text content
 nor the position in the document of the entity changes, it will retain the same
