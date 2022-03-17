@@ -1438,7 +1438,29 @@ All of the following variants below are supported:
 
 * `identifier`: an identifier for the term being cited (optional).
 
-* `term`: the term cited, in its canonical form (mandatory).
+* `term`: the term being cited (mandatory). The term can be named using any of
+the preferred designations. It can also be named using 
+an admitted designation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.5].
+So any of the following will work:
++
+[source,adoc]
+----
+== Terms and definitions
+
+=== First Designation
+
+preferred:[Second Designation]
+
+alt:[Third Designation]
+
+...
+
+{{First Designation}}
+
+{{Second Designation}}
+
+{{Third Designation}}
+----
 
 * `display-text`: text to be displayed, if it is distinct from the cited term
 (optional). If this argument is not provided, the canonical form and the display
