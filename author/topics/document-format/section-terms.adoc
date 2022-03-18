@@ -1379,45 +1379,84 @@ image::/assets/author/topics/document-format/section-terms/fig-term-stem.png[Ill
 
 
 [[citeterms]]
-=== Referencing concepts
+=== Referencing concepts through mentions
 
 ==== General
 
-Instances of terms, symbols or abbreviations used in the document can be marked
-up to indicate the semantic meaning of the concept. [added in
-https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14].
+Instances of concepts (terms, symbols or abbreviations) used in the document
+can be linked to indicate the semantic meaning of the
+concept. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14].
 
-This can be done whether the concept is defined:
+Semantically linking a concept instance is performed in through an action called
+a "`concept mention`".
 
-* in the current document;
-* in an external, cited document; or
-* in an external termbase.
+Concept mentions are very useful in showing the reader of the standard what
+a particular term means.
 
-Marking up mentions of concepts (terms, symbols, or abbreviations) in the
-content body generally does not impact their rendering.
+Concept mentions have different effects on rendering depending where they are
+used:
 
-This tagging is intended for semantic processing of standards documents in
-Metanorma Semantic XML.
+* when used in the "`terms and definitions`" clauses, a concept mention is
+  rendered differently in certain flavors (such as ISO and IEC) in order to
+  display location of where those concepts are defined.
 
-Marking up term instances in the "`terms and definitions`" clauses may cause
-terms to render differently in certain flavors, such as for ISO and IEC, in
-order to display location of where those concepts are defined.
+* when used in the content body, rendering of concept mentions are generally not
+  impacted.
 
-NOTE: The syntax for citing terms has been changed for v1.10.0.
-This section describes the current syntax
-[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.0].
+Concept mentions are converted into a distinct `<concept>` element in Metanorma
+Semantic XML, which includes a cross-reference to the concept definition, the
+canonical form of the term designation, and the text to be displayed for the
+term in that instance.
 
-The generic syntax is shown here.
+
+==== Full syntax for concept mentions
+
+NOTE: This section is intended for advanced usage only. Please refer to the
+other sections for simple syntaxes for concept mentions.
+
+The full syntax for a concept mention is:
 
 [source,adoc]
 ----
 {{<<identifier>>,term,display-text,cross-reference-text,options="..."}}
 ----
 
-In this full form of the syntax, only the `term` argument is mandatory.
+In this syntax, only the `term` argument is mandatory.
 
-All of the following variants below are supported:
+* `identifier`: an identifier for the concept being cited (optional).
 
+* `term`: the concept designation being cited (mandatory).
+
+* `display-text`: text to be displayed, if it is distinct from the cited term
+(optional).
+
+** If this argument is not provided, the canonical form and the display
+text are assumed to be identical.
+
+* `cross-reference-text`: text to display for the cross-reference to the concept
+definition (optional).
+
+** If this argument is not provided, the default rendering of the
+cross-reference for the current Metanorma flavour is provided.
+
+* `options`: options that determine how the concept is to be displayed (may be
+flavour-specific).
+
+NOTE: The `{{<<identifier>>,term,display-text,cross-reference,options=".."}}`
+markup closely mirrors the markup syntax of cross-references in Metanorma
+AsciiDoc (`\<<anchor,%option,text>>`).
+
+NOTE: The syntax for citing terms has been changed for v1.10.0.
+This section describes the current syntax
+[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.0].
+
+
+The full syntax enables multiple simple patterns that can be used for concept
+mentions.
+
+[example]
+.Referencing concepts with supported variant syntaxes
+====
 [source,adoc]
 ----
 {{term}}                // or synonym: term:[term]
@@ -1435,87 +1474,69 @@ All of the following variants below are supported:
 {{<<identifier>>,term,display-text,cross-reference-text}}
 {{<<identifier>>,term,display-text,cross-reference-text,options="..."}}
 ----
-
-* `identifier`: an identifier for the term being cited (optional).
-
-* `term`: the term being cited (mandatory). The term can be named using any of
-the preferred designations. It can also be named using 
-an admitted designation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.5].
-So any of the following will work:
-+
-[source,adoc]
-----
-== Terms and definitions
-
-=== First Designation
-
-preferred:[Second Designation]
-
-alt:[Third Designation]
-
-...
-
-{{First Designation}}
-
-{{Second Designation}}
-
-{{Third Designation}}
-----
-
-* `display-text`: text to be displayed, if it is distinct from the cited term
-(optional). If this argument is not provided, the canonical form and the display
-text are assumed to be identical.
-
-* `cross-reference-text`: text to display for the cross-reference to the concept
-definition (optional). If this argument is not provided, the default rendering
-of the cross-reference for the current Metanorma flavour is provided.
-
-* `options`: options that determine how the concept is to be displayed (may be
-flavour-specific).
-
-NOTE: The `{{<<identifier>>,term,display-text,cross-reference,options=".."}}`
-markup closely mirrors the markup syntax of cross-references in Metanorma
-AsciiDoc (`\<<anchor,%option,text>>`).
-
-Instances of cited terms are converted into a distinct `concept` element in
-Metanorma Semantic XML, which includes a cross-reference to the term definition,
-the canonical form of the term name, and the text to be displayed for the term
-in that instance.
+====
 
 
 ==== Concepts defined within current document
 
 ===== Reference by term
 
-To cite a concept defined within a document the following syntax can be used.
-
-Syntax:
+Concept mentions are encoded by having a designation wrapped with doubled curly
+braces (`{{...}}`).
 
 [source,adoc]
 ----
-// The term is from the current document as a concept.
-{{term}}
-// or synonym:
-term:[term]
-
-// If the desired display text differs from the concept term.
-{{term,display-text}}
-// or synonym:
-term:[term,display-text]
-
-// If a specific version of the cross-reference text is required.
-{{term,display-text,cross-reference-text}}
+{{concept}}
 ----
 
-`term` in concept syntax is matched against any of the preferred terms
-in the document, but the wording of `term` is expected to be an exact match.
+Where,
 
-NOTE: Metanorma automatically creates anchor references for every concept
-from the document, which is used when referencing by term.
+* the `concept` is a term specified in the document or any designation of that
+term.
+
+An alternative syntax for a concept mention uses the command `term:[...]`.
+
+[source,adoc]
+----
+term:[concept]
+----
+
+Rendering of a concept mention differs according to flavour. Typically, the
+concept mention contains the term text, and a cross-reference to its definition.
+Hyperlinking is done on the cross-reference.
 
 [example]
-.Example from ISO/IEC Directives Part 2 (2020), 16.5.10
+.Example of concept mention rendering (modified from OGC 20-010)
 ====
+This source:
+
+[source,adoc]
+----
+=== conceptual model
+model that defines concepts of a universe of discourse
+
+=== conceptual schema
+formal description of a {{conceptual model}}
+----
+
+Renders by default as:
+
+____
+formal description of a _conceptual model_ [term defined in Clause 3.6]
+____
+====
+
+
+
+[example]
+.Example of concept mention rendering (ISO/IEC Directives Part 2 (2020), 16.5.10)
+====
+In Metanorma for ISO, concept mentions render according to ISO DIR 2, Clause 16.
+The rendering contains the term text, and a cross-reference to its definition,
+where a hyperlink is added on the cross-reference.
+
+Source:
+
 [source,adoc]
 ----
 == Terms and definitions
@@ -1530,26 +1551,9 @@ from the document, which is used when referencing by term.
 
 part of a terminological data collection which contains the
 {{terminological data}} related to one {{concept}}
-
-// equivalent:
-part of a terminological data collection which contains the
-term:[terminological data] related to one term:[concept]
 ----
 
-This will be displayed according to the flavour; the rendering typically
-contains the term text, and a cross-reference to its definition. Any
-hyperlinking is done on the cross-reference.
-
-The default Metanorma rendering would look like:
-
-____
-part of a terminological data collection which contains the
-_terminological data_ [term defined in Clause 3.1] related to one
-_concept_ [term defined in Clause 3.2]
-____
-
-In the ISO flavour of Metanorma, and flavours derived from it, the rendering
-follows ISO conventions:
+Rendered as:
 
 ____
 part of a terminological data collection which contains the
@@ -1558,30 +1562,62 @@ ____
 ====
 
 
-In some cases, the displayed term is a variant of the referenced term, such as
-its plural form. That means that the display text needs to be differentiated
+A concept mention can refer to any of the preferred or admitted
+designations defined in the current
+document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.5].
+
+[example]
+.Referencing concepts with preferred or alternate designations
+====
+[source,adoc]
+----
+== Terms and definitions
+
+=== first preferred designation
+preferred:[another preferred designation]
+alt:[alternate designation]
+
+...
+
+=== another designation
+...
+
+terms can be referenced using the {{first preferred designation}},
+any of the other {{other preferred designation}} or {{alternate designation}}
+----
+====
+
+
+Sometimes a variant of the referenced term, such as its plural form is used in a
+concept mention. That means that the display text needs to be differentiated
 from the referenced term.
 
-.Example from ISO 8601:2019, 3.1.1.5
+This can be done by adding the display text after the mentioned concept
+separated by a comma.
+
+[source,adoc]
+----
+{{concept,display-text}}
+----
+
+[source,adoc]
+----
+term:[concept,display-text]
+----
+
+
+.Example of concept mention with display text (ISO 8601:2019, 3.1.1.5)
 [example]
 ====
 [source,adoc]
 ----
 ===== instant
 ...
-
 ===== time axis
 ...
-
 ===== time scale
-
-system of ordered marks which can be attributed to {{instant, instants}} on the
-{{time axis}}, one instant being chosen as the origin
-
-// equivalent:
-
-system of ordered marks which can be attributed to term:[instant, instants] on
-the term:[time axis], one instant being chosen as the origin
+system of ordered marks which can be attributed to {{instant, instants}}
+on the {{time axis}}, one instant being chosen as the origin
 ----
 
 In the rendering, the display text is used instead of the referenced term:
@@ -1593,7 +1629,16 @@ the _time axis_ (3.9), one instant being chosen as the origin
 ____
 ====
 
-It is conceivable that authors will want to override the automatically-generated
+
+If a specific version of the cross-reference text is required, the following
+syntax is to be used.
+
+[source,adoc]
+----
+{{term,display-text,cross-reference-text}}
+----
+
+Authors will want to override the automatically-generated
 cross-reference text with their own text, as is already possible for
 cross-references within Metanorma.
 
@@ -1608,7 +1653,6 @@ This requires an expanded version of the expression:
 ...
 
 ===== time scale
-
 system of ordered marks which can be attributed to {{instant, instants}} on the
 {{time axis,time axis,see the preceding discussion}}, one instant being chosen
 as the origin
@@ -1624,84 +1668,41 @@ origin
 ____
 
 
-[NOTE]
---
-The terms reference capability relies on automatically created anchor
-references for every term defined.
-
-For example, in the following text,
-
-[source,adoc]
-----
-== Terms and definitions
-=== Foo
-
-bar
-
-=== Lor
-
-special kind of term:[foo]
-----
-
-the anchors `\[[term-foo]]` and `\[[term-lor]]` are automatically created and
-assigned to the terms 'foo` and `lor`.
-
-These anchors are generated from the terms themselves according to these rules:
-
-* the terms are lowercased;
-* non-ASCII characters are stripped;
-* whitespaces are replaced by `-`.
-
-This means if you wanted to refer to a particular term from body text, you could
-either:
-
-* directly refer to the term: e.g., `see definition of term:[foo]`
-* refer to the anchor of the term: e.g., `the topic is further explained in \<<term-foo>>`
-
-In case you have created manual anchors that conflict with `[[term-{X}]]`, the
-term reference mechanism is smart enough to rename the generated anchor as
-`[[term-{X}-{n}]]`, where `n` is a number from 1, and so forth.
-
-Therefore this will still work as expected:
-
-[source,adoc]
-----
-== Terms and definitions
-=== Foo
-bar
-
-=== Lor
-special kind of term:[foo]
-
-[[term-foo]]
-== My section
-
-lorem
-----
---
-
-===== Reference by symbol
+===== Reference by symbol or abbreviated term
 
 Symbols and abbreviated terms defined in the document can also be cited as
 concepts [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1].
 
-In the case of symbols and abbreviated terms, the `symbol:[]` macro is used
-instead of `term:[]`, and targets a symbol defined in a definition list within
-the "`Symbols and abbreviated terms`" section.
+The `{{...}}` syntax can also be used for referencing symbols or abbreviated
+terms.
 
-NOTE: Such symbols have automatic anchors assigned to them, as with terms, but
-prefixed with `symbol-` rather than `term-`. If the `{{...}}` format is used
-instead, either a term or a symbol is matched; terms are matched by default.
+When using the `{{...}}` syntax, precedence of reference matching starts with
+terms, then symbols, then abbreviated terms.
+
+The `symbol:[]` command can also be used to refer to a symbol or an abbreviated
+term, which directly targets a symbol defined in a definition list within the
+"`Symbols and abbreviated terms`" section.
+
+NOTE: If there is a particular symbol to be referenced that conflicts with a
+term designation, the `symbol:[]` command should be used in that instance.
+However, do note that such situation already introduces a conceptual conflict
+within the document since a designation is defined more than once.
+
+Concept mentions of symbols and abbreviated terms generally do not get rendered,
+they are not italicised, referenced, or hyperlinked by default.
+In order to have them rendered, the overriding syntax for supplying
+cross-reference text can be used.
 
 [example]
-.Citing concepts in content body do not get rendered
+.Concept mentions of symbols in content body do not get rendered
 ====
+The following source:
+
 [source,adoc]
 ----
 == Symbols and abbreviated terms
-
 ISO:: International Standards Organization // automatically assigned the anchor `symbol-ISO`
-[[xyz]]IEC:: International Electrotechnical Commission // is assigned the anchor `xyz`
+[[xyz]]IEC:: International Electrotechnical Commission // assigned the anchor `xyz`
 
 == Discussion
 The vocabulary is authorised by {{ISO}} and {{IEC,the IEC}}.
@@ -1710,9 +1711,7 @@ The vocabulary is authorised by {{ISO}} and {{IEC,the IEC}}.
 The vocabulary is authorised by symbol:[ISO] and symbol:[IEC,the IEC].
 ----
 
-Unlike terms, symbols and abbreviations are not italicised, referenced, or
-hyperlinked by default.
-
+Renders as:
 ____
 The vocabulary is authorised by ISO and IEC.
 ____
@@ -1724,8 +1723,8 @@ ____
 In certain cases it is more appropriate to reference a concept (defined
 in the current document) by anchor, instead of by term, e.g.:
 
-* the defined term is not plain text, e.g., a math formula;
-* the defined term is long in length.
+* the defined term is not plain text, e.g., a math formula in MathML;
+* the defined term is too long in length.
 
 To reference a concept by anchor, the anchor of the concept should be provided,
 and optionally the text to be displayed. The anchor must be given in angle
@@ -1736,26 +1735,32 @@ The following elements are needed to make this inference:
 * anchor of the concept;
 * (optional) text to be displayed.
 
-The syntax is:
+When a concept has a designation that is not in plain text (such as MathML), a
+manual anchor can be created for it in order to reference it as a shorthand.
 
 [source,adoc]
 ----
-// The concept is from the current document, but a manual anchor has been
-// created for referencing it as a shorthand, useful in the case where a
-// concept term is not in plain text (e.g. MathML).
 {{<<identifier>>}}
+----
 
-// If the display text differs from the cited concept term, referred through
-// an anchor.
+If the display text differs from the cited concept, it can be referred
+through an anchor.
+
+[source,adoc]
+----
 {{<<identifier>>,display-text}}
+----
 
-// If the display text differs from the cited concept term, referred through
-// an anchor, and we also want to provide a canonical name for the term.
+If the display text differs from the mentioned cited concept, referred
+through an anchor, a canonical name can be provided for the cited concept.
+
+[source,adoc]
+----
 {{<<identifier>>,canonical-term,display-text}}
 ----
 
 [example]
-.Referencing concepts by anchors
+.Example of referencing concepts by anchors
 ====
 [source,asciidoc]
 ----
@@ -1775,38 +1780,46 @@ the literature.
 ====
 
 
-==== Concepts from external documents
+==== Concepts from external resources
 
-To refer to concepts from an external document requires a corresponding
-bibliographic anchor for that document. The identifier for the concept
-is then given in the same fashion as any citation of an external document.
+To refer to concepts from an external resources requires a corresponding
+bibliographic anchor for that resource. The identifier for the concept
+is then given in the same fashion as any citation of an external resource.
 
 The following elements are needed to make this inference:
 
-* bibliographic anchor of the external document, optionally including the
-  locality of the term definition in that document;
+* bibliographic anchor of the external resource, optionally including the
+  locality of the term definition in that resource;
 * concept term name;
 * (optional) text to be displayed;
 * (optional) cross-reference text to be displayed.
 
-The syntax is:
+A concept from an external resource is referenced through a bibliographic anchor
+to that external resource, and by providing the term designation used in the
+external resource.
 
 [source,adoc]
 ----
-// The concept is from the current document but a manual anchor has been
-// created for referencing it as a shorthand, useful in the case where a
-// concept term is not in plain text (e.g. MathML).
 {{<<bibliographic-anchor>>,term}}
+----
 
-// If the display text differs from the cited concept term, referred through
-// an anchor.
+Display text can be specified if the cited concept term differs from the desired
+text to be shown.
+
+[source,adoc]
+----
 {{<<bibliographic-anchor>>,term,display-text}}
+----
 
-// If the cross-reference text for the external document needs to be overriden.
+The cross-reference text for the external document can also be overridden.
+
+----
 {{<<bibliographic-anchor>>,term,display-text,cross-reference-text}}
 ----
 
+
 [example]
+.Example of concept mention referring to a concept from an external resource
 ====
 [source,asciidoc]
 ----
@@ -1827,57 +1840,72 @@ The source of the _immature kernel_ [term defined in ISO 17301] has not yet been
 identified. Allusions to _unripe kernels_ [term defined in ISO 17301] are
 plentiful in the literature.
 ____
-====
-
 
 NOTE: Metanorma Semantic XML preserves the information that the latter term is
 cited as _unripe kernels_, but is defined as _immature kernel_. However by
 default, only the display text is rendered.
+====
 
 To supplement the concept reference with a locality, the `bibliographic-anchor`
 element can be supplemented by a comma-delimited list of
 link:/author/topics/document-format/bibliography#localities[localities and locality values],
 as is normal for a reference to a locality in an external document.
 
-The syntax is:
-
 [source,adoc]
 ----
 {{<<bibliographic-anchor,locality=X>>,term}}
+----
 
-// Simple example:
+[example]
+.Concept mention to an external resource with locality
+====
+[source,asciidoc]
+----
 {{<<iso639-1,clause=3.1>>,language}}
+----
+====
 
-// If the display text differs from the cited term:
+Display text can be specified if it is different from the cited term.
+
+[source,adoc]
+----
 {{<<bibliographic-anchor,locality1=X>>,term,display-text}}
+----
 
-// Multiple localities can be used:
+[example]
+.Concept mention to an external resource with display text and multiple localities
+====
+[source,adoc]
+----
 {{<<bibliographic-anchor,clause=4.7,table=1>>,display-text}}
 ----
+====
 
 
 [example]
+.Concept mention to an external resource shown with rendering
 ====
 [source,asciidoc]
 ----
 [bibliography]
-== Normative References
+== Normative references
 
 * [[[iso17301,ISO 17301]]] Cereals and pulses -- Specifications and test methods -- Rice
 
 == Discussion
 
 The source of the {{<<iso17301>>,clause=3.9,immature kernel}} has not yet been
-identified. Allusions to {{<<iso17301>>,clause=3.9,unripe kernels,immature
-kernel}} are plentiful in the literature.
+identified. Allusions to
+{{<<iso17301>>,clause=3.9,unripe kernels,immature kernel}} are plentiful in the
+literature.
 ----
 
 In Metanorma, this will be displayed by default as:
 
 ____
 The source of the _immature kernel_ [term defined in ISO 17301, Clause 3.9] has
-not yet been identified. Allusions to _unripe kernels_ [term defined in ISO
-17301, Clause 3.9] are plentiful in the literature.
+not yet been identified. Allusions to _unripe kernels_
+[term defined in ISO 17301, Clause 3.9] are plentiful in the literature.
 ____
 ====
 
@@ -1901,16 +1929,25 @@ cross-references or bibliographic anchors.
 NOTE: Termbase identifiers are treated as special anchors, they do not need
 to be defined using a bibliographic reference anchor.
 
-The syntax is as follows:
+The syntax to reference a termbase for a concept mention is:
 
 [source,adoc]
 ----
 {{termbase-id:concept-id,term}}
+----
 
-// If the display text differs from the cited concept term.
+Display text can be specified if the cited concept term differs from the desired
+text to be shown.
+
+[source,adoc]
+----
 {{termbase-id:concept-id,term,display-text}}
+----
 
-// If the text of the cross-reference to the termbase needs to be overridden.
+The cross-reference text for the external document can also be overridden.
+
+[source,adoc]
+----
 {{termbase-id:concept-id,term,display-text,cross-reference-text}}
 ----
 
@@ -1933,8 +1970,10 @@ reference syntax is `<<IEV:{IEV concept ID}>>`.
 ----
 
 [example]
-.Citing termbase concepts
+.Citing termbase concepts from the IEV
 ====
+This source:
+
 [source,asciidoc]
 ----
 == Discussion
@@ -1944,15 +1983,16 @@ Allusions to {{<<IEV:171-05-02>>,unripe kernels,immature kernel,ibid.}} are plen
 the literature.
 ----
 
-In Metanorma, this will be displayed by default as:
+This will be rendered by default as:
 
-.Rendering of cited termbase concepts
+.Rendering of cited termbase concepts from the IEV
 ____
 The source of the _immature kernel_ [term defined in IEV 171-05-02] has not yet
 been identified. Allusions to _unripe kernels_ [ibid.] are plentiful in the
 literature.
 ____
 ====
+
 
 ==== Rendering options
 
@@ -1981,6 +2021,7 @@ flavour.
 The default behaviour in Metanorma is `ital,ref,nolinkmention,linkref` for all
 terms, `noital,noref,nolinkmention,nolinkref` for acronyms.
 
+
 In ISO, the default behaviour for terms is refined:
 
 * for terms outside the "`Terms and definitions`" section: `noital,noref,nolinkmention,nolinkref`;
@@ -2002,7 +2043,7 @@ the literature. Allusions to {{<<IEV:171-05-02>>,non-ripe kernels,immature kerne
 are rather less frequent.
 ----
 
-In Metanorma, this will be displayed by default as:
+This will be displayed by default as:
 
 .Rendering of cited concepts with various options
 ____
@@ -2014,3 +2055,69 @@ ____
 
 In flavours that customise concept rendering, these options override the
 behaviour of whatever the flavour implements.
+
+
+==== Implementation note on term anchors
+
+Concept mentions in Metanorma relies on automatically created anchor references
+for every term defined.
+
+Metanorma automatically creates anchor references for every concept from the
+document, which is used when referencing by term.
+
+Specifically, anchors are generated from the terms themselves according to these rules:
+
+* the anchor starts with the type of the concept, such as `term-` for
+terminology entries and `symbol-` for symbols and abbreviated terms;
+
+* the designation is lowercased;
+
+* non-ASCII characters are stripped;
+
+* whitespaces are replaced by `-`.
+
+[example]
+.Example of automatically generated anchors in Metanorma
+====
+In the following text,
+
+[source,adoc]
+----
+== Terms and definitions
+=== Foo
+bar
+
+=== Lor
+special kind of {{foo}}
+----
+
+the anchors `\[[term-foo]]` and `\[[term-lor]]` are automatically created and
+assigned to the terms 'foo` and `lor`.
+====
+
+This means if you wanted to refer to a particular term from body text, you could
+either:
+
+* directly refer to the term: e.g., `see definition of {{foo}}`
+* refer to the anchor of the term: e.g., `the topic is further explained in \<<term-foo>>`
+
+In case you have created manual anchors that conflict with `[[term-{X}]]`, the
+term reference mechanism is smart enough to rename the generated anchor as
+`[[term-{X}-{n}]]`, where `n` is a number from 1, and so forth.
+
+Therefore this will still work as expected:
+
+[source,adoc]
+----
+== Terms and definitions
+=== Foo
+bar
+
+=== Lor
+special kind of {{foo}}
+
+[[term-foo]]
+== My section
+
+lorem
+----
