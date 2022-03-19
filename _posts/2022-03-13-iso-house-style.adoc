@@ -11,55 +11,277 @@ authors:
       - https://github.com/opoudjis
 
 excerpt: >-
-  Metanorma has just been updated to take the rules in the 
-  https://www.iso.org/ISO-house-style.html[ISO house style] into account.
+  Metanorma now supports validation of the
+  https://www.iso.org/ISO-house-style.html[ISO House Style] for ISO deliverables
 ---
 == Summary
 
-ISO and IEC have a comprehensive prescription of the expected style and content arrangement
-for their standards, https://www.iso.org/sites/directives/current/part2/index.xhtml[ISO/IEC DIR 2].
-Metanorma since the beginning has applied the rules laid out in ISO/IEC DIR 2, to validate
-ISO and IEC standards authored in Metanorma, and communicates the associated warnings to users
-during document compilation. The rules that Metanorma validates for are laid out in
-link:/author/iso/topics/content-validation/[ISO Content style validation], and include such
-rules as:
+Metanorma now supports validation of the
+https://www.iso.org/ISO-house-style.html[ISO House Style] for ISO deliverables.
 
-* "see" and "refer to" can only introduce informative references. 
-* Undated references may be made only to a complete document.
+
+== Introducing the ISO House Style
+
+ISO and IEC have a comprehensive prescription of the expected style and content
+arrangement for their standards in
+https://www.iso.org/sites/directives/current/part2/index.xhtml[ISO/IEC DIR 2].
+
+The rules specified in ISO/IEC DIR 2 are extensive -- covering 29 clauses that
+describe requirements that must be met for a deliverable to be published in
+either organization. These are requirements applied at the organization level.
+
+This may come as a surprise to some: In ISO, ISO/IEC DIR 2 are not the only
+requirements!
+
+The ISO Central Secretariat (ISO/CS) has a designated editorial team that
+assigns every ISO TC/SC with an ISO Editorial Programme Manager (EPM).
+For those who are familiar with drafting within ISO, the ISO EPM is the editor
+that performs quality checks and editorial work on submitted drafts.
+
+The lesser known fact is that the ISO/CS editorial team applies an additional
+set of requirements to deliverables, called the ISO House Style.
+
+The ISO House Style started off as an internal style guide within the ISO/CS
+editorial team, and was finally published publicly in 2021 to show standards
+authors what ISO EPMs look for.
+
+The public publication of the ISO House Style excellent in terms of
+transparency, and more importantly, a boon for standards authors.
+
+
+== Validating against ISO House Style
+
+Since its inception, Metanorma has applied the rules laid out in ISO/IEC DIR 2,
+to validate ISO and IEC standards authored in Metanorma. The associated warnings
+are communicated to users during document compilation so that authors.
+
+The intention is to allow the author to fix up any issues early on to prevent
+downstream problems -- ISO standards authors and editors will understand the
+manual and tedious process of handling comments and resolutions for ballots. One
+less comment equals plenty of saved time!
+
+In the ISO standards authoring process, the ISO EPM will not comment on your
+document until the Draft International Standard (DIS) stage.
+
+At DIS stage and onwards, the ISO EPM will take scrutiny on the document, and
+a standard that does not meet ISO House Style is guaranteed to:
+
+* be littered with changes made by the ISO EPM that need to be manually tracked
+(by the author), and
+
+* accompanied by many ISO/CS comments that every one of them needs responding
+to.
+
+After which the standards author would be forced to go through the
+typical comments resolution process:
+
+. change the document
+. document the change and justifications
+. explain that change
+. host numerous meetings to agree on those changes
+
+Why do this when you can already fix it yourself and save all that time?
+
+Metanorma already performs automatic validation against ISO/IEC DIR 2, for
+instance:
+
 * Forewords shall not be subdivided
+* "`see`" and "`refer to`" can only introduce informative references.
+* Undated references may be made only to a complete document.
 
-Metanorma has just been updated to take the rules in the https://www.iso.org/ISO-house-style.html[ISO house style]
-into account. Metanorma now validates against the following requirements:
+So let's take it further.
 
-* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-r-ref_clause3[References in Clause 3 (Terms and definitions)]:
-Cross-references in terms clauses can only reference content within terms clauses.
-Cross-references outside of terms clauses can only reference content outside of terms clauses.
-So terms clauses and other content are self-contained in cross-referencing.
-* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-lists[Lists]:
-List punctuation needs to be consistent with that of the sentence preceding it.
-+
+
+== ISO House Style rules validated by Metanorma
+
+=== General
+
+The https://www.iso.org/ISO-house-style.html[ISO House Style] contains
+various rules, some of which can be machine-validated but not all.
+Metanorma now supports the validation of most, if not all, machine-validatable
+rules specified in the ISO House Style..
+
+The rules that Metanorma validates for are laid out in
+link:/author/iso/topics/content-validation/[ISO content style validation].
+
+
+=== Cross-references in the "`Terms and definition`" clause
+
+Metanorma now validates against the requirements stated in the ISO House Style's
+https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-r-ref_clause3[ISO References in Clause 3 (Terms and definitions)].
+
+[quote,ISO House Style]
+____
+Do not include cross-references in the text to the terminological entries
+definitions listed in Clause 3. Cross-references to terms and definitions are
+only included within Clause 3.
+____
+
+[quote,ISO House Style]
+____
+Avoid any other cross-references in terms and definitions.
+____
+
+* Cross-references in terminology clauses can only reference content within
+terminology clauses.
+
+* Cross-references outside of terminology clauses can only reference content
+outside of terminology clauses.
+
+Metanorma validates that the terms clauses and other content are self-contained
+in cross-referencing.
+
+
+=== Lists
+
+Documented in ISO House Style's
+https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-lists[Lists]
+section.
+
+[quote,ISO House Style]
 ____
 * If the list comprises several sentences, then use the following list format.
 ** The introductory sentence is a complete sentence and ends with a colon or a full stop.
 ** The list items are complete sentences that start with a capital letter and end with a full stop.
+
 * If the list comprises one sentence broken into a list format, then:
 ** the introductory sentence is a partial sentence and preferably ends with a colon;
 ** the list items start in lower case and end with a semicolon (preferred) or a comma, used consistently;
 ** the final list item ends with a full stop.
 ____
 
-* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-lists[Lists]:
-There should not be more than one ordered list in a numbered clause.
-* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-lists[Lists]:
-No list should be more than four levels deep.
-* https://www.iso.org/ISO-house-style.html#iso-hs-s-formatting-r-vocabulary[Vocabulary documents]:
-Single terms clause in vocabulary document should have normal Terms and definitions heading.
-Multiple terms clauses in vocabulary document should be prefixed with "Terms related to".
-* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-n-numbers[Numbers]:
+Metanorma validates against this list structure and content requirements in ISO
+documents.
+
+List punctuation is also validated to ensure its usage is consistent with that
+of the sentence preceding it.
+
+
+[quote,ISO House Style]
+____
+Avoid having more than one numbered list in a clause/subclause. If a second
+numbered list is necessary, insert a new clause/subclause to separate it from
+the first list or use an unnumbered list.
+____
+
+Metanorma warns if more than one ordered list in a numbered clause is detected.
+
+
+[quote,ISO House Style]
+____
+A list can be subdivided up to four levels. If more levels are required,
+consider using a table or splitting into several shorter lists.
+____
+
+Metanorma warns if a list is more than four levels deep.
+
+
+=== Vocabulary document
+
+The "`Vocabulary document`" is a special kind of ISO document structure
+defined by ISO DIR 2 but its requirements have not been documented until
+the publication of the ISO House Style.
+
+There are several requirements as described by the ISO House Style on
+https://www.iso.org/ISO-house-style.html#iso-hs-s-formatting-r-vocabulary[Vocabulary documents].
+
+[quote,ISO House Style]
+____
+A vocabulary is the only ISO document that can have terminological entries in
+clauses other than Clause 3. If terminological entries are given in other
+clauses, use a clause title starting “Terms related to”. Terminological entries
+are never included in annexes.
+____
+
+Metanorma supports the designed behavior:
+
+* Single terms clause in vocabulary document should have the normal
+  "`Terms and definitions`" heading.
+
+* Multiple terms clauses in vocabulary document should be prefixed with
+  "`Terms related to`".
+
+[quote,ISO House Style]
+____
+Do not include the first line of the fixed text for Clause 3, i.e. “For the
+purposes of this document, the following terms and definitions apply.” This is
+not needed in a vocabulary document because the terminological entries apply to
+all the documents of the committee.
+____
+
+Metanorma automatically omits the Clause 3 fixed text for vocabulary documents.
+
+Metanorma has also received clarification from the ISO editorial team that:
+
+* Symbols and abbreviated terms are preferred to be given as part of
+terminological entries;
+
+* Otherwise, symbols and abbreviated terms can be provided in an informative
+Annex after vocabulary content.
+
+
+=== Content
+
+Content in Metanorma is validated according to ISO House Style.
+
+https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-n-numbers[Numbers]:
+
+[quote,ISO House Style]
+____
+Do not use a hyphen instead of a minus symbol.
+____
+
 The Unicode minus sign, U+2212, should be used instead of the hyphen.
-* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-and[And/Or]:
-The conjunction _and/or_ should be avoided.
-* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-andor[And or &]:
-Avoid ampersand in ordinary text
-* https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-full[Full stops]:
-Do not use full stop at the end of a title or caption.
+
+
+https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-and[And/Or]:
+
+[quote,ISO House Style]
+____
+The phrase “and/or” is often used in English to express “either or both” of two
+options. The meaning can be ambiguous, especially in translation to other
+languages where the “/” is not a recognized punctuation mark.
+
+Avoid using “and/or” in a document to avoid confusion and misapplication. Use
+the construction “either x or y, or both” instead.
+____
+
+The conjunction phrase _and/or_ is to be avoided. Metanorma issues a warning if
+_and/or_ is used.
+
+https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-andor[And or &]:
+
+[quote,ISO House Style]
+____
+ISO documents do not use the ampersand (&) in ordinary text. Use the word “and” instead.
+____
+
+The ampersand is to be avoided in ordinary text. Metanorma warns on encountering
+the symbol `&`.
+
+https://www.iso.org/ISO-house-style.html#iso-hs-s-text-r-p-full[Full stops]:
+
+[quote,ISO House Style]
+____
+Do not use full stops between letters in abbreviated terms or at the end of
+clause/subclause headings, table titles, figure titles, normative references or
+bibliographic entries.
+____
+
+Full stops should be avoided at the end of a title or caption.
+Metanorma warns on such instances.
+
+== Conclusion
+
+Metanorma has implemented automatic validation support for the ISO House Style.
+This newly implemented functionality is intended to preserve precious time for
+both ISO deliverable authors, editors and as such for the ISO/CS editing team.
+
+That said, the ISO House Style contains a number of requirements that cannot be
+automatically validated -- we encourage all ISO deliverable authors and editors
+to familiarize yourself with the new (and growing) style guide!
+
+== Reference
+
+* https://www.iso.org/ISO-house-style.html[ISO House Style]
+* https://www.iso.org/sites/directives/current/part2/index.xhtml[ISO/IEC Directives Part 2]
