@@ -1,4 +1,4 @@
-name: deploy
+name: build_deploy
 
 on:
   push:
@@ -54,12 +54,13 @@ jobs:
         JEKYLL_ENV: production
       run: |
         make _site
+        zip -r site.zip _site
 
     - name: Upload site
       uses: actions/upload-artifact@v3
       with:
-        name: site
-        path: _site
+        name: site.zip
+        path: site.zip
         retention-days: 1
 
   deploy:
@@ -73,11 +74,15 @@ jobs:
       name: ${{ needs.set_environment.outputs.my_env }}
       url: ${{ needs.set_environment.outputs.my_url }}
     steps:
+
     - name: Download site
       uses: actions/download-artifact@v3
       with:
-        name: site
-        path: _site
+        name: site.zip
+        path: .
+
+    - name: Unzip
+      run: unzip site.zip
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
