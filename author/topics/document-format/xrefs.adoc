@@ -104,7 +104,15 @@ Of the connectives, `from` and `to`
 are presumed to nest more closely than `and` or `or`, and there is no provision for complex nesting.
 If a connective is left out before `to`, `from` is presupposed; otherwise, `and` is presupposed.
 
+Sequences of more than two cross-references all logically joined by `and` should be marked up as `;`,
+with no commas: comma in markup of references indicates a subreference. So
 
+* `<<clause3,table2>>` means "table 2 within clause 3"
+* `<<clause3;table2>>` means "clause 3, and table 2"
+
+Therefore the reference "clause 3.2, 4.6, 4.7 and 9" should be marked up as: `<<clause3_2;clause4_6;clause4_7;clause9>>`
+(or `<<clause3_2;and!clause4_6;and!clause4_7;and!clause9>>`):
+rendering localisation will take care of separating them by commas, and inserting the "and".
 
 [[text-ref-allowed-anchors]]
 == Anchor ID syntax
