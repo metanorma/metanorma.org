@@ -73,11 +73,24 @@ ____
 [[combined-xrefs]]
 == Combination of cross-references
 
-It is also possible to combine multiple cross-references into a single expression, which will be
-internationalised as appropriate [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
-Multiple cross-references are separated by `;`. The connections recognised between cross-references 
-are `and`, `or`, `from`, and `to`, and these are prefixed to the cross-reference anchor, separated by `!`:
+It is  possible to combine multiple cross-references into a single expression,
+which will be internationalised as
+appropriate [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
 
+Multiple cross-references are separated by `;`.
+
+Conjunctives recognised between cross-references are:
+
+* `and`
+* `or`
+* `from`
+* `to`
+
+These conjunctives are prefixed to the cross-reference anchor, separated by `!`.
+
+[example]
+.Example of rendering a continuous locality range
+====
 [source,adoc]
 ----
 <<context;to!improvement>>
@@ -88,7 +101,11 @@ rendered as
 ____
 Clauses 7 to 9
 ____
+====
 
+[example]
+.Example of rendering a disjoint locality range
+====
 [source,adoc]
 ----
 <<context;and!improvement>>
@@ -99,20 +116,42 @@ rendered as
 ____
 Clauses 7 and 9
 ____
+====
 
-Of the connectives, `from` and `to`
-are presumed to nest more closely than `and` or `or`, and there is no provision for complex nesting.
-If a connective is left out before `to`, `from` is presupposed; otherwise, `and` is presupposed.
+Of the connectives, `from` and `to` are presumed to nest more closely than `and`
+or `or`, and there is no provision for complex nesting.
 
-Sequences of more than two cross-references all logically joined by `and` should be marked up as `;`,
-with no commas: comma in markup of references indicates a subreference. So
+If a connective is left out before `to`, `from` is presupposed; otherwise, `and`
+is presupposed.
 
-* `<<clause3,table2>>` means "table 2 within clause 3"
+Sequences of more than two cross-references all logically joined by `and` should
+be separated with `;` with no commas:
+
 * `<<clause3;table2>>` means "clause 3, and table 2"
 
-Therefore the reference "clause 3.2, 4.6, 4.7 and 9" should be marked up as: `<<clause3_2;clause4_6;clause4_7;clause9>>`
-(or `<<clause3_2;and!clause4_6;and!clause4_7;and!clause9>>`):
-rendering localisation will take care of separating them by commas, and inserting the "and".
+Commas in the encoding of references indicates separation of subreference:
+
+* `<<clause3,table2>>` means "table 2 within clause 3"
+
+Continuous and disjoint localities can be used together.
+
+[example]
+.Example of rendering continuous and discontinuous locality ranges in the same cross-reference
+====
+[source,adoc]
+----
+<<clause3_2;clause4_6;clause4_7;clause9>>
+// or
+<<clause3_2;and!clause4_6;and!clause4_7;and!clause9>>
+----
+
+Renders as:
+
+____
+clause 3.2, 4.6, 4.7 and 9
+____
+====
+
 
 [[text-ref-allowed-anchors]]
 == Anchor ID syntax
