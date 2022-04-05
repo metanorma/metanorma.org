@@ -663,14 +663,26 @@ Conjoining verbs include:
 
 NOTE: This is similar to the behavior in
 link:/author/topics/document-format/xrefs/#combined-xrefs[Combination of cross-references].
-As with cross-references, more than two references combined by `and` should be marked up
-with semicolons, e.g. `<<ref1,clause=3.2;clause=4.7;clause=4.9;clause=9>>` or
-`<<ref1,clause=3.2;and!clause=4.7;and!clause=4.9;and!clause=9>>`. Internationalisation during
-rendering will take care of separating the references by colon, and inserting "and".
 
-Any trailing text after the sequence of `locality=reference` (or
+As with cross-references, more than two references combined by "`and`" should be
+marked up with semicolons. Internationalisation during rendering will take care
+of separating the references by colon, and inserting any necessary conjunction
+wording ("`and`").
+
+[example]
+.Example of referencing multiple references that are complex localities
+====
+[source,asciidoc]
+----
+<<ref1,clause=3.2;clause=4.7;clause=4.9;clause=9>>
+// or
+<<ref1,clause=3.2;and!clause=4.7;and!clause=4.9;and!clause=9>>
+----
+====
+
+Trailing text after the sequence of `locality=reference` (or
 `locality{space}reference`) is treated as custom text for the cross-reference,
-as would occur normally in a typical AsciiDoc cross-reference.
+as would occur normally in a typical cross-reference.
 
 The locality can appear in quotations if it contains special characters (like
 dashes or commas).
