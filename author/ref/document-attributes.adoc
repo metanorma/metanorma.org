@@ -384,6 +384,18 @@ the default [added in https://github.com/metanorma/metanorma-standoc/releases/ta
 
 == Visual appearance
 
+`:fonts:`::
+Semicolon-delimited listing of fonts to be used for this document, in addition to the fonts
+predefined for the flavour [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.7].
+This is currently only implemented for use in PDF. Fonts need to be supported by https://www.fontist.org[fontist],
+and can be named as either the font name recognised by fontist, or the formula name recognised by fontist,
+prefixed by `formula:`.
+
+`:font-license-agreement:`::
+The response to the license agreement prompt by https://www.fontist.org[fontist] for the fonts
+specified in `:fonts:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.7].
+Legal values are: `no-install-fonts` (default), `agree-to-terms`, `continue-without-fonts`.
+
 `:body-font:`::
 Font for body text; will be inserted into CSS, overriding the default set for
 the particular Metanorma flavour.
