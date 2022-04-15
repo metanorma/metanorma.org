@@ -523,6 +523,35 @@ The references cannot contain spaces. Any text following the sequence of
 localities will be displayed instead of the localities.
 
 
+==== Locality types
+
+The following locality types are recognised in Metanorma:
+
+* section
+* clause
+* part
+* paragraph
+* chapter
+* page
+* line
+* table
+* annex
+* figure
+* example
+* note
+* formula
+* list
+* time
+* anchor
+* whole
+* title
+
+For these types, almost all require an identifier of the specific identifier to make sense;
+e.g. `note 1`, `page 77-99`, `annex A`. `whole`, `title` are not expected to take an identifier.
+
+Any localities not in that list can only be recognised if prefixed with `locality:` <<custom-locality>>.
+
+
 ==== Simple locality
 
 A simple locality is specified with a unique location identifier or free text.
@@ -550,7 +579,8 @@ Sampling shall be carried out in accordance with <<xxx,section="5-3-1,bis">>
 ----
 ====
 
-To refer to the "`whole`" item, the keyword `whole` is used.
+To refer to the "`whole`" item, or the title within a block, the corresponding keyword is used
+(`whole`, `title`), without an argument.
 
 [example]
 .Example of referencing with a "whole" locality
@@ -687,7 +717,7 @@ as would occur normally in a typical cross-reference.
 The locality can appear in quotations if it contains special characters (like
 dashes or commas).
 
-
+[[custom-locality]]
 ==== Custom locality
 
 A custom locality can be entered by prefixing it with `locality:`.
