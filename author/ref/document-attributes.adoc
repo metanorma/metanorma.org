@@ -385,14 +385,55 @@ the default [added in https://github.com/metanorma/metanorma-standoc/releases/ta
 == Visual appearance
 
 `:fonts:`::
-Semicolon-delimited listing of fonts to be used for this document, in addition to the fonts
-predefined for the flavour [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.7].
-This is currently only implemented for use in PDF. Fonts need to be supported by https://www.fontist.org[fontist].
++
+--
+Semicolon-delimited listing of fonts to be used for this document, in addition
+to the fonts predefined for the
+flavour [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.7]. +
+
+Valid values are font names supported by https://www.fontist.org[Fontist].
+The full font name listing is available from the
+https://github.com/fontist/formulas[Fontist Formulas] repository.
+
+NOTE: This is currently only used in PDF generation.
+
+[example]
+====
+EXAMPLE.
+
+The https://www.tiro.com/syllabics/resources/index.html[Euphemia] font is
+an openly licensed font for end-users only commonly used to render
+https://en.wikipedia.org/wiki/Canadian_Aboriginal_syllabics[Canadian Syllabics].
+The font name `Euphemia` is supported by Fontist for unattended
+install. In a document that contains Canadian Syllabics, the following attributes
+can be used.
+
+[source,adoc]
+----
+:fonts: Euphemia
+:font-license-agreement: agree-to-terms
+----
+====
+--
 
 `:font-license-agreement:`::
-The response to the license agreement prompt by https://www.fontist.org[fontist] for the fonts
-specified in `:fonts:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.7].
-Legal values are: `no-install-fonts` (default), `agree-to-terms`, `continue-without-fonts`.
++
+--
+The response to the license agreement prompt by https://www.fontist.org[fontist]
+for the fonts specified in
+`:fonts:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.7].
+
+Valid values are:
+
+* `no-install-fonts`: (default) do not install any additional fonts, even when
+listed in `:fonts:`.
+
+* `agree-to-terms`: agree to all terms of the fonts that will be installed in an
+unattended manner.
+
+* `continue-without-fonts`: do not warn if a font is not available on the
+system.
+--
 
 `:body-font:`::
 Font for body text; will be inserted into CSS, overriding the default set for
