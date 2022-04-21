@@ -1426,9 +1426,35 @@ In this syntax, only the `term` argument is mandatory.
 * `identifier`: an identifier for the concept being cited (optional).
 
 * `term`: the concept designation being cited (mandatory).
++
 The term must match the source term title for case, because case can be used to
-differentiate terms (e.g. _international standard_ and 
-_international Standard_) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.7].
+differentiate terms (e.g. _international standard_ and
+_International Standard_) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.7].
++
+[example]
+====
+EXAMPLE. From ISO/IEC SMART terminology, where an identical but capitalized
+term refers to the identical term in lowercase.
+
+[source,adoc]
+----
+==== international standard
+
+{{standard}} that is adopted by an international standardizing/standards
+organization and made available to the public
+
+[.source]
+<<ISO-IEC_Guide_2,clause="3.2.1.1">>
+
+==== International Standard
+
+{{international standard}} where the international standards organization is ISO
+or IEC
+
+[.source]
+<<ISO-IEC_DIR_2,clause="3.1.4">>
+----
+====
 
 * `display-text`: text to be displayed, if it is distinct from the cited term
 (optional).
