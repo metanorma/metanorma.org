@@ -23,7 +23,8 @@ the standard document identifier needs to be encoded in a format recognized by R
 
 ISO deliverables:: `ISO(identifier)`, or any identifier prefixed with `ISO`
 
-IEC deliverables:: `IEC(identifier)`, or any identifier prefixed with `IEC`
+IEC deliverables:: `IEC(identifier)`, or any identifier prefixed with `IEC`.
+For the IEC Electropedia termbank (IEV), simply use `IEV`.
 
 ITU deliverables:: `ITU(identifier)` (e.g. `ITU(H.265)`), or any identifier prefixed with `ITU`
 
@@ -93,7 +94,13 @@ If any entries in Terms and Definitions cite terms sourced from the http://www.e
 it is queried during validation to retrieve the correct citation information
 for creating the reference.
 
-// TODO: add IEV syntax
+[source,asciidoc]
+--
+[bibliography]
+== Bibliography
+
+* [[[ievterms,IEV]]]
+--
 
 These queries are routed through the `iev` gem.
 
