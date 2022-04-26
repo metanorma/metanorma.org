@@ -86,11 +86,45 @@ language:: language of document
 
 ==== Publisher
 
-This is the abbreviation of the publishing organization, typically `ISO`. If the document is published under co-publishing agreements, it can contain the abbreviations of other publishing SDOs, delimited by `/` after `ISO`. An `IWA` document has publisher abbreviation of `IWA`.
+This is the abbreviation of the publishing organization, typically `ISO` if
+ISO is the only publisher.
 
-EXAMPLE: `ISO`, `ISO/IEC`, `ISO/IEC/IEEE`, `ISO/IEEE`, `ISO/SAE`, `IWA`
+If the document is published under co-publishing agreements, it can contain the
+abbreviations of other publishing SDOs, delimited by `/` after `ISO`. An `IWA`
+document has publisher abbreviation of `IWA`.
 
-The prefixes occur in the order that they are given in `publisher`. `ISO` is no longer forced to appear first [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.0.9].
+The prefixes occur in the order that they are given in `publisher`.
+
+[example]
+.Setting one or multiple publishers
+====
+EXAMPLE:
+
+* `ISO`
+* `ISO/IEC` (for ISO/IEC JTC 1 documents)
+* `IEC/ISO`
+* `ISO/IEC/IEEE`
+* `ISO/IEEE`
+* `ISO/SAE`
+* `IWA`
+====
+
+[example]
+.Setting IEC and ISO as copyright holders for an IEC/ISO document
+====
+In the case of IEC/ISO, both `:publisher:` and `:copyright-holder:` need to
+be set for the document identifier and the logos to be in correct order.
+
+[source,adoc]
+----
+:publisher: IEC;ISO
+:copyright-holder: IEC;ISO
+----
+====
+
+NOTE: `ISO` is no longer forced to appear
+first [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.0.9].
+
 
 ==== Document type and stage
 
