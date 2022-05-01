@@ -355,6 +355,60 @@ do not insert "Annex A" or "Appendix 1" as part of the title.
 
 Annex and Appendix **titles** can be left blank, as with Clauses.
 
+=== Term Annexes, Symbols Annexes, Bibliography Annexes
+
+Normally in Metanorma, Terms & Definitions, Symbols & Abbreviated Terms, and
+Bibliographic References are contained in a main clause. However, it is possible
+for those clauses to be contained in annexes instead; in fact, this is done by default
+for Terms and References in the NIST flavour of Metanorma.
+
+In rendering, these annexes are treated the same as Terms & Definitions, Symbols & Abbreviated Terms, and
+Bibliographic sections. However, neither the Metanorma information model, nor Asciidoctor
+markup permit a clause to be an annex and a terms clause, or a bibliographic clause simultaneously.
+Such clauses are modelled as an annex *containing* a terms clause or bibliographic clause:
+
+[source,asciidoc]
+----
+[annex]
+== Bibliography
+
+[bibliography]
+=== Bibliography
+----
+
+In order to render such annexes as expected, the following rules are applied [added in https://github.com/metanorma/isodoc/releases/tag/v2.0.9]:
+
+* If an annex contains multiple subclauses, it is rendered as usual.
+* If an annex contains a single subclause, and that subclause is a Terms & Definitions, 
+Symbols & Abbreviated Terms, or Bibliographic section,
+** The title for that subclause is skipped in rendering
+** The subclause itself is skipped for the purposes of numbering; if it has any sub-subclauses
+of its own, they are numbered as immediate child clauses of the annex.
+
+So:
+
+[source,asciidoc]
+----
+[annex]
+== Terminology
+
+=== Terms and definitions
+
+==== First Term
+
+==== Second Term
+----
+
+is rendered like
+
+____
+*Annex A. Terminology*
+
+*A.1 First Term*
+
+*A.2 Second Term*
+____
+
 == Sections deeper than 5 levels
 
 Standards can contain many levels of embedding: ISO/IEC DIR 2 only considers
