@@ -357,14 +357,20 @@ Annex and Appendix **titles** can be left blank, as with Clauses.
 
 === Term Annexes, Symbols Annexes, Bibliography Annexes
 
-Normally in Metanorma, Terms & Definitions, Symbols & Abbreviated Terms, and
-Bibliographic References are contained in a main clause. However, it is possible
-for those clauses to be contained in annexes instead; in fact, this is done by default
-for Terms and References in the NIST flavour of Metanorma.
+Normally in Metanorma, the sections describing terms and definitions, symbols
+and abbreviated terms, and bibliographic references are contained in a main
+clause.
 
-In rendering, these annexes are treated the same as Terms & Definitions, Symbols & Abbreviated Terms, and
-Bibliographic sections. However, neither the Metanorma information model, nor Asciidoctor
-markup permit a clause to be an annex and a terms clause, or a bibliographic clause simultaneously.
+However, it is possible for such clauses to be contained in annexes instead. In
+fact, this is done by default for the "Terms and References" section in the NIST
+flavour of Metanorma.
+
+In rendering, these annexes are treated identically as when those sections were
+in the main body.
+
+However, the Metanorma information model does not permit a clause to be an annex
+and a terms or a bibliographic clause at the same time.
+
 Such clauses are modelled as an annex *containing* a terms clause or bibliographic clause:
 
 [source,asciidoc]
@@ -376,10 +382,11 @@ Such clauses are modelled as an annex *containing* a terms clause or bibliograph
 === Bibliography
 ----
 
-In order to render such annexes as expected, the following rules are applied [added in https://github.com/metanorma/isodoc/releases/tag/v2.0.9]:
+In order to render such annexes as expected, the following rules are
+applied [added in https://github.com/metanorma/isodoc/releases/tag/v2.0.9]:
 
 * If an annex contains multiple subclauses, it is rendered as usual.
-* If an annex contains a single subclause, and that subclause is a Terms & Definitions, 
+* If an annex contains a single subclause, and that subclause is a Terms & Definitions,
 Symbols & Abbreviated Terms, or Bibliographic section,
 ** The title for that subclause is skipped in rendering
 ** The subclause itself is skipped for the purposes of numbering; if it has any sub-subclauses
@@ -408,6 +415,7 @@ ____
 
 *A.2 Second Term*
 ____
+
 
 == Sections deeper than 5 levels
 
