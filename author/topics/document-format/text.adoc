@@ -310,6 +310,42 @@ Bibliographic note
 
 == Admonitions
 
+=== General
+
+Admonitions ("`NOTE`", "`IMPORTANT`", "`WARNING`", "`CAUTION`" etc.)
+are typically inserted into the main content of a document providing
+guidance or request readers to exercise caution.
+
+[source,asciidoc]
+----
+== General requirements
+
+[NOTE]
+====
+This is just a note providing guidance.
+====
+
+[IMPORTANT]
+====
+This is an important message.
+====
+
+== Safety requirements
+
+[WARNING]
+====
+This important notice applies to safety concerns.
+====
+
+[CAUTION]
+====
+This notice must not be ignored.
+====
+----
+
+
+=== Whole document admonitions
+
 Admonitions ("`NOTE`", "`IMPORTANT`", "`WARNING`", "`CAUTION`" etc.)
 in the document body (i.e. within a main body clause) can be
 stated to apply to the entire document by moving them to the
@@ -330,9 +366,11 @@ This important notice applies to the entire document.
 My scope text...
 ----
 
-Admonitions in the document prefaces (including in the Foreword) can be stated to apply
-to the entire preface by moving them to the start of the preface, before the Foreword.
-This can be done by giving them the same attribute
+=== Preface admonitions
+
+Admonitions in the document prefaces (including in the Foreword) can be stated
+to apply to the entire preface by moving them to the start of the preface,
+before the Foreword. This can be done by giving them the same attribute
 `beforeclauses=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.2].
 
 [source,asciidoc]
@@ -350,8 +388,10 @@ This important notice applies to the entire document.
 My foreword text...
 ----
 
-An admonition in the document prefaces can instead be flagged to be rendered on the cover page of
-the document, through
+=== Cover page admonitions
+
+An admonition in the document prefaces can instead be flagged to be rendered on
+the cover page of the document, through
 `coverpage=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.8].
 
 [source,asciidoc]
@@ -369,9 +409,11 @@ This important notice appears on the cover page.
 My foreword text...
 ----
 
-Normally, the label of the type of admonition (_NOTE_, _IMPORTANT_, etc) is inserted at the start
-of the admonition in rendering. This may not be desirable, especially for coverpage admonitions.
-Inserting the admonition type is suppressed through 
+Normally, the label of the type of admonition (_NOTE_, _IMPORTANT_, etc) is
+inserted at the start of the admonition in rendering. This may not be desirable,
+especially for coverpage admonitions.
+
+Inserting the admonition type is suppressed through
 `notag=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.8].
 
 [source,asciidoc]
