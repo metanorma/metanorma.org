@@ -307,6 +307,31 @@ Bibliographic note
 ====
 --
 
+Normally, notes are only tagged as term notes when they appear in the context of a terms section.
+Rarely, term notes need to be presented in isolation (e.g. in ISO Amendments); to achieve that,
+mark the note up with `termnote=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.2].
+
+[source,asciidoc]
+--
+[NOTE,termnote=true]
+====
+Bibliographic note
+====
+--
+
+== Examples
+
+Normally, examples are only tagged as term examples when they appear in the context of a terms section.
+Rarely, term examples need to be presented in isolation (e.g. in ISO Amendments); to achieve that,
+mark the example up with `termexample=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.2].
+
+[source,asciidoc]
+--
+[termexample=true]
+====
+Bibliographic note
+====
+--
 
 == Admonitions
 
@@ -1204,6 +1229,7 @@ their source documents:
 * figures
 * tables
 * examples
+* notes
 * formulas
 * sourcecode, pseudocode
 * permissions, recommendations and requirements.
