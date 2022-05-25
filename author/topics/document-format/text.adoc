@@ -264,13 +264,19 @@ image::/assets/author/topics/document-format/text/fig-block-quote.png[Illustrati
 
 == Notes
 
+=== Folding notes
+
 Notes that are not at the end of a clause are folded into the preceding block,
 if that block is not delimited (so that the user could not choose to include or exclude a note).
 That is, notes are folded into a preceding list, formula, figure, or table.
 
-To prevent that behaviour, add the attribute `keep-separate`
-to the note [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.29].
-(Extended to apply to tables [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6].)
+=== Prevent notes from folding
+
+To prevent a note from folding into the preceding block, add the attribute
+`keep-separate` to the
+note [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.29].
+
+NOTE: Extended to apply to tables [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6].
 
 [source,asciidoc]
 --
@@ -307,9 +313,15 @@ Bibliographic note
 ====
 --
 
+=== Explicitly-defined terminology entry notes
+
 Normally, notes are only tagged as term notes when they appear in the context of a terms section.
-Rarely, term notes need to be presented in isolation (e.g. in ISO Amendments); to achieve that,
-mark the note up with `%termnote` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.2].
+
+Rarely, term notes need to be presented in isolation, including in ISO Amendments or
+Technical Corrigenda.
+
+To achieve that, mark the note up with
+`%termnote` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.2].
 
 [source,asciidoc]
 --
@@ -319,11 +331,18 @@ Bibliographic note
 ====
 --
 
+
 == Examples
 
-Normally, examples are only tagged as term examples when they appear in the context of a terms section.
-Rarely, term examples need to be presented in isolation (e.g. in ISO Amendments); to achieve that,
-mark the example up with `%termexample` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.2].
+=== Explicitly-defined terminology examples
+
+Normally, examples are only tagged as term examples when they appear in the
+context of a terms section.
+
+Rarely, term notes need to be presented in isolation, including in ISO Amendments or
+Technical Corrigenda.
+
+To achieve that, mark the example up with `%termexample` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.2].
 
 [source,asciidoc]
 --
