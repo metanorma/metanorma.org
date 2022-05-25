@@ -6,19 +6,34 @@ layout: iso-flavor
 
 == Lists
 
+=== Unordered lists
+
 Unordered lists in Word are rendered with em-dashes instead of bullets, as
 preferred by ISO/CS.
+
+=== Ordered lists
 
 Ordered list numbering enforce the ISO/IEC DIR 2 labelling convention,
 therefore the `type` attribute is ignored in ordered lists.
 
-The `start` attribute is supported in ISO by Metanorma, but not by IEC or 
+The `start` attribute is supported in ISO by Metanorma, but not by IEC or
 BSI [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2].
-Note that the `start` attribute will be *ignored* in Word output for stages
-between 00 and 39, because Word output for those stages involves autonumbering of
-lists, for which Metanorma does not yet support `start` in Word. Stages from 40 onward
-insert explicit numbers in lists in Word, and so do not rely on Word autonumbering.
-PDF and HTML respect the `start` attribute at all stages.
+
+The `start` attribute behaves as described below:
+
+* PDF and HTML respect the `start` attribute at all stages;
+
+* For Word output:
+
+** The `start` attribute will be *ignored* for stages between `00` and `30`,
+because Word output for those stages uses the "`ISO Simple Template`", which
+involves autonumbering of lists. Metanorma does not yet support `start` in Word
+for autonumbered lists.
+
+** The `start` attribute will *work* from stages `40` onward,
+as Work output for those stages uses the "`ISO Edited DIS Template`",
+which insert explicit numbers in lists, and do not rely on Word autonumbering.
+
 
 == Admonitions
 
