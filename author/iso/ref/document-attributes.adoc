@@ -14,10 +14,24 @@ For _common document attributes_, see link:/author/ref/document-attributes[Docum
 For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
 ====
 
+
 == Document information
 
-`:tc-docnumber:`:: The document number assigned by the Technical Committee. Must include the approval group prefix, since
-documents may circulate widely; e.g. "ISO/TC 154 N 1218", not just "N 1218".
+`:tc-docnumber:`:: The document number assigned by a *distribution group*
+(also called the "`N-document number`" or the "`N-number`"), typically a Technical Committee, a Subcommittee or a Working Group.
+Must include the short reference of the distribution group, since documents may
+circulate widely; +
++
+[example]
+.Setting the N-document number for a distribution group
+====
+For a document circulated in ISO/TC 154 as "N 1218" (instead of "N 1218"):
+
+[source,adoc]
+----
+:tc-docnumber: ISO/TC 154 N 1218
+----
+====
 
 `:partnumber:`:: The ISO document part number. This can be "`part-subpart`" if this is an ISO/IEC or IEC document.
 
@@ -39,8 +53,8 @@ The document type that this amendment or technical corrigendum is
 updating [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25].
 
 `:docsubtype:`:: A subclass of doctype for which special processing rules apply:
-+
-** `vocabulary`: [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.8.2]
+
+*** `vocabulary`: [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.8.2]
 The "vocabulary" document type is defined in the
 https://www.iso.org/ISO-house-style.html[ISO House Rules]
 and title requirements defined in the ISO/IEC Directives, Part 2, 2018, 11.5.2.
@@ -69,7 +83,8 @@ If this is left out, a substage of "`00`" is assumed, with the exception of
 stage "`60`" (published), where a substage of "`60`" is assumed.
 ("`60.00`" is the final proof "`PRF stage`", "`60.60`" the published document "`published`".)
 
-`:horizontal:`:: Document is a horizontal standard (true/false) [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.5.13].
+`:horizontal:`:: Document is a horizontal standard
+(true/false) [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.5.13].
 
 === Document identifier
 
@@ -97,10 +112,8 @@ document has publisher abbreviation of `IWA`.
 The prefixes occur in the order that they are given in `publisher`.
 
 [example]
-.Setting one or multiple publishers
+.Accepted values for the `:publisher:` attribute
 ====
-EXAMPLE:
-
 * `ISO`
 * `ISO/IEC` (for ISO/IEC JTC 1 documents)
 * `IEC/ISO`
@@ -184,7 +197,12 @@ Technical Corrigendum::
 
 When the Publisher element contains a "`slash`" ("`/`"), the separation in front of the document stage will be converted into an empty space.
 
-EXAMPLE: `ISO/NP 33333` but `ISO/IEC NP 33333`; `ISO/NP TR 33333` but `ISO/IEC NP TR 33333`.
+[example]
+.Differentiating single and dual publisher document identifiers
+====
+* `ISO/NP 33333` but `ISO/IEC NP 33333`
+* `ISO/NP TR 33333` but `ISO/IEC NP TR 33333`
+====
 
 
 According to ISO Directives Part 1 (11ed), SE.2 "`Working drafts (WD), committee drafts (CD), draft International Standards (DIS), final draft International Standards (FDIS) and International Standards`", "`Successive DIS on the same subject will carry the same number but will be distinguished by a numerical suffix (.2, .3, etc.).`"
@@ -202,17 +220,34 @@ The patterns are as follows:
 *International Standard*::
 `{publisher} (/{document type and stage})? ({document number}) (- {part number})? (: {copyright year}) ({ISO 639 language code})?` +
 +
-EXAMPLE: `ISO/IEEE/FDIS 33333-2`, `ISO/IEEE 33333-2:2030(E)`
+[example]
+.Examples of ISO International Standard document identifiers
+====
+* `ISO/IEEE/FDIS 33333-2`
+* `ISO/IEEE 33333-2:2030(E)`
+====
 
 *Technical Report*, *Technical Specification*::
 `{publisher} (/{document type and stage}) ({document number}) (- {part number})? (: {copyright year}) ({ISO 639 language code})?` +
 +
-EXAMPLE: `ISO/IEC/FDIS TS 33333-2`, `ISO/TR 33333-2:2030(E)`, `ISO/IEC TR 33333-2:2030(E)`
+[example]
+.Examples of ISO TR and TS document identifiers
+====
+* `ISO/IEC/FDIS TS 33333-2`
+* `ISO/TR 33333-2:2030(E)`
+* `ISO/IEC TR 33333-2:2030(E)`
+====
 
 *Amendments*, *Technical Corrigendum*::
 `{source document ID}/{document type and stage} {update number} (: {copyright year}) ({ISO 639 language code})?` +
 +
-EXAMPLE: `ISO 33333-2:2030/DIS Cor 2:2031`, `ISO 33333-2:2030/Cor 2:2032`, `ISO/IEC 33333-2:2030/Cor 2:2032`
+[example]
+.Examples of ISO Amendment and Technical Corrigendum document identifiers
+====
+* `ISO 33333-2:2030/DIS Cor 2:2031`
+* `ISO 33333-2:2030/Cor 2:2032`
+* `ISO/IEC 33333-2:2030/Cor 2:2032`
+====
 
 
 === Title
@@ -244,13 +279,25 @@ template will be needed for French, including French titles of document
 components such as annexes.
 
 
-== Author info
+== Authorship and editorial information
+
+There are potentially three types of groups involved in an ISO deliverable:
+
+. the *drafting group*: where the deliverable is created and worked on
+(mandatory);
+
+. the *approval group*: where the deliverable gets approved for publication,
+typically a TC or SC (optional);
+
+. the *distribution group*: where the deliverable is distributed for review,
+depending on where the deliverable gets distributed to (optional).
+
 
 `:secretariat:`:: The national body acting as the secretariat for the document
 in the drafting stage.
 
-`:technical-committee-number:`:: The number of the relevant ISO technical
-committee.
+`:technical-committee-number:`:: The number of the relevant ISO
+technical committee.
 
 `:technical-committee-type:`:: The type of the relevant technical committee.
 Defaults to `TC` if not supplied.
@@ -265,39 +312,93 @@ Typical values: `TC`, `PC`, `JTC`, `JPC`.
 Defaults to `SC` if not supplied.
 Typical values: `SC`, `JSC`.
 
-`:subcommittee:`:: The name of the relevant ISO subcommittee
+`:subcommittee:`:: The name of the relevant ISO subcommittee.
 
-`:workgroup-number:`:: The number of the relevant ISO working group
+`:workgroup-number:`:: The number of the relevant ISO working group.
 
 `:workgroup-type:`:: The type of the relevant ISO working group.
 Defaults to `WG` if not supplied. +
 +
 --
+.Common values for `workgroup-type`
 [example]
-EXAMPLE: `JWG` (joint working group), `JAG` (joint advisory group), `AG` (advisory group),
+`JWG` (joint working group), `JAG` (joint advisory group), `AG` (advisory group),
 `AHG` (ad-hoc group), `SWG` (pecial working group), `SG` (strategic/steering group),
 `MA` (maintenance agency), `CORG` (co-ordination group),
 `JCG` (joint co-ordination group), `CAG` (chair advisory group).
 --
 
-`:workgroup:`:: The name of the relevant ISO working group
-
-
+`:workgroup:`:: The name of the relevant ISO *working group*. +
++
 In the case of multiple responsible groups (technical committees, subcommittees,
 working groups), the `:technical-committee:`, `:subcommittee:` and `:workgroup:`
 attributes can be used to encode multiple groups by suffixing `_n` to the
 attribute where `n` is a sequential number after 1.
-
++
+[example]
+.Setting a responsible technical committee, subcommtitee and working group (1)
 ====
-EXAMPLE:
-`:technical-committee_2:` and `:technical-committee-number_2:`; `:subcommittee:` and `:subcommittee-number_2:`.
+For ISO/TC 211/WG 9:
+[source,adoc]
+----
+:technical-committee-number: 211
+:technical-committee: Geographic information/Geomatics
+:workgroup-type: WG
+:workgroup-number: 9
+----
+====
++
+[example]
+.Setting a responsible technical committee, subcommtitee and working group (2)
+====
+For ISO/TC 184/SC 4/WG 12:
+[source,adoc]
+----
+:technical-committee-number: 184
+:technical-committee: Automation systems and integration
+:subcommittee-type: SC
+:subcommittee-number: 4
+:subcommittee: Industrial data
+:workgroup-type: WG
+:workgroup-number: 12
+:workgroup: STEP product modelling and resources
+----
+====
++
+[example]
+.Setting multiple responsible technical committees
+====
+[source,adoc]
+----
+:technical-committee-number: 184
+:technical-committee: Automation systems and integration
+:subcommittee-type: SC
+:subcommittee-number: 4
+:subcommittee: Industrial data
+:technical-committee-number_2: 184
+:technical-committee_2: Automation systems and integration
+:subcommittee-type_2: SC
+:subcommittee-number_2: 5
+:subcommittee_2: Interoperability, integration, and architectures for enterprise systems and automation applications
+----
 ====
 
-`:approval-group-id:`:: The identifier of the ISO editorial committee responsible for
-approving a draft [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2].
-Normally this is the technical committee or subcommittee, but this provides
-the option to provide this explicitly.
+`:approval-group-id:`:: The identifier of the *approval group*. The approval
+group is typically the ISO Technical Committee, Subcommittee or Working Group
+responsible for approving a
+draft [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2].
+If not provided, the editing group is assumed to also be the approval group. +
++
+[example]
+.Setting `approval-group-id`
+====
+For ISO/TC 154/WG 5 "Date and time":
 
+[source,adoc]
+----
+:approval-group-id: ISO/TC 154/WG 5
+----
+====
 
 == Document relations
 
@@ -328,8 +429,9 @@ individual mappings shown [added in https://github.com/metanorma/metanorma-iso/r
 `annotation-of`:: ISOSTS  `commentOn`
 `related`::  ISOSTS  `""` (empty value)
 
+[example]
+.Example encoding of a document relationship
 ====
-EXAMPLE:
 [source,adoc]
 ----
 :informatively-cited-in: ISO 639;IEC 60050-112;W3C XML,Extensible Markup Language (XML)
