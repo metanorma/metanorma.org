@@ -16,7 +16,8 @@ For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorm
 
 == Document information
 
-`:tc-docnumber:`:: The document number assigned by the Technical Committee.
+`:tc-docnumber:`:: The document number assigned by the Technical Committee. Must include the approval group prefix, since
+documents may circulate widely; e.g. "ISO/TC 154 N 1218", not just "N 1218".
 
 `:partnumber:`:: The ISO document part number. This can be "`part-subpart`" if this is an ISO/IEC or IEC document.
 
@@ -291,6 +292,11 @@ attribute where `n` is a sequential number after 1.
 EXAMPLE:
 `:technical-committee_2:` and `:technical-committee-number_2:`; `:subcommittee:` and `:subcommittee-number_2:`.
 ====
+
+`:approval-group-id:`:: The identifier of the ISO editorial committee responsible for
+approving a draft [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2].
+Normally this is the technical committee or subcommittee, but this provides
+the option to provide this explicitly.
 
 
 == Document relations
