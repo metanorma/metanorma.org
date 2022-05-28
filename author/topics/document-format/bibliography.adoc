@@ -549,7 +549,7 @@ or colon.
 The references cannot contain spaces. Any text following the sequence of
 localities will be displayed instead of the localities.
 
-
+[[locality-types]]
 ==== Locality types
 
 The following locality types are recognised in Metanorma:
@@ -755,22 +755,31 @@ dashes or commas).
 [[custom-locality]]
 ==== Custom locality
 
-A custom locality can be entered by prefixing it with `locality:`.
+Metanorma recognises only a fixed list of locality types in the AsciiDoc encoding of references,
+as listed in <<locality-types,Locality types>>.
+This list is not exhaustive of all possible locality types. For example, Metanorma is configured to
+recognise "annex" as a generic reference to annex/appendixes in documents. It is not configured
+to recognise appendixes instead of annexes, or (as is the case in ISO) as distinct from annexes.
+
+The locality types not foreseen in  <<locality-types,Locality types>> are custom localities. Such a
+custom locality can be entered by prefixing it with the string `locality:`.
 
 [example]
 .Example of referencing a custom locality the `locality:` prefix
 ====
 [source,asciidoc]
 ----
-// renders as: "ISO 712, Frontispiece 5, Page 8-10"
-<<ISO712,locality:frontispiece=5, page=8-10>>
+// renders as: "ISO/IEC DIR 2, Annex SL, Appendix 2, Clause 3.2"
+<<ISO-IEC_DIR_1_ISO_SUP,annex=SL,locality:appendix=2,clause=3.2>>
 ----
 ====
 
 Custom localities may not contain commas, colons, or space.
 
-Localities with the `locality:` prefix are recognized in internationalization
-configuration files.
+Localities with the `locality:` prefix can be recognized in internationalization
+configuration files, but they need to be added as part of the flavour..
+
+==== Locality plus custom text
 
 Any text after the bibliographic localities is still treated as custom
 cross-reference text.
