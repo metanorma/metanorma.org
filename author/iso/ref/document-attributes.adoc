@@ -383,11 +383,11 @@ For ISO/TC 184/SC 4/WG 12:
 ----
 ====
 
-`:approval-group-id:`:: The identifier of the *approval group*. The approval
-group is typically the ISO Technical Committee, Subcommittee or Working Group
-responsible for approving a
-draft [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2].
-If not provided, the editing group is assumed to also be the approval group. +
+`:approval-technical-committee-number, approval-technical-committee-type, approval-technical-committee, approval-subcommittee-number, approval-subcommittee-type, approval-subcommittee, approval-workgroup-number, approval-workgroup-type, approval-workgroup:`:: The metadata 
+for the *approval group* [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2].
+The approval group is typically the ISO Technical Committee, Subcommittee or Working Group
+responsible for approving a draft.
+If at least the `approval-technical-committee-number` is not provided, the editing groups are assumed to also be the approval group. +
 +
 [example]
 .Setting `approval-group-id`
@@ -396,7 +396,8 @@ For ISO/TC 154/WG 5 "Date and time":
 
 [source,adoc]
 ----
-:approval-group-id: ISO/TC 154/WG 5
+:approval-technical-committee-number: 154
+:approval-workgroup-number: 5
 ----
 ====
 
