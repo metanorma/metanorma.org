@@ -364,9 +364,12 @@ named by default, such as ITU.
 [example]
 .Example of numeric reference tag with automatic fetching
 ====
-* [[[h760,(1)ITU-T H.760]]] Recommendation ITU-T H.760 (2009_),__Overview of multimedia application frameworks for IPTV services_.
+[source,adoc]
+----
+* [[[h760,(1)ITU-T H.760]]] Recommendation ITU-T H.760 (2009), _Overview of multimedia application frameworks for IPTV services_.
 
 * [[[x1255,(1)ITU-T X.1255]]] Recommendation ITU-T X.1255 (2013), _Framework for discovery of identity management information_.
+----
 ====
 
 NOTE: Any number can be entered between the parentheses.
@@ -417,31 +420,6 @@ tag in `hidden(...)`. [added in https://github.com/metanorma/metanorma-standoc/r
 --
 ====
 
-
-=== Entering entries using Relaton XML
-
-Bibliographic entries can also be given as raw https://www.relaton.org[Relaton XML],
-in an AsciiDoc passthrough block.
-
-Of course, any Relaton XML BibItem entries need to be valid, and using correct
-`id` attributes.
-
-[example]
-.Example of entering an entry using Relaton XML (ISO 1)
-====
-[source,asciidoc]
---
-[bibliography]
-== Normative references
-
-++++
-<bibitem id="doc1">
-<docidentifier>ISO 1</docidentifier>
-<title>Geometrical product specifications (GPS) -- Standard reference temperature for the specification of geometrical and dimensional properties</title>
-</bibitem>
-++++
---
-====
 
 === Entering entries using AsciiBib
 
@@ -503,6 +481,36 @@ docid::
   type::: ABC
   id::: 32784
 type:: standard
+--
+====
+
+
+=== Entering entries using Relaton XML
+
+WARNING: This functionality is strongly discouraged due to the ease of breaking
+the resulting Metanorma XML. It is useful only for limited use cases and
+only intended for experts.
+
+Bibliographic entries can also be given as raw https://www.relaton.org[Relaton XML],
+in an AsciiDoc passthrough block.
+
+Of course, any Relaton XML BibItem entries need to be valid, and using correct
+`id` attributes.
+
+[example]
+.Example of entering an entry using Relaton XML (ISO 1)
+====
+[source,asciidoc]
+--
+[bibliography]
+== Normative references
+
+++++
+<bibitem id="doc1">
+<docidentifier>ISO 1</docidentifier>
+<title>Geometrical product specifications (GPS) -- Standard reference temperature for the specification of geometrical and dimensional properties</title>
+</bibitem>
+++++
 --
 ====
 
@@ -571,21 +579,29 @@ The following locality types are recognised in Metanorma:
 * `time`: a particular time
 * `anchor`: an anchor
 * `whole`: whole
-* `title`: title
+* `title`: the title
 
-For these types, almost all require an identifier of the specific identifier to
-make sense.
+Except for the locality types of `whole` and `title`, all locality types require
+explicit specification of an identifier to make sense.
 
+.Example locality types that are used on their own
 [example]
 ====
-e.g. `note 1`, `page 77-99`, `annex A`
+* `whole`
+* `title`
 ====
 
-The locality types of `whole` and `title` are not expected to take an
-identifier.
+.Example locality types that need to be used with identifiers
+[example]
+====
+* `note 1` (or `note=1`)
+* `page 77-99` (or `page="77-79"`)
+* `annex A` (or `annex=A`)
+* `line 399` (or `line=399`)
+====
 
-Any localities not in that list can only be recognised if prefixed with
-`locality:`, see <<custom-locality>>.
+Locality types not listed here shall be entered using the mechanism described at
+<<custom-locality>>.
 
 ==== Simple locality
 
@@ -755,23 +771,37 @@ dashes or commas).
 [[custom-locality]]
 ==== Custom locality
 
-Metanorma recognises only a fixed list of locality types in the AsciiDoc encoding of references,
-as listed in <<locality-types,Locality types>>.
-This list is not exhaustive of all possible locality types. For example, Metanorma is configured to
-recognise "annex" as a generic reference to annex/appendixes in documents. It is not configured
-to recognise appendixes instead of annexes, or (as is the case in ISO) as distinct from annexes.
+Metanorma accepts a fixed list of locality types in cross-references (see
+<<locality-types>>).
+This list is not exhaustive of all possible locality types.
 
-The locality types not foreseen in  <<locality-types,Locality types>> are custom localities. Such a
-custom locality can be entered by prefixing it with the string `locality:`.
+For example, "annex" is recognized as a generic reference to annexes in
+documents. It does not recognize appendixes (instead of annexes), or as distinct
+from annexes (as is the case in ISO).
+
+Locality types not listed in <<locality-types>> are entered using the
+"custom localities" functionality.
+
+Custom localities are entered by prefixing the locality type with the string
+`locality:`. The locality type will be rendered as text preceding the equal
+sign.
+//TODO: What happens in other languages?
 
 [example]
 .Example of referencing a custom locality the `locality:` prefix
 ====
+This encoding:
+
 [source,asciidoc]
 ----
-// renders as: "ISO/IEC DIR 2, Annex SL, Appendix 2, Clause 3.2"
 <<ISO-IEC_DIR_1_ISO_SUP,annex=SL,locality:appendix=2,clause=3.2>>
 ----
+
+Renders as:
+
+____
+"ISO/IEC DIR 2, Annex SL, Appendix 2, Clause 3.2"
+____
 ====
 
 Custom localities may not contain commas, colons, or space.
