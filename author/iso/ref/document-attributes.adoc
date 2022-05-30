@@ -17,23 +17,25 @@ For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorm
 
 == Document information
 
-`:tc-docnumber:`:: The document number assigned by a *distribution group*
-(also called the "`N-document number`" or the "`N-number`"), typically a Technical Committee, a Subcommittee or a Working Group.
-Must include the short reference of the distribution group, since documents may
-circulate widely; +
+`:docnumber:`:: The ISO document number without any part. +
 +
+.Example of setting `:docnumber:`
 [example]
-.Setting the N-document number for a distribution group
 ====
-For a document circulated in ISO/TC 154 as "N 1218" (instead of "N 1218"):
+For ISO 8601-1:2019, the `docnumber` is `8601`.
 
-[source,adoc]
-----
-:tc-docnumber: ISO/TC 154 N 1218
-----
+For ISO 24229:2022, the `docnumber` is `24229`.
 ====
 
-`:partnumber:`:: The ISO document part number. This can be "`part-subpart`" if this is an ISO/IEC or IEC document.
+`:partnumber:`:: The ISO document part number. This can be "`part-subpart`" if this is an ISO/IEC or IEC document. +
++
+.Example of setting `:partnumber:`
+[example]
+====
+For ISO 10303-2:2022, the `partnumber` is `2`.
+
+For ISO 8000-118, the `partnumber` is `118`.
+====
 
 `:doctype:`:: Has its possible values defined by
 https://www.iso.org/deliverables-all.html[ISO deliverables: The different types of ISO publications]
@@ -67,10 +69,11 @@ https://www.iso.org/stage-codes.html[International harmonized stage codes]).
 Synonym of `:status:`.
 +
 --
-NOTE: ISO authors usually create Metanorma documents at stages `00` through `40`
+NOTE: Typically, ISO authors create Metanorma documents at stages `00` through `40`
 (PWI `00.`, AWI, NP, WD, CD, DIS).
 Documents at the final stages, `50` and `60` (FDIS, PRF, IS), are created by
-ISO Editorial Program Managers at ISO/CS (aka ISO EPMs, ISO Editors).
+ISO Editorial Program Managers at ISO/CS (aka ISO EPMs, ISO Editors), and the
+EPMs are expected to provide the Project Leader with
 Authors using Metanorma are not expected to edit documents at those stages, and
 are not necessary in a normal submission process.
 These stages, however, can be used for mirroring and tracking of final stage
@@ -281,6 +284,8 @@ components such as annexes.
 
 == Authorship and editorial information
 
+=== General
+
 There are potentially three types of groups involved in an ISO deliverable:
 
 . the *drafting group*: where the deliverable is created and worked on
@@ -292,6 +297,8 @@ typically a TC or SC (optional);
 . the *distribution group*: where the deliverable is distributed for review,
 depending on where the deliverable gets distributed to (optional).
 
+[[drafting-group]]
+=== Drafting group
 
 `:secretariat:`:: The national body acting as the secretariat for the document
 in the drafting stage.
@@ -323,12 +330,12 @@ Defaults to `WG` if not supplied. +
 .Common values for `workgroup-type`
 [example]
 `JWG` (joint working group), `JAG` (joint advisory group), `AG` (advisory group),
-`AHG` (ad-hoc group), `SWG` (pecial working group), `SG` (strategic/steering group),
+`AHG` (ad-hoc group), `SWG` (special working group), `SG` (strategic/steering group),
 `MA` (maintenance agency), `CORG` (co-ordination group),
 `JCG` (joint co-ordination group), `CAG` (chair advisory group).
 --
 
-`:workgroup:`:: The name of the relevant ISO *working group*. +
+`:workgroup:`:: The name of the relevant ISO working group. +
 +
 In the case of multiple responsible groups (technical committees, subcommittees,
 working groups), the `:technical-committee:`, `:subcommittee:` and `:workgroup:`
@@ -336,20 +343,20 @@ attributes can be used to encode multiple groups by suffixing `_n` to the
 attribute where `n` is a sequential number after 1.
 +
 [example]
-.Setting a responsible technical committee, subcommtitee and working group (1)
+.Setting a responsible technical committee, subcommittee and working group (1)
 ====
 For ISO/TC 211/WG 9:
 [source,adoc]
 ----
 :technical-committee-number: 211
 :technical-committee: Geographic information/Geomatics
-:workgroup-type: WG
 :workgroup-number: 9
+:workgroup: Information management
 ----
 ====
 +
 [example]
-.Setting a responsible technical committee, subcommtitee and working group (2)
+.Setting a responsible technical committee, subcommittee and working group (2)
 ====
 For ISO/TC 184/SC 4/WG 12:
 [source,adoc]
@@ -383,23 +390,73 @@ For ISO/TC 184/SC 4/WG 12:
 ----
 ====
 
-`:approval-technical-committee-number, approval-technical-committee-type, approval-technical-committee, approval-subcommittee-number, approval-subcommittee-type, approval-subcommittee, approval-workgroup-number, approval-workgroup-type, approval-workgroup:`:: The metadata 
-for the *approval group* [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2].
-The approval group is typically the ISO Technical Committee, Subcommittee or Working Group
-responsible for approving a draft.
-If at least the `approval-technical-committee-number` is not provided, the editing groups are assumed to also be the approval group. +
-+
+=== Approval group
+
+The *approval group* is typically the ISO Technical Committee, Subcommittee or
+Working Group responsible for approving a draft.
+The method of specifying metadata of the *approval group* is identical to that
+of specifying the *drafting group* (see <<drafting-group>>).
+
+If at least the `:approval-technical-committee-number:` is not provided, the
+editing groups are assumed to also be the
+approval group. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2].
+
+`:approval-technical-committee-number`:: The number of the relevant ISO
+technical committee.
+
+`approval-technical-committee-type`:: The type of the relevant technical committee.
+Defaults to `TC` if not supplied.
+
+`approval-technical-committee`:: The name of the relevant ISO technical committee.
+
+`approval-subcommittee-number`:: The number of the relevant ISO subcommittee.
+
+`approval-subcommittee-type`:: The type of the relevant ISO subcommittee.
+Defaults to `SC` if not supplied.
+
+`approval-subcommittee`:: The name of the relevant ISO subcommittee.
+
+`approval-workgroup-number`:: The number of the relevant ISO working group.
+
+`approval-workgroup-type`:: The type of the relevant ISO working group.
+Defaults to `WG` if not supplied.
+
+`approval-workgroup:`:: The name of the relevant ISO working group.
+
 [example]
-.Setting `approval-group-id`
+.Example of setting approval group metadata
 ====
 For ISO/TC 154/WG 5 "Date and time":
 
 [source,adoc]
 ----
+:approval-technical-committee-type: TC
 :approval-technical-committee-number: 154
+:approval-technical-committee: Processes, data elements and documents in commerce, industry and administration
+:approval-workgroup-type: WG
 :approval-workgroup-number: 5
+:approval-workgroup: Date and time
 ----
 ====
+
+=== Distribution group
+
+`:tc-docnumber:`:: The document number assigned by a *distribution group*
+(also called the "`N-document number`" or the "`N-number`"), typically a Technical Committee, a Subcommittee or a Working Group.
+Must include the short reference of the distribution group, since documents may
+circulate widely; +
++
+[example]
+.Setting the N-document number for a distribution group
+====
+For a document circulated in ISO/TC 154 as "N 1218" (instead of "N 1218"):
+
+[source,adoc]
+----
+:tc-docnumber: ISO/TC 154 N 1218
+----
+====
+
 
 == Document relations
 
