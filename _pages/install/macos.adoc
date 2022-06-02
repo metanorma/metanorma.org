@@ -6,6 +6,33 @@ redirect_from:
   - /setup/macos
 ---
 
+== Install Ruby
+
+While macOS provides a default installation of Ruby, it is restricted in a number of ways.
+
+We strongly recommend installing a Ruby outside of the system Ruby using `rbenv`.
+
+[source,console]
+----
+# Install Xcode and associated development tools
+$ xcode-select --install
+
+# Install GCC and development tools
+$ brew install autoconf gcc make
+
+# Install rbenv to manage Ruby versions
+# Remember to follow the setup steps by running `rbenv init`!
+$ curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+
+# Install Ruby 3.1.2 through rbenv [or whatever the latest version is]
+$ rbenv install 3.1.2
+
+# Set Ruby 3.1.2 as your global version
+$ rbenv global 3.1.2
+
+# Then restart Terminal.app
+----
+
 == Install Metanorma via Homebrew
 
 https://brew.sh/[Homebrew] is a popular package manager on macOS.
@@ -20,4 +47,3 @@ Then, run the following commands in Terminal.app:
 brew install metanorma/metanorma/metanorma
 ----
 
-For more information about `metanorma` CLI see the link:/software/metanorma-cli/docs/usage/[Usage page of Metanorma CLI]
