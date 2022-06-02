@@ -1,0 +1,187 @@
+== Manual Installation of Metanorma
+
+The `metanorma` command-line executable is installed by this Ruby gem.
+
+[IMPORTANT]
+====
+Users of the Metanorma suite should install Metanorma according to the steps at the https://www.metanorma.org/author/topics/install/[Metanorma installation guide].
+
+The instructions provided here are intended for Metanorma developers, since
+a number of third-party dependencies will also need to be installed manually.
+====
+
+=== Install Ruby
+
+==== macOS
+
+While macOS provides a default installation of Ruby, it is restricted in a number of ways.
+
+We strongly recommend installing a Ruby outside of the system Ruby using `rbenv`.
+
+[source,console]
+----
+# Install Xcode and associated development tools
+$ xcode-select --install
+
+# Install GCC and development tools
+$ brew install autoconf gcc make
+
+# Install rbenv to manage Ruby versions
+# Remember to follow the setup steps by running `rbenv init`!
+$ curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+
+# Install Ruby 2.7.4 through rbenv
+$ rbenv install 2.7.4
+
+# Set Ruby 2.7.4 as your global version
+$ rbenv global 2.7.4
+
+# Then restart Terminal.app
+----
+
+
+==== Linux
+
+Ruby is sometimes included with Linux. To see if you already have it (and check the version):
+
+1. Open a console/terminal
+2. Type `ruby -v`
+
+If Ruby is installed, you'll see something like the following
+[source, console]
+----
+ruby 3.1.0p0 (2021-12-25 revision fb4df44d16) [x86_64-linux]
+----
+
+If not, follow the official
+https://www.ruby-lang.org/en/documentation/installation[Ruby installation guide].
+
+==== Windows
+
+Ruby is not pre-installed on Windows. There are several ways to install it:
+
+. For an *easy* experience, use `RubyInstaller`, via the official https://www.ruby-lang.org/en/documentation/installation[Ruby installation guide])
+. For a  more *developer-friendly* experience, install Ruby via a Linux distribution (like Ubuntu) hosted in the https://docs.microsoft.com/en-us/windows/wsl/[Windows Subsystem for Linux (WSL)]. https://docs.microsoft.com/en-us/windows/wsl/install[Install WSL2], and then https://gorails.com/setup/ubuntu/21.04[Install Ruby].
+. For a *simpler command-line* experience, first install the https://chocolatey.org/install[Chocolatey] package manager, then add Ruby packaged with https://www.msys2.org/[the MSYS2 build tools]. This process is explained below:
+
+
+.. Open a command prompt (`cmd.exe`) or *PowerShell* console.
+.. Type `choco install -y msys2 ruby`. (If you have a firewall, you may be prompted to allow *dirmngr.exe* and *pacman.exe*. These are part of Ruby and are safe).
+.. When the installation completes, type `refreshenv` to make Ruby available to you.
+.. Type `ridk install 3` to complete the installation of Ruby version 3. This make take a while.
+
+=== Other Ruby Resources
+
+Further details (or FAQ) on Ruby installation please visit the official
+https://www.ruby-lang.org/en/documentation/installation[Ruby installation guide].
+
+== Installing the Metanorma CLI gem
+
+Once Ruby is installed, you can install `metanorma-cli` as a gem:
+
+[source,console]
+----
+gem install metanorma-cli
+----
+
+Installing the gem will also install all officially supported Metanorma flavors
+(such as ISO, CalConnect, IETF, etc).
+
+
+== Dependencies
+
+=== Java
+
+You will have to have a Java runtime installed.
+
+Use the following commands on various platforms:
+
+macOS:: Run `brew cask install java`
+
+Linux:: Follow https://www.java.com/en/download/help/linux_install.html[official instructions]
+
+Windows:: Run `choco install -y javaruntime`
+
+=== PlantUML
+
+*If your documents include link:/author/topics/document-format/diagrams/[PlantUML diagrams]*,
+PlantUML will have to be installed.
+
+macOS:: Run `brew install plantuml`.
+
+Linux:: Link the PlantUML jar file into a command line executable; see
+`.travis.yml` for an example.
+
+Windows:: Run `choco install -y plantuml`.
+
+If PlantUML diagrams used within a document but there PlantUML is not installed,
+the PlantUML diagram source will be incorporated into the output document as
+source code (i.e. `[source]` style).
+
+=== Graphviz
+
+Graphviz is required by LutaML (and PlantUML) to draw diagrams.
+
+macOS:: Run `brew install graphviz`.
+
+Linux:: Install the appropriate
+https://graphviz.org/download/#linux[available packages] (`apt` or `yum`)
+
+Windows:: Run `choco install -y graphviz`
+
+
+=== xml2rfc
+
+Metanorma IETF requires usage of the `xml2rfc` Python package.
+
+To install Python:
+
+macOS:: `brew install python3`
+
+Windows:: `choco install -y python`
+
+Then install `xml2rfc` with:
+
+[source,console]
+----
+pip3 install xml2rfc
+----
+
+
+=== Inkscape
+
+Optional dependency. Inkscape is needed for SVG-to-EMF conversion functionality.
+
+macOS:: Run `brew install inkscape`
+
+Linux:: See Linux instructions https://inkscape.org/release/[here]
+
+Windows:: Run `choco install -y inkscape`
+
+
+=== LaTeXML
+
+Optional dependency. `LaTeXML` is needed for Metanorma for LaTeX functionality.
+
+Most of the packages from various package manager listed on
+https://dlmf.nist.gov/LaTeXML/get.html are outdated.
+
+Since `LaTeXML` is a `perl` module, a reliable way to install it is with the
+https://metacpan.org/dist/App-cpanminus/view/bin/cpanm[`cpanm` package manager]
+
+[source,console]
+----
+curl -L https://cpanmin.us | perl - --sudo App::cpanminus
+cpanm --notest LaTeXML
+# or
+cpanm --notest git://github.com/brucemiller/LaTeXML.git@9a0e7dc5
+----
+
+Alternative, it also can be installed in the following ways (always check the
+version, because the packages may be outdated):
+
+macOS:: Run `brew install latexml`
+
+Linux (with Snap installed):: Run `snap install latexml`
+
+Windows:: `choco install -y latexml`

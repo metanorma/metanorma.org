@@ -1,0 +1,291 @@
+== Metanorma CLI Manual
+
+=== Usage samples
+
+For a single document:
+[source,sh]
+----
+$ metanorma iso-my-standard-document.adoc
+----
+
+or
+
+[source,sh]
+----
+$ metanorma --type iso -x html iso-my-standard-document.adoc
+----
+
+if type and extensions are not defined in adoc header.
+
+See link:/install/man[Metanorma CLI Manual] for the complete Metanorma CLI command options.
+
+
+=== Generate a new Metanorma document using a template  (`metanorma new`)
+
+Metanorma CLI allows you to create a new document using an official
+template, or a user-specified custom template.
+
+To see what options are available under the `new` command,
+run `metanorma help new`.
+
+==== Generate a new document from an official Metanorma template (from an official Metanorma template repository)
+
+The `metanorma new` command allows you to create a document by running a
+single command.
+
+To create a new document using an official template you simply
+invoke the command with the mandatory options `type` and `doctype`,
+then Metanorma will find and load the official template to
+create your document.
+
+For example, if you want to create a new CSD document (`type`: `csd`) called
+`csd-foo-standard`, using the `standard` template type,
+run the following command:
+
+[source, sh]
+----
+metanorma new -d standard -t csd csd-foo-standard
+----
+
+This will create your barebones document and will also print out
+all files created during generation.
+
+Currently, the supported Metanorma template types are `csd`, `ogc` and `iso`.
+
+
+==== Generate a new document from a custom Metanorma template repository
+
+The CLI allows using custom or unofficial template repositories, meaning you
+could also generate a new document using your own custom template.
+
+Metanorma supports two types of template repositories:
+
+* Git: a Git repository (local or remote, public or private)
+* Local: a directory
+
+Once a template repository and a template within is specified, Metanorma will
+automatically download and generate the new document using your custom template.
+
+For example, if you want to create a new CSD document with the
+following parameters:
+
+* Document name: `my-custom-csd-document`
+* Flavor: `csd`
+* Doctype: `standard`
+* Template: `https://gitfoo.com/foobar/mn-templates-foobar` (fictitious example)
+
+You could execute the following command to do so:
+
+[source,sh]
+----
+metanorma new -d standard -t csd \
+  -l https://gitfoo.com/foobar/mn-templates-foobar my-custom-csd-document
+----
+
+Here's an example of using a local directory:
+
+[source,sh]
+----
+metanorma new -d standard -t csd \
+  -l ~/shared/mn-templates my-custom-csd-document
+----
+
+
+=== Compile a document (`metanorma compile` or just `metanorma`)
+
+The key functionality of this CLI is to allow compilation of a Metanorma document.
+The command `metanorma help compile` will display all usage instructions of
+the `compile` command shown with available options.
+
+[source]
+----
+Usage:
+  metanorma compile FILENAME [..options]
+
+Options:
+  -t, [--type=TYPE]                   # Type of standard to generate
+  -x, [--extensions=EXTENSIONS]       # Type of extension to generate per type
+  -f, [--format=FORMAT]               # Format of source file: eg. asciidoc
+                                      # Default: asciidoc
+
+  -r, [--require=one two three]       # Require LIBRARY prior to execution
+  -w, [--wrapper], [--no-wrapper]     # Create wrapper folder for HTML output
+  -a, [--asciimath], [--no-asciimath] # Keep Asciimath in XML output instead of converting it to MathM
+  -R, [--relaton=RELATON]             # Export Relaton XML for document to nominated filename
+  -e, [--extract=EXTRACT]             # Export sourcecode fragments from this document to nominated directory
+  -v, [--version=VERSION]             # Print version of code (accompanied with -t)
+----
+
+So, let's put this in use. For example we have a document `my-iso-document.adoc`
+and we want to compile this using `iso` and `html` as extension, then we can use
+the following command.
+
+[source, sh]
+----
+metanorma compile --type iso -x html my-iso-document.adoc
+# or just
+metanorma --type iso -x html my-iso-document.adoc
+----
+
+This should compile any valid document, but if there are some issues then it
+will also print those out in the terminal. Currently, the supported flavors
+are `ietf`, `iso`, `gb`, `csd`, `csand`, `m3d` and `rsd`.
+
+=== Compile a document collection (`metanorma collection`)
+
+This functionality compiles collections of Metanorma documents. It compiles
+the individual documents comprising the collection; then it compiles a document
+acting as a container for those collections. See
+https://github.com/metanorma/metanorma/wiki/Metanorma-collections[],
+https://github.com/metanorma/metanorma-cli/blob/master/spec/fixtures/collection1.yml[]
+
+The file argument to the collection command is a Metanorma Collections YAML file,
+which contains:
+
+* Directives on how the collection should be generated
+* Metadata about the collection
+* A manifest listing the documents contained in the collection, in nested hierarchy
+* Content to put at the beginning of the collection container
+* Content to put at the ending of the collection container
+
+Documents within a collection
+may cross-reference each other using the syntax
+`* [[[myanchor,repo:(current-metanorma-collection/mydoc)]]]`,
+as proposed in https://github.com/metanorma/metanorma/issues/57, where
+`mydoc` is be the value of docref/identifier corresponding to the target document,
+as set in the YAML manifest.
+
+The output directory will contain:
+
+* The documents referenced in the manifest, with any citations of other documents in the collection
+resolved, in the output formats requested
+* If `xml` or `presentation` are requested as formats, a concatenated `collection.xml` and/or
+`collection.presentation.xml` file, containing all the documents in the collection.
+* If `html` is requested as a format, an `index.html` HTML page, populated from a provided
+Liquid template coverpage, and linking to all the documents in the manifest.
+
+
+[source]
+----
+Usage:
+  metanorma collection FILENAME [..options]
+
+Options:
+  -x, [--extensions=EXTENSIONS]     # Type of extension to generate
+  -w, [--output-folder=FOLDER]      # Folder to generate collection in
+  -c, [--coverpage=COVERPAGE]       # Cover page as Liquid template for collection (currently HTML only)
+----
+
+=== List supported doctypes (`metanorma list-doctypes`)
+
+You want to know what are the supported doctypes and what do they support for
+input and output format? Well, the `metanorma list-doctypes` can help.
+
+
+[source,sh]
+----
+metanorma list-doctypes
+----
+
+
+To list out the details for a specific flavor run the following command:
+
+[source,sh]
+----
+metanorma list-doctypes <flavor>
+----
+
+e.g.,
+
+[source,sh]
+----
+metanorma list-doctypes iso
+----
+
+=== List supported output formats (`metanorma list-extensions`)
+
+Need to know what output formats are supported for a given flavor?
+We've got you covered.
+
+To list out the output formats supported by every single flavor type,
+run the following command:
+
+[source,sh]
+
+----
+metanorma list-extensions
+----
+
+
+To list out the output formats supported by a particular flavor type,
+run the following command:
+
+[source,sh]
+----
+metanorma list-extensions <flavor>
+----
+
+e.g.,
+
+[source,sh]
+----
+metanorma list-extensions iso
+----
+
+
+=== Show processor version (`metanorma version`)
+
+The `version` command returns the version of the Metanorma processor for
+a specific flavor.
+
+e.g., to know the currently running version for `iso`, then we
+can use the following command and this will show the current version that we are
+using for that specific processor.
+
+[source, sh]
+----
+metanorma version --type iso
+----
+
+=== Add new template repository (`metanorma template-repo add`)
+
+The `template-repo add` interface allows you to add your custom template
+repository to metanorma, so next time when you need to generate a new document
+then you can directly use that name to use your custom template from that
+repository.
+
+[source, sh]
+----
+metanorma template-repo add my-iso https://github.com/you/my-iso-template
+----
+
+=== Generate metanorma minisite
+
+The `site` interface allows you to manage mini site generation using the CLI.
+To generate a mini site you need to provide the `SOURCE_PATH` and the CLI will
+take care of compiling each of those files and generate deployable site in the
+provided output directory.
+
+This interface also supports a YAML manifest file that can be used to customize
+the site generation process. You can check more details here: link:./spec/fixtures/metanorma.yml[metanorma.yml]
+
+[source, sh]
+----
+metanorma site generate SOURCE_PATH -o OUTPUT_PATH -c metanorma.yml
+----
+
+=== Using with proxy
+
+The `metanorma` command can read proxy settings from the following
+environment variables:
+
+* `HTTP_PROXY` for HTTPS and HTTP proxies
+* `SOCKS_PROXY` for SOCKS proxies
+
+Please refer to our https://www.metanorma.org/blog/2021-07-20/metanorma-with-proxies/[announcement on proxy support] for details.
+
+NOTE: Since `metanorma` uses Git for templates (and fonts via Fontist, which also relies on Git),
+Git must also be configured to use proxies. Please refer to
+https://gist.github.com/evantoli/f8c23a37eb3558ab8765[this Gist by evantoli] for details.
+
+
