@@ -50,19 +50,40 @@ image::/assets/author/topics/document-format/text/fig-underline.png[Illustration
 
 === Identifier
 
-The identifier macro, used to indicate that its contents are an identifier as semantic markup
-(and not to be processed as a hyperlink) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.2]:
+The `identifier`` command, used to indicate that its contents are an identifier as
+semantic markup (and not to be processed as a
+hyperlink) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.2].
+
+This functionality is very useful for encoding URIs, which can be virtually
+indistinguishable from URLs that can be resolved. URIs very often cannot
+be resolved since they are simply namespaced identifiers.
 
 [source,asciidoc]
 --
 identifier:[http://www.example.com]
 --
 
-which renders:
+renders:
 
 ____
 `http&#x200c;://www.example.com`
 ____
+
+[example]
+.Example of rendering a URI using the `identifier` command
+====
+[source,asciidoc]
+--
+identifier:[https://schemas.isotc211.org/19115/-1/mdb/1.3]
+--
+
+renders:
+
+____
+`https&#x200c;://schemas.isotc211.org/19115/-1/mdb/1.3
+____
+
+====
 
 === Nesting of styles
 
