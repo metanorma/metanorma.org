@@ -3,10 +3,9 @@ layout: docs-base
 html-class: docs-page
 title: Metanorma CLI Usage
 ---
+= Metanorma CLI Usage
 
-== Metanorma CLI Usage
-
-=== Usage samples
+== Usage samples
 
 For a single document:
 [source,sh]
@@ -26,7 +25,7 @@ if type and extensions are not defined in adoc header.
 See link:/install/man[Metanorma CLI Manual] for the complete Metanorma CLI command options.
 
 
-=== Generate a new Metanorma document using a template  (`metanorma new`)
+== Generate a new Metanorma document using a template  (`metanorma new`)
 
 Metanorma CLI allows you to create a new document using an official
 template, or a user-specified custom template.
@@ -34,7 +33,7 @@ template, or a user-specified custom template.
 To see what options are available under the `new` command,
 run `metanorma help new`.
 
-==== Generate a new document from an official Metanorma template (from an official Metanorma template repository)
+=== Generate a new document from an official Metanorma template (from an official Metanorma template repository)
 
 The `metanorma new` command allows you to create a document by running a
 single command.
@@ -59,7 +58,7 @@ all files created during generation.
 Currently, the supported Metanorma template types are `csd`, `ogc` and `iso`.
 
 
-==== Generate a new document from a custom Metanorma template repository
+=== Generate a new document from a custom Metanorma template repository
 
 The CLI allows using custom or unofficial template repositories, meaning you
 could also generate a new document using your own custom template.
@@ -97,7 +96,7 @@ metanorma new -d standard -t csd \
 ----
 
 
-=== Compile a document (`metanorma compile` or just `metanorma`)
+== Compile a document (`metanorma compile` or just `metanorma`)
 
 The key functionality of this CLI is to allow compilation of a Metanorma document.
 The command `metanorma help compile` will display all usage instructions of
@@ -137,7 +136,7 @@ This should compile any valid document, but if there are some issues then it
 will also print those out in the terminal. Currently, the supported flavors
 are `ietf`, `iso`, `gb`, `csd`, `csand`, `m3d` and `rsd`.
 
-=== Compile a document collection (`metanorma collection`)
+== Compile a document collection (`metanorma collection`)
 
 This functionality compiles collections of Metanorma documents. It compiles
 the individual documents comprising the collection; then it compiles a document
@@ -182,7 +181,7 @@ Options:
   -c, [--coverpage=COVERPAGE]       # Cover page as Liquid template for collection (currently HTML only)
 ----
 
-=== List supported doctypes (`metanorma list-doctypes`)
+== List supported doctypes (`metanorma list-doctypes`)
 
 You want to know what are the supported doctypes and what do they support for
 input and output format? Well, the `metanorma list-doctypes` can help.
@@ -208,7 +207,7 @@ e.g.,
 metanorma list-doctypes iso
 ----
 
-=== List supported output formats (`metanorma list-extensions`)
+== List supported output formats (`metanorma list-extensions`)
 
 Need to know what output formats are supported for a given flavor?
 We've got you covered.
@@ -239,7 +238,7 @@ metanorma list-extensions iso
 ----
 
 
-=== Show processor version (`metanorma version`)
+== Show processor version (`metanorma version`)
 
 The `version` command returns the version of the Metanorma processor for
 a specific flavor.
@@ -253,7 +252,7 @@ using for that specific processor.
 metanorma version --type iso
 ----
 
-=== Add new template repository (`metanorma template-repo add`)
+== Add new template repository (`metanorma template-repo add`)
 
 The `template-repo add` interface allows you to add your custom template
 repository to metanorma, so next time when you need to generate a new document
@@ -265,7 +264,7 @@ repository.
 metanorma template-repo add my-iso https://github.com/you/my-iso-template
 ----
 
-=== Generate metanorma minisite
+== Generate metanorma minisite
 
 The `site` interface allows you to manage mini site generation using the CLI.
 To generate a mini site you need to provide the `SOURCE_PATH` and the CLI will
@@ -280,7 +279,7 @@ the site generation process. You can check more details here: link:./spec/fixtur
 metanorma site generate SOURCE_PATH -o OUTPUT_PATH -c metanorma.yml
 ----
 
-=== Using with proxy
+== Using with proxy
 
 The `metanorma` command can read proxy settings from the following
 environment variables:

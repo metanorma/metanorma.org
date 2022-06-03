@@ -5,82 +5,38 @@ title: Manual Installation of Metanorma
 redirect_from:
   - /setup/manual
 ---
-== Manual Installation of Metanorma
+= Manual Installation of Metanorma
+
+== General
 
 The `metanorma` command-line executable is installed by this Ruby gem.
 
 [IMPORTANT]
 ====
-Users of the Metanorma suite should install Metanorma according to the steps at the https://www.metanorma.org/author/topics/install/[Metanorma installation guide].
+Users of the Metanorma suite should install Metanorma according to the steps at
+the
+https://www.metanorma.org/author/topics/install/[Metanorma installation guide].
 
 The instructions provided here are intended for Metanorma developers, since
 a number of third-party dependencies will also need to be installed manually.
 ====
 
-=== Install Ruby
+== Install Ruby
 
-==== macOS
+Depending on your platform, please refer to:
 
-While macOS provides a default installation of Ruby, it is restricted in a number of ways.
+* link:/install/macos#macos-install-ruby[macOS]
 
-We strongly recommend installing a Ruby outside of the system Ruby using `rbenv`.
+* link:/install/windows#windows-install-ruby[Windows]
 
-[source,console]
-----
-# Install Xcode and associated development tools
-$ xcode-select --install
-
-# Install GCC and development tools
-$ brew install autoconf gcc make
-
-# Install rbenv to manage Ruby versions
-# Remember to follow the setup steps by running `rbenv init`!
-$ curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
-
-# Install Ruby 2.7.4 through rbenv
-$ rbenv install 2.7.4
-
-# Set Ruby 2.7.4 as your global version
-$ rbenv global 2.7.4
-
-# Then restart Terminal.app
-----
+* link:/install/linux#linux-install-ruby[Linux]
 
 
-==== Linux
-
-Ruby is sometimes included with Linux. To see if you already have it (and check the version):
-
-1. Open a console/terminal
-2. Type `ruby -v`
-
-If Ruby is installed, you'll see something like the following
-[source, console]
-----
-ruby 3.1.0p0 (2021-12-25 revision fb4df44d16) [x86_64-linux]
-----
-
-If not, follow the official
-https://www.ruby-lang.org/en/documentation/installation[Ruby installation guide].
-
-==== Windows
-
-Ruby is not pre-installed on Windows. There are several ways to install it:
-
-. For an *easy* experience, use `RubyInstaller`, via the official https://www.ruby-lang.org/en/documentation/installation[Ruby installation guide])
-. For a  more *developer-friendly* experience, install Ruby via a Linux distribution (like Ubuntu) hosted in the https://docs.microsoft.com/en-us/windows/wsl/[Windows Subsystem for Linux (WSL)]. https://docs.microsoft.com/en-us/windows/wsl/install[Install WSL2], and then https://gorails.com/setup/ubuntu/21.04[Install Ruby].
-. For a *simpler command-line* experience, first install the https://chocolatey.org/install[Chocolatey] package manager, then add Ruby packaged with https://www.msys2.org/[the MSYS2 build tools]. This process is explained below:
-
-
-.. Open a command prompt (`cmd.exe`) or *PowerShell* console.
-.. Type `choco install -y msys2 ruby`. (If you have a firewall, you may be prompted to allow *dirmngr.exe* and *pacman.exe*. These are part of Ruby and are safe).
-.. When the installation completes, type `refreshenv` to make Ruby available to you.
-.. Type `ridk install 3` to complete the installation of Ruby version 3. This make take a while.
-
-=== Other Ruby Resources
+== Other Ruby Resources
 
 Further details (or FAQ) on Ruby installation please visit the official
 https://www.ruby-lang.org/en/documentation/installation[Ruby installation guide].
+
 
 == Installing the Metanorma CLI gem
 
