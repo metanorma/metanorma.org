@@ -6,29 +6,32 @@ redirect_from:
   - /setup/windows
 ---
 
-== Install Ruby
-
-Ruby is not pre-installed on Windows. There are several ways to install it:
-
-. For an *easy* experience, use `RubyInstaller`, via the official https://www.ruby-lang.org/en/documentation/installation[Ruby installation guide])
-. For a  more *developer-friendly* experience, install Ruby via a Linux distribution (like Ubuntu) hosted in the https://docs.microsoft.com/en-us/windows/wsl/[Windows Subsystem for Linux (WSL)]. https://docs.microsoft.com/en-us/windows/wsl/install[Install WSL2], and then https://gorails.com/setup/ubuntu/21.04[Install Ruby].
-
 === Install Chocolatey
 
-For a *simpler command-line* experience, first install the https://chocolatey.org/[Chocolatey] package manager: please follow
+For a *simpler command-line* experience, first install the
+https://chocolatey.org/[Chocolatey] package manager: please follow
 https://chocolatey.org/install[the official installation instructions].
 
-Then, add Ruby packaged with https://www.msys2.org/[the MSYS2 build tools]. This process is explained below:
+Then, add the Ruby install that is packaged with https://www.msys2.org/[MSYS2 build tools].
+This process is explained below:
+
 . Open a command prompt (`cmd.exe`) or *PowerShell* console.
-. Type `choco install -y msys2 ruby`. (If you have a firewall, you may be prompted to allow *dirmngr.exe* and *pacman.exe*. These are part of Ruby and are safe).
-. When the installation completes, type `refreshenv` to make Ruby available to you.
-. Type `ridk install 3` to complete the installation of Ruby version 3. This make take a while.
+
+. Type `choco install -y msys2 ruby`. (If you have a firewall, you may be
+prompted to allow *dirmngr.exe* and *pacman.exe*. These are part of Ruby and are
+safe).
+
+. When the installation completes, type `refreshenv` to make Ruby available to
+you.
+
+. Type `ridk install 3` to complete the installation of Ruby version 3. This
+make take a while.
 
 
 == Install Metanorma via Chocolatey
 
-Once you have installed Cholocaley, run the following in your `cmd.exe` or `PowerShell` to install the
-Metanorma Chocolatey package:
+Once you have installed Cholocaley, run the following in your `cmd.exe` or
+`PowerShell` to install the Metanorma Chocolatey package:
 
 [source,console]
 ----
@@ -42,3 +45,16 @@ link:/blog/12-25-2018/metanorma-on-windows-via-chocolatey/[the blog post on Meta
 for more background information.
 ====
 
+[[windows-install-ruby]]
+== Install Ruby
+
+Ruby is not pre-installed on Windows. There are several ways to install it:
+
+. For an *easy* experience, use `RubyInstaller`, via the official
+https://www.ruby-lang.org/en/documentation/installation[Ruby installation guide]
+
+. For a more *developer-friendly* experience, install Ruby via a Linux
+distribution (like Ubuntu) hosted in the
+https://docs.microsoft.com/en-us/windows/wsl/[Windows Subsystem for Linux (WSL)].
+https://docs.microsoft.com/en-us/windows/wsl/install[Install WSL2], and
+then https://gorails.com/setup/ubuntu/21.04[Install Ruby].
