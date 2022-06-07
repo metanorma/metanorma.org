@@ -5,14 +5,16 @@ docs_title: Metanorma for IEEE
 title: Author IEEE documents using Metanorma
 
 ieee_flavor:
-  implemented_by: metanorma-ieee
   title: IEEE
   markup_name: Metanorma for IEEE
+  experimental: yes
   build:
-    cli_flags: "--type ieee"
+    cli_flags: "--type ieee -x html"
   sample:
     repo_url: https://github.com/metanorma/mn-samples-ieee
     rendered_url: https://metanorma.github.io/mn-samples-ieee/
+  implemented_by: metanorma-ieee
+  data_models: metanorma-model-ieee
   docs_entry_points:
     - path: ./authoring/
       title: guide
@@ -26,7 +28,16 @@ navigation:
   - title: Sample
     path: /sample/
   - title: Usage
-    path: /authoring/
+    path: /topics/
+    items:
+    - title: IEEE markup
+      path: /topics/markup/
+  - title: Reference guides
+    path: /ref/
+    items:
+      - title: Document attributes
+        path: /ref/document-attributes/
+
 ---
 
 {{ content }}
