@@ -1,0 +1,318 @@
+---
+layout: ieee-flavor
+---
+
+= Metanorma IEEE document attributes
+
+[[note_general_doc_ref_doc_attrib_ieee]]
+[NOTE]
+====
+Document attributes listed below are unique to the processing of ITU documents in Metanorma.
+
+For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author’s documentation. That page describes attributes that apply to all Metanorma flavors, not just ITU.
+
+For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
+====
+
+== Document information
+
+`docnumber`:: In IEEE terms: the designation number for the document.
+
+`draft`:: The draft number.
+
+`doctype`::
+Document type. Choices:
++
+--
+* `standard` (default): This document is a Standard
+* `recommended-practice`: This document is a Recommended Practice
+* `guide`: This document is a Guide
+--
+
+`docsubtype`::
+Document subtype. Choices:
++
+--
+* `trial-use`: Document published for a limited period of time.
+--
+
+####
+
+UNEDITED
+
+`:status:`::
+Document status. Synonym: `:docstage:`. Choices:
++
+--
+* `in-force`: This document is In-force.
+* `in-force-prepublished`: This document is In-force but the text is not final.
+* `superseded`: This document has been superseded.
+* `withdrawn`: This document has been withdrawn.
+
+NOTE: If the document is a draft, use the general `:draft:` document
+attribute instead of `:status:` to indicate so (see
+link:/author/ref/document-attributes/[Document attributes reference]).
+
+In general, the document stages are:
+
+* Draft Recommendation (the text of the Recommendation is being developed and may be quite mature, but it has not yet been approved)
+* Once the text is mature, the SG may decide to "`Consent it`" (APP) or "`Determine it`" (TAP). The draft Recommendation is then in "`Consented`" (AAP) or "`Determined`" (TAP) state.
+* As soon as it has been approved, the Recommendation is no longer a draft Recommendation, but an in-force Recommendation.
+* TSB then prepublishes the Recommendation. Prepublished Recommendations are in-force texts that are not yet in their final form.
+  Because they are not final, they are made available only to the Membership.
+* TSB copy-edits and publishes the Recommendation. This final in-force version is made available to all for free download.
+* If the Recommendation is revised, it will be superseded by the revision as soon as the revision is approved.
+* Recommendations are seldom withdrawn, but it may happen when the SG decides to do so.
+
+Please refer to the Traditional Approval Process (TAP) (https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1])
+and the Alternative Approval Process (AAP) (https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8])
+for further details.
+--
+
+`:docnumber:`::
+The identifier for the document, including the series, the document number, and any suffix,
+but excluding the bureau. For instance, `H.781`, `G.108.2`, `G.709/Y.1331`.
+
+`:amendment-number:`:: Number of amendment, if this is an amendment [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
+`:amendment-title:`:: Title of amendment, if this is an amendment [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
+`:corrigendum-number:`:: Number of corrigendum, if this is a corrigendum [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
+`:corrigendum-title:`:: Title of corrigendum, if this is a corrigendum [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
+
+`:recommendationnumber:`:: For implementation guides, the
+recommendation that this document is an implementation guide
+for [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.8].
+If this is a guide for multiple recommendations, they are
+slash-delimited. If this is a guide for a subseries of recommendations,
+the recommendations as specified as `.\*`, e.g. `H.350.*`.
+
+`:series:`::
+Series that the Recommendation belongs to. Use full title, for example:
+"`H: Audiovisual and Multimedia Systems`"
+
+`:series1:`::
+First level subseries, for example: "`IPTV multimedia services and applications for IPTV`"
+(= "`H.700–H.789`")
+
+`:series2:`::
+Second level subseries, for example: "`Digital Signage`"
+(= "`H.780–H.789`")
+
+`:intended-type:`::
+Intended type for this document (for technical reports) (`R`, `C`, `TD`) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
+
+`:language:` :: The language of the document (only `en` for now; will eventually support
+`ar`, `zh`, `en`, `fr`, `ru`, `es`)  (default: `en`)
+
+`:provisional-name:`:: A provisional identifier allocated to the document if the proper
+document identifier (`:docnumber:`) is not yet known.
+
+`:ip-notice-received:`:: ITU has received a notice of intellectual property,
+protected by patents, which may be required to implement this Recommendation.
+(default: `false`)
+
+`:title-{en, fr, es, ar, ru, zh}:`:: The title to use, in each of the official languages of the ITU.
+
+`:annexid:`:: The ID to use for the annex, if this document is an annex.
+
+// `:annextitle:`:: Shorthand for `:annextitle-en:`, the English title to use for the annex.
+
+`:annextitle-{en, fr, es, ar, ru, zh}:`::
+The title to use for the annex, if this document is an annex,
+in each of the official languages of the ITU.
+
+`:subtitle-{en, fr, es, ar, ru, zh}:`::
+The subtitle to use, in each of the official languages of the ITU;
+appears only at the start of the document body, not in the
+front cover [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
+
+== Author Information
+
+`:bureau_{i}:`::
+Mandatory. Bureau that the document belongs to. Choices:
++
+--
+* `T` (Telecommunication Standardization Bureau, ITU-T) (default)
+* `R` (Radiocommunication Bureau, ITU-R)
+* `D` (Development Bureau, ITU-D)
+
+`bureau`, `group`, `subgroup`, and `workgroup` together form
+a project group, and there may be multiple project groups associated with a document;
+each group after the first is indicated by a trailing number, e.g. `bureau_2`, `group_2`.
+For technical reports, `group`, `subgroup`, and `workgroup` correspond to
+Question, Study Group and Work Group.
+--
+
+`:group_{i}:`::
+Mandatory. Project group that the document belongs to.
+
+`:grouptype_{i}:`::
+Type of Project group that the document belongs to. Permitted values:
+`tsag`, `study-group`, `work-group`
+
+`:groupacronym_{i}:`::
+Acronym of Project group that the document belongs to.
+
+`:groupyearstart_{i}:`::
+Year that Project group study period started.
+
+`:groupyearend_{i}:`::
+Year that Project group study period ended.
+
+`:subgroup_{i}:`::
+Project subgroup that the document belongs to.
+
+`:subgrouptype_{i}:`::
+Type of Project subgroup that the document belongs to. Permitted values:
++
+--
+* `tsag`: TSAG
+* `study-group`: Study Group
+* `work-group`: Working Group of a Study Group
+--
+
+`:subgroupacronym_{i}:`::
+Acronym of Project subgroup that the document belongs to.
+
+`:subgroupyearstart_{i}:`::
+Year that Project subgroup study period started.
+
+`:subgroupyearend_{i}:`::
+Year that Project subgroup study period ended.
+
+`:workgroup_{i}:`::
+Project workgroup that the document belongs to.
+
+`:workgrouptype_{i}:`::
+Type of Project workgroup that the document belongs to. Permitted values:
++
+--
+* `tsag`: TSAG
+* `study-group`: Study Group
+* `work-group`: Working Group of a Study Group
+--
+
+`:workgroupacronym_{i}:`::
+Acronym of Project workgroup that the document belongs to.
+
+`:workgroupyearstart_{i}:`::
+Year that Project workgroup study period started.
+
+`:workgroupyearend_{i}:`::
+Year that Project workgroup study period ended.
+
+`:meeting:`::
+Name of meeting that generated this document (for resolutions, technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
+
+`:meeting-date:`::
+Date of meeting that generated this document (for resolutions, technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]. If the date is a range, it is given slash-delimited, e.g. `2000-01-01/2000-01-02`
+
+`:meeting-place:`::
+Place of meeting that generated this document (for resolutions) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.11].
+
+`:meeting-acronym:`::
+Acronym of meeting that generated this document (for resolutions) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.11].
+
+`:source:`::
+Source for this document (for technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
+
+`:fullname_{i}:`::
+Name of contact for this document (for technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
+
+`:affiliation_{i}:`::
+Name of organization or company for contact for this document (for technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
+
+`:address_{i}:`::
+Country for this document (for technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
+
+`:phone_{i}:`::
+Phone number of contact for this document (for technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
+
+`:fax_{i}:`::
+Fax number of contact for this document (for technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
+
+`:email_{i}:`::
+Email of contact for this document (for technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
+
+`:role_{i}:`::
+Role of contact for this document (for implementers guides): may be either `editor` (default) or `rapporteur` [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.8]
+
+
+== Document Status
+
+`:recommendation-from:`::
+Date from which Recommendation status applies
+
+`:recommendation-to:`::
+Date to which Recommendation status applies
+
+`:approval-process:`::
+Approval Process for Recommendation status. Legal values are:
++
+--
+* `tap`: Traditional Approval Process (TAP), as described in
+https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1, Section 9].
+
+* `aap`: Alternative Approval Process (AAP), as described in
+https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8].
+--
+
+`:approval-status:`::
+Approval status code for Recommendation status. Legal values are:
++
+--
+* If `:approval-process:` is set to `tap`: (refer to
+  https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1],
+  Figure 9.1 "`Approval of new and revised Recommendations using TAP -- Sequence of events`")
+** `determined`: Determined
+** `in-force`: In-force
+
+* If `:approval-process:` is set to `aap`: (refer to
+  https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8],
+  Figure 1 "`Sequence of Events`")
+** `a`: Approved
+** `ac`: Approved with Substantial Changes
+** `aj`: Additional Review Judgement
+** `ar`: Additional Review
+** `at`: Approved with Typographical Corrections
+** `lc`: Last Call
+** `c`: Consented
+** `lj`: Last Call Judgment (includes Last Call Comment resolution)
+** `na`: Not Approved
+** `ri`: Re-Initiate Last Call
+** `sg`: Referred to Study Group Approval
+** `tap`: Moved to TAP (ITU-T A.8 / §5.2)
+--
+
+`:edition:`:: In the case of Resolutions, this attribute is used to indicate whether the current
+document is a revision of an earlier document; if it is, it should have a value other than "1".
+(Resolutions are identified through place and year, regardless of whether they constitute revisions
+or not.)
+
+`:complement-of:`:: Identifier of document that this is a complement or supplement of; used
+in particular for recommendation supplements, to nominate the document or documents that this is a
+supplement of [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.12]. Semicolon-delimited.
+
+== Visual appearance
+
+`:smartquotes:`::
+In ITU, quotes and apostrophes default to straight.
+When this attribute is set, Metanorma will convert quotes and apostrophes to smart quotes and smart apostrophes.
+In the rest of Metanorma, if this attribute is not supplied, quotes and apostrophes default to "`smart`".
+
+`:legacy-do-not-insert-missing-sections:`::
+If set, do not insert the sections "`Scope`", "`References`", "`Definitions`", "`Abbreviations and acronyms`",
+"`Conventions`" if missing [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.11]. +
++
+Use this if you have a legacy Recommendation document with clauses with names preceding this requirement
+(e.g. "`Prerequisites`", "`Process`", "`General`"), and you do not want the compulsory new sections
+to be added in at the start of the document.
+
+`:hierarchical-object-numbering:`::
+If set, do not numbering objects (tables, figures etc.) consecutively throughout the body of the
+document, but restart numbering with each clause
+(hierarchically) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.11]. +
++
+Use in complex documents, with multiple tables or figures, that need to be tracked against
+clauses for ease of lookup (so _Figure 6-3, 6-4_, instead of _Figure 21, 22_.)
+Note that equations in ITU are always numbered hierarchically.
+
