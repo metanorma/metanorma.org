@@ -63,6 +63,9 @@ https://github.com/metanorma/mn-samples-ogc/blob/c19e2fe8354ea331c25b28b32294394
 
 These are the basic document attributes for OGC.
 
+.Setting basic document attributes for OGC
+[example]
+====
 ----
 = API - Features - Part 1: Core <1>
 :docnumber: 17-069r3 <2>
@@ -71,7 +74,7 @@ These are the basic document attributes for OGC.
 <1> OGC document title.
 <2> OGC document number.
 <3> OGC External ID for this deliverable.
-
+====
 
 These are operational concerns that are useful for the author.
 
@@ -79,6 +82,9 @@ These are operational concerns that are useful for the author.
 
 * `:mn-output-extensions:` determines what output to be produced.
 
+.Setting OGC-specific attributes
+[example]
+====
 ----
 :mn-document-class: ogc <1>
 :mn-output-extensions: xml,html,doc,pdf,rxl <2>
@@ -87,7 +93,7 @@ These are operational concerns that are useful for the author.
 <1> Metanorma flavor. For OGC, enter `ogc`.
 <2> Metanorma output formats. For OGC, supported formats are `xml`, `html`, `pdf`, `doc` and `rxl`.
 <3> Metanorma option to store data cache in the current directory.
-
+====
 
 
 == Document types and subtypes
@@ -98,7 +104,12 @@ consensus.
 Some types, such as `standard` and `best-practice` have subtypes that must be
 set.
 
-The list includes:
+The type is to be set via these two attributes:
+
+* `:doctype:` for the document type
+* `:docsubtype:` for the document subtype, necessary for certain `:doctypes:`
+
+Document types, set using the `:doctype:` attribute, include:
 
 * `standard`: Standard (a document subtype is necessary) (_default_)
 * `abstract-specification-topic`: Abstract Specification
@@ -116,9 +127,9 @@ The list includes:
 * `user-guide`: User Guide
 * `white-paper`: White Paper
 
-Subtypes include:
+Document subtypes, set using the `:docsubtype:` attribute, include:
 
-* For `doctype` set to `standard`:
+* For `:doctype:` set to `standard`:
 ** `implementation`: Implementation (_default_)
 ** `conceptual-model`: Conceptual model
 ** `conceptual-model-and-encoding`: Conceptual model and encoding
@@ -128,35 +139,46 @@ Subtypes include:
 ** `profile`: Profile
 ** `profile-with-extension`: Profile with extension
 
-* For `doctype` set to `best-practice`:
+* For `:doctype:` set to `best-practice`:
 ** `general`: General (_default_)
 ** `encoding`: Encoding
 ** `extension`: Extension
 ** `profile`: Profile
 ** `profile-with-extension`: Profile with extension
 
+.Setting document type and subtype
+[example]
+====
 ----
 :doctype: standard <1>
 :docsubtype: implementation <2>
 ----
 <1> OGC document type.
 <2> OGC document subtype. Not all OGC deliverables have subtype.
+====
 
 == Document stages and progress dates
 
 OGC deliverables go through various stages of consensus building.
 
-For an OGC standard and an abstract specification topic, it goes through the
+The document stage is set via the `:status:` attribute.
+
+Values accepted by the `:status:` attribute include:
+
+* For an OGC standard and an abstract specification topic, it goes through the
 stages of: `swg-draft`, `oab-review`, `public-rfc`, `tc-vote` and `approve`.
 
-An OGC community standard goes through the same stages as a normal standard,
+* An OGC community standard goes through the same stages as a normal standard,
 except `swg-draft` is replaced with `work-item-draft`.
 
-All other types only have one `draft` stage and then goes to `approved`.
+* All other types only have one `draft` stage and then goes to `approved`.
 
-OGC deliverables can also be `rescinded` or `retired` but it will not be
+* OGC deliverables can also be `rescinded` or `retired` but these are not
 discussed here.
 
+.Setting document stage and progress dates
+[example]
+====
 ----
 :edition: 1.0 <1>
 :status: approved <2>
@@ -169,9 +191,27 @@ discussed here.
 <3> OGC date of receipt.
 <4> OGC date of issuance.
 <5> OGC date of publication.
-
+====
 
 == Authorship and other preface information
+
+There are three types of authorship information:
+
+* The working group that created the document, this is set via the `:committee:`
+attribute.
+
+* The individual contributors that created the document, this is set via the
+`:fullname:` and `:role:` attributes. Additional contributors are set by
+suffixing the attribute with a `_{n}` where {n} is a sequential number after 1,
+e.g. For `:fullname_2:` use `:role_2:`.
+
+* The submitting organizations (active OGC members) that submitted this document
+(i.e. supported the adoption of the document), this is set via the
+`:submitting-organizations:` attribute as semicolon-delimited values.
+
+.Usage of authorship information
+[example]
+====
 
 ----
 :committee: technical <1>
@@ -184,11 +224,12 @@ discussed here.
 :submitting-organizations: CubeWerx Inc.; Heazeltech LLC; Hexagon; ... <5>
 ----
 <1> OGC committee. Typically `technical` for standards.
-<2> Name of author or editor.
-<3> Role of author or editor. To set role of a `:fullname_2:` use `:role_2:`.
+<2> Name of the individual contributor (author or editor).
+<3> Role of author or editor. To set role of a `:fullname_2:` use `:role_2:`. If
+the role value is not provided, it is set to `author` by default.
 <4> List of OGC keywords, comma-delimited.
 <5> List of OGC members submitting this deliverable, semicolon-delimited.
-
+====
 
 == Metadata references
 
@@ -196,12 +237,20 @@ Metadata defined as document attributes can be used to substitute values defined
 by putting the attribute in curly braces `{attribute}`. The reference will be
 replaced with the value in the rendered output.
 
+.Using a document attribute for variable replacement
+[example]
+====
+
 [source,adoc]
 ----
-:technical-committee-number: 2
-:technical-committee: Fasteners
-:subcommittee-number: 11
-:subcommittee: Fasteners with metric external thread
+:architecture-dwg: OGC Architecture Domain Working Group
 
-This document was prepared by Technical Committee ISO/TC {technical-committee-number}, _{technical-committee}_, Subcommittee SC {subcommittee-number}, _{subcommittee}_.
+This document was prepared by the {architecture-dwg}.
 ----
+
+renders as:
+
+____
+This document was prepared by the OGC Architecture Domain Working Group.
+____
+====
