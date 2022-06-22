@@ -381,6 +381,22 @@ practice is not necessary -- the reference system used in the bibliography of
 ISO deliverables is already numeric by default. Numeric tags do not need to be
 explicitly specified.
 
+== Citation processing flags
+
+Various processing flags can be entered on the document identifier, to specify different
+behaviour. All such flags are optional, and need to be entered in the following order:
+
+[source,adoc]
+----
+ [[[{anchor},nofetch(hidden(dropid(repo(path({document identifier or reference tag})))))]]]
+----
+
+* For `nofetch()`, see link:/author/topics/building/reference-lookup/#nofetch[Automatic reference lookup: Disabling automatic lookup]
+* For `hidden()`, see <<hidden-citations>>
+* For `dropid()`, see <<dropid>>
+* For `repo()`, see  <<other-databases>>
+* For `path()` (_mutually exclusive with ``repo()``_), see <<hyperlink-biblio>>
+
 == Alternate bibliography formats
 
 === Entering pre-formatted citations
@@ -394,6 +410,42 @@ references, on an experimental basis.
 See the
 link:/author/topics/building/reference-lookup[Automatic reference lookup]
 topic for more details.
+
+[[dropid]]
+=== Ignore document identifier
+
+Normally the document identifier is critical to formulating both citations and bibliographies in Metanorma.
+There are times however where the supplied document identifier is to be ignored in bibliographies.
+For example, Metanorma builds a reference entry for a reference without auto-fetching or bibliographic detail
+as the text following the document identifier, followed by the document identifier in brackets:
+
+[source,asciidoc]
+----
+* [[[id1,ELOT 743]]], _Transliteration of Greek into Roman script._
+----
+
+rendered as:
+
+____
+[1] _Transliteration of Greek into Roman script._ [ELOT 743]
+____
+
+If we want to suppress inclusion of the document identifier in the bibliography (e.g. because the bibliographic
+item is not a standard, so the identifier should not be used, wrap it in 
+`dropid()` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.4].
+
+[source,asciidoc]
+----
+* [[[id1,dropid(GIBBON)]]], Gibbon, Edward. 1776-1789. _Decline and fall of the Roman Empire._ London: Strahan & Cadell.
+----
+
+rendered as:
+
+____
+[1] Gibbon, Edward. 1776-1789. _Decline and fall of the Roman Empire._ London: Strahan & Cadell.
+____
+
+
 
 [[hidden-citations]]
 === Entering hidden citations
@@ -784,8 +836,10 @@ Locality types not listed in <<locality-types>> are entered using the
 
 Custom localities are entered by prefixing the locality type with the string
 `locality:`. The locality type will be rendered as text preceding the equal
-sign.
-//TODO: What happens in other languages?
+sign. The locality type is meant to be valid for all languages, and is localised
+as with other localities through inclusion in the internationalisation YAML file for that language.
+(So `locality:appendix` would be used for both English and French texts; the 
+realisation of `locality:appendix` as French _Appendice_ is a matter of gem configuration.)
 
 [example]
 .Example of referencing a custom locality the `locality:` prefix
@@ -829,8 +883,8 @@ cross-reference text.
 Exceptionally, the `anchor` locality is only used in HTML, to generate
 anchor links to other HTML pages [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
 
-It is intended for use with bibliographic anchors linking to URLs (`repo()`):
-see <<hyperlink-biblio>>.
+It is intended for use with bibliographic anchors linking to URLs (`repo()`, `path()`):
+see <<other-databases>> and <<hyperlink-biblio>>.
 
 
 [example]
@@ -967,6 +1021,7 @@ ISO 20483:2013. _Cereals and cereal products -- Determination of moisture conten
 ____
 ====
 
+[[other-databases]]
 === Other databases
 
 Metanorma allows bibliographic entries to be specified for retrieval from arbitrary
