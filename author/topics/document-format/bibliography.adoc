@@ -164,28 +164,80 @@ document.
 ----
 
 
-== Entering typical references
+== Entering individual references
 
 === General
 
-Typical bibliographic entries are given as unordered lists.
+Bibliographic entries are entered as unordered lists in Metanorma AsciiDoc
+within a dedicated clause or section.
 
-A single bibliographic entry must be preceded by a
-bibliographic anchor, in triple brackets, consisting of:
-
-* an internal identifier (used within Metanorma AsciiDoc for cross-references); and
-* a document identifier.
-
-This is illustrated as:
+A single bibliographic entry must be preceded by a bibliographic anchor, in
+_triple brackets_, as shown in the following syntax:
 
 [source,asciidoc]
 --
 * [[[{anchor},{document identifier or reference tag}]]], _{reference list text}_
 --
 
+The following data elements are needed in a reference entry:
+
+* anchor
+* document identifier or reference tag
+* reference list text
+
+anchor:: a user-defined string that is an internal identifier used  for
+cross-referencing within the current document. This string is typically composed
+with ASCII characters and hyphens or underscores. Other characters are not
+recommended. +
++
 WARNING: See link:/author/topics/document-format/text#text-ref-allowed-anchors[Anchor ID syntax]
 for allowed characters in anchor IDs.
 
+document identifier:: the authoritative document identifier of the bibliographic item.
+Standardized deliverables such as International Standards from ISO and IEC are
+assigned authoritative identifiers, such as "ISO 8601-1" or "ISO 8601-1:2019".
+This is often used for auto-fetching of bibliographic details (see <<auto-fetch>>).
+When a document identifier is used, the reference tag is also set to be identical.
+
+reference tag:: a user-defined string used for rendering a mention of this
+bibliographic item in the resulting output. This is typically in a format
+defined by the user, or publication conventions adopted by the user.
+See <<reference-tags>> for more information.
+
+reference list text:: a user-defined, pre-formatted description about the
+bibliographic item. This text is either formatted according to ISO 690:2021, or
+publication conventions like MLA, APA or the Chicago Manual of Style.
+If encoded in the ISO 690:2021 format, the resulting citation will be a
+machine-readable one.
+
+
+=== Types of references
+
+There are multiple ways of entering bibliographic items in Metanorma for
+referencing as shown in <<entering-refs>>.
+
+The most commonly-used methods are:
+
+* <<autofetch>>;
+* <<preformatted-citations>>; and
+* <<asciibib>>.
+
+The basic form of a reference is a "pre-formatted reference", which relies on
+the user to supply a formatted reference. Details of that format are available
+at <<preformatted-citation>>.
+
+It is strongly recommended that <<auto-fetch,automatic fetching>> methods be
+used for data consistency and ease of use whenever possible (especially for
+references to standards).
+
+If automatic fetching is not available for the reference, and if
+machine-readability or accurate rendering is important, <<asciibib>> is the best
+method for entering structured and detailed bibliographic information within a
+document.
+
+
+[[reference-tags]]
+== Reference tags
 
 === Implied reference tags
 
@@ -218,9 +270,9 @@ ____
 ____
 ====
 
-A well-defined standards code as the item label will by default result in the reference details for the
-bibliographic entry being auto-fetched, provided that auto-fetching has been defined for that class of
-standard (<<autofetch>>).
+A well-defined standards code as the item label will by default result in the
+reference details for the bibliographic entry being auto-fetched, provided that
+auto-fetching has been defined for that class of standard (<<autofetch>>).
 
 
 === Numeric reference tags
@@ -381,99 +433,138 @@ practice is not necessary -- the reference system used in the bibliography of
 ISO deliverables is already numeric by default. Numeric tags do not need to be
 explicitly specified.
 
-== Citation processing flags
+[[entering-refs]]
+== Entering bibliographic references
 
-Various processing flags can be entered on the document identifier, to specify different
-behaviour. All such flags are optional, and need to be entered in the following order:
+[[autofetch]]
+=== Automatic fetching via Relaton ("auto-fetch")
 
-[source,adoc]
-----
- [[[{anchor},nofetch(hidden(dropid(repo(path({document identifier or reference tag})))))]]]
-----
+https://www.relaton.org/[Relaton] can fetch bibliographic entries
+for any standards known to have online bibliographic databases.
 
-* For `nofetch()`, see link:/author/topics/building/reference-lookup/#nofetch[Automatic reference lookup: Disabling automatic lookup]
-* For `hidden()`, see <<hidden-citations>>
-* For `dropid()`, see <<dropid>>
-* For `repo:()`, see  <<other-databases>>
-* For `path:()` (_mutually exclusive with ``repo:()``_), see <<hyperlink-biblio>>
+Any bibliographic entry recognized through its document identifier prefix
+will by default have its bibliographic entry fetched by the appropriate
+Relaton extension.
 
-== Alternate bibliography formats
+The fetched data overrides any content about the item provided in the document,
+since the online bibliography is treated as the source of truth for that
+standards document.
 
+The format of the standard identifier required for automatic lookup is documented at
+link:/author/topics/building/reference-lookup/[Automatic reference lookup].
+
+NOTE: Currently Metanorma supports auto-fetching document identifiers
+from: ISO, IEC, IETF, GB, NIST, OGC, CalConnect and many more.
+
+[example]
+.Example of specifying an auto-fetched reference
+====
+The following will trigger auto-fetching:
+
+[source,asciidoc]
+--
+* [[[ref1,ISO 20483]]]
+--
+
+and gets rendered as:
+
+____
+ISO 20483:2013. _Cereals and cereal products -- Determination of moisture content -- Reference method_
+____
+====
+
+
+[[other-databases]]
+=== Referencing from a Metanorma collection
+
+Metanorma allows bibliographic entries to be specified for retrieval from a
+Metanorma
+collection [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
+
+Details on author/topics/document-format/collections#collection-cross-references
+This is achieved with the following syntax:
+
+[source,asciidoc]
+--
+* [[[anchor,repo:(repository-name/document-entry,document-identifier)]]]
+--
+
+This retrieves item `document-entry` from repository `repository-name`; the document
+identifier "document-identifier" is retained in order for citations to remain well-formed.
+
+By default, `repo:(repository-name/document-entry)` is left in the Metanorma XML as
+a document identifier, of type `repo`; it will typically be resolved in post-processing.
+
+NOTE: The `repo:(...)` function is mutually exclusive to `path:(...)`, they
+cannot be used together.
+
+NOTE: Bibliographical information about the entry is *not* auto-fetched via Relaton.
+
+
+[[hyperlink-biblio]]
+=== Referencing from Metanorma or Relaton files
+
+Metanorma allows bibliographic entries to be specified by either relative or absolute
+paths [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1],
+where a path leads to a Metanorma XML or a Relaton RXL reference file.
+
+This is achieved with the following syntax:
+
+[source,asciidoc]
+--
+* [[[anchor,path:(hyperlink,document-identifier)]]]
+--
+
+As with `repo:()` bibliographic entries, the document identifier
+`document-identifier` is retained in order for citations to remain well-formed.
+
+If the hyperlink is local, Metanorma will look for an XML (Metanorma XML) or RXL
+(Relaton XML) file at the nominated location with the same filename, and read in
+the bibliographic metadata from there.
+
+All citations of this entry in the document (referencing `anchor`) will be
+rendered with the hyperlink in HTML.
+
+NOTE: The `path:(...)` function is mutually exclusive to `repo:(...)`, they
+cannot be used together.
+
+NOTE: Bibliographical information about the entry is *not* auto-fetched via Relaton.
+
+
+[[preformatted-citation]]
 === Entering pre-formatted citations
 
 For generic references, by default, Metanorma only supports formatted citations,
 which are given as such in the AsciiDoc source.
 
-The NIST flavour of Metanorma currently supports rendering of generic
-references, on an experimental basis.
-
-See the
-link:/author/topics/building/reference-lookup[Automatic reference lookup]
-topic for more details.
-
-[[dropid]]
-=== Ignore document identifier
-
-Normally the document identifier is critical to formulating both citations and bibliographies in Metanorma.
-There are times however where the supplied document identifier is to be ignored in bibliographies.
-For example, Metanorma builds a reference entry for a reference without auto-fetching or bibliographic detail
-as the text following the document identifier, followed by the document identifier in brackets:
-
-[source,asciidoc]
-----
-* [[[id1,ELOT 743]]], _Transliteration of Greek into Roman script._
-----
-
-rendered as:
-
-____
-[1] _Transliteration of Greek into Roman script._ [ELOT 743]
-____
-
-If we want to suppress inclusion of the document identifier in the bibliography (e.g. because the bibliographic
-item is not a standard, so the identifier should not be used, wrap it in 
-`dropid()` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.4].
-
-[source,asciidoc]
-----
-* [[[id1,dropid(GIBBON)]]], Gibbon, Edward. 1776-1789. _Decline and fall of the Roman Empire._ London: Strahan & Cadell.
-----
-
-rendered as:
-
-____
-[1] Gibbon, Edward. 1776-1789. _Decline and fall of the Roman Empire._ London: Strahan & Cadell.
-____
-
-
-
-[[hidden-citations]]
-=== Entering hidden citations
-
-It is possible to add a citation to a document while suppressing its rendering
-in all rendered outputs.
-
-This is done so that the Metanorma Semantic XML will still contain information
-about the citation, and can use it, for instance, to populate cross-references
-to that document.
-
-A hidden citation can be added to a Metanorma document by wrapping the reference
-tag in `hidden(...)`. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.0]
-
 [example]
-.Example of hiding a named reference (ISO 8601-1:2019)
+.Example of a pre-formatted citation
 ====
 [source,asciidoc]
---
+----
 [bibliography]
 == Normative references
 
-* [[[iso86011,hidden(ISO 8601-1:2019)]]]
---
+* [[[edge_mesh,Edge Mesh]]], Y. SAHNI, J. CAO, S. ZHANG and L. YANG.
+_Edge Mesh: A New Paradigm to Enable Distributed Intelligence in Internet of Things_.
+In: IEEE Access, vol. 5, pp. 16441-16458, 2017, doi: 10.1109/ACCESS.2017.2739804.
+----
+
+This is rendered as:
+
+____
+[1] Y. SAHNI, J. CAO, S. ZHANG and L. YANG. _Edge Mesh: A New Paradigm to Enable Distributed Intelligence in Internet of Things._
+In: IEEE Access, vol. 5, pp. 16441-16458, 2017, doi: 10.1109/ACCESS.2017.2739804.
+____
 ====
 
+NOTE: The NIST flavour of Metanorma currently supports rendering of generic
+references, on an experimental basis. See the
+link:/author/topics/building/reference-lookup[Automatic reference lookup]
+topic for more details.
 
-=== Entering entries using AsciiBib
+
+=== Entering with AsciiBib
 
 Bibliographic entries can be entered in the AsciiBib format.
 
@@ -537,7 +628,7 @@ type:: standard
 ====
 
 
-=== Entering entries using Relaton XML
+=== Entering with Relaton XML (EXPERT only)
 
 WARNING: This functionality is strongly discouraged due to the ease of breaking
 the resulting Metanorma XML. It is useful only for limited use cases and
@@ -838,7 +929,7 @@ Custom localities are entered by prefixing the locality type with the string
 `locality:`. The locality type will be rendered as text preceding the equal
 sign. The locality type is meant to be valid for all languages, and is localised
 as with other localities through inclusion in the internationalisation YAML file for that language.
-(So `locality:appendix` would be used for both English and French texts; the 
+(So `locality:appendix` would be used for both English and French texts; the
 realisation of `locality:appendix` as French _Appendice_ is a matter of gem configuration.)
 
 [example]
@@ -982,86 +1073,122 @@ std-link:[ISO 123,droploc%clause=3]
 ====
 
 
-[[autofetch]]
-== Automatic reference fetching ("auto-fetch")
+== Reference processing flags
 
-=== Relaton databases
+=== General
 
-https://www.relaton.org/[Relaton] can fetch bibliographic entries
-for any standards known to have online bibliographic databases.
+Various processing flags can be entered at the document identifier element to
+specify different reference processing behaviour. All such flags are optional.
 
-Any bibliographic entry recognized through its document identifier prefix
-will by default have its bibliographic entry fetched by the appropriate
-Relaton extension.
+Reference processing flags need to be entered according to the following pattern
+(in this order):
 
-The fetched data overrides any content about the item provided in the document,
-since the online bibliography is treated as the source of truth for that
-standards document.
+[source,adoc]
+----
+[[[{anchor},nofetch(hidden(dropid({document identifier or reference tag})))]]]
+----
 
-The format of the standard identifier required for automatic lookup is documented at
-link:/author/topics/building/reference-lookup/[Automatic reference lookup].
+`nofetch()`:: Disable automatic lookup of references. See <<disable-auto-fetch>>
 
-NOTE: Currently Metanorma supports auto-fetching document identifiers
-from: ISO, IEC, IETF, GB, NIST, OGC, CalConnect and many more.
+`hidden()`:: Do not show this item in the bibliography. See <<hidden-citations>>.
+
+`dropid()`:: Do not display the document identifier. See <<dropid>>.
+
+
+NOTE: The `repo:()` and `path:()` functions are to be entered as document
+identifiers in this pattern.
+
+[[disable-auto-fetch]]
+=== Disable auto-fetch with `nofetch()`
+
+See link:/author/topics/building/reference-lookup/#nofetch[Automatic reference lookup: Disabling automatic lookup].
+
+
+[[dropid]]
+=== Ignoring document identifiers with `dropid()`
+
+The document identifier is critical to formulating both citations and
+bibliographies. There are times, however, where the supplied document identifier
+is to be ignored in bibliographies.
+
+When a manual bibliographic item is entered (not auto-fetched),
+with a user-defined anchor and the document identifier in triple brackets,
+followed by bibliographic details provided as text.
+
+In this case, the bibliographic item is rendered with the document identifier
+placed in brackets after the provided bibliographic details, as it is shown in
+<<dropid-example-1>>.
+
+[[dropid-example-1]]
+[example]
+.Example of a manually-entered bibliographic item with document identifier shown after bibliographic details
+====
+[source,asciidoc]
+----
+* [[[id1,ELOT 743]]], _Transliteration of Greek into Roman script._
+----
+
+Notice that the document identifier is placed in brackets after the provided
+bibliographic details:
+
+____
+[1] _Transliteration of Greek into Roman script._ [ELOT 743]
+____
+====
+
+There are situations where it is useful to suppress the document identifier in
+the bibliography, for example:
+
+* the bibliographic item is not a standard, so the identifier should not be
+used;
+
+* there is no authoritative form for the document identifier for this
+bibliographic item.
+
+The `dropid()` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.4]
+citation processing flag can be used to suppress the appearance of the document
+identifier in the bibliography.
 
 [example]
-.Example of specifying an auto-fetched reference
+.Example of using `dropid(...)` to drop rendering of a document identifier in the bibliography
 ====
-The following will trigger auto-fetching:
-
 [source,asciidoc]
---
-* [[[ref1,ISO 20483]]]
---
+----
+* [[[id1,dropid(GIBBON)]]], Gibbon, Edward. 1776-1789. _Decline and fall of the Roman Empire._ London: Strahan & Cadell.
+----
 
-and gets rendered as:
+The resulting rendering omits the document identifier:
 
 ____
-ISO 20483:2013. _Cereals and cereal products -- Determination of moisture content -- Reference method_
+[1] Gibbon, Edward. 1776-1789. _Decline and fall of the Roman Empire._ London: Strahan & Cadell.
 ____
 ====
 
-[[other-databases]]
-=== Other databases
 
-Metanorma allows bibliographic entries to be specified for retrieval from arbitrary
-databases [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
 
-This is achieved with the following syntax:
+[[hidden-citations]]
+=== Hiding citations with `hidden()`
 
-[source,asciidoc]
---
-* [[[anchor,repo:(repository-name/document-entry,document-identifier)]]]
---
+It is possible to add a citation to a document while suppressing its rendering
+in all rendered outputs.
 
-This retrieves item `document-entry` from repository `repository-name`; the document
-identifier "document-identifier" is retained in order for citations to remain well-formed.
+This is done so that the Metanorma Semantic XML will still contain information
+about the citation, and can use it, for instance, to populate cross-references
+to that document.
 
-Bibliographical information about the entry is *not* auto-fetched via Relaton.
+A hidden citation can be added to a Metanorma document by wrapping the reference
+tag in `hidden(...)`. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.0]
 
-By default, `repo:(repository-name/document-entry)` is left in the Metanorma XML as
-a document identifier, of type `repo`; it will typically be resolved in post-processing.
-
-[[hyperlink-biblio]]
-=== HTML links
-
-Metanorma allows bibliographic entries to be specified by either relative or absolute
-hyperlink [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
-
-This is achieved with the following syntax:
+[example]
+.Example of hiding a named reference (ISO 8601-1:2019)
+====
+The following encoding will hide the particular bibliographic reference.
 
 [source,asciidoc]
 --
-* [[[anchor,path:(hyperlink,document-identifier)]]]
+[bibliography]
+== Normative references
+
+* [[[iso86011,hidden(ISO 8601-1:2019)]]]
 --
-
-As with `repo:()` bibliographic entries, the document
-identifier `document-identifier` is retained in order for citations to remain well-formed.
-
-Bibliographical information about the entry is *not* auto-fetched via Relaton. Instead,
-if the hyperlink is local, Metanorma will look for an XML (Metanorma XML) or
-RXL (Relaton XML) file at the nominated location with the same filename, and read in the
-bibliographic metadata from there.
-
-All citations of this entry in the document (referencing `anchor`) will be rendered with
-the hyperlink in HTML.
+====
