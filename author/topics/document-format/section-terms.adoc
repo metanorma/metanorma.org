@@ -87,10 +87,18 @@ regardless of case:
 NOTE: This behavior differs across standard flavors; please refer to specific
 documentation for a particular flavor.
 
-To stay on the safe side, it is recommended just using _Terms and definitions_
-for any case; the clause title will render accordingly. It doesn't matter
-if the same text is repeated afterwards as a subclause. For example, this would
-be a valid encoding:
+It is recommended to use the "_Terms and definitions_" title for the clause
+heading regardless of the content contained -- Metanorma will automatically
+render the correct clause title. This is demonstrated in <<clause-title-example>>.
+
+NOTE: The same clause title can be repeated as a subclause without negative
+effects (see <<clause-title-example>>).
+
+[[clause-title-example]]
+[example]
+.Automatic generation of "Terms and definitions" title depending on content
+====
+This encoding:
 
 [source,adoc]
 ----
@@ -98,12 +106,31 @@ be a valid encoding:
 
 === Terms and definitions
 
-Text text...
+==== beef
 
-=== Abbreviations
+...
 
-Text text...
+=== Abbreviated terms
+
+foo:: bar
 ----
+
+Will generate the following structure with the correct clause title:
+
+____
+*3* Terms, definitions and abbreviated terms
+
+*3.1* Terms and definitions
+
+*3.1.1* beef
+...
+
+*3.2* Abbreviated terms
+
+foo: bar
+____
+====
+
 
 [[source]]
 ==== Concept source
@@ -555,6 +582,7 @@ The following keys are allowed:
 [source,asciidoc]
 ----
 == Terms and definitions
+
 === Term 1
 
 [%metadata]
@@ -787,6 +815,7 @@ Multiple values are allowed, comma-delimited. Supported values are:
 [source,asciidoc]
 ----
 == Terms and definitions
+
 === Term 1
 
 [%metadata]
@@ -823,6 +852,7 @@ A designation can be empty:
 [source,asciidoc]
 ----
 == Terms and definitions
+
 === {blank}
 
 admitted:[]
@@ -875,6 +905,7 @@ Target concepts from various sources can be referenced, as described below.
 [source,adoc]
 ----
 == Terms and definitions
+
 === mammoth
 
 extinct woolly pachyderm
