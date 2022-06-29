@@ -65,20 +65,46 @@ in Metanorma, namely: document identifier, title, publication date.
 [[nofetch]]
 == Disabling automatic lookup
 
-If the document attribute link:/author/ref/document-attributes/#reference-lookup[`:no-isobib:`] is set, the reference details for
-items are not automatically looked up via `isobib`, and the `isobib` caches are not used.
+=== For entire document
 
-If an individual reference identifier is wrapped in `nofetch()`, the reference details for that
-item are not looked up, though other items still will be [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.8]:
+The presence of the link:/author/ref/document-attributes/#reference-lookup[`:no-isobib:`]
+document attribute will disable the `isobib` bibliographic lookup engine for the
+entire document:
 
+* Bibliographic items will not be automatically looked up via `isobib`;
+* The `isobib` bibliographic caches are not used.
+
+[example]
+.Example of using `:no-isobib:` to disable bibliographic lookup for whole document
+====
 [source,asciidoc]
---
+----
+= ISO 8601-1:2019/Amd 1:2022
+:docnumber: 8601
+:partnumber: 1
+:mn-document-class: iso
+:no-isobib:
+----
+====
+
+=== For a bibliographic item
+
+To turn off automatic lookup for a particular bibliographic item, simply wrap
+the individual reference identifier in `nofetch(...)`, then the reference details for that
+item are not looked up, though other items still will be [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.8].
+
+[example]
+.Example of using `nofetch(...)` to disable bibliographic lookup for one item
+====
+[source,asciidoc]
+----
 [bibliography]
 == Bibliography
 
 * [[[ref1,nofetch(ISO 639-1)]]], ISO 639-1.
 * [[[ref1,ISO 639-2]]], ISO 639-2.
---
+----
+====
 
 == Citing from termbanks
 
