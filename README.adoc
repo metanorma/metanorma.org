@@ -12,7 +12,7 @@ It is implemented as a https://jekyllrb.com[Jekyll] site with `jekyll-theme-open
 
 === Custom features
 
-When adding a blog post, it’s possible to have an illustration that is replaced on hover
+When adding a blog post, it's possible to have an illustration that is replaced on hover
 with another illustration. To do that, use the following markup:
 
 [source,asciidoc]
@@ -23,7 +23,7 @@ with another illustration. To do that, use the following markup:
 image::/assets/blog/image-1.png[Alt text]
 --
 
-And make sure widget JS is included via post’s frontmatter:
+And make sure widget JS is included via post's frontmatter:
 [source,yaml]
 --
 extra_scripts:
@@ -34,7 +34,7 @@ extra_scripts:
 
 === Avoiding dead links with redirects
 
-Whenever you delete or rename a page, it’s important that you leave a redirect.
+Whenever you delete or rename a page, it's important that you leave a redirect.
 
 To leave a redirect, add an entry under `redirect_from` key in the frontmatter of the page where you want to redirect _to_.
 For an example, see https://github.com/metanorma/metanorma.org/blob/main/_pages/author.adoc.
@@ -46,7 +46,7 @@ IMPORTANT: Try to reduce such changes with careful planning, and never delete or
 . **Settle on flavor and markup abbreviations.**
 +
 - _Flavor abbreviation_ is _not_ typically the same as organization abbreviation;
-  usually it ends with “D”—e.g., M3AAWG is M3AAWG’s flavor abbreviation.
+  usually it ends with “D”—e.g., M3AAWG is M3AAWG's flavor abbreviation.
 +
 IMPORTANT: The `--type` flag given to Metanorma-CLI is expected to reference the same flavor abbreviation in lowercase.
 - _Markup abbreviation_ usually takes the form of `Ascii<uppercase flavor abbreviation>`.
@@ -100,7 +100,7 @@ title: Metanorma for <uppercase flavor abbreviation>
   Topic and reference guide documents must live under correspondingly named sibling directories,
   `topics/` and `ref/`.
 - Sample document guide should be placed in `sample.adoc`.
-  It’s suggested to ensure that your _sample document build process_ is consistent with other
+  It's suggested to ensure that your _sample document build process_ is consistent with other
   flavors, and that you use includes to avoid repetition, though you can provide custom
   instructions if needed.
   See `author/m3aawg/sample.adoc` for an example with default basic build instructions (via include),
@@ -156,7 +156,7 @@ title: Write <organization abbreviation> <documents|standards> with Metanorma
     # If you have self-containing HTML file showcasing built sample document for the new flavor,
     # you can place it under `_pages/`, and reference filename here this way:
     rendered_url: https://www.metanorma.org/<built-sample-html-filename>/
-    # …or, if it’s available elsewhere, this way:
+    # …or, if it's available elsewhere, this way:
     rendered_url: https://metanorma.github.io/…/
 
   # Desired navigation structure. Example given.
