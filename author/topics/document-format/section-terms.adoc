@@ -453,10 +453,16 @@ input scheme:
 * The term is given as a *subheading* at the appropriate level
   (three equal signs, unless there are subsections in the "`Terms and definition`"
   section).
-* The term is optionally followed by *alternative/admitted terms*,
-  which must be marked up in an `+alt:[...]+` command;
-  *deprecated terms*, which must be marked up in a `+deprecated:[...]+` command;
-  and a term *domain*, which must be marked up in a `+domain:[...]+` command.
+
+* The term is optionally followed by *related terms*, which are marked up with
+  `related:[]` commands. Alternative/admitted terms and deprecated terms
+  can be marked up with `+alt:[...]+` and `+deprecated:[...]+`, but are treated
+  as instances of related terms.
+
+* The term can also be followed by other metadata, including the
+  term *domain*, which must be marked up in a `+domain:[...]+` command.
+  Much of this metadata is formatted through a `%metadata` definition list
+  (see <<metadata>>).
 
 * The *definition* of the term is given in a separate paragraph.
 
@@ -528,8 +534,8 @@ NOTE: An unmodified term and definition does not require any text after
 the source reference.
 
 More complex concepts can also be specified, with alternative terms,
-deprecated terms, domain, examples and a definition modified
-from its original source.
+deprecated terms, related terms, domain, examples and a definition modified
+from its original source. On providing more extensive metadata about concepts, see <<metadata>>.
 
 [example]
 .Defining a term with additional options, with examples, notes and source
@@ -669,6 +675,9 @@ the requirements of an application reference model
 ----
 ====
 
+Admitted designations are distinct from preferred designations, in that the use of any
+of the preferred designations is recommended over any of the admitted designations.
+
 ===== Deprecated designations
 
 Deprecated designations are entered using the `deprecated:[...]` command.
@@ -686,6 +695,7 @@ single integrated information model for the scope of an AP
 ====
 
 
+[[metadata]]
 ===== Designation metadata
 
 Metadata about designations can be given in a definition list,
@@ -1002,8 +1012,12 @@ the nominated concept.
 `see`:: in order to better understand the current concept, refer to the
 nominated concept.
 
-`seealso`:: in order to better understand the current concept, refer in addition to the
-nominated concept [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.3]. 
+`related:deprecates[]` is equivalent to `deprecated:[]`, and `related:equivalent[]`
+is equivalent to `admitted:[]`. However, concept relations only provide crossreferences
+to concepts defined elsewhere; admitted and deprecated designations can also provide 
+metadata about the designations, such as usage notes or grammatical information.
+If the admitted and deprecated designations are not defined elsewhere in the document,
+use the `admitted:[]` and `deprecated:[]` macros.
 
 
 ==== Definitions
