@@ -452,12 +452,15 @@ input scheme:
 
 * The term is given as a *subheading* at the appropriate level
   (three equal signs, unless there are subsections in the "`Terms and definition`"
-  section).
+  section). That subheading has as its content a preferred designation for the term
+  (<<designations>>).
+
+* The term is followed by other designations: preferred (`+preferred:[...]+`),  
+  admitted (`+alt:[...]+`) and deprecated (`+deprecated:[...]+`).
 
 * The term is optionally followed by *related terms*, which are marked up with
-  `related:[]` commands. Alternative/admitted terms and deprecated terms
-  can be marked up with `+alt:[...]+` and `+deprecated:[...]+`, but are treated
-  as instances of related terms.
+  `+related:[...]+` commands. These are cross-references that are expected to be defined
+  elsewhere, by contrast with the other designations, which are defined within the current entry.
 
 * The term can also be followed by other metadata, including the
   term *domain*, which must be marked up in a `+domain:[...]+` command.
@@ -597,6 +600,7 @@ subject:: pipes
 ----
 ====
 
+[[designations]]
 ==== Designations
 
 ===== General
@@ -677,6 +681,8 @@ the requirements of an application reference model
 
 Admitted designations are distinct from preferred designations, in that the use of any
 of the preferred designations is recommended over any of the admitted designations.
+Normally there is only one preferred designation per term, and any other designations
+are treated as admitted.
 
 ===== Deprecated designations
 
@@ -903,10 +909,14 @@ NOTE: Multiple non-verbal designations are supported by ISO 10241-1.
 
 ===== General
 
-In Metanorma, a concept relation is to be made between the current concept and a
-target concept. Concept relations are specified in a syntax similar to that for
+In Metanorma, a concept relation is made between the current concept and a
+target concept, expected to be defined elsewhere. That means concept relations are references
+to target concepts. Accordingly, concept relations are specified in a syntax similar to that for
 concept cross-references
 (<<citeterms>>) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0].
+
+Note that concept relations are NOT supported in ISO, or flavours derived from ISO (IEC, BSI).
+However, admitted and deprecated designations are supported in ISO.
 
 Target concepts from various sources can be referenced, as described below.
 
