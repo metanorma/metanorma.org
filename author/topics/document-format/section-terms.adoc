@@ -2114,16 +2114,19 @@ If these options are missing, Metanorma applies the defaults for the current
 flavour.
 
 The default behaviour in Metanorma is `ital,ref,nolinkmention,linkref` for all
-terms, `noital,noref,nolinkmention,nolinkref` for acronyms.
+terms (italics and cited), `noital,noref,nolinkmention,nolinkref` for acronyms (no special rendering).
+
+In IEEE, the default behaviour is `noital,noref,nolinkmention,nolinkref` for all terms (i.e. no special rendering
+for a term cited within a term definition.)
 
 
 In ISO, the default behaviour for terms is refined:
 
-* for terms outside the "`Terms and definitions`" section: `noital,noref,nolinkmention,nolinkref`;
+* for terms outside the "`Terms and definitions`" section: `noital,noref,nolinkmention,nolinkref` (no special rendering);
 
-* for the first mention of a term within the "`Terms and definitions`" section: `ital,ref,nolinkmention,linkref`;
+* for the first mention of a term within the "`Terms and definitions`" section: `ital,ref,nolinkmention,linkref` (italics, cited, hyperlinked);
 
-* for all subsequent mentions within the "`Terms and definitions`" section: `ital,noref,nolinkmention,linkref`.
+* for all subsequent mentions within the "`Terms and definitions`" section: `ital,noref,nolinkmention,linkref` (italics, hyperlinked, no citation).
 
 [example]
 .Using cited concepts with various options
