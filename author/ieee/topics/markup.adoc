@@ -64,14 +64,11 @@ The notation for subdefinitions and cross-references in Metanorma is:
 ----
 === widget
 
-related:contrast[thing]
+alt:[doovywhack] // Syn:
 
-related:see[thingummy]
-related:see[thingummijig]
+related:contrast[thing] // Contrast:
 
-related:seealso[whatsit]
-
-related:equivalent[doovywhack] // Metanorma term for synonym
+related:seealso[whatsit] // See also:
 
 [.definition]
 --
@@ -89,11 +86,27 @@ which renders as:
 ____
 
 *widget*: *(A)* device performing an unspecified function. *(B)* general metasyntactic variable. _Contrast:_ thing.
-_Syn:_ doovywhack. _See:_ thingummijig; thingymmy. _See also:_ whatsit.
+_Syn:_ doovywhack. _See also:_ whatsit.
 ____
 
+Do NOT insert markup for _See:_ terms. _See:_ terms are the opposite relations to "Syn:" relations; Metanorma will 
+automatically generate an entry for the synonymous term, pointing back to the original entry:
+
+___
+
+*doovywhack*: _See:_ widget.
+___
+
+Do use `+alt:[...]+` for synonyms, rather than `related:equivalent[]`: the latter is intended to cross-reference
+pre-existing term definitions, and that is not how IEEE treats _Syn:_ entries.
+
+Do use `+alt:[...]+` instead of `+preferred[...]+` for _Syn:_ entries. The `+preferred[...]+` syntax is intended for 
+names that are fully equivalent in preference, such as acronyms.
+
+TODO: acronyms
+
 Metanorma supports _concepts_, which capture terms are cross-referencable entities, including cross-references
-within Terms & Definitions sections. Highlighting and cross-referencing of concepts is not supported in Metanorma.
+within Terms & Definitions sections. Highlighting and cross-referencing of concepts is not supported in Metanorma for IEEE.
 
 Term sources are marked up as "adapted from" through an `adapted` option on the source tag:
 
