@@ -153,6 +153,42 @@ link:../child[This Is The Child Document,update-type=true]
 This will link to `../parent.html` and `../child.html` in HTML, and to
  `../parent.pdf` and `../child.pdf` in PDF.
 
+=== Numeric ranges
+
+Numeric ranges, like dates (e.g., _1981&ndash;1995_), make use of
+_en dashes_ in between the numbers, usually without any white space around.
+
+At the time writing, there is no AsciiDoc encoding to render en dashes.
+
+In Metanorma, there is a vision of implementing a semantic encoding for
+numeric ranges, perhaps an option like `range:[n,m]` or shorthands like `n..m`.
+But for the time being, the existent workaround for such cases is
+the use of entity codes, more specifically, `&&#x200c;ndash;`.
+
+For example:
+
+
+[source,asciidoc]
+----
+See chapters 15&ndash;17...
+
+Issues 18&ndash;20 are in fact a single issue...
+
+_Laser Physics_ *17* 1017&ndash;1024 (2007).
+----
+
+to render
+
+____
+See chapters 15&ndash;17...
+
+Issues 18&ndash;20 are in fact a single issue...
+
+_Laser Physics_ *17* 1017&ndash;1024 (2007).
+____
+
+
+
 == Corrigenda
 
 Text to be marked as added or deleted in corrigenda is indicated through the
