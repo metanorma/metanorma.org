@@ -19,6 +19,7 @@ For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorm
 `docnumber`:: In IEEE terms: the designation number for the document. Do not include the initial "P".
 
 `draft`:: The draft number. Do not include the initial "D".
+`edition`:: The revision number of the document.
 
 `isbn-pdf`:: The ISBN of the PDF document.
 `isbn-print`:: The ISBN of the print document.
@@ -39,11 +40,19 @@ Document type. Choices:
 Document subtype. Choices:
 +
 --
-* `trial-use`: Document published for a limited period of time.
+* `amendment`:: Document is an amendment
+* `corrigendum`:: Document is an corrigendum
+* `erratum`:: Document is an erratum
 --
 
-`confirmed-date`:: The date on which the document was approved.
+`trial-use`:: Document published for a limited period of time. Can apply to any of the document types. (Default value: `false`.)
+
+`docstatus`:: Status of document. Legal values are `developing`, `active`, and `inactive`. If not supplied, the value is `developing` if `draft` is supplied, else `active`.
+
+`confirmed-date`:: The date on which the document was approved. Like all dates in Metanorma, this must be supplied in YYYY-MM-DD format.
 `issued-date`:: The date on which the document draft was circulated.
+`feedback-ended-date`:: Specific to trial-use documents: the final date at which comments about the document will be accepted.
+`obsoleted-date`:: The date on which the document was made no longer valid (inactive), or else will become no longer valid (trial-use).
 
 `:keywords`:: Comma-delimited list of keywords associated with the document.
 
@@ -57,12 +66,12 @@ by Metanorma.
 == Document participants
 
 `society`:: The IEEE society responsible for the document. Do not include the "IEEE" prefix.
-`committee`:: The committee responsible for the document.
+`committee`:: The standards committee, standards coordinating committee, standards subcommittee, or technical committee responsible for the document.
 `working-group`:: The working group responsible for the document.
 `balloting-group`:: The Standards Association balloting group responsible for the document.
 
 IEEE requires listing the full membership of the working group, balloting group, and
-standards board responsible for the document. The current membership of the balloting group and
+the IEEE Standards Board responsible for the document. The current membership of the balloting group and
 standards board is normally provided by IEEE during editing; if the information is not provided in
 the document, dummy values will be provided to match those in the IEEE templates.
 This information is provided as follows; all names are given inline as full names.
@@ -74,11 +83,12 @@ This information is provided as follows; all names are given inline as full name
 `wg-org-members`:: The organisations that are working group members, semicolon-delimited
 
 `balloting-group-members`:: The balloting group members, semicolon-delimited
-`std-board-chair`:: The standards board chair
-`std-board-vicechair`:: The standards board vice-chair
-`std-board-pastchair`:: The standards board past chair
-`std-board-secretary`:: The standards board secretary
-`std-board-members`:: The standards board members, semicolon-delimited. Any emeritus members should be given with an asterisk at the end of their names
+
+`std-board-chair`:: The Standards Board chair
+`std-board-vicechair`:: The Standards Board vice-chair
+`std-board-pastchair`:: The Standards Board past chair
+`std-board-secretary`:: The Standards Board secretary
+`std-board-members`:: The Standards Board members, semicolon-delimited. Any emeritus members should be given with an asterisk at the end of their names
 
 == Visual appearance
 
