@@ -1,23 +1,25 @@
 ---
 layout: flavor
 
-docs_title: Metanorma for IEEE
+docs_title: Metanorma for IEEE SA
 title: Author IEEE documents using Metanorma
 
 ieee_flavor:
-  title: IEEE
-  markup_name: Metanorma for IEEE
+  implemented_by: metanorma-ieee
+  data_models: metanorma-model-ieee
+  title: IEEE SA
+  title_org: IEEE SA
+  title_org_full: Institute of Electrical and Electronics Engineers
+  markup_name: Metanorma for IEEE SA
   experimental: yes
   build:
     cli_flags: "--type ieee -x html"
   sample:
     repo_url: https://github.com/metanorma/mn-samples-ieee
     rendered_url: https://metanorma.github.io/mn-samples-ieee/
-  implemented_by: metanorma-ieee
-  data_models: metanorma-model-ieee
   docs_entry_points:
-    - path: ./authoring/
-      title: guide
+  - path: ./topics/markup/
+    title: general guide
 
 base_url: /author/ieee
 
@@ -25,19 +27,43 @@ navigation:
   items:
   - title: Get started
     path: /
-  - title: Sample
+  - title: Authoring guide
+    path: /authoring-guide/
+    items:
+    - title: Terms used in this guide
+      path: /authoring-guide/terms/
+    - title: Development process
+      path: /authoring-guide/process/
+    - title: Metanorma AsciiDoc
+      path: /authoring-guide/metanorma-adoc/
+    - title: New document
+      path: /authoring-guide/new-doc-template/
+    - title: Setting metadata
+      path: /authoring-guide/metadata/
+    - title: Sections
+      path: /authoring-guide/sections/
+    - title: Block syntax
+      path: /authoring-guide/block-syntax/
+    - title: Text formatting
+      path: /authoring-guide/text-formatting/
+    - title: Cross references
+      path: /authoring-guide/cross-references/
+    - title: Terms and definitions
+      path: /authoring-guide/terms-definitions/
+    - title: Bibliographic references
+      path: /authoring-guide/bibliographic-references/
+  - title: Samples
     path: /sample/
   - title: Usage
     path: /topics/
     items:
-    - title: IEEE markup
+    - title: Markup
       path: /topics/markup/
   - title: Reference guides
     path: /ref/
     items:
       - title: Document attributes
         path: /ref/document-attributes/
-
 ---
 
 {{ content }}

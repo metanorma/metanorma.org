@@ -2,106 +2,389 @@
 layout: ieee-flavor
 ---
 
-= Metanorma IEEE document attributes
+= Metanorma IEEE SA document attributes
 
 [[note_general_doc_ref_doc_attrib_ieee]]
 [NOTE]
 ====
-Document attributes listed below are unique to the processing of IEEE documents
+Document attributes listed below are unique to the processing of IEEE SA documents
 in Metanorma.
 
-For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author's documentation. That page describes attributes that apply to all Metanorma flavors, not just IEEE.
+For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author's documentation. That page describes attributes that apply to all Metanorma flavors, not just IEEE SA.
 
 For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
 ====
 
 == Document information
 
-`docnumber`:: In IEEE terms: the designation number for the document. Do not include the initial "P".
+`docnumber`:: In IEEE SA terms: the designation number for the document. Do not include the initial "P".
++
+.Example for IEEE SA `docnumber`
+[example]
+====
+[source,adoc]
+----
+:docnumber: 2830
+----
+====
 
-`draft`:: The draft number. Do not include the initial "D".
-`edition`:: The revision number of the document.
+`draft`:: The draft number. Use together with `:docstage: draft`. Do not include the initial "D".
++
+.Example for IEEE SA `docstage`
+[example]
+====
+[source,adoc]
+----
+:docstage: draft
+:draft: 2
+----
+====
+
+`edition`:: The edition number of the document. In case that a document is a
+draft, the edition number indicates the intended edition number.
++
+.Example for IEEE SA `edition`
+[example]
+====
+[source,adoc]
+----
+:edition: 1
+----
+====
 
 `amendment-number`:: (only when `docsubtype` is set to `amendment`) The number of the amendment.
+
 `corrigendum-number`:: (only when `docsubtype` is set to `corrigendum`) The number of the corrigendum.
 
-`isbn-pdf`:: The ISBN of the PDF document.
-`isbn-print`:: The ISBN of the print document.
+`isbn-pdf`:: The ISBN of the PDF document in ISBN-13 format.
++
+.Example for IEEE SA `isbn-pdf`
+[example]
+====
+[source,adoc]
+----
+:isbn-pdf: 978-1-5044-7724-6
+----
+====
+
+`isbn-print`:: The ISBN of the print document in ISBN-13 format.
++
+.Example for IEEE SA `isbn-print`
+[example]
+====
+[source,adoc]
+----
+:isbn-print: 978-1-5044-7725-3
+----
+====
 
 `stdid-pdf`:: The final standard identifier of the PDF document.
++
+.Example for IEEE SA `stdid-pdf`
+[example]
+====
+[source,adoc]
+----
+:stdid-pdf: STD24807
+----
+====
+
 `stdid-print`:: The final standard identifier of the print document.
++
+.Example for IEEE SA `stdid-print`
+[example]
+====
+[source,adoc]
+----
+:stdid-print: STDPD24807
+----
+====
 
 `doctype`::
-Document type. Choices:
+Document type. Definitions of the document type are found on
+the https://standards.ieee.org/develop/drafting-standard/resources/[IEEE SA Style Manual].
++
+Choices:
 +
 --
-* `standard` (default): This document is a Standard
-* `recommended-practice`: This document is a Recommended Practice
-* `guide`: This document is a Guide
+`standard`:: This document is a Standard (default)
+`recommended-practice`:: This document is a Recommended Practice
+`guide`:: This document is a Guide
 --
 
 `docsubtype`::
 Document subtype. Choices:
 +
 --
-* `document`:: Document is new or a revision (default)
-* `amendment`:: Document is an amendment
-* `corrigendum`:: Document is an corrigendum
-* `erratum`:: Document is an erratum
+`document`:: Document is new or a revision (default)
+`amendment`:: Document is an amendment
+`corrigendum`:: Document is an corrigendum
+`erratum`:: Document is an erratum
 --
 
-`trial-use`:: Document published for a limited period of time. Can apply to any of the document types. (Default value: `false`.)
+`trial-use`:: Document published for a limited period of time.
+Can apply to any of the document types. (Default value: `false`.)
++
+NOTE: Please see
+https://standards.ieee.org/about/policies/opman/sect5/[Operations Manual, 5.7 Trial-Use standards]
+for more details.
 
-`docstatus`:: Status of document. Legal values are `developing`, `active`, and `inactive`. If not supplied, the value is `developing` if `draft` is supplied, else `active`.
+`docstatus`:: Status of document.
++
+--
+Allowed values are:
 
-`confirmed-date`:: The date on which the document was approved. Like all dates in Metanorma, this must be supplied in YYYY-MM-DD format.
+`developing`:: Document is under development.
+`active`:: Document is active.
+`inactive`:: Document is inactive.
++
+NOTE: See https://standards.ieee.org/about/policies/opman/sect6/[Operations Manual, 6.3.3 Inactive standards] for details.
+
+If not supplied, the value is `developing` if `draft` is supplied, else `active`.
+--
+
+`confirmed-date`:: The date on which the document was approved.
+Like all dates in Metanorma, this must be supplied in `YYYY-MM-DD` format.
++
+.Example for IEEE SA `confirmed-date`
+[example]
+====
+[source,adoc]
+----
+:confirmed-date: 2021-06-16
+----
+====
+
 `issued-date`:: The date on which the document draft was circulated.
-`feedback-ended-date`:: Specific to trial-use documents: the final date at which comments about the document will be accepted.
-`obsoleted-date`:: The date on which the document was made no longer valid (inactive), or else will become no longer valid (trial-use).
+
+`feedback-ended-date`:: (conditional). Only when `trial-use` is set to `true`.
+Specific to trial-use documents: the final date at which comments about the
+document will be accepted.
+
+`obsoleted-date`::
+
+*** When `trial-use` is set to `false`: the date on which the document will become `inactive`
+
+*** When `trial-use` is set to `true`: the date on which the document will expire.
++
+NOTE: A trial-use document is effective for not more than three years
+(https://standards.ieee.org/about/policies/opman/sect5/[Operations Manual, 5.7 Trial-Use standards]).
+
 
 `:keywords`:: Comma-delimited list of keywords associated with the document.
++
+.Example for IEEE SA `keywords`
+[example]
+====
+[source,adoc]
+----
+:keywords: data fusion, IEEE 2830™, shared machine learning, SML, trusted execution environment, TEE
+----
+====
 
-`:doctitle:`:: Document title (also can be given as the first line of the Asciidoctor markup, prefaced by `= `.
-Do not include the words "Draft (Guide/Stadnard/Recommended Practice) for", they are supplied automatically
-by Metanorma.
+`:doctitle:`:: Document title.
++
+Do not include the words "Draft {Guide/Standard/Recommended Practice} for",
+these words are supplied automatically by Metanorma.
++
+NOTE: `:doctitle:` can be set using the first line of the
+AsciiDoc markup, prefaced by `= ` instead of setting the document attribute.
 
-`:merges:`:: This document incorporates the document(s) with the nominated identifiers (semicolon-delimited).
-`:updates:`:: This document is an update of the document(s) with the nominated identifiers (semicolon-delimited).
 
-== Document participants
+== Document relationships
 
-`society`:: The IEEE society responsible for the document. Do not include the "IEEE" prefix.
-`committee`:: The standards committee, standards coordinating committee, standards subcommittee, or technical committee responsible for the document.
+`:merges:`:: This document incorporates the document(s) with the nominated
+identifiers (semicolon-delimited).
+
+`:updates:`:: This document is an update of the document(s) with the nominated
+identifiers (semicolon-delimited).
+
+
+== Document contributors
+
+=== General
+
+There are the multiple kinds of contributors to an IEEE SA document that
+indicate full provenance of where the document was developed, balloted and
+eventually approved.
+
+IEEE requires listing of all members of the:
+
+* working group
+* balloting group
+* standards board, at the time of publishing the document.
+
+The current membership of the balloting group and standards board is normally
+provided by IEEE during editing; if the information is not provided in the
+document, dummy values will be provided to match those in the IEEE templates.
+
+
+=== Society
+
+An IEEE SA document is sponsored by an IEEE society.
+This is mandatory information.
+
+`society`:: The IEEE society responsible for the document. Do not include the
+"IEEE" prefix.
++
+.Example for IEEE SA `society`
+[example]
+====
+[source,adoc]
+----
+:society: Computer Society
+----
+====
+
+=== Committee
+
+An IEEE SA document is developed within a working group under an IEEE SA
+committee.
+This is mandatory information.
+
+`committee`:: The committee responsible for the document.
++
+.Example for IEEE SA `committee`
+[example]
+====
+[source,adoc]
+----
+:committee: C/AISC - Artificial Intelligence Standards Committee
+----
+====
++
+[example]
+====
+[source,adoc]
+----
+:committee: Standards Activities Board
+----
+====
+
+
+=== Working group
+
+An IEEE SA document is developed by a working group.
+Members of the working group are to be fully elaborated as metadata
+presented in the document preface.
+
+This is mandatory information.
+
+An IEEE SA working group can be one of two modes
+(more details at link:/author/ieee/ref/process[process]):
+
+* Entity-based: members are IEEE SA member organizations, use the `:wg-org-members:` attribute to specify
+member organizations;
+* Individual-based: members are individual contributors, use the `:wg-members:` attribute to specify
+member individuals.
+
 `working-group`:: The working group responsible for the document.
++
+.Example for IEEE SA `working-group`
+[example]
+====
+[source,adoc]
+----
+:working-group: Spatial Web Working Group
+----
+====
+
+`wg-chair`:: The working group chair.
++
+.Example for IEEE SA `wg-chair`
+[example]
+====
+[source,adoc]
+----
+:wg-chair: Gabriel Rene
+----
+====
+
+`wg-vicechair`:: The working group vice-chair.
++
+.Example for IEEE SA `wg-vicechair`
+[example]
+====
+[source,adoc]
+----
+:wg-vicechair: Michael Wadden
+----
+====
+
+`wg-secretary`:: The working group secretary.
++
+.Example for IEEE SA `wg-secretary`
+[example]
+====
+[source,adoc]
+----
+:wg-secretary: Christine Perey
+----
+====
+
+`wg-members`:: If a working group is in "individual mode", this attribute stores
+the names of individual working group members. Values are to be
+semicolon-delimited. (One of `wg-members` and `wg-org-members` must be specified.)
+
+`wg-org-members`:: If a working group is in "entity mode", this attribute stores
+the names of organisations that are working group members. Values are to be
+semicolon-delimited. (One of `wg-members` and `wg-org-members` must be
+specified.)
+
+[example]
+.Working group participants shown in preface (IEEE Std 1800.2(TM)-2020)
+image::/assets/author/ieee/wg-participants.png[]
+
+
+=== Balloting group
+
+The balloting group, or balloting committee, is the group that recommends
+the document for approval as a standard by the IEEE SA Standardization board.
+
+The balloting group is composed of voting members of the working group, or the
+committee that the working group belongs to.
+
 `balloting-group`:: The Standards Association balloting group responsible for the document.
 `balloting-group-type`:: The type of the Standards Association balloting group responsible for the document,
 _individual_ or _entity_ (default: _individual_).
 
-IEEE requires listing the full membership of the working group, balloting group, and
-the IEEE Standards Board responsible for the document. The current membership of the balloting group and
-standards board is normally provided by IEEE during editing; if the information is not provided in
-the document, dummy values will be provided to match those in the IEEE templates.
-This information is provided as follows; all names are given inline as full names.
+`balloting-group-members`:: The balloting group members, semicolon-delimited.
 
-`wg-chair`:: The working group chair
-`wg-vicechair`:: The working group vice-chair
-`wg-secretary`:: The working group secretary
-`wg-members`:: The individual working group members, semicolon-delimited
-`wg-org-members`:: The organisations that are working group members, semicolon-delimited
+[example]
+.Balloting group (individual mode) shown in preface (IEEE Std 1680.1a(TM)-2020)
+image::/assets/author/ieee/balloting-individual.png[]
 
-`balloting-group-members`:: The balloting group members, semicolon-delimited
+[example]
+.Balloting group (entity mode) shown in preface (IEEE Std 1800.2(TM)-2020)
+image::/assets/author/ieee/balloting-entity.png[]
 
-`std-board-chair`:: The Standards Board chair
-`std-board-vicechair`:: The Standards Board vice-chair
-`std-board-pastchair`:: The Standards Board past chair
-`std-board-secretary`:: The Standards Board secretary
-`std-board-members`:: The Standards Board members, semicolon-delimited. Any emeritus members should be given with an asterisk at the end of their names
+
+=== Standardization board
+
+The standardization board at the time of document publication is rendered
+in the document preface.
+
+`std-board-chair`:: The standards board chair.
+
+`std-board-vicechair`:: The standards board vice-chair.
+
+`std-board-pastchair`:: The standards board past chair.
+
+`std-board-secretary`:: The standards board secretary.
+
+`std-board-members`:: The standards board members, semicolon-delimited. Any
+emeritus members should be given with an asterisk at the end of their names.
+
+.IEEE SA Standards Board shown in preface (IEEE Std 1800.2(TM)-2020)
+image::/assets/author/ieee/sa-standards-board.png[]
+
+
 
 == Visual appearance
 
 `:hierarchical-object-numbering:`::
 If set, do not number tables and figures consecutively throughout the body of the
-document, but restart numbering with each clause (hierarchically) +
+document, but restart numbering with each clause (hierarchically). +
 +
 Use in complex documents, with multiple tables or figures, that need to be tracked against
 clauses for ease of lookup (so _Figure 6-3, Figure 6-4_, instead of _Figure 21, Figure 22_.)
