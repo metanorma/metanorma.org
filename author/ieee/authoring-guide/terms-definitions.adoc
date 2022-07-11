@@ -1,0 +1,431 @@
+---
+layout: ieee-flavor
+title: Terms and definitions
+---
+////
+This text is copied and pasted from metanorma.org:staging /tutorials/tutorial_complete.adoc
+Once staging is merged into main --> Reuse
+////
+
+== General
+
+//General Metanorma AsciiDoc
+
+Every IEEE standard requires a "`Definitions`" clause to hold terminology
+entries important to the standard. This clause is designated as "Clause 3" in
+accordance to the 2021 IEEE SA Style Manual, 12.4.3.
+
+The "`Definitions`" section provides a single point of truth for terms
+and concepts used within this standard.
+
+Definitions provided by all IEEE SA documents are entered into the
+http://dictionary.ieee.org[IEEE Standards Dictionary Online] (at
+http://dictionary.ieee.org).
+
+NOTE: The "`Definitions`" clause is called by various names in other SDOs, for
+instance, at OGC, ISO and IEC it is "`Terms and definitions`".
+
+== Content of the definitions clause
+
+The following quote from the IEEE SA Style Manual indicates the types of
+terminology entries to be made available in the definitions clause.
+
+[quote,IEEE SA Style Manual 2021, 12.4.2 General terminology usage]
+____
+English words should be used in accordance with their definitions in the latest
+edition of Merriam-Webster’s New Collegiate Dictionary. Electrical and
+electronics terms not defined in Merriam-Webster’s New Collegiate Dictionary
+should be used in accordance with their definitions in the Dictionary Online.
+The Dictionary is a continually-updated electronic version of the former IEEE
+100, The Authoritative Dictionary of IEEE Standards Terms.
+
+Working groups are strongly encouraged to use definitions that already exist
+instead of creating new definitions or slightly modifying existing definitions.
+During MEC and during IEEE SA ballot, working groups may be asked to validate
+the use and presentation of terms. For assistance, IEEE draft developers may
+also find useful the IEC Multilingual Dictionary of Electricity, Electronics,
+and Telecommunications and the IEC International Electrotechnical Vocabulary
+(IEV).
+____
+
+
+== Terminology models
+
+Terminology entries in IEEE adhere to the terminology specifications described
+in the IEEE SA Style Manual, 12.4.
+
+In Metanorma, the underlying terminology entries adhere to the international
+standard for terminology representation, ISO 10241-1, which is a superset of the
+IEEE terminology requirements and therefore fully supports the expression of
+them.
+
+
+== Definitions clauses
+
+An IEEE SA document uses one of the following clause structures.
+
+A typical definitions clause, which does not provide additional acronyms and
+abbreviations, looks like this:
+
+* 3. Definitions
+
+The Metanorma AsciiDoc encoding for this structure is demonstrated below.
+
+.Defining the Definitions clause
+[example]
+====
+
+[source,adoc]
+----
+== Definitions
+
+=== acceleration-insensitive drift rate
+related:seealso[drift rate]
+related:seealso[systematic drift rate]
+
+The component of...
+
+=== code set
+related:see[coded character set]
+
+=== coded character set
+related:equivalent[code set]
+
+A set of characters.
+
+=== drift rate
+The slope at a stated time of...
+
+[.source%adapted]
+<<iso-iec_9945-1>>
+----
+
+Renders as:
+
+[quote]
+____
+*3. Definitions*
+
+For the purposes of this document, the following terms and definitions apply.
+The IEEE Standards Dictionary Online should be consulted for terms not defined
+in this clause.
+
+*acceleration-insensitive drift rate*: The component of ... _See also_: *drift rate*; *systematic drift rate*.
+
+*code set*: _See_: *coded character set*.
+
+*coded character set*: A set of characters ... _Syn_: *code set*.
+
+*drift rate*: The slope at a stated time of ... (adapted from ISO/IEC 9945-1:2003).
+____
+====
+
+When the document provides additional acronyms and abbreviations, the definition
+clause needs to be structured as follows:
+
+A combined definitions and acronyms structure:
+
+* 3 Definitions, acronyms, and abbreviations
+* 3.1 Definitions
+* 3.2 Acronyms and abbreviations
+
+
+The sample Metanorma AsciiDoc encoding is shown below.
+
+.Defining the combined Definitions, acronyms and abbreviations clause
+[example]
+====
+[source,adoc]
+----
+== Definitions, acronyms and abbreviations
+=== Definitions
+
+==== acceleration-insensitive drift rate
+related:seealso[drift rate]
+related:seealso[systematic drift rate]
+
+The component of...
+
+==== code set
+related:see[coded character set]
+
+==== coded character set
+related:equivalent[code set]
+
+A set of characters.
+
+==== drift rate
+The slope at a stated time of...
+
+[.source%adapted]
+<<iso-iec_9945-1>>
+
+...
+
+=== Acronyms and abbreviations
+
+DER:: distributed emission regeneration
+DIS:: distributed interactive simulation
+----
+
+Renders as:
+
+[quote]
+____
+*3. Definitions, acronyms, and abbreviations*
+
+*3.1 Definitions*
+
+For the purposes of this document, the following terms and definitions apply.
+The IEEE Standards Dictionary Online should be consulted for terms not defined
+in this clause.
+
+*acceleration-insensitive drift rate*: The component of ... _See also_: *drift rate*; *systematic drift rate*.
+
+*code set*: _See_: *coded character set*.
+
+*coded character set*: A set of characters ... _Syn_: *code set*.
+
+*drift rate*: The slope at a stated time of ... (adapted from ISO/IEC 9945-1:2003).
+
+...
+
+*3.2 Acronyms and abbreviations*
+
+[cols="1,1"]
+|===
+
+|DER | distributed emission regeneration
+|DIS | distributed interactive simulation
+
+|===
+____
+
+====
+
+Terms and concepts that are referred to from the "`Definitions`" clause, such as
+from concept relationships, but not defined in a document, must already be
+available in the
+http://dictionary.ieee.org[IEEE Standards Dictionary Online] (at
+http://dictionary.ieee.org).
+
+Optionally, if there are informative terminology entries, IEEE allows
+a "`Glossary`" section to be set in an Annex, which only consists of
+informative terms.
+
+
+== Entering terminology entries
+
+There are in general the following kinds of terms:
+
+* Terms that are newly defined in this document;
+
+* Terms that are entirely sourced from another document;
+
+* Terms that are sourced from another document but modified within this
+  standard.
+
+// * Terms that are in the IEEE Standards Dictionary Online.
+
+A newly defined term:
+
+[source,adoc]
+----
+==== coded character set <1>
+related:equivalent[code set] <2>
+
+A {{set}} of {{character,character}}s. <3>
+
+----
+<1> `coded character set` provides the term to be defined.
+<2> `related:equivalent[code set]` indicates that the defined term has
+an `equivalent` relationship with the term `code set`.
+<3> Text here provides the definition of the term. `{{set}}` here refers
+to another term defined within the document. `{{character,characters}}` here
+indicate that the term "character" is defined in this document.
+
+A sourced term:
+
+[source,adoc]
+----
+==== systematic drift rate
+
+That component of drift rate that...
+
+[.source]
+<<IEEE_Std_260.1>> <1>
+----
+<1> Term is sourced but no modification is done.
+
+
+A sourced but adapted (modified) term looks like this:
+
+[source,adoc]
+----
+==== drift rate
+
+The slope at a stated time of...
+
+[.source%adapted] <1>
+<<iso-iec_9945-1>>
+----
+<1> The `%adapted` option indicates that the definition has been modified.
+
+NOTE: Different from the sourcing of terms in other SDOs, the exact
+modifications made are not elaborated in IEEE SA documents.
+
+
+== Acronyms and abbreviations
+
+=== As part of a defined term
+
+In IEEE SA documents, acronyms and abbreviations can be assigned to terms
+as according to the IEEE SA Style Manual, 12.5 "Acronyms and abbreviations".
+
+In order to encode acronyms or abbreviations in the terminological entry,
+the following syntax is to be used.
+
+.Encoding a defined term with an acronym or abbreviation
+[example]
+====
+[source,adoc]
+----
+==== input reference axis
+
+[%metadata]
+abbreviation-type:: initialism
+
+preferred:[IRA]
+
+The direction of an axis.
+----
+
+Renders as:
+
+[quote]
+____
+**input reference axis (IPA)**: The direction of an axis.
+____
+====
+
+=== As a separate clause
+
+As per IEEE SA Style Manual, 12.5 "Acronyms and abbreviations",
+acronyms and abbreviations can be shown as a separate clause.
+
+.Encoding a defined term with an acronym or abbreviation
+[example]
+====
+[source,adoc]
+----
+// This should be placed as Clause 3.2, after Clause 3.1 "Definitions"
+=== Acronyms and abbreviations
+
+DER:: distributed emission regeneration
+DIS:: distributed interactive simulation
+----
+
+Renders as:
+
+____
+*3.2 Acronyms and abbreviations*
+
+[cols="1,1"]
+|===
+
+|DER | distributed emission regeneration
+|DIS | distributed interactive simulation
+
+|===
+____
+====
+
+== Term relationships
+
+A defined term may define links to other defined terms in the document or to
+terms in the http://dictionary.ieee.org[IEEE Standards Dictionary Online].
+
+The allowed relationships are codified in IEEE SA Style Manual, 12.4
+"Definitions", being:
+
+[quote,IEEE SA Style Manual, 12.4 "Definitions"]
+____
+Cross-references should occur after the definition and may consist of the
+following classes, in the order shown: Contrast:, Syn:, See:, and See also:.
+Contrast: refers to a term with an opposite or substantially different meaning.
+Syn: refers to a synonymous term. See: refers to a term where the desired
+definition can be found. See also: refers to a related term. The
+cross-references listed under these headings should be in alphabetical order, in
+bold type, and separated by semicolons when there are more than one.
+____
+
+The allowed relationships are entered using this syntax:
+
+[source,adoc]
+----
+related:{type}[term]
+----
+
+Where:
+
+`type`:: is one of the following values.
+
+`contrast`::: (generates "Contrast:") refers to a term with an opposite or substantially different meaning.
+
+`equivalent`::: (generates "Syn:") refers to a term that has equivalent meaning.
+
+`see`::: (generates "See:") refers to a term where the desired definition can be found.
+
+`seealso`::: (generates "See also:") refers to a related term.
+
+`term`:: is the name of the term to be referenced.
+
+.Example of entering concept relationships
+[example]
+====
+[source,adoc]
+----
+==== acceleration-insensitive drift rate
+related:seealso[drift rate]
+related:seealso[systematic drift rate]
+
+The component of...
+
+==== code set
+related:see[coded character set]
+
+==== coded character set
+related:equivalent[code set]
+
+==== input reference axis
+related:contrast[output reference axis]
+
+The direction of an axis.
+----
+
+Renders as:
+
+____
+*acceleration-insensitive drift rate*: The component of ... _See also_: *drift rate*; *systematic drift rate*.
+
+*code set*: _See_: *coded character set*.
+
+*coded character set*: A set of characters ... _Syn_: *code set*.
+
+*input reference axis*: The direction of an axis. _Contrast_: *output reference axis*
+____
+
+====
+
+For a concept that has multiple designations (terms), defined through the
+`preferred:[...]` or `admitted:[...]` commands, Metanorma automatically
+generates a "`Syn:`" relationship for the original designation and an additional
+entry for the other designations with no definition but only contains a "`See:`"
+that links back to the original.
+
+
+
+// //OGC specific markup
+// == More OGC terms and definitions
+
+// include::author/ogc/topics/markup.adoc[tag=term-def-ogc,leveloffset=-1]
