@@ -455,12 +455,16 @@ input scheme:
   section). That subheading has as its content a preferred designation for the term
   (<<designations>>).
 
-* The term is followed by other designations: preferred (`+preferred:[...]+`),  
-  admitted (`+alt:[...]+`) and deprecated (`+deprecated:[...]+`).
+* The term is followed by other designations:
+
+** preferred (`+preferred:[...]+`);
+** admitted (`+admitted:[...]+` or `+alt:[...]+`); and
+** deprecated (`+deprecated:[...]+`).
 
 * The term is optionally followed by *related terms*, which are marked up with
-  `+related:[...]+` commands. These are cross-references that are expected to be defined
-  elsewhere, by contrast with the other designations, which are defined within the current entry.
+  `+related:[...]+` commands. These are cross-references that are expected to be
+  defined elsewhere, by contrast with the other designations, which are defined
+  within the current entry.
 
 * The term can also be followed by other metadata, including the
   term *domain*, which must be marked up in a `+domain:[...]+` command.
@@ -682,7 +686,9 @@ the requirements of an application reference model
 Admitted designations are distinct from preferred designations, in that the use of any
 of the preferred designations is recommended over any of the admitted designations.
 Normally there is only one preferred designation per term, and any other designations
-are treated as admitted.
+are treated as admitted. Multiple preferred designations are however allowed
+in cases where they are useful, for instance, in representing multiple
+equivalent symbols.
 
 ===== Deprecated designations
 
@@ -910,13 +916,16 @@ NOTE: Multiple non-verbal designations are supported by ISO 10241-1.
 ===== General
 
 In Metanorma, a concept relation is made between the current concept and a
-target concept, expected to be defined elsewhere. That means concept relations are references
-to target concepts. Accordingly, concept relations are specified in a syntax similar to that for
-concept cross-references
+target concept, expected to be defined elsewhere.
+
+That means concept relations are references to target concepts. Accordingly,
+concept relations are specified in a syntax similar to that for concept
+cross-references
 (<<citeterms>>) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0].
 
-Note that concept relations are NOT supported in ISO, or flavours derived from ISO (IEC, BSI).
-However, admitted and deprecated designations are supported in ISO.
+NOTE: Concept relations are NOT supported in Metanorma for ISO, or flavours
+derived from that (incl. IEC, BSI).
+However, admitted and deprecated designations are supported in Metanorma for ISO.
 
 Target concepts from various sources can be referenced, as described below.
 
@@ -1000,6 +1009,8 @@ Where:
 The following concept relations can be specified
 
 `deprecates`:: the current concept deprecates the nominated concept.
++
+NOTE: `related:deprecates[]` is equivalent to `deprecated:[]`.
 
 `supersedes`:: the current concept supersedes the nominated concept.
 
@@ -1012,6 +1023,8 @@ NOTE: This is similar to the `skos:narrower` property in SKOS.
 NOTE: This is similar to the `skos:broader` property in SKOS.
 
 `equivalent`:: the current concept is equivalent to the nominated concept.
++
+NOTE: `related:equivalent[]` is equivalent to `admitted:[]`.
 
 `compare`:: in order to better understand the current concept, compare it with
 the nominated concept.
@@ -1022,12 +1035,15 @@ the nominated concept.
 `see`:: in order to better understand the current concept, refer to the
 nominated concept.
 
-`related:deprecates[]` is equivalent to `deprecated:[]`, and `related:equivalent[]`
-is equivalent to `admitted:[]`. However, concept relations only provide crossreferences
-to concepts defined elsewhere; admitted and deprecated designations can also provide 
-metadata about the designations, such as usage notes or grammatical information.
-If the admitted and deprecated designations are not defined elsewhere in the document,
-use the `admitted:[]` and `deprecated:[]` macros.
+[NOTE]
+--
+Concept relations only provide cross-references to concepts defined elsewhere;
+admitted and deprecated designations can also provide metadata about the
+designations, such as usage notes or grammatical information.
+
+If the admitted and deprecated designations are not defined elsewhere in
+the document, use the `admitted:[]` and `deprecated:[]` macros.
+--
 
 
 ==== Definitions
@@ -2123,20 +2139,27 @@ for concept mentions.
 If these options are missing, Metanorma applies the defaults for the current
 flavour.
 
-The default behaviour in Metanorma is `ital,ref,nolinkmention,linkref` for all
-terms (italics and cited), `noital,noref,nolinkmention,nolinkref` for acronyms (no special rendering).
+The default behaviour in Metanorma is:
 
-In IEEE, the default behaviour is `noital,noref,nolinkmention,nolinkref` for all terms (i.e. no special rendering
+* for all terms (italics and cited): `ital,ref,nolinkmention,linkref`
+
+* for acronyms (no special rendering): `noital,noref,nolinkmention,nolinkref`
+
+NOTE: In Metanorma for IEEE, the default behaviour is
+`noital,noref,nolinkmention,nolinkref` for all terms (i.e. no special rendering
 for a term cited within a term definition.)
 
 
 In ISO, the default behaviour for terms is refined:
 
-* for terms outside the "`Terms and definitions`" section: `noital,noref,nolinkmention,nolinkref` (no special rendering);
+* for terms outside the "`Terms and definitions`" section:
+  `noital,noref,nolinkmention,nolinkref` (no special rendering);
 
-* for the first mention of a term within the "`Terms and definitions`" section: `ital,ref,nolinkmention,linkref` (italics, cited, hyperlinked);
+* for the first mention of a term within the "`Terms and definitions`"
+  section: `ital,ref,nolinkmention,linkref` (italics, cited, hyperlinked);
 
-* for all subsequent mentions within the "`Terms and definitions`" section: `ital,noref,nolinkmention,linkref` (italics, hyperlinked, no citation).
+* for all subsequent mentions within the "`Terms and definitions`" section:
+  `ital,noref,nolinkmention,linkref` (italics, hyperlinked, no citation).
 
 [example]
 .Using cited concepts with various options
