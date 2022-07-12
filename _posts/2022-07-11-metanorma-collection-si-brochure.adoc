@@ -1,0 +1,215 @@
+---
+layout: post
+title: 'Introducing the Metanorma collection, through the SI Brochure'
+date: 2022-07-11
+categories: documentation
+authors:
+  -
+    name: Alexander Bobrikovich
+    email: alex.bobrikovich@ribose.com
+    social_links:
+      - https://github.com/CAMOBAP
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+
+excerpt: >-
+  Metanorma now supports Metanorma collections, a feature that allows
+  a set of Metanorma documents to be published in flexible configurations.
+---
+== Summary
+
+The Metanorma collection functionality is a new feature used by complex
+standards published using Metanorma.
+
+In this blog post we will use the
+https://www.bipm.org/en/publications/si-brochure[SI Brochure], published by the
+https://www.bipm.org[BIPM], as an example of how it is used.
+
+This post will illustrate how to compile the BIPM SI Brochure using the
+`collection` sub-command.
+
+
+== What's in a Collection?
+
+Standards are typically published as individual documents. However, there are
+standards that are a lot more complex:
+
+* the https://en.wikipedia.org/wiki/ISO_10303[ISO 10303] series of standards is
+published as a collection known as the
+https://www.iso.org/publication/PUB100443.html[STEP Module and Resource Library (SMRL)],
+with interlinking links and embedded computer-readable
+https://www.expresslang.org/language/[EXPRESS] models;
+
+* the BIPM SI Brochure is composed of multiple documents, including
+the main content, CGPM and CIPM outcomes in both French and English, all cross-linked,
+together with over 20
+https://www.bipm.org/en/publications/mises-en-pratique[mise en pratique]
+documents, where each of these components can be individually published.
+
+
+== The SI Brochure
+
+The https://www.bipm.org/en/publications/si-brochure[SI Brochure] is the
+authoritative document detailing the now ubiquitous
+https://www.bipm.org/en/measurement-units[International System of Units (SI)]
+(https://en.wikipedia.org/wiki/International_System_of_Units[Wikipedia]),
+commonly called the "SI system".
+
+The SI system is established and maintained by the
+https://www.bipm.org/en/committees/cg/cgpm[General Conference on Weights and Measures / Conférence générale des poids et mesures (CGPM)],
+which was established by the
+https://www.bipm.org/en/metre-convention[Metre Convention]
+(https://en.wikipedia.org/wiki/Metre_Convention[Wikipedia]) of 1875.
+
+The SI Brochure is offered under the Creative Commons 3 license.
+
+The Metanorma team has been tasked by BIPM to develop a machine-readable form of
+the BIPM SI Brochure, of which the workings is worthy of several blog posts.
+
+In this blog post, we use the BIPM SI Brochure to illustrate how to compile a
+Metanorma collection.
+
+
+== SI Brochure in Metanorma
+
+The SI Brochure is structured as a Metanorma collection.
+
+Specifically, it is published in 3 forms:
+
+* A French-English bilingual version
+* A French version
+* An English version
+
+[cols="a,a,a"]
+|===
+
+|
+.Metanorma-generated SI Brochure (bilingual)
+image::/assets/blog/2022-07-11-si-brochure.png[]
+
+|
+.Metanorma-generated SI Brochure (French)
+image::/assets/blog/2022-07-11-si-brochure-fr.png[]
+
+|
+.Metanorma-generated SI Brochure (English)
+image::/assets/blog/2022-07-11-si-brochure-en.png[]
+
+|===
+
+
+In Metanorma, the French and English versions are independent documents.
+The bilingual version, on the other hand, is a composite document that is
+directly composed of the combination of the French and English documents.
+
+Can't we just "concatenate the two documents and slap on a new cover page"?
+
+It is actually a lot more complex than this:
+
+* The French and English versions contain cross-references to each other. In the
+bilingual composite version, these links become internal links, and the
+corresponding references in the bibliography are also considered internal within
+the collection (since both parts are given in the same document)
+
+* The metadata of the individual documents and the metadata of the bilingual
+collection differ but both need to be reflected.
+
+* The document elements shared between the French and English documents, such as
+figures, resolution outcomes and bibliographic references, should not be
+duplicated in the bilingual collection.
+
+* The bilingual collection allows the generation (or extraction) of its source
+components, namely, the French and English documents in their desired form and
+respective cover pages.
+
+Ultimately, this structure allows us to retain only a single source of truth
+without duplication while keeping the document components independent.
+
+
+== Compiling the collection
+
+As mentioned, the SI Brochure is offered under the Creative Commons 3 license
+so there should not be licensing concerns in performing this exercise.
+
+The draft version of the machine-readable SI Brochure is available at:
+
+* https://github.com/metanorma/bipm-si-brochure
+
+Once you have link:/install[installed Metanorma], you are ready to do the actual
+compilation of the document.
+
+Clone the repository with your favorite Git application. We recommend either
+using the `git` command or https://desktop.github.com[GitHub Desktop].
+
+In macOS or Linux, you could do:
+
+[source,sh]
+----
+$ git clone https://github.com/metanorma/bipm-si-brochure
+----
+
+Generate the source Metanorma documents into `site/documents`:
+
+[source,sh]
+----
+$ metanorma site generate -c brochure.yml --agree-to-terms
+----
+
+NOTE: The `-c brochure.yml` flag is used to only generate necessary files for
+the bilingual SI Brochure; it does not compile any MEP documents.
+
+Once it is finished you will be able to see compilation results under
+`site/documents`.
+
+NOTE: This is the default directory but you can change the target directory
+with the `--output-dir` argument.
+
+Then generate the bilingual collection documents with:
+
+[source,sh]
+----
+$ metanorma collection collection.yml -w collection -x xml,html,presentation,pdf \
+  -c sources/collection_cover.html --agree-to-terms --no-continue-without-fonts
+----
+
+NOTE: This step may take some time depending on processor speed.
+
+The resulting document will be generated in the directory `collection`.
+You should see these files generated:
+
+* Bilingual SI Brochure (PDF): `collection.pdf`
+
+* Language-specific SI Brochure (PDF)
+** English SI Brochure `collection_en.pdf`
+** French SI Brochure `collection_fr.pdf`
+
+* Metanorma XML files
+** Metanorma Semantic XML `collection.xml`
+** Metanorma Presentational XML `collection.presentation.xml`
+
+The machine-readable versions of the SI Brochure are in the XML files.
+The semantic version provides full semantic encoding of content, where the
+presentational version provides rendering-oriented structured content.
+
+If you are curious of the inner workings of the Metanorma collection,
+have a look at `collection.yml` which provides instructions to Metanorma on how
+to process the input files.
+
+== Conclusion
+
+Metanorma provides a flexible collection compilation functionality for
+standards. The bilingual SI Brochure can be technically generated just with
+one line of command (or two!).
+
+We will likely follow up with more articles on how a collection works.
+Stay tuned!
+
+
+== Bibliography
+
+* https://github.com/metanorma/metanorma-cli#compile-a-document-collection-metanorma-collection[Compiling a Metanorma collection]
+
+* link:/install[Installing Metanorma]
