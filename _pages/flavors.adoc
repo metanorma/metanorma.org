@@ -88,3 +88,13 @@ at the customization guidelines in link:/builder/[Metanorma builder's documentat
 |===
 
 NOTE: Typically, private flavors are not listed.
+
+== How to add flavors not included by default
+
+It depends on the way how metanorma installed:
+
+* if metanorma comes as a `gem` (from GitHub or rubygems.org), you can simply add additional flavors (or other gems) to `Gemfile`
+
+* for the metanorma `docker` image, flavors can be installed also from `Gemfile` but with https://github.com/metanorma/metanorma-build-scripts/blob/main/gemfile-to-bundle-add.sh[gemfile-to-bundle-add.sh] script
+
+* for `packed-mn`/`snap`/`brew`/`chocolatey` additional flavors not supported yet
