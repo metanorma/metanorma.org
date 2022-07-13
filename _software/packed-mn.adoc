@@ -1,18 +1,28 @@
 ---
-title: Metanorma-CLI single executable binary
-description: Command-line tools for building Metanorma sources, packed into a single binary with versions for three major operating systems.
+title: Metanorma packaged as a single executable
+description: Code for packaging Metanorma into a single binary.
 repo_url: https://github.com/metanorma/packed-mn
 
 external_links:
-  - url: https://github.com/metanorma/packed-mn
+- url: https://github.com/metanorma/packed-mn
 
 tags: ["interface:CLI"]
 
 feature_with_priority: 2
 ---
 
-This is a work-in-progress addressing the challenge
-of ensuring painless usage of Metanorma on wider variety of systems
-with minimal preliminary setup.
+Metanorma is distributed as a single executable in binary form for Windows,
+macOS and Linux for painless installs.
 
-NOTE: metanorma from packed-mn doesn't support other flavors than built-in. To get list of supported flavors just run `metanorma version`
+Metanorma is written in a combination of languages, and the single executable
+approach includes all necessary dependencies within a binary file
+using the https://github.com/tamatebako/tebako[Tebako] cross-platform
+executable packager.
+
+This repository is only intended to be used by Metanorma developers or
+users who wish to build their own Metanorma executables for distribution.
+
+NOTE: The Metanorma single executable includes only
+link:/flavors#default-flavors[default flavors] due to file size considerations.
+To see the list of included flavors, run the command `metanorma version`.
+To use other flavors, please consult the usage guide.
