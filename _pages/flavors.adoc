@@ -95,6 +95,28 @@ It depends on the way how metanorma installed:
 
 * if metanorma comes as a `gem` (from GitHub or rubygems.org), you can simply add additional flavors (or other gems) to `Gemfile`
 
-* for the metanorma `docker` image, flavors can be installed also from `Gemfile` but with https://github.com/metanorma/metanorma-build-scripts/blob/main/gemfile-to-bundle-add.sh[gemfile-to-bundle-add.sh] script
+* for the metanorma `Docker` images, flavors can be installed also from `Gemfile` but with https://github.com/metanorma/metanorma-build-scripts/blob/main/gemfile-to-bundle-add.sh[gemfile-to-bundle-add.sh] script:
++
+[TIP]
+====
+Example of `Gemfile`:
+
+[source,ruby]
+----
+source 'https://rubygems.org'
+
+gem 'metanorma-cli'
+gem 'metanorma-some-flavor'
+gem 'debug'
+----
+
+Then flavors/gems can be installed from the `Gemfile` above with command:
+
+[source,sh]
+----
+curl -L https://raw.githubusercontent.com/metanorma/metanorma-build-scripts/main/gemfile-to-bundle-add.sh | bash
+----
+====
+
 
 * for `packed-mn`/`snap`/`brew`/`chocolatey` additional flavors not supported yet
