@@ -44,8 +44,102 @@ automatically provided by Metanorma:
 * Front page: Copyright statement, license statement
 * Second page: Contact statement, ISBNs
 * Important Notices and Disclaimers Concerning IEEE Standards Documents
-* Participants statement (the membership of the various committees is provided as document attributes)
+* Participants statement (the membership of the various committees is provided in a <<participants,Participants>> clause)
 * The note before the overview in amendments, indicating how formatting is to be interpreted
+
+[[participants]]
+== Participants
+
+While there is a Participants clause in the supplied IEEE boilerplate, it is very frequently added to and modified
+in IEEE documents. Metanorma allows it to be customised as follows:
+
+* The initial sentence before each of the Working Group, Balloting Group, and Standards Board listings is supplied
+by Metanorma, with the templated wording taken from IEEE; e.g. the sentence
++
+--
+____
+The following members of the <individual/entity> Standards Association balloting group voted on this <gde./rec. prac./std.>. Balloters may have voted for approval, disapproval, or abstention.
+____
+
+with the document type and the type of ballotting group supplied by Metanorma.
+--
+* The remainder of the content is provided in three subclauses of a `== Participants` clause supplied by the author:
+`=== Working Group`, `=== Balloting Group`, and `=== Standards Board`:
++
+--
+[source,asciidoc]
+----
+== Participants
+=== Working Group
+....
+=== Balloting Group
+....
+=== Standards Board
+....
+----
+
+The first `== Participants` clause found in a document will be processed for boilerplate content, and removed from
+the document by Metanorma
+--
+** If you have an actual clause titled `== Participants` which needs to be left alone, insert `[heading=clause]` before
+it to prevent it being recognised as a boilerplate Participants clause.
+* The first item in each subclause is expected to be a list of participants. The list is expected to be a list of
+definition lists, with each definition list giving the attributes of the participant (`name` for persons,
+`company` for entities, `role`). Because of how cumbersome it is to enter lists of definition lists in Asciidoctor,
+Metanorma will also recognise a definition list of definition lists, with each participant introduced by `item::`.
+So the participants list is entered as follows:
++
+--
+[source,asciidoc]
+----
+item::
+name::: Arthur C. Clark
+role::: Chair
+item::
+name::: Alessandro Volta
+role::: Vice-Chair
+item::
+company::: Apple Inc.
+role::: Member
+item::
+name::: Claude Elwood Shannon
+role::: Member
+----
+--
+** If no `role` is specified, it is assumed to be "Member". 
++
+--
+[source,asciidoc]
+----
+item::
+name::: Arthur C. Clark
+role::: Chair
+item::
+name::: Alessandro Volta
+role::: Vice-Chair
+item::
+company::: Apple Inc.
+item::
+name::: Claude Elwood Shannon
+----
+--
+** If only a list of names is given, each entry is assumed to
+be a personal name as a member:
++
+--
+[source,asciidoc]
+----
+* Nikola Tesla
+* Thomas Edison
+* Henry Ford
+----
+--
+* Participant lists should be given in the order they will be rendered in, with office-holders before members,
+and organisation members before individual members.
+* Documents often insert additional lists of participants and acknowledgements. Any list or definition list
+in the user-supplied Participants clause is treated and processed the same way.
+* The Word and PDF rendering of the participants listings automatically works out the differential rendering
+of member organisations and individual members in two or three columns.
 
 == Overview
 
