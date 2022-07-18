@@ -1,132 +1,223 @@
 ---
 layout: ieee-flavor
+title: Metanorma for IEEE SA markup
 ---
 
-= Metanorma markup for IEEE SA
+== Clause structure
 
-== Clauses
+The following clause structure is mandated by the
+https://standards.ieee.org/develop/drafting-standard/resources/[IEEE SA Style Manual].
 
-* Preface sections. There are 4 mandatory sections:
-** Abstract, Keywords right after the inner cover page
+* Preface segments
+** Abstract and Keywords right after the inner cover page
 ** Important Notices and Disclaimers Concerning IEEE Standards Documents
 ** Participants
 ** Introduction
+** Acknowledgements (optional)
 
 * 1. Overview
 ** 1.1. Scope
-** 1.2. Purpose
-** 1.3. Word usage
+** 1.2. Purpose (optional)
+** 1.x. Word usage (last subclause of Overview)
 
 * 2. Normative references
-* 3. Terms and definitions
+* 3. Definitions
 * 4 and onwards. Document content.
 * Annex A (informative). Bibliography.
 * Annex B onwards. Document content.
 
 
-=== Prefatory
+=== Preface sections
 
-The abstract of the document is marked up as a clause with the style attribute `[abstract]`.
+==== Abstract
 
-The keywords of the document are given as the comma-delimited `:keywords:` document attribute.
+The abstract of the document is marked up as a clause with the style attribute
+`[abstract]`.
 
-The introduction of the document is marked up as a clause with the title "Introduction".
-The initial boxed text,
-"This introduction is not part of P{designation}/D{draft_number}, Draft {document-type} for {par-title}"
-is automatically generated and populated by Metanorma.
-Do not provide it.
+.Example of Abstract encoding (IEEE Std 1636.1(TM)-2007)
+[example]
+====
+[source,adoc]
+----
+[abstract]
+== Abstract
 
-The permissions of the document are marked up as a clause with the title "Acknowledgements".
+This standard is intended to promote and facilitate interoperability
+between components of an automatic test system (e.g., between test
+executive and diagnostic reasoner) where test results need to be shared.
+----
+====
+
+
+==== Keywords
+
+The keywords of the document are given as the comma-delimited `:keywords:`
+document attribute (see link:/author/ieee/ref/document-attributes[Document attributes]).
+
+
+==== Introduction
+
+The introduction of the document is marked up as a clause with the title
+"Introduction". The initial boxed text, "This introduction is not part of
+P{designation}/D{draft_number}, Draft {document-type} for {par-title}" is
+automatically generated and populated by Metanorma. Do not provide it.
+
+
+==== Acknowledgements
+
+If the document refers to any externally sourced content that require permission
+or licensing acknowledgements, they are entered as a section with the title
+"Acknowledgements".
+
+The "Acknowledgements" section shall appear immediately after the
+"Introduction", in accordance with the
+https://standards.ieee.org/develop/drafting-standard/resources/[IEEE SA Style Manual (2021)].
+
+NOTE: The placement of the "Acknowledgements" section differs in legacy
+documents, some IEEE SA standards places it immediately before the
+"Introduction".
+
+.Example of Acknowledgements (IEEE Std 1127(TM)-2013)
+[example]
+====
+[source,adoc]
+----
+== Acknowledgements
+
+<<table2>> of this standard is printed with permission from BBN Corporation.
+----
+====
+
+==== Automatic generated content
 
 The templated material ("boilerplate") of the document front matter is all
 automatically provided by Metanorma:
 
 * Front page: Copyright statement, license statement
-* Second page: Contact statement, ISBNs
+
+* Second page: Contact information, ISBNs
+
 * Important Notices and Disclaimers Concerning IEEE Standards Documents
-* Participants statement (the membership of the various committees is provided in a <<participants,Participants>> clause)
-* The note before the overview in amendments, indicating how formatting is to be interpreted
+
+* Participants statement (the membership of the various committees is provided
+in a <<participants,Participants>> clause)
+
+* The note before the overview in amendments, indicating how formatting is to be
+interpreted
+
 
 [[participants]]
-== Participants
+== Participants and contributors
 
-While there is a Participants clause in the supplied IEEE boilerplate, it is very frequently added to and modified
-in IEEE documents. Metanorma allows it to be customised as follows:
+=== General
 
-* The initial sentence before each of the Working Group, Balloting Group, and Standards Board listings is supplied
-by Metanorma, with the templated wording taken from IEEE; e.g. the sentence
-+
---
+There are multiple types of contributors to an IEEE SA document, and the
+document displays full provenance of where the document was developed, balloted
+and eventually approved.
+
+NOTE: Requirements of the "`Participants`" section is described in the IEEE
+Style Manual, 11.5 "Participant lists".
+
+
+Other than the basic information entered through the
+link:/author/ieee/ref/document-attributes#document-contributors[document attributes on document contributors],
+the participants and members are entered in the "`Participants`" section.
+
+An IEEE SA document requires listing of all members of the:
+
+* working group;
+* balloting group, whether the group is of entity mode or individual mode;
+* Standards Board (SASB), at the time of publishing the document;
+* any additional groups or individuals involved in the development process.
+
+The Participants section is provided by the official IEEE template. Additional
+contributing groups and participants, if any, are permitted additions to
+the basic text.
+
+In Metanorma, the participants section is entered as a top level section.
+The section contains paragraphs in the order specified in the above list.
+
+The initial sentence before each of the Working Group, Balloting Group, and
+Standards Board listings is automatically supplied by Metanorma, following the
+defined pattern provided by the 2021 IEEE Style Manual.
+
 ____
-The following members of the <individual/entity> Standards Association balloting group voted on this <gde./rec. prac./std.>. Balloters may have voted for approval, disapproval, or abstention.
+The following members of the <individual/entity> balloting committee voted on
+this <guide/recommended practice/standard>. Balloters may have voted for
+approval, disapproval, or abstention.
 ____
 
-with the document type and the type of ballotting group supplied by Metanorma.
---
-* The remainder of the content is provided in three subclauses of a `== Participants` clause supplied by the author:
-`=== Working Group`, `=== Balloting Group`, and `=== Standards Board`:
-+
---
+where, the Metanorma-generated sentence describes the correct document type and
+the type of balloting group.
+
+The remainder of the content is provided in three subclauses of the
+`== Participants` clause supplied by the author:
+
+* `=== Working group`
+* `=== Balloting group`, and
+* `=== Standards board`:
+
+.Entering participants in an IEEE document
 [source,asciidoc]
 ----
 == Participants
-=== Working Group
-....
-=== Balloting Group
-....
-=== Standards Board
-....
+=== Working group
+...
+=== Balloting group
+...
+=== Standards board
+...
 ----
 
-The first `== Participants` clause found in a document will be processed for boilerplate content, and removed from
-the document by Metanorma
---
-** If you have an actual clause titled `== Participants` which needs to be left alone, insert `[heading=clause]` before
-it to prevent it being recognised as a boilerplate Participants clause.
-* The first item in each subclause is expected to be a list of participants. The list is expected to be a list of
-definition lists, with each definition list giving the attributes of the participant (`name` for persons,
-`company` for entities, `role`). Because of how cumbersome it is to enter lists of definition lists in Asciidoctor,
-Metanorma will also recognise a definition list of definition lists, with each participant introduced by `item::`.
-So the participants list is entered as follows:
+NOTE: The first `== Participants` clause found in a document will be processed
+for boilerplate content, and removed from the document by Metanorma.
+
+NOTE: If you have an actual clause titled `== Participants` which needs to be
+left alone, insert `[heading=clause]` before it to prevent it being recognised
+as a metadata Participants clause.
+
+[[representing-participants]]
+=== Representing participants
+
+Participants can be entered in the following manners:
+
+* in an unordered list, where each list item is a personal name
 +
---
+.Example of representing individual participants in an unordered list
+[example]
+====
 [source,asciidoc]
 ----
-item::
-name::: Arthur C. Clark
-role::: Chair
-item::
-name::: Alessandro Volta
-role::: Vice-Chair
-item::
-company::: Apple Inc.
-role::: Member
-item::
-name::: Claude Elwood Shannon
-role::: Member
+* Nikola Tesla
+* Thomas Edison
+* Henry Ford
 ----
---
-** If no `role` is specified, it is assumed to be "Member". 
+====
+
+* in a definition list, with the key `item` pointing to a name, as a personal name
 +
---
+.Example of representing individual participants in a definition list
+[example]
+====
 [source,asciidoc]
 ----
-item::
-name::: Arthur C. Clark
-role::: Chair
-item::
-name::: Alessandro Volta
-role::: Vice-Chair
-item::
-company::: Apple Inc.
-item::
-name::: Claude Elwood Shannon
+item:: Claude Elwood Shannon
+item:: Charles-Augustin de Coulomb
 ----
---
-** If only a list of names is given, each entry is assumed to
-be a personal name as a member:
+====
+
+* in a two-level definition list, where the key `item` empty, with
+sub-definitions containing key-value encoded attributes of the participant:
+
+** `name` for persons
+** `company` for entities
+** `role` to describe the role of the participant.
+When no `role` is provided, it is assumed to be "Member".
+
 +
---
+.Example of representing individual participants with roles and companies
+[example]
+====
 [source,asciidoc]
 ----
 item::
@@ -140,128 +231,522 @@ company::: Apple Inc.
 item:: Claude Elwood Shannon
 item:: Charles-Augustin de Coulomb
 ----
+====
 
-[source,asciidoc]
+Participant lists should be given in the order they will be rendered in:
+
+* officers before members;
+* organisation members before individual members.
+
+Documents often insert additional lists of participants and acknowledgements.
+Any list or definition list in the user-supplied Participants clause is treated
+and processed the same way.
+
+The Word and PDF rendering of the participants listings automatically works
+out the differential rendering of member organisations and individual members in
+two or three columns.
+
+
+=== Working group
+
+Working group participants are entered using the method in
+<<representing-participants>>.
+
+For an individual mode working group, participants are entered using
+personal names.
+
+[example]
+.Working group individual participants (IEEE Std 1800.2(TM)-2020)
+====
+[source,adoc]
 ----
-* Nikola Tesla
-* Thomas Edison
-* Henry Ford
+// Officers
+item::
+name::: Justin Refice
+role::: Chair
+item::
+name::: Mark Strickland
+role::: Vice Chair
+item::
+name::: Jamsheed Agahi
+role::: Secretary
+item::
+name::: Joel Feldman
+role::: Technical Editor
+// Individual participants
+name::: Mala Bandyopahdyay
+name::: Martin Barnasconi
+name::: Dennis Brophy
+name::: Cliff Cummings
+//...
 ----
---
-* Participant lists should be given in the order they will be rendered in, with office-holders before members,
-and organisation members before individual members.
-* The paragraph explaining that asterisk indicates emeritus members is inserted automatically by Metanorma.
-* Documents often insert additional lists of participants and acknowledgements. Any list or definition list
-in the user-supplied Participants clause is treated and processed the same way.
-* The Word and PDF rendering of the participants listings automatically works out the differential rendering
-of member organisations and individual members in two or three columns.
+
+Rendered as:
+
+image::/assets/author/ieee/wg-participants.png[]
+====
+
+For an entity mode working group, there are two types of participants:
+entity representatives, and individuals.
+
+Entity representative participants should be entered using both `name` with
+`company`, and individual participants just with `name`.
+Officers are to be entered with `name`, `role` and `company`.
+
+.Working group entity participants (IEEE Std 1800.2(TM)-2020)
+[example]
+====
+[source,adoc]
+----
+// Officers
+item::
+name::: Jin Peng
+role::: Chair
+item::
+name::: Cheng Hong
+role::: Vice Chair
+company::: Alibaba China Co. Ltd.
+// Entity representative participants
+item::
+name::: Lei Wang
+company::: Alipay (China) Technology Co., Ltd.
+item::
+name::: Guantong Su
+company::: Arpacorp Limited
+item::
+name::: Xiaoru Li
+company::: Beijng Baidu Netcom Science Technology Co., Ltd.
+item::
+name::: Bingzhe Wu
+company::: Beijing University
+// ...
+// Individual participants
+name::: Xiaoyuan Bai
+name::: Yang Bian
+name::: Wenting Chang
+// ...
+----
+
+Rendered as:
+
+image::/assets/author/ieee/wg-entity-1.png[]
+
+(continued)
+
+image::/assets/author/ieee/wg-entity-2.png[]
+====
+
+=== Balloting group
+
+Balloting group participants are entered using the method in
+<<representing-participants>>.
+
+There are two types of balloting groups.
+
+In an individual working group, personal names are entered using the
+`name` key.
+
+[example]
+.Balloting group (individual mode) (IEEE Std 1680.1a(TM)-2020)
+====
+The following two encodings are identical in effect.
+
+[source,adoc]
+----
+* Robert Aiello
+* Lennart Ask
+* William Byrd
+* Sandra Cannon
+* Chris Cleet
+* Jennifer Costley
+//...
+----
+
+[source,adoc]
+----
+item:: Robert Aiello
+item:: Lennart Ask
+item:: William Byrd
+item:: Sandra Cannon
+item:: Chris Cleet
+item:: Jennifer Costley
+//...
+----
+
+image::/assets/author/ieee/balloting-individual.png[]
+====
+
+
+In an entity working group, organization names are to be entered using the
+`company` key.
+
+[example]
+.Balloting group (entity mode) (IEEE Std 1800.2(TM)-2020)
+====
+[source,adoc]
+----
+=== Balloting group
+
+item::
+company::: Accellera Systems Initiative, Inc.
+item::
+company::: Analog Devices Inc.
+item::
+company::: Cadence Design Systems, Inc.
+item::
+company::: Ericsson AB
+item::
+company::: Intel Corporation
+item::
+company::: Marvell Semiconductor, Inc.
+//...
+----
+
+image::/assets/author/ieee/balloting-entity.png[]
+====
+
+=== Standards board
+
+Standards board members are entered using the method in
+<<representing-participants>>.
+
+The IEEE SA Standards Board members are to be entered using `name` and
+with `role` when appropriate. Member Emeritus is entered with attaching
+an asterisk (`*`) at the end of the name.
+
+The paragraph explaining the asterisk indicates Member Emeritus is inserted
+automatically by Metanorma.
+
+[example]
+.IEEE SA Standards Board (IEEE Std 1800.2(TM)-2020)
+====
+[source,adoc]
+----
+// Officers
+item::
+name::: Gary Hoffman
+role::: Chair
+item::
+name::: Jon Walter Rosdahl
+role::: Vice Chair
+item::
+name::: John D. Kulick
+role::: Past Chair
+item::
+name::: Konstantinos Karachalios
+role::: Secretary
+// Board members
+item:: Ted Burse
+item:: Doug Edwards
+item:: J. Travis Griffith
+item:: Grace Gu
+item:: Guido R. Hiertz
+item:: Joseph L. Koepfinger*
+----
+
+image::/assets/author/ieee/sa-standards-board.png[]
+====
+
+NOTE: The standards board membership is provided by the working group secretary
+or the IEEE editor during editing. If the information is not provided in the
+document, dummy values will be provided to match those in the IEEE templates.
+
+
+
 
 == Overview
 
-The _Overview_ clause, and its _Scope_, _Purpose_ and _Word Usage_ subclauses,
-are recognised automatically from the supplied clause headers.
+The _Overview_ clause, and its subclauses are recognized automatically from the
+supplied clause headers.
 
-The _Word Usage_ subclause is mandatory for normal documents (as distinct from amendments and corrigenda),
-and is auto-populated by Metanorma. Do not supply it.
+The subclauses recognized include:
 
-=== References
+* _Scope_
+* _Purpose_
+* _Word usage_
+
+The _Word Usage_ subclause is mandatory for normal documents (as distinct from
+amendments and corrigenda), and is auto-populated by Metanorma. There is no need
+to encode it.
+
+== References
 
 The introductory paragraph for normative references and bibliographies is
 automatically generated by Metanorma.
 
-Normative references are automatically sorted by designator, by Metanorma. Bibliography references are automatically
-sorted by designators or author and title, by Metanorma.
+References are automatically sorted by Metanorma:
 
-The bibliography is marked up as a subclause of an annex: the bibliography
+* Normative references are automatically sorted by designator.
+
+* Bibliography references are automatically sorted by designators or author and
+title.
+
+The bibliography is entered as a subclause of an annex: the bibliography
 heading is overwritten by the annex heading, but it must still be given as
 "Bibliography" to be recognised correctly.
 
 [source,asciidoc]
 ----
 [appendix]
-== Bibliographic Excursus
+== Bibliographic excursus
 
 [bibliography]
 === Bibliography
 ----
 
-=== Definitions
+== Definitions clause
+
+=== General
 
 Definitions are recognised as a clause with the title "Definitions" or "Terms
 and definitions".
 
-Definitions are sorted by Metanorma.
+Definitions are automatically sorted by Metanorma in accordance with the
+IEEE SA Style Manual.
 
-The notation for subdefinitions and cross-references in Metanorma is:
+The notation for subdefinitions and cross-references in Metanorma is
+demonstrated in the following example.
 
+Metanorma supports _concepts_, which capture terms are cross-referencable
+entities, including cross-references within the Definitions sections.
+
+NOTE: Highlighting and cross-referencing of concepts is not supported in
+Metanorma for IEEE, in accordance with the IEEE SA Style Manual.
+
+
+.Example with abbreviated term, multiple definitions and concept relations
+[example]
+====
 [source,asciidoc]
 ----
 === widget
-
-preferred:[WgT] // acronym
-
-alt:[doovywhack] // Syn:
-
+preferred:[WgT]
 related:contrast[thing] // Contrast:
-
 related:seealso[whatsit] // See also:
 
 [.definition]
---
 device performing an unspecified function.
---
 
 [.definition]
---
 general metasyntactic variable.
---
 ----
 
-which renders as:
+renders as:
 
 ____
-
-*widget (WgT)*: *(A)* device performing an unspecified function. *(B)* general metasyntactic variable. _Contrast:_ thing.
-_Syn:_ doovywhack. _See also:_ whatsit.
+*widget (WgT)*: *(A)* device performing an unspecified function. *(B)* general
+metasyntactic variable. _See also:_ whatsit. _Contrast:_ thing.
 ____
+====
 
-Do NOT insert markup for _See:_ terms. _See:_ terms are the opposite relations to "Syn:" relations; Metanorma will 
-automatically generate an entry for the synonymous term, pointing back to the original entry:
 
-___
+=== Multiple definitions
 
-*doovywhack*: _See:_ widget.
-___
+IEEE SA documents supports multiple definitions per term.
 
-Do use `+alt:[...]+` for synonyms, rather than `related:equivalent[]`: the latter is intended to cross-reference
-pre-existing term definitions, and that is not how IEEE treats _Syn:_ entries.
+Each definition is encoded using the `[.definition]` block.
 
-Do use `+alt:[...]+` instead of `+preferred[...]+` for _Syn:_ entries. The `+preferred[...]+` syntax is intended for 
-names that are fully equivalent in preference, such as acronyms.
+.Example with multiple definitions (IEEE SA Style Manual 2021)
+[example]
+====
+[source,adoc]
+----
+=== output
 
-Do use a second `+preferred:[...]+` term, to introduce equally valid term designations, such as abbreviations and acronyms;
-they will be displayed in brackets after the initial term.
+[.definition]
+Data that has been processed.
 
-Metanorma supports _concepts_, which capture terms are cross-referencable entities, including cross-references
-within Terms & Definitions sections. Highlighting and cross-referencing of concepts is not supported in Metanorma for IEEE.
+[.definition]
+The process of transferring data from an internal storage device to an external
+storage device.
+----
 
-Term sources are marked up as "adapted from" through an `adapted` option on the source tag:
+renders as:
 
+____
+*output:* *(A)* Data that has been processed. *(B)* The process of transferring
+data from an internal storage device to an external storage device.
+____
+====
+
+
+=== Concept relations
+
+==== Synonyms
+
+Synonyms are entered using `preferred:[...]` or `admitted:[...]`.
+
+A preferred term is intended to introduce equally valid term designations, such
+as abbreviations and acronyms such as acronyms. Preferred terms are encoded
+`+preferred[...]+`.
+These are displayed in parentheses after the initial term.
+
+An admitted term is intended for synonyms. Admitted terms are encoded using
+`+admitted:[...]+`.
+These are displayed using the concept relation _See:_, where an additional term
+is automatically inserted into the clause.
+
+NOTE: _See:_ terms are the opposite relations to _Syn:_ relations, and the
+generated relation will point the _See:_ term's definition back at the original
+term. Please _do not_ manually insert markup for _See:_ terms.
+
+.Example of definition with _See:_ (IEEE SA Style Manual 2021)
+[example]
+====
+[source,adoc]
+----
+=== coded character set
+admitted:[code set]
+
+A set of characters for which coded representation exist.
+----
+
+renders as:
+
+____
+*code set:* _See:_ *coded character set*.
+
+*coded character set:* A set of characters for which coded representation exist.
+_Syn:_ code set.
+____
+====
+
+.Example of definition showing preferred abbreviation and admitted term as _See:_
+[example]
+====
 [source,asciidoc]
 ----
+=== widget
+preferred:[WgT]
+admitted:[doovywhack]
+
+device performing an unspecified function.
+----
+
+renders as:
+
+____
+*doovywhack*: _See:_ widget.
+
+*widget (WgT)*: device performing an unspecified function. _Syn:_ doovywhack.
+____
+====
+
+==== Contrast
+
+A contrasting term is one that describes an opposite meaning to the designated
+definition.
+
+.Term encoded with _Contrast:_ (IEEE SA Style Manual 2021)
+[example]
+====
+[source,asciidoc]
+----
+=== input reference axis
+related:contrast[output reference axis]
+
+The direction of an axis as defined by the case mounting surfaces, external case
+markings, or both.
+----
+
+renders as:
+
+____
+*input reference axis:* The direction of an axis as defined by the case mounting
+surfaces, external case markings, or both. _Contrast:_ *output reference axis*.
+____
+====
+
+==== See also
+
+.Term encoded with _See also:_ (IEEE SA Style Manual 2021)
+[example]
+====
+[source,asciidoc]
+----
+=== acceleration-insensitive drift rate
+related:seealso[drift rate]
+related:seealso[systematic drift rate]
+
+The component of systematic drift rate that has no correlation with acceleration.
+----
+
+renders as:
+
+____
+*acceleration-insensitive drift rate:* The component of systematic drift rate
+that has no correlation with acceleration. _See also:_ *drift rate*;
+*systematic drift rate*.
+____
+====
+
+
+==== Equivalence
+
+An equivalent term is meant to cross-reference pre-existing term definitions.
+
+Equivalent terms are encoded using the relation `related:equivalent[...]`.
+
+
+
+=== Term sources
+
+Term sources are encoded using the `[.source]` syntax, and rendered within
+parentheses after the definition according to the IEEE SA Style Manual.
+
+.Example on encoding term source (IEEE SA Style Manual 2021)
+[example]
+====
+[source,asciidoc]
+----
+=== systematic drift rate
+
+That component of drift rate that is correlated with specific operating
+conditions.
+
+[.source]
+<<IEEE-260-1-2004>>
+----
+
+renders as:
+
+____
+*systematic drift rate*: That component of drift rate that is correlated with
+specific operating conditions. (IEEE Std 260.1-2004)
+____
+====
+
+For terms that are modified or adapted from the source, they are encoded as
+"adapted from" through an `adapted` option on the source tag.
+
+.Example on encoding an adapted term source (IEEE Style Manual 2021)
+[example]
+====
+[source,asciidoc]
+----
+=== drift rate
+
+The slope at a stated time of the smoothed curve of tube voltage drop with time
+at constant operating conditions.
+
 [.source%adapted]
-<<reference>>
+<<iso-iec_9945-1>>
 ----
 
 rendered as
 
 ____
-[definition]  (adapted from [reference])
+*drift rate:* The slope at a stated time of the smoothed curve of tube voltage
+drop with time at constant operating conditions. (Adapted from ISO/IEC
+9945-1:2003)
 ____
+====
 
-=== Annexes
 
-Normative and informative annexes are differentiated with the `obligation` attribute:
+== Annexes
+
+Normative and informative annexes are differentiated with the `obligation`
+attribute:
 
 [source,asciidoc]
 ----
@@ -284,6 +769,7 @@ subclause.
 [bibliography]
 === Bibliography
 ----
+
 
 == Blocks
 
