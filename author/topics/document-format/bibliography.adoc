@@ -563,6 +563,38 @@ references, on an experimental basis. See the
 link:/author/topics/building/reference-lookup[Automatic reference lookup]
 topic for more details.
 
+=== Annotating pre-formatted citations semantically
+
+While a pre-formatted citation is not explictly broken down into its semantic components,
+it may be expedient to mark up segments of the citation semantically, to provide information
+which is useful for parsing; for example, indicating the author surnames and publication date,
+in order to generate an author-date citation.
+
+For that reason, a limited number of span categories can be used to annotate a pre-formatted
+citation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
+These are not an exhaustive list of bibliographic fields, and if more detail is required
+(or a dynamically generated citation is to be generated), one of the following explicit
+bibliographic entry methods should be used instead.
+
+The span categories supported are:
+
+* `surname`: Author (or editor) surname.
+* `initials`: Author (or editor) initials.
+* `givenname`: Author (or editor) given name.
+* `title`: Title.
+* `docid`: Document identifier.
+* `docid.XXX`: Document identifier, of type _XXX_.
+* `publisher`: Publisher.
+* `pubplace`: Place of publication.
+* `pubyear`: Year of publication.
+
+For example:
+
+[source,asciidoc]
+----
+* [[[A, B]]], s:surname[Wozniak], s:initials[S.] & s:givenname[Steve] s:surname[Jobs]. s:pubyear[1996]. s:title[_Work_].
+s:docid.ISO[ISO 1234]. s:pubplace[Geneva]: s:publisher[International Standardization Organization].
+----
 
 === Entering with AsciiBib
 
