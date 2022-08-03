@@ -46,7 +46,7 @@ In some instances, the naming of terms that Metanorma uses in general is
 used in Metanorma markup instead of the nomenclature used in the
 https://www.ogc.org/standards/modularspec[OGC Modular Specification (ModSpec)]:
 
-* Metanorma uses _subject_ to refer to what the requirement is about, rather
+* Metanorma uses _target_ to refer to what the requirement is about, rather
 than the more specific language of the ModSpec, to ensure that requirements are
 represented consistently within Metanorma.
 
@@ -190,7 +190,7 @@ identically in output).
 .Encoding of logical models
 ====
 [%metadata]
-label:: ogc/spec/waterml/2.0/req/xsd-xml-rules
+identifier:: ogc/spec/waterml/2.0/req/xsd-xml-rules
 subject:: system
 part:: Metadata models faithful to the original UML model.
 description:: Logical models encoded as XSDs should be faithful to the original
@@ -208,7 +208,7 @@ step::: Step 3
 [source,asciidoc]
 .ModSpec requirement in block attributes syntax
 ----
-[requirement,label="ogc/spec/waterml/2.0/req/xsd-xml-rules",subject="system"]
+[requirement,identifier="ogc/spec/waterml/2.0/req/xsd-xml-rules",subject="system"]
 .Encoding of logical models
 ====
 
@@ -282,9 +282,9 @@ The following two encodings are equivalent:
 [requirement,type=conformance_test]
 ----
 
-* `label` (mandatory). Label of the model, typically a URI. This must be unique
+* `identifier` (mandatory). Label of requirement, typically a URI. This must be unique
 in the document (as required by ModSpec), and is also used for referencing.
-Plain text.
+Plain text. (Was `label` until https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.0 .)
 
 * `subject` (optional). Subject that the model refers to. Plain text.
 
@@ -292,6 +292,11 @@ Plain text.
 ** `requirement` (default)
 ** `recommendation`
 ** `permission`
+
+* `target`. Requirement being tested by a Conformance test; Requirements class being tested by a
+Conformance class. Mandatory for those two requirement types. Is the identifier of the
+Requirement or Requirements class.
+Replaces `subject` in that context. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.0] 
 
 // * `model` (optional when using Metanorma OGC). Type of model. The value of `ogc`
 // means using OGC ModSpec models.
@@ -335,7 +340,7 @@ EXAMPLE:
 [source,asciidoc]
 .OGC CityGML 3.0 sample requirement with two parts (block attributes)
 ----
-[requirement,label="/req/relief/classes"]
+[requirement,identifier="/req/relief/classes"]
 ====
 For each UML class defined or referenced in the Relief Package:
 
@@ -359,7 +364,7 @@ source, target, direction, roles, and multiplicities as those of the UML class.
 [requirement]
 ====
 [%metadata]
-label:: /req/relief/classes
+identifier:: /req/relief/classes
 description:: For each UML class defined or referenced in the Relief Package:
 part:: The Implementation Specification SHALL contain an element which represents the
 same concept as that defined for the UML class.
@@ -373,7 +378,7 @@ image::/assets/author/ogc/reqt1.png[Rendering]
 [source,asciidoc]
 .OGC GroundWaterML 2.0 sample requirement
 ----
-[requirement,id="/req/core/encoding",label="/req/core/encoding"]
+[requirement,id="/req/core/encoding",identifier="/req/core/encoding"]
 ====
 All target implementations SHALL conform to the appropriate GroundWaterML2
 Logical Model UML defined in Section 8.
@@ -394,7 +399,7 @@ image::/assets/author/ogc/reqt2.png[Rendering]
 // [%metadata]
 // model:: ogc
 // type:: class
-// label:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
+// identifier:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
 // subject:: Encoding of logical models
 // inherit:: urn:iso:dis:iso:19156:clause:7.2.2
 // inherit:: urn:iso:dis:iso:19156:clause:8
@@ -424,7 +429,7 @@ image::/assets/author/ogc/reqt2.png[Rendering]
 // ----
 // === Clause Four Point Five
 // [[a1]]
-// [recommendation,label=/ogc/recommendation/wfs/2,obligation=permission,subject=user,inherit=/ss/584/2015/level/1,classification="control-class:Technical;priority:P0"]
+// [recommendation,identifier=/ogc/recommendation/wfs/2,obligation=permission,subject=user,inherit=/ss/584/2015/level/1,classification="control-class:Technical;priority:P0"]
 // .Widgets
 // ====
 // [.component,class=conditions]
@@ -518,7 +523,7 @@ EXAMPLE:
 [requirements_class]
 ====
 [%metadata]
-label:: http://www.opengis.net/spec/CityGML-1/3.0/req/req-class-building
+identifier:: http://www.opengis.net/spec/CityGML-1/3.0/req/req-class-building
 subject:: Implementation Specification
 inherit:: <<rc_core,/req/req-class-core>>
 inherit:: <<rc_construction,/req/req-class-construction>>
@@ -537,8 +542,8 @@ requirements.
 
 The contents of these embedded requirements may be specified within the
 requirements class, or specified outside of the requirements class (referenced
-using the label). If the requirement is specified within a definition list,
-the definition list value is interpreted as the requirement label
+using the identifier). If the requirement is specified within a definition list,
+the definition list value is interpreted as the requirement identifier.
 
 EXAMPLE:
 
@@ -550,19 +555,17 @@ EXAMPLE:
 ====
 [%metadata]
 subject:: Encoding of logical models
-label:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
+identifier:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
 
-[requirement,label="/req/core/encoding"]
+[requirement,identifier="/req/core/encoding"]
 ======
 ======
 
-[requirement,label="/req/core/quantities-uom"]
+[requirement,identifier="/req/core/quantities-uom"]
 ======
 ======
 ====
 ----
-
-//NOTE: The hyperlink in the `label` attribute needs to be given as a definition list value.
 
 .Example from OGC GroundWaterML 2.0 (definition list)
 [source,asciidoc]
@@ -571,7 +574,7 @@ label:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
 .GWML2 core logical model
 ====
 [%metadata]
-label:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
+identifier:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
 obligation:: requirement
 subject:: Encoding of logical models
 inherit:: urn:iso:dis:iso:19156:clause:7.2.2
@@ -609,21 +612,21 @@ ____
 
 Embedded requirements (such as are found within Requirements classes) will
 automatically insert cross-references to the non-embedded requirements with the
-same label [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.8]:
+same identifier [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.8]:
 
 [source,asciidoc]
 ----
-[requirements_class,label="/req/conceptual"]
+[requirements_class,identifier="/req/conceptual"]
 .GWML2 core logical model
 ====
 
-[requirement,label="/req/core/encoding"]
+[requirement,identifier="/req/core/encoding"]
 ======
 ======
 
 ====
 
-[requirement,label="/req/core/encoding"]
+[requirement,identifier="/req/core/encoding"]
 ====
 Encoding requirement
 ====
@@ -664,8 +667,8 @@ A Conformance class is cross-referenced and captioned as
 Conformance classes support the following attributes in addition to base ModSpec
 attributes:
 
-* `subject`. Associated Requirements class. May be encoded as a cross-reference
-or as plain text. Rendered as _Requirements Class_.
+* `target`. Associated Requirements class. Populated with the identifier of the
+Requirements class. Rendered as _Requirements Class_.
 
 * `inherit` (optional). Dependencies of the conformance class. Accepts multiple
 values, which each could be a cross-reference to another
@@ -687,10 +690,10 @@ EXAMPLE:
 
 [source,asciidoc]
 ----
-[conformance_class,label="http://www.opengis.net/spec/ogcapi-features-2/1.0/conf/crs",inherit="http://www.opengis.net/doc/IS/ogcapi-features-1/1.0#ats_core",classification="Target Type:Web API"]
+[conformance_class,identifier="http://www.opengis.net/spec/ogcapi-features-2/1.0/conf/crs",inherit="http://www.opengis.net/doc/IS/ogcapi-features-1/1.0#ats_core",classification="Target Type:Web API"]
 ====
 [%metadata]
-subject:: <<rc_crs,Requirements Class 'Coordinate Reference Systems by Reference'>>
+target:: http://www.opengis.net/spec/CityGML-1/3.0/req/req-class-building
 ====
 ----
 
@@ -699,8 +702,8 @@ subject:: <<rc_crs,Requirements Class 'Coordinate Reference Systems by Reference
 [conformance_class]
 ====
 [%metadata]
-label:: http://www.opengis.net/spec/ogcapi-features-2/1.0/conf/crs
-subject:: <<rc_crs,Requirements Class 'Coordinate Reference Systems by Reference'>>
+identifier:: http://www.opengis.net/spec/ogcapi-features-2/1.0/conf/crs
+target:: http://www.opengis.net/spec/CityGML-1/3.0/req/req-class-building
 inherit:: http://www.opengis.net/doc/IS/ogcapi-features-1/1.0#ats_core
 classification:: Target Type:Web API
 ====
@@ -748,9 +751,8 @@ It is cross-referenced as "`Abstract test {N}`" [added in https://github.com/met
 Conformance tests support the following attributes and components in addition to
 base ModSpec attributes:
 
-* `subject`. The associated requirement. May be encoded as a cross-reference or
-plain text. Multiple semicolon-delimited values may be provided. Rendered as
-_Requirement_.
+* `target`. The associated requirement. Populated with the identifier of the requirement.
+Multiple semicolon-delimited values may be provided. Rendered as _Requirement_.
 
 * `inherit` (optional). Dependencies. Accepts multiple values.
 Each may be a cross-reference or in plain text.
@@ -792,10 +794,10 @@ EXAMPLE:
 .Example of Abstract test from CityGML 3.0 (block attributes)
 [source,adoc]
 ----
-[abstract_test,label="/conf/core/classes"]
+[abstract_test,identifier="/conf/core/classes"]
 ====
 [%metadata]
-subject:: <<req_core_classes,/req/core/classes>>
+target:: /req/core/classes
 
 [.component,class=test-purpose]
 --
@@ -832,9 +834,9 @@ Conceptual Model.
 [abstract_test]
 ====
 [%metadata]
-label:: /conf/core/classes
+identifier:: /conf/core/classes
 
-subject:: <<req_core_classes,/req/core/classes>>
+target:: /req/core/classes
 
 test-purpose:: To validate that the Implementation Specification correctly
 implements the UML Classes defined in the Conceptual Model.
@@ -858,13 +860,13 @@ image::/assets/author/ogc/reqt4.png[Rendering]
 .Example of Abstract test from DGGS (block attributes)
 [source,asciidoc]
 ----
-[abstract_test,label="/conf/crs/crs-uri",classification="Test Type:Basic"]
+[abstract_test,identifier="/conf/crs/crs-uri",classification="Test Type:Basic"]
 ====
 [%metadata]
-subject:: <<req_crs_crs-uri,/req/crs/crs-uri>>
-subject:: <<req_crs_fc-md-crs-list_A,/req/crs/fc-md-crs-list A>>
-subject:: <<req_crs_fc-md-storageCrs,/req/crs/fc-md-storageCrs>>
-subject:: <<req_crs_fc-md-crs-list-global,/req/crs/fc-md-crs-list-global>>"
+target:: /req/crs/crs-uri
+target:: /req/crs/fc-md-crs-list-A
+target:: /req/crs/fc-md-storageCrs
+target:: /req/crs/fc-md-crs-list-global
 
 [.component,class=test-purpose]
 --
@@ -896,11 +898,11 @@ https://tools.ietf.org/html/rfc3986#section-3[RFC 3986, section 3].
 [abstract_test]
 ====
 [%metadata]
-label:: /conf/crs/crs-uri
-subject:: <<req_crs_crs-uri,/req/crs/crs-uri>>
-subject:: <<req_crs_fc-md-crs-list_A,/req/crs/fc-md-crs-list A>>
-subject:: <<req_crs_fc-md-storageCrs,/req/crs/fc-md-storageCrs>>
-subject:: <<req_crs_fc-md-crs-list-global,/req/crs/fc-md-crs-list-global>>"
+identifier:: /conf/crs/crs-uri
+target:: /req/crs/crs-uri
+target:: /req/crs/fc-md-crs-list-A
+target:: /req/crs/fc-md-storageCrs
+target:: /req/crs/fc-md-crs-list-global
 classification:: Test Type:Basic
 test-purpose:: Verify that each CRS identifier is a valid value
 test-method::
@@ -968,7 +970,7 @@ The default CSS class currently assigned for HTML rendering is `recommend`.
 or style of the requirement, e.g. `[permission]` or `[.permission]`), optionally
 followed by its title (the caption of the requirement, e.g. `.Title`).
 
-* The title of the table (spanning two columns) is its `label` attribute.
+* The title of the table (spanning two columns) is its `identifier` attribute.
 
 * The initial rows of the body of the table give metadata about the requirement.
 They include:
@@ -977,13 +979,12 @@ They include:
 followed by the attribute value
 
 ** The `subject` attribute of the requirement, if given: _Subject_, followed by the attribute.
-(In other classes of requirement, the `subject` attribute of the requirement
-is rendered differently; see below.) The subject attribute can be marked up as a cross-reference
+The subject attribute can be marked up as a cross-reference
 to another requirement given in the same document. If there are multiple values of the subject,
 they are semicolon delimited [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4].
 
 ** The `inherit` attribute of the requirement, if given: _Dependency_ followed
-by the attribute value. If there are multiple values of the subject,
+by the attribute value. If there are multiple values of the attribute,
 they are semicolon delimited.
 
 ** The `classification` attributes of the requirement, if given: the
@@ -1009,7 +1010,7 @@ syntax allows open-ended component names.
 *** Components with the `class` attribute `part` are extracted and presented in
 order: each Part is rendered as an incrementing capital letter (_A_, _B_, _C_
 and so on), followed by the component contents. Any cross-references to part components
-will automatically be labelled with the label of their parent requirement, followed by their ordinal
+will automatically be labelled with the identifier of their parent requirement, followed by their ordinal
 letter.
 
 ** Components can include descriptive text (`description`), which is interleaved with
