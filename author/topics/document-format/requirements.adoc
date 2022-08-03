@@ -39,8 +39,8 @@ The following attributes are supported in these block types:
 Does not get rendered in final output (although this may be overridden in flavours).
 Multiple instances of `subject` can be given, semicolon-delimited [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4]
 
-`label`:: Indicates conventional label assigned to the requirement.
-If present, it will be rendered in final output.
+`identifier`:: Indicates identifier assigned to the requirement.
+If present, it will be rendered in final output (formerly `label`). [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.0]
 
 `classification`:: May be used to give an arbitrary number of key-value pairs of tags describing
 the requirement. Key and value are separated by a colon, multiple values are delimited by comma,
@@ -53,7 +53,7 @@ comma-delimited. Using this attribute will override the obligation of the requir
 `inherit`:: May be used to reference the label of a requirement or definition
 that is imported or presupposed by this requirement.
 Can contain multiple semicolon-delimited
-labels. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14]. +
+identifiers. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14]. +
 +
 Multiple instances of `inherit` can also be expressed with the `inherit` macro,
 which can contain markup including
@@ -70,7 +70,6 @@ inherit:[<<ref1>>]
 `:model`:: The specific data model followed by the requirement.
 
 `:type`:: The applicable subclass of requirement.
-
 
 == Specifying attributes for requirement blocks
 
@@ -113,6 +112,9 @@ I recommend this
 ====
 ----
 ======
+
+Any attributes that are not included in the list of requirement attributes above
+are treated as classification tags. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.0]
 
 
 === Via an attribute list
