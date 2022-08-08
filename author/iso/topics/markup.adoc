@@ -116,12 +116,28 @@ Editorial notes can be marked up as follows [added in https://github.com/metanor
 
 [source,asciidoc]
 --
-EDITOR: this is an editorial note
+EDITOR: This is an editorial note
 
 [EDITOR]
 ====
 So is this
 ====
+
+[EDITOR]
+And this as well.
+--
+
+to render:
+
+image::../../../assets/author/iso/editorial_notes.png[]
+
+Beneath the surface,`[EDITOR]` is just an alias for the admonition `[IMPORTANT,type=editorial]`.
+So the following markup is also valid, though larger to type:
+
+[source,asciidoc]
+--
+[IMPORTANT,type=editorial]
+This is an editorial note, too.
 --
 
 == Cross-references
