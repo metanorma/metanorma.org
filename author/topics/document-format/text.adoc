@@ -1049,26 +1049,12 @@ should be re-arranged as:
 === Formulae
 
 Formulae are marked up as `[stem]` blocks.
-Any explanation of symbols in the formula is given in a definition list,
+Any explanation of symbols in the formula is given in a definition list, marked up with 
+`[%key]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3] .
 either preceded by a "`where`" paragraph (in English),
 or [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3] marked up with `[%key]`.
 
 For example:
-
-[source,asciidoc]
---
-[[formulaA-1]]
-[stem]
-++++
-w = (m_D) / (m_s)
-++++
-
-where
-
-stem:[w]:: is the mass fraction of grains with a particular defect in the test sample;
-stem:[m_D]:: is the mass, in grams, of grains with that defect;
-stem:[m_S]:: is the mass, in grams, of the test sample.
---
 
 [source,asciidoc]
 --
@@ -1088,6 +1074,28 @@ which renders
 
 .Example of a block stem equation in Metanorma.
 image::/assets/author/topics/document-format/text/fig-stem-equality.png[Example of a block stem equation in Metanorma]
+
+[NOTE]
+--
+Instead of `[%key]`, the definition list can be preceded with a paragraph containing
+the English word `where`, though this is not recommended:
+
+[source,asciidoc]
+----
+[[formulaA-1]]
+[stem]
+++++
+w = (m_D) / (m_s)
+++++
+
+where
+
+stem:[w]:: is the mass fraction of grains with a particular defect in the test sample;
+stem:[m_D]:: is the mass, in grams, of grains with that defect;
+stem:[m_S]:: is the mass, in grams, of the test sample.
+----
+--
+
 
 
 Inequalities are indicated through the option attribute `%inequality`:
@@ -1114,26 +1122,9 @@ In some flavours (e.g. ITU), they are referenced differently as "`Equations`" an
 == Figures
 
 Like formulae, figures can be followed by a definition list for the variables used in the figure;
-the definition list is either preceded by the paragraph `+*Key*+` (in English),
-or [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3] is marked up with `[%key]`.
+the definition list is marked up with `[%key]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3].
+
 For example:
-
-[source,asciidoc]
---
-[[figureC-1]]
-.Typical gelatinization curve
-image::rice_images/rice_image2.png[alt text]
-footnote:[The time stem:[t_90] was estimated to be 18,2 min for this example.]
-
-*Key*
-
-stem:[w]:: mass fraction of gelatinized kernels, expressed in per cent
-stem:[t]:: cooking time, expressed in minutes
-stem:[t_90]:: time required to gelatinize 90 % of the kernels
-P:: point of the curve corresponding to a cooking time of stem:[t_90]
-
-NOTE: These results are based on a study carried out on three different types of kernel.
---
 
 [source,asciidoc]
 --
@@ -1149,6 +1140,29 @@ stem:[t_90]:: time required to gelatinize 90 % of the kernels
 P:: point of the curve corresponding to a cooking time of stem:[t_90]
 
 NOTE: These results are based on a study carried out on three different types of kernel.
+--
+
+[NOTE]
+--
+The definition list can also be preceded by a paragraph consisting of `\*Key*`, though
+that is not recommended:
+
+[source,asciidoc]
+----
+[[figureC-1]]
+.Typical gelatinization curve
+image::rice_images/rice_image2.png[alt text]
+footnote:[The time stem:[t_90] was estimated to be 18,2 min for this example.]
+
+*Key*
+
+stem:[w]:: mass fraction of gelatinized kernels, expressed in per cent
+stem:[t]:: cooking time, expressed in minutes
+stem:[t_90]:: time required to gelatinize 90 % of the kernels
+P:: point of the curve corresponding to a cooking time of stem:[t_90]
+
+NOTE: These results are based on a study carried out on three different types of kernel.
+----
 --
 
 As an extension to AsciiDoc syntax, Metanorma allows Data URLs as the URL for an image:
