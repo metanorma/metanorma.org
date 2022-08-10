@@ -323,10 +323,8 @@ component of a requirement, which is itself a requirement. A step is a stage in
 a process of testing a requirement: it only makes sense within a test method.
 
 * `inherit` (optional). A requirement can inherit from one or more requirements.
-Accepts cross-references to other requirement models, or plain text. In block
-attributes syntax, accepts multiple semicolon-delimited values, which each could
-be a cross-reference to another conformance class or plain text. Can be repeated
-in definition list syntax.
+Accepts identifiers of other requirements: multiple values are semicolon-delimited.
+Can be repeated in definition list syntax.
 
 * `classification` (optional). Classification of this requirement.
 The `classification` attribute is marked up as in the rest of Metanorma:
@@ -525,15 +523,15 @@ EXAMPLE:
 [%metadata]
 identifier:: http://www.opengis.net/spec/CityGML-1/3.0/req/req-class-building
 subject:: Implementation Specification
-inherit:: <<rc_core,/req/req-class-core>>
-inherit:: <<rc_construction,/req/req-class-construction>>
+inherit:: /req/req-class-core
+inherit:: /req/req-class-construction
 ====
 ----
 
 image::/assets/author/ogc/reqt3.png[Rendering]
 
 NOTE: In this example, both block attributes and definition list syntax is used;
-the `inherit` attribute has two hyperlink values, which are expressed in the definition list.
+the `inherit` attribute has two values, which are expressed in the definition list.
 
 // TODO: Add rendering example
 
@@ -671,8 +669,8 @@ attributes:
 Requirements class. Rendered as _Requirements Class_.
 
 * `inherit` (optional). Dependencies of the conformance class. Accepts multiple
-values, which each could be a cross-reference to another
-conformance class or plain text. See <<generalreqt,Requirement, recommendation, permission>>.
+values, which are the identifiers of other requirements.
+See <<generalreqt,Requirement, recommendation, permission>>.
 
 Conformance classes also feature:
 
@@ -754,9 +752,8 @@ base ModSpec attributes:
 * `target`. The associated requirement. Populated with the identifier of the requirement.
 Multiple semicolon-delimited values may be provided. Rendered as _Requirement_.
 
-* `inherit` (optional). Dependencies. Accepts multiple values.
-Each may be a cross-reference or in plain text.
-See <<generalreqt,Requirement, recommendation, permission>>.
+* `inherit` (optional). Dependencies. Accepts multiple values, which are the identifiers
+of other requirements.  See <<generalreqt,Requirement, recommendation, permission>>.
 
 * Components (optional). Components of the conformance test. Accepts rich
 text. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.0].
