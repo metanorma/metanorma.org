@@ -123,7 +123,8 @@ There are two ways to encode a ModSpec model:
 . Via block attributes
 
 The definition lists method is generally recommended for its multi-line syntax
-but some authors may prefer specifying attributes in the header.
+but some authors may prefer specifying attributes in the header. However, not
+all attributes are supported in the block attribute syntax (`target`, `indirect-dependency`).
 
 NOTE: These two methods originate from Metanorma's general support of the
 alternative syntaxes for specifying a block attribute list as a definition list.
@@ -295,8 +296,8 @@ Plain text. (Was `label` until https://github.com/metanorma/metanorma-ogc/releas
 
 * `target`. Requirement being tested by a Conformance test; Requirements class being tested by a
 Conformance class. Mandatory for those two requirement types. Is the identifier of the
-Requirement or Requirements class.
-Replaces `subject` in that context. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.0] 
+Requirement or Requirements class. Replaces `subject` in that context. 
+Only supported in definition list syntax. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.0] 
 
 // * `model` (optional when using Metanorma OGC). Type of model. The value of `ogc`
 // means using OGC ModSpec models.
@@ -322,9 +323,16 @@ NOTE: A part is distinct from a step (as appears in <<conftest>>): a part is a
 component of a requirement, which is itself a requirement. A step is a stage in
 a process of testing a requirement: it only makes sense within a test method.
 
-* `inherit` (optional). A requirement can inherit from one or more requirements.
+* `inherit` (optional). A requirement can inherit from one or more requirements
+(_direct dependency_ in ModSpec terms).
 Accepts identifiers of other requirements: multiple values are semicolon-delimited.
 Can be repeated in definition list syntax.
+
+* `indirect-dependency` (optional). A requirement can inherit indirectly 
+from one or more requirement classes, which have a different standardisation target from that of the
+requirement. That requirement class is used, produced, or associated with the current requirement,
+but its requirements are not inherited by this requirement. 
+Only supported in definition list syntax. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.1]
 
 * `classification` (optional). Classification of this requirement.
 The `classification` attribute is marked up as in the rest of Metanorma:
@@ -509,6 +517,7 @@ block caption.
 * `subject` (mandatory). The Target Type. Rendered as _Target Type_.
 
 * `inherit` (optional). Dependent requirements classes. See <<generalreqt,Requirement, recommendation, permission>>.
+* `indirect-dependency` (optional). Indirect dependent requirements classes. See <<generalreqt,Requirement, recommendation, permission>>.
 
 * Embedded requirements (optional). Requirements contained in a class are marked
 up as nested requirements.
@@ -671,6 +680,7 @@ Requirements class. Rendered as _Requirements Class_.
 * `inherit` (optional). Dependencies of the conformance class. Accepts multiple
 values, which are the identifiers of other requirements.
 See <<generalreqt,Requirement, recommendation, permission>>.
+* `indirect-dependency` (optional). Indirect dependent requirements classes. See <<generalreqt,Requirement, recommendation, permission>>.
 
 Conformance classes also feature:
 
@@ -754,6 +764,7 @@ Multiple semicolon-delimited values may be provided. Rendered as _Requirement_.
 
 * `inherit` (optional). Dependencies. Accepts multiple values, which are the identifiers
 of other requirements.  See <<generalreqt,Requirement, recommendation, permission>>.
+* `indirect-dependency` (optional). Indirect dependent requirements classes. See <<generalreqt,Requirement, recommendation, permission>>.
 
 * Components (optional). Components of the conformance test. Accepts rich
 text. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.0].
@@ -981,6 +992,10 @@ to another requirement given in the same document. If there are multiple values 
 they are semicolon delimited [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4].
 
 ** The `inherit` attribute of the requirement, if given: _Dependency_ followed
+by the attribute value. If there are multiple values of the attribute,
+they are semicolon delimited.
+
+** The `indirect-dependency` attribute of the requirement, if given: _Indirect Dependency_ followed
 by the attribute value. If there are multiple values of the attribute,
 they are semicolon delimited.
 
