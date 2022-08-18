@@ -216,7 +216,7 @@ unconstrained formatting marks.
 
 [source,asciidoc]
 --
-`*Boldmono__space__*`
+*Boldmono__space__*
 --
 
 NOTE: See https://docs.asciidoctor.org/asciidoc/latest/text/[Asciidoctor Text].
@@ -442,16 +442,45 @@ The page orientation is reset at the start of the main document body to `portrai
 === Avoiding page breaks
 
 The "`keep with next`" feature is useful if you want to indicate that
-a document element must belong on the same page with another element.
-Kind of like the opposite of a "`page break`".
+a document element must belong on the same page with another element,
+on a paginated
+medium [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
 
-Most blocks support the boolean attributes `keep-with-next` and
-`keep-lines-together` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
+NOTE: "`Keep with next`" is often considered as the opposite of a forced
+"`page break`", i.e. a "`page unbreak`".
+
+Metanorma supports the following boolean attributes for the avoidance
+of page breaks:
+
+`keep-with-next`:: The block with this attribute specified will be rendered
+on the same page with the next document element.
+
+`keep-lines-together`:: The block with this attribute specified will force
+the paragraph to render all its content on the same page.
+
+The syntax is as follows:
+
+[source,asciidoc]
+--
+[keep-with-next=true]
+{Paragraph or block}
+--
+
+and
+
+[source,asciidoc]
+--
+[keep-lines-together=true]
+{Paragraph}
+--
 
 The following syntax indicates that these two paragraphs will always be
 presented on the same page, even if the textual layout allows them to be
 split into two pages.
 
+[example]
+.Example of using keep-with-next to avoid page breaks
+====
 [source,asciidoc]
 --
 [keep-with-next=true]
@@ -460,30 +489,51 @@ This is a paragraph.
 This is a paragraph that will be on the same page as the
 immediately previous one.
 --
+====
 
 
 == Block quotes
 
-As in normal AsciiDoc, block quotes are preceded with an author and a citation;
-but the citation is expected to be in the same format as all other citations,
-a cross-reference optionally followed by text, which may include the bibliographic
-sections referenced:
+Block quotes are preceded with an author and a citation.
 
+* The citation is expected to be in the same format as all other citations,
+which is a cross-reference optionally followed by text.
+
+* The citation may include the bibliographic sections referenced.
+
+[source,asciidoc]
+--
+[quote,{attribution},{citation}]
+____
+{content}
+____
+--
+
+Where:
+
+* `{attribution}` is the rendered name of the source
+* `{citation}` is a valid citation reference (citation anchor, optionally followed by locality)
+* `{content}` is the quotation content
+
+[example]
+.Example of a block quote, quoting a section from an ISO deliverable
+====
 [source,asciidoc]
 --
 [quote, ISO, "ISO7301,section=1"]
 _____
-This International Standard gives the minimum specifications for rice (_Oryza sativa_ L.)
-which is subject to international trade. It is applicable to the following types: husked rice
-and milled rice, parboiled or not, intended for direct human consumption. It is neither
-applicable to other products derived from rice, nor to waxy rice (glutinous rice).
+This International Standard gives the minimum specifications for rice
+(_Oryza sativa_ L.) which is subject to international trade. It is applicable to
+the following types: husked rice and milled rice, parboiled or not, intended for
+direct human consumption. It is neither applicable to other products derived
+from rice, nor to waxy rice (glutinous rice).
 _____
 --
 
 renders as
 
-.Illustration of a block quote in Metanorma.
 image::/assets/author/topics/document-format/text/fig-block-quote.png[Illustration of a block quote in Metanorma]
+====
 
 
 == Notes
@@ -1048,17 +1098,81 @@ should be re-arranged as:
 
 === Formulae
 
-Formulae are marked up as `[stem]` blocks.
-Any explanation of symbols in the formula is given in a definition list, marked up with 
-`[%key]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3] .
-either preceded by a "`where`" paragraph (in English),
-or [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3] marked up with `[%key]`.
+==== General
 
-For example:
+Formulae are marked up as `[stem]` blocks.
+
+==== Equations
+
+In most flavours, equations and inequalities are both referenced in the same
+way, as "`Formula`".
+
+In some flavours (e.g. ITU), they are referenced differently as "`Equations`"
+and "`Inequalities`".
+
+
+==== Inequalities
+
+Inequalities are indicated through the option attribute `%inequality`:
 
 [source,asciidoc]
 --
-[[formulaA-1]]
+[stem%inequality]
+++++
+{formula-content}
+++++
+--
+
+Where:
+
+* `{formula-content}` is content within a formula.
+
+[example]
+.Example of encoding an inequality formula
+====
+[source,asciidoc]
+--
+[stem%inequality]
+++++
+A < B
+++++
+--
+
+renders as:
+
+image::/assets/author/topics/document-format/text/fig-stem-inequality.png[Example of a block stem inequality in Metanorma]
+====
+
+==== Key
+
+Explanation of symbols used in the formula is specified in a "key" list, which is
+specified as a definition list with the `[%key]`
+option [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3].
+
+The syntax is as follows:
+
+[source,asciidoc]
+--
+[stem]
+s++++
+{some-formula}
+++++
+
+[%key]
+stem:[{some-symbol}]:: {symbol-description}
+--
+
+Where:
+
+* `{some-formula}` represents content within a formula
+* `{some-symbol}` represents a symbol within the formula
+* `{symbol-description}` is text that describes information about the symbol
+
+[example]
+.Example of including a key for a formula (`stem`) block
+====
+[source,asciidoc]
+--
 [stem]
 ++++
 w = (m_D) / (m_s)
@@ -1070,19 +1184,19 @@ stem:[m_D]:: is the mass, in grams, of grains with that defect;
 stem:[m_S]:: is the mass, in grams, of the test sample.
 --
 
-which renders
+renders as:
 
-.Example of a block stem equation in Metanorma.
 image::/assets/author/topics/document-format/text/fig-stem-equality.png[Example of a block stem equation in Metanorma]
+====
 
-[NOTE]
---
-Instead of `[%key]`, the definition list can be preceded with a paragraph containing
-the English word `where`, though this is not recommended:
+Instead of `[%key]`, the definition list can also be preceded with a paragraph
+containing the English word `where`, though this is not recommended practice.
 
+[example]
+.Example of including a key for a formula (`stem`) block using the `where` keyword
+====
 [source,asciidoc]
 ----
-[[formulaA-1]]
 [stem]
 ++++
 w = (m_D) / (m_s)
@@ -1094,43 +1208,43 @@ stem:[w]:: is the mass fraction of grains with a particular defect in the test s
 stem:[m_D]:: is the mass, in grams, of grains with that defect;
 stem:[m_S]:: is the mass, in grams, of the test sample.
 ----
---
-
-
-
-Inequalities are indicated through the option attribute `%inequality`:
-
-[source,asciidoc]
---
-[stem%inequality]
-++++
-A < B
-++++
---
-
-which renders
-
-.Example of a block stem inequality in Metanorma.
-image::/assets/author/topics/document-format/text/fig-stem-inequality.png[Example of a block stem inequality in Metanorma]
-
-
-In most flavours, equations and inequalities are both referenced in the same way, as "`Formula`".
-
-In some flavours (e.g. ITU), they are referenced differently as "`Equations`" and "`Inequalities`".
+====
 
 
 == Figures
 
-Like formulae, figures can be followed by a definition list for the variables used in the figure;
-the definition list is marked up with `[%key]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3].
+=== Key
 
-For example:
+Like formulae, figures can be followed by a definition list for the variables used in the figure.
+This definition list is marked up with `[%key]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3].
+
+The syntax is as follows:
 
 [source,asciidoc]
 --
-[[figureC-1]]
+.Figure title
+image::figure-path.png[]
+
+[%key]
+{some-id}:: {some-description}
+--
+
+Where:
+
+* `.Figure title` represents the intended title of the figure
+* `figure-path.png` is an example for an image path
+* `{some-id}` represents a reference within the figure
+* `{some-description}` is text that describes information about the thing
+represented by `{some-id}`
+
+
+[example]
+.Example of providing a key for a figure (ISO Rice document)
+====
+[source,asciidoc]
+--
 .Typical gelatinization curve
-image::rice_images/rice_image2.png[alt text]
+image::rice_images/rice_image2.png[]
 footnote:[The time stem:[t_90] was estimated to be 18,2 min for this example.]
 
 [%key]
@@ -1141,15 +1255,16 @@ P:: point of the curve corresponding to a cooking time of stem:[t_90]
 
 NOTE: These results are based on a study carried out on three different types of kernel.
 --
+====
 
-[NOTE]
---
-The definition list can also be preceded by a paragraph consisting of `\*Key*`, though
-that is not recommended:
+The key definition list can also be preceded by a paragraph consisting of
+`\*Key*`, though that is not recommended.
 
+[example]
+.Example of providing a key for a figure using the `\*Key*` syntax (ISO Rice document)
+====
 [source,asciidoc]
 ----
-[[figureC-1]]
 .Typical gelatinization curve
 image::rice_images/rice_image2.png[alt text]
 footnote:[The time stem:[t_90] was estimated to be 18,2 min for this example.]
@@ -1163,21 +1278,28 @@ P:: point of the curve corresponding to a cooking time of stem:[t_90]
 
 NOTE: These results are based on a study carried out on three different types of kernel.
 ----
---
+====
 
-As an extension to AsciiDoc syntax, Metanorma allows Data URLs as the URL for an image:
+
+=== Data URLs as images
+
+Metanorma allows Data URLs as the URL for an image:
 
 [source,asciidoc]
 --
 image::data:image/png;base64,ivBO[alt text]
 --
 
+NOTE: Data URLs are not typically supported by AsciiDoc processors.
+
+
+=== Discursive figures
+
 A discursive figure, containing text as well as images, can be marked up as an
 example, with a `[.figure]` role [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.7]:
 
 [source,asciidoc]
 --
-[[figureC-1]]
 [.figure]
 .Typical gelatinization curve
 ====
@@ -1187,14 +1309,14 @@ This is lots of discursive text
 ====
 --
 
+
 === Subfigures
 
-Subfigures (which appear in ISO formats, for example)
-are entered by including images in AsciiDoc examples.
+Subfigures (which appear in ISO formats, for example) are entered by including
+images in an example block.
 
 [source,asciidoc]
 --
-[[figureC-2]]
 .Stages of gelatinization
 ====
 .Initial stages: No grains are fully gelatinized (ungelatinized starch granules are visible inside the kernels)
@@ -1205,7 +1327,6 @@ image::rice_images/rice_image3_2.png[]
 
 .Final stages: All kernels are fully gelatinized
 image::rice_images/rice_image3_3.png[]
-
 ====
 --
 
@@ -1319,12 +1440,13 @@ by the caption.
 Word's description of "`Alt Text`" is:
 "`How would you describe this object and its context to someone who is blind?`".
 
-== Preformatted blocks
+
+=== Preformatted blocks
 
 Figures can include preformatted blocks, as well as images.
 
-For accessibility, preformatted blocks can be provided with an alt text attribute
-[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+For accessibility, preformatted blocks can be provided with an `alt` text
+attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
 
 [sources,asciidoc]
 --
