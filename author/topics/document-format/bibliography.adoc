@@ -953,23 +953,38 @@ dashes or commas).
 [[custom-locality]]
 ==== Custom locality
 
-Metanorma accepts a fixed list of locality types in cross-references (see
-<<locality-types>>).
-This list is not exhaustive of all possible locality types.
-
-For example, "annex" is recognized as a generic reference to annexes in
-documents. It does not recognize appendixes (instead of annexes), or as distinct
-from annexes (as is the case in ISO).
-
 Locality types not listed in <<locality-types>> are entered using the
-"custom localities" functionality.
+"custom locality" functionality.
 
-Custom localities are entered by prefixing the locality type with the string
-`locality:`. The locality type will be rendered as text preceding the equal
-sign. The locality type is meant to be valid for all languages, and is localised
-as with other localities through inclusion in the internationalisation YAML file for that language.
-(So `locality:appendix` would be used for both English and French texts; the
-realisation of `locality:appendix` as French _Appendice_ is a matter of gem configuration.)
+Metanorma accepts a fixed list of locality types in cross-references (see
+<<locality-types>>), which is not meant to be exhaustive of all possible
+locality types.
+
+[example]
+`annex` is recognized as a generic reference to annexes in documents, but it
+does not recognize appendixes (instead of annexes), or as distinct from annexes
+(as is the case in ISO deliverables).
+
+A custom locality is entered by prefixing the locality type with `locality:`.
+
+A custom locality has the following properties:
+
+* The locality type will be rendered as text preceding the equal sign.
+
+* The locality type shall not contain commas, colons, or space.
+
+* The locality type is meant to be valid for all languages.
++
+NOTE: The custom locality `locality:appendix` would be used for both English
+and French texts.
+
+* Localization of custom locality types is managed through inclusion in the
+internationalization YAML file for that language, which has to be customized
+as part of the Metanorma flavor implementation.
++
+NOTE: The custom locality `locality:appendix` is realized as French _Appendice_
+through configuration in the Metanorma flavor implementation.
+
 
 [example]
 .Example of referencing a custom locality the `locality:` prefix
@@ -988,10 +1003,6 @@ ____
 ____
 ====
 
-Custom localities may not contain commas, colons, or space.
-
-Localities with the `locality:` prefix can be recognized in internationalization
-configuration files, but they need to be added as part of the flavour..
 
 ==== Locality plus custom text
 
