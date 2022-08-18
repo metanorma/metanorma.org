@@ -93,15 +93,41 @@ renders:
 image::/assets/author/topics/document-format/text/fig-underline.png[Illustration of underlined text in Metanorma]
 ====
 
-=== Open-ended CSS
 
-The prefix `css` can be used to introduce a CSS style directive (corresponding to the 
-HTML `style` attribute) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6]:
+=== CSS declarations
+
+The `css` command is used to wrap content with a CSS declaration
+(https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/CSS_Declaration[MDN])
+[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
+
+This feature only applies to HTML output.
+
+NOTE: CSS declarations are also used within the HTML `style` attribute.
+
+The syntax is as follows:
 
 [source,asciidoc]
 --
-[css font-family:"Noto Sans JP"]#styled text#
+[css {css-directive}]#{styled-text}#
 --
+
+Where:
+
+* `{css-directive}` is a CSS declaration
+
+* `{styled-text}` is text where the CSS declaration is to be applied
+
+[example]
+.Example of applying a custom CSS declaration to content
+====
+[source,asciidoc]
+--
+[css font-family:"Noto Sans JP"]#お好み焼き#
+
+[css font-family:"Noto Sans Canadian Aboriginal"]#ᓀᐦᐃᔭᐍᐏᐣ#
+--
+====
+
 
 === Identifier
 
