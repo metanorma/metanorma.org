@@ -565,16 +565,21 @@ topic for more details.
 
 === Annotating pre-formatted citations semantically
 
-While a pre-formatted citation is not explictly broken down into its semantic components,
-it may be expedient to mark up segments of the citation semantically, to provide information
-which is useful for parsing; for example, indicating the author surnames and publication date,
-in order to generate an author-date citation.
+While a pre-formatted citation is not explicitly broken down into its semantic
+components, it may be expedient to mark up segments of the citation
+semantically, to provide information which is useful for parsing.
 
-For that reason, a limited number of span categories can be used to annotate a pre-formatted
+[example]
+In order to generate an author-date citation, it is necessary to indicate the
+author surnames and publication date.
+
+For that reason, a limited number of span categories can be used to annotate a
+pre-formatted
 citation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
-These are not an exhaustive list of bibliographic fields, and if more detail is required
-(or a dynamically generated citation is to be generated), one of the following explicit
-bibliographic entry methods should be used instead.
+
+These are not an exhaustive list of bibliographic fields, and if more detail is
+required (or a dynamically generated citation is to be generated), one of the
+following explicit bibliographic entry methods should be used instead.
 
 The span categories supported are:
 
@@ -594,14 +599,28 @@ The span categories supported are:
 * `uri.XXX`: URI, of type _XXX_.
 * `type`: Document type (e.g. _standard_, _book_, _inbook_): suppressed from rendering.
 
-For example:
-
+[example]
+.Example encoding of a bibliographic item inline with semantic markup
+====
 [source,asciidoc]
 ----
- * [[[A, B]]], span:surname[Wozniak], span:initials[S.] & span:givenname[Steve] span:surname[Jobs]. span:pubyear[1996]. span:title[_Work_]. In span:surname.editor[Gates], span:initials.editor[W. H], Collected Essays. span:docid.ISO[ISO 1234]. span:pubplace[Geneva]: span:publisher[International Standardization Organization]. span:uri.citation[http://www.example.com]. span:type[inbook]
+* [[[A, B]]],
+  span:surname[Wozniak], span:initials[S.] & span:givenname[Steve] span:surname[Jobs].
+  span:pubyear[1996].
+  span:title[_Work_].
+  In span:surname.editor[Gates], span:initials.editor[W. H],
+  Collected Essays.
+  span:docid.ISO[ISO 1234].
+  span:pubplace[Geneva]:
+  span:publisher[International Standardization Organization].
+  span:uri.citation[http://www.example.com].
+  span:type[inbook]
 ----
+====
 
-After the first instances of surname and either initials or givenname, any subsequent instances of surname or either initials or givenname are interpreted as belonging to a new contributor of the same role.
+After the first instances of `surname` and either `initials` or `givenname`, any
+subsequent instances of `surname` or either `initials` or `givenname` are
+interpreted as belonging to a new contributor of the same role.
 
 === Entering with AsciiBib
 
