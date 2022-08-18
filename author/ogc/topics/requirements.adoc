@@ -123,8 +123,10 @@ There are two ways to encode a ModSpec model:
 . Via block attributes
 
 The definition lists method is generally recommended for its multi-line syntax
-but some authors may prefer specifying attributes in the header. However, not
-all attributes are supported in the block attribute syntax (`target`, `indirect-dependency`).
+but some authors may prefer specifying attributes in the header.
+
+WARNING: Not all attributes are supported in the block attribute syntax.
+Specifically, `target`, `indirect-dependency` are not supported.
 
 NOTE: These two methods originate from Metanorma's general support of the
 alternative syntaxes for specifying a block attribute list as a definition list.
@@ -150,8 +152,9 @@ Attributes that can take rich textual input (Metanorma AsciiDoc input), such as
 encoded in the block attributes syntax using the `[.component]` role within the
 ModSpec model block, on open blocks or example blocks.
 
-EXAMPLE:
-
+[example]
+.Example of encoding a ModSpec requirement "part" in an open block syntax
+====
 [source,adoc]
 ----
 [.component,class=part]
@@ -159,7 +162,11 @@ EXAMPLE:
 Part A of the requirement.
 --
 ----
+====
 
+[example]
+.Example of encoding a ModSpec requirement "part" in an example block syntax
+======
 [source,adoc]
 ----
 [.component,class=part]
@@ -167,6 +174,7 @@ Part A of the requirement.
 Part A of the requirement.
 ====
 ----
+======
 
 Conversely, in definition list syntax, not only components such as `part` and
 `conditions`, but also `description` for descriptive text, can be specified
@@ -256,7 +264,7 @@ These two syntaxes can be mixed.
 
 === ModSpec model attributes
 
-A ModSpec model is encoded with one of these block types:
+A ModSpec model instance is encoded with one of these block types:
 
 * `[requirement]` for Requirement
 * `[recommendation]` for Recommendation
@@ -283,21 +291,34 @@ The following two encodings are equivalent:
 [requirement,type=conformance_test]
 ----
 
-* `identifier` (mandatory). Label of requirement, typically a URI. This must be unique
-in the document (as required by ModSpec), and is also used for referencing.
-Plain text. (Was `label` until https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.0 .)
+Attributes accepted by a ModSpec instance are as follows:
 
-* `subject` (optional). Subject that the model refers to. Plain text.
+`identifier`:: (mandatory) Identifier of the requirement, typically a URI. Plain text.
++
+This must be unique in the document (as required by ModSpec), and is also used for referencing
+and cross-linking between ModSpec instances.
++
+NOTE: The `identifier` was previously encoded as `label` until
+https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.0 .
 
-* `obligation` (optional). One of:
-** `requirement` (default)
-** `recommendation`
-** `permission`
+`subject`:: (optional) Subject that the model refers to. Plain text.
 
-* `target`. Requirement being tested by a Conformance test; Requirements class being tested by a
-Conformance class. Mandatory for those two requirement types. Is the identifier of the
-Requirement or Requirements class. Replaces `subject` in that context. 
-Only supported in definition list syntax. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.0] 
+`obligation`:: (optional) Accepted values are one of:
+*** `requirement` (default)
+*** `recommendation`
+*** `permission`
+
+`target`:: (conditional: only for conformance-related models)
+The "target" that is being tested against, specified with the identifier of the
+requirement or requirements class. (Replaces `subject` in that context.)
++
+NOTE: The `target` is only supported in definition list syntax. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.0]
+
+*** When in a conformance test (or an abstract test), specify the corresponding
+identifier of the requirement that is being tested.
+
+*** When in a conformance class, specify the corresponding identifier of the
+requirement class that is being tested.
 
 // * `model` (optional when using Metanorma OGC). Type of model. The value of `ogc`
 // means using OGC ModSpec models.
@@ -313,38 +334,38 @@ A Requirement (or Recommendation, Permission) is encoded as a `requirement`,
 
 It supports the following attributes in addition to base ModSpec attributes:
 
-* `conditions` (optional). Conditions on where this requirement applies. Accepts
-rich text.
+`conditions`:: (optional)
+Conditions on where this requirement applies. Accepts rich text.
 
-* `part` (optional). A requirement can contain multiple parts of
+`part`:: (optional) A requirement can contain multiple parts of
 sub-requirements. Accepts rich text. Labelled with a capital alphabetic letter.
 
 NOTE: A part is distinct from a step (as appears in <<conftest>>): a part is a
 component of a requirement, which is itself a requirement. A step is a stage in
 a process of testing a requirement: it only makes sense within a test method.
 
-* `inherit` (optional). A requirement can inherit from one or more requirements
+`inherit`:: (optional) A requirement can inherit from one or more requirements
 (_direct dependency_ in ModSpec terms).
 Accepts identifiers of other requirements: multiple values are semicolon-delimited.
 Can be repeated in definition list syntax.
 
-* `indirect-dependency` (optional). A requirement can inherit indirectly 
+`indirect-dependency`:: (optional) A requirement can inherit indirectly
 from one or more requirement classes, which have a different standardisation target from that of the
 requirement. That requirement class is used, produced, or associated with the current requirement,
-but its requirements are not inherited by this requirement. 
+but its requirements are not inherited by this requirement.
 Only supported in definition list syntax. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.1]
 
-* `classification` (optional). Classification of this requirement.
+`classification`:: (optional) Classification of this requirement.
 The `classification` attribute is marked up as in the rest of Metanorma:
 `key1=value1;key2=value2...`, where _value_ is either a single
 string, or a comma-delimited list of values.
 
-NOTE: Support for `conditions`, `part` [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2].
+NOTE: `conditions`, `part` supported since [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2].
 
-EXAMPLE:
-
-[source,asciidoc]
+[example]
 .OGC CityGML 3.0 sample requirement with two parts (block attributes)
+======
+[source,asciidoc]
 ----
 [requirement,identifier="/req/relief/classes"]
 ====
@@ -364,8 +385,15 @@ source, target, direction, roles, and multiplicities as those of the UML class.
 ====
 ----
 
-[source,asciidoc]
+renders as:
+
+image::/assets/author/ogc/reqt1.png[Rendering]
+======
+
+[example]
 .OGC CityGML 3.0 sample requirement with two parts (definition list)
+======
+[source,asciidoc]
 ----
 [requirement]
 ====
@@ -378,9 +406,11 @@ part:: The Implementation Specification SHALL represent associations with the sa
 source, target, direction, roles, and multiplicities as those of the UML class.
 ====
 ----
+======
 
-image::/assets/author/ogc/reqt1.png[Rendering]
-
+[example]
+.OGC CityGML 3.0 sample requirement with two parts (definition list)
+======
 [source,asciidoc]
 .OGC GroundWaterML 2.0 sample requirement
 ----
@@ -391,8 +421,10 @@ Logical Model UML defined in Section 8.
 ====
 ----
 
-image::/assets/author/ogc/reqt2.png[Rendering]
+renders as:
 
+image::/assets/author/ogc/reqt2.png[Rendering]
+======
 
 // The entries `test-purpose`, `test-method`, `conditions`, and `part` will
 // be recognised as components of those types.
@@ -511,20 +543,23 @@ NOTE: Classes for Recommendations will be captioned as
 Requirements classes allow the following attributes in addition to the base
 ModSpec attributes:
 
-* Name (mandatory). Name of the requirements class should be specified as the
+Name:: (mandatory) Name of the requirements class should be specified as the
 block caption.
 
-* `subject` (mandatory). The Target Type. Rendered as _Target Type_.
+`subject`:: (mandatory) The Target Type. Rendered as _Target Type_.
 
-* `inherit` (optional). Dependent requirements classes. See <<generalreqt,Requirement, recommendation, permission>>.
-* `indirect-dependency` (optional). Indirect dependent requirements classes. See <<generalreqt,Requirement, recommendation, permission>>.
+`inherit`:: (optional)
+Dependent requirements classes. See <<generalreqt,Requirement, recommendation, permission>>.
 
-* Embedded requirements (optional). Requirements contained in a class are marked
-up as nested requirements.
+`indirect-dependency`:: (optional)
+Indirect dependent requirements classes. See <<generalreqt,Requirement, recommendation, permission>>.
 
-EXAMPLE:
+Embedded requirements (optional)::
+Requirements contained in a class are marked up as nested requirements.
 
+[example]
 .Example from OGC CityGML 3.0
+======
 [source,asciidoc]
 ----
 [requirements_class]
@@ -537,7 +572,10 @@ inherit:: /req/req-class-construction
 ====
 ----
 
+renders as:
+
 image::/assets/author/ogc/reqt3.png[Rendering]
+======
 
 NOTE: In this example, both block attributes and definition list syntax is used;
 the `inherit` attribute has two values, which are expressed in the definition list.
@@ -552,29 +590,9 @@ requirements class, or specified outside of the requirements class (referenced
 using the identifier). If the requirement is specified within a definition list,
 the definition list value is interpreted as the requirement identifier.
 
-EXAMPLE:
-
-.Example from OGC GroundWaterML 2.0 (block attributes)
-[source,asciidoc]
-----
-[requirements_class,inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used"]
-.GWML2 core logical model
-====
-[%metadata]
-subject:: Encoding of logical models
-identifier:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
-
-[requirement,identifier="/req/core/encoding"]
-======
-======
-
-[requirement,identifier="/req/core/quantities-uom"]
-======
-======
-====
-----
-
+[example]
 .Example from OGC GroundWaterML 2.0 (definition list)
+======
 [source,asciidoc]
 ----
 [requirements_class]
@@ -615,12 +633,38 @@ GWML2 core logical model
 
 |===
 ____
+======
 
+[example]
+.Example from OGC GroundWaterML 2.0 (block attributes)
+========
+[source,asciidoc]
+----
+[requirements_class,inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used"]
+.GWML2 core logical model
+====
+[%metadata]
+subject:: Encoding of logical models
+identifier:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
+
+[requirement,identifier="/req/core/encoding"]
+======
+======
+
+[requirement,identifier="/req/core/quantities-uom"]
+======
+======
+====
+----
+========
 
 Embedded requirements (such as are found within Requirements classes) will
 automatically insert cross-references to the non-embedded requirements with the
-same identifier [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.8]:
+same identifier [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.8].
 
+[example]
+.Example of specifying embedded requirements within a ModSpec instance
+========
 [source,asciidoc]
 ----
 [requirements_class,identifier="/req/conceptual"]
@@ -659,6 +703,7 @@ ____
 
 |===
 ____
+========
 
 
 
@@ -674,19 +719,21 @@ A Conformance class is cross-referenced and captioned as
 Conformance classes support the following attributes in addition to base ModSpec
 attributes:
 
-* `target`. Associated Requirements class. Populated with the identifier of the
+`target`:: (mandatory) Associated Requirements class. Populated with the identifier of the
 Requirements class. Rendered as _Requirements Class_.
 
-* `inherit` (optional). Dependencies of the conformance class. Accepts multiple
+`inherit`:: (optional) Dependencies of the conformance class. Accepts multiple
 values, which are the identifiers of other requirements.
 See <<generalreqt,Requirement, recommendation, permission>>.
-* `indirect-dependency` (optional). Indirect dependent requirements classes. See <<generalreqt,Requirement, recommendation, permission>>.
+
+`indirect-dependency`:: (optional) Indirect dependent requirements classes. See
+<<generalreqt,Requirement, recommendation, permission>>.
 
 Conformance classes also feature:
 
-* Name (optional). Specified as the block caption.
+Name:: (optional) Specified as the block caption.
 
-* Nesting (optional). Conformance tests contained in a conformance class are
+Nesting:: (optional) Conformance tests contained in a conformance class are
 encoded as conformance tests within the conformance class block.
 See <<reqt_class,Requirements class>>.
 
@@ -694,17 +741,9 @@ NOTE: Conformance classes do not have a Target Type (as specified in ModSpec).
 If one must be encoded, it should be encoded as a classification key-value
 pair.
 
-EXAMPLE:
-
-[source,asciidoc]
-----
-[conformance_class,identifier="http://www.opengis.net/spec/ogcapi-features-2/1.0/conf/crs",inherit="http://www.opengis.net/doc/IS/ogcapi-features-1/1.0#ats_core",classification="Target Type:Web API"]
-====
-[%metadata]
-target:: http://www.opengis.net/spec/CityGML-1/3.0/req/req-class-building
-====
-----
-
+[example]
+.Example of encoding a conformance class using definition list syntax
+======
 [source,asciidoc]
 ----
 [conformance_class]
@@ -731,6 +770,20 @@ ____
 |Target Type   |Web API
 |===
 ____
+======
+
+[example]
+.Example of encoding a conformance class using list attribute syntax
+======
+[source,asciidoc]
+----
+[conformance_class,identifier="http://www.opengis.net/spec/ogcapi-features-2/1.0/conf/crs",inherit="http://www.opengis.net/doc/IS/ogcapi-features-1/1.0#ats_core",classification="Target Type:Web API"]
+====
+[%metadata]
+target:: http://www.opengis.net/spec/CityGML-1/3.0/req/req-class-building
+====
+----
+======
 
 
 [[conftest]]
@@ -759,36 +812,37 @@ It is cross-referenced as "`Abstract test {N}`" [added in https://github.com/met
 Conformance tests support the following attributes and components in addition to
 base ModSpec attributes:
 
-* `target`. The associated requirement. Populated with the identifier of the requirement.
+`target`:: The associated requirement. Populated with the identifier of the requirement.
 Multiple semicolon-delimited values may be provided. Rendered as _Requirement_.
 
-* `inherit` (optional). Dependencies. Accepts multiple values, which are the identifiers
+`inherit`:: (optional) Dependencies. Accepts multiple values, which are the identifiers
 of other requirements.  See <<generalreqt,Requirement, recommendation, permission>>.
 * `indirect-dependency` (optional). Indirect dependent requirements classes. See <<generalreqt,Requirement, recommendation, permission>>.
 
-* Components (optional). Components of the conformance test. Accepts rich
+Components:: (optional) Components of the conformance test. Accepts rich
 text. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.0].
 Allows the following classes:
 
-** `test-purpose` (optional). Purpose of the test. Rich text. Presented as _Test
+`test-purpose`::: (optional) Purpose of the test. Rich text. Presented as _Test
 Purpose_ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2]
 
-** `test-method` (optional). Method of the test. Rich text. Presented as _Test
+`test-method`::: (optional) Method of the test. Rich text. Presented as _Test
 Method_ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2]
 
-** `step` (optional). Step of the test method. Is expected to be embedded within `test-method`,
+`step`::: (optional) Step of the test method. Is expected to be embedded within `test-method`,
 and may contain substeps of its own. Rich text. Presented as a numbered list.
 added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2].
 +
 Steps can be nested, the nested list order is: _arabic_, then _alphabetic_, then
 _roman_.
 
-** `test-method-type` (optional). Method of the test. Rich text. Presented as
+`test-method-type`::: (optional) Method of the test. Rich text. Presented as
 _Test Method Type_ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.3]
 
-** `reference` (optional). Purpose of the test. Rich text. Presented as _Reference_.
+`reference`::: (optional) Purpose of the test. Rich text. Presented as _Reference_.
 
-* Test type of a Conformance test is encoded as a `classification` key-value pair.
+Test type:: The test type of a Conformance test is encoded as a `classification` key-value pair.
+
 
 Conformance tests also feature:
 
@@ -797,9 +851,44 @@ Conformance tests also feature:
 NOTE: Conformance Tests are excluded from the "`Table of Requirements`" in Word
 output [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.10].
 
-EXAMPLE:
+[example]
+.Example of Abstract test from CityGML 3.0 (definition list)
+======
+[source,adoc]
+----
+[abstract_test]
+====
+[%metadata]
+identifier:: /conf/core/classes
 
+target:: /req/core/classes
+
+test-purpose:: To validate that the Implementation Specification correctly
+implements the UML Classes defined in the Conceptual Model.
+
+test-method-type:: Manual Inspection
+
+description:: For each UML class defined or referenced in the Core Package:
+
+part:: Validate that the Implementation Specification contains a data element
+which represents the same concept as that defined for the UML class.
+
+part:: Validate that the data element has the same relationships with other
+elements as those defined for the UML class. Validate that those relationships
+have the same source, target, direction, roles, and multiplicities as those
+documented in the Conceptual Model.
+====
+----
+
+renders as:
+
+image::/assets/author/ogc/reqt4.png[Rendering]
+======
+
+
+[example]
 .Example of Abstract test from CityGML 3.0 (block attributes)
+======
 [source,adoc]
 ----
 [abstract_test,identifier="/conf/core/classes"]
@@ -835,37 +924,65 @@ Conceptual Model.
 --
 ====
 ----
+======
 
-.Example of Abstract test from CityGML 3.0 (definition list)
-[source,adoc]
+[example]
+.Example of Abstract test from DGGS (definitions list)
+======
+[source,asciidoc]
 ----
 [abstract_test]
 ====
 [%metadata]
-identifier:: /conf/core/classes
+identifier:: /conf/crs/crs-uri
+target:: /req/crs/crs-uri
+target:: /req/crs/fc-md-crs-list-A
+target:: /req/crs/fc-md-storageCrs
+target:: /req/crs/fc-md-crs-list-global
+classification:: Test Type:Basic
+test-purpose:: Verify that each CRS identifier is a valid value
+test-method::
++
+--
+For each string value in a `crs` or `storageCrs` property in the collections and collection objects,
+validate that the string conforms to the generic URI syntax as specified by
+https://tools.ietf.org/html/rfc3986#section-3[RFC 3986, section 3].
 
-target:: /req/core/classes
+. For http-URIs (starting with `http:`) validate that the string conforms to the syntax specified by RFC 7230, section 2.7.1.
 
-test-purpose:: To validate that the Implementation Specification correctly
-implements the UML Classes defined in the Conceptual Model.
-
-test-method-type:: Manual Inspection
-
-description:: For each UML class defined or referenced in the Core Package:
-
-part:: Validate that the Implementation Specification contains a data element
-which represents the same concept as that defined for the UML class.
-
-part:: Validate that the data element has the same relationships with other
-elements as those defined for the UML class. Validate that those relationships
-have the same source, target, direction, roles, and multiplicities as those
-documented in the Conceptual Model.
+. For https-URIs (starting with `https:`) validate that the string conforms to the syntax specified by RFC 7230, section 2.7.2.
+--
+reference:: <<ogc_07_147r2,clause=15.2.2>>
 ====
 ----
 
-image::/assets/author/ogc/reqt4.png[Rendering]
+renders as:
 
+____
+
+[cols="1,3"]
+|===
+2+a|Abstract Test 1
+
+2+a|/conf/crs/crs-uri
+|Requirement  |_/req/crs/crs-uri, /req/crs/fc-md-crs-list A, /req/crs/fc-md-storageCrs, /req/crs/fc-md-crs-list-global_
+|Test Purpose   |Verify that each CRS identifier is a valid value
+|Test Method   a|For each string value in a `crs` or `storageCrs` property in the collections and collection objects,
+validate that the string conforms to the generic URI syntax as specified by
+https://tools.ietf.org/html/rfc3986#section-3[RFC 3986, section 3].
+
+. For http-URIs (starting with `http:`) validate that the string conforms to the syntax specified by RFC 7230, section 2.7.1.
+. For https-URIs (starting with `https:`) validate that the string conforms to the syntax specified by RFC 7230, section 2.7.2.
+
+|Reference | OGC-07-147r2: cl. 15.2.2
+|Test Type | Basic
+|===
+____
+======
+
+[example]
 .Example of Abstract test from DGGS (block attributes)
+======
 [source,asciidoc]
 ----
 [abstract_test,identifier="/conf/crs/crs-uri",classification="Test Type:Basic"]
@@ -899,63 +1016,12 @@ https://tools.ietf.org/html/rfc3986#section-3[RFC 3986, section 3].
 
 ====
 ----
-
-.Example of Abstract test from DGGS (definitions list)
-[source,asciidoc]
-----
-[abstract_test]
-====
-[%metadata]
-identifier:: /conf/crs/crs-uri
-target:: /req/crs/crs-uri
-target:: /req/crs/fc-md-crs-list-A
-target:: /req/crs/fc-md-storageCrs
-target:: /req/crs/fc-md-crs-list-global
-classification:: Test Type:Basic
-test-purpose:: Verify that each CRS identifier is a valid value
-test-method::
-+
---
-For each string value in a `crs` or `storageCrs` property in the collections and collection objects,
-validate that the string conforms to the generic URI syntax as specified by
-https://tools.ietf.org/html/rfc3986#section-3[RFC 3986, section 3].
-
-. For http-URIs (starting with `http:`) validate that the string conforms to the syntax specified by RFC 7230, section 2.7.1.
-
-. For https-URIs (starting with `https:`) validate that the string conforms to the syntax specified by RFC 7230, section 2.7.2.
---
-reference:: <<ogc_07_147r2,clause=15.2.2>>
-====
-----
-
-
-renders as:
-
-____
-
-[cols="1,3"]
-|===
-2+a|Abstract Test 1
-
-2+a|/conf/crs/crs-uri
-|Requirement  |_/req/crs/crs-uri, /req/crs/fc-md-crs-list A, /req/crs/fc-md-storageCrs, /req/crs/fc-md-crs-list-global_
-|Test Purpose   |Verify that each CRS identifier is a valid value
-|Test Method   a|For each string value in a `crs` or `storageCrs` property in the collections and collection objects,
-validate that the string conforms to the generic URI syntax as specified by
-https://tools.ietf.org/html/rfc3986#section-3[RFC 3986, section 3].
-
-. For http-URIs (starting with `http:`) validate that the string conforms to the syntax specified by RFC 7230, section 2.7.1.
-. For https-URIs (starting with `https:`) validate that the string conforms to the syntax specified by RFC 7230, section 2.7.2.
-
-|Reference | OGC-07-147r2: cl. 15.2.2
-|Test Type | Basic
-|===
-____
+======
 
 
 == Rendering of ModSpec models
 
-OGC ModSpec models are rendered as tables.
+OGC ModSpec models are rendered in a table format.
 
 NOTE: This rendering method is consistent with prior OGC practice.
 
@@ -995,9 +1061,9 @@ they are semicolon delimited [added in https://github.com/metanorma/metanorma-st
 by the attribute value. If there are multiple values of the attribute,
 they are semicolon delimited.
 
-** The `indirect-dependency` attribute of the requirement, if given: _Indirect Dependency_ followed
-by the attribute value. If there are multiple values of the attribute,
-they are semicolon delimited.
+** The `indirect-dependency` attribute of the requirement, if given:
+_Indirect Dependency_ followed by the attribute value. If there are multiple
+values of the attribute, they are semicolon delimited.
 
 ** The `classification` attributes of the requirement, if given: the
 classification tag (in capitals), followed by the classification value.
@@ -1037,8 +1103,9 @@ legacy Metanorma components:
 *** `[.import]`
 
 
+== Legacy usage
 
-== Legacy Metanorma OGC AsciiDoc syntax
+=== Legacy Metanorma OGC AsciiDoc syntax
 
 For legacy reasons, a second Metanorma OGC AsciiDoc syntax is permitted for
 recommendations, requirements and permissions.
@@ -1072,7 +1139,7 @@ the document SHOULD conform to the
 ----
 ====
 
-== Legacy ModSpec type keywords
+=== Legacy ModSpec type keywords
 
 These values for the ModSpec model type have been deprecated:
 
