@@ -100,6 +100,20 @@ draft, the edition number indicates the intended edition number.
 ----
 ====
 
+`docstage`:: Document stages. Allowed values are:
+
+`draft`::: This document is in draft stage, being developed.
+
+`approved`::: (default) This document has been approved by the IEEE SASB.
++
+NOTE: Approved does not necessarily mean published, it is a necessary stage
+prior to publication.
+
+`superseded`::: This document has been superseded.
+
+`withdrawn`::: This document has been withdrawn.
+
+
 `doctype`::
 Document type. Definitions of the document type are found on
 the https://standards.ieee.org/develop/drafting-standard/resources/[IEEE SA Style Manual].
@@ -110,6 +124,9 @@ Choices:
 `standard`:: This document is a Standard (default)
 `recommended-practice`:: This document is a Recommended Practice
 `guide`:: This document is a Guide
+`whitepaper`:: This document is a White Paper
+`redline`:: This document is a Redline product document
+`other`:: This document is of a type not otherwise described
 --
 
 `docsubtype`::
@@ -132,20 +149,6 @@ NOTE: Please see
 https://standards.ieee.org/about/policies/opman/sect5/[Operations Manual, 5.7 Trial-Use standards]
 for more details.
 
-`docstatus`:: Status of document.
-+
---
-Allowed values are:
-
-`developing`:: Document is under development.
-`active`:: Document is active.
-`inactive`:: Document is inactive.
-+
-NOTE: See https://standards.ieee.org/about/policies/opman/sect6/[Operations Manual, 6.3.3 Inactive standards] for details.
-
-If not supplied, the value is `developing` if `draft` is supplied, else `active`.
---
-
 `issued-date`:: The date on which the document was approved.
 Like all dates in Metanorma, this must be supplied in `YYYY-MM-DD` format.
 +
@@ -165,6 +168,8 @@ document will be accepted.
 `obsoleted-date`::
 
 *** When `trial-use` is set to `false`: the date on which the document will become `inactive`.
++
+NOTE: See https://standards.ieee.org/about/policies/opman/sect6/[Operations Manual, 6.3.3 Inactive standards] for details.
 
 *** When `trial-use` is set to `true`: the date on which the document will expire.
 +
