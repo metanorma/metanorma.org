@@ -1,0 +1,346 @@
+---
+layout: post
+title: "Editor notes, reviewer comments and TODOs now available in Metanorma PDF"
+date: 2022-08-21
+categories: documentation
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+  -
+    name: Alexander Dyuzhev
+    email: dyuzhev@gmail.com
+    social_links:
+      - https://www.linkedin.com/in/alexander-dyuzhev/
+      - https://github.com/Intelligent2013/
+
+excerpt: >-
+  Metanorma-generated PDFs now incorporate reviewer notes and annotations.
+---
+
+== Introduction
+
+Consensus building is vital to any standards development process. For
+international or industry standards, the internal circulation and public review
+stages are key to demonstrate consensus and gain public acceptance.
+
+During these review stages, reviewers are asked to provide feedback on the
+standard draft. Instead of providing a plain draft, standard bodies, authors and
+editors may opt to provide additional information inline to the draft being
+reviewed, including review notes, guidance and annotations to clarify the intent
+of content.
+
+== Supporting semantic annotations in Metanorma
+
+Metanorma supports a host of semantic annotation mechanisms, including:
+
+* Editor notes: notes from the editor (or the editorial process) intended for
+the reader
+
+* https://www.metanorma.org/author/topics/document-format/reviewer-notes/[Reviewer notes and comments]:
+comments from reviewers, internal or external, intended to highlight or clarify
+issues. Reviewer comments can apply in two ways:
+
+** Ranged comments: where comments apply to a range of text, with a defined
+start and end.
+
+** Standalone comments: where the comments apply to a particular point in the text.
+
+* TODOs: notes intended for the project's authors or editors as a reminder
+for something to be done in the text.
+
+Until recently, Metanorma only supported outputting semantic annotations in
+HTML and Word DOC formats.
+
+To better support standards bodies and committees that use Metanorma for
+standards development, semantic annotation output is now available in
+Metanorma-generated PDFs.
+
+
+
+== Types of Metanorma annotations
+
+[[editors-note]]
+== Editor's notes
+
+Editor's notes are specified using the `EDITOR:` prefix or the `[EDITOR]` block
+syntax.
+
+The editor's note is rendered as a document element (an admonition), which means
+that they are rendered as real elements in the content flow, and cannot span or
+point to content. No locality needs to be provided.
+
+The editor's note is always rendered, regardless of the draft status of the
+standard.
+
+[example]
+.Example of an editorial note (from ISO 19135)
+====
+[source,adoc]
+----
+== Conformance
+
+EDITOR: The contents of this clause will be changed in conjunction with the UML.
+----
+
+renders as:
+
+.Editor's note from ISO 19135 (Preview)
+image::/assets/blog/2022-08-21_editor.png[Editor's note from ISO 19135 (Preview)]
+====
+
+[[todos]]
+== To-dos
+
+To-dos (or "TODOs" in the computer world) are specified using the `TODO:`
+prefix or the `[TODO]` block.
+
+Similar to the editor's notes, they are rendered as document elements (as
+admonitions) and are presented in the content flow. Again, no locality needs
+to be supplied to use TODOs.
+
+Different from the editor's note, to-do blocks are only rendered if the
+standard specifies the document attribute `:draft:`.
+
+[example]
+.Example of a TODO (from ISO 19135)
+====
+[source,adoc]
+----
+== Introduction
+
+TODO: Revise introduction.
+----
+
+renders as:
+
+.To-do from ISO 19135 (Preview)
+image::/assets/blog/2022-08-21_todo.png[To-do from ISO 19135 (Preview)]
+====
+
+
+== Reviewer notes
+
+=== General
+
+Reviewer notes are specified using the `[reviewer]` block syntax.
+There are two types of reviewer notes:
+
+* standalone comment
+* ranged comment
+
+The reviewer notes (as with the TODOs) are only rendered if the `:draft:`
+document attribute is set, which identifies the document as a draft.
+
+We will be using the ISO Rice document
+(https://github.com/metanorma/mn-samples-iso/blob/main/sources/international-standard/body/body-en.adoc[Metanorma sample]) as an example.
+
+
+[[standalone]]
+=== Standalone reviewer note
+
+==== Syntax
+
+For a standalone comment, the syntax is as follows:
+
+[source,adoc]
+----
+[reviewer={name of reviewer},date={YYYY-MM-DD}]
+****
+Note content
+****
+----
+
+or
+
+[source,adoc]
+----
+[reviewer={name of reviewer},date={YYYY-MM-DD},from={anchor}]
+****
+Note content
+****
+----
+
+Where:
+
+* `{name of reviewer}` is the name of the reviewer
+* `{YYYY-MM-DD}` is the date of the review comment, in the ISO 8601-1 format "YYYY-MM-DD"
+* `Note content` is the intended content of the note.
+* `{anchor}` (optional) is an anchor location of where the reviewer note should
+appear. This parameter is entirely optional.
+
+==== Rendering
+
+A standalone reviewer note is rendered in a generated PDF document with:
+
+* small orange icon with a tool-tip
+* comment text in the Acrobat Reader Comment tool panel
+
+
+==== Example
+
+The following block specifies is a standalone reviewer note -- as it does not
+reference a location that relates to concrete text. It is shown at the end of
+the specified section of `from` and `to`.
+
+
+[example]
+.Example of a standalone review note (from the ISO Rice document)
+====
+[source,adoc]
+----
+[reviewer=ISO,date=2017-01-01,from=foreword]
+****
+A Foreword shall appear in each document. The generic text is shown here. It
+does not contain requirements, recommendations or permissions.
+
+For further information on the Foreword, see
+*ISO/IEC Directives, Part 2, 2016, Clause 12*.
+****
+----
+
+renders as:
+
+.Standalone reviewer note from the ISO Rice document (Adobe Reader)
+image::/assets/blog/2022-08-21_standalone.png[Standalone reviewer note from the ISO Rice document (Adobe Reader)]
+====
+
+NOTE: This example applies bolding to the "ISO/IEC ..., Clause 12" text. Usage
+of rich-text comments are not supported by all PDF readers, please refer to
+<<compat>> for details.
+
+
+[[ranged]]
+=== Ranged reviewer note
+
+==== Syntax
+
+For a ranged reviewer note, the syntax is as follows
+
+[source,adoc]
+----
+[reviewer={name of reviewer},date={YYYY-MM-DD},from={from anchor},to={to anchor}]
+****
+Note content
+****
+----
+
+Where:
+
+* `{name of reviewer}` is the name of the reviewer
+* `{YYYY-MM-DD}` is the date of the review comment, in the ISO 8601-1 format "YYYY-MM-DD"
+* `Note content` is the intended content of the note.
+* `{from anchor}` is an anchor location of where the reviewer note should
+start.
+* `{to anchor}` is an anchor location of where the reviewer note should
+end.
+
+
+==== Rendering
+
+The ranged reviewer note renders as following:
+
+* small orange icon with a tool-tip
+* highlighted text
+* comment's text in the Acrobat Reader Comment tool panel
+
+
+==== Example
+
+The following example applies a reviewer note that highlights a textual range,
+namely, the text wrapped by the `[[start_review1]]` and `[[end_review1]]`
+anchors. The reviewer note specifies `from=start_review1,to=end_review1`
+as the start and end.
+
+[example]
+.Example of a ranged reviewer comment (from the ISO Rice document)
+====
+[source,adoc]
+----
+This second edition cancels and replaces the
+[[start_review1]]second[[end_review1]] edition (ISO
+{docnumber}-{partnumber}:2009), which has been technically revised.
+...
+
+[reviewer=ISO,date=2022-07-01,from=start_review1,to=end_review1]
+****
+Instead of _second_ should be _first_.
+****
+----
+
+renders as:
+
+.Ranged reviewer note from the ISO Rice document (Adobe Reader)
+image::/assets/blog/2022-08-21_ranged.png[Ranged reviewer note from the ISO Rice document (Adobe Reader)]
+====
+
+NOTE: This example applies italics to the "second" and "first" texts. Usage
+of rich-text comments are not supported by all PDF readers, please refer to
+<<compat>> for details.
+
+
+== Comparison of semantic annotation methods
+
+Here's a handy table that compares the differences between the annotation types.
+
+.Comparison of semantic annotation methods
+[cols="2,2,1"]
+|===
+| Annotation type | When rendered | Supports range?
+
+| <<editors-note>> | Always                           | No
+| <<todos>>        | Only when `:draft:` is specified | No
+| <<standalone>>   | Only when `:draft:` is specified | No
+| <<ranged>>       | Only when `:draft:` is specified | Yes
+
+|===
+
+
+[[compat]]
+== Reader compatibility
+
+While the PDF standard is widely adopted, not all PDF readers implement all the
+features available. As it is to be expected, only Adobe Reader (and Adobe Acrobat Pro)
+attempts to implement all available features.
+
+In the department of PDF annotations:
+
+* most of the common PDF readers implement plain text comments only
+* the presentation of comments vary widely, and can occasionally crash documents
+or trigger editing of the comments, and is not always saveable (Preview).
+
+When using reviewer notes, you need to be aware that rich-text functionality
+such as bold and italics within the notes will lead to those notes being hidden
+(or broken) in PDF readers that do not implement them.
+
+The following table describes the level of annotation support of common PDF
+readers.
+
+.Compatibility of PDF comments across popular PDF readers
+|===
+| PDF viewer application | Comments support | Rich text support
+
+| Adobe Reader      | ✅ | ✅
+| Foxit PDF Reader  | ✅ | doesn't display rich text from the generated PDF, but text can be formatted as rich text
+| Preview (macOS)   | ✅ | ❌, text displays as plain text only
+| Skim (macOS)      | ✅ | ❌, text displays as plain text only
+| Firefox (browser) | ✅ | doesn't display bolded text, only italic
+| Safari (browser)  | shows only orange icon | doesn't display text at all
+| Microsoft Word    | ❌ | ❌
+|===
+
+
+== Conclusion
+
+Metanorma provides multiple methods for semantically annotating standards,
+and now this functionality is available across all output formats, including
+HTML, Word, and PDF.
+
+When using rich-text annotations, consider the PDF reader compatibility
+matrix in <<compat>> for the intended audience.
+
+== Bibliography
+
+* https://www.metanorma.org/author/topics/document-format/reviewer-notes/[Metanorma reviewer notes and comments]
