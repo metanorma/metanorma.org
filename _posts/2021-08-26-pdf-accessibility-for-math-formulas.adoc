@@ -231,10 +231,23 @@ Ever wonder how a scanned PDF file treated with OCR allows you to select text on
 top of a scan? That's the PDF content tree being layered behind the scanned
 image.
 
-This technique involves inserting "non-visible text" behind SVG math formulas.
-"Non-visible" means that we insert the human-readable math formulas in the PDF
-content tree, but place them behind the rendered math formulas and blend them
-into the background.
+This technique involves inserting "invisible text" behind SVG math formulas.
+This means that we insert the human-readable math formulas in the PDF
+content tree, but place them "behind" the rendered math formulas so that
+they are still selectable.
+
+NOTE: The term "behind" here refers to placing accessible text content with a
+lower z-index than the presentational text layer.
+
+The PDF specification,
+https://www.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf[ISO 32000-1:2008],
+9.3.6, supports different "text rendering modes".
+Mode 3 is invisible text, which means that the text is rendered with no fill nor
+stroke. This technique is used to hide the accessible, text-selectable, math
+without affecting the presentation, behind the normal content.
+
+.ISO 32000-1:2008 supported text rendering modes
+image::/assets/blog/2021-08-26_8.png[ISO 32000-1:2008 supported text rendering modes]
 
 To achieve this, mn2pdf directly edits the
 https://xmlgraphics.apache.org/fop/2.6/intermediate.html[Apache FOP Intermediate Format]
@@ -253,7 +266,7 @@ in Metanorma presentation XML as comments in the MathML `<math>` tag.
 . Determine font size of the human-readable math to fit into bounding box;
 
 . Insert the human-readable math as transparent text (i.e. the text is invisible
-  on any background) under the rendered math formula SVG.
+  on any background) behind the rendered math formula SVG.
 
 As shown in the screenshot below, the human-readable math markup (here
 AsciiMath) is inserted into the Content tree.
@@ -282,7 +295,7 @@ full.
 image::/assets/blog/2021-08-26_5.png[Complex human-readable math copied from PDF]
 
 NOTE: The light blue highlight at the bottom part of the rendered formula
-reflects where the inserted non-visible text (AsciiMath) is located.
+reflects where the inserted invisible text (AsciiMath) is located.
 
 This functionality is available on most PDF readers.
 
@@ -337,7 +350,9 @@ In the SI Brochure, we embed the following content in these tags:
 * human-readable math markup in alternate text (PDF "Alt"), and
 * MathML in actual text (PDF "Actual Text").
 
-Both Adobe Reader and Adobe Acrobat Pro can read the content of alternate text via the "`Read Out Loud`" function (available at the menu bar "`View > Read Out Load`").
+Both Adobe Reader and Adobe Acrobat Pro can read the content of alternate text
+via the "`Read Out Loud`" function (available at the menu bar "`View > Read Out
+Load`").
 
 Adobe Acrobat Pro has additional features to inspect alternate text and actual
 text tags:
