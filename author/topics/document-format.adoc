@@ -2,26 +2,27 @@
 layout: author-docs
 description: >-
   <p>
-  This is a general guidance for authoring Metanorma documents using Metanorma AsciiDoc.
+  This section provides general guidance for authoring Metanorma documents using
+  Metanorma AsciiDoc.
 
   <p>
-  Since Metanorma uses AsciiDoc markup
-  (see <a href="/author/approach/">Approach</a> for technical background),
-  this section details the specific ways in which Metanorma interprets AsciiDoc markup,
-  as well as custom markup directives.
+  This describes the Metanorma AsciiDoc language and how it extends the AsciiDoc
+  markup language (see <a href="/author/approach/">Approach</a> for technical
+  details).
 
   <p>
-  This section applies across most of the
-  <a href="/flavors/">officially supported flavors of Metanorma</a>.
-  If you are using one of those flavors,
-  be sure to also check out guidelines for your flavor.
+  Content here applies across most of the
+  <a href="/flavors/">supported flavors of Metanorma</a>, for additional
+  features available for specific flavors, please refer to the flavor's
+  documentation.
 ---
 
 = Metanorma AsciiDoc
 
-== Basic AsciiDoc syntax
+== Basic syntax
 
-Metanorma AsciiDoc is based on the AsciiDoc syntax used by Asciidoctor.
+Metanorma AsciiDoc is based on the AsciiDoc syntax used by Asciidoctor,
+and inherits most of its syntax.
 
 Please refer to the https://asciidoctor.org/docs/user-manual/[Asciidoctor manual]
 for general markup mechanisms offered in typical AsciiDoc.
@@ -29,16 +30,30 @@ for general markup mechanisms offered in typical AsciiDoc.
 
 == Unsupported AsciiDoc features
 
-* Sidebars (``aside``s) are not supported. Instead, they are used for link:./reviewer-notes/[reviewer comments].
-* Page breaks (`thematic break`) are not supported.
-* ASCII art/preformatted text (`literal`) are not supported in most Metanorma flavors.
+* Sidebars (``aside``s) are not supported.
+Instead, see link:./annotations/[semantic annotations].
+
+* Page breaks ("thematic break") are not supported, as Metanorma documents are
+focuses on semantic encoding.
+
+* ASCII art, or preformatted text ("literal content"), are only supported in
+selected Metanorma flavors, as they are disallowed in most standardization
+organizations.
 
 
 == Auto-numbering
 
-In addition to the blocks that typical AsciiDoc already supports auto-numbering for (such as tables
-and figures),
-auto-numbering in Metanorma extends to formulas (which are encoded as `stem` blocks) and notes.
+Metanorma auto-numbering extends beyond typical AsciiDoc, applying to document
+elements including:
 
-Auto-numbering is applied in the conversion from Metanorma XML to output formats (`isodoc`);
-by default it restarts for each annex, but is continuous within the main body of text.
+* tables
+* figures
+* formulas
+* notes
+
+Auto-numbering is applied during conversion from Metanorma semantic XML to Metanorma presentation XML.
+
+NOTE: Auto-numbering rules are implemented according to the needs of specific
+flavors.
+For most flavors, the numbering is continuous within the main body of text
+and restarts for each annex.
