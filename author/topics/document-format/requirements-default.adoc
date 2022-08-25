@@ -1,0 +1,151 @@
+---
+layout: author-docs
+---
+
+= Metanorma Default model for Requirements
+
+== Attributes
+
+The following attributes are supported:
+
+`subject`:: Indicates the subject of the requirement.
+Does not get rendered in final output (although this may be overridden in flavours).
+Multiple instances of `subject` can be given, semicolon-delimited [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4]
+
+`identifier`:: Indicates identifier assigned to the requirement.
+If present, it will be rendered in final output (formerly `label`). [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.0]
+
+`classification`:: May be used to give an arbitrary number of key-value pairs of tags describing
+the requirement. Key and value are separated by a colon, multiple values are delimited by comma,
+and key-value pairs are delimited by semicolon.
+Both key and value are expected to be tokens containing no punctuation.
+
+`obligation`:: Can contain one or more of "requirement", "permission", "recommendation",
+comma-delimited. Using this attribute will override the obligation of the requirement.
+
+`inherit`:: May be used to reference the label of a requirement or definition
+that is imported or presupposed by this requirement.
+Can contain multiple semicolon-delimited
+identifiers. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14]. +
++
+Multiple instances of `inherit` can also be expressed with the `inherit` macro,
+which can contain markup including
+cross-references [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21]. +
++
+[example]
+====
+[source,adoc]
+--
+inherit:[<<ref1>>]
+--
+====
+
+`:model`:: The specific data model followed by the requirement.
+
+`:type`:: The applicable subclass of requirement.
+
+== Named blocks and descriptions
+
+The internal structure of a requirement can be encoded in order to make it
+machine-readable, although this is not expected to be reflected in rendering.
+
+The internal structure of requirements is encoded using open blocks,
+or [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
+example blocks,
+which are marked up with a succession of two or more hyphens, rather than equals signs.
+
+Each block needs to be named with the kind of component it contains
+as a role attribute; the recognised values for Metanorma Default are:
+
+* `specification` (a formal statement, which may be considered
+the object of the requirement)
+* `measurement-target`  (for quantitative requirements)
+* `verification` (verification steps for the requirement)
+* `import` (code stubs)
+* `component` (generic component of requirement) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4]
+
+[example]
+.An example of a requirement with four components
+======
+[source,asciidoc]
+----
+[.requirement]
+====
+[.specification]
+--
+This is a formal specification
+--
+
+[.measurement-target]
+=====
+This is a measurement target
+=====
+
+[.verification]
+--
+This is a verification step
+--
+
+[.import]
+--
+This is a code stub
+--
+
+====
+----
+======
+
+The component value is associated with an additional `class` attribute, to
+specify the particular kind of component; if no such attribute is given,
+the default value is `component`.
+
+[example]
+=====
+[source,asciidoc]
+----
+[.requirement]
+====
+
+[.component,class=conditions]
+--
+The following conditions need to be fulfilled...
+--
+====
+----
+=====
+
+The combination of example markup and open block markup  allows us to combine
+nested requirements with internal structure for the nested requirements:
+
+[example]
+.An example of nested requirements with components
+======
+[source,asciidoc]
+-----
+[.requirement,label="requirement A"]
+====
+
+[.requirement,label="requirement A1"]
+=====
+
+[.specification]
+--
+This is a formal specification
+--
+
+=====
+
+[.requirement,label="requirement A2"]
+=====
+
+[.measurement-target]
+--
+This is a measurement target
+--
+
+=====
+
+====
+-----
+======
+
