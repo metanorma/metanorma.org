@@ -31,13 +31,37 @@ I recommend this
 NOTE: Below, the term "requirement" is used to refer to any of these three block
 types.
 
+== Models
+
+Metanorma allows requirements to be specified in different 
+models [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.1]. Currently
+the following requirements are supported:
+
+* Metanorma default: `default`
+* OGC Modspec: `ogc`
+
+Each model has different structures, validation rules, and renderings of requirements. A single document
+can combine requirements from different models, but we do not recommend it, as it can be confusing to users.
+
+The model for requirements can be specified in three ways:
+
+. Use the default for the current Metanorma flavour. This is `default` for all flavours except for OGC, which
+uses a default of `ogc`. If you do not explicitly specify anything, this is what will happen.
+. Use the `requirements-model:` document attribute to specify the requiremnts model for the current document.
+For example, if you want the requirements in an ISO document to be Modspec, add `requirements-model: ogc`
+as a document attribute to the document.
+. Use the `model` attribute to specify the model specific to that requirement. This is extra effort, and only
+makes sense if you will use more than one model within a document. Note that the `model` attribute cannot be
+specified in a definition list, unlike other arguments.
+
+More information on the supported model is given separately:
+
+* link:author/topics/document-format/requirements-default[Metanorma default]
+* link:author/topics/document-format/requirements-modspec[OGC Modspec]
+
 == Attributes
 
 The following attributes are supported in these block types:
-
-`subject`:: Indicates the subject of the requirement.
-Does not get rendered in final output (although this may be overridden in flavours).
-Multiple instances of `subject` can be given, semicolon-delimited [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4]
 
 `identifier`:: Indicates identifier assigned to the requirement.
 If present, it will be rendered in final output (formerly `label`). [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.0]
@@ -50,26 +74,11 @@ Both key and value are expected to be tokens containing no punctuation.
 `obligation`:: Can contain one or more of "requirement", "permission", "recommendation",
 comma-delimited. Using this attribute will override the obligation of the requirement.
 
-`inherit`:: May be used to reference the label of a requirement or definition
-that is imported or presupposed by this requirement.
-Can contain multiple semicolon-delimited
-identifiers. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14]. +
-+
-Multiple instances of `inherit` can also be expressed with the `inherit` macro,
-which can contain markup including
-cross-references [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21]. +
-+
-[example]
-====
-[source,adoc]
---
-inherit:[<<ref1>>]
---
-====
-
 `:model`:: The specific data model followed by the requirement.
 
 `:type`:: The applicable subclass of requirement.
+
+Other attributes may be supported in different models: refer to model documentation.
 
 == Specifying attributes for requirement blocks
 
@@ -81,18 +90,21 @@ Within the requirement block, a definition list marked with attribute
 `[%metadata]` can be used to enter
 attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4].
 
-This method allows specifying `subjects` and `inherit` as cross-references,
+This method allows specifying attributes like `subject` and `inherit` as cross-references,
 and it allows multiple instances of an attribute to be marked up separately.
+
+NOTE: Model should not be specified in the definition list as `model`: the processing
+of the definition list varies by model, and Metanorma needs to be aware of which
+model to apply as early as possible.
 
 [example]
 .Attributes specified in a definition list
 ======
-[source,asciidoc]
+[source,asciidoc,model=ogc]
 ----
 [requirement]
 ====
 [%metadata]
-model:: ogc
 type:: class
 label:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
 subject:: Encoding of logical models
@@ -179,17 +191,10 @@ example blocks,
 which are marked up with a succession of two or more hyphens, rather than equals signs.
 
 Each block needs to be named with the kind of component it contains
-as a role attribute; the recognised values for Metanorma are:
-
-* `specification` (a formal statement, which may be considered
-the object of the requirement)
-* `measurement-target`  (for quantitative requirements)
-* `verification` (verification steps for the requirement)
-* `import` (code stubs)
-* `component` (generic component of requirement) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4]
+as a role attribute; the kinds of permitted component vary by requirements model.
 
 [example]
-.An example of a requirement with four components
+.An example of a requirement with four components, in the Default requirements model
 ======
 [source,asciidoc]
 ----
@@ -218,25 +223,6 @@ This is a code stub
 ====
 ----
 ======
-
-The component value is associated with an additional `class` attribute, to
-specify the particular kind of component; if no such attribute is given,
-the default value is `component`.
-
-[example]
-=====
-[source,asciidoc]
-----
-[.requirement]
-====
-
-[.component,class=conditions]
---
-The following conditions need to be fulfilled...
---
-====
-----
-=====
 
 The combination of example markup and open block markup  allows us to combine
 nested requirements with internal structure for the nested requirements:
