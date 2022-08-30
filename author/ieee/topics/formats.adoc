@@ -1,0 +1,28 @@
+---
+layout: ieee-flavor
+---
+
+= Metanorma-IEEE output formats
+
+In addition to the normal output formats of Metanorma (`html`, `doc`, `pdf`),
+Metanorma-ISO also supports the following output formats:
+
+`ieee`:: IEEE XML [added in https://github.com/metanorma/isodoc/releases/tag/v0.1.0]
+
+EXAMPLE:
+
+[source,console]
+----
+metanorma -t ieee -x html,ieee test.adoc
+----
+
+If you wish to run DTD validation on the IEEE XML output, you will need to specify the location
+of the IEEE XML DTD, with the `ieee-dtd` document argument.
+
+
+[source,asciidoc]
+----
+...
+:ieee-dtd: C:\Metanorma\IEEE\standards-1-7-DTD\standards-1-7-dtd\standards.dtd
+----
+
