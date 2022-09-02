@@ -13,9 +13,12 @@ The OGC ModSpec (https://portal.ogc.org/files/?artifact_id=34762[OGC 08-131r3])
 specifies a unified encoding through a set of UML models, describing how
 requirements in OGC standards are to be treated and presented.
 
-Metanorma for OGC provides a special syntax for the encoding and embedding of
+Metanorma provides a special syntax for the encoding and embedding of
 requirements compliant to OGC ModSpec, for the exporting of machine-readable
-requirements as well as ModSpec compliant rendering.
+requirements as well as ModSpec compliant rendering. This model was developed for OGC,
+but it can be used in any flavour of Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.1].
+The rendering of Modspec requirements may vary in different Metanorma flavours from that
+of metanorma-ogc; the metanorma-ogc rendering is shown here, unless otherwise indicated.
 
 Specifically, the following models in ModSpec are supported:
 
@@ -30,15 +33,11 @@ https://www.iso.org/standard/26010.html[ISO 19105],
 see https://portal.ogc.org/files/?artifact_id=34762[OGC 08-131r3], 4.20)
 
 NOTE: The "`Conformance suite`", "`Conformance module`", "`Requirements module`"
-models are not yet supported in Metanorma OGC. Please contact
+models are not yet supported in Metanorma. Please contact
 https://www.ogc.org/projects/groups/docteam[OGC DocTeam] if support is required.
 
 In this document, we refer to "`recommendations`", "`requirements`" and
 "`permissions`" collectively using the generic term "`requirement`".
-
-NOTE: This document supplements
-link:/author/topics/document-format/requirements[Requirement, recommendation, and permission blocks]
-in general Metanorma documentation.
 
 [NOTE]
 --
@@ -50,7 +49,7 @@ https://www.ogc.org/standards/modularspec[OGC Modular Specification (ModSpec)]:
 than the more specific language of the ModSpec, to ensure that requirements are
 represented consistently within Metanorma.
 
-* The different types of requirement expressed by Metanorma for OGC are about
+* The different types of requirement expressed by Metanorma for Modspec are about
 different things, and the more abstract types of requirement are about other
 requirements.
 --
@@ -362,6 +361,12 @@ string, or a comma-delimited list of values.
 
 NOTE: `conditions`, `part` supported since [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2].
 
+NOTE: In the native OGC rendering of Modspec, the `description` attributes, which introduces descriptive statements 
+related to the requirement, is displayed as unlabelled text. In flavours which label descriptions explicitly,
+such as ISO [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.1.2], descriptions are labelled as  
+_Statement_ for requirements, recommendations, permissions, and conformance tests. They are left as _Description_
+for other kinds of requirement.
+
 [example]
 .OGC CityGML 3.0 sample requirement with two parts (block attributes)
 ======
@@ -406,6 +411,34 @@ part:: The Implementation Specification SHALL represent associations with the sa
 source, target, direction, roles, and multiplicities as those of the UML class.
 ====
 ----
+
+This renders in OGC as:
+
+|===
+2+^|Requirement 1
+
+2+|`/req/relief/classes`
+2+|For each UML class defined or referenced in the Relief Package:
+|A | The Implementation Specification SHALL contain an element which represents the
+same concept as that defined for the UML class.
+|B | The Implementation Specification SHALL represent associations with the same
+source, target, direction, roles, and multiplicities as those of the UML class.
+|===
+
+
+This renders in ISO as:
+
+.Requirement 1
+|===
+|Identifier |`/req/relief/classes`
+|Statement | For each UML class defined or referenced in the Relief Package:
+a|A | The Implementation Specification SHALL contain an element which represents the
+same concept as that defined for the UML class.
+|B | The Implementation Specification SHALL represent associations with the same
+source, target, direction, roles, and multiplicities as those of the UML class.
+|===
+
+
 ======
 
 [example]
