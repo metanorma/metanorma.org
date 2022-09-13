@@ -147,7 +147,7 @@ Values given in the definition list syntax can be fully-formatted Metanorma
 AsciiDoc text.
 
 Attributes that can take rich textual input (Metanorma AsciiDoc input), such as
-`part` and `conditions`, are components of requirements in Metanorma: these are
+`part`, `conditions`, and `guidance`, are components of requirements in Metanorma: these are
 encoded in the block attributes syntax using the `[.component]` role within the
 ModSpec model block, on open blocks or example blocks.
 
@@ -342,6 +342,10 @@ sub-requirements. Accepts rich text. Labelled with a capital alphabetic letter.
 NOTE: A part is distinct from a step (as appears in <<conftest>>): a part is a
 component of a requirement, which is itself a requirement. A step is a stage in
 a process of testing a requirement: it only makes sense within a test method.
+
+`guidance`:: (optional) Guidance on how to apply the requirement. Used to avoid
+numbering of notes or examples as part of the overall document. Accepts
+rich text. [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.1.4]
 
 `inherit`:: (optional) A requirement can inherit from one or more requirements
 (_direct dependency_ in ModSpec terms).
@@ -586,6 +590,9 @@ Dependent requirements classes. See <<generalreqt,Requirement, recommendation, p
 
 `indirect-dependency`:: (optional)
 Indirect dependent requirements classes. See <<generalreqt,Requirement, recommendation, permission>>.
+
+`guidance`:: (optional)
+Guidance on requirement class. See <<generalreqt,Requirement, recommendation, permission>>.
 
 Embedded requirements (optional)::
 Requirements contained in a class are marked up as nested requirements.
