@@ -41,3 +41,41 @@ If you're looking for information about how to add support for a new language
 in your custom Metanorma workflow, see link:/builder/topics/localization/[localization]
 in Metanorma builder's documentation.
 ====
+
+[[number-localisation]]
+== Number localisation
+
+Standardisation organisations often require numbers to be localised in their display, with the use of a particular
+decimal marker, groupings of digits, and groupings of decimal digits. By default, numbers in Metanorma are localised 
+to the display conventions of the language of the document; this can be overridden in particular flavours of Metanorma,
+to flavour-specific requirements. But such localisation is only applied if numbers are encoded as stem expressions.
+
+So the number `60007.1234`, entered in that way, will be displayed as _60007.1234_. 
+
+However, English localisation prefers
+the number to be encoded as _60,007.1234_. This is achieved in Metanorma by tagging the document as being in English
+(`:language: en`), and encoding the number as a stem expression (`stem&#x200c;:[60007.1234]`). Metanorma will automatically apply
+the localisation conventions of English, as captured in the https://github.com/twitter/twitter-cldr-rb[Twitter CLDR] gem.
+
+Flavours can override the language-specific conventions. For example, BIPM requires both digits and fraction digits
+to be grouped in threes, and separated by non-breaking space, rather than using a comma. So it will be displayed as
+_60 007.123 4_.
+
+The language and flavour conventions for number localisation can be overridden with the `:localize-number:` attribute,
+which uses a template to indicate how numbers should be displayed; e.g.
+
+`:localize-number: \#,#\#0.#\## \###`
+
+* The character after "0" is the decimal marker (decimal point, or decimal comma)
+* 1 + the number of continuous hashes before 0 is the number of digits to be grouped together. (This is normally three, but two are used in India.)
+* The separator of groups of digits is the first character before the continuous run of hashes before 0. If there is no non-hash character before 0, then there is no grouping of digits before the decimal marker.
+* The number of contiguous hashes after the decimal marker is the number of fractional digits to be grouped together.
+* The first character after the contiguous hashes after the decimal marker is the separator of groups of fractional digits. If there is no non-hash character after the decimal marker, then there is no grouping of digits after the decimal marker.
+
+To illustrate:
+
+* _60 007.123 4_ is specified as `:localize-number: \# #\#0.#\## \###`
+* _60 007,123 4_ is specified as `:localize-number: \# #\#0,#\## \###`
+* _60007.1234_ is specified as `+++:localize-number: ###0.######+++`
+* _60,007.12 34_ is specified as `:localize-number: \#,#\#0.#\# #\# ##`
+
