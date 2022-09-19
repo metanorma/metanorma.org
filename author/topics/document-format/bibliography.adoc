@@ -586,17 +586,26 @@ The span categories supported are:
 * `surname`: Author surname.
 * `initials`: Author initials.
 * `givenname`: Author given name.
+* `organization`: Corporate author.
 * `surname.XXX`: Contributor surname, with role _XXX_ (e.g. _editor_).
 * `initials.XXX`: Contributor initials, with role _XXX_ (e.g. _editor_).
 * `givenname.XXX`: Contributor given name, with role _XXX_ (e.g. _editor_).
+* `organization.XXX`: Corporate contributor, with role _XXX_ (e.g. _editor_).
 * `title`: Title.
+* `in_title`: Title of containing bibiographic item (for types `inbook, inproceedings, incollection`,
+the title of the book, proceedings, collection containing the item).
+* `series`: Series title. (For articles, this is the journal title.)
 * `docid`: Document identifier.
 * `docid.XXX`: Document identifier, of type _XXX_.
 * `publisher`: Publisher.
 * `pubplace`: Place of publication.
-* `pubyear`: Year of publication.
+* `date`: Date published.
+* `date.XXX`: Date with type _XXX_ (e.g. _published_, _created_, _issued_)
 * `uri`: URI.
 * `uri.XXX`: URI, of type _XXX_.
+* `pages`: page or page range (e.g. _9_, _9-11_)
+* `issue`: issue or issue range (e.g. _9_, _9-11_)
+* `volume`: volume or volume range (e.g. _9_, _9-11_)
 * `type`: Document type (e.g. _standard_, _book_, _inbook_): suppressed from rendering.
 
 [example]
@@ -606,14 +615,19 @@ The span categories supported are:
 ----
 * [[[A, B]]],
   span:surname[Wozniak], span:initials[S.] & span:givenname[Steve] span:surname[Jobs].
-  span:pubyear[1996].
+  span:date.issued[1991].
+  span:date[1996].
   span:title[_Work_].
-  In span:surname.editor[Gates], span:initials.editor[W. H],
-  Collected Essays.
+  In span:in_surname.editor[Gates], span:in_initials.editor[W. H] &
+  span:in_organization[UNICEF],
+  span:in_title[Collected Essays].
+  _span:series[Bibliographers Anonymous]._
   span:docid.ISO[ISO 1234].
   span:pubplace[Geneva]:
   span:publisher[International Standardization Organization].
   span:uri.citation[http://www.example.com].
+  vol. span:volume[5],
+  pp. span:pages[2-21]
   span:type[inbook]
 ----
 ====
@@ -621,6 +635,15 @@ The span categories supported are:
 After the first instances of `surname` and either `initials` or `givenname`, any
 subsequent instances of `surname` or either `initials` or `givenname` are
 interpreted as belonging to a new contributor of the same role.
+
+[NOTE]
+--
+For presentations,
+
+* `title` is the title of the presentation
+* `series` is the title of the conference
+* `organization.distributor` is the organizer of the conference
+--
 
 === Entering with AsciiBib
 
