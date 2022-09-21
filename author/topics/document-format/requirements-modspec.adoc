@@ -2,22 +2,26 @@
 layout: author-docs
 ---
 
-= ModSpec recommendations, requirements, and permissions
+== OGC Modular Specification ("ModSpec") requirements model scheme
 
-== General
+=== General
 
 This document describes methods used to encode OGC requirements adhering to
 the https://www.ogc.org/standards/modularspec[OGC Modular Specification (ModSpec)].
 
-The OGC ModSpec (https://portal.ogc.org/files/?artifact_id=34762[OGC 08-131r3])
-specifies a unified encoding through a set of UML models, describing how
-requirements in OGC standards are to be treated and presented.
+OGC ModSpec (https://portal.ogc.org/files/?artifact_id=34762[OGC 08-131r3])
+specifies a requirements model scheme where requirements are expressed through a
+set of UML models, with description on how these models are to be treated and
+presented in OGC standards.
 
 Metanorma provides a special syntax for the encoding and embedding of
 requirements compliant to OGC ModSpec, for the exporting of machine-readable
-requirements as well as ModSpec compliant rendering. This model was developed for OGC,
-but it can be used in any flavour of Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.1].
-The rendering of Modspec requirements may vary in different Metanorma flavours from that
+requirements as well as ModSpec compliant rendering.
+
+This model was developed for OGC, but it can be used in any flavour of
+Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.1].
+
+The rendering of ModSpec requirements may vary in different Metanorma flavours from that
 of metanorma-ogc; the metanorma-ogc rendering is shown here, unless otherwise indicated.
 
 Specifically, the following models in ModSpec are supported:
@@ -49,12 +53,12 @@ https://www.ogc.org/standards/modularspec[OGC Modular Specification (ModSpec)]:
 than the more specific language of the ModSpec, to ensure that requirements are
 represented consistently within Metanorma.
 
-* The different types of requirement expressed by Metanorma for Modspec are about
+* The different types of requirement expressed by Metanorma for ModSpec are about
 different things, and the more abstract types of requirement are about other
 requirements.
 --
 
-== Understanding ModSpec
+=== ModSpec models
 
 A basic understanding of ModSpec is crucial in order to understand how to encode
 ModSpec-compliant models.
@@ -109,14 +113,14 @@ OGC standards that contain requirements must have those requirements conform to
 https://portal.ogc.org/files/?artifact_id=34762[OGC 08-131r3].
 
 
-== Encoding syntax
+=== Encoding syntax
 
-=== General
+==== General
 
 A requirement (in its generic meaning) is encoded via tagged example blocks
 containing other tagged example blocks and open blocks.
 
-There are two ways to encode a ModSpec model:
+There are two ways to encode a ModSpec instance:
 
 . Via definition lists
 . Via block attributes
@@ -133,7 +137,7 @@ The extension of the definition lists syntax to components is specific to
 Metanorma OGC.
 
 
-=== Specifying using definition lists or block attributes
+==== Specifying using definition lists or block attributes
 
 In Metanorma, the following two encoding syntaxes are considered equivalent.
 
@@ -142,14 +146,14 @@ attribute list to the block.
 Values contained in the attribute list must be in plain text.
 
 * In the *definition list* syntax, a `[%metadata]` definition list within a
-ModSpec model provides the necessary information for the specified model.
+ModSpec instance provides the necessary information for the specified model.
 Values given in the definition list syntax can be fully-formatted Metanorma
 AsciiDoc text.
 
 Attributes that can take rich textual input (Metanorma AsciiDoc input), such as
 `part`, `conditions`, and `guidance`, are components of requirements in Metanorma: these are
 encoded in the block attributes syntax using the `[.component]` role within the
-ModSpec model block, on open blocks or example blocks.
+ModSpec instance block, on open blocks or example blocks.
 
 [example]
 .Example of encoding a ModSpec requirement "part" in an open block syntax
@@ -261,7 +265,7 @@ models.
 These two syntaxes can be mixed.
 
 
-=== ModSpec model attributes
+==== Instance attributes
 
 A ModSpec model instance is encoded with one of these block types:
 
@@ -325,7 +329,7 @@ requirement class that is being tested.
 Differentiated types of ModSpec models allow additional attributes.
 
 [[generalreqt]]
-=== Requirement, recommendation, permission
+==== Requirement, recommendation, permission
 
 A Requirement (or Recommendation, Permission) is encoded as a `requirement`,
 `recommendation`, or `permission` block or by setting `type` to `requirement`,
@@ -345,7 +349,7 @@ a process of testing a requirement: it only makes sense within a test method.
 
 `guidance`:: (optional) Guidance on how to apply the requirement. Used to avoid
 numbering of notes or examples as part of the overall document. Accepts
-rich text. Guidance is always rendered last in Modspec. [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.1.4]
+rich text. Guidance is always rendered last in ModSpec. [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.1.4]
 
 `inherit`:: (optional) A requirement can inherit from one or more requirements
 (_direct dependency_ in ModSpec terms).
@@ -365,9 +369,9 @@ string, or a comma-delimited list of values.
 
 NOTE: `conditions`, `part` supported since [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2].
 
-NOTE: In the native OGC rendering of Modspec, the `description` attributes, which introduces descriptive statements 
+NOTE: In the native OGC rendering of ModSpec, the `description` attributes, which introduces descriptive statements
 related to the requirement, is displayed as unlabelled text. In flavours which label descriptions explicitly,
-such as ISO [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.1.2], descriptions are labelled as  
+such as ISO [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.1.2], descriptions are labelled as
 _Statement_ for requirements, recommendations, permissions, and conformance tests. They are left as _Description_
 for other kinds of requirement.
 
@@ -565,7 +569,7 @@ image::/assets/author/ogc/reqt2.png[Rendering]
 
 
 [[reqt_class]]
-=== Requirements class
+==== Requirements class
 
 A "`Requirements class`" is encoded as a block of `requirements_class` or using
 `type` equals to `requirements_class`.
@@ -747,7 +751,7 @@ ____
 
 
 
-=== Conformance class
+==== Conformance class
 
 Specified by setting the block as `conformance_class` or by using `type` as
 `conformance_class`.
@@ -827,7 +831,7 @@ target:: http://www.opengis.net/spec/CityGML-1/3.0/req/req-class-building
 
 
 [[conftest]]
-=== Conformance test and Abstract test
+==== Conformance test and Abstract test
 
 A "`Conformance test`" can be "`concrete`" or "`abstract`" depending on the type
 of conformance test suite (see https://portal.ogc.org/files/?artifact_id=34762[OGC 08-131r3], 6.4).
@@ -1059,9 +1063,9 @@ https://tools.ietf.org/html/rfc3986#section-3[RFC 3986, section 3].
 ======
 
 
-== Rendering of ModSpec models
+=== Rendering of ModSpec instances
 
-OGC ModSpec models are rendered in a table format.
+OGC ModSpec instances are rendered in a table format.
 
 NOTE: This rendering method is consistent with prior OGC practice.
 
@@ -1143,9 +1147,9 @@ legacy Metanorma components:
 *** `[.import]`
 
 
-== Legacy usage
+=== Legacy usage
 
-=== Legacy Metanorma OGC AsciiDoc syntax
+==== Legacy Metanorma OGC AsciiDoc syntax
 
 For legacy reasons, a second Metanorma OGC AsciiDoc syntax is permitted for
 recommendations, requirements and permissions.
@@ -1179,7 +1183,7 @@ the document SHOULD conform to the
 ----
 ====
 
-=== Legacy ModSpec type keywords
+==== Legacy ModSpec type keywords
 
 These values for the ModSpec model type have been deprecated:
 

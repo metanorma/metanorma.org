@@ -2,76 +2,84 @@
 layout: author-docs
 ---
 
-= Document attributes
+== Document attributes
 
-The core metadata about a standard—who authored it, when it was published, etc.—comes from
-AsciiDoc document attributes.
-Document attributes are also used to adjust some aspects of document generation process
-and visual appearance of output documents.
+Metadata of a standard is entered as document attributes in Metanorma.
 
-Some of the attributes are simple flags, while other expect a value to be provided.
+Document attributes are also used to adjust some aspects of document generation
+process and visual appearance of output documents.
 
-Supply meta attributes as part of document header:
+Some of the attributes are simple flags, while others expect a value to be
+provided.
+
+Document attributes are supplied in the document header.
 
 [source,asciidoc]
 .Document header example
 ----
 = Rice model <1>
-Author <2>
-:docnumber: 17301 <3>
-:tc-docnumber: 17301
+:docnumber: 17301 <2>
+:tc-docnumber: 9999
 :partnumber: 1
 :draft:
 :edition: 2
 :copyright-year: 2016
 :language: en
-:docfile: iso-rice-en.adoc
 :mn-document-class: iso
-:mn-output-extensions: xml,html,doc,html_alt <4>
-:local-cache-only: <5>
+:mn-output-extensions: xml,html,doc,pdf <3>
+:local-cache-only: <4>
 :data-uri-image:
 ----
-<1> Document title
-<2> The author line is ignored by Metanorma, but needs to be present for Asciidoctor
-    to process document attributes correctly.
-<3> `:docnumber:` is the first document attribute, and it has the value _17301_
-<4> Some attributes allow multiple values, which usually must be comma-delimited
-<5> `:local-cache-only:` demonstrates a kind of attribute that works without a value
+<1> Title of the document.
+<2> In Metanorma-ISO, the `:docnumber:` attribute specifies the document number, which is the value _17301_ here.
+<3> Some attributes allow multiple values, which is comma-delimited
+<4> `:local-cache-only:` demonstrates a kind of attribute that works without a value
     (the attribute itself is either present or not, Boolean style)
 
-The order of attributes doesn't matter to Metanorma.
+The order of attributes does not matter to Metanorma.
 
 
-== Which attributes to specify?
+=== Which attributes to specify?
 
 The attributes required or allowed to be specified for given document
 depend on the type of document and the Metanorma flavor used.
 
 See link:/author/ref/document-attributes/[generic attribute reference]
 for attributes supported by most Metanorma flavors.
-If you're using one of the officially supported Metanorma flavors,
-consult your flavor's author documentation as well.
+
+When using one of the officially supported Metanorma flavors,
+please consult your flavor's author documentation.
 
 
-== Referencing attributes in the text
+=== Re-using attributes in text
 
 The body of the document can reference the values of document attributes.
 Here's an example of referencing committee-related metadata entries:
 
-[source,asciidoc]
---
-This document was prepared by Technical Committee ISO/TC {technical-committee-number}, _{technical-committee}_, Subcommittee SC {subcommittee-number}, _{subcommittee}_.
---
+[source,adoc]
+----
+:technical-committee-number: 184
+:technical-committee: Automation systems and integration
+:subcommittee-number: 4
+:subcommittee: Industrial data
+...
 
-If the corresponding document attributes are not populated in the header, then the references
-themselves will not be populated.
+This document was prepared by Technical Committee ISO/TC
+{technical-committee-number}, _{technical-committee}_, Subcommittee SC
+{subcommittee-number}, _{subcommittee}_.
+----
+
+If the corresponding document attributes are not populated in the header, then
+the references themselves will not be populated.
 
 
-== Dealing with HTML entities
+=== Dealing with Unicode characters
 
-Document attribute values, unlike document text, cannot deal with HTML entities.
-If you need to have non-ASCII characters in document title, or dashes for compound titles,
-you will need to enter them directly as Unicode.
+Document attribute values that contain Unicode characters must be entered
+directly as Unicode.
+
+Any non-ASCII characters in document attribute values, or dashes for compound
+titles, will need to be entered as Unicode.
 
 As an example, this would work:
 
@@ -81,7 +89,7 @@ As an example, this would work:
 :title-main-fr: Spécification et méthodes d'essai
 --
 
-However, this wouldn't:
+Entering them as HTML Entities or XML Entities would not:
 
 [source,adoc]
 --

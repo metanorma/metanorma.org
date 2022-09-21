@@ -2,33 +2,139 @@
 layout: author-docs
 ---
 
-= Metanorma Default model for Requirements
+== Metanorma machine-readable requirements ("MRR") requirements model scheme
 
-== Attributes
+=== General
+
+Metanorma machine-readable requirements ("MRR") is a generic requirements
+model scheme developed according to the needs of NIST and ITU with a focus
+on machine-readability.
+
+This document describes the models provided by the MRR scheme and their
+usage.
+
+=== Understanding MRR
+
+The major benefit of MRR, in comparison with other requirements model schemes,
+is its focus on making requirements machine-readable and executable.
+
+Many standards and specifications today are meant for encoding data and
+behavioral requirements intended for machines or software. Instead of needing
+human intervention or re-interpretation of these requirements for machines,
+it is possible to streamline the semantics between the specification of
+requirements and the machine usage of such requirements.
+
+MRR was originally announced at the ISO/TMB/SAG_MRS
+("Special Advisory Group for Machine-Readable Standards") in 2019, and
+placed into production the same year.
+
+NOTE: The Multi-Modal Modelling Language ("MMEL"), a core component of the
+BSI SMART program supported by the Ministry of Defense, UK, is implemented as a
+superset of MRR.
+
+Use cases supported by MRR include:
+
+* representation of a requirements collection or a requirements graph of
+a coherent set of compliance criteria;
+
+* automated validation of the consistency of a set of requirements;
+
+* automated execution of automated processing steps as specified by as requirements;
+
+* automated compliance checks against machine-readable verification tests.
+
+As described in the https://github.com/metanorma/metanorma-requirements-models[MRR model diagram],
+MRR provides:
+
+* Two core classes:
+** Provision
+** ProvisionPart
+
+* Three models that can be instantiated:
+
+** Requirement
+** Recommendation
+** Permission
+
+The three instantiable models provide the basis for encoding machine-readable
+requirements. The only difference between these three models is the obligation,
+which binds the subject to a different strength in terms of compliance.
+
+
+=== Encoding syntax
+
+==== General
+
+The following MRR models are supported in Metanorma:
+
+* Requirement: with the type `requirement`
+* Recommendation: with the type `recommendation`
+* Permission: with the type `permission`.
+
+The method of encoding an MRR model is described in the
+link:/author/topics/document-format/requirements[general description of requirements].
+
+The encoding syntax is as follows, where the block definition describes the
+type of the model.
+
+[example]
+.Encoding an MRR permission
+======
+[source,adoc]
+----
+[permission]
+====
+This is the permission statement.
+====
+----
+======
+
+NOTE: Additional examples of MRR encodings are available at
+https://github.com/metanorma/metanorma-mrr-samples[metanorma-mrr-samples].
+
+
+==== Instance attributes
+
+An MRR model instance is encoded with one of these block types:
+
+* `[requirement]` for Requirement
+* `[recommendation]` for Recommendation
+* `[permission]` for Permission
+
+All instantiable models in MRR share the same set of attributes.
+
 
 The following attributes are supported:
 
-`subject`:: Indicates the subject of the requirement.
-Does not get rendered in final output (although this may be overridden in flavours).
-Multiple instances of `subject` can be given, semicolon-delimited [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4]
+`model`:: (optional) The requirement model scheme that applies to the instance.
+(default: `basic`)
 
-`identifier`:: Indicates identifier assigned to the requirement.
-If present, it will be rendered in final output (formerly `label`). [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.0]
+`type`:: (optional) The model of the instance, typically not necessary given the
+type has been specified at the block level (e.g. `permission`).
+
+`identifier`:: The identifier assigned to an instance. Identifiers can be simple
+strings, and are often entered as URIs or URNs.
+If present, it will be rendered in final output. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.0]
++
+NOTE: `identifier` was previously called `label`.
 
 `classification`:: May be used to give an arbitrary number of key-value pairs of tags describing
-the requirement. Key and value are separated by a colon, multiple values are delimited by comma,
+the instance. Key and value are separated by a colon, multiple values are delimited by comma,
 and key-value pairs are delimited by semicolon.
 Both key and value are expected to be tokens containing no punctuation.
 
-`obligation`:: Can contain one or more of "requirement", "permission", "recommendation",
-comma-delimited. Using this attribute will override the obligation of the requirement.
+`obligation`:: (optional) Modality of the instance, as in the strength to which it
+pertains to compliance.
+Can contain one or more of `requirement`, `permission`, `recommendation`,
+comma-delimited.
+Using this attribute will override the obligation of the requirement.
 
 `inherit`:: May be used to reference the label of a requirement or definition
 that is imported or presupposed by this requirement.
 Can contain multiple semicolon-delimited
 identifiers. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.14]. +
 +
-Multiple instances of `inherit` can also be expressed with the `inherit` macro,
+Multiple instances of `inherit` can also be expressed with the `inherit` command,
 which can contain markup including
 cross-references [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21]. +
 +
@@ -40,11 +146,12 @@ inherit:[<<ref1>>]
 --
 ====
 
-`:model`:: The specific data model followed by the requirement.
+Any attributes that are not included in the list of requirement attributes above
+are treated as
+"classification tags". [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.0]
 
-`:type`:: The applicable subclass of requirement.
 
-== Named blocks and descriptions
+==== Requirement, recommendation, permission
 
 The internal structure of a requirement can be encoded in order to make it
 machine-readable, although this is not expected to be reflected in rendering.
@@ -55,21 +162,27 @@ example blocks,
 which are marked up with a succession of two or more hyphens, rather than equals signs.
 
 Each block needs to be named with the kind of component it contains
-as a role attribute; the recognised values for Metanorma Default are:
+as a role attribute.
 
-* `specification` (a formal statement, which may be considered
-the object of the requirement)
+Any text not wrapped in a named block is considered to be part of a description.
+
+==== Components
+
+The recognized components are:
+
+* `specification` (a formal statement, which may be considered the object of the requirement)
 * `measurement-target`  (for quantitative requirements)
 * `verification` (verification steps for the requirement)
 * `import` (code stubs)
 * `component` (generic component of requirement) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.4]
+
 
 [example]
 .An example of a requirement with four components
 ======
 [source,asciidoc]
 ----
-[.requirement]
+[requirement]
 ====
 [.specification]
 --
@@ -99,6 +212,7 @@ The component value is associated with an additional `class` attribute, to
 specify the particular kind of component; if no such attribute is given,
 the default value is `component`.
 
+
 [example]
 =====
 [source,asciidoc]
@@ -114,7 +228,7 @@ The following conditions need to be fulfilled...
 ----
 =====
 
-The combination of example markup and open block markup  allows us to combine
+The combination of example markup and open block markup allows us to combine
 nested requirements with internal structure for the nested requirements:
 
 [example]
@@ -148,4 +262,168 @@ This is a measurement target
 ====
 -----
 ======
+
+
+Any text in a named open block allowed under Metanorma is considered to be a separate
+subpart of the requirement. These blocks can have types, referring to the conventions
+or computer frameworks that they follow.
+
+They are given by setting the `type` attribute on the open block:
+
+[example]
+.An example of mixed descriptions and typed open blocks
+=====
+[source,asciidoc]
+-----
+[.requirement,label="requirement A"]
+====
+
+This is some descriptive text.
+
+[.specification,type=EBNF]
+--
+This is a formal specification in EBNF
+--
+
+This is some more descriptive text.
+
+====
+-----
+=====
+
+
+==== Machine-readable components
+
+Text in a named open block may be include or consist of machine-readable code; any such
+code needs to be wrapped in turn in a source code element, which is expected to
+contain an attribute giving the computer language the block is expressed in.
+(The notion of "language" may be expanded to include a particular computer framework
+that the code is to be run under.)
+
+`[sourcecode,text]` is taken as meaning that the block is still human readable.
+The language of a source code block is likely to be distinct from the type of named block
+it is contained in.
+
+[example]
+.An example of machine-readable code in a specification
+=====
+[source,asciidoc]
+-----
+[.requirement,label="requirement A"]
+====
+
+This is some descriptive text.
+
+[.verification,type=heuristic]
+--
+[source,ruby]
+----
+instances.each do |i|
+  warn "uh-oh" if i > 5
+end
+----
+--
+
+====
+-----
+=====
+
+
+By default, both named blocks and descriptions will be included in final output.
+Often, though not always, named blocks contain machine-readable code which is not
+intended to be included in the output, but is supplemental to the human-readable
+description. That is signalled through the options attribute `exclude` on the named block.
+
+[example]
+.An example of a complex recommendation with named blocks
+=====
+[source,asciidoc]
+-----
+[.recommendation,label="/ogc/recommendation/wfs/2",subject="user"]
+====
+I recommend _this_.
+[.specification,type="tabular"]
+--
+This is the object of the recommendation:
+|===
+|Object |Value
+|Mission | Accomplished
+|===
+--
+As for the measurement targets,
+[.measurement-target]
+--
+The measurement target shall be measured as:
+[stem]
+++++
+r/1 = 0
+++++
+--
+[.verification,type="comprehensive"]
+--
+The following code will be run for verification:
+[source,CoreRoot]
+----
+CoreRoot(success): HttpResponse
+if (success)
+  recommendation(label: success-response)
+end
+----
+--
+
+[.import%exclude]
+--
+[source,CoreRoot]
+----
+success-response()
+----
+--
+====
+-----
+=====
+
+
+
+==== Nested requirements
+
+Metanorma requirements can be nested by adding one more delimiter symbol than
+its containing block.
+
+NOTE: Therefore nested requirements are marked up just like nested examples.
+
+[example]
+.Nested recommendations
+======
+[source,asciidoc]
+----
+[permission]
+====
+
+I permit this
+
+=====
+Example 2
+=====
+
+[permission]
+=====
+I also permit this
+=====
+
+====
+----
+======
+
+==== Requirement validation
+
+In MRR, validation and their steps are encoded within a requirement.
+
+NOTE: Contrast this against OGC ModSpec, where tests are considered separate
+from requirements.
+
+
+// === Rendering of MRR instances
+
+
+// === Legacy usage
 
