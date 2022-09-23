@@ -367,6 +367,16 @@ The `classification` attribute is marked up as in the rest of Metanorma:
 `key1=value1;key2=value2...`, where _value_ is either a single
 string, or a comma-delimited list of values.
 
+`requirement`, `permission`, `recommendation`:: A requirement, permission, or recommendation
+contained within a requirement. The value of the element is its identifier.
+Only supported in definition list syntax.
+
+`conformance-test`, `abstract-test`, `conformance-class`, 
+`requirement-class` `recommendation-class`, `permission-class`::
+A requirement, permission, or recommendation of those categories,
+contained within a requirement. The value of the element is its identifier.
+Only supported in definition list syntax. [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.1.6]
+
 NOTE: `conditions`, `part` supported since [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2].
 
 NOTE: In the native OGC rendering of ModSpec, the `description` attributes, which introduces descriptive statements
@@ -778,7 +788,7 @@ Conformance classes also feature:
 Name:: (optional) Specified as the block caption.
 
 Nesting:: (optional) Conformance tests contained in a conformance class are
-encoded as conformance tests within the conformance class block.
+encoded as conformance tests within the conformance class block, marked as `conformance-test:: `.
 See <<reqt_class,Requirements class>>.
 
 NOTE: Conformance classes do not have a Target Type (as specified in ModSpec).
