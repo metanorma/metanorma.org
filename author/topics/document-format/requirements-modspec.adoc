@@ -137,135 +137,16 @@ The extension of the definition lists syntax to components is specific to
 Metanorma OGC.
 
 
-==== Specifying using definition lists or block attributes
+[[instance-syntax]]
+==== Instance syntax
 
-In Metanorma, the following two encoding syntaxes are considered equivalent.
+In Metanorma, the recommended way to encode a ModSpec instance is via the
+*definition list* syntax.
 
-* In the *block attributes* syntax, the necessary information is provided as an
-attribute list to the block.
-Values contained in the attribute list must be in plain text.
-
-* In the *definition list* syntax, a `[%metadata]` definition list within a
-ModSpec instance provides the necessary information for the specified model.
-Values given in the definition list syntax can be fully-formatted Metanorma
-AsciiDoc text.
-
-Attributes that can take rich textual input (Metanorma AsciiDoc input), such as
-`part`, `conditions`, and `guidance`, are components of requirements in Metanorma: these are
-encoded in the block attributes syntax using the `[.component]` role within the
-ModSpec instance block, on open blocks or example blocks.
-
-[example]
-.Example of encoding a ModSpec requirement "part" in an open block syntax
-====
-[source,adoc]
-----
-[.component,class=part]
---
-Part A of the requirement.
---
-----
-====
-
-[example]
-.Example of encoding a ModSpec requirement "part" in an example block syntax
-======
-[source,adoc]
-----
-[.component,class=part]
-====
-Part A of the requirement.
-====
-----
-======
-
-Conversely, in definition list syntax, not only components such as `part` and
-`conditions`, but also `description` for descriptive text, can be specified
-in the definition list. (In block attributes syntax, descriptive text is left
-as normal text.)
-
-The definition list may contain embedded levels [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.3];
-this is needed specifically for steps embedded within a test method.
-
-If you need to insert a cross-reference to a component, for example referencing
-a specific part of a requirement elsewhere, you can only use the block
-attributes sequence (as illustrated above).
-
-The following two examples demonstrate encoding of a ModSpec requirement
-that are encoded in Metanorma XML identically (and therefore rendered
-identically in output).
-
-[source,asciidoc]
-.ModSpec requirement in definition list syntax
-----
-[requirement]
-.Encoding of logical models
-====
-[%metadata]
-identifier:: ogc/spec/waterml/2.0/req/xsd-xml-rules
-subject:: system
-part:: Metadata models faithful to the original UML model.
-description:: Logical models encoded as XSDs should be faithful to the original
-UML conceptual models.
-
-test-method::
-step::: Step 1
-step::: Step 2
-step:::: Step 2a
-step:::: Step 2b
-step::: Step 3
-====
-----
-
-[source,asciidoc]
-.ModSpec requirement in block attributes syntax
-----
-[requirement,identifier="ogc/spec/waterml/2.0/req/xsd-xml-rules",subject="system"]
-.Encoding of logical models
-====
-
-[.component,class=part]
---
-Metadata models faithful to the original UML model.
---
-
-[.component,class=test-method]
------
-[.component,class=step]
-------
-Step 1
-------
-
-[.component,class=step]
-------
-Step 2
-
-[.component,class=step]
--------
-Step 2a
--------
-
-[.component,class=step]
--------
-Step 2b
--------
-------
-
-[.component,class=step]
-------
-Step 3
-------
------
-
-Logical models encoded as XSDs should be faithful to the original UML conceptual
-models.
-====
-----
-
-These two syntaxes can be mixed.
-
-
-==== Instance attributes
+This syntax requires specification of a `[%metadata]` definition list within a
+ModSpec instance, which provides the necessary information for the specified
+model. Values given in the definition list syntax can be fully-formatted
+Metanorma AsciiDoc text.
 
 A ModSpec model instance is encoded with one of these block types:
 
@@ -294,12 +175,128 @@ The following two encodings are equivalent:
 [requirement,type=conformance_test]
 ----
 
+
+Attributes that can take rich textual input (Metanorma AsciiDoc input), such as
+`part`, `conditions`, and `guidance`, are components of requirements in
+Metanorma.
+
+These can be encoded within the definition list, or in the block attributes
+syntax using the `[.component]` role within the ModSpec instance block, on open
+blocks or example blocks.
+
+[example]
+.Example of encoding a ModSpec requirement "part" within the definition list
+======
+[source,adoc]
+----
+[requirement]
+====
+[%metadata]
+identifier:: /req/world/hello
+part:: Part A of the requirement.
+====
+----
+======
+
+[example]
+.Example of encoding a ModSpec requirement "part" in an open block syntax
+======
+[source,adoc]
+----
+[requirement]
+====
+[%metadata]
+identifier:: /req/world/hello
+
+[.component,class=part]
+--
+Part A of the requirement.
+--
+====
+----
+======
+
+[example]
+.Example of encoding a ModSpec requirement "part" in an example block syntax
+======
+[source,adoc]
+----
+[requirement]
+=====
+[%metadata]
+identifier:: /req/world/hello
+
+[.component,class=part]
+====
+Part A of the requirement.
+====
+=====
+----
+======
+
+The syntax also supports encoding the `description` for descriptive text within
+the list.
+
+The `%metadata` definition list may contain embedded
+levels [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.3];
+this is needed specifically for steps embedded within a test method.
+
+If you need to insert a cross-reference to a component, for example referencing
+a specific part of a requirement elsewhere, you can only use the block
+attributes sequence (as illustrated above).
+
+
+[source,asciidoc]
+.ModSpec requirement with hierarchical test-method steps
+----
+[requirement]
+.Encoding of logical models
+====
+[%metadata]
+identifier:: ogc/spec/waterml/2.0/req/xsd-xml-rules
+subject:: system
+part:: Metadata models faithful to the original UML model.
+description:: Logical models encoded as XSDs should be faithful to the original
+UML conceptual models.
+
+test-method::
+step::: Step 1
+step::: Step 2
+step:::: Step 2a
+step:::: Step 2b
+step::: Step 3
+====
+----
+
+
+When using ModSpec within other documents that, by default, uses another
+requirements model scheme (such as non-OGC flavors), it is necessary specify the
+instance with the `model` attribute.
+
+[example]
+.Encoding a ModSpec instance within a document that uses another requirements model scheme
+======
+[source,asciidoc]
+----
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/iso-nnnnn/considerations
+
+This is an OGC ModSpec requirement within an ISO document.
+====
+----
+======
+
+
+==== Instance attributes
+
 Attributes accepted by a ModSpec instance are as follows:
 
 `identifier`:: (mandatory) Identifier of the requirement, typically a URI. Plain text.
 +
-This must be unique in the document (as required by ModSpec), and is also used for referencing
-and cross-linking between ModSpec instances.
+This must be unique in the document (as required by ModSpec), and is also used
+for referencing and cross-linking between ModSpec instances.
 +
 NOTE: The `identifier` was previously encoded as `label` until
 https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.0 .
@@ -371,7 +368,7 @@ string, or a comma-delimited list of values.
 contained within a requirement. The value of the element is its identifier.
 Only supported in definition list syntax.
 
-`conformance-test`, `abstract-test`, `conformance-class`, 
+`conformance-test`, `abstract-test`, `conformance-class`,
 `requirement-class` `recommendation-class`, `permission-class`::
 A requirement, permission, or recommendation of those categories,
 contained within a requirement. The value of the element is its identifier.
@@ -384,34 +381,6 @@ related to the requirement, is displayed as unlabelled text. In flavours which l
 such as ISO [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.1.2], descriptions are labelled as
 _Statement_ for requirements, recommendations, permissions, and conformance tests. They are left as _Description_
 for other kinds of requirement.
-
-[example]
-.OGC CityGML 3.0 sample requirement with two parts (block attributes)
-======
-[source,asciidoc]
-----
-[requirement,identifier="/req/relief/classes"]
-====
-For each UML class defined or referenced in the Relief Package:
-
-[.component,class=part]
---
-The Implementation Specification SHALL contain an element which represents the
-same concept as that defined for the UML class.
---
-
-[.component,class=part]
---
-The Implementation Specification SHALL represent associations with the same
-source, target, direction, roles, and multiplicities as those of the UML class.
---
-====
-----
-
-renders as:
-
-image::/assets/author/ogc/reqt1.png[Rendering]
-======
 
 [example]
 .OGC CityGML 3.0 sample requirement with two parts (definition list)
@@ -456,17 +425,50 @@ same concept as that defined for the UML class.
 source, target, direction, roles, and multiplicities as those of the UML class.
 |===
 
-
 ======
 
+
 [example]
-.OGC CityGML 3.0 sample requirement with two parts (definition list)
+.OGC CityGML 3.0 sample requirement with two parts (block attributes)
+======
+[source,asciidoc]
+----
+[requirement,identifier="/req/relief/classes"]
+====
+For each UML class defined or referenced in the Relief Package:
+
+[.component,class=part]
+--
+The Implementation Specification SHALL contain an element which represents the
+same concept as that defined for the UML class.
+--
+
+[.component,class=part]
+--
+The Implementation Specification SHALL represent associations with the same
+source, target, direction, roles, and multiplicities as those of the UML class.
+--
+====
+----
+
+renders as:
+
+image::/assets/author/ogc/reqt1.png[Rendering]
+======
+
+
+
+[example]
+.OGC CityGML 3.0 sample requirement with two parts
 ======
 [source,asciidoc]
 .OGC GroundWaterML 2.0 sample requirement
 ----
-[requirement,id="/req/core/encoding",identifier="/req/core/encoding"]
+[requirement]
 ====
+[%metadata]
+identifier:: /req/core/encoding
+
 All target implementations SHALL conform to the appropriate GroundWaterML2
 Logical Model UML defined in Section 8.
 ====
@@ -1158,6 +1160,142 @@ legacy Metanorma components:
 
 
 === Legacy usage
+
+==== Specifying instances using block attributes
+
+Traditionally in Metanorma, the following two encoding syntaxes are considered
+equivalent.
+
+* In the *definition list* syntax, where a `[%metadata]` definition list within
+a ModSpec instance provides the necessary information for the specified model,
+as described in <<instance-syntax>>.
+
+* In the *block attributes* syntax, the necessary information is provided as an
+attribute list to the block.
+Values contained in the attribute list must be in plain text.
+
+The *block attributes* syntax is now deprecated as the syntax only supports
+plain text values, and does not support rich text or complex values.
+
+This limitation means that when used with components, the block attributes
+syntax must also be mixed with the definition list syntax.
+
+Attributes that can take rich textual input (Metanorma AsciiDoc input), such as
+`part`, `conditions`, and `guidance`, are components of requirements, and have
+to be encoded in the block attributes syntax using the `[.component]` role
+within the ModSpec instance block, on open blocks or example blocks.
+
+[example]
+.Example of encoding a ModSpec requirement "part" in an open block syntax
+====
+[source,adoc]
+----
+[.component,class=part]
+--
+Part A of the requirement.
+--
+----
+====
+
+[example]
+.Example of encoding a ModSpec requirement "part" in an example block syntax
+======
+[source,adoc]
+----
+[.component,class=part]
+====
+Part A of the requirement.
+====
+----
+======
+
+Conversely, in definition list syntax, not only components such as `part` and
+`conditions`, but also `description` for descriptive text, can be specified
+in the definition list. (In block attributes syntax, descriptive text is left
+as normal text.)
+
+The definition list may contain embedded levels [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.3];
+this is needed specifically for steps embedded within a test method.
+
+If you need to insert a cross-reference to a component, for example referencing
+a specific part of a requirement elsewhere, you can only use the block
+attributes sequence (as illustrated above).
+
+The following two examples demonstrate encoding of a ModSpec requirement
+that are encoded in Metanorma XML identically (and therefore rendered
+identically in output).
+
+[source,asciidoc]
+.ModSpec requirement in definition list syntax
+----
+[requirement]
+.Encoding of logical models
+====
+[%metadata]
+identifier:: ogc/spec/waterml/2.0/req/xsd-xml-rules
+subject:: system
+part:: Metadata models faithful to the original UML model.
+description:: Logical models encoded as XSDs should be faithful to the original
+UML conceptual models.
+
+test-method::
+step::: Step 1
+step::: Step 2
+step:::: Step 2a
+step:::: Step 2b
+step::: Step 3
+====
+----
+
+[source,asciidoc]
+.ModSpec requirement in block attributes syntax
+----
+[requirement,identifier="ogc/spec/waterml/2.0/req/xsd-xml-rules",subject="system"]
+.Encoding of logical models
+====
+
+[.component,class=part]
+--
+Metadata models faithful to the original UML model.
+--
+
+[.component,class=test-method]
+-----
+[.component,class=step]
+------
+Step 1
+------
+
+[.component,class=step]
+------
+Step 2
+
+[.component,class=step]
+-------
+Step 2a
+-------
+
+[.component,class=step]
+-------
+Step 2b
+-------
+------
+
+[.component,class=step]
+------
+Step 3
+------
+-----
+
+Logical models encoded as XSDs should be faithful to the original UML conceptual
+models.
+====
+----
+
+These two syntaxes can be mixed.
+
+
+
 
 ==== Legacy Metanorma OGC AsciiDoc syntax
 
