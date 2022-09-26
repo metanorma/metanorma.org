@@ -1,33 +1,76 @@
 ---
 layout: author-docs
+title: Languages and localization
 ---
-
-= Languages and localization
 
 == Languages
 
 Metanorma allows generation of standards in different languages.
 
-The language of the document is specified in following link:/author/ref/document-attributes/#languages-localization[document attributes]:
+=== Document specification
 
-* `:language:` — ISO 639-2 two-letter language code. Defaults to `en`.
-* `:script:` — ISO 15924 script code (for languages with more than one script).
-  Defaults to `Latn`. e.g., specify `Hant` for Traditional Chinese.
-* `:locale:` – ISO 3166-1 two-letter country code [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.4].
-As of this writing, the impact of locale in localisation is minor: narrow non-breaking space in front of colon for templated
-localised text (e.g. cross-references) in Swiss French, vs full non-breaking space for other locales of French.
-* `:i18nyaml:` — language template file. Only needed if you're using a language other than
-  English, Chinese (Simplified) or French.
+The language of the document is specified using the following
+link:/author/ref/document-attributes/#languages-localization[document attributes]:
+
+`:language:`::
+ISO 639-2 two-letter language code. Defaults to `en`.
+
+`:script:`::
+ISO 15924 script code (for languages with more than one script).
+Defaults to `Latn`. e.g., specify `Hant` for Traditional Chinese.
+
+`:locale:`::
+ISO 3166-1 two-letter country code [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.4].
++
+NOTE: As of this writing, the impact of locale in localisation is minor: narrow
+non-breaking space in front of colon for templated localised text (e.g.
+cross-references) in Swiss French, vs full non-breaking space for other locales
+of French.
+
+`:i18nyaml:`::
+language template file. Only needed if you're using a language other than
+English, Chinese (Simplified) or French.
+
+
+=== Content specification
 
 Localised string variants can be specified using the
-`lang:[]` macro [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3]:
+`lang:[]` inline command [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3]:
 
-* `lang:XX[]` indicates a string specific to language XX; e.g. `lang:fr[text]`
-* `lang:XX-YYYY[]` indicates a string specific to language `XX` and script `YYYY`; e.g. `lang:zh-Hant[text]`
+The `lang:[]` inline command is specified in content as:
 
-If `lang:[]` macros appear next to each other in a document, and one of the macros
-matches the current document language (and script, if supplied), then only that macro will be rendered.
-For example, if the document is in English,
+[source,adoc]
+----
+... lang:{locale-code}[] ...
+----
+
+Where,
+
+* `{locale-code}` is either a:
+
+** language code. A two-letter code specifying the language, specified using ISO
+639-2 two-letter language codes.
++
+[example]
+.French text specified in a document that is not specified as using French
+`... lang:fr[je pense, donc je suis] ...`
+
+** language code and script codes linked with a hyphen. The language code
+is specified using ISO 639-2 two-letter language codes, and the script code
+is specified using ISO 15924 codes.
+[example]
+.Traditional Chinese text specified in a document that is not specified as using Traditional Chinese
+`... lang:zh-Hant[國有四維] ...`
+
+
+If `lang:[]` command appear next to each other in a document, and one of the
+commands matches the current document language (and script, if supplied), then
+only that command will be rendered.
+
+[example]
+.Encoding language-specific content in a document specified with a different language
+====
+Suppose the document is in English:
 
 [source,asciidoc]
 ----
@@ -39,6 +82,7 @@ is rendered as
 ____
 *husked rice*
 ____
+====
 
 [TIP]
 ====
