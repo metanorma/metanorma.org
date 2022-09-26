@@ -2,7 +2,9 @@
 layout: author-docs
 ---
 
-= Languages & localization
+= Languages and localization
+
+== Languages
 
 Metanorma allows generation of standards in different languages.
 
@@ -42,40 +44,114 @@ in your custom Metanorma workflow, see link:/builder/topics/localization/[locali
 in Metanorma builder's documentation.
 ====
 
-[[number-localisation]]
-== Number localisation
 
-Standardisation organisations often require numbers to be localised in their display, with the use of a particular
-decimal marker, groupings of digits, and groupings of decimal digits. By default, numbers in Metanorma are localised 
-to the display conventions of the language of the document; this can be overridden in particular flavours of Metanorma,
-to flavour-specific requirements. But such localisation is only applied if numbers are encoded as stem expressions.
+[[number-localization]]
+== Number localization
 
-So the number `60007.1234`, entered in that way, will be displayed as _60007.1234_. 
+=== General
 
-However, English localisation prefers
-the number to be encoded as _60,007.1234_. This is achieved in Metanorma by tagging the document as being in English
-(`:language: en`), and encoding the number as a stem expression (`stem&#x200c;:[60007.1234]`). Metanorma will automatically apply
-the localisation conventions of English, as captured in the https://github.com/twitter/twitter-cldr-rb[Twitter CLDR] gem.
+Standardization bodies often require numbers to be localized in their
+display, with the use of a particular decimal marker, groupings of digits, and
+groupings of decimal digits.
 
-Flavours can override the language-specific conventions. For example, BIPM requires both digits and fraction digits
-to be grouped in threes, and separated by non-breaking space, rather than using a comma. So it will be displayed as
-_60 007.123 4_.
+The https://www.bipm.org/en/measurement-units[SI system] defined by the
+Metre Convention, notably describes acceptable practices for representing
+numbers and quantities
+(as documented in the https://www.bipm.org/en/publications/si-brochure[BIPM SI Brochure])
 
-The language and flavour conventions for number localisation can be overridden with the `:localize-number:` attribute,
-which uses a template to indicate how numbers should be displayed; e.g.
+Some standardization bodies also utilize the
+https://www.iso.org/standard/30669.html[ISO 80000] series of standards which
+provide details on representing numbers.
 
-`:localize-number: \#,#\#0.#\## \###`
+Metanorma supports localization for number representation formats as well as
+specific formats required by specific standardization bodies.
 
-* The character after "0" is the decimal marker (decimal point, or decimal comma)
-* 1 + the number of continuous hashes before 0 is the number of digits to be grouped together. (This is normally three, but two are used in India.)
-* The separator of groups of digits is the first character before the continuous run of hashes before 0. If there is no non-hash character before 0, then there is no grouping of digits before the decimal marker.
-* The number of contiguous hashes after the decimal marker is the number of fractional digits to be grouped together.
-* The first character after the contiguous hashes after the decimal marker is the separator of groups of fractional digits. If there is no non-hash character after the decimal marker, then there is no grouping of digits after the decimal marker.
+The number localization format can be overridden in particular flavours of
+Metanorma, to flavour-specific requirements.
 
-To illustrate:
 
-* _60 007.123 4_ is specified as `:localize-number: \# #\#0.#\## \###`
-* _60 007,123 4_ is specified as `:localize-number: \# #\#0,#\## \###`
-* _60007.1234_ is specified as `+++:localize-number: ###0.######+++`
-* _60,007.12 34_ is specified as `:localize-number: \#,#\#0.#\# #\# ##`
+=== Specifying numbers to localize
 
+Localization of numbers is only applied if numbers are encoded as `stem`
+expressions.
+
+[example]
+.Example of representing numbers without localization
+The number `60007.1234`, entered in that way, is displayed plainly as
+_60007.1234_.
+
+By default, numbers in Metanorma are localized to the display conventions of the
+language of the document (specified using the attribute `:language:`).
+Metanorma automatically applies localization conventions of the particular
+language, as specified by the
+https://cldr.unicode.org[Unicode CLDR data repository]
+(via the https://github.com/twitter/twitter-cldr-rb[Twitter CLDR] gem).
+
+Typical English localization formats the number `60007.1234` as _60,007.1234_.
+This is achieved in Metanorma by tagging the document as being in English
+(`:language: en`), and encoding the number as a stem expression
+(`stem&#x200c;:[60007.1234]`).
+
+[example]
+.Example of localizing numbers using `stem` encoding
+The encoding of `stem&#x200c;:[60007.1234]` in a document with language
+specified to English is displayed as _60,007.1234_.
+
+
+=== Flavor-specific number formats
+
+Flavours can override the language-specific conventions.
+
+Flavor-specific number formats are implemented for the following flavors:
+
+* link:/author/bipm/topics/markup#numeral-formats[BIPM-specific number localization]
+
+* link:/author/iso/topics/markup#numeral-formats[ISO/IEC-specific number localization]
+
+
+
+=== Overriding number representation formats
+
+The language and flavour conventions for number localization can be overridden
+with the `:localize-number:` attribute, which uses a template to indicate how
+numbers should be displayed.
+
+The template is encoded as a string as follows:
+
+[source,adoc]
+----
+:localize-number: #,##0.### ###
+----
+
+Where,
+
+* The decimal marker is the character immediately after "0". It is typically
+specified as a decimal point (`.`), or decimal comma (`,`).
+
+* 1 + the number of continuous hashes before 0 is the number of digits to be
+grouped together. (This is normally three, but two are used in India.)
+
+* The separator of groups of digits is the first character before the continuous
+run of hashes before 0. If there is no non-hash character before 0, then there
+is no grouping of digits before the decimal marker.
+
+* The number of contiguous hashes after the decimal marker is the number of
+fractional digits to be grouped together.
+
+* The first character after the contiguous hashes after the decimal marker is
+the separator of groups of fractional digits. If there is no non-hash character
+after the decimal marker, then there is no grouping of digits after the decimal
+marker.
+
+If a non-breaking space is to be entered, please directly enter the
+corresponding unicode character within the template string.
+The differences between a normal whitespace
+and non-breaking spaces can be seen at
+https://en.wikipedia.org/wiki/Non-breaking_space[Non-breaking space on Wikipedia].
+
+To illustrate, the encoding `stem&#x200c;:[6007.1234]` will be rendered as:
+
+* _60 007.123 4_ if specified with `:localize-number: \# #\#0.#\## \###`
+* _60 007,123 4_ if specified with `:localize-number: \# #\#0,#\## \###`
+* _60007.1234_ if specified with `+++:localize-number: ###0.######+++`
+* _60,007.12 34_ if specified with `:localize-number: \#,#\#0.#\# #\# ##`

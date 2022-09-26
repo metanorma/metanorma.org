@@ -1,13 +1,19 @@
 ---
 layout: bipm-flavor
+title: Metanorma BIPM document attributes
 ---
 
-= Using Metanorma-BIPM
+[[note_general_doc_ref_doc_attrib]]
+[NOTE]
+====
+The document attributes listed below are unique to Metanorma's processing of BIPM documents.
 
+For _common document attributes_, see link:/author/ref/document-attributes[Document attributes reference] in general Metanorma author's documentation. That page describes attributes that apply to all Metanorma flavors, not just BIPM.
 
-== Document attributes
+For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
+====
 
-Metadata elements of a BIPM document are entered via document attributes:
+== Document information
 
 `:edition:`:: The document edition.
 
@@ -15,64 +21,6 @@ Metadata elements of a BIPM document are entered via document attributes:
 
 `:copyright-year:`:: The year which will be claimed as when the copyright for
 the document was issued.
-
-`:title-en:`:: *Mandatory.* The title of the document in English.
-`:title-fr:`:: *Mandatory.* The title of the document in French.
-
-`:title-cover-en:`:: The title of the front cover of the document in English (where different from the title proper).
-`:title-cover-fr:`:: The title of the front cover of the document in French (where different from the title proper).
-
-`:title-part-en:`:: The title of the document part in English (if applicable).
-`:title-part-fr:`:: The title of the document part in French (if applicable).
-
-`:title-subpart-en:`:: The title of the document subpart in English (if applicable).
-`:title-subpart-fr:`:: The title of the document subpart in French (if applicable).
-
-`:title-appendix-en:`:: The title of the appendix in English, if this document is an appendix published separately; `title-en` becomes the title of the main document, as presented within the standalone appendix.
-`:title-appendix-fr:`:: The title of the appendix in French, if this document is an appendix published separately; `title-fr` becomes the title of the main document, as presented within the standalone appendix.
-
-`:title-annex-en:`:: The title of the annex in English, if this document is an annex of an appendix published separately [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v1.0.2]; `title-appendix-en` becomes the title of the main document, as presented within the standalone appendix.
-`:title-annex-fr:`:: The title of the annex in French, if this document is an annex of an appendix published separately [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v1.0.2]; `title-appendix-fr` becomes the title of the main document, as presented within the standalone appendix.
-
-`:title-provenance-en:`:: A subtitle giving the provenance of the document, in English [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v1.0.8].
-`:title-provenance-fr:`:: A subtitle giving the provenance of the document, in French [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v1.0.8].
-
-`:partnumber:`:: The number of the document part, if applicable. If it is in the format `m.n`, the portion after the period becomes the subpart number.
-`:appendix-id:`:: The number of the appendix, if this document is an appendix published separately.
-`:annex-id:`:: The number of the annex of the appendix, if this document is an annex of an appendix published separately [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v1.0.2].
-
-`:si-aspect:`:: The domain of SI covered by the document; used to select logo in PDF cover page. The logo nominates one primary SI base units, and defining consonants for that unit and possibly others as well. Permitted values are:
-+
---
-* `A_e_deltanu` (ampere; time)
-* `A_e` (ampere)
-* `cd_Kcd_h_deltanu` (candela; mass, time)
-* `cd_Kcd` (candela)
-* `full` (all units)
-* `K_k_deltanu` (kelvin; mass, time)
-* `K_k` (kelvin)
-* `kg_h_c_deltanu` (kilogram; length, time)
-* `kg_h` (kilogram)
-* `m_c_deltanu` (metre; time)
-* `m_c` (metre)
-* `mol_NA` (mole)
-* `s_deltanu` (second)
---
-+
-NOTE: See the https://github.com/metanorma/metanorma-bipm/issues/14[SI Aspect implementation issue] for rendering details.
-
-`:supersedes:`:: One or more BIPM document that this BIPM document standard supersedes; the superseded
-document may still remain in effect. Identified with document identifier. Comma delimited.
-
-`:superseded-by:`:: One or more BIPM document that this BIPM document standard is superseded by; this
-document may still remain in effect. Identified with document identifier. Comma delimited.
-
-`:supersedes-date_{i}:`:: Date of the document draft or version which this document supersedes.
-Assumes superseded document does not have distinct identifier.
-`:supersedes-draft_{i}:`:: Draft of the document which this document supersedes.
-Assumes superseded document does not have distinct identifier.
-`:supersedes-edition{i}:`:: Version of the document which this document supersedes.
-Assumes superseded document does not have distinct identifier.
 
 `:doctype:`:: *Mandatory.* The document type. Permitted types are:
 +
@@ -98,6 +46,90 @@ Assumes superseded document does not have distinct identifier.
 * `in-force`
 * `retired`
 --
+
+`:language:`:: *Mandatory.* The language of the document (`en` or `fr`)
+
+`:title-en:`:: *Mandatory.* The title of the document in English.
+`:title-fr:`:: *Mandatory.* The title of the document in French.
+
+`:title-cover-en:`:: The title of the front cover of the document in English (where different from the title proper).
+`:title-cover-fr:`:: The title of the front cover of the document in French (where different from the title proper).
+
+`:title-part-en:`:: The title of the document part in English (if applicable).
+`:title-part-fr:`:: The title of the document part in French (if applicable).
+
+`:title-subpart-en:`:: The title of the document subpart in English (if applicable).
+`:title-subpart-fr:`:: The title of the document subpart in French (if applicable).
+
+`:title-appendix-en:`:: The title of the appendix in English, if this document is an appendix published separately; `title-en` becomes the title of the main document, as presented within the standalone appendix.
+`:title-appendix-fr:`:: The title of the appendix in French, if this document is an appendix published separately; `title-fr` becomes the title of the main document, as presented within the standalone appendix.
+
+`:title-annex-en:`:: The title of the annex in English, if this document is an annex of an appendix published separately [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v1.0.2]; `title-appendix-en` becomes the title of the main document, as presented within the standalone appendix.
+`:title-annex-fr:`:: The title of the annex in French, if this document is an annex of an appendix published separately [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v1.0.2]; `title-appendix-fr` becomes the title of the main document, as presented within the standalone appendix.
+
+`:title-provenance-en:`:: A subtitle giving the provenance of the document, in English [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v1.0.8].
+`:title-provenance-fr:`:: A subtitle giving the provenance of the document, in French [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v1.0.8].
+
+`:partnumber:`:: The number of the document part, if applicable. If it is in the format `m.n`, the portion after the period becomes the subpart number.
+
+`:appendix-id:`:: The number of the appendix, if this document is an appendix published separately.
+
+`:annex-id:`:: The number of the annex of the appendix, if this document is an annex of an appendix published separately [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v1.0.2].
+
+`:si-aspect:`:: The domain of SI covered by the document; used to select logo in PDF cover page. The logo nominates one primary SI base units, and defining consonants for that unit and possibly others as well. Permitted values are:
++
+--
+* `A_e_deltanu` (ampere; time)
+* `A_e` (ampere)
+* `cd_Kcd_h_deltanu` (candela; mass, time)
+* `cd_Kcd` (candela)
+* `full` (all units)
+* `K_k_deltanu` (kelvin; mass, time)
+* `K_k` (kelvin)
+* `kg_h_c_deltanu` (kilogram; length, time)
+* `kg_h` (kilogram)
+* `m_c_deltanu` (metre; time)
+* `m_c` (metre)
+* `mol_NA` (mole)
+* `s_deltanu` (second)
+--
++
+NOTE: See the https://github.com/metanorma/metanorma-bipm/issues/14[SI Aspect implementation issue] for rendering details.
+
+`:meeting-note:`:: Note on when and where a guide was adopted.
+
+The attribute `:draft:`, if present, includes review notes in the XML output;
+these are otherwise suppressed.
+
+
+== Document dates and relationships
+
+`:supersedes:`:: One or more BIPM document that this BIPM document standard supersedes; the superseded
+document may still remain in effect. Identified with document identifier. Comma delimited.
+
+`:superseded-by:`:: One or more BIPM document that this BIPM document standard is superseded by; this
+document may still remain in effect. Identified with document identifier. Comma delimited.
+
+`:supersedes-date_{i}:`:: Date of the document draft or version which this document supersedes.
+Assumes superseded document does not have distinct identifier.
+`:supersedes-draft_{i}:`:: Draft of the document which this document supersedes.
+Assumes superseded document does not have distinct identifier.
+`:supersedes-edition{i}:`:: Version of the document which this document supersedes.
+Assumes superseded document does not have distinct identifier.
+
+`:comment-period-from:`:: Start of the period during which comments are allowed on the document draft.
+`:comment-period-to:`:: End of the period during which comments are allowed on the document draft. (optional)
+
+`:obsoleted-date:`:: The date a document was superseded.
+`:implemented-date:`:: The date a document became effective.
+
+`:supersedes-date_{i}:`:: Date of the document draft or version which this document supersedes.
+`:supersedes-draft_{i}:`:: Draft of the document which this document supersedes.
+`:supersedes-version_{i}:`:: Version of the document which this document supersedes.
+
+
+
+== Contribution information
 
 `:committee-en:`:: *Mandatory.* The name of the relevant committee in English. This includes inter-organization entities.
 `:committee-fr:`:: *Mandatory.* The name of the relevant committee in French. This includes inter-organization entities.
@@ -127,97 +159,5 @@ Assumes superseded document does not have distinct identifier.
 `:workgroup:`:: The name of the relevant workgroup.
 `:workgroup-acronym:`:: The acronym of the relevant workgroup.
 
-`:language:`:: *Mandatory.* The language of the document (`en` or `fr`)
-
-`:comment-period-from:`:: Start of the period during which comments are allowed on the document draft.
-`:comment-period-to:`:: End of the period during which comments are allowed on the document draft. (optional)
-
-`:obsoleted-date:`:: The date a document was superseded.
-`:implemented-date:`:: The date a document became effective.
-
-`:meeting-note:`:: Note on when and where a guide was adopted.
-
 `:role_{i}:`:: If provided and is other than `author` or `editor` (e.g. "`WG-N co-chair`"),
 is treated as a subclass of `editor`.
-
-`:supersedes-date_{i}:`:: Date of the document draft or version which this document supersedes.
-`:supersedes-draft_{i}:`:: Draft of the document which this document supersedes.
-`:supersedes-version_{i}:`:: Version of the document which this document supersedes.
-
-
-The attribute `:draft:`, if present, includes review notes in the XML output;
-these are otherwise suppressed.
-
-
-
-== Clauses
-
-=== Unnumbered clauses and annexes
-
-Clauses and annexes may be marked as `[%unnumbered]`, in which case they do not receive section numbering, and are cross-referenced by their title.
-
-
-== Lists
-
-=== Ordered lists
-
-Numbering behavior for ordered lists differs from the default in Metanorma.
-
-Ordered lists do not have a fixed sequence of numbering styles:
-the `type` set for each ordered list (including nested lists) is respected.
-
-In BIPM, the default numbering style for ordered lists is always `arabic`.
-
-The numbering of ordered lists per level are in the order of:
-
-* level 1: "`1.`"
-* level 2: "`a)`" (`alphabetic`)
-* level 3 and above: Metanorma defaults.
-
-The `start` attribute on lists is also supported in BIPM,
-unlike in standard Metanorma.
-
-
-== Numerals
-
-Numerals are automatically formatted as required by BIPM:
-
-* French: the decimal symbol is the comma, numbers spaced in groups of three
-* English: the decimal symbol is the period, numbers spaced in groups of three
-
-EXAMPLE: `\stem:[1234567890]` is rendered as _1 234 567 890_ in both languages.
-
-EXAMPLE: `\stem:[32123.456789]` is rendered as _32 123,456 789_ in French, and _32 123.456 789_ in English.
-
-
-== Cross-references
-
-Rendered cross-references are locale-aware.
-
-Cross-references formatted as `\<<{{anchor}},pagenumber%>>`
-are rendered in PDF as just the page number; they are used for
-tables of content.
-In HTML output, such cross-references are treated as normal cross-references.
-
-In PDF, cross-references are otherwise accompanied by a page number,
-preceded by _see_ (English) or _voir_ (French).
-If the cross-reference is formatted as `\<<{{anchor}},nosee%>>`,
-then _see_/_voir_ is not inserted, just the page number.
-If the cross-reference
-is formatted as `\<<{{anchor}},nopage%>>`, then neither _see_/_voir_
-nor the page number is inserted [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v1.0.1].
-Again, both such cross-references are treated as normal cross-references in HTML.
-
-Cross-references to clauses are rendered in lowercase: "`see section 4.1`".
-Metanorma will attempt to impose correct capitalisation for instances at
-the start of blocks and sentences, but it may get it wrong.
-
-To override such capitalisation, you can use the the flags
-`capital%` or `lowercase%` as the content of the cross-reference,
-to force that casing on the cross-reference.
-
-Localization occurs for both English and French versions.
-
-== Index
-
-Metanorma PDF supports index generation in both HTML and PDF outputs.

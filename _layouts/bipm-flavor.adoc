@@ -9,7 +9,14 @@ bipm_flavor:
   title: BIPM
   markup_name: Metanorma for BIPM
   build:
-    cli_flags: "--type bipm"
+    cli_flags: "--type bipm -x pdf"
+  sample:
+    title: SI Brochure
+    repo_url: https://github.com/metanorma/bipm-si-brochure
+    rendered_url: https://metanorma.github.io/bipm-si-brochure/
+  docs_entry_points:
+    - path: ./topics/
+      title: topics
 
 base_url: /author/bipm
 
@@ -17,10 +24,18 @@ navigation:
   items:
   - title: Get started
     path: /
-  # - title: Sample
-  #   path: /sample/
-  - title: Using Metanorma-BIPM
-    path: /authoring/
+  - title: Sample
+    path: /sample/
+  - title: Usage
+    path: /topics/
+    items:
+    - title: Markup
+      path: /topics/markup/
+  - title: Reference guides
+    path: /ref/
+    items:
+      - title: Document attributes
+        path: /ref/document-attributes/
 ---
 
 {{ content }}

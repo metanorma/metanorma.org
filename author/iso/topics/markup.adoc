@@ -3,6 +3,8 @@ layout: iso-flavor
 title: Metanorma for ISO markup
 ---
 
+= Metanorma for ISO markup
+
 == Lists
 
 === Unordered lists
@@ -110,34 +112,60 @@ spanning multiple-blocks.
 
 == Editorial notes
 
-Editorial notes can be added to an ISO document, to differentiate feedback from ISO editors to
-the readers of a circulated draft, from feedback to the authors or editors of a draft.
-Editorial notes can be marked up as follows [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2]:
+Editorial notes can be added to an ISO document, to differentiate feedback from
+ISO editors to the readers of a circulated draft, from feedback to the authors
+or editors of a
+draft [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2].
+
+The editorial note in ISO documents is meant to represent the `zzHelp` style
+as known to ISO editors, meant to represent notes to the editors.
+
+Editorial notes are encoded as the `EDITOR` admonition, which can be used
+in a single-line encoding or in a block syntax.
 
 [source,asciidoc]
+----
+EDITOR: {text}
+----
+
+Where:
+
+* `{text}` is the contents of the editorial note.
+
+
+[example]
+.Example of specifying editorial notes
+======
+[source,asciidoc]
 --
-EDITOR: This is an editorial note
+EDITOR: This is an editorial note.
 
 [EDITOR]
 ====
-So is this
+So is this.
 ====
 
 [EDITOR]
 And this as well.
 --
 
-to render:
+Renders into:
 
-image::../../../assets/author/iso/editorial_notes.png[]
+.Example rendering of editorial notes
+image::/assets/author/iso/editorial_notes.png[]
+======
 
-Beneath the surface,`[EDITOR]` is just an alias for the admonition `[IMPORTANT,type=editorial]`.
-So the following markup is also valid, though larger to type:
+
+[NOTE]
+--
+`[EDITOR]` is an alias for the admonition `[IMPORTANT,type=editorial]`.
+Hence, the following markup is also valid:
 
 [source,asciidoc]
---
+----
 [IMPORTANT,type=editorial]
 This is an editorial note, too.
+----
 --
 
 == Cross-references
@@ -191,8 +219,8 @@ one of:
 In systematic order, the entry numbers are "serial numbers reflecting
 the position of the respective concept within a concept system".
 
-EXAMPLE.
-
+[example]
+.Example of clause structure with systematic order (ISO 10241-1)
 ====
 3.1 Terminological entry at first level of concept system. +
 3.2 Terminological entry at first level of concept system. +
@@ -204,9 +232,10 @@ EXAMPLE.
 
 This arrangement means that terms can also occur in non-terminal subclauses, and
 in effect means that terms can appear to be nested within other terms in
-numbering. This is indicated via a `[.term]` role attribute:
+numbering. This is indicated via a `[.term]` role attribute.
 
 [source,asciidoc]
+.Encoding non-term clauses in a terminology clause in systematic order
 --
 == Terms and definitions
 
@@ -233,8 +262,8 @@ In mixed order,
 * entry numbers of terminological entries within the divisions are "serial
   numbers reflecting the order of preference"
 
-EXAMPLE.
-
+[example]
+.Example of clause structure with mixed order (ISO 10241-1)
 ====
 3.1 Division at first level of concept system. +
 3.2 Division at first level of concept system. +
@@ -249,19 +278,18 @@ This arrangement is of typical structure in Metanorma, where only the terminal
 subclauses within a "`Terms and definitions`" clause are treated as terms, and
 any intermediate sections are treated as subclauses.
 
-EXAMPLE.
-
 [source,asciidoc]
+.Encoding subclause groupings in a terminology clause in mixed order
 --
 == Terms and definitions
 
-=== Subclause 1
+=== Term grouping 1 (subclause 1)
 
 ==== Term
 
 ==== Term
 
-=== Subclause 2
+=== Term grouping 2 (subclause 2)
 
 ==== Term
 --
@@ -557,7 +585,7 @@ The entries in the Bibliography are reordered (and, for numerical references, re
 * Full document identifier
 * Document title
 
-The bracketed reference numbers are expected to be correct and in order (accounting for the fact that references to standards will end up numbered): they are not overriden in rendering.
+The bracketed reference numbers are expected to be correct and in order (accounting for the fact that references to standards will end up numbered): they are not overridden in rendering.
 
 
 == Amendments and technical corrigenda
@@ -609,3 +637,27 @@ numbering in any snippets of text (as they already do), and mock up clause title
 (since clause titles will be quoted, and thus not recognised as such).
 
 
+[[numeral-formats]]
+== Numeral formats
+
+In ISO and IEC, by default, the decimal marker used is the comma, as described
+
+[quote,ISO/IEC Directives Part 2 9.1]
+The decimal sign shall be a comma on the line in all language versions.
+
+And digits are also to be grouped into threes:
+
+[quote]
+Each group of three digits shall be separated by a small space from the
+preceding digits, counting from the decimal sign. This also applies to digits
+following the decimal sign.
+
+[example]
+.Rendering numbers using `stem` encoding in an ISO or IEC document
+The encoding of `stem&#x200c;:[60007.12345]` in an ISO or IEC document in any language
+is displayed as _60 007,123 45_.
+
+[example]
+.Rendering numbers using `stem` encoding in an ISO or IEC document without treatment on the hanging digit
+The encoding of `stem&#x200c;:[2345.6789]` in an ISO or IEC document in any language
+is displayed as _2 345,678 9_.
