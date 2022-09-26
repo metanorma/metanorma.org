@@ -1,0 +1,138 @@
+---
+layout: bipm-flavor
+title: Metanorma for BIPM markup
+---
+
+== Clauses
+
+=== Unnumbered clauses and annexes
+
+Clauses and annexes may be marked as `[%unnumbered]`, in which case they do not
+receive section numbering, and are cross-referenced by their title.
+
+
+== Lists
+
+=== Ordered lists
+
+Numbering behavior for ordered lists differs from the default in Metanorma.
+
+Ordered lists do not have a fixed sequence of numbering styles:
+the `type` set for each ordered list (including nested lists) is respected.
+
+In BIPM, the default numbering style for ordered lists is always `arabic`.
+
+The numbering of ordered lists per level are in the order of:
+
+* level 1: "`1.`"
+* level 2: "`a)`" (`alphabetic`)
+* level 3 and above: Metanorma defaults.
+
+The `start` attribute on lists is also supported in BIPM,
+unlike in standard Metanorma.
+
+
+[[numeral-formats]]
+== Numeral formats
+
+Numerals are automatically formatted as required by BIPM:
+
+* French: the decimal symbol is the comma, numbers spaced in groups of three
+* English: the decimal symbol is the period, numbers spaced in groups of three
+
+[example]
+.Identical rendering for whole numbers in English and French
+`\stem:[1234567890]` is rendered as _1 234 567 890_ in both languages.
+
+[example]
+.Different decimal markers used in English and French
+`\stem:[32123.456789]` is rendered as _32 123,456 789_ in French, and
+_32 123.456 789_ in English.
+
+
+Specifics are detailed below.
+
+[quote,SI Brochure 5.4.4]
+The symbol used to separate the integral part of a number from its decimal part
+is called the decimal marker. Following a decision by the 22nd CGPM (2003,
+Resolution 10), the decimal marker "shall be either the point on the line or the
+comma on the line." The decimal marker chosen should be that which is customary
+in the language and context concerned.
+
+Moreover, digits are to be divided in groups of three, without a hanging digit.
+The digits are to be separated by a non-breaking space.
+
+[quote,SI Brochure 5.4.4]
+Following the 9th CGPM (1948, Resolution 7) and the 22nd CGPM (2003, Resolution
+10), for numbers with many digits the digits may be divided into groups of three
+by a space, in order to facilitate reading. Neither dots nor commas are inserted
+in the spaces between groups of three. However, when there are only four digits
+before or after the decimal marker, it is customary not to use a space to
+isolate a single digit. The practice of grouping digits in this way is a matter
+of choice; it is not always followed in certain specialized applications such as
+engineering drawings, financial statements and scripts to be read by a computer.
+
+[example]
+.BIPM grouping of digits (SI Brochure 5.4.4 Example 2)
+Rendering of _43 279.168 29_ instead of _43,279.168,29_.
+
+[example]
+.BIPM grouping of digits (SI Brochure 5.4.4 Example 3)
+Rendering of _43 279.168 29_ instead of _43,279.168,29_.
+
+
+[example]
+.Rendering numbers using `stem` encoding in a BIPM document in English
+The encoding of `stem&#x200c;:[60007.12345]` in a BIPM document in English is displayed
+as _60 007.123 45_.
+
+[example]
+.Rendering numbers using `stem` encoding in a BIPM document in French
+The encoding of `stem&#x200c;:[60007.12345]` in a BIPM document in French is displayed
+as _60 007,123 45_.
+
+[example]
+.Rendering numbers using `stem` encoding in a BIPM document with hanging digits (1)
+The encoding of `stem&#x200c;:[1999.1999]` in a BIPM document in English is displayed
+as _1999.1999_ (not _1 999.999 9_).
+
+[example]
+.Rendering numbers using `stem` encoding in a BIPM document with hanging digits (2)
+The encoding of `stem&#x200c;:[1234567.7654321]` in a BIPM document in English is displayed
+as _1234 567.765 4321_ (not _1 234 567.765 432 1_).
+
+
+
+
+== Cross-references
+
+Rendered cross-references are locale-aware.
+
+Cross-references formatted as `\<<{{anchor}},pagenumber%>>`
+are rendered in PDF as just the page number; they are used for
+tables of content.
+In HTML output, such cross-references are treated as normal cross-references.
+
+In PDF, cross-references are otherwise accompanied by a page number,
+preceded by _see_ (English) or _voir_ (French).
+If the cross-reference is formatted as `\<<{{anchor}},nosee%>>`,
+then _see_/_voir_ is not inserted, just the page number.
+If the cross-reference
+is formatted as `\<<{{anchor}},nopage%>>`, then neither _see_/_voir_
+nor the page number is inserted [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v1.0.1].
+Again, both such cross-references are treated as normal cross-references in HTML.
+
+Cross-references to clauses are rendered in lowercase: "`see section 4.1`".
+Metanorma will attempt to impose correct capitalisation for instances at
+the start of blocks and sentences, but it may get it wrong.
+
+To override such capitalisation, you can use the the flags
+`capital%` or `lowercase%` as the content of the cross-reference,
+to force that casing on the cross-reference.
+
+Localization occurs for both English and French versions.
+
+== Index
+
+Metanorma PDF supports index generation in both HTML and PDF outputs.
+
