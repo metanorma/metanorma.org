@@ -53,6 +53,16 @@ in the AsciiDoc source
 (e.g. `\<<``formulaB-1``>>` generates either "`Formula (B.1)`" or "`B.6, Formula (B.1)`",
 depending on where in the document it occurs.)
 
+If the cross-reference is given with `style=basic%`, `style=short%`, or `style=full%` as its text,
+and is referencing a clause, then the automatically populated cross-reference is modified from
+the Metanorma default [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.6]:
+
+* `short` means that the clause type and number is used as the cross-reference, as is the Metanorma default, e.g. "Clause 3.1.2";
+* `basic` means that the title of the clause is used as the cross-reference, e.g. "Other considerations";
+* `full` combines the title with the clause type/number cross-reference, e.g. "Clause 3.1.2, Other considerations"
+
+The document attribute `:xrefstyle:` applies the same setting as a document default.
+
 If the cross-reference is given with `droploc%` as its text, then the label and prefix
 are dropped: the cross-reference value is given in
 isolation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.4].
