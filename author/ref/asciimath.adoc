@@ -9,6 +9,11 @@ to process AsciiMath, converting it to MathML for Metanorma processing. For rend
 HTML, the MathML generated is processed by https://www.mathjax.org[MathJax]. For rendering
 in Word, the MathML is converted to https://en.wikipedia.org/wiki/Office_Open_XML[Office Open XML (OOXML)].
 
+NOTE: AsciiMath only recognises decimal points and not decimal commas. Any attempt to use
+a decimal comma (e.g. _3,4_) will be processed as an operator, and will end up treating the integer and fractional
+parts of the number as two separate numerals, separated by a space as well as a comma. This
+applies to all versions of Asciimath.
+
 == Ruby AsciiMath
 
 The version of AsciiMath supported by the Ruby AsciiMath parser is slightly different
