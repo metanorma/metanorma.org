@@ -81,11 +81,12 @@ Where:
 
 Object values are accessed via the `.` (dot) separator.
 
-EXAMPLE:
---
+[example]
+.Example of accessing object values
+====
 Given:
 
-strings.yaml
+`strings.yaml`
 [source,yaml]
 ----
 ---
@@ -111,7 +112,7 @@ Will render as:
 I'm heading to the bar for beef.
 ----
 
---
+====
 
 
 === Accessing arrays
@@ -120,11 +121,12 @@ I'm heading to the bar for beef.
 
 The length of an array can be obtained by `{{arrayname.size}}`.
 
-EXAMPLE:
---
+[example]
+.Example of accessing arrays
+====
 Given:
 
-strings.yaml
+`strings.yaml`
 [source,yaml]
 ----
 ---
@@ -151,7 +153,7 @@ Will render as:
 The length of the YAML array is 3.
 ----
 
---
+====
 
 ==== Enumeration and context
 
@@ -184,11 +186,12 @@ Within an array enumerator, the following https://shopify.dev/docs/themes/liquid
 * `{{array_name[i]}}` provides the value at index `i` (zero-based: starts with `0`) in the array `array_name`; `-1` can be used to refer to the last item, `-2` the second last item, and so on.
 
 
-EXAMPLE:
---
+[example]
+.Example of iterating through a for loop
+====
 Given:
 
-strings.yaml
+`strings.yaml`
 [source,yaml]
 ----
 ---
@@ -233,8 +236,7 @@ This section is about ipsum.
 This section is about dolor.
 ----
 
---
-
+====
 
 
 === Accessing objects
@@ -245,8 +247,9 @@ This section is about dolor.
 Similar to arrays, the number of key-value pairs within an object can be
 obtained by `{{objectname.size}}`.
 
-EXAMPLE:
---
+[example]
+.Example of accessing an object
+====
 Given:
 
 object.yaml
@@ -279,7 +282,7 @@ Will render as:
 dolor sit amet
 ----
 
---
+====
 
 ==== Enumeration and context
 
@@ -300,8 +303,9 @@ Where:
 * `{% endfor %}` indicates where the object enumeration block ends
 
 
-EXAMPLE:
---
+[example]
+.Example of iterating through an object
+====
 Given:
 
 object.yaml
@@ -345,15 +349,16 @@ Lorem ipsum
 dolor sit amet
 ----
 
---
+====
 
 
 
 Moreover, the `keys` and `values` attributes can also be used in object enumerators.
 
 
-EXAMPLE:
---
+[example]
+.Example of using `keys` and `values` in object enumeration
+====
 Given:
 
 object.yaml
@@ -399,7 +404,7 @@ Will render as:
 |===
 ----
 
---
+====
 
 There are several optional arguments to the for tag that can influence which items you receive in your loop and what order they appear in:
 
@@ -407,11 +412,12 @@ There are several optional arguments to the for tag that can influence which ite
 * offset:<INTEGER> lets you start the collection with the nth item.
 * reversed iterates over the collection from last to first.
 
-EXAMPLE:
---
+[example]
+.Example of using `limit` and `offset` attributes in a for loop
+====
 Given:
 
-strings.yaml
+`strings.yaml`
 [source,yaml]
 ----
 ---
@@ -446,7 +452,7 @@ Will render as:
 dolor sit
 ----
 
---
+====
 
 
 == Advanced examples
@@ -458,8 +464,9 @@ With the syntax of enumerating arrays and objects we can now try more powerful e
 === Array of objects
 
 
-EXAMPLE:
---
+[example]
+.Advanced example of accessing an array of objects
+====
 Given:
 
 array_of_objects.yaml
@@ -514,18 +521,19 @@ amet:: lorem
 - amet: 6
 ----
 
---
+====
 
 
 === An array with interpolated file names (for AsciiDoc consumption)
 
 `yaml2text` blocks can be used for pre-processing document elements for AsciiDoc consumption.
 
-EXAMPLE:
---
+[example]
+.Advanced example of using interpolated file names
+====
 Given:
 
-strings.yaml
+`strings.yaml`
 [source,yaml]
 ----
 ---
@@ -586,7 +594,7 @@ Last item is dolor.
 
 ------
 
---
+====
 
 
 == Legacy version < 1.5.3

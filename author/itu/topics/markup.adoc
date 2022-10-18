@@ -76,13 +76,26 @@ A < B
 ++++
 --
 
-== Numbers
+[[numeral-formats]]
+== Numeral formats
 
-Numbers should be marked up with `\stem:[...]` to have them formatted
-as required by the _ITU Editing Guidelines_.
-This way the numbers will be shown with single quote as a thousands separator.
+In ITU, the numeral format is determined by the
+https://www.itu.int/oth/T0A0F000004/en[ITU Editing Guidelines: Author's guide for drafting ITU-T Recommendations].
 
-EXAMPLE: `\stem:[1234567890]` is rendered as _1'234'567'890_.
+[quote,ITU Editing Guidelines 9.4.3]
+In order to avoid ambiguity, it is recommended to use a single quote (') as a
+thousand's digit separator instead of spaces, commas or dots
+(e.g., "1'000'000").
+
+Digits are grouped into threes delimited by a single quote.
+
+The decimal marker is dependent on the language of authoring.
+
+[example]
+.Rendering numbers using `stem` encoding in an ITU-T document
+The encoding of `stem&#x200c;:[1234567890]` in an ISO or IEC document in any language
+is displayed as _1'234'567'890_.
+
 
 == Annexes
 

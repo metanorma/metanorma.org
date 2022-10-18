@@ -930,14 +930,16 @@ a large range of table formatting options.
 Table columns can also have their widths set [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3].
 Table column widths must be enumerated explicitly per column to generate column widths.
 
-EXAMPLE:
-
+[example]
+.Example of table with equal width columns
+====
 The following syntax will be processed as generating equal width columns.
 
 [source,adoc]
 ----
 [cols="1,1,1"]
 ----
+====
 
 NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to
 `[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.
@@ -983,21 +985,24 @@ https://github.com/asciidoctor/asciimath[asciimath] gem.
 
 The syntax of AsciiMath recognised by the `asciimath` gem is more strict
 than the common MathJax processor of AsciiMath.
+
 For example, `asciimath` insists on numerators being bracketed.
 
-EXAMPLE:
-
-(IEV 103-01-03)
-
+[example]
+.Usage of AsciiMath in IEV (IEV 103-01-03)
+====
 [source,asciidoc]
 ----
 The derivative of a distribution stem:[D] is another distribution
 stem:[D'] defined for any function stem:[f](stem:[x]) by
 stem:[D^( ' ) ( f ) = - D ( d f // d x )].
 ----
+====
 
-(ISO 10303-55, Clause 2)
 
+[example]
+.Usage of AsciiMath in ISO 10303-55 (ISO 10303-55, Clause 2)
+====
 [source,asciidoc]
 ----
 [stem]
@@ -1005,9 +1010,10 @@ stem:[D^( ' ) ( f ) = - D ( d f // d x )].
 f -= lambda x (a * x + b)
 ++++
 ----
+====
 
-NOTE: Some math expressions are NOT supported by AsciiMath -- in that
-case it is necessary to use LaTeX math or MathML input.
+WARNING: Some math expressions are NOT supported by AsciiMath. In that case it
+is necessary to use LaTeX math or MathML input.
 
 
 === Using LaTeX math
@@ -1031,17 +1037,20 @@ to generate identical output to the `latexmlmath` command.
 Unicode characters in the LaTeX source are translated into LaTeX escapes
 through the https://github.com/metanorma/unicode2latex[unicode2latex] gem.
 
-EXAMPLE:
-
-(ISO 10303-110, Clause 4)
+[example]
+.Example of using LaTeX Math in ISO 10303-110 (ISO 10303-110, Clause 4)
+====
 [source,asciidoc]
 ----
 The only change from the above example would be the
 nondimensionalization of viscosity, which would become,
 latexmath:[\tilde{\tilde{\mu}} = mu / (rho_infty c_infty L)].
 ----
+====
 
-(ISO 10303-110, Clause 4)
+[example]
+.Another example of using LaTeX Math in ISO 10303-110 (ISO 10303-110, Clause 4)
+====
 [source,asciidoc]
 ----
 [latexmath]
@@ -1053,7 +1062,7 @@ latexmath:[\tilde{\tilde{\mu}} = mu / (rho_infty c_infty L)].
 \end{array}
 ++++
 ----
-
+====
 
 
 The LaTeX math `eqnarray` environment is not supported in Metanorma as
@@ -1066,8 +1075,9 @@ The proper LaTeX math syntax used to replace existing `eqnarray`
 equations is to place the equations in separate blocks concatenated
 with `+`.
 
-EXAMPLE:
-
+[example]
+.Replacing LaTeX math `eqnarray` in Metanorma with separate equations
+====
 These equations using the `eqnarray` environment:
 
 [source,asciidoc]
@@ -1095,6 +1105,7 @@ should be re-arranged as:
 \bf{x^\prime} = \langle \bf{\eta} \times \bf{\zeta} \rangle
 ++++
 --
+====
 
 === Formulae
 
@@ -1466,7 +1477,7 @@ attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/
 
 Figures in documents can belong to different classes (e.g. _Plate_, _Chart_, _Diagram_),
 each of which can be auto-numbered and captioned differently. In order to achieve this,
-the desired class can be indicated 
+the desired class can be indicated
 through the `class` attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.5].
 
 [source,asciidoc]
@@ -1496,14 +1507,16 @@ generated from Metanorma AsciiDoc input, can be entered as a
 passthrough block [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1],
 with no format indication.
 
-EXAMPLE:
-
+[example]
+.Using passthrough XML tags in the Metanorma XML target
+====
 [source,asciidoc]
 --
 ++++
 <bibitem>
 ++++
 --
+====
 
 WARNING: Passthrough text may break the structure of the output
 format -- it is the user's responsibility to ensure the integrity
@@ -1514,8 +1527,9 @@ a format indication corresponding to one or more of the existing output formats
 of Metanorma in a comma-delimited manner
 (not limited to: `html`, `doc`, `pdf`, `rfc`, `sts`).
 
-EXAMPLE:
-
+[example]
+.Using passthrough XML tags in the RFC XML target
+====
 [source,asciidoc]
 --
 [format=rfc]
@@ -1524,6 +1538,7 @@ EXAMPLE:
 <artwork>
 ++++
 --
+====
 
 === Passthrough inline text
 
