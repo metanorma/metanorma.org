@@ -336,25 +336,31 @@ of groundwater data, as well as a GML/XML encoding with examples.
 The Executive Summary section is entered as a clause with the title
 "`Executive summary`".
 
-EXAMPLE:
-
+[example]
+.Setting the Executive summary
+====
 [source,adoc]
 ----
 == Executive summary
 
 This is the executive summary...
 ----
+====
 
 This clause is mandatory for Engineering Reports,
 and only allowed for that document type [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.3].
+
 
 [[ogc-preface]]
 === Preface
 
 A preface clause is recognized as a full section, with the title "`Preface`".
-The Preface clause may contain subclauses.
-\[added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.1]
+The Preface clause may contain
+subclauses. [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.1]
 
+[example]
+.Setting the Preface
+====
 [source,asciidoc]
 ----
 :received-date: 2019-01-01
@@ -367,6 +373,7 @@ Your preface text...
 
 More preface text...
 ----
+====
 
 NOTE: Previously, the Preface section can be specified by text entered after a
 `.Preface` label, which has to be placed between the AsciiDoc document
@@ -381,26 +388,30 @@ value as a comma-delimited list.
 
 Prefatory text is generated automatically.
 
-EXAMPLE:
-
+[example]
+.Setting the Keywords attribute
+====
 [source,adoc]
 ----
 :keywords: ogcdoc, OGC document, groundwater, hydrogeology, GWML2
 ----
+====
 
 === Security considerations
 
 The Security considerations section is entered as a clause with the title
 "`Security considerations`".
 
-EXAMPLE:
-
+[example]
+.Setting the Security considerations section
+====
 [source,adoc]
 ----
 == Security considerations
 
 The following security considerations apply...
 ----
+====
 
 If the security considerations are not provided in the source document, the
 clause is inserted with the text "`No security considerations have been made for
@@ -416,13 +427,14 @@ The values are entered using a semi-colon delimited list.
 
 Prefatory text is generated automatically.
 
-EXAMPLE:
-
+[example]
+.Setting the Submitting organizations attribute
+====
 [source,adoc]
 ----
 :submitting-organizations: Geological Survey of Canada (GSC), Canada; U.S. Geological Survey (USGS), United States of America
 ----
-
+====
 
 === Submitters
 
@@ -431,8 +443,9 @@ EXAMPLE:
 NOTE: Any table included in a Submitters section is automatically
 unnumbered [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.1]
 
-EXAMPLE:
-
+[example]
+.Setting the Submitters section with OGC membership status
+====
 [source,adoc]
 ----
 == Submitters
@@ -443,9 +456,12 @@ EXAMPLE:
 |Steve Liang | University of Calgary, Canada / SensorUp Inc. | Yes
 |===
 ----
+====
 
-EXAMPLE:
 
+[example]
+.Setting the Submitters section without OGC membership status
+====
 [source,adoc]
 ----
 == Submitters
@@ -460,6 +476,7 @@ submitters:
 |Alexander Kmoch |U Salzburg
 |===
 ----
+====
 
 
 [[ogc-additional-prelim]]
@@ -475,8 +492,9 @@ elements.
 
 Functionality implemented in https://github.com/metanorma/metanorma-ogc/issues/83.
 
-EXAMPLE:
-
+[example]
+.Setting additional preface sections
+====
 [source,adoc]
 ----
 == Preface
@@ -489,6 +507,7 @@ EXAMPLE:
 ...
 
 ----
+====
 
 end::preliminary-ogc[]
 
@@ -509,6 +528,7 @@ NOTE: Currently, this section is not machine-readable. However, OGC has plans to
 make it so. For future compatibility, please encode the table in the format
 described in the example below.
 
+[example]
 .Example of the "`Revision history`" section from OGC 20-010
 ====
 [source,adoc]
@@ -534,6 +554,9 @@ end::revision-history[]
 
 Unlike typical Metanorma, examples can have captions:
 
+[example]
+.Setting captions in an example
+======
 [source,asciidoc]
 ----
 [example]
@@ -542,6 +565,8 @@ Unlike typical Metanorma, examples can have captions:
 Text
 ====
 ----
+======
+
 
 === Table blocks
 
