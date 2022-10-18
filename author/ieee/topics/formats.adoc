@@ -1,28 +1,68 @@
 ---
 layout: ieee-flavor
+title: Metanorma for IEEE output formats
 ---
 
-= Metanorma-IEEE output formats
+== Metanorma for IEEE output formats
 
-In addition to the normal output formats of Metanorma (`html`, `doc`, `pdf`),
-Metanorma-ISO also supports the following output formats:
+=== General
 
-`ieee`:: IEEE XML [added in https://github.com/metanorma/isodoc/releases/tag/v0.1.0]
+Metanorma for IEEE supports the generation of the following formats.
 
-EXAMPLE:
+`html`:: HTML output
+`pdf`:: PDF output
+`doc`:: Word document in the `.doc` extension
+`ieee`:: IEEE STL XML (see <<format-ieee-stl>>)
 
+
+[[format-ieee-stl]]
+=== IEEE SA STL XML
+
+IEEE SA uses the IEEE SA Standards Tag Library (STL) XML format for publication
+of standards. [added in https://github.com/metanorma/isodoc/releases/tag/v0.1.0]
+
+Metanorma-IEEE supports the IEEE STL XML format as output for assisting the IEEE
+editorial and publication process.
+
+NOTE: The IEEE STL XML format is only meant for IEEE SA internal publication use
+and not typically needed for IEEE Working Groups.
+
+
+[example]
+.Generating IEEE STL XML and HTML output from an IEEE SA document
+====
 [source,console]
 ----
 metanorma -t ieee -x html,ieee test.adoc
 ----
+====
 
-If you wish to run DTD validation on the IEEE XML output, you will need to specify the location
-of the IEEE XML DTD, with the `ieee-dtd` document argument.
 
+=== Validation against IEEE SA STL DTD
+
+If you wish to run DTD validation on the IEEE XML output, you will need to
+specify the location of the IEEE XML DTD, with the `ieee-dtd` document argument.
+
+NOTE: The IEEE XML DTD is not publicly available. It can be obtained from the
+IEEE SA editorial team on WG request.
+
+[example]
+.Example of running IEEE XML validation given a local IEEE XML DTD file
+====
+On macOS/Linux:
+
+[source,asciidoc]
+----
+...
+:ieee-dtd: ../standards-1-7-DTD/standards-1-7-dtd/standards.dtd
+----
+
+On Windows:
 
 [source,asciidoc]
 ----
 ...
 :ieee-dtd: C:\Metanorma\IEEE\standards-1-7-DTD\standards-1-7-dtd\standards.dtd
 ----
+====
 

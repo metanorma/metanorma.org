@@ -1,19 +1,35 @@
 ---
 layout: iso-flavor
+title: Metanorma for ISO output formats
 ---
 
-= Metanorma-ISO output formats
+== Metanorma for ISO output formats
 
-In addition to the normal output formats of Metanorma (`html`, `doc`, `pdf`),
-Metanorma-ISO also supports the following output formats:
+ISO internally uses ISOSTS XML and NISO STS XML for the publication of
+standards.
+
+Metanorma-ISO supports the generation of ISOSTS XML and NISO STS XML output
+formats for assisting the ISO editorial and publication process, in addition to
+the normal output formats of Metanorma intended for authors (`html`, `doc`,
+`pdf`).
+
+ISO project teams could use these output files for the alignment and
+verification of the encoding performed by the ISO Editorial Team.
+
+NOTE: The ISOSTS XML and NISO STS XML formats are only meant for ISO internal
+publication use, and not typically needed for project teams.
+
+The accept format values of Metanorma-ISO output are as follows:
 
 `html_alt`:: HTML output with a more Web-like rendering (whereas `html` abides by ISO document style as much as possible)
 `sts`:: NISO STS XML
-`isosts`:: ISO STS XML [added in https://github.com/metanorma/isodoc/releases/tag/v1.5.6]
+`isosts`:: ISOSTS XML [added in https://github.com/metanorma/isodoc/releases/tag/v1.5.6]
 
-EXAMPLE:
-
+[example]
+.Generating ISOSTS and NISO STS XML output from an ISO document
+====
 [source,console]
 ----
 metanorma -t iso -x html,html_alt,sts,isosts test.adoc
 ----
+====
