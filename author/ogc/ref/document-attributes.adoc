@@ -84,19 +84,27 @@ Choices:
 Choices:
 
 * `draft`: Draft. This is the only draft stage for document types that are not
-  `standard`, `abstract-specification-topic` and `community-standard`.
+  `standard`, `abstract-specification-topic`, `community-standard`,
+  `best-practice` and `community-practice`.
 
 * `work-item-draft`: Work item draft. This is the first stage for a
-  `community-standard`.
+  `community-standard`, `best-practice` and a `community-practice`.
 
 * `swg-draft`: Candidate SWG Draft. This is the first stage for a
   `standard`.
 
-* `oab-review`: Candidate OAB Review Draft. This is the intended draft for the "`OAB + OGC-NA Review`".
+* `oab-review`: Candidate OAB Review Draft. This is the intended draft for the
+  "`OAB + OGC-NA Review`".
+  This stage is only valid for `standard`, `abstract-specification-topic` and
+  `community-standard`.
 
 * `public-rfc`: Public RFC. This is the draft for the (30 days) public comment period.
+  This stage is only valid for `standard`, `abstract-specification-topic`,
+  `community-standard`, `best-practice` and `community-practice`.
 
 * `tc-vote`: Candidate TC Vote Draft. This is the intended draft for the TC adoption and PC adoption votes.
+  This stage is only valid for `standard`, `abstract-specification-topic`,
+  `community-standard`, `best-practice` and `community-practice`.
 
 * `approved`: Published. This is the document intended to be published.
   This status is to be set after comments are handled with the TC chair (after `tc-vote`).
@@ -109,16 +117,23 @@ Choices:
 * `retired`: Retired. This document has been retired and no longer considered normative.
 
 [NOTE]
-The following table shows the available statuses for each document
-type [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.1].
+The following figure and table shows available document statuses for each
+document type [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.1].
 
-.Document statuses for OGC document types
+.OGC document type and document stage publication flows
+image::/assets/author/ogc/ogc-doctype-pub-process.svg[]
+
+// Editable diagram at https://lucid.app/lucidchart/19ed6874-34fe-4444-8baf-08a2b0196930
+
+.Document statuses available for various OGC document types
 |===
 | | draft | work-item-draft | swg-draft | oab-review | public-rfc | tc-vote | approved (published) | deprecated | rescinded | retired
 
 h| standard, abstract-specification-topic |   |   | x | x | x | x | x | x | x | x
 h| community-standard                     |   | x |   | x | x | x | x | x | x | x
-h| _all other types_ | x |   |   |   |   |   | x |   |   | x
+h| best-practice, community-practice      |   | x |   |   | x | x | x | x | x | x
+h| _all other types_                      | x |   |   |   |   |   | x |   |   | x
+
 |===
 --
 
