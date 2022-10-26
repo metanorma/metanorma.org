@@ -112,6 +112,7 @@ The type is to be set via these two attributes:
 Document types, set using the `:doctype:` attribute, include:
 
 * `standard`: Standard (a document subtype is necessary) (_default_)
+* `draft-standard`: Draft Standard (a document subtype is necessary) [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.6]
 * `abstract-specification-topic`: Abstract Specification
 * `best-practice`: Best Practice (a document subtype is necessary)
 * `change-request-supporting-document`: Change Request Supporting Document
@@ -129,7 +130,7 @@ Document types, set using the `:doctype:` attribute, include:
 
 Document subtypes, set using the `:docsubtype:` attribute, include:
 
-* For `:doctype:` set to `standard`:
+* For `:doctype:` set to `standard` or `draft-standard`:
 ** `implementation`: Implementation (_default_)
 ** `conceptual-model`: Conceptual model
 ** `conceptual-model-and-encoding`: Conceptual model and encoding
@@ -165,8 +166,8 @@ The document stage is set via the `:status:` attribute.
 
 Values accepted by the `:status:` attribute include:
 
-* For an OGC standard and an abstract specification topic, it goes through the
-stages of: `swg-draft`, `oab-review`, `public-rfc`, `tc-vote` and `approve`.
+* For an OGC standard, an OGC draft standard, and an abstract specification topic, 
+it goes through the stages of: `swg-draft`, `oab-review`, `public-rfc`, `tc-vote` and `approve`.
 
 * An OGC community standard goes through the same stages as a normal standard,
 except `swg-draft` is replaced with `work-item-draft`.
