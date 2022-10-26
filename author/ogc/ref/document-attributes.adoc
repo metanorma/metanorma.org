@@ -33,6 +33,7 @@ Document type.
 Values:
 
 * `standard`: Standard (a document subtype is necessary, see <<ogc-docsubtype>>) (_default_)
+* `draft-standard`: Standard (a document subtype is necessary, see <<ogc-docsubtype>>) [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.6]
 * `abstract-specification-topic`: Abstract Specification
 * `best-practice`: Best Practice (a document subtype is necessary, see <<ogc-docsubtype>>)
 * `change-request-supporting-document`: Change Request Supporting Document
@@ -84,26 +85,26 @@ Choices:
 Choices:
 
 * `draft`: Draft. This is the only draft stage for document types that are not
-  `standard`, `abstract-specification-topic`, `community-standard`,
+  `standard`, `draft-standard`, `abstract-specification-topic`, `community-standard`,
   `best-practice` and `community-practice`.
 
 * `work-item-draft`: Work item draft. This is the first stage for a
   `community-standard`, `best-practice` and a `community-practice`.
 
 * `swg-draft`: Candidate SWG Draft. This is the first stage for a
-  `standard`.
+  `standard` or `draft-standard`.
 
 * `oab-review`: Candidate OAB Review Draft. This is the intended draft for the
   "`OAB + OGC-NA Review`".
-  This stage is only valid for `standard`, `abstract-specification-topic` and
+  This stage is only valid for `standard`, `draft-standard`, `abstract-specification-topic` and
   `community-standard`.
 
 * `public-rfc`: Public RFC. This is the draft for the (30 days) public comment period.
-  This stage is only valid for `standard`, `abstract-specification-topic`,
+  This stage is only valid for `standard`, `draft-standard`, `abstract-specification-topic`,
   `community-standard`, `best-practice` and `community-practice`.
 
 * `tc-vote`: Candidate TC Vote Draft. This is the intended draft for the TC adoption and PC adoption votes.
-  This stage is only valid for `standard`, `abstract-specification-topic`,
+  This stage is only valid for `standard`, `draft-standard`, `abstract-specification-topic`,
   `community-standard`, `best-practice` and `community-practice`.
 
 * `approved`: Published. This is the document intended to be published.
@@ -129,10 +130,10 @@ image::/assets/author/ogc/ogc-doctype-pub-process.svg[]
 |===
 | | draft | work-item-draft | swg-draft | oab-review | public-rfc | tc-vote | approved (published) | deprecated | rescinded | retired
 
-h| standard, abstract-specification-topic |   |   | x | x | x | x | x | x | x | x
-h| community-standard                     |   | x |   | x | x | x | x | x | x | x
-h| best-practice, community-practice      |   | x |   |   | x | x | x | x | x | x
-h| _all other types_                      | x |   |   |   |   |   | x |   |   | x
+h| standard, draft-stadard, abstract-specification-topic |   |   | x | x | x | x | x | x | x | x
+h| community-standard                                    |   | x |   | x | x | x | x | x | x | x
+h| best-practice, community-practice                     |   | x |   |   | x | x | x | x | x | x
+h| _all other types_                                     | x |   |   |   |   |   | x |   |   | x
 
 |===
 --
