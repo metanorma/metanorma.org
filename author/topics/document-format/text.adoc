@@ -1965,7 +1965,7 @@ image::...[]
 image::...[]
 
 // block type with shorthand
-[{block-type},%unnumbered]
+[{block-type}%unnumbered]
 image::...[]
 
 // block type with other options
@@ -1975,7 +1975,13 @@ image::...[]
 
 Where:
 
-* `{block-type}` is type of the document block
+* `{block-type}` is type of the document block;
+* The `%` symbol is a shorthand for `options="unnumbered"`.
+
+NOTE: The `%` shorthand cannot be used in the presence of block arguments or
+attributes, such as `[source,c]` or `[source,type="..."]`. In this case, the
+`options="unnumbered"` should be spelled out.
+
 
 [example]
 .Example of an unnumbered figure
@@ -1990,11 +1996,21 @@ image::rice_images/rice_image2.png[]
 ====
 
 [example]
-.Example of an unnumbered sourcecode block
+.Example of an unnumbered source block
 ====
+Both of these blocks are identical.
+
 [source,asciidoc]
 --
-[sourcecode%unnumbered]
+[source%unnumbered]
+----
+for (i = 0; i < n; i++) { bounce(v[i], wall) }
+----
+--
+
+[source,asciidoc]
+--
+[source,options="unnumbered"]
 ----
 for (i = 0; i < n; i++) { bounce(v[i], wall) }
 ----
@@ -2002,7 +2018,25 @@ for (i = 0; i < n; i++) { bounce(v[i], wall) }
 ====
 
 [example]
-.Example of an unnumbered pseudocode block
+.Example of an unnumbered source block with syntax highlighting (from RNP)
+====
+[source,asciidoc]
+--
+[source,cpp,options="unnumbered"]
+----
+/* print a usage message */
+static void
+print_usage(const char *usagemsg)
+{
+  cli_rnp_print_praise();
+  ERR_MSG("%s", usagemsg);
+}
+----
+--
+====
+
+[example]
+.Example of an unnumbered `pseudocode` block
 ====
 [source,asciidoc]
 --
@@ -2060,7 +2094,7 @@ Where:
 ====
 [source,asciidoc]
 --
-[sourcecode,number=7]
+[source,number=7]
 ----
 for (i = 0; i < n; i++) { bounce(v[i], wall) }
 ----
