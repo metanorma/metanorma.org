@@ -1078,6 +1078,44 @@ https://tools.ietf.org/html/rfc3986#section-3[RFC 3986, section 3].
 ----
 ======
 
+==== Cross-references to requirements
+
+As seen above, in the attributes of requirements, Modspec prefers to refer to other requirements
+with their identifiers, rather than the numbered labels allocated by default by Metanorma 
+(e.g. `http://www.example.com/req/crs/crs-uri`, rather than _Requirement Class 6_). 
+
+This can be extended to cross-references. If the anchor of the requirement is known,
+a normal cross-reference can be marked up, e.g. `<<id1,http://www.example.com/req/crs/crs-uri>>`.)
+However, this presupposes that the anchor of the requirement is known ahead of time.
+It also precludes automated manipulation of the identifier base path.
+
+For that reason, Modspec in Metanorma supports 
+link:/author/topics/document-format/xrefs/#anchor-aliasing[anchor aliasing]: the identifier of the
+requirement can be used in cross-references as an alias of the anchor. Metanorma will automatically
+map the anchor it allocates to requirements to identifiers, to that end: users do not need to supply
+the anchor alias mappings manually.
+
+So for a requirement such as
+
+[source,asciidoctor]
+----
+[[id1]]
+[requirement]
+====
+identifier:: http://www.example.com/req/crs/crs-uri
+====
+----
+
+`xref:http://www.example.com/req/crs/crs-uri[]` can be used instead of `<<id1>>`:
+Metanorma treats them as fully equivalent, and will render them in the same way, as a numbered
+label (_Requirement Class 6_).
+
+NOTE: Asciidoctor will not process URIs correctly within `<<..>>`: the `xref:...[]` macro needs to be used instead.
+
+In order to make the cross-reference render as the identifier value, while still hyperlinking to the
+correct identifier, you will need to specify `style=id` as the cross-reference text, e.g.
+`xref:http://www.example.com/req/crs/crs-uri[style=id]`. This will also highlight the URI text
+as subject to truncation, with reference to identifier bases.
 
 === Rendering of ModSpec instances
 

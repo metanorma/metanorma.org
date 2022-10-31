@@ -59,7 +59,12 @@ the Metanorma default [added in https://github.com/metanorma/metanorma-standoc/r
 
 * `short` means that the clause type and number is used as the cross-reference, as is the Metanorma default, e.g. "Clause 3.1.2";
 * `basic` means that the title of the clause is used as the cross-reference, e.g. "Other considerations";
-* `full` combines the title with the clause type/number cross-reference, e.g. "Clause 3.1.2, Other considerations"
+* `full` combines the title with the clause type/number cross-reference, e.g. "Clause 3.1.2, Other considerations".
+
+In addition,
+
+* a cross reference with `style=id%` displays the target anchor identifier (or any identifier aliased to 
+the anchor) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7]
 
 The document attribute `:xrefstyle:` applies the same setting as a document default.
 
@@ -191,6 +196,29 @@ its text content [added in https://github.com/metanorma/metanorma-standoc/releas
 So long as neither the text content nor the position in the document of the
 entity changes, an entity will retain the same GUID anchor.
 
+[[anchor-aliasing]]
+== Anchor aliasing
+
+It is possible to use more than one identifier to refer to the same anchor. This is useful
+particularly for Linked Data documents, where a URI is treated as the identifier of a document
+block or term, and the URI is used to reference that document element: Asciidoctor and XML syntax
+both prevent URIs from being used themselves as document anchors.
+
+In order to specify the aliases of anchors manually, you will need to specify a table
+with anchor `_misccontainer_anchor_aliases` under the 
+(link:/author/topics/document-format/section#misc-container[`Misc-Container` clause]) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7]. 
+Each row of that table will have the anchor as its first cell, and aliases of the anchor as the other
+cells; there can be more than one alias of an anchor.
+
+[source,asciidoctor]
+----
+== Misc-Container
+
+[[_misccontainer_anchor_aliases]]
+|===
+| id1 | http://www.example.com | second-alias-of-anchor
+|===
+----
 
 == Localities
 
