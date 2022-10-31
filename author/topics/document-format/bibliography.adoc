@@ -219,21 +219,22 @@ referencing as shown in <<entering-refs>>.
 The most commonly-used methods are:
 
 * <<autofetch>>;
-* <<preformatted-citations>>; and
-* <<asciibib>>.
+* <<annotated-spans>>;
+* <<asciibib>>; and
+* <<preformatted-citation>>.
 
-The basic form of a reference is a "pre-formatted reference", which relies on
-the user to supply a formatted reference. Details of that format are available
-at <<preformatted-citation>>.
-
-It is strongly recommended that <<auto-fetch,automatic fetching>> methods be
+It is strongly recommended that the <<auto-fetch,automatic fetching>> method be
 used for data consistency and ease of use whenever possible (especially for
-references to standards).
+references to standards supported by Relaton).
 
-If automatic fetching is not available for the reference, and if
-machine-readability or accurate rendering is important, <<asciibib>> is the best
-method for entering structured and detailed bibliographic information within a
-document.
+If automatic fetching is not available for a particular reference, and if
+machine-readability or accurate rendering is important, either
+use <<annotated-spans,annotated citation spans>> or <<asciibib,AsciiBib>> for
+entering structured and detailed bibliographic information within a document.
+
+The basic form of a reference is a
+<<pre-formatted reference,pre-formatted reference>>, which relies on the user to
+supply a properly formatted reference.
 
 
 [[reference-tags]]
@@ -563,7 +564,8 @@ references, on an experimental basis. See the
 link:/author/topics/building/reference-lookup[Automatic reference lookup]
 topic for more details.
 
-=== Annotating pre-formatted citations semantically
+[[annotated-spans]]
+=== Annotating pre-formatted citations using semantic elements
 
 While a pre-formatted citation is not explicitly broken down into its semantic
 components, it may be expedient to mark up segments of the citation
@@ -645,6 +647,7 @@ For presentations,
 * `organization.distributor` is the organizer of the conference
 --
 
+[[asciibib]]
 === Entering with AsciiBib
 
 Bibliographic entries can be entered in the AsciiBib format.
