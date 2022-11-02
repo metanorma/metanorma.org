@@ -138,17 +138,19 @@ There may be more than one ICS for a document; if so, they should be comma-delim
 but may not be visible in the resulting document, depending on Metanorma flavor.)
 
 `:isbn:`::
-The ISBN-13 number of the document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.2]
+The ISBN-13 number of the document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.2].
+This value is optional.
 
 `:isbn10:`::
 The ISBN-10 number of the document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.2]
+This value is optional.
 
 `:title:`::
 The title of the document. If not supplied, the built-in AsciiDoc title
 (first line of document header) is used instead.
 
 `:title-XX:`::
-The title of the document in the language `XX` (where “XX” is a ISO 639-1 code;
+The title of the document in the language `XX` (where `XX` is a ISO 639-1 code;
 for example, `:title-en:`, `:title-fr`:).
 
 `:doctype:`::
@@ -554,61 +556,106 @@ If not provided explicitly, is assumed to be
 `true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0].
 
 `:xrefstyle:`::
-Override the default rendering of cross-references to 
+Override the default rendering of cross-references to
 clauses [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.6].
+Available styles as follows:
+
+`short`::: (default) the clause type and number is used as the cross-reference.
 +
-** `short` means that the clause type and number is used as the cross-reference, as is the Metanorma default, e.g. "Clause 3.1.2";
-** `basic` means that the title of the clause is used as the cross-reference, e.g. "Other considerations";
-** `full` combines the title with the clause type/number cross-reference, e.g. "Clause 3.1.2, Other considerations";
-** `id` means that the cross-reference is to be rendered as the target anchor identifier (or any identifier aliasing 
-the anchor) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7].
+.Example of a cross-reference rendered in the "short" style
+[example]
+"Clause 3.1.2"
+
+`basic`::: the title of the clause is used as the cross-reference.
++
+.Example of a cross-reference rendered in the "basic" style
+[example]
+"Other considerations"
+
+`full`::: combines the title with the clause type/number cross-reference.
++
+.Example of a cross-reference rendered in the "full" style
+[example]
+"Clause 3.1.2, Other considerations"
+
+`id`::: the cross-reference is to be rendered as the target anchor identifier
+(or any identifier aliasing the
+anchor) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7].
++
+.Example of a cross-reference rendered in the "id" style
+[example]
+====
+The following cross-reference:
+
+[source,adoc]
+----
+[[my-anchor]]
+=== My title
+...
+
+=== Another place
+<<my-anchor>>
+----
+
+Renders the cross-reference as:
+
+"my-anchor"
+====
+
 
 `:smartquotes:`::
 Apply "`smart quotes`" and other auto-formatting to the XML output (and hence
-the downstream outputs). Defaults to `true`.
-+
-** Smart quotes are not applied to the following type of text:
-*** text in sourcecode
-*** text in pseudocode
+the downstream outputs). Available values below:
+
+`true`::: (default) Smart quotes are not applied to the following type of text:
+*** text in source code;
+*** text in pseudo-code;
 *** text in monospace.
-** If this attribute is set to `false`, the AsciiDoc default is used to generate smart quotes:
-`"&#x060; &#x060;"`, `'&#x060; &#x060;'`.
-** The rules for smart formatting follow the
-https://github.com/pbhogan/sterile[sterile] gem, and are given in
+
+`false`::: The AsciiDoc default is used to generate smart quotes:
+`"&#x060; &#x060;"`, `'&#x060; &#x060;'`. The rules for smart formatting follow
+the https://github.com/pbhogan/sterile[sterile] gem, and are given in
 https://github.com/pbhogan/sterile/blob/main/lib/sterile/data/smart_format_rules.rb[smart_format_rules.rb].
 
 `:toclevels`::
-Number of table of contents levels to render (default: `2`).
+Number of table of contents levels to render. Accepts an integer value. (default: `2`).
+Can be overridden with output-specific options (`htmltoclevels`, `doctoclevels`).
 
 `:htmltoclevels`::
-Number of table of contents levels to render in HTML/PDF output; used
-to override `:toclevels:` (default: `2`).
+Number of table of contents levels to render in HTML output; used to override
+`:toclevels:` for HTML output. Accepts an integer value. (default: `2`).
 
 `:doctoclevels`::
-Number of table of contents levels to render in DOC output; used to
-override `:toclevels:` (default: `2`).
+Number of table of contents levels to render in Microsoft Word "DOC" output;
+used to override `:toclevels:` for Word DOC output. Accepts an integer value.
+(default: `2`).
 
 `:toc-figures:`::
 Introduce table of contents for figures [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
+No attribute value needed.
 Only numbered and/or captioned figures are included.
 
 `:toc-tables:`::
 Introduce table of contents for tables [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
+No attribute value needed.
 Only numbered and/or captioned tables are included.
 
 `:toc-requirements:`::
 Introduce table of contents for requirements, recommendations, and
 permissions [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
+No attribute value needed.
 Only numbered and/or captioned requirements, recommendations, and permissions are included.
 
 `:imagesdir`::
-Directory in which images are located: all local image file locations
-are prefixed with this directory. (Optional.)
+(Optional) Directory in which images are located: all local image file locations
+are prefixed with this directory.
+Accepts a directory path.
 
 `:break-up-urls-in-tables:`::
 (for Word output only) If present, long strings in table cells
 (longer than 30 characters) are broken up on rendering, to help
-tables fit within the page width [added in
+tables fit within the page width.
+No attribute value needed. [added in
 https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.25] +
 +
 --
@@ -655,40 +702,75 @@ All the following attributes relate to PDF protection from
 copying [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.3].
 
 `:pdf-encrypt:`::
-Specify encryption of PDF output. (Allowed values: `true`, `false`. Default `false`.)
+Specify encryption of PDF output.
+
+`true`::: Applies encryption to PDF output.
+`false`::: Do not encrypt PDF output. (default)
 
 `:pdf-encryption-length:`::
-Specify encryption strength. (Allowed values: `256`, `128`, corresponding to 256-bit or 128-bit AES keys. Default `256`)
+Specify encryption strength.
+
+`256`::: Use 256-bit AES keys (default)
+`128`::: Use 128-bit AES keys.
 
 `:pdf-user-password:`::
 Specify user password needed to open the encrypted PDF document.
+The attribute value sets the user password.
 
 `:pdf-owner-password:`::
 Specify owner password to bypass restrictions on encrypted PDF document.
+The attribute value sets the owner password.
 
 `:pdf-allow-copy-content:`::
-Allow content to be copy-pasted from the PDF document. (Allowed values: `true`, `false`. Default `true`.)
+Allow content to be copy-pasted from the PDF document.
+
+`true`::: Content can be copy-pasted from the PDF document. (default)
+`false`::: Content cannot be copy-pasted from the PDF document.
 
 `:pdf-allow-edit-content:`::
-Allow content of the PDF document to be edited. (Allowed values: `true`, `false`. Default `true`.)
+Allow content of the PDF document to be edited.
+
+`true`::: Content of the PDF document can be edited. (default)
+`false`::: Content of the PDF document cannot be edited.
 
 `:pdf-allow-assemble-document:`::
-Allow inserting, deleting, or rotating pages in the PDF document. (Allowed values: `true`, `false`. Default `true`.)
+Allow inserting, deleting, or rotating pages in the PDF document.
+
+`true`::: Inserting, deleting or rotating pages in the PDF document is allowed. (default)
+`false`::: Inserting, deleting or rotating pages in the PDF document is disallowed.
 
 `:pdf-allow-edit-annotations:`::
-Allow annotations and signatures to be added to the PDF document. (Allowed values: `true`, `false`. Default `true`.)
+Allow annotations and signatures to be added to the PDF document.
+
+`true`::: Annotations and signatures can be added to the PDF document. (default)
+`false`::: Annotations and signatures cannot be added to the PDF document.
 
 `:pdf-allow-print:`::
-Allow PDF document to be printed, physically or to file. (Allowed values: `true`, `false`. Default `true`.)
+Allow PDF document to be printed, physically or to a file.
+
+`true`:: PDF content can be printed, physically or to a file. (default)
+`false`:: PDF content cannot be printed, physically or to a file.
 
 `:pdf-allow-print-hq:`::
-Allow PDF document to be printed in high quality. (Allowed values: `true`, `false`. Default `true`.)
+Allow PDF document to be printed in high quality.
+
+`true`:: PDF content can be printed in high quality. (default)
+`false`:: PDF content cannot be printed in high quality.
 
 `:pdf-allow-fill-in-forms:`::
-Allow forms to be filled in the PDF document. (Allowed values: `true`, `false`. Default `true`.)
+Allow forms to be filled in the PDF document.
+
+`true`:: Forms in the PDF document can be filled in. (default)
+`false`:: Forms in the PDF document are read-only, they cannot be filled in.
 
 `:pdf-allow-access-content:`::
-Allow text and graphics extraction from the PDF document for accessibility purposes. (Allowed values: `true`, `false`. Default `true`.)
+Allow text and graphics extraction from the PDF document for accessibility purposes.
+
+`true`:: Text and graphics can be extracted from the PDF document. (default)
+`false`:: Text and graphics cannot be extracted from the PDF document.
 
 `:pdf-encrypt-metadata:`::
-Specify encryption of the metadata stream. (Allowed values: `true`, `false`. Default `false`.)
+Specify encryption of the metadata stream.
+
+`true`:: The PDF metadata stream will be encrypted. (default)
+`false`:: The PDF metadata stream will not be encrypted.
