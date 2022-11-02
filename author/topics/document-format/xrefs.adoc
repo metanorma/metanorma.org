@@ -53,42 +53,109 @@ in the AsciiDoc source
 (e.g. `\<<``formulaB-1``>>` generates either "`Formula (B.1)`" or "`B.6, Formula (B.1)`",
 depending on where in the document it occurs.)
 
-If the cross-reference is given with `style=basic%`, `style=short%`, or `style=full%` as its text,
-and is referencing a clause, then the automatically populated cross-reference is modified from
-the Metanorma default [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.6]:
 
-* `short` means that the clause type and number is used as the cross-reference, as is the Metanorma default, e.g. "Clause 3.1.2";
-* `basic` means that the title of the clause is used as the cross-reference, e.g. "Other considerations";
-* `full` combines the title with the clause type/number cross-reference, e.g. "Clause 3.1.2, Other considerations".
+== Cross-reference styles
 
-In addition,
+Metanorma supports multiple cross-reference styles [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.6].
 
-* a cross reference with `style=id%` displays the target anchor identifier (or any identifier aliased to 
-the anchor) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7]
+NOTE: The document attribute `:xrefstyle:` applies the same setting as a
+document default.
 
-The document attribute `:xrefstyle:` applies the same setting as a document default.
+The following cross-reference styles are available:
 
-If the cross-reference is given with `droploc%` as its text, then the label and prefix
-are dropped: the cross-reference value is given in
-isolation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.4].
+`short`::: (default) the clause type and number is used as the cross-reference.
++
+.Example of a cross-reference rendered in the "short" style
+[example]
+"Clause 3.1.2"
 
-This can be done for example for ranges:
+`basic`::: the title of the clause is used as the cross-reference.
++
+.Example of a cross-reference rendered in the "basic" style
+[example]
+"Other considerations"
+
+`full`::: combines the title with the clause type/number cross-reference.
++
+.Example of a cross-reference rendered in the "full" style
+[example]
+"Clause 3.1.2, Other considerations"
+
+`id`::: the cross-reference is to be rendered as the target anchor identifier
+(or any identifier aliasing the
+anchor) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7].
++
+.Example of a cross-reference rendered in the "id" style
+[example]
+====
+"/req/crs/crs-uri", where `/req/crs/crs-uri` is an identifier of the referenced object.
+====
+
+These cross-reference styles can be specified at the individual cross-references
+by using the following syntax:
 
 [source,adoc]
 ----
-Clauses <<context,droploc%>> to <<improvement,droploc%>>
+<<LOCATOR,style={STYLE}%>>
 ----
 
-to be rendered as e.g.
+Where,
 
-____
-Clauses 7 to 9
-____
+* `LOCATOR` is the locator, which could be an anchor;
+* `STYLE` is one of the cross-reference styles codes.
+
+.Example of a cross-reference rendered in the basic style
+[example]
+====
+[source,adoc]
+----
+<<anchor,style=basic%>>
+----
+====
+
+.Example of a cross-reference rendered in the short style
+[example]
+====
+[source,adoc]
+----
+<<anchor,style=short%>>
+----
+====
+
+.Example of a cross-reference rendered in the full style
+[example]
+====
+[source,adoc]
+----
+<<anchor,style=full%>>
+----
+====
+
+.Example of a cross-reference rendered in the "id" style
+[example]
+====
+The following cross-reference:
+
+[source,adoc]
+----
+[[my-anchor]]
+=== My title
+...
+
+=== Another place
+<<my-anchor,style=id%>>
+----
+
+Renders the cross-reference as:
+
+"my-anchor"
+====
+
 
 [[combined-xrefs]]
 == Combination of cross-references
 
-It is  possible to combine multiple cross-references into a single expression,
+It is possible to combine multiple cross-references into a single expression,
 which will be internationalised as
 appropriate [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
 
@@ -96,10 +163,9 @@ Multiple cross-references are separated by `;`.
 
 Conjunctives recognised between cross-references are:
 
-* `and`
-* `or`
-* `from`
-* `to`
+* `and` (clauses A and B)
+* `or` (clauses A or B)
+* `from` and `to` (clauses from A to B)
 
 These conjunctives are prefixed to the cross-reference anchor, separated by `!`.
 
@@ -168,6 +234,31 @@ ____
 ====
 
 
+== Cross-references without labels and prefixes
+
+If the cross-reference is given with `droploc%` as its text, then the label and
+prefix are dropped: the cross-reference value is given in
+isolation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.4].
+
+This can be done for example for ranges, as follows.
+
+.Example of cross-reference without labels and prefixes
+[example]
+====
+[source,adoc]
+----
+Clauses <<context,droploc%>> to <<improvement,droploc%>>
+----
+
+renders as:
+
+____
+Clauses 7 to 9
+____
+====
+
+
+
 [[text-ref-allowed-anchors]]
 == Anchor ID syntax
 
@@ -205,8 +296,8 @@ block or term, and the URI is used to reference that document element: Asciidoct
 both prevent URIs from being used themselves as document anchors.
 
 In order to specify the aliases of anchors manually, you will need to specify a table
-with anchor `_misccontainer_anchor_aliases` under the 
-(link:/author/topics/document-format/section#misc-container[`Misc-Container` clause]) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7]. 
+with anchor `_misccontainer_anchor_aliases` under the
+(link:/author/topics/document-format/section#misc-container[`Misc-Container` clause]) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7].
 Each row of that table will have the anchor as its first cell, and aliases of the anchor as the other
 cells; there can be more than one alias of an anchor.
 
