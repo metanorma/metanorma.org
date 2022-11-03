@@ -254,8 +254,58 @@ The patterns are as follows:
 
 === Title
 
-`:title-intro-{en,fr}:`:: The introductory component of the English or French title of the
-document.
+ISO deliverables have titles that support different title components,
+and can be multilingual:
+
+* Intro title (optional)
+* Main title (mandatory)
+* Part title (optional)
+
+NOTE: In the case where an ISO deliverable title has multiple elements, care
+should be taken when assigning them to title components. For instance, a not
+necessarily mean that the document has a part title.
+
+.Example of title with multiple elements but no part title
+[example]
+====
+ISO/IEC 27001:2022 has the title:
+"Information security, cybersecurity and privacy protection -- Information
+security management systems -- Requirements" that
+is encoded as:
+
+[source,adoc]
+----
+:title-intro-en: Information security, cybersecurity and privacy protection -- Information security management systems
+:title-main-en: Information security management systems -- Requirements
+----
+
+Notice that there is no part title, as it is not a part standard (e.g. "Part 1").
+====
+
+.Example of title with a part title
+[example]
+====
+ISO 10303-11:2004 has the title:
+"Industrial automation systems and integration -- Product data representation
+and exchange -- Part 11: Description methods: The EXPRESS language reference
+manual"
+and is encoded as:
+
+[source,adoc]
+----
+:title-intro-en: Industrial automation systems and integration
+:title-main-en: Product data representation and exchange
+:title-part-en: Description methods: The EXPRESS language reference manual
+----
+
+Since this is a part standard ("Part 11"), the last title element is assigned as the part title.
+====
+
+
+
+
+`:title-intro-{en,fr}:`:: The introductory component of the English or French
+title of the document.
 
 `:title-main-{en,fr}:`:: The main component of the English or French title
 of the document (mandatory).
@@ -275,8 +325,6 @@ NOTE: These `:title-*` document attributes are used instead
 of the `metanorma-standoc` `:title:` attribute and the default AsciiDoc title
 (the first line of the document header, prefixed with `=`),
 due to the complexity of ISO deliverable titles.
-
-NOTE: In case the title has multiple components, it does not mean that document has a part title.
 
 NOTE: This document template presupposes authoring in English; a different
 template will be needed for French, including French titles of document
