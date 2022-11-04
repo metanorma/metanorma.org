@@ -38,30 +38,31 @@ For ISO 8000-118, the `partnumber` is `118`.
 
 `:doctype:`:: Has its possible values defined by
 https://www.iso.org/deliverables-all.html[ISO deliverables: The different types of ISO publications]
-(mandatory). Permitted types are: +
-+
-** `international-standard`
-** `technical-specification`
-** `technical-report`
-** `publicly-available-specification`
-** `international-workshop-agreement`
-** `guide`
-** `technical-corrigendum` [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
-** `amendment` [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25].
+(mandatory). Permitted types are:
+
+`international-standard`::: International Standard (IS)
+`technical-specification`::: Technical Specification (TR)
+`technical-report`::: Technical Report (TR)
+`publicly-available-specification`::: Publicly Available Specification (PAS)
+`international-workshop-agreement`::: International Workshop Agreement (IWA)
+`guide`:: Guide (Guide)
+`technical-corrigendum`::: Technical Corrigendum (Cor) [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
+`amendment`::: Amendment (Amd) [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
 
 `:updates-document-type:`:: (only when `doctype` is set to `amendment` or `technical-corrigendum`)
 The document type that this amendment or technical corrigendum is
 updating [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25].
 
-`:docsubtype:`:: A subclass of doctype for which special processing rules apply:
+`:docsubtype:`:: A subclass of doctype for which special processing rules apply.
 
-*** `vocabulary`: [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.8.2]
+`vocabulary`:::
 The "vocabulary" document type is defined in the
 https://www.iso.org/ISO-house-style.html[ISO House Rules]
 and title requirements defined in the ISO/IEC Directives, Part 2, 2018, 11.5.2.
 The initial clause of the terms section,
 "`For the purposes of this document, the following terms and definitions apply`",
-is deleted; terminological entries are permitted outside of Clause 3.
+is deleted; terminological entries are permitted outside of
+Clause 3. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.8.2]
 
 `:docstage:`:: The stage code for the document status (see
 https://www.iso.org/stage-codes.html[International harmonized stage codes]).
@@ -85,8 +86,10 @@ If this is left out, a substage of "`00`" is assumed, with the exception of
 stage "`60`" (published), where a substage of "`60`" is assumed.
 ("`60.00`" is the final proof "`PRF stage`", "`60.60`" the published document "`published`".)
 
-`:horizontal:`:: Document is a horizontal standard
-(true/false) [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.5.13].
+`:horizontal:`:: Whether the document is a horizontal standard. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.5.13]
+
+`true`::: The document is a horizontal standard.
+`false`::: (default) The document is not a horizontal standard.
 
 === Document identifier
 
@@ -113,24 +116,25 @@ document has publisher abbreviation of `IWA`.
 
 The prefixes occur in the order that they are given in `publisher`.
 
-[example]
-.Accepted values for the `:publisher:` attribute
-====
-* `ISO`
-* `ISO/IEC` (for ISO/IEC JTC 1 documents)
-* `IEC/ISO`
-* `ISO/IEC/IEEE`
-* `ISO/IEEE`
-* `ISO/SAE`
-* `IWA`
-====
+Attributes:
+
+`:publisher:`:: Publisher of the document. Accepted values are:
+
+`ISO`::: ISO.
+`ISO/IEC`::: Joint ISO and IEC. (e.g. ISO/IEC JTC 1 and ISO/IEC JTC 2 documents)
+`IEC/ISO`::: Joint IEC and ISO. (e.g. IEC/ISO SMART documents)
+`ISO/IEC/IEEE`::: Joint ISO/IEC/IEEE.
+`ISO/IEEE`::: Joint ISO/IEEE.
+`ISO/SAE`::: Joint ISO/SAE.
+`IWA`::: International Workshop Agreement.
+
+
+In the case of IEC/ISO, both `:publisher:` and `:copyright-holder:` need to
+be set for the document identifier and the logos to be in correct order.
 
 [example]
 .Setting IEC and ISO as copyright holders for an IEC/ISO document
 ====
-In the case of IEC/ISO, both `:publisher:` and `:copyright-holder:` need to
-be set for the document identifier and the logos to be in correct order.
-
 [source,adoc]
 ----
 :publisher: IEC;ISO
@@ -207,12 +211,27 @@ When the Publisher element contains a "`slash`" ("`/`"), the separation in front
 ====
 
 
-According to ISO Directives Part 1 (11ed), SE.2 "`Working drafts (WD), committee drafts (CD), draft International Standards (DIS), final draft International Standards (FDIS) and International Standards`", "`Successive DIS on the same subject will carry the same number but will be distinguished by a numerical suffix (.2, .3, etc.).`"
+==== Document stage iteration number
 
-Metanorma names the stage iteration number accordingly for all stages, which is patterned as:
-`{document stage}` (no suffix if iteration is 1), `{document stage}.{iteration number}` (suffix including iteration number after 1).
+According to ISO Directives Part 1 (11ed), SE.2:
 
-Once the document is published (stage 60 substage 60), no status abbreviation is given.
+[quote]
+____
+"`Working drafts (WD), committee drafts (CD), draft International Standards
+(DIS), final draft International Standards (FDIS) and International Standards`"
+and
+"`Successive DIS on the same subject will carry the same number but will be
+distinguished by a numerical suffix (.2, .3, etc.).
+____
+
+Metanorma names the stage iteration number accordingly for all stages, which is
+patterned as:
+
+* No suffix if iteration is 1: `{document stage}`
+* Suffix including iteration number after 1: `{document stage}.{iteration number}`
+
+Once the document is published (stage 60 substage 60), no status abbreviation is
+given.
 
 
 ==== Full document identifier patterns
@@ -257,7 +276,7 @@ The patterns are as follows:
 ISO deliverables have titles that support different title components,
 and can be multilingual:
 
-* Intro title (optional)
+* Introductory title (optional)
 * Main title (mandatory)
 * Part title (optional)
 
@@ -301,8 +320,7 @@ and is encoded as:
 Since this is a part standard ("Part 11"), the last title element is assigned as the part title.
 ====
 
-
-
+Attributes:
 
 `:title-intro-{en,fr}:`:: The introductory component of the English or French
 title of the document.
@@ -356,8 +374,12 @@ in the drafting stage.
 technical committee.
 
 `:technical-committee-type:`:: The type of the relevant technical committee.
-Defaults to `TC` if not supplied.
-Typical values: `TC`, `PC`, `JTC`, `JPC`.
+Typical values are:
+
+`TC`::: (default) technical committee
+`JTC`::: joint technical committee
+`PC`::: project committee
+`JPC`::: joint project committee
 
 `:technical-committee:`:: The name of the relevant ISO technical committee
 (mandatory)
@@ -365,26 +387,31 @@ Typical values: `TC`, `PC`, `JTC`, `JPC`.
 `:subcommittee-number:`:: The number of the relevant ISO subcommittee.
 
 `:subcommittee-type:`:: The type of the relevant ISO subcommittee.
-Defaults to `SC` if not supplied.
-Typical values: `SC`, `JSC`.
+Typical values are:
+
+`SC`::: (default) subcommittee
+`JSC`::: joint subcommittee
 
 `:subcommittee:`:: The name of the relevant ISO subcommittee.
 
 `:workgroup-number:`:: The number of the relevant ISO working group.
 
 `:workgroup-type:`:: The type of the relevant ISO working group.
-Defaults to `WG` if not supplied. +
-+
---
-.Common values for `workgroup-type`
-[example]
-`JWG` (joint working group), `JAG` (joint advisory group), `AG` (advisory group),
-`AHG` (ad-hoc group), `SWG` (special working group), `SG` (strategic/steering group),
-`MA` (maintenance agency), `CORG` (co-ordination group),
-`JCG` (joint co-ordination group), `CAG` (chair advisory group).
---
+Typical values are:
 
-`:workgroup:`:: The name of the relevant ISO working group. +
+`WG`::: (default) working group
+`JWG`::: joint working group
+`JAG`::: joint advisory group
+`AG`::: advisory group
+`AHG`::: ad-hoc group
+`SWG`::: special working group
+`SG`::: strategic/steering group
+`MA`::: maintenance agency
+`CORG`::: co-ordination group
+`JCG`::: joint co-ordination group
+`CAG`::: chair advisory group
+
+`:workgroup:`:: The name of the relevant ISO working group.
 +
 In the case of multiple responsible groups (technical committees, subcommittees,
 working groups), the `:technical-committee:`, `:subcommittee:` and `:workgroup:`
@@ -395,6 +422,7 @@ attribute where `n` is a sequential number after 1.
 .Setting a responsible technical committee, subcommittee and working group (1)
 ====
 For ISO/TC 211/WG 9:
+
 [source,adoc]
 ----
 :technical-committee-number: 211
@@ -408,6 +436,7 @@ For ISO/TC 211/WG 9:
 .Setting a responsible technical committee, subcommittee and working group (2)
 ====
 For ISO/TC 184/SC 4/WG 12:
+
 [source,adoc]
 ----
 :technical-committee-number: 184
@@ -450,31 +479,31 @@ If at least the `:approval-technical-committee-number:` is not provided, the
 editing groups are assumed to also be the
 approval group. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2].
 
-`:approval-agency`:: The agency or agencies of the *approval group*. Defaults to `ISO` if
+`:approval-agency:`:: The agency or agencies of the *approval group*. Defaults to `ISO` if
 not supplied; the only alternate value is `ISO/IEC`, for JTCs. (For the drafting group,
 the agencies are taken from the `publisher` attribute.)
 
-`:approval-technical-committee-number`:: The number of the relevant ISO
+`:approval-technical-committee-number:`:: The number of the relevant ISO
 technical committee.
 
-`approval-technical-committee-type`:: The type of the relevant technical committee.
+`:approval-technical-committee-type:`:: The type of the relevant technical committee.
 Defaults to `TC` if not supplied.
 
-`approval-technical-committee`:: The name of the relevant ISO technical committee.
+`:approval-technical-committee:`:: The name of the relevant ISO technical committee.
 
-`approval-subcommittee-number`:: The number of the relevant ISO subcommittee.
+`:approval-subcommittee-number:`:: The number of the relevant ISO subcommittee.
 
-`approval-subcommittee-type`:: The type of the relevant ISO subcommittee.
+`:approval-subcommittee-type:`:: The type of the relevant ISO subcommittee.
 Defaults to `SC` if not supplied.
 
-`approval-subcommittee`:: The name of the relevant ISO subcommittee.
+`:approval-subcommittee:`:: The name of the relevant ISO subcommittee.
 
-`approval-workgroup-number`:: The number of the relevant ISO working group.
+`:approval-workgroup-number:`:: The number of the relevant ISO working group.
 
-`approval-workgroup-type`:: The type of the relevant ISO working group.
+`:approval-workgroup-type:`:: The type of the relevant ISO working group.
 Defaults to `WG` if not supplied.
 
-`approval-workgroup:`:: The name of the relevant ISO working group.
+`:approval-workgroup::`:: The name of the relevant ISO working group.
 
 [example]
 .Example of setting approval group metadata
@@ -495,9 +524,10 @@ For ISO/TC 154/WG 5 "Date and time":
 === Distribution group
 
 `:tc-docnumber:`:: The document number assigned by a *distribution group*
-(also called the "`N-document number`" or the "`N-number`"), typically a Technical Committee, a Subcommittee or a Working Group.
+(also called the "`N-document number`" or the "`N-number`"), typically a
+Technical Committee, a Subcommittee or a Working Group.
 Must include the short reference of the distribution group, since documents may
-circulate widely; +
+circulate widely;
 +
 [example]
 .Setting the N-document number for a distribution group
@@ -522,23 +552,23 @@ for details.
 The following document relations are compatible with ISOSTS with their
 individual mappings shown [added in https://github.com/metanorma/metanorma-iso/releases/tag/v1.10.4].
 
-`revises`:: ISOSTS `revises`
-`replaces`:: ISOSTS `replaces`
-`amends`:: ISOSTS `amends`
-`corrects`:: ISOSTS `corrects`
-`informatively-cited-in`:: ISOSTS `informativelyReferencedBy`
-`informatively-cites`:: ISOSTS `informativelyReferences`
-`normatively-cited-in`:: ISOSTS `normativelyReferencedBy`
-`normatively-cites`:: ISOSTS `normativelyReferences`
-`identical-adopted-from`:: ISOSTS `isIdenticalNationalStandardOf`
-`modified-adopted-from`:: ISOSTS `isModifiedNationalStandardOf`
-`successor-of`:: ISOSTS `isProgressionOf`
-`manifestation-of`:: ISOSTS `isPublishedFormatOf`
-`related-directive`:: ISOSTS `relatedDirective`
-`related-mandate`:: ISOSTS `relatedMandate`
-`supersedes`:: ISOSTS  `supersedes`
-`annotation-of`:: ISOSTS  `commentOn`
-`related`::  ISOSTS  `""` (empty value)
+`:revises:`:: ISOSTS `revises`
+`:replaces:`:: ISOSTS `replaces`
+`:amends:`:: ISOSTS `amends`
+`:corrects:`:: ISOSTS `corrects`
+`:informatively-cited-in:`:: ISOSTS `informativelyReferencedBy`
+`:informatively-cites:`:: ISOSTS `informativelyReferences`
+`:normatively-cited-in:`:: ISOSTS `normativelyReferencedBy`
+`:normatively-cites:`:: ISOSTS `normativelyReferences`
+`:identical-adopted-from:`:: ISOSTS `isIdenticalNationalStandardOf`
+`:modified-adopted-from:`:: ISOSTS `isModifiedNationalStandardOf`
+`:successor-of:`:: ISOSTS `isProgressionOf`
+`:manifestation-of:`:: ISOSTS `isPublishedFormatOf`
+`:related-directive:`:: ISOSTS `relatedDirective`
+`:related-mandate:`:: ISOSTS `relatedMandate`
+`:supersedes:`:: ISOSTS  `supersedes`
+`:annotation-of:`:: ISOSTS  `commentOn`
+`:related:`::  ISOSTS  `""` (empty value)
 
 [example]
 .Example encoding of a document relationship
@@ -552,20 +582,20 @@ individual mappings shown [added in https://github.com/metanorma/metanorma-iso/r
 == Visual appearance
 
 `:iso-word-template:`:: For Word output, pick the styles template
-to use [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2]. +
-+
---
-The options are:
+to use [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2].
+Options are:
 
-`simple`::: using the styles of the https://www.iso.org/iso-templates.html[ISO Simple Template]
+`simple`::: using the styles of the https://www.iso.org/iso-templates.html[ISO Simple Template] (default for stages before 40)
 `dis`::: using the styles of the "`ISO Edited DIS template`", introduced by the
-ISO editors at the DIS stage of editing, through to publication.
+ISO editors at the DIS stage of editing, through to publication. (default for stages 40 through 95)
 
-If the option is not supplied, the default value is `simple` for harmonized
-stages before 40, and `dis` for stages 40 through 95.
---
+`:iso-word-bg-strip-color:`:: The "`ISO Edited DIS template`" introduces
+background colouring of spans in order to ensure correct semantic markup, as
+validated by ISO editors.
 
-`:iso-word-bg-strip-color:`:: The "`ISO Edited DIS template`" introduces background colouring of spans in order to ensure
-correct semantic markup, as validated by ISO editors. This attribute overrides the background colouring of spans
-(equivalent to "Pattern: Clear"), and is set to `true` by default.
-The enabling of this option is _necessary_ for draft submission of the DIS/FDIS documents to ISO editors. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.2.3].
+`true`::: (default) Remove background colors of semantically-annotated
+spans (equivalent to "Pattern: Clear"). This option is _necessary_ for draft
+submission of the stage 40 onwards (DIS/FDIS) documents to ISO
+editors. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.2.3].
+
+`false`::: Retain background colors of semantically-annotated spans.
