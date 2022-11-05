@@ -1182,6 +1182,75 @@ Renders as:
 This will also highlight the URI text as subject to truncation, with reference
 to identifier bases.
 
+[[identifier-base]]
+==== Identifier bases
+
+Under Modspec, requirements are normally identified by URIs, and both user cross-references to
+requirement and automatically generated cross-references use those URIs.
+
+URIs identifying requirements can be lengthly, and it is possible to truncate URIs by specifying
+an identifier base. Any URI used to identify a Modspec requirement and that is prefixed by that
+identifier base will have the identifier base component stripped on rendering. [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.2.1]
+
+An identifier base can be specified for the entire document, using the document attribute `:modspec-identifier-base:`.
+An identifier base can also be specified within a requirement, with the definition list tag `identifier-base`.
+If an identifier base is specified on a requirement, it overrides any value specified in `:modspec-identifier-base:`.
+If an identifier base is specified on a requirement class, it is inherited by the requirement that belong to that
+class -- unless those requirements specify identifier bases of their own. An identifier base specified on a
+requirement applies to all Modspec requirement cross-references rendered within that requirement.
+
+[example]
+====
+[source,adoc]
+-----
+:modspec-identifier-base: http://www.example.com
+
+[requirement]
+----
+identifier:: http://www.example.com/reqt/1
+description:: See also xref:http://www.example.com/reqt/2[style=id%].
+----
+
+[requirement-class]
+----
+identifier:: http://www.example.com/reqt/class/1
+identifier-base:: http://www.example.com/reqt
+requirement:: http://www.example.com/reqt/2
+----
+
+[requirement]
+----
+identifier:: http://www.example.com/reqt/2
+description:: See also xref:http://www.example.com/reqt/1[style=id%].
+----
+-----
+
+Renders as:
+
+____
+|===
+2| Requirement 1
+
+h| Identifier | http://www.example.com/reqt/1
+h| Statement  | See also /reqt/1
+|===
+
+|===
+2| Requirement class 1
+
+h| Identifier  | http://www.example.com/reqt/class/1
+h| Requirement | /2
+|===
+
+|===
+2| Requirement 2
+
+h| Identifier  | http://www.example.com/reqt/2
+h| Included in | /class/1
+h| Statement   | See also /1
+|===
+____
+====
 
 === Rendering of ModSpec instances
 
