@@ -1183,45 +1183,113 @@ This will also highlight the URI text as subject to truncation, with reference
 to identifier bases.
 
 [[identifier-base]]
-==== Identifier bases
+==== Identifier base pattern
 
-Under Modspec, requirements are normally identified by URIs, and both user cross-references to
-requirement and automatically generated cross-references use those URIs.
+NOTE: This functionality is first implemented in [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.2.1].
 
-URIs identifying requirements can be lengthly, and it is possible to truncate URIs by specifying
-an identifier base. Any URI used to identify a Modspec requirement and that is prefixed by that
-identifier base will have the identifier base component stripped on rendering. [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.2.1]
+A ModSpec instance can be cross-referenced from other parts of the document,
+with the reference text used to identify the ModSpec instance named either
+according to its:
 
-An identifier base can be specified for the entire document, using the document attribute `:modspec-identifier-base:`.
-An identifier base can also be specified within a requirement, with the definition list tag `identifier-base`.
-If an identifier base is specified on a requirement, it overrides any value specified in `:modspec-identifier-base:`.
-If an identifier base is specified on a requirement class, it is inherited by the requirement that belong to that
-class -- unless those requirements specify identifier bases of their own. An identifier base specified on a
-requirement applies to all Modspec requirement cross-references rendered within that requirement.
+* instance label (e.g. "Requirement 3"); or
+* identifier (e.g. `http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules`)
+
+ModSpec instances need to be assigned unique identifiers, which are typically
+either
+https://en.wikipedia.org/wiki/Uniform_Resource_Identifier[URIs],
+https://en.wikipedia.org/wiki/Uniform_Resource_Name[URNs] or
+https://en.wikipedia.org/wiki/URL[URLs].
+
+These identifier types utilize a hierarchical pattern. If two identifiers share
+a common prefix, it means that the two identifiers can be grouped semantically
+at some level.
+
+In well-structured standards (in OGC and others), ModSpec instances often share
+a common identifier prefix. For example, a defined, document-wide identifier
+prefix is used as the "base" for all ModSpec identifiers.
 
 [example]
+.Document-wide identifier prefix with ModSpec instances using that prefix
+====
+OGC WaterML 2.0 applies a document identifier prefix:
+
+* document identifier prefix: `http://www.opengis.net/spec/waterml/2.0`
+* sample of a ModSpec instance identifier in the document:
+  `http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules`
+====
+
+When cross-referencing a ModSpec instance using its identifier, the references
+can be lengthy to read.
+
+If a document-wide identifier "base prefix" is defined, Metanorma will omit the
+base prefix in the rendering of ModSpec instances when using the identifier as
+reference text.
+
+There are the following ways of specifying an identifier base prefix:
+
+Document-wide:: The document attribute `:modspec-identifier-base:` is used
+to specify the identifier base prefix for the entire document.
+
+ModSpec class instance:: An identifier base prefix can be defined inside a
+ModSpec class instance (e.g. Requirements class), using the definition list tag
+`identifier-base`.
+
+ModSpec instance:: An identifier base prefix can be defined inside a ModSpec
+instance (e.g. Requirement), using the definition list tag `identifier-base`.
+
+The behavior is specified as follows:
+
+* If an identifier base prefix is specified document-wide:
+
+** When a ModSpec instance or class instance is cross-referenced using its
+identifier, the identifier base prefix will be removed from the identifier in
+the reference text.
+
+* If an identifier base prefix is specified on a ModSpec class instance (e.g. Requirements class):
+
+** This identifier base prefix overrides any value specified in
+`:modspec-identifier-base:`, if any.
+
+** The identifier base prefix specified will apply to all its ModSpec instances
+(e.g. Requirements in the Requirements class) unless overridden.
+
+** When a ModSpec class instance is cross-referenced using its identifier, the
+identifier base prefix will be removed from the identifier in the reference
+text.
+
+* If an identifier base prefix is specified on a ModSpec instance (e.g. Requirement):
+
+** The identifier base prefix specified on the instance overrides all higher
+level identifier base prefixes;
+
+** The identifier base prefix specified on the instance's class (e.g. Requirements class)
+overrides any value specified in `:modspec-identifier-base:`, if any;
+
+** When the instance is cross-referenced using its identifier, the
+identifier base prefix will be removed from the identifier in the reference
+text.
+
+NOTE: An identifier base specified on a requirement applies to all ModSpec
+requirement cross-references rendered within that requirement.
+
+[example]
+.Setting a document-wide identifier base prefix
 ====
 [source,adoc]
 -----
 :modspec-identifier-base: http://www.example.com
 
-[requirement]
-----
-identifier:: http://www.example.com/reqt/1
-description:: See also xref:http://www.example.com/reqt/2[style=id%].
-----
-
 [requirement-class]
 ----
-identifier:: http://www.example.com/reqt/class/1
-identifier-base:: http://www.example.com/reqt
-requirement:: http://www.example.com/reqt/2
+identifier:: http://www.example.com/req/class1
+requirement:: http://www.example.com/req/class1/req1
+description:: Some description.
 ----
 
 [requirement]
 ----
-identifier:: http://www.example.com/reqt/2
-description:: See also xref:http://www.example.com/reqt/1[style=id%].
+identifier:: http://www.example.com/req/class1/req1
+statement:: A requirement.
 ----
 -----
 
@@ -1229,34 +1297,135 @@ Renders as:
 
 ____
 |===
-2| Requirement 1
+2| Requirements class 1
 
-h| Identifier | http://www.example.com/reqt/1
-h| Statement  | See also /reqt/1
+h| Identifier  | /req/class1/
+h| Requirement | /req/class1/req1
+h| Description | Some description.
 |===
 
+|===
+2| Requirement 1
+
+h| Identifier | /req/class1/req1
+h| Statement  | A requirement.
+|===
+____
+====
+
+[example]
+.Setting a identifier base prefix at a class instance
+====
+[source,adoc]
+-----
+[requirement-class]
+----
+identifier:: http://www.example.com/req/class1
+identifier-base:: http://www.example.com/req
+requirement:: http://www.example.com/req/class1/req1
+description:: Some description.
+----
+
+[requirement]
+----
+identifier:: http://www.example.com/req/class1/req1
+statement:: A requirement.
+----
+-----
+
+Renders as:
+
+____
+|===
+2| Requirements class 1
+
+h| Identifier  | /class1/
+h| Requirement | /class1/req1
+h| Description | Some description.
+|===
+
+|===
+2| Requirement 1
+
+h| Identifier | /class1/req1
+h| Statement  | A requirement.
+|===
+____
+====
+
+[example]
+.Setting identifier base prefixes for document-wide and at the class instance level
+====
+[source,adoc]
+-----
+:modspec-identifier-base: http://www.example.com
+
+[requirement-class]
+----
+identifier:: http://www.example.com/req/class1
+identifier-base:: http://www.example.com/req
+requirement:: http://www.example.com/req/class1/req1
+----
+
+[requirement-class]
+----
+identifier:: http://www.example.com/req/class2
+requirement:: http://www.example.com/req/class2/req2
+----
+
+[requirement]
+----
+identifier:: http://www.example.com/req/class1/req1
+description:: See also xref:http://www.example.com/req/class2/req2[style=id%].
+----
+
+[requirement]
+----
+identifier:: http://www.example.com/req/class2/req2
+description:: See also xref:http://www.example.com/req/class1/req1[style=id%].
+----
+-----
+
+Renders as:
+
+____
 |===
 2| Requirement class 1
 
-h| Identifier  | http://www.example.com/reqt/class/1
-h| Requirement | /2
+h| Identifier  | /class1
+h| Requirement | /req1
+|===
+
+|===
+2| Requirement class 2
+
+h| Identifier  | /req/class2
+h| Requirement | /req/class2/req2
+|===
+
+|===
+2| Requirement 1
+
+h| Identifier  | http://www.example.com/req/class1/req1
+h| Included in | /class1
+h| Statement   | See also /class2/req2
 |===
 
 |===
 2| Requirement 2
 
-h| Identifier  | http://www.example.com/reqt/2
-h| Included in | /class/1
-h| Statement   | See also /1
+h| Identifier  | http://www.example.com/req/class2/req2
+h| Included in | /req/class2
+h| Statement   | See also /req/class1/req1
 |===
 ____
 ====
 
 === Rendering of ModSpec instances
 
-OGC ModSpec instances are rendered in a table format.
+ModSpec instances are rendered in a table format.
 
-NOTE: This rendering method is consistent with prior OGC practice.
+NOTE: This rendering method is consistent with prior OGC ModSpec practice.
 
 * For HTML rendering, the CSS class of the ModSpec specification table is the
 `type` attribute of the requirement.
@@ -1270,7 +1439,7 @@ The following types are recognised:
 ** `requirements_class` for Requirements classes
 ** `conformance_class` for Conformance classes
 
-The default CSS class currently assigned for HTML rendering is `recommend`.
+NOTE: The default CSS class currently assigned for HTML rendering is `recommend`.
 --
 
 * The heading of the table (spanning two columns) is its name (the role
