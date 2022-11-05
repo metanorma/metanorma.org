@@ -685,26 +685,34 @@ Final delimiter for markup inserted in sourcecode [added in
 https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.4]
 
 `:bare:`::
-The document is rendered "`bare`", without the coverpage, boilerplate, or introductory text
-expected of a complete standards document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.4].
-This is used to compile into HTML e.g. clauses as standalone documents, or document attachments.
+(optional)
+The document is rendered in "`bare form`" -- without the cover page,
+boilerplate, or introductory text expected of a complete
+document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.4].
+This is typically used for HTML output, e.g. clauses as standalone documents, or document attachments.
 
 `:base-asset-path:`::
-All media paths in the XML path are relative to the given directory;
-used when the Metanorma XML file to be processed is not necessarily
-in the same directory as the source Metanorma AsciiDoc file, and the media file
-paths are given as relative and not absolute file locations (and are not
-encoded as data URIs, via `:data-uri-image:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.7].
+(optional)
+All media paths in the XML path are relative to the given directory; used when
+the Metanorma XML file to be processed is not necessarily in the same directory
+as the source Metanorma AsciiDoc file, and the media file paths are given as
+relative and not absolute file locations (and are not encoded as data URIs, via
+`:data-uri-image:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.7].
 
 `:modspec-identifier-base:`::
-Base for Modspec identifiers throughout the document, to be stripped from any identifiers
-used to cross-reference Modspec requirements. See
-link:/author/topics/document-format/requirements-modspec/#identifier-base[Modspec identifier bases]. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7].
+(optional)
+Base identifier pattern for ModSpec instances throughout the document. The
+attribute value provides a prefix that will be removed from all ModSpec instance
+identifiers used to cross-reference ModSpec instances. The specification of the
+pattern only affects the rendering of cross-references, not the underlying XML
+representation of the ModSpec instances. See more details at
+link:/author/topics/document-format/requirements-modspec/#identifier-base[ModSpec identifier base]. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7].
 
 
 == PDF protection and permissions
 
-All the following attributes relate to PDF protection from
+All the following attributes relate to protection of PDF files as described
+in https://www.iso.org/standard/51502.html[ISO 32000-1:2008].
 copying [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.3].
 
 `:pdf-encrypt:`::
