@@ -1163,7 +1163,7 @@ NOTE: As a limitation of syntax, URIs cannot be processed correctly within
 `<<..>>`. The `xref:...[]` command needs to be used instead.
 
 To make the cross-reference render the identifier value of the instance itself,
-while still hyperlinking to the correct identifier, you can specify `style=id`
+while still hyperlinking to the correct identifier, you can specify `style=id%`
 as the cross-reference text, as follows.
 
 .Cross-reference to a ModSpec instance using its identifier, displaying the instance's identifier
@@ -1171,7 +1171,7 @@ as the cross-reference text, as follows.
 ====
 [source,adoc]
 ----
-xref:http://www.example.com/req/crs/crs-uri[style=id]
+xref:http://www.example.com/req/crs/crs-uri[style=id%]
 ----
 
 Renders as:
@@ -1270,7 +1270,10 @@ identifier base prefix will be removed from the identifier in the reference
 text.
 
 NOTE: An identifier base specified on a requirement applies to all ModSpec
-requirement cross-references rendered within that requirement.
+requirement cross-references rendered within that requirement. The identifier base
+truncation is applied to cross-references rendered as just the identifier (`style=id%`),
+but it is also applied to the identifiers incorporated inside of normal cross-references,
+and to the identifier labels of requirements.
 
 [example]
 .Setting a document-wide identifier base prefix
@@ -1279,36 +1282,48 @@ requirement cross-references rendered within that requirement.
 -----
 :modspec-identifier-base: http://www.example.com
 
-[requirement-class]
-----
+Refer to
+xref:http://www.example.com/req/class1[] and
+xref:http://www.example.com/req/class1/req1[style=id%].
+
+[requirement,type=requirements_class]
+====
+[%metadata]
 identifier:: http://www.example.com/req/class1
 requirement:: http://www.example.com/req/class1/req1
 description:: Some description.
-----
+====
 
 [requirement]
-----
+====
+[%metadata]
 identifier:: http://www.example.com/req/class1/req1
 statement:: A requirement.
-----
+====
+
 -----
 
 Renders as:
 
 ____
+
+Refer to
+/req/class1 and /req/class1/req1.
+
 |===
 2+| Requirements class 1
 
-h| Identifier  | /req/class1/
-h| Requirement | /req/class1/req1
-h| Description | Some description.
+h| Identifier          | `/req/class1/`
+h| Normative statement | Requirement 1: `/req/class1/req1`
+h| Description         | Some description.
 |===
 
 |===
 2+| Requirement 1
 
-h| Identifier | /req/class1/req1
-h| Statement  | A requirement.
+h| Identifier  | `/req/class1/req1`
+h| Included in | Requirement class 1: `/req/class1`
+h| Statement   | A requirement.
 |===
 ____
 ====
@@ -1318,19 +1333,22 @@ ____
 ====
 [source,adoc]
 -----
-[requirement-class]
-----
+[requirement,type=requirements_class]
+====
+[%metadata]
 identifier:: http://www.example.com/req/class1
 identifier-base:: http://www.example.com/req
 requirement:: http://www.example.com/req/class1/req1
 description:: Some description.
-----
+====
 
 [requirement]
-----
+====
+[%metadata]
 identifier:: http://www.example.com/req/class1/req1
 statement:: A requirement.
-----
+====
+
 -----
 
 Renders as:
@@ -1339,16 +1357,17 @@ ____
 |===
 2+| Requirements class 1
 
-h| Identifier  | /class1/
-h| Requirement | /class1/req1
-h| Description | Some description.
+h| Identifier          | `/class1/`
+h| Normative statement | Requirement 1: `/class1/req1`
+h| Description         | Some description.
 |===
 
 |===
 2+| Requirement 1
 
-h| Identifier | /class1/req1
-h| Statement  | A requirement.
+h| Identifier  | `/class1/req1`
+h| Included in | Requirements class 1: `/class1`
+h| Statement   | A requirement.
 |===
 ____
 ====
@@ -1382,7 +1401,7 @@ description:: See also xref:http://www.example.com/req/class2/req2[style=id%].
 [requirement]
 ----
 identifier:: http://www.example.com/req/class2/req2
-description:: See also xref:http://www.example.com/req/class1/req1[style=id%].
+description:: See also xref:http://www.example.com/req/class1/req1[].
 ----
 -----
 
@@ -1392,31 +1411,31 @@ ____
 |===
 2+| Requirement class 1
 
-h| Identifier  | /class1
-h| Requirement | /req1
+h| Identifier  | `/class1`
+h| Normative statement | Requirement 1: `/class1/req1`
 |===
 
 |===
 2+| Requirement class 2
 
-h| Identifier  | /req/class2
-h| Requirement | /req/class2/req2
+h| Identifier  | `/req/class2`
+h| Normative statement | Requirement 2: `/req/class2/req2`
 |===
 
 |===
 2+| Requirement 1
 
-h| Identifier  | http://www.example.com/req/class1/req1
-h| Included in | /class1
+h| Identifier  | `/class1/req1`
+h| Included in | Requirements class 1: `/class1`
 h| Statement   | See also /class2/req2
 |===
 
 |===
 2+| Requirement 2
 
-h| Identifier  | http://www.example.com/req/class2/req2
-h| Included in | /req/class2
-h| Statement   | See also /req/class1/req1
+h| Identifier  | `/req/class2/req2`
+h| Included in | Requirements class 2: `/req/class2`
+h| Statement   | See also Requirement 1: `/req/class1/req1`
 |===
 ____
 ====
