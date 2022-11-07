@@ -234,9 +234,6 @@ Part A of the requirement.
 ----
 ======
 
-The syntax also supports encoding the `description` for descriptive text within
-the list. The tag `statement` is treated as a synonym of `description` [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.2.1].
-
 The `%metadata` definition list may contain embedded
 levels [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.3];
 this is needed specifically for steps embedded within a test method.
@@ -253,7 +250,7 @@ attributes sequence (as illustrated above).
 .Encoding of logical models
 ====
 [%metadata]
-identifier:: ogc/spec/waterml/2.0/req/xsd-xml-rules
+identifier:: /spec/waterml/2.0/req/xsd-xml-rules
 subject:: system
 part:: Metadata models faithful to the original UML model.
 description:: Logical models encoded as XSDs should be faithful to the original
@@ -293,7 +290,8 @@ This is an OGC ModSpec requirement within an ISO document.
 
 Attributes accepted by a ModSpec instance are as follows:
 
-`identifier`:: (mandatory) Identifier of the requirement, typically a URI. Plain text.
+`identifier`:: (mandatory) Identifier of the requirement, such as a URI or a
+URN. Plain text.
 +
 This must be unique in the document (as required by ModSpec), and is also used
 for referencing and cross-linking between ModSpec instances.
@@ -304,9 +302,17 @@ https://github.com/metanorma/metanorma-ogc/releases/tag/v2.2.0 .
 `subject`:: (optional) Subject that the model refers to. Plain text.
 
 `obligation`:: (optional) Accepted values are one of:
-*** `requirement` (default)
-*** `recommendation`
-*** `permission`
+`requirement`::: (default) The instance is a requirement.
+`recommendation`::: The instance is a recommendation.
+`permission`::: The instance is a permission.
+
+`description`:: (optional)
+The descriptive text for this instance.
++
+NOTE: In a normative statement, the `description` key is treated as a synonym of
+`statement`, which forms the statement of compliance itself instead of
+informative, descriptive,
+text. [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.2.1].
 
 `target`:: (conditional: only for conformance-related models)
 The "target" that is being tested against, specified with the identifier of the
@@ -325,14 +331,27 @@ requirement class that is being tested.
 
 Differentiated types of ModSpec models allow additional attributes.
 
-[[generalreqt]]
-==== Requirement, recommendation, permission
 
-A Requirement (or Recommendation, Permission) is encoded as a `requirement`,
-`recommendation`, or `permission` block or by setting `type` to `requirement`,
-`recommendation`, or `permission`.
+[[generalreqt]]
+==== Normative statement
+
+Metanorma ModSpec supports the following normative statement types:
+
+* Requirement (`requirement`)
+* Recommendation (`recommendation`)
+* Permission (`permission`)
+
+The type of normative statement can be specified with using the above
+values as block types, or by setting the `type` attribute of a block.
 
 It supports the following attributes in addition to base ModSpec attributes:
+
+`statement`:: (mandatory)
+The statement to which compliance applies within this provision.
++
+NOTE: Prior to mn-requirements v0.2.1, the key `description` is used.
+`description` is now a synonym for `statement` in a provision
+instance [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.2.1].
 
 `conditions`:: (optional)
 Conditions on where this requirement applies. Accepts rich text.
@@ -380,11 +399,10 @@ Only supported in definition list syntax. [added in https://github.com/metanorma
 
 NOTE: `conditions`, `part` supported since [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.2].
 
-NOTE: In the native OGC rendering of ModSpec, the `description` attributes, which introduces descriptive statements
-related to the requirement, is displayed as unlabelled text. In flavours which label descriptions explicitly,
-such as ISO [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.1.2], descriptions are labelled as
-_Statement_ for requirements, recommendations, permissions, and conformance tests. They are left as _Description_
-for other kinds of requirement.
+NOTE: In the default rendering of ModSpec, the `statement` attribute,
+descriptions are labelled as _Statement_ for requirements, recommendations,
+permissions. They are left as _Description_ for all other kinds of ModSpec
+instances.
 
 [example]
 .OGC CityGML 3.0 sample requirement with two parts (definition list)
@@ -395,7 +413,7 @@ for other kinds of requirement.
 ====
 [%metadata]
 identifier:: /req/relief/classes
-description:: For each UML class defined or referenced in the Relief Package:
+statement:: For each UML class defined or referenced in the Relief Package:
 part:: The Implementation Specification SHALL contain an element which represents the
 same concept as that defined for the UML class.
 part:: The Implementation Specification SHALL represent associations with the same
@@ -1286,7 +1304,7 @@ Refer to
 xref:http://www.example.com/req/class1[] and
 xref:http://www.example.com/req/class1/req1[style=id%].
 
-[requirement,type=requirements_class]
+[requirements_class]
 ====
 [%metadata]
 identifier:: http://www.example.com/req/class1
@@ -1395,13 +1413,13 @@ requirement:: http://www.example.com/req/class2/req2
 [requirement]
 ----
 identifier:: http://www.example.com/req/class1/req1
-description:: See also xref:http://www.example.com/req/class2/req2[style=id%].
+statement:: See also xref:http://www.example.com/req/class2/req2[style=id%].
 ----
 
 [requirement]
 ----
 identifier:: http://www.example.com/req/class2/req2
-description:: See also xref:http://www.example.com/req/class1/req1[].
+statement:: See also xref:http://www.example.com/req/class1/req1[].
 ----
 -----
 
@@ -1600,7 +1618,7 @@ identically in output).
 identifier:: ogc/spec/waterml/2.0/req/xsd-xml-rules
 subject:: system
 part:: Metadata models faithful to the original UML model.
-description:: Logical models encoded as XSDs should be faithful to the original
+statement:: Logical models encoded as XSDs should be faithful to the original
 UML conceptual models.
 
 test-method::
