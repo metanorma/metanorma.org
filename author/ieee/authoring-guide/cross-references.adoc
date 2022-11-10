@@ -10,41 +10,20 @@ title: Cross-references
 Cross-references are an integral part of standards.
 The main mechanism for references are anchors and destinations.
 
-There are four types of cross-references:
+There are the following types of cross-references:
 
-* Internal references to a section, image, table, etc.
-* link:/author/topics/sections/entering_bib.adoc[Bibliographic entries]
-* Hyperlinks to an external source (e.g., a link to a website)
+// * link:/author/topics/sections/entering_bib.adoc[Bibliographic entries]
+* link:/author/topics/document-format/xrefs[Internal references]
+* link:/author/topics/document-format/bibliography[Bibliographic entries]
+* Hyperlinks to external sources (e.g., a link to a website)
 
-== Hyperlinks
+The following clauses will provide the basics on how cross-referencing
+works in Metanorma.
 
-It is easy to include links to external sources in Metanorma, and sources to
-files within the same project.
-
-To reference an *internal* source:
-
-. Use the `link` command to include a link to a file. The syntax looks like this: `\link:PATH[]`.
-
-. Add link text in square brackets after the path.
-+
-.Example of an internal link
-[source,adoc]
-----
-Download the latest link:downloads/report.pdf[Report]!
-----
-
-To reference an *external* source:
-
-. Paste the URL into the document.
-. Add link text in square brackets after the URL (optional) `URL[Link text]`.
-+
-.Example of an external link
-[source,adoc]
-----
-http://www.iso.org/[International Organization for Standardization].
-----
 
 == Internal references
+
+=== General
 
 To link to an important section, table, figure, formula, or list item in your document:
 
@@ -84,7 +63,8 @@ Metanorma automatically numbers and names references; because they are
 auto-numbered, they will be renumbered automatically if you insert any new text
 of the same type.
 
-Metanorma markup is serialized into XML, hence the anchor should follow the https://www.w3.org/TR/xml-names11/[XML namespace conventions].
+Metanorma markup is serialized into XML, hence the anchor should follow the
+https://www.w3.org/TR/xml-names11/[XML namespace conventions].
 
 i.e., an anchor name name must not contain:
 
@@ -94,3 +74,32 @@ i.e., an anchor name name must not contain:
 
 If you want to learn more about the technical aspects of cross-references, read
 link:/author/concepts/deep-dive-cross-references[Deep-dive into cross-references].
+
+
+== Hyperlinks
+
+It is easy to include links to external sources in Metanorma, and sources to
+files within the same project.
+
+To reference an *internal* source:
+
+. Use the `link` command to include a link to a file. The syntax looks like this: `\link:PATH[]`.
+
+. Add link text in square brackets after the path.
++
+.Example of an internal link
+[source,adoc]
+----
+Download the latest link:downloads/report.pdf[Report]!
+----
+
+To reference an *external* source:
+
+. Paste the URL into the document.
+. Add link text in square brackets after the URL (optional) `URL[Link text]`.
++
+.Example of an external link
+[source,adoc]
+----
+http://www.iso.org/[International Organization for Standardization].
+----
