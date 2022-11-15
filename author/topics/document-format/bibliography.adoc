@@ -609,6 +609,7 @@ the title of the book, proceedings, collection containing the item).
 * `issue`: issue or issue range (e.g. _9_, _9-11_)
 * `volume`: volume or volume range (e.g. _9_, _9-11_)
 * `type`: Document type (e.g. _standard_, _book_, _inbook_): suppressed from rendering.
+The list of valid document types is given in https://www.relaton.org/specs/model/bibtype/[Relaton model -- Bibitem type].
 
 [example]
 .Example encoding of a bibliographic item inline with semantic markup
@@ -645,6 +646,18 @@ For presentations,
 * `title` is the title of the presentation
 * `series` is the title of the conference
 * `organization.distributor` is the organizer of the conference
+--
+
+[IMPORTANT]
+--
+The rendering of different bibliographic types is quite different in the various
+stylesheets that SDOs follow, and strange things will happen if Metanorma gets the
+bibliographic type wrong. Under Metanorma, the default bibliographic type is "standard",
+and most SDOs render standards in bibliographies with very little data (no author, no
+publisher, no date outside of the document identifier, and so on). 
+
+If you use this notation to enter any document other than a standard, you *must*
+specify the type of document, using `span:type[]`.
 --
 
 [[asciibib]]
