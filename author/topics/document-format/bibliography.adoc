@@ -596,6 +596,10 @@ The span categories supported are:
 * `title`: Title.
 * `in_title`: Title of containing bibiographic item (for types `inbook, inproceedings, incollection`,
 the title of the book, proceedings, collection containing the item).
+* `in_surname`, `in_initials`, `in_givenname`, `in_organization`: Name of contributor for containing
+bibliographic item (for types `inbook, inproceedings, incollection`, the author or more usually editor
+of the book, proceedings, collection containing the item. So `in_surname.editor`, `in_givenname.editor`
+give the name of the editor of the book or proceedings that a paper is included in).
 * `series`: Series title. (For articles, this is the journal title.)
 * `docid`: Document identifier.
 * `docid.XXX`: Document identifier, of type _XXX_.
@@ -634,6 +638,11 @@ The list of valid document types is given in https://www.relaton.org/specs/model
   span:type[inbook]
 ----
 ====
+
+Note the distinction in the example between Wozniak and Jobs (authors of the paper),
+and Gates and UNICEF (editors of the book including the paper). Similarly, note the
+distinction between the title of the paper (_Work_), and the title of the book including
+the paper (_Collected Essays_).
 
 After the first instances of `surname` and either `initials` or `givenname`, any
 subsequent instances of `surname` or either `initials` or `givenname` are
