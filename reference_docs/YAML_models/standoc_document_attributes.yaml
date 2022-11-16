@@ -1,0 +1,728 @@
+# How to use this template:
+# Within the document_attributes section, there are several key value pairs to model a reference entry.
+# A complete reference entry looks like this:
+# nameOfTheAttribute: # Unique across document attributes for a flavor
+#   tags: []  # A list of strings; Include flavor and type of attribute, e.g. "Author info"
+#   title: "name of the attribute"
+#   description: "Can contain inline and block AsciiDoc formatting."
+#   required: true #Describes if the attribute is required to generate a well-formed doc or optional. Takes a boolean.
+#   declaration: ":attribute:" #How the attribute is invoked
+#   value_spec: "Comma-delimited list of classification tokens, expressed as `type:value` pairs. The `type:` prefix is optional, where omitted `default:` prefix is auto-supplied"
+#   value_default: null  #OPTIONAL A string showing literal value for this attribute, without quotes. If the attribute doesn't take a values, this stays empty.
+#   added_in_version: v1.9.1 # Could be auto-inferred, however the renderer might run into trouble, see https://github.com/metanorma/metanorma.org/wiki/Flavor-reference-structure-specification
+#   example: >- ...  #OPTIONAL Should be pure AsciiDoc. Will be rendered as is inside an example block.
+#   more_information: "string" #OPTIONAL Use to provide related links, such as a blog article that discusses background info, if applicable
+
+version: v1.x.x #@opoudjis Check versions throughout this doc. Huuuge thanks!
+flavor: standoc
+
+document_attributes:
+#--- Build and validation ---#
+  nodoc:
+    tags: ["Build and validation"]
+    title: "No document generation"
+    description:  "Instructs Metanorma to only generate XML output. Word and HTML output will not be generated."
+
+  novalid:
+    tags: ["Build and validation"]
+    title: "No document validation"
+    description: "Suppress document validation."
+
+  #--- Bibliographic lookup ---#
+  no-isobib:
+    tags: ["Bibliographic lookup"]
+    title: "No reference lookup"
+    description: |
+      Disable automatic reference lookup.
+      If set, do not use the `relaton` or `iev` gem functionality to look up ISO and IEV references online, nor the cache of `relaton` and `iev` searches.
+    more_information: "For bibliographic lookup, see link:https://www.metanorma.org/author/topics/building/reference-lookup[automatic reference lookup]."
+
+#--- Please include all Bibliographic lookup references from https://www.metanorma.org/author/topics/building/reference-lookup/ ---#
+
+
+  #--- Caches ---#
+      #--- Is there some reference information hidden in https://www.metanorma.org/author/topics/building/reference-lookup/#lookup-result-caching ? ---#
+
+  no-isobib-cache:
+    tags: ["Caches"]
+    title: "No isobib cache"
+    description: "If set, use the relaton and iev gem functionality to look up ISO and IEV references online, but do not use the cache of relaton and iev searches."
+
+  local-cache:
+    tags: ["Caches"]
+    title: "Local cache"
+    description: "Use the local relaton and iev search caches to override the global relaton and iev search caches. If a directory name is given for the attribute, that name overrides relaton as the cache name."
+
+  local-cache-only:
+    tags: ["Caches"]
+    title: "Local cache only"
+    description: |
+      Use the local relaton and iev search caches to the exclusion of the global
+      `relaton` and `iev` search caches.
+      If a directory name is given for the attribute, that name overrides `relaton` as the cache name.
+
+  flush-caches:
+    tags: ["Caches"]
+    title: "Flush caches"
+    description: "If set, delete and reinitialise the cache of `https://www.relaton.com/[relaton]` searches."
+
+  #--- Math ---#
+      #--- Please include all references from https://www.metanorma.org/author/topics/document-format/text/#mathematical-expressions ---#
+  stem:
+    tags: ["Math"]
+    title: "Mathematical Markup Language"
+    description: "This attribute is required if you have any AsciiMath, MathML, or LaTeX included in the document; otherwise they will not be detected. If you want the STEM expressions in your document to be interpreted as LaTeX by default, use `:stem: latexmath`."
+    value_spec: "enum: latexmath, asciimath"
+    more_information: "Read more about working with link:/author/topics/document-format/text/#mathematical-expressions[mathematical expressions].  Additional information see link:/author/ref/asciimath/[AsciiMath reference]"
+
+
+  #--- Languages and localization ---#
+      #--- Please include all references from https://www.metanorma.org/author/topics/languages/ ---#
+  i18nyaml:
+    tags: ["Languages and localization"]
+    title: "YAML language template"
+    description: |
+      Name of YAML language template file.
+      Use if you wish to output an standard in a language that’s not supported out of the box.
+      For more on how to customise localization, see link:/builder/topics/localization[Localization].
+
+  language:
+    tags: ["Languages and localization"]
+    title: "Language"
+    description: "Two-letter code (ISO 639-1) of the language the document is written in. Defaults to `en`."
+    value_default: en
+
+  script:
+    tags: ["Languages and localization"]
+    title: "Script"
+    description: "Script of the document (ISO 15924). Defaults to `Latn`. Must be supplied as `Hans` for Simplified Chinese."
+    value_spec: "enum: Arab, Aran, Cyrl, Deva, Grek, Hans, Kore, Hebr, Jpan, Latn"
+    value_default: Latn
+
+  boilerplate-authority:
+    tags: ["Languages and localization"]
+    title: "Boilerplate authority"
+    description: "File containing predefined text of document, in Metanorma XML. The document predefined text needs to follow the structure described in link:/builder/topics/metadata-and-boilerplate#boilerplate[Predefined text]; compare examples of Metanorma predefined text files such as https://github.com/metanorma/metanorma-itu/blob/main/lib/asciidoctor/itu/boilerplate.xml[that in ITU]."
+    added_in_version: v1.3.15
+
+  #--- Document info ---#
+  publisher:
+    tags: ["Document info"]
+    title: "Publisher"
+    description: "Standards agency publishing the standard; can be multiple (semicolon-delimited: processed via CSV, recognising quote marks)."
+    value_spec: comma-list
+    added_in_version: v1.5.1
+
+
+  copyright-holder:
+    tags: ["Document info"]
+    title: "Copyright holder"
+    description: "Copyright holder, if distinct from the publisher; can be multiple (semicolon-delimited: processed via CSV, recognising quote marks)."
+    value_spec: comma-list
+    added_in_version: v1.5.1
+
+  docnumber:
+    tags: ["Document info"]
+    title: "Document number"
+    description: "Numeric component of the document identifier. The full identifier is formed by prefixing and suffixing this element with other strings derived from metadata."
+
+  edition:
+    tags: ["Document info"]
+    title: "Edition"
+    description: "Document edition."
+
+  revdate:
+    tags: ["Document info"]
+    title: "Revision date"
+    description: "Date the document was last updated."
+
+  library-ics:
+    tags: ["Document info"]
+    title: "Library ICS"
+    description: "ICS (International Categorization for Standards) number for the standard. There may be more than one ICS for a document; if so, they should be comma-delimited. Depending on the Metanorma flavor, the ICS identifier is added to the document metadata, but may not be visible in the resulting document.)"
+
+  isbn:
+    tags: ["Document info"]
+    title: "ISBN-13 number"
+    description: "ISBN-13 number of the document."
+    added_in_version: v1.6.2
+
+  isbn10:
+    tags: ["Document info"]
+    title: "ISBN-10 number"
+    description: "ISBN-10 number of the document."
+    added_in_version: v1.6.2
+
+  title:
+    tags: ["Document info"]
+    title: "Title of the document"
+    description: "Title of the document. If not supplied, the built-in AsciiDoc title (first line of document header) is used instead."
+
+  title-XX:
+    tags: ["Document info"]
+    title: "Title of document in certain language"
+    description: "Title of the document in the language `XX` (where “XX” is a ISO 639-1 code; for example, `:title-en:`, `:title-fr`:)."
+    declaration: ":title-en:, :title-fr:"
+
+  doctype:
+    tags: ["Document info"]
+    title: "Document type"
+    description: 'The document type; e.g. "standard", "guide", "report".'
+
+  docsubtype:
+    tags: ["Document info"]
+    title: "Document subtype"
+    description: "Document subtype; by default, used to provide an ad hoc, user defined document class, unless provided for explicitly in the flavour, as in OGC."
+
+  status:
+    tags: ["Document info"]
+    title: "Document status"
+    description: 'Status of the document; e.g. "draft", "published". Synonym: `:docstage:`.'
+
+  docsubstage:
+    tags: ["Document info"]
+    title: "Document substage"
+    description: "Substage code for the document status, where applicable."
+
+  iteration:
+    tags: ["Document info"]
+    title: "Iteration"
+    description: "Iteration of a stage, in case there have been multiple drafts (e.g. `2` on a `CD`: this is the second iteration through the `CD` stage)."
+
+  keywords:
+    tags: ["Document info"]
+    title: "Keywords"
+    description: "Comma-delimited list of keywords associated with the document."
+    value_spec: comma-list
+
+  classification:
+    tags: ["Document info"]
+    title: "Classification"
+    description: 'Comma-delimited list of classification tokens, expressed as `type:value` pairs, set by user; if no prefix is given to a value, "default" is supplied as the type.'
+    value_spec: comma-list
+
+  draft:
+    tags: ["Document info"]
+    title: "Document draft"
+    description: "Document draft. Used in addition to document stage. The value must provide the exact draft iteration in _X.Y_ format (major version number and minor version number separated by a dot). If present, link:/author/topics/document-format/reviewer-notes[reviewer notes] will be rendered (otherwise those are suppressed)."
+
+  #--- URIs ---#
+  uri:
+    tags: ["URIs"]
+    title: "URI"
+    description: "URI to which this standard is published."
+
+  xml-uri:
+    tags: ["URIs"]
+    title: "XML URI"
+    description: "URI to which the (Metanorma) XML representation of this standard is published."
+
+  html-uri:
+    tags: ["URIs"]
+    title: "HTML URI"
+    description: "URI to which the HTML representation of this standard is published."
+
+  pdf-uri:
+    tags: ["URIs"]
+    title: "PDF URI"
+    description: "URI to which the PDF representation of this standard is published."
+
+  doc-uri:
+    tags: ["URIs"]
+    title: "DOC URI"
+    description: "URI to which the DOC representation of this standard is published."
+
+  relaton-uri:
+    tags: ["URIs"]
+    title: "Relaton URI"
+    description: "URI to which the Relaton XML representation of this standard is published."
+
+
+  #--- Timestamps ---#
+  copyright-year:
+    tags: ["Timestamps"]
+    title: "Copyright year"
+    description: "Year in which the copyright for the document was issued."
+
+  issued-date:
+    tags: ["Timestamps"]
+    title: "Issued date"
+    description: "Date on which the standard was issued (authorised for publication by the issuing authority)."
+
+  published-date:
+    tags: ["Timestamps"]
+    title: "Published date"
+    description: "Date on which the standard was published (distributed by the publisher)."
+
+  implemented-date:
+    tags: ["Timestamps"]
+    title: "Implemented date"
+    description: "Date on which the standard became active."
+
+  created-date:
+    tags: ["Timestamps"]
+    title: "created date"
+    description: "Date on which the first version of the standard was created."
+
+  updated-date:
+    tags: ["Timestamps"]
+    title: "Updated date"
+    description: "Date on which the current version of the standard was updated."
+
+  obsoleted-date:
+    tags: ["Timestamps"]
+    title: "Obsoleted date"
+    description: "Date on which the standard was obsoleted/revoked."
+
+  confirmed-date:
+    tags: ["Timestamps"]
+    title: "Confirmed date"
+    description: "Date on which the standard was reviewed and approved by the issuing authority."
+
+  unchanged-date:
+    tags: ["Timestamps"]
+    title: "Unchanged date"
+    description: "Date on which the standard was last renewed without any changes in content."
+
+  circulated-date:
+    tags: ["Timestamps"]
+    title: "Circulated date"
+    description: "Date on which the unpublished standard was last circulated officially as a preprint. For standards, this is associated with the latest transition to a formally defined preparation stage, such as Working Draft or Committee Draft."
+
+  accessed-date:
+    tags: ["Timestamps"]
+    title: "Accessed date"
+    description: "Date on which the standard was last accessed by the compiler of the bibliography; e.g. for a cited online resource, the date on which the document author viewed the resource."
+
+  date:
+    tags: ["Timestamps"]
+    title: "Date"
+    description: "An arbitrary date in the production of the standard. Content of the attribute should be a token, giving the type of date, then space, then the date itself. Multiple dates can be added as `:date_2:`, `:date_3:`, etc."
+
+  vote-started-date:
+    tags: ["Timestamps"]
+    title: "Vote started date"
+    description: "Date on which the voting process starts for this document."
+
+  vote-ended-date:
+    tags: ["Timestamps"]
+    title: "Vote ended date"
+    description: "Date on which the voting process ends for this document."
+
+  announced-date:
+    tags: ["Timestamps"]
+    title: "Announced date"
+    description: "Date on which the document was announced as forthcoming."
+    added_in_version: v1.9.3
+
+  #--- Author info ---#
+  technical-committee:
+    tags: ["Author info"]
+    title: "Technical committee"
+    description: "Name of the relevant technical committee."
+
+  fullname:
+    tags: ["Author info"]
+    title: "Fullname"
+    description: |
+      Full name of a person who is a contributor to the document. A second person is indicated by using a numeric suffix: `:fullname:`, `:fullname_2:`, `fullname_3:`, &c. The same convention applies to all the following attributes.
+
+      NOTE: Not all standards display the `fullname` and other personal name attributes.
+    declaration: ":fullname:, :fullname_{i}:"
+
+  surname:
+    tags: ["Author info"]
+    title: "Surname"
+    description: "Surname of a person who is a contributor to the document."
+    declaration: ":surname:, :surname_{i}:"
+
+  givenname:
+    tags: ["Author info"]
+    title: "Given name"
+    description: "Given name(s) of a person who is a contributor to the document."
+    declaration: ":givenname:, :givenname_{i}:"
+
+  initials:
+    tags: ["Author info"]
+    title: "Initials"
+    description: "Initials(s) of a person who is a contributor to the document."
+    declaration: ":initials:, :initials_{i}:"
+
+  role:
+    tags: ["Author info"]
+    title: "Role"
+    description: |
+      Role of a person who is a contributor to the document.
+      By default, they are coded as an `editor`; they can also be represented as an `author`.
+    declaration: ":role:, :role_{i}:"
+
+  affiliation:
+    tags: ["Author info"]
+    title: "Organization"
+    description: "Organization that a person who is a contributor to the document is affiliated with."
+    declaration: ":affiliation:, :affiliation{_i}:"
+
+  affiliation_abbrev:
+    tags: ["Author info"]
+    title: "Abbreviation of organization"
+    description: "Abbreviation of the organization that a person who is a contributor to the document is affiliated with."
+    declaration: ":affiliation_abbrev:, :affiliation_abbrev{_i}:"
+    added_in_version: v1.3.12
+
+  affiliation_subdiv:
+    tags: ["Author info"]
+    title: "Subdivision of the organization"
+    description: |
+      Subdivision of the organization that a contributor to the document is affiliated with.
+      Can be multiple (semicolon-delimited: processed via CSV, recognising quote marks).
+    declaration: ":affiliation_subdiv:, :affiliation_subdiv{_i}:"
+    added_in_version: v1.7.0
+
+  address:
+    tags: ["Author info"]
+    title: "Address"
+    description: "Organizational address of a person who is a contributor to the document. Mutually exclusive with street/city/region/country/postcode."
+    declaration: ":address:, :address{_i}:"
+
+  street:
+    tags: ["Author info"]
+    title: "Street component"
+    description: "Street component of the organization address of a person who is a contributor to the document."
+    declaration: ":street:, :street{_i}:"
+    added_in_version: v1.9.4
+
+  city:
+    tags: ["Author info"]
+    title: "City component"
+    description: "City component of the organization address of a person who is a contributor to the document."
+    declaration: ":city:, :city{_i}:"
+    added_in_version: v1.9.4
+
+  region:
+    tags: ["Author info"]
+    title: "Region component"
+    description: "Region component of the organization address of a person who is a contributor to the document."
+    declaration: ":region:, :region{_i}:"
+    added_in_version: v1.9.4
+
+  country:
+    tags: ["Author info"]
+    title: "Country"
+    description: "Country component of the organization address of a person who is a contributor to the document."
+    declaration: ":country:, :country{_i}:"
+    added_in_version: v1.9.4
+
+  postcode:
+    tags: ["Author info"]
+    title: "postcode"
+    description: "Postcode component of the organization address of a person who is a contributor to the document."
+    declaration: ":postcode:, :postcode{_i}:"
+    added_in_version: v1.9.4
+
+  contributor-uri:
+    tags: ["Author info"]
+    title: "Contributor URI"
+    description: "URI of a person who is a contributor to the document."
+    declaration: ":pcontributor-uri:, :contributor-uri{_i}:"
+
+
+  email:
+    tags: ["Author info"]
+    title: "Email address"
+    description: "Email of a person who is a contributor to the document."
+    declaration: ":email:, :email{_i}:"
+
+  phone:
+    tags: ["Author info"]
+    title: "Phone number"
+    description: "Phone number of a person who is a contributor to the document."
+    declaration: ":phone:, :phone{_i}:"
+
+  fax:
+    tags: ["Author info"]
+    title: "Fax number"
+    description: "Fax number of a person who is a contributor to the document."
+    declaration: ":fax:, :fax{_i}:"
+
+  subdivision:
+    tags: ["Author info"]
+    title: "Subdivision of the organization"
+    description: "Subdivision of the organization that is responsible for this document."
+    added_in_version: v1.6.1
+
+  subdivision-abbr:
+    tags: ["Author info"]
+    title: "Subdivision abbreviation of the organization"
+    description: "Abbreviation of the subdivision of the organization that is responsible for this document."
+    added_in_version: v1.6.1
+
+  pub-address:
+    tags: ["Author info"]
+    title: "Address of the organization"
+    description: |
+      Address of the organization responsible for this document, if it overrides
+      the default.
+      +
+      [NOTE]
+      --
+      Each line in a multi-line address must end with `+ \`, e.g.
+
+      [source,adoc]
+      ----
+      :pub-address: 1 Infinity Loop + \
+      California + \
+      United States of America
+      ----
+      --
+    added_in_version: v1.6.1
+
+  pub-phone:
+    tags: ["Author info"]
+    title: "Phone number of the organization"
+    description: "If set, it overrides the default phone number of the organization responsible for this document."
+    added_in_version: v1.6.1
+
+  pub-fax:
+    tags: ["Author info"]
+    title: "Fax number of the organization"
+    description: "If set, it overrides the default fax number of the organization responsible for this document."
+    added_in_version: v1.6.1
+
+  pub-email:
+    tags: ["Author info"]
+    title: "Email of the organization"
+    description: "If set, it overrides the default email of the organization responsible for this document."
+    added_in_version: v1.6.1
+
+  pub-uri:
+    tags: ["Author info"]
+    title: "URI of the organization"
+    description: "If set, it overrides the default URI of the organization responsible for this document."
+    added_in_version: v1.6.1
+
+
+  #--- Visual appearance ---#
+  body-font:
+    tags: ["Visual appearance"]
+    title: "Body font"
+    description: "Font for body text; will be inserted into CSS, overriding the default set for the particular Metanorma flavour."
+
+  header-font:
+    tags: ["Visual appearance"]
+    title: "Header font"
+    description: "Font for headers; will be inserted into CSS, overriding the default set for the particular Metanorma flavour."
+
+  monospace-font:
+    tags: ["Visual appearance"]
+    title: "Monospace font"
+    description: "Font for monospace; will be inserted into CSS, overriding the default set for the particular Metanorma flavour."
+
+  htmlstylesheet:
+    tags: ["Visual appearance"]
+    title: "HTML stylesheet"
+    description: "SCSS stylesheet to use for HTML output. Defaults to built-in template for the particular Metanorma flavour. Overriding is not recommended."
+
+  htmlstylesheet-override:
+    tags: ["Visual appearance"]
+    title: "HTMLstylesheet override"
+    description: "CSS stylesheet to use for HTML output. Is inserted after any built in stylesheet for the particular Metanorma flavour, and can be used to override it."
+    added_in_version: v1.8.7
+
+  htmlcoverpage:
+    tags: ["Visual appearance"]
+    title: "HTML cover page"
+    description: |
+      HTML template for cover page. +
+      Defaults to built-in template for the particular Metanorma flavour. +
+      Overriding is not recommended.
+    value_default: built-in
+
+  htmlintropage:
+    tags: ["Visual appearance"]
+    title: "HTML intro page"
+    description: |
+      HTML template for introductory section. +
+      Defaults to built-in template for the particular Metanorma flavour. +
+      Overriding is not recommended.
+    value_default: built-in
+
+  scripts:
+    tags: ["Visual appearance"]
+    title: "Scripts"
+    description: |
+      JavaScript scripts for HTML output. +
+      Defaults to built-in scripts for the particular Metanorma flavour. +
+      Overriding is not recommended.
+    value_default: built-in
+
+  scripts-override:
+    tags: ["Visual appearance"]
+    title: "scripts override"
+    description: "JavaScript scripts for HTML output. Inserted after any built-in scripts for the particular Metanorma flavour, and can be used to override them."
+    added_in_version: v1.9.4
+
+  scripts-pdf:
+    tags: ["Visual appearance"]
+    title: "scripts pdf"
+    description: |
+      JavaScript scripts for HTML to PDF output. +
+      Defaults to built-in scripts for the particular Metanorma flavour. +
+      Overriding is not recommended.
+    value_default: built-in
+
+  wordstylesheet:
+    tags: ["Visual appearance"]
+    title: "Word stylesheet"
+    description: |
+      Primary SCSS stylesheet to use for Word output. +
+      Defaults to built-in template for the particular Metanorma flavour. +
+      Overriding is not recommended.
+    value_default: built-in
+
+  standardstylesheet:
+    tags: ["Visual appearance"]
+    title: "Standard stylesheet"
+    description: |
+      Secondary SCSS stylesheet use for Word output. +
+      Defaults to built-in template for the particular Metanorma flavour. +
+      Overriding is not recommended.
+    value_default: built-in
+
+  htmlstylesheet-override:
+    tags: ["Visual appearance"]
+    title: "HTML stylesheet override"
+    description: "CSS stylesheet to use for Word output. Is inserted after any built in stylesheets for the particular Metanorma flavour, and can be used to override them."
+
+  header:
+    tags: ["Visual appearance"]
+    title: "Word header"
+    description: |
+      Header and footer file for Word output.
+
+      Defaults to built-in template the particular Metanorma flavour.
+
+      Overriding is not recommended.
+    value_default: built-in
+
+  wordcoverpage:
+    tags: ["Visual appearance"]
+    title: "Word cover page"
+    description: |
+      Word template for cover page. +
+      Defaults to built-in template for the particular Metanorma flavour. +
+      Overriding is not recommended.
+    value_default: built-in
+
+  wordintropage:
+    tags: ["Visual appearance"]
+    title: "Word introductory section"
+    description: |
+      Word template for introductory section. +
+      Defaults to built-in template for the particular Metanorma flavour. +
+      Overriding is not recommended.
+    value_default: built-in
+
+  ulstyle:
+    tags: ["Visual appearance"]
+    title: "Unordered list style"
+    description: |
+      Word CSS selector for unordered lists in supplied stylesheets. +
+      Defaults to value for built-in stylesheet. +
+      Overriding is not recommended.
+
+  olstyle:
+    tags: ["Visual appearance"]
+    title: "Ordered list style"
+    description: |
+      Word CSS selector for ordered lists in supplied stylesheets. +
+      Defaults to value for built-in stylesheet. +
+      Overriding is not recommended.
+
+  data-uri-image:
+    tags: ["Visual appearance"]
+    title: "Data-URI image"
+    description: "Encode all images in HTML output as inline data-URIs. Defaults to true."
+    value_default: true
+
+  smartquotes:
+    tags: ["Visual appearance"]
+    title: "Smartquotes"
+    description: |
+      Apply "`smartquotes`" and other autoformatting to the XML output and the downstream outputs.
+      +
+      ** Smart quotes are not applied to the following type of text:
+      *** text in sourcecode
+      *** text in pseudocode
+      *** text in monospace.
+      ** If this attribute is set to `false`, the AsciiDoc default is used to generate smart quotes:
+      `"&#x060; &#x060;"`, `"&#x060; &#x060;"`.
+      ** The rules for smart formatting follow the
+      https://github.com/pbhogan/sterile[sterile] gem, and are given in
+      https://github.com/pbhogan/sterile/blob/main/lib/sterile/data/smart_format_rules.rb[smart_format_rules.rb].
+    value_default: true
+
+  toclevels:
+    tags: ["Visual appearance"]
+    title: "Table of contents levels"
+    description: "Number of table of contents levels to render."
+    value_spec: number
+    value_default: 2
+
+  htmltoclevels:
+    tags: ["Visual appearance"]
+    title: "HTML table of contents levels"
+    description: "Number of table of contents levels to render in HTML/PDF output; used to override `:toclevels:`."
+    value_spec: number
+    value_default: 2
+
+  doctoclevels:
+    tags: ["Visual appearance"]
+    title: "DOC table of contents levels"
+    description: "Number of table of contents levels to render in Word (`.doc`) output; used to override `:toclevels:`."
+    value_spec: number
+    value_default: 2
+
+  imagesdir:
+    tags: ["Visual appearance"]
+    title: "Images directory"
+    description: "Directory in which images are located: all local image file locations are prefixed with this directory."
+
+  break-up-urls-in-tables:
+    tags: ["Visual appearance"]
+    title: "Break up URLs in tables"
+    description: |
+      If present, long strings in table cells (longer than 30 characters) are broken up on rendering, to help tables fit within the page width.
+      +
+      --
+      NOTE: Due to limitations of Microsoft Word tables with long string
+      wrapping, this functionality is only applied to Word output.
+      --
+    added_in_version: v1.3.29
+
+  sectionsplit:
+    tags: ["Visual appearance"]
+    title: "Section split"
+    description: |
+      Treat the HTML output as a Metanorma collection, with one web page per clause and annex.
+      NOTE: HTML output only.
+    added_in_version: v1.9.0
+
+  sourcecode-markup-start:
+    tags: ["Visual appearance"]
+    title: "Sourcecode markup start"
+    description: "Initial delimiter for markup inserted in sourcecode."
+    added_in_version: v1.7.4
+
+  sourcecode-markup-end:
+    tags: ["Visual appearance"]
+    title: "Sourcecode markup end"
+    description: "Final delimiter for markup inserted in sourcecode."
+    added_in_version: v1.7.4
+
+  bare:
+    tags: ["Visual appearance"]
+    title: "Bare"
+    description: |
+      The document is rendered "`bare`", without the coverpage, boilerplate, or introductory text expected of a complete standards document. +
+      This is used to compile into HTML e.g. clauses as standalone documents, or document attachments.
+    added_in_version: v1.9.4

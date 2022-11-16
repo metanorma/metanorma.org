@@ -1,0 +1,74 @@
+---
+title: Diagrams
+layout: author-docs
+---
+== General
+
+Diagrams are useful to visualize the structure of a system or processes.
+
+Metanorma supports the LutaML and PlantUML diagramming tools, for creation of
+different kinds of diagrams directly in a Metanorma document.
+
+== LutaML
+
+Please refer to documentation for the
+link:/author/topics/automation/lutaml_uml[LutaML UML plugin].
+
+== PlantUML
+
+=== Prerequisites
+
+If you are using Metanorma installed through one of the supported installation
+mechanisms (e.g. Homebrew, Snap, Chocolatey, Docker), this feature is by default
+available.
+
+If you are using the development install (e.g. via Ruby gems), you need to have
+PlantUML installed in order to use this feature.
+Specifically, you must have an accessible executable called `plantuml` in your
+terminal path.
+
+Please refer to the https://plantuml.com[official PlantUML site] for
+installation instructions.
+
+The recommended manner to install PlantUML on macOS is through Homebrew, and
+on Windows via Chocolatey.
+
+
+=== Adding a diagram
+
+To add one or more diagrams in a Metanorma document:
+
+. Begin a new literal block (delimited by `....`) and use the attribute `[plantuml]`.
++
+The compiler now knows that PlantUML syntax follows.
+
+. Begin the diagram with `@startuml`.
+
+. Enter your diagram using the PlantUML notation.
+
+. End the diagram with `@enduml`.
+
+Example:
+[source,asciidoc]
+--
+[plantuml]
+....
+@startuml
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: another authentication Response
+@enduml
+....
+--
+
+Metanorma when encountered with a `[plantuml]` block will automatically invoke
+PlantUML to transform your text input into a PNG image. The images are stored in
+a `plantuml` directory relative to the current path.
+
+=== Related links
+
+* Visit the https://plantuml.com/[PlantUML website] to learn more about PlantUML
+and what kinds of diagrams it supports.
+

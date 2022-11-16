@@ -1,0 +1,56 @@
+version: v3.4.5 #Verify versions
+
+inherits_from:
+  # Also may be referred to as “parent flavor”
+  flavor: standoc
+  version: v1.x.x
+
+document_attributes:
+#--- Document info  ---#
+  docnumber: 
+    tags: ["Document info"]
+    title: "Document number" 
+    description: "CalConnect document number, as allocated by TCC."
+
+  status: 
+    tags: ["Document info"]
+    title: "Status" 
+    description: |
+      The status of the document. Synonym: `:docstage:`.
+    value_spec: "enum: proposal, working-draft, committee-draft, draft-standard, final-draft, published, withdrawn"
+
+  doctype: 
+    tags: ["Document info"]
+    title: "Document type" 
+    description: |
+      The type of the document. Can be one of:
+      +
+      --
+      standard:: Standard (no suffix on identifier; e.g. `CC 1`)
+      directive:: Directive (suffix `DIR`, e.g. `CC/DIR 1`)
+      guide:: Guide (suffix `Guide`)
+      specification:: Specification (suffix `S`)
+      report:: Report (suffix `R`)
+      administrative:: Administrative (suffix `A`)
+      amendment:: Amendment (suffix `Amd`)
+      technical corrigendum:: Technical Corrigendum (suffix `Cor`)
+      advisory:: Advisory (suffix `Adv`)
+      --
+    value_spec: "enum: standard, directive, guide, specification, report, administrative, amendment, technical corrigendum, advisory"
+
+  technical-committee: 
+    tags: ["Document info"]
+    title: "Technical committee" 
+    description: |
+      Name of the relevant CSD technical committee. +
+      A second relevant CSD technical committee (and other committees) are added as `_2`, `_3`, `_4`...​
+    declaration: ":technical-committee:, :technical-committee{_i}:"
+
+  technical-committee-type: 
+    tags: ["Document info"]
+    title: "Technical committee type" 
+    description: |
+      Type of the relevant CSD technical committee: `technical`, `provisional`. +
+      A second relevant CSD technical committee (and other committees) are added as `_2`, `_3`, `_4`...
+    required: true
+    declaration: ":technical-committee-type:, :technical-committee-type{_i}:"

@@ -1,0 +1,152 @@
+---
+layout: author-docs
+---
+== Metadata and document attributes
+
+=== General
+
+tag::tutorial[]
+tag::metadata-intro[]
+
+Information about a document itself is called the "metadata" of the document.
+The document header is where metadata is entered.
+Metadata is specified by using document attributes.
+
+Document attributes are used in the following ways:
+
+* provide semantic information for the document
+* modify visual appearance of output format
+* adjust the document generation process
+
+You can specify metadata about:
+
+* Authors: Issuing organization, authors, and their location
+* Document information: Title, language, document stages (draft, published, etc.) copyright holder, etc.
+* Identifiers: Document numbers, ISBNs, URIs
+* Dates: Draft dates, revision dates, publishing date, copyright year, etc.
+
+Some metadata influence how the document is generated and should only be
+used by advanced users. Often, they will require familiarity with the
+structures and processes of the flavor's organization.
+
+NOTE: Some of the metadata is visible in the document, such as `:title:`, while
+others are not visible but still affect how your document is generated.
+
+
+A document attribute looks like this:
+
+[source,adoc]
+----
+:title: My document
+:draft:
+----
+
+Document attributes are used as simple flags like on/off switches, which do
+not take a value, while others accept one or more values.
+
+NOTE: The order of document attributes generally does not matter to Metanorma,
+except that a document attribute with the same key can be overwritten by a
+subsequent definition of the same attribute below the original definition.
+
+end::metadata-intro[]
+
+
+This is an example for an ISO deliverable:
+
+[source,adoc]
+----
+= Rice model <1>
+:docnumber: 17301 <2>
+:doctype: international-standard <3>
+:copyright-year: 2021
+:language: en
+:mn-document-class: iso <4>
+:technical-committee: Food products <5>
+:draft: <6>
+:mn-output-extensions: xml,html,doc,html_alt <7>
+----
+
+<1> Document title
+<2> `:docnumber:` is the first document attribute, and it has the value _17301_
+<3> `:doctype:` defines the type of document, for example `international-standard`, `technical-report`, `guide`, etc. The allowed values for this attribute are specific to each flavor.
+<4> `:mn-document-class:` indicates the Metanorma flavor the document should be checked against.
+<5> The committee responsible for the document.
+<6> `:draft:` renders comments as well. The attribute does not take any values: it is either present or not.
+<7> `mn-output-extensions` specifies the generated output formats. It can take several comma-delimited values.
+
+end::tutorial[]
+
+
+// :fullname: Your Name <6>
+// :fullname_2: Co-Authors Name
+// :address: Chemin de Blandonnet 8 + \ <7>
+// CP 401 - 1214 Vernier + \
+// Geneva + \
+// Switzerland
+
+// <6> The author's name. You can add co-authors by appending the attribute with a number:  `_2`, `_3`, and so on.
+// <7> When you add an address that contains multiple lines, end each line except for the last with `+ \`. Alternatively, you can enter each line into its own attribute, such as `:street:`, `:postcode:`, `:city:`, `:country:`.
+
+
+== Which attributes to specify?
+
+The attributes required or allowed to be specified for given document
+depend on the type of document and the Metanorma flavor used.
+
+See link:/author/ref/document-attributes/[generic attribute reference]
+for attributes supported by most Metanorma flavors.
+
+When using one of the officially supported Metanorma flavors,
+please consult your flavor's author documentation.
+
+
+=== Re-using attributes in text
+
+The body of the document can reference the values of document attributes.
+Here's an example of referencing committee-related metadata entries:
+
+[source,adoc]
+----
+:technical-committee-number: 184
+:technical-committee: Automation systems and integration
+:subcommittee-number: 4
+:subcommittee: Industrial data
+...
+
+This document was prepared by Technical Committee ISO/TC
+{technical-committee-number}, _{technical-committee}_, Subcommittee SC
+{subcommittee-number}, _{subcommittee}_.
+----
+
+If the corresponding document attributes are not populated in the header, then
+the references themselves will not be populated.
+
+
+=== Dealing with Unicode characters
+
+Document attribute values that contain Unicode characters must be entered
+directly as Unicode.
+
+Any non-ASCII characters in document attribute values, or dashes for compound
+titles, will need to be entered as Unicode.
+
+If you need to have non-ASCII characters in document title, or dashes for
+compound titles, you will need to enter them directly as Unicode. Document
+attribute values, unlike document text, cannot deal with
+https://www.w3schools.com/html/html_entities.asp[HTML entities].
+
+As an example, this would work:
+
+[source,adoc]
+--
+:title-part-en: Information Technology—Security
+:title-main-fr: Spécification et méthodes d'essai
+--
+
+Entering them as HTML Entities or XML Entities would not:
+
+[source,adoc]
+--
+:title-part-en: Information Technology\&mdash;Security
+:title-main-fr: Sp\&eacute;cification et m\&eacute;thodes d'essai
+--

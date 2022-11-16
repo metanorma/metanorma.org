@@ -1,0 +1,361 @@
+---
+layout: author-docs
+title: Document sections
+---
+
+= Document sections
+
+== General
+
+tag::tutorial[]
+
+Sections define hierarchy levels in a document, as chapters do.
+In AsciiDoc, sections are encoded with titles prefixed by equal signs (`=`).
+
+* The document title is considered the highest section in the hierarchy, and is
+created by prepending a `=` sign in front of the heading.
+* Subsequent sections are encoded with titles prefixed with least two equal signs:
+** `==` indicates a first-level section;
+** `===` indicates a second-level section;
+** `====` indicates a third-level subsection;
+** and so on.
+
+
+[example]
+.Example of setting document and section titles
+====
+[source,adoc]
+----
+= Document title
+
+== Section 1
+
+=== Section 1.1
+
+==== Section 1.1.1
+
+===== Section 1.1.1.1
+
+== Section 2
+
+=== Section 2.1
+
+...
+----
+====
+
+
+== Section titles
+
+=== Pre-defined section titles
+
+Sections in a document are composed and placed in their appropriate places
+inside the Metanorma document model.
+
+Metanorma utilizes the following pre-defined section titles to identify specific
+kinds of sections in the document:
+
+* `Abstract`
+* `Foreword` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
+* `Introduction`
+* `Acknowledgements` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
+* `Scope`
+* `Normative references`
+* `Terms and definitions`
+* `Symbols and abbreviated terms`
+* `Symbols` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.0]
+* `Abbreviated terms` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.0]
+* `Bibliography`
+* `Misc-Container` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7]
+
+// To successfully validate a document, the compiler needs to know what sections
+// are in the document. Metanorma relies on these predefined section titles to
+// check them against the document model.
+
+The content body, or annexes, are entered as normal sections without need for
+pre-defined titles.
+
+Fixed section names are specific to either the preface of a document, or the main body;
+so for example an instance of "Introduction" the main body of the text will not be treated
+as part of the preface.
+
+NOTE: The underlying document model behind all Metanorma flavors is called the
+StandardDocument model, also abbreviated as "StanDoc".
+The available section types available in StanDoc are reproduced in this section.
+StanDoc represents the harmonized common requirements of standardization
+documents, not the document model of a particular SDO.
+
+.UML representation of section classes in Metanorma StanDoc
+image::https://raw.githubusercontent.com/metanorma/metanorma-model-standoc/main/images/StandardDoc_Sections.png[UML representation of section classes in Metanorma StanDoc]
+
+
+Flavours may overrule these pre-defined section titles with titles of their own,
+or may choose not to recognise at least some of them as special sections.
+
+NOTE: Each organization is based on the standard document model but they can
+omit sections or make them mandatory, if they choose to. For example, only NIST
+uses the acknowledgments section, whereas other SDOs do not require it. Flavours
+may overrule these pre-defined section titles with titles of their own, or may
+choose not to recognise at least some of them as special sections. Check the
+https://www.metanorma.org/flavors/[flavor documentation] for more details on how
+your SDO uses Metanorma.
+
+
+=== Deviating section titles
+
+Entering titles that deviate from the pre-defined titles, or in languages other than English requires
+explicit declaration of those section types.
+
+The section type is declared between square brackets `[ ... ]` immediately
+above the section title.
+
+For these types of sections, enter them without
+
+* Abstract: `[abstract]`
+* Foreword: `[heading=foreword]`
+* Preface sections: `[preface]`
+* Introduction: `[heading=introduction]`
+* Acknowledgements: `[acknowledgments]`
+* Scope: `[heading=scope]`
+* Bibliography, Normative references: `[bibliography]`
+* Terms and definitions: `[heading=terms and definitions]`
+* Symbols and abbreviated terms: `[heading=symbols and abbreviated terms]`
+* Index: `[index]`
+* Annexes: `[appendix]`
+
+NOTE: Documents can contain only one Abstract, one Acknowledgements section, and one Index.
+
+The following example indicates usage of the section titles.
+
+[source,adoc]
+----
+= Document title
+
+== Abstract
+
+== Foreword
+
+[preface] <1>
+== Introduction to version 3 of this standard
+
+[bibliography] <2>
+== Normative references
+
+[heading=terms and definitions] <3>
+== Terms, definitions, and abbreviations
+
+[bibliography]
+== Bibliography
+...
+
+[appendix,obligation=informative] <4>
+== Additional content
+...
+----
+
+<1> This section is meant to be the introduction but the title deviates from the
+pre-defined title. The `[preface]` declares it as such.
+<2> "Normative references" is encoded with the `[bibliography]` declaration.
+<3> The "heading" declaration assigns the section as a particular kind.
+<4> "Additional content" is an annex and needs to be declared explicitly.
+Normative status of the annex is defined by adding the `obligation` option.
+
+end::tutorial[]
+
+[NOTE]
+====
+The above section titles as detected by Metanorma are case-insensitive.
+While ISO Directives Part 2 demands clause titles to be in
+https://en.wikipedia.org/wiki/Letter_case#Sentence_case[sentence case],
+some organizations utilize
+https://en.wikipedia.org/wiki/Letter_case#Title_case[title case].
+====
+
+[NOTE]
+====
+A dedicated topic link:../section-terms/[expands on "`Terms and definitions`" section grammar].
+====
+
+
+=== Blank subclause headings
+
+Blank subclause headings can be given like this:
+
+[source,asciidoc]
+--
+=== {blank}
+--
+
+These are used when you want to give a subclause number for a new subclause,
+but without an associated header text. For example,
+
+[source,asciidoc]
+--
+=== Physical and chemical characteristics
+
+==== {blank}
+
+The mass fraction of moisture, determined in accordance with...
+--
+
+renders as
+
+____
+*4.2. Physical and chemical characteristics*
+
+*4.2.1.*  The mass fraction of moisture, determined in accordance with...
+____
+
+[NOTE]
+====
+This notation should not be used to implement paragraph numbering as required for e.g. metanorma-un.
+The link:/flavors/un/[UN Metanorma flavor] treats each paragraph
+as a distinct clause and automatically numbers it.
+====
+
+=== Inline headings
+
+Inline subclause headings (e.g. for test methods) are indicated by preceding the heading
+with the `[%inline-header]` option attribute. So in the Rice Model document,
+
+[source,asciidoc]
+--
+[%inline-header]
+==== Sieve,
+
+with round perforations of diameter 1,4 mm.
+--
+
+renders as
+
+____
+*A.2.1.1. Sieve,* with round perforations of diameter 1,4 mm.
+____
+
+=== Variant titles
+
+Variant titles [added in
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.5] are entered
+as paragraphs with a `variant-title` role attribute within a clause, as follows:
+
+[source,adoc]
+----
+=== Proper title
+
+[.variant-title,type=sub]
+This is the variant title
+
+Text of section.
+----
+
+Variant titles of type `sub` are rendered as subtitles of clauses.
+
+=== Floating titles
+
+WARNING: Intended for legacy support only. Use with care.
+
+A "`floating title`" is a title that is placed outside the numbered hierarchy of
+clauses. This means that a floating title is not uniquely referable like normal
+clauses.
+
+Since the hierarchical structure of standards documents is critical to their
+proper referencing, floating titles are commonly disallowed by standards
+documents. Nonetheless, for legacy support reasons, floating titles are
+supported in Metanoma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.4]:
+
+[source,adoc]
+----
+=== Section 2.1
+
+[discrete]
+==== I am a floating title within section 2.1
+
+==== Section 2.1.1
+----
+
+NOTE: Floating titles are sometimes referred in AsciiDoc as "`discrete titles`".
+
+
+
+== Sections deeper than 5 levels
+
+Standards can contain many levels of embedding: ISO/IEC DIR 2 only considers
+it a problem if there are more than 7 levels of embedding.
+
+To realise higher levels of embedding,
+prefix a 5-level section title with the attribute `level=`:
+
+NOTE: Asciidoctor AsciiDoc permits only five levels of section embedding
+(not counting the document title).
+
+
+[source,asciidoc]
+--
+// Six equal signs for five levels
+====== Clause 5A
+
+[level=6]
+====== Clause 6A
+
+[level=7]
+====== Clause 7A
+
+[level=7]
+====== Clause 7B
+
+[level=6]
+====== Clause 6B
+
+====== Clause 5B
+--
+
+This generates the following ISO XML:
+
+[source,xml]
+--
+<clause id="_" inline-header="false" obligation="normative">
+	<title>
+		Clause 5
+	</title>
+	<clause id="_" inline-header="false" obligation="normative">
+		<title>
+			Clause 6
+		</title>
+		<clause id="_" inline-header="false" obligation="normative">
+			<title>
+				Clause 7A
+			</title>
+		</clause>
+		<clause id="_" inline-header="false" obligation="normative">
+			<title>
+				Clause 7B
+			</title>
+		</clause>
+	</clause>
+	<clause id="_" inline-header="false" obligation="normative">
+		<title>
+			Clause 6B
+		</title>
+	</clause>
+</clause>
+<clause id="_" inline-header="false" obligation="normative">
+	<title>
+		Clause 5B
+	</title>
+</clause>
+--
+
+and the rendering would be something like
+
+*1.1.1.1.1  Clause 5A*
+
+*1.1.1.1.1.1  Clause 6A*
+
+1.1.1.1.1.1.1  Clause 7A
+
+1.1.1.1.1.1.2  Clause 7B
+
+*1.1.1.1.1.2  Clause 6B*
+
+*1.1.1.1.2  Clause 5B*
+

@@ -1,0 +1,145 @@
+---
+layout: author-docs
+title: Footnotes
+---
+== General
+
+tag::tutorial[]
+
+Footnotes are useful for adding remarks to content without distracting from the
+reading flow.
+
+Metanorma AsciiDoc supports:
+
+* inline footnotes
+* multi-paragraph footnotes
+
+NOTE: Typical AsciiDoc does not support multi-paragraph footnotes.
+
+
+== Inline footnotes
+
+Footnotes are added to a document using the footnote command (`footnote:[]`).
+
+The syntax is demonstrated as:
+
+[source,adoc]
+----
+Oryza sativafootnote:[Sativa means "cultivated"], is rice that is farmed commercially.
+----
+
+
+== Multi-paragraph footnotes
+
+The multi-paragraph footnote command `footnoteblock:[id]` allows for specification
+of multi-paragraph content within a
+footnote, through a named note block. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.4].
+
+The `id` is the identifier of a note containing the contents of the footnote.
+
+The following syntax is used:
+
+[source,adoc]
+----
+... footnoteblock:[my-anchor] ... <1>
+
+...
+[[my-anchor]] <2>
+[NOTE] <3>
+--
+Multi-paragraph footnote content.
+--
+----
+<1> `my-anchor` indicates where the footnote's text block is located.
+<2> Anchor of the multi-paragraph NOTE block.
+<3> Defined NOTE block that provides content for the footnote.
+
+.Example of a multi-paragraph footnote
+====
+[source,adoc]
+----
+This is a paragraph.footnoteblock:[id1] This continues the paragraph.
+
+[[id]]
+[NOTE]
+--
+This is
+
+a multi-paragraph
+
+footnote
+--
+----
+====
+
+NOTE: Multi-paragraph footnotes are a Metanorma AsciiDoc feature and not
+supported in typical AsciiDoc.
+
+end::tutorial[]
+
+
+== Named footnotes and duplicate footnotes
+
+In some cases, identical footnote content can apply to multiple places.
+Metanorma AsciiDoc supports named footnotes that facilitate reuse without repeated
+definitions.
+
+By default, Metanorma already detects whether footnote text is reused.
+When the text of a footnote is repeated in two different places, the same
+footnote number in both places, rather than treat the repetition as a new
+footnote. Assignment of IDs is therefore optional.
+
+NOTE: Duplicated footnote reuse applies to HTML and DOC outputs.
+
+
+The following syntax is used:
+
+[source,adoc]
+----
+... footnote:{id}[text] ... <1>
+
+... footnote:{id}[] ... <2>
+----
+<1> Definition of a named footnote. `{id}` is an assigned unique ID for the footnote, and `text` the footnote content
+<2> To reuse a named footnote, specify the ID but keep the text portion empty.
+
+
+.Example of a named footnote and its reuse
+====
+[source,adoc]
+----
+A bold statement!footnote:disclaimer[Opinions are my own.]
+
+Another outrageous statement.footnote:disclaimer[]
+----
+====
+
+
+
+== Special footnotes
+
+=== Table footnotes
+
+Footnotes immediately placed after a table are considered a "table footnote",
+which renders the footnote at the table footer, within the table.
+
+A table footnote is numbered separately.
+
+
+=== Figure footnotes
+
+Footnotes immediately placed after a figure are considered a "figure footnote",
+which renders the footnote at the bottom of the figure.
+
+A figure footnote is numbered separately.
+
+=== Document title footnotes
+
+Footnotes on document titles are recognised [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1],
+but by default they are not rendered, because of how document title pages are
+processed separately in Metanorma via Liquid templates.
+
+Document title footnotes are moved into `/bibdata/note[@type =
+"title-footnote"]`, and are treated as document metadata, as are document titles
+themselves. The location of the footnote within the title is not preserved.
+

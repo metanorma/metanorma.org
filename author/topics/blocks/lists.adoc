@@ -1,0 +1,241 @@
+---
+layout: author-docs
+title: Lists
+---
+== General
+
+tag::tutorial[]
+
+Metanorma AsciiDoc supports three types of lists:
+
+* Unordered lists
+* Ordered lists
+* Definition lists
+
+== Unordered lists
+
+Unordered lists are bulleted lists, entered using the asterisk (`*`) symbol.
+Unordered lists can be nested by prefixing additional asterisks.
+
+[source,adoc]
+----
+The main changes compared to the previous edition are:
+
+* updated normative references;
+* deletions:
+** deletion of 4.3. [nested list item]
+** deletion of 4.4. [nested list item]
+----
+
+
+== Ordered lists
+
+Ordered lists are invoked by beginning the line with a dot `.`. The list items
+are numbered automatically. The default list arabic numbers but can vary
+depending on the defined style of the Metanorma flavor.
+
+[source, AsciiDoc]
+----
+. First Step
+. Second Step
+. Third Step
+----
+
+
+== Definition lists
+
+Definition lists pair a term and a description together in a list, separated by
+two or more colon symbols (`:`).
+
+Definition lists are often used to define abbreviations, units or symbols.
+
+NOTE: In Metanorma, the Terms section uses a special syntax for defining terms.
+
+NOTE: Definition lists are also sometimes called https://docs.asciidoctor.org/asciidoc/latest/lists/description/[description lists].
+
+Definition lists follow the syntax of:
+----
+`term:: Definition`
+----
+
+// TODO: In Metanorma PDFs stem:[w] compiled to a lowercase omega. How to determine which alphabet to use?
+.Example of definitions for units
+[source,adoc]
+----
+stem:[w]:: is the mass fraction of grains with a particular defect in the test sample;
+stem:[m_D]:: is the mass, in grams, of grains with that defect;
+stem:[m_S]:: is the mass, in grams, of the test sample.
+----
+
+NOTE: `\stem:[]` is used for mathematical formatting, and results in italics. So
+`stem:[w]` is an italic w, _w_; `\stem:[m_D]` is an italic m with a D subscript:
+_m~D~_.
+
+end::tutorial[]
+
+
+== Referencing a list item
+
+You can reference a single list item using the
+link:/author/topics/inline_markup/links[internal reference] mechanism.
+
+Simply assign an anchor before the list item:
+
+.Example of list items that can be referenced
+[source,adoc]
+--
+. Ordered list
+.. [[id1]] This is the first list item
+... [[id2]] This is a list sub-item
+--
+
+
+== List items with more than one paragraph
+
+Metanorma AsciiDoc supports multiple paragraphs within a single list item
+through https://asciidoctor.org/docs/user-manual/#list-continuation[list continuation].
+
+NOTE: In HTML output, all the paragraphs within a list item will be aligned.
+
+[NOTE]
+====
+.Microsoft Word caveats
+
+- For list items containing multiple paragraphs,
+  Metanorma attempts to format them appropriately by using custom
+  list continuation styles (`ListContLevel1` etc.) applied to groups
+  of paragraphs; however, you should check the output document and
+  may need to manually intervene.
+
+- In Microsoft Word, each list entry must be a single paragraph.
+  Metanorma is employing a workaround through list continuation styles,
+  and results may be unexpected if the list is edited.
+====
+
+
+
+== List styling
+
+=== Unordered list styling
+
+The default styling for unordered lists are bullets. Metanorma does not support
+other styles for unordered lists.
+
+
+=== Ordered list styling
+
+==== General
+
+The default styling for ordered lists follow the specifications of ISO/IEC DIR 2
+and is the same for each output type:
+
+- level 1: _a), b), c)_ (`alphabetic`),
+- level 2: _1), 2), 3)_ (`arabic`),
+- level 3: _i), ii), iii)_ (`roman`),
+- level 4: _A), B), C)_ (`alphabetic_upper`),
+- level 5: _I), II), III)_ (`roman_upper`).
+
+NOTE: This labeling applies to all output formats, including PDF, HTML and Word.
+
+
+==== Step lists
+
+In some situations an integer-numbered list is needed for specification
+of process steps.
+
+In certain flavours (NIST, ITU, OGC), `class=steps` is used to override the
+default numbering, and use Arabic numbering as the base instead:
+
+* level 1: _1), 2), 3)_
+* level 2: _a), b), c)_
+* level 3: _i), ii), iii)_
+* level 4: _A), B), C)_
+* level 5: _I), II), III)_
+
+
+==== Specification of start label
+
+The `start` attribute can be specified for ordered lists to specify the start
+label of the ordered list.
+
+NOTE: The `start` attribute for ordered lists is only allowed by certain Metanorma
+flavors, such as BIPM and ISO. This is because of the difficulty of realising
+the list numbering starting other than at 1 in autonumbered lists in Word HTML.
+
+
+==== Specification of list type
+
+The `type` attribute can be used to specify the list numbering using values from
+above. Manually-styled lists are not supported by all flavors.
+
+The accepted values are:
+
+`alphabetic`:: _a), b), c)_
+`arabic`:: _1), 2), 3)_
+`roman`:: _i), ii), iii)_
+`alphabetic_upper`:: _A), B), C)_
+`roman_upper`:: _I), II), III)_
+
+.Example for a manually-styled list
+====
+[source,adoc]
+----
+[type="alphabetic_upper"]
+. First as "A"
+. Second as "B"
+
+[type="roman_upper"]
+. First as "I"
+. Second as "II"
+----
+====
+
+
+[NOTE]
+--
+This is a historical note that applies to `isodoc` v1.3.0 to v2.0.2.
+
+The `type` attribute, with acceptable values listed in the list above,
+could be used to allow specifying labels of an ordered
+list [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.0].
+
+In Word rendering the `type` attribute is always ignored in favor of
+ISO/IEC DIR 2 compliant labelling.
+
+As of v2.0.3, the ability to specify the `type` attribute has been
+retracted [added in https://github.com/metanorma/isodoc/releases/tag/v2.0.3],
+because of the bugs it introduces with list cross-referencing and rendering.
+--
+
+
+=== Definition list styling
+
+Definition lists are rendered by default horizontally, with the definition in
+the same line as the term.
+
+In Word output, definition lists are rendered as true tables.
+Word defines the width of the term column using the auto-width algorithm, and
+might cause words to break.
+
+To ensure that terms are rendered in a single line in Word, you need to use
+non-breaking spaces and non-breaking hyphens in HTML escape notation.
+
+* Non-breaking spaces: `\&nbsp;` or `\&#xa0;`
+* Non-breaking hyphens `\&#x2011;`
+
+.Example for a non-breaking sentence
+====
+Instead of entering:
+
+[source,adoc]
+----
+This is a non-breaking term.
+----
+
+Enter:
+
+[source,adoc]
+----
+This\&nbsp;is\&nbsp;a\&nbsp;non\&#x2011;breaking\&nbsp;term.
+----
+====

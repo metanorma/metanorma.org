@@ -1,0 +1,255 @@
+---
+layout: author-docs
+title: Automatic numbering
+---
+== Automatic numbering
+
+=== General
+tag::auto-num-intro[]
+
+Metanorma supports auto-numbering for the following types of document elements ("`elements`"):
+
+* figures
+* tables
+* examples
+* notes
+* formulas
+* sourcecode, pseudocode
+* permissions, recommendations and requirements.
+
+NOTE: Users do not need to specify any numbering of these elements in their
+source documents.
+
+The conventions for numbering vary by Metanorma flavour, but the
+default is to number all elements consecutively in the main body of a document, and
+separately in each Annex/Appendix, prefixed bt the Annex/Appendix number.
+
+NOTE: Typical AsciiDoc only supports auto-numbering of some block types, like
+tables and figures.
+
+
+=== Multi-level numbering
+
+Metanorma's auto-numbering functionality assigns numbers to elements consecutively.
+Sometimes, more than one level of numbering is required for a sequence of elements;
+for instance, _17a_, _17b_.
+
+To indicate that, all elements in the subsequence should be assigned the same
+`subsequence` attribute of an autonumbered document element.
+
+The syntax is as follows:
+
+[source,asciidoc]
+--
+[{block-type},subsequence={subsequence-id}]
+--
+
+Where:
+
+* `{block-type}` is type of the document block
+* `{subsequence-id}` is the subsequence identifier
+
+[example]
+.Example of using multiple subsequences for auto-numbering
+====
+[source,asciidoc]
+--
+[stem,subsequence=A]
+++++
+A
+++++
+
+[stem,subsequence=A]
+++++
+B
+++++
+
+[stem,subsequence=B]
+++++
+C
+++++
+
+[stem,subsequence=B]
+++++
+D
+++++
+
+[stem]
+++++
+E
+++++
+--
+
+renders as:
+
+____
+A (1a)
+
+B (1b)
+
+C (2a)
+
+D (2b)
+
+E (3)
+____
+====
+
+
+=== Unnumbered elements
+
+Sometimes a document element needs to be excluded from auto-numbering.
+This is achieved by giving it the option attribute `%unnumbered`.
+
+Sourcecode and pseudocode snippets are by default numbered as figures
+[added in https://github.com/metanorma/isodoc/releases/tag/v1.0.10]. If they
+are not to be numbered, they need to be given the `%unnumbered` option attribute.
+
+The syntax is as follows:
+
+[source,asciidoc]
+--
+// shorthand
+[%unnumbered]
+image::...[]
+
+// with other options
+[options="unnumbered"]
+image::...[]
+
+// block type with shorthand
+[{block-type}%unnumbered]
+image::...[]
+
+// block type with other options
+[{block-type},options="unnumbered"]
+image::...[]
+--
+
+Where:
+
+* `{block-type}` is type of the document block;
+* The `%` symbol is a shorthand for `options="unnumbered"`.
+
+NOTE: The `%` shorthand cannot be used in the presence of block arguments or
+attributes, such as `[source,c]` or `[source,type="..."]`. In this case, the
+`options="unnumbered"` should be spelled out.
+
+
+[example]
+.Example of an unnumbered figure
+====
+[source,asciidoc]
+--
+[[figureC-1]]
+[%unnumbered]
+.Typical gelatinization curve
+image::rice_images/rice_image2.png[]
+--
+====
+
+[example]
+.Example of an unnumbered source block
+====
+Both of these blocks are identical.
+
+[source,asciidoc]
+--
+[source%unnumbered]
+----
+for (i = 0; i < n; i++) { bounce(v[i], wall) }
+----
+--
+
+[source,asciidoc]
+--
+[source,options="unnumbered"]
+----
+for (i = 0; i < n; i++) { bounce(v[i], wall) }
+----
+--
+====
+
+[example]
+.Example of an unnumbered source block with syntax highlighting (from RNP)
+====
+[source,asciidoc]
+--
+[source,cpp,options="unnumbered"]
+----
+/* print a usage message */
+static void
+print_usage(const char *usagemsg)
+{
+  cli_rnp_print_praise();
+  ERR_MSG("%s", usagemsg);
+}
+----
+--
+====
+
+[example]
+.Example of an unnumbered pseudocode block
+====
+[source,asciidoc]
+--
+[%unnumbered]
+[pseudocode]
+----
+stem:[forall v_{i}] *bounce* stem:[v_{i}] off the wall
+----
+--
+====
+
+
+=== Prevention of double-numbering
+
+If a document element is included in a block type that is already subject to
+numbering, it will be excluded from auto-numbering.
+
+This means that tables, sourcecode and pseudocode, and figures are
+excluded from auto-numbering within
+examples, requirements, recommendations, permissions, tables, figures,
+sourcecode and pseudocode.
+{blank}[added in https://github.com/metanorma/isodoc/releases/tag/v1.0.11]
+
+
+[[numbering-override]]
+=== Override numbering
+
+There are circumstances when auto-numbering of elements needs to be overriden;
+for instance, numbering out of sequence in updated documents.
+
+In these cases, elements can be given an optional `number`
+attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1],
+assigning a required document element number to override auto-numbering.
+
+Elements subsequent to that element will be auto-numbered so as to
+follow the previous element, so long as the supplied number belongs
+to the same sequence.
+
+For subsequences, number shall have only subsequence scope.
+
+The syntax is as follows:
+
+[source,asciidoc]
+--
+[{block-type},number={number-to-use}]
+--
+
+Where:
+
+* `{block-type}` is type of the document block
+* `{number-to-use}` is an integer specifying at which number to use
+
+[example]
+.Example of manually specifying numbering of a document block
+====
+[source,asciidoc]
+--
+[source,number=7]
+----
+for (i = 0; i < n; i++) { bounce(v[i], wall) }
+----
+--
+====

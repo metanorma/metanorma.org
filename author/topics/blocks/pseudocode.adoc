@@ -1,0 +1,86 @@
+---
+layout: author-docs
+title: Pseudocode
+---
+== Pseudocode
+
+Pseudocode is a mix between formal math with code like properties commonly
+used in computer science and related fields.
+
+Unlike source code, pseudocode is typically in a proportional font, but it
+still needs to be indented to reflect code structure.
+Moreover, pseudocode typically requires source code highlighting
+such as boldface; but unlike well-defined computer languages, there is no
+guaranteed way of automating such highlighting.
+
+Pseudocode is supported in Metanorma using the `pseudocode` block with these
+properties:
+
+* text within a pseudocode block is treated as normal text, including
+  respect for inline formatting;
+
+* lines do not need to be separated by line breaks, although two carriage
+  returns in a row are still interpreted as a new
+  paragraph. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10]
+
+* indentation spaces at the start of each line are preserved, by converting
+  them into non-breaking spaces; initial tabs are converted into four
+  non-breaking spaces.
+
+The syntax is as follows:
+
+[source,asciidoc]
+--
+[pseudocode]
+====
+normal text
+  stem:[math]
+    _italics_ [smallcap]#small caps text#
+*bolded text*
+====
+--
+
+[example]
+.Example of using the pseudocode block with flow operators
+======
+[source,asciidoc]
+--
+[pseudocode]
+====
+*do in-parallel*
+  [smallcap]#SharedAccess#
+*enddo*
+
+[smallcap]#ExclusiveAccess# stem:[-=]
+  *if* _ag.mode_ = _exclusive_ stem:[^^ AA t in] [smallcap]#Token# : _t.available_ *then*
+    *do forall* _t_ : stem:[in]  [smallcap]#_Token_#
+      _t.owner_ := _ag_
+    *enddo*
+  *endif*
+====
+--
+======
+
+[example]
+.Example of using the pseudocode block with numeric values (from ISO 8000-118)
+======
+[source,asciidoc]
+--
+[pseudocode]
+====
+EncodeGroundLevel(_groundLevel_)
+
+  *if not* stem:[-19652 <= "_groundLevel_" <= 19651]
+    *raise* _out of bounds error_
+  *endif*
+
+  _groundLevel_ = _groundLevel_ + 19652
+
+  *return* [smallcap]#EncodeBase34#(_groundLevel_)
+====
+--
+
+renders as (PDF):
+
+image::/assets/author/topics/document-format/text/fig-pseudocode-8000-118.png[Pseudocode usage in ISO 8000-118]
+======
