@@ -1,0 +1,171 @@
+---
+layout: post
+post title: 'Convert ISO/NISO STS standards to Metanorma using mnconvert'
+date: 2022-11-17
+categories: documentation
+---
+
+Imagine that you have a typically long XML standard compliant with
+ISOSTS or NISOSTS, and you want (quite intelligently) shift to Metanorma
+AsciiDoc. This can be a really tedious task even with the most advanced
+text editor at our disposal. And here is where _mnconvert_ come us
+in handy, to fasten by a substantial amount the conversion process.
+
+== What is ISOSTS and NISOSTS?
+
+Both ISOSTS and NISOSTS allude to the definition of elements and attributes
+(i.e., tag sets) to describe, in a semantic and structured manner,
+the metadata and full content of standard documents.
+
+On one hand, ISOSTS implements the proper tag set (based on
+https://jats.niso.org/jatswiki/index.php/Main_Page[JATS]) for encoding
+any ISO standard. On the other hand, NISOSTS was created to be an
+extension of ISOSTS and be able to provide a more generic tag set
+that other standards organizations could adopt. In other words, NISOSTS
+is a superset of ISOSTS, and is currently widely adopted to describe
+any Scientific, Technical, or Medical text in the world.
+
+For more in-depth information about ISOSTS, visit
+https://www.iso.org/schema/isosts/v1.1/doc/index.html[ISO Standards Tag Set documentation].
+
+For more in-depth information about NISOSTS, visit
+https://www.niso-sts.org/TagLibrary/niso-sts-TL-1-2-html/index.html[NISO STS documentation].
+
+== What is _mnconvert_?
+
+_mnconvert_ is a conversion tool that transfers the content of a XML
+document compliant with ISO/NISO STS to Metanorma AsciiDoc. It was
+developed with the intent of speeding up the conversion process.
+
+_mnconvert_ is a Java program packed into a JAR file that you will
+need to reference in your command execution.
+
+== Needed requirements
+
+To use _mnconvert_, you need to meet with the following:
+
+* Having a version of Java JDK installed in your system. You can download
+an installer at: https://www.oracle.com/java/technologies/downloads/#jdk19-windows.
+(If you think you have Java JDK already but are not sure, just execute
+`java --version` to confirm.)
+* Having the latest JAR release of _mnconvert_ available for download
+at: https://github.com/metanorma/_mnconvert_/releases
+* Having a XML file compliant with ISO/NISO STS (i.e., XMLSTS).
+
+
+== Converting ISO/NISO STS to Metanorma AsciiDoc
+
+The command structure of _mnconvert_ is:
+
+[source]
+--
+java -jar <JAR_path>.jar <XML_path>.xml [options]
+--
+
+For illustrative purposes, let's make some assumptions:
+
+* the JAR and XML files are located in the same folder,
+* we are using `mnconvert-1.27.0.jar` release,
+* the XMLSTS file we want to convert is named as `standard.xml`.
+
+After these assumptions, the command simplifies to:
+
+[source]
+--
+java -jar mnconvert-1.27.0.jar standard.xml [options]
+--
+
+If we don't specify any options (we'll get to them later), the default
+behavior of the program is to convert the XML file to Metanorma AsciiDoc,
+placing the ADOC files in the same location as the XML file. The file
+structure of the output will be the typical used by many of our document
+https://github.com/metanorma/iso-27002/tree/main/sources[samples].
+
+Once the conversion is done, it is quite possible the necessity of
+making some adjustments to get a properly encoded Metanorma AsciiDoc.
+In other words, we need to validate ourselves the correct application
+of the Metanorma encoding rules, and the
+https://www.metanorma.org/author/topics/document-format/[Metanorma
+documentation]
+will be our best ally in this chore. This should be a quick validation
+though, given that the program does a good job in most of the cases.
+
+There are some areas that are suggested to pay special attention.
+
+== Areas to validate after using _mnconvert_
+
+We suggest a list of areas to validate after executing _mnconvert_:
+
+* Verify if the attribute values of the document are correct.
++
+--
+This part tends to be almost flawless after the conversion (if the
+XML source is encoded properly).
+But given the importance of this area, it is a good practice to take
+a quick look.
+--
+
+* Remove unnecessary non-breaking spaces. 
++
+--
+XMLSTS documents tend to include multiple non-breaking spaces to avoid
+the split of continuity of some expressions by a line-break; for example,
+the white space in a percentage expression (e.g., "75&nbsp;%") should
+not be broken by a line-break. Nonetheless, some of them are not necessary
+in Metanorma encoding. To name one, non-breaking spaces in reference
+declarations are not needed. So we ought to remove these kind of spaces,
+if any.
+--
+
+* Verify if the initial text of the Normative references clause corresponds
+to the usual predefined text, or if it is any other different.
++
+---
+In the Normative references clause, the initial paragraph will be
+encoded like this after using _mnconvert_:
+
+[source,asciidoc]
+----
+[NOTE,type=boilerplate]
+--
+The following referenced documents are indispensable for the application
+of this document. For dated references, only the edition cited applies.
+For undated references, the latest edition of the referenced document
+(including any amendments) applies.
+--
+----
+
+If this is the case, we can remove this NOTE block as this text is
+provided automatically by Metanorma.
+If it is any other, it could mean that the standard's author wanted
+to override the predefined text, in which case, this markup does the
+job and maybe it should not be removed.
+---
+
+* Verify the correct encoding of the Terms and definitions clause.
+Specially when contains sub-clauses.
+
+* Make a quick validation of the document's encoding in general.
+
+
+== Optional parameters of _mnconvert_
+
+The are some optional parameters of _mnconvert_ that you might find
+useful:
+
+`--output` or `-o`::  to specify an output path different to the XML
+file.
+
+`--output-format` or `-of`:: to specify the output format, `xml` or
+`adoc`, being `adoc` the default value.
+
+`--imagesdir` or `-img`:: to specify an `:imagesdir:` attribute value.
+Default is "images".
+
+`--mathml` or `-m`:: to specify the MathML version of the XMLSTS.
+`2` for MathML version 2, or `3` for MathML version 3.
+
+`--check-type` or `-ct`:: to perform a validation check of the XML
+file against ISO/NISO STS. Values are: `xsd-niso` (check against NISO
+XSD), `dtd-niso` (check against NISO DTD), and `iso-dtd` (check against
+ISO DTD).
