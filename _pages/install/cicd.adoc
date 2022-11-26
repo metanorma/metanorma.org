@@ -26,13 +26,56 @@ of Metanorma on CI/CD testers.
 
 === GitHub Actions
 
-The following GitHub Actions can be used to simplify a Metanorma CI workflow:
+For most cases you will need a single action https://github.com/marketplace/actions/build-and-publish[`actions-mn/build-and-publish@v1`] and minimal workflow can looks like this:
 
-* Metanorma setup: https://github.com/marketplace/actions/setup-metanorma[`actions-mn/setup@v2`]
+[source,yaml]
+--
+name: generate
 
-* Metanorma CLI actions: https://github.com/actions-mn/cli[`actions-mn/cli/site-gen@main` and more]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
 
-Please refer to our https://github.com/metanorma/mn-samples-iso[ISO samples repository]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: metanorma/metanorma:latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Metanorma generate site
+        uses: actions-mn/build-and-publish@v1
+        with:
+          agree-to-terms: true
+--
+
+https://github.com/marketplace/actions/build-and-publish[`actions-mn/build-and-publish@v1`] is a 'meta' action which calls several actions under the hood:
+
+* Metanorma cache: https://github.com/marketplace/actions/metanorma-cache[`actions-mn/site-gen@v1`]. Cache all intermediate files to speedup future complications.
+
+* Metanorma site generate: https://github.com/marketplace/actions/metanorma-site-generate[`actions-mn/site-gen@v1`]. Perform `metanorma site generate` command
+
+* https://github.com/marketplace/actions/upload-github-pages-artifact[`actions/upload-pages-artifact@v1`]. Preapre GitHub Pages for later deployment.
+
+In case if you have a non-common use-case you many need more flexibility and following additional GitHub Actions can be used to simplify a Metanorma CI workflow:
+
+* Metanorma setup: https://github.com/marketplace/actions/setup-metanorma[`actions-mn/setup@v1`]. Setup metanorma for Ubuntu, macOS and Windows runners can be done with this action.
+
+* Metanorma flavors setup: https://github.com/marketplace/actions/metanorma-setup-flavors[`actions-mn/setup-flavors@v1`]. Custom metanorma flavors (processors) can be installed and used. Only Docker supported at this moment
+
+* Metanorma compile: https://github.com/marketplace/actions/setup-metanorma[`actions-mn/site-gen@v1`]. In case if you need to compile a single file and don't have `metanorma.yml` manifest, this actions will be useful
+
+* Metanorma new: https://github.com/actions-mn/cli/blob/main/new/action.yml[`actions-mn/cli/new@main`]. Useful action for generate sample documents for different flavors
+
+* Metanorma collection: https://github.com/actions-mn/cli/blob/main/collection/action.yml[`actions-mn/cli/collection@main`]. Deprecased. https://github.com/marketplace/actions/metanorma-site-generate[`actions-mn/site-gen@v1`] should be used instead
+
+Please refer to our repositories:
+
+* https://github.com/metanorma/S-102-Product-Specification/blob/main/.github/workflows/generate.yml[S-102 Product Specification]
+* https://github.com/metanorma/SWF-Corpus_and_IEEEP2874-D2/blob/main/.github/workflows/generate.yml[SWF Corpus and IEEEP2874-D2]
+
 for further reference.
 
 === GitLab CI
@@ -40,4 +83,4 @@ for further reference.
 Metanorma provides a sample `.gitlab-ci.yml` workflow file that demonstrates
 how to use the Metanorma docker container in the environment.
 
-* https://github.com/metanorma/metanorma-build-scripts/blob/master/cimas-config/gh-actions/samples/.gitlab-ci.yml[Sample `.gitlab-ci.yml`]
+* https://github.com/metanorma/ci/blob/master/cimas-config/gh-actions/samples/.gitlab-ci.yml[Sample `.gitlab-ci.yml`]
