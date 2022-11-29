@@ -1,0 +1,347 @@
+---
+layout: iho-flavor
+title: Document header and metadata
+---
+//General info about metadata
+//include::/author/topics/metadata.adoc[tag=metadata-intro]
+
+== General
+
+The header contains information about the document (metadata). You specify these
+metadata by using predefined document attributes, that look like this:
+
+[source,adoc]
+----
+:document-attribute: some-value
+----
+
+Most of the attributes take a value, while others are simple flags without a
+value, like:
+
+[source,adoc]
+----
+:draft:
+----
+
+Some of the metadata will be visible in your document, such as `:title:`, while
+others are not visible but still affect how your document is generated.
+
+NOTE: The order of attributes does not matter in Metanorma.
+
+== Specifying IHO metadata
+
+In an IHO document, you can specify metadata about:
+
+* Contributors: working group participants, ballot group members, standardization board members
+
+* Document info: document type, document stages (draft, published, etc.).
+
+* Dates: draft dates, revision dates, publishing date, copyright year, etc.
+
+* Identifiers: document numbers, ISBNs, STD numbers
+
+NOTE: Other metadata influence how the document is generated and should only be
+used by advanced users. Please refer to the IHO document attributes.
+
+At a minimum, you will need to specify:
+
+* Title
+* Metanorma document class as `iho`
+* Document number
+* Document type, and optionally subtype
+* Document stage
+* Committee
+* Author or editor
+
+NOTE: Please refer to reference documentation to see the full list of
+link:/author/iho/ref/document-attributes/[IHO-specific document attributes].
+
+NOTE: In this section we use the document header from the
+https://github.com/metanorma/mn-samples-iho/blob/main/sources/p987.6/document.adoc[IHO Style Manual document example]
+to explain.
+
+// IHO example
+== Document-specific attributes and basic operations
+
+These are the basic document attributes for IHO.
+
+.Setting basic document attributes for IHO
+[example]
+====
+----
+= Recommended Practice for Preparing an IHO Standards Draft <1>
+:docnumber: 987.6 <2>
+:docstage: draft <3>
+:draft: 3 <4>
+----
+<1> IHO document title.
+<2> IHO document number. If draft, omit the "P" prefix as it will be
+automatically added.
+<3> IHO document stage.
+<4> If `:docstage:` is draft, enter the draft number in `:draft:`.
+====
+
+These are operational concerns that are useful for the author.
+
+* `:mn-document-class:` must be set in order to set the flavor to IHO.
+
+* `:mn-output-extensions:` determines what output to be produced.
+
+.Setting IHO-specific attributes
+[example]
+====
+----
+:mn-document-class: iho <1>
+:mn-output-extensions: xml,html,doc,pdf,rxl <2>
+:local-cache-only: <3>
+----
+<1> Metanorma flavor. For IHO, enter `iho`.
+<2> Metanorma output formats. For IHO, supported formats are `xml`, `html`, `pdf`, `doc` and `rxl`.
+<3> Metanorma option to store data cache in the current directory.
+====
+
+
+== Document types and subtypes
+
+IHO offers three types of documents that differ in the level of
+the obligation of requirements.
+
+
+The type is to be set via these two attributes:
+
+`:doctype:`:: for the document type
+
+`:docsubtype:`:: for the document subtype, necessary for certain `:doctypes:`
+
+Document types, set using the `:doctype:` attribute, include:
+
+`standard`:: This document is a Standard (default). This document provides
+mandatory requirements.
+
+`recommended-practice`:: This document is a Recommended Practice. This document
+only provides recommendations, not requirements.
+
+`guide`:: This document is a Guide. This document only provide guidelines, not
+requirements.
+
+For each of these types, modification documents can be issued by using
+`:docsubtype:` with the following values:
+
+`document`:: This document is the standardization deliverable itself. (default)
+
+`amendment`:: This document details amendments made to the base document.
+
+`corrigendum`:: This document details technical error corrections made to the base document.
+
+`errata`:: This document details publication error corrections made to the base document.
+
+.Setting document type
+[example]
+====
+----
+:doctype: standard <1>
+----
+<1> IHO document type.
+====
+
+.Setting document type with subtype for an Amendment
+[example]
+====
+----
+:doctype: standard
+:docsubtype: amendment <1>
+----
+<1> IHO document subtype.
+====
+
+
+== Document stages and progress dates
+
+IHO deliverables go through various stages of approval.
+
+The document stage is set via the `:docstage:` attribute.
+
+Typically, a document goes through these processes:
+
+. Started off as a draft. where `:docstage: draft` is set, and draft number set
+to 1 `:draft: 1`. The `:copyright-year:` should always be set to the current year.
+
+. Draft number increases, e.g. `:draft: 2`, as the working group progresses.
+
+. The draft gets balloted by the working group when ready.
+
+. Once the balloting group approves the document, it will be represented
+to the SA standardization board for approval.
+
+. After approval, the date of approval should be entered as metadata
+using `:issued-date:`.
+
+. Once the document is ready to be published, set `:docstage: published` and
+remove the `:draft:` attribute.
+
+NOTE: IHO documents can also be marked `inactive` by `:docstage: inactive`.
+
+.Setting document stage and progress dates
+[example]
+====
+----
+:docstage: draft <1>
+:draft: 3 <2>
+:copyright-year: 2021 <3>
+:issued-date: 2021-01-01 <4>
+----
+<1> Document stage.
+<2> Document draft number.
+<3> Copyright year of document.
+<4> Date of approval by the standards board.
+====
+
+== Authorship and other preface information
+
+In IHO documents there are several types of contributor information to be
+entered:
+
+* society name
+* standardization committee
+* working group information
+** name of working group
+** members of working group
+* balloting committee members
+* SA standardization board members
+
+In IHO, a working group operate under one of two modes:
+"individual mode" or "entity mode".
+
+If the working group operates under individual mode:
+
+* the participants of the working mode should be entered, as individuals
+
+If the working group operates under entity mode:
+
+* the representatives of entities that are members of the working group
+are to be entered;
+* the individual participants of the working mode should be entered, as
+individuals;
+* the entity members of the working group should be entered.
+
+// The individual contributors that created the document, this is set via the
+// `:fullname:` and `:role:` attributes. Additional contributors are set by
+// suffixing the attribute with a `_{n}` where {n} is a sequential number after 1,
+// e.g. For `:fullname_2:` use `:role_2:`.
+
+
+.Usage of contributor information for an individual mode working group
+[example]
+====
+----
+:society: Computer Society <1>
+:committee: C/AISC - Artificial Intelligence Standards Committee <2>
+:working-group: Spatial Web Working Group <3>
+:wg-chair: Gabriel Rene <4>
+:wg-vicechair: Michael Wadden <5>
+:wg-secretary: Christine Perey <6>
+----
+<1> IHO Society.
+<2> IHO Committee sponsor of the document.
+<3> IHO working group that produces the document.
+<4> Working group chair.
+<5> Working group vice chair.
+<6> Working group secretary.
+List of working group members (entity).
+====
+
+
+.Usage of contributor information (entity mode working group)
+[example]
+====
+----
+:society: Computer Society <1>
+:committee: Standards Activities Board <2>
+:working-group: Shared Machine Learning <3>
+:wg-chair: Jin Peng <4>
+:wg-vicechair: Cheng Hong <5>
+:wg-members: Alibaba China Co. Ltd.; Alipay Technology Co., Ltd; ... <6>
+----
+<1> IHO Society.
+<2> IHO Committee sponsor of the document.
+<3> IHO working group that produces the document.
+<4> Working group chair.
+<5> Working group vice chair.
+<6> List of working group members (entity), semi-colon delimited.
+====
+
+
+.Entry of balloting group members (entity mode working group)
+[example]
+====
+[source,adoc]
+----
+:balloting-group: Standards Association <1>
+:balloting-group-members: 0xSenses Corporation; AAC Technologies; ... <2>
+----
+<1> Balloting group name.
+<2> Balloting group members.
+====
+
+
+.Entry of standardization board members
+[example]
+====
+[source,adoc]
+----
+:std-board-chair: Gary Hoffman <1>
+:std-board-vicechair: Jon Walter Rosdahl <2>
+:std-board-pastchair: John D. Kulick <3>
+:std-board-secretary: Konstantinos Karachalios <4>
+:std-board-members: Edward A. Addy; Doug Edwards; ... <5>
+----
+<1> IHO Standardization Board Chair.
+<2> IHO Standardization Board Vice Chair.
+<3> IHO Standardization Board Past Chair.
+<4> IHO Standardization Board Secretary.
+<5> IHO Standardization Board members, semicolon-delimited.
+====
+
+== Table of contents: figures and tables
+
+In IHO documents, a list of figures and tables are often provided in the
+TOC.
+
+The following Metanorma setting will enable these tables of contents.
+
+.Enabling figures and tables in the Table of Contents
+[example]
+====
+[source,adoc]
+----
+:toc-figures: true <1>
+:toc-tables: true <2>
+----
+<1> Enables the TOC for figures.
+<2> Enables the TOC for tables.
+====
+
+== Other metadata
+
+Every IHO document has a list of keywords (for searching purposes)
+and is also issued identifiers like the ISBN.
+
+This information can be set as follows.
+
+.Setting other identifying metadata
+[example]
+====
+[source,adoc]
+----
+:keywords: data fusion, IHO 2830™, shared machine learning, SML, ... <1>
+:isbn-pdf: 978-1-5044-7724-6 <2>
+:isbn-print: 978-1-5044-7725-3 <3>
+:stdid-pdf: STD24807 <4>
+:stdid-print: STDPD24807 <5>
+----
+<1> List of keywords, comma-delimited.
+<2> ISBN-13 for the PDF version.
+<3> ISBN-13 for the printed version.
+<4> STDID for the PDF version.
+<5> STDID for the printed version.
+====
