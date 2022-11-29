@@ -1,0 +1,188 @@
+---
+layout: iho-flavor
+---
+
+= Metanorma IHO document attributes
+
+[[note_general_doc_ref_doc_attrib_iho]]
+[NOTE]
+====
+The document attributes listed below are unique to Metanorma's processing of IHO documents.
+
+For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author's documentation. That page describes attributes that apply to all Metanorma flavors, not just IHO.
+
+For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
+====
+
+== Document information
+
+`:series:`:: Series that the document belongs to. *Mandatory.*  Permitted values:
++
+.Example for IHO S-102
+[example]
+====
+[source,adoc]
+----
+:series: S
+----
+====
+
+`B`::: Bathymetric Publications
+`C`::: Capacity Building Publications
+`M`::: Miscellaneous Publications
+`P`::: Periodic Publications
+`S`::: Standards and Specifications
+
+
+`docnumber`:: The designation number for the document. Do not include the series prefix. *Mandatory.*
++
+.Example for IHO S-102
+[example]
+====
+[source,adoc]
+----
+:docnumber: 102
+----
+====
+
+
+`:doctype:`:: Document type. *Mandatory.* Permitted types:
++
+.Example for IHO S-102
+[example]
+====
+[source,adoc]
+----
+:doctype: standard
+----
+====
+
+`standard`::: IHO Standard
+`specification`::: IHO Specification
+`resolution`::: IHO Resolution
+`regulation`::: Regulation-related
+
+
+`:status:`:: Document status. Synonym: `:docstage:`.
+Refer to IHO M-3, "Principles and procedures for making changes to IHO technical
+standards and specifications" (2/2007 as amended), for the relationships between
+stages.
+Permitted types:
++
+.Example for IHO S-102
+[example]
+====
+[source,adoc]
+----
+:status: in-force
+----
+====
+
+`draft-proposal`::: Draft at the proposal stage.
+`draft-development`::: Draft at the development stage.
+`draft-testing`::: Draft at the testing stage.
+`draft-implementation`::: Draft at the implementation stage.
+`in-force`::: Document is in-force.
+`retired`::: Document has been retired.
+
+
+`edition`:: The edition number of the document. The format of IHO edition
+numbers fits in a pattern of `major.minor.patch`. Please refer to
+IHO M-3, "Principles and procedures for making changes to IHO technical
+standards and specifications" (2/2007 as amended), 4.2, for the numbering pattern.
++
+.Example for IHO S-102
+[example]
+====
+[source,adoc]
+----
+:edition: 2.1.0
+----
+====
+
+
+`:comment-from:`:: The beginning of the period during which comments may be
+submitted to the document draft. Accepted values: ISO 8601 date.
+
+`:comment-to:`:: The end of the period during which comments may be submitted to
+the document draft. The end of the period may change, and may be left open-ended
+(omitted). Accepted values: ISO 8601 date.
+
+`:copyright-year:`:: Year the document was published.
++
+.Example for IHO S-102
+[example]
+====
+[source,adoc]
+----
+:copyright-year: 2022
+----
+====
+
+
+`:published-date:`::
++
+.Example for IHO S-102
+[example]
+====
+[source,adoc]
+----
+:docnumber: 102
+----
+====
+
+`:implemented-date:`:: The date a document becomes effective. YYYY-MM-DD.
+
+`:obsoleted-date:`:: The date a document becomes no longer effective. YYYY-MM-DD.
+
+
+
+== Document contributors
+
+=== General
+
+An IHO publication is typically developed under an IHO working group within
+a committee.
+
+The basic information of these groups are entered as document attributes,
+including:
+
+* the working group
+* the committee
+
+=== Committee
+
+`:committee:`::
+*Mandatory.* Name of relevant IHO committee. A second, third etc. committee is
+named as `:committee_2:`, `:committee_3:`, etc. Permitted values:
++
+.Example for IHO S-102
+[example]
+====
+[source,adoc]
+----
+:committee: hssc
+----
+====
+
+`hssc`::: Hydrographic Services and Standards Programme (HSSC)
+`ircc`::: Inter-Regional Coordination Committee (IRCC)
+
+
+=== Working group
+
+`:workgroup:`::
+*Mandatory.* Name of relevant IHO working group. All working groups have an
+associated committee. A second, third etc. committee is named as
+`:workgroup_2:`, `:workgroup_3:`, etc.
++
+.Example for IHO S-102
+[example]
+====
+[source,adoc]
+----
+:workgroup: tsmad
+----
+====
+
+

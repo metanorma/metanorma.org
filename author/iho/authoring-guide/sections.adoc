@@ -1,0 +1,118 @@
+---
+layout: iho-flavor
+title: Typical sections in IHO
+---
+
+== General
+
+The easiest way to ensure that you are following the document structure that IHO
+demands, is to use a Metanorma template.
+
+If you author a document type that doesn't have a template, check a
+https://github.com/metanorma/mn-samples-iho[sample document] for better
+understanding how to structure that document.
+
+Typically, an IHO document contains the following content order:
+
+* <<preliminary,Preliminary sections>>
+* <<terms,Terms and definitions>>
+* <<refs,References>>
+* <<content,Content sections>>
+* <<annex,Annex sections>>
+
+[[preliminary]]
+include::author/iho/topics/markup.adoc[tag=preliminary-iho]
+
+[[terms]]
+== Terms and definitions
+
+The terms and definitions is used to define important terms and cite them
+throughout the standard.
+
+Learn how to
+link:/author/iho/authoring-guide/terms-definitions[enter terms and definitions].
+
+[[refs]]
+== References
+
+The references section contains normative references, it is considered a
+"`bibliography`" section.
+
+Learn how to
+link:/author/iho/authoring-guide/bibliography[enter bibliographic entries].
+
+NOTE: In IHO there are two "`bibliography`" sections. The "`References`"
+section for normative references, and the "`Bibliography`" section which is for
+informative references.
+
+
+[[content]]
+== Content sections
+
+After the sections above, any number of content sections can be added.
+
+[[annex]]
+== Annex sections
+
+=== General
+
+Annex sections are declared by prepending the `[appendix]` tag above the section
+declaration.
+Annexes can be added as necessary.
+
+An annex can either be _normative_ or _informative_. By default an annex is
+marked _informative_.
+
+In order to declare a _normative_ annex, use the _obligation_ attribute in
+the following manner: `[appendix,obligation=normative]`
+
+.Example of creating a normative versus an information annex
+====
+[source,asciidoc]
+----
+// Without declaration, an annex is informative.
+[appendix]
+== Informative annex title
+...
+
+// A normative annex.
+[appendix,obligation=normative]
+== Normative annex title
+...
+
+// A informative annex with explicit declaration
+[appendix,obligation=informative]
+== Informative annex title
+...
+----
+====
+
+Annex clauses are placed after all content sections, right before the
+bibliography section.
+
+
+=== Glossary
+
+IHO documents support an extra definitions section that represents
+informative terms, as a "Glossary" section in the annex.
+
+It can be encoded as follows:
+
+.Example of creating the Glossary section
+====
+[source,asciidoc]
+----
+[appendix]
+== Glossary
+
+=== My term
+
+My definition
+...
+----
+====
+
+The usage and syntax of this section is identical to that of <<terms>>.
+Please refer to the
+link:/author/iho/authoring-guide/terms-definitions[terms and definitions syntax]
+on how to write out the terms in the Glossary.

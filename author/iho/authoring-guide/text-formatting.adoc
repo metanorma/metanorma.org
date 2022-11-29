@@ -1,0 +1,159 @@
+---
+layout: iho-flavor
+title: Text formatting
+---
+////
+include::author/topics/inline_markup.adoc[tag=tutorial]
+== Text markup
+include::author/topics/inline_markup/text_formatting.adoc[tag=text-markup]
+include::author/iho/topics/markup/[tag=inline-iho]
+include::author/topics/inline_markup/text_formatting.adoc[tag=char-subs]
+== Footnotes
+include::author/topics/inline_markup/footnotes.adoc[tag=tutorial]
+
+If IHO produces an Index, include this section, too
+== Index Terms
+include::author/topics/inline_markup/index.adoc[tag=tutorial]
+////
+
+// Include 1: inline_markup.adoc
+
+To annotate single words, use inline markup. The markup encloses the word(s)
+and you do not need to begin a new line.
+
+Inline markup allows you to:
+
+* Emphasize text
+* Link to external resources with hyperlinks
+* Create internal cross-references
+* Create index entries
+* Create Bibliographic entries
+
+
+== Text markup
+
+// Include 2: text_formatting.adoc
+=== General text markup
+
+The simplest form of inline markup is to emphasize text. typical AsciiDoc allows
+you to:
+
+* *Bold* text by wrapping text with asterisks (`*`)
+* _Italicise_ words by wrapping text with underscores (`_`)
+* Apply `monospace` formatting by wrapping text with backticks
+* Superscript and subscript characters (like CO~2~ or x^4^)
+
+.Example of general text markup syntax
+[example]
+====
+[source,adoc]
+----
+*bold*
+_italic_
+`monospace`
+^superscript^
+~subscript~
+----
+====
+
+Metanorma extends these simple formats with:
+
+* Strikethrough text ([strike]#strike through text#)
+* Smallcaps text ([smallcap]#small caps text#)
+* Underline text ([underline]#underline text#)
+
+[source,adoc]
+----
+[strike]#strike through text#
+[smallcap]#small caps text#
+[underline]#underline text#
+----
+
+//renders as:
+
+.Illustration of strikethrough text in Metanorma.
+image::/assets/author/topics/document-format/text/fig-strikethrough.png[Illustration of strikethrough text in Metanorma,width=500]
+
+
+.Illustration of small caps text in Metanorma.
+image::/assets/author/topics/document-format/text/fig-smallcaps.png[Illustration of small caps text in Metanorma,width=500]
+
+.Illustration of underlined text in Metanorma.
+image::/assets/author/topics/document-format/text/fig-underline.png[Illustration of underlined text in Metanorma,width=500]
+
+//Include 3: markup.adoc
+
+== IHO specific text markup
+
+include::author/iho/topics/markup.adoc[tag=inline-iho]
+
+//Include 4: text_formatting.adoc
+== Character substitutions
+
+Metanorma supports automatic character replacements, for example the
+copyright symbol © can be entered using `(C)`.
+
+Metanorma also recognizes HTML and XML character references, as well as decimal
+and hexadecimal Unicode code points.
+
+NOTE: For more information about automatic character replacements, see
+https://docs.asciidoctor.org/asciidoc/latest/subs/replacements/[AsciiDoc documentation].
+
+
+//Inlcude 5: footnotes.adoc
+== Footnotes
+
+=== General
+
+Footnotes are a great option to add a remark to your content without disturbing
+reading flow.
+
+In standards however, footnotes are discouraged as they hide potentially
+important information in the footer. It also becomes unclear whether the
+footnote is normative or informative in nature.
+
+=== Single-line footnotes
+
+Footnotes can be added to the document using the footnote command
+(`footnote:[]`).
+
+Just add the footnote where you want it to appear, like this:
+
+[source,adoc]
+====
+Oryza sativa footnote:[Sativa means "cultivated"], is rice that is farmed
+commercially.
+====
+
+
+=== Multi-paragraph footnotes
+
+Metanorma provides the footnote command `footnoteblock:[id]` which allows
+multi-paragraph notes to be treated as footnotes.
+
+Multi-paragraph footnotes can be entered using the command
+`footnoteblock:[id]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.4],
+where `id` is the identifier of a note containing the contents of the footnote.
+
+.Example of a multi-paragraph footnote
+====
+[source,asciidoc]
+----
+This is a paragraph.footnoteblock:[id1] This continues the paragraph.
+
+[[id]]
+[NOTE]
+--
+This is
+
+a multi-paragraph
+
+footnote
+--
+----
+====
+
+NOTE: The popular AsciiDoc processor, Asciidoctor, supports only
+single-paragraph footnotes through its `footnote` command (which can only
+contain a single line of text).
+

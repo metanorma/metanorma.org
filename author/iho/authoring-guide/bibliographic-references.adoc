@@ -1,0 +1,167 @@
+---
+layout: iho-flavor
+title: Bibliographic references
+---
+//General Bibliography
+//include::/author/topics/sections/entering_bib.adoc[tag=tutorial]
+
+== General
+
+In IHO deliverables, bibliographic references are presented in two categories,
+and put into these two sections:
+
+* "`Normative references`", contain normative references, located at Clause 2;
+* "`Bibliography`", contain informative references, placed as the first Annex.
+
+== Creating a bibliographic section
+
+Every bibliographic section must be preceded by the style attribute
+`[bibliography]` so that bibliographic references are recognized as such.
+
+Place them into the Normative references if they are a required part of this
+standard.
+
+[source,adoc]
+----
+[bibliography]
+== Normative references
+
+* [[[iso_19103,ISO 19103:2015]]], Geographic information — Conceptual schema language
+
+* [[[w3c_owl,W3C owl-time]]], W3C Time Ontology in OWL
+----
+
+Or if the references are informative,
+
+[source,adoc]
+----
+[appendix]
+[bibliography]
+== Bibliography
+
+* [[[ISO_22739,ISO 22739:2020]]]
+
+* [[[EVANS_DDD,1]]], Eric EVANS. _Domain-Driven Design: Tackling Complexity in Software_.
+Addison-Wesley: 2004.
+----
+
+
+== Entering a bibliographic entry
+
+Bibliographic references (citations) are entered using a specialized list syntax.
+
+. Starts with a list item indicator (`*`).
+
+. Followed by a pair of triple square brackets (`[[[ ... ]]]`) which contains
+
+** A unique anchor name used to reference this entry. This anchor has to be unique per document.
+
+** A document identifier (also called the "`reference tag`") that identifies
+this reference to the reader. If the cited document is a standard, it is likely
+that Metanorma can link:/author/concepts/automatic-reference-lookup[automatically fetch bibliographic information] for it via https://www.relaton.org/[Relaton].
++
+NOTE: If Metanorma recognizes a document identifier, it will overwrite any title
+you provide with the authoritative title of the reference.
+
+. After the triple brackets, the citation text is entered manually. IHO uses
+the _Chicago Manual of Style_ citation format as documented in the
+https://mentor.iho.org/myproject/Public/mytools/draft/styleman.pdf[IHO Standards Style Manual].
+
+.Syntax for a bibliographic entry
+[source,adoc]
+----
+* [[[{anchor},{document identifier}]]], _citation text_
+----
+
+.Example of an auto-fetched entry
+====
+The following two statements will create identical outputs.
+
+[source,adoc]
+----
+* [[[IHO_528-2019,IHO 528-2019]]]
+----
+
+[source,adoc]
+----
+* [[[IHO_528-2019,IHO 528-2019]]], IHO. _IHO Standard for Inertial Sensor Terminology_ (2019).
+Available at: https://standards.iho.org/iho/528/7292/
+----
+====
+
+== Referencing a bibliographic entry
+
+There are two ways to cite a bibliography entry entered in the bibliography
+sections.
+
+. Cite the whole document, by cross-referencing the anchor name like this: `\<<IHO_528-2019>>`.
+
+. Cite a particular locality of the document, by cross-referencing the anchor name but additionally specify a link:/author/topics/document-format/bibliography/#localities[locality] as the second argument, like this: `\<<IHO_528-2019,part=IV,chapter=3,paragraph=12>>`.
+
+
+== Bibliography example
+
+The following source code illustrates how a bibliography section looks like in
+Metanorma AsciiDoc.
+
+.Example for a bibliography section
+====
+[source,adoc]
+----
+[bibliography]
+== Normative references
+
+* [[[ISO20483,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+
+* [[[ISO6540,ISO 6540:1980]]]. _Maize -- Determination of moisture content (on milled grains and on whole grains)_
+----
+
+Gets rendered as:
+
+____
+* ISO 20483:2013. _Cereals and cereal products — Determination of moisture content — Reference method_
+* ISO 6540:1980. _Maize — Determination of moisture content (on milled grains and on whole grains)_
+____
+
+====
+
+
+//IHO specific
+== Auto-fetching IHO references
+
+Relaton fetches bibliographic entries for IHO documents, when the syntax matches the following:
+
+//Line 62 stems from https://www.metanorma.org/author/topics/building/reference-lookup/. To me, the parenthesis are a bit confusing. In which context do we use it?
+`IHO(identifier)` (e.g. `IHO(528-2019)`), or any identifier prefixed with `IHO`.
+
+* If Relaton *can* resolve the reference, the bibliographic information from the
+database will be rendered.
++
+.Example of a IHO standard reference
+====
+[source,asciidoc]
+----
+* [[[IHO_528-2019,IHO 528-2019]]], _Standard for Specifying ..._
+----
+
+will render:
+____
+IHO 528-2019, _IHO Standard for Inertial Sensor Terminology_ (2019).
+Available at: https://standards.iho.org/iho/528/7292/
+____
+====
+
+* If Relaton *can not* resolve the reference, the provided description will be rendered.
++
+.Another example
+====
+[source,asciidoc]
+----
+* [[[GeoRSS,GeoRSS]]], GeoRSS Geographically Encoded Objects for RSS Feeds. (http://www.georss.org/)
+----
+
+will render:
+____
+GeoRSS Geographically Encoded Objects for RSS Feeds. (http://www.georss.org/)
+____
+====

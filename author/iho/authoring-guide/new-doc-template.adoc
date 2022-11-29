@@ -1,0 +1,57 @@
+---
+layout: iho-flavor
+title: Creating a new document from a template
+---
+The easiest way to get started is with a template because it provides the document structure and lets you fill in the content.
+To see which document types are available as a template, check out the https://github.com/metanorma/mn-templates-iho[IHO template repository].
+
+//General Metanorma AsciiDoc
+//include::/author/topics/creating_new_document.adoc[tag=template-steps]
+. Open a new terminal window on your computer.
+. Use the `cd` command to navigate to the folder where the documents should be copied to.
+. To copy the template to your machine, use the `new` command and specify the organization type and document.
++
+`metanorma new PROJECT-NAME -t ORGANIZATION -d DOCUMENT-TYPE`
+. Edit the copied files with a text editor of your choice.
+
+These examples illustrate how to use `metanorma new` in different setups:
+
+.Local Metanorma installation
+[%collapsible]
+[source]
+----
+metanorma new my-new-standard -t iho -d standard
+----
+
+.Metanorma in Docker (MacOS)
+[%collapsible]
+[source]
+----
+docker run -v "$(pwd)":/metanorma/ \
+  -w /metanorma metanorma/mn
+  metanorma new my-new-standard -t iho -d standard
+----
+
+.Metanorma in Docker (Windows, cmd)
+[%collapsible]
+[source]
+----
+docker run ^
+  -v %cd%:/metanorma ^
+  -w /metanorma ^
+  metanorma/mn ^
+  metanorma new my-new-standard -t iho -d standard
+----
+
+.Metanorma in Docker (Windows, Powershell)
+[%collapsible]
+[source]
+----
+docker run `
+  -v ${pwd.Path}:/metanorma `
+  -w /metanorma `
+  metanorma/mn `
+  metanorma new my-new-standard -t iho -d standard
+----
+
+The link:/_posts/2019-04-26-metanorma-templates-and-metanorma-new.adoc[blog post about templates] discusses the technical details of templates.

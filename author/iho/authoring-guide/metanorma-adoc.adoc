@@ -1,0 +1,77 @@
+---
+layout: iho-flavor
+title: Writing Metanorma AsciiDoc
+---
+// include::/author/concepts/intro_to_asciidoc/[tag=tutorial]
+
+== General
+
+Metanorma documents are typically written in a
+https://en.wikipedia.org/wiki/Markup_language[markup language] called
+"`Metanorma AsciiDoc`".
+
+Metanorma AsciiDoc is created as an extended superset of the normal
+https://asciidoc.org[AsciiDoc] markup language in order to support the complex
+requirements of standards and model-based content creation.
+
+NOTE: A markup language allows applying processing instructions to textual
+content.
+
+Metanorma AsciiDoc inherits the ease of use of normal AsciiDoc but lets you do
+much more. AsciiDoc is very similar to Markdown or Wiki formatting but provides
+more precise markup for creating text documents, for example to create a
+bibliography section or an index.
+
+Since Metanorma AsciiDoc is a "`plain text`" markup language, you can use any
+plain text editor to create and edit its files (`.adoc` files).
+
+== Structure
+
+A Metanorma AsciiDoc document consists of several basic components:
+
+* Document header
+* Clauses, sections
+* Blocks
+* Text formatting
+
+This guide introduces these concepts through a real life example.
+
+== IHO document structure
+
+An IHO document is in the following structure:
+
+* Preface sections. There are 4 mandatory sections:
+** Abstract, Keywords right after the inner cover page
+** Important Notices and Disclaimers Concerning IHO Standards Documents
+** Participants
+** Introduction
+
+* 1. Overview
+** 1.1. Scope
+** 1.2. Purpose
+** 1.3. Word usage (supplied by Metanorma)
+
+* 2. Normative references
+* 3. Terms and definitions
+* 4 and onwards. Document content.
+* Annex A (informative). Bibliography.
+* Annex B onwards. Document content.
+
+
+== Automatic numbering in Metanorma
+// include::/author/concepts/auto_numbering/[tag=auto-num-intro]
+
+Metanorma supports auto-numbering for the following document elements, so you do
+not need to specify any numbering for them:
+
+* figures
+* tables
+* admonitions (such as NOTEs)
+* examples
+* formulas (inline or block)
+* sourcecode, pseudocode
+* permissions, recommendations and requirements.
+
+The conventions for numbering vary by Metanorma flavour, but the default is to
+number all elements consecutively in the main body of a document, and separately
+in each Annex/Appendix, prefixed bt the Annex/Appendix number.
