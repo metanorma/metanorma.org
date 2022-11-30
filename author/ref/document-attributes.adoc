@@ -55,6 +55,16 @@ If a directory name is given for the attribute, that name overrides `relaton` as
 `:flush-caches:`::
 If set, delete and reinitialise the cache of `https://www.relaton.org/[relaton]` searches.
 
+`:relaton-data-source`:: Allows specification of an external bibliographic file to be 
+imported [added in https://github.com/metanorma/metanorma-standoc/releases/tag/2.2.9].
+The value of the field is the file name; if the format also needs to be specified, this is done
+as `file=PATH/TO/FILE,format=FORMAT`. Currently, only "bibtex" is supported as a format,
+and any other formats will raise an error.
+
+`:relaton-data-source-{id}`:: Allows specification of multiple external bibliographic files to be
+imported [added in https://github.com/metanorma/metanorma-standoc/releases/tag/2.2.9].
+The different bibliographic sources are differentiated through the value of the `{id}` identifier,
+e.g. `:relaton-data-source-bib1: PATH/TO/FIRST/FILE`, `:relaton-data-source-bib2: PATH/TO/SECOND/FILE`.
 
 == Math
 

@@ -647,6 +647,59 @@ For presentations,
 * `organization.distributor` is the organizer of the conference
 --
 
+=== Importing bibliographic records from other formats
+Metanorma can import files containing bibliographic records in other 
+formats [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.9].
+To date, only Bibtex is supported.
+
+In order to specify an external Bibtex file, use the `relaton-data-source` document
+attribute:
+
+[source,asciidoc]
+----
+:relaton-data-source: path/to/bibtex-file
+----
+
+In order to specify multiple external Bibtex files, use `relaton-data-source-{id}` 
+document attributes, where the value of `{id}` is the source identifier
+used to differentiate each import file:
+
+[source,asciidoc]
+----
+:relaton-data-source-bib1: path/to/first/bibtex-file
+:relaton-data-source-bib2: path/to/second/bibtex-file
+----
+
+References to a bibliographic item imported this way are expressed in the bibliography
+with the bibliographic anchor `local-file(SOURCE, KEY)`, where `SOURCE` is the name
+of the source identifier for the import file, and `KEY` is the identifier of the 
+reference in the import file. So given the import statements above,
+
+[source,asciidoc]
+----
+== Bibliography
+* [[[ref1, local-file(bib1, tc211)]]]
+----
+
+will import the reference inside the Bibtex file `path/to/first/bibtex-file` 
+(the value of `relaton-data-source-bib1`) that starts as e.g.
+
+[source]
+----
+@book{tc211
+  ...
+}
+----
+
+If only one file was imported through `relaton-data-source`, the source identifier
+is omitted (or else "default" is used):
+
+[source,asciidoc]
+----
+== Bibliography
+* [[[ref1, local-file(tc211)]]]
+----
+
 [[asciibib]]
 === Entering with AsciiBib
 
