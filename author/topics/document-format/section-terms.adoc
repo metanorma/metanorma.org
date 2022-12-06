@@ -2121,19 +2121,18 @@ The following rendering options, introduced with `options="..."`, are defined
 for concept mentions.
 
 `ital`:: italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
-
-`ref`:: provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
-
 `noital`:: do not italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
 
+`bold`:: boldface the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.2]
+`nobold`:: do not boldface the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.2]
+
+`ref`:: provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
 `noref`:: do not provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
 
 `linkmention`:: hyperlink the rendered term to a term definition [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
-
 `nolinkmention`:: do not hyperlink the rendered term to a term definition [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
 
 `linkref`:: hyperlink the reference for the term to a term definition [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
-
 `nolinkref`:: do not hyperlink the reference for the term to a term definition [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
 
 If these options are missing, Metanorma applies the defaults for the current
@@ -2141,25 +2140,27 @@ flavour.
 
 The default behaviour in Metanorma is:
 
-* for all terms (italics and cited): `ital,ref,nolinkmention,linkref`
+* for all terms (italics and cited): `ital,nobold,ref,nolinkmention,linkref`
 
-* for acronyms (no special rendering): `noital,noref,nolinkmention,nolinkref`
+* for acronyms (no special rendering): `noital,nobold,noref,nolinkmention,nolinkref`
 
 NOTE: In Metanorma for IEEE, the default behaviour is
-`noital,noref,nolinkmention,nolinkref` for all terms (i.e. no special rendering
+`noital,nobold,noref,nolinkmention,nolinkref` for all terms (i.e. no special rendering
 for a term cited within a term definition.)
 
 
 In ISO, the default behaviour for terms is refined:
 
 * for terms outside the "`Terms and definitions`" section:
-  `noital,noref,nolinkmention,nolinkref` (no special rendering);
+  `noital,nobold,noref,nolinkmention,nolinkref` (no special rendering);
 
 * for the first mention of a term within the "`Terms and definitions`"
-  section: `ital,ref,nolinkmention,linkref` (italics, cited, hyperlinked);
+  section: `ital,nobold,ref,nolinkmention,linkref` (italics, cited, hyperlinked);
 
 * for all subsequent mentions within the "`Terms and definitions`" section:
-  `ital,noref,nolinkmention,linkref` (italics, hyperlinked, no citation).
+  `ital,nobold,noref,nolinkmention,linkref` (italics, hyperlinked, no citation).
+
+In BSI, the default behaviour for terms is: `noital,bold,ref,nolinkmention,linkref`
 
 [example]
 .Using cited concepts with various options
