@@ -488,6 +488,28 @@ ISO 20483:2013. _Cereals and cereal products -- Determination of moisture conten
 ____
 ====
 
+Omne of the online bibliographic databases Metanorma allows access to is the CrossRef registry
+of DOI identifiers [added in https://github.com/relaton/relaton-cli/releases/tag/v1.14.0]. That means that 
+any book, journal article, conference paper or dataset that has been identified with a DOI identifier
+can be cited by providing its DOI identifier as its bibliographic tag. Metanorma will import the bibliographic
+details of the reference from CrossRef, and format them in the required format of the current Metanorma flavour.
+
+[example]
+.Example of specifying an auto-fetched DOI reference
+====
+The following will trigger auto-fetching:
+
+[source,asciidoc]
+--
+* [[[ref1,doi:10.1045/november2010-massart]]]
+--
+
+and gets rendered as:
+
+____
+Massart D., Shulman E., Nicholas N., Ward N., &#x26; Bergeron F. Taming the Metadata Beast: ILOX. _D-Lib Magazine_ Vol. 16 No. 11/12. November 2010. Available from: <a href="http://dx.doi.org/10.1045/november2010-massart">http://dx.doi.org/10.1045/november2010-massart</a>
+____
+====
 
 [[other-databases]]
 === Referencing from a Metanorma collection
