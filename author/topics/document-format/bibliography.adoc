@@ -600,8 +600,8 @@ following explicit bibliographic entry methods should be used instead.
 The span categories supported are:
 
 * `surname`: Author surname.
-* `initials`: Author initials.
-* `givenname`: Author given name.
+* `initials`: Author initials. 
+* `givenname`: Author given name. 
 * `organization`: Corporate author.
 * `surname.XXX`: Contributor surname, with role _XXX_ (e.g. _editor_).
 * `initials.XXX`: Contributor initials, with role _XXX_ (e.g. _editor_).
@@ -630,7 +630,8 @@ the title of the book, proceedings, collection containing the item).
 [source,asciidoc]
 ----
 * [[[A, B]]],
-  span:surname[Wozniak], span:initials[S.] & span:givenname[Steve] span:surname[Jobs].
+  span:surname[Wozniak], span:initials[S.], span:surname[Jobs], span:givenname[Steve],
+    & surname:[Hoover], span:initials[J.] span:givenname[Edgar].
   span:date.issued[1991].
   span:date[1996].
   span:title[_Work_].
@@ -649,8 +650,11 @@ the title of the book, proceedings, collection containing the item).
 ====
 
 After the first instances of `surname` and either `initials` or `givenname`, any
-subsequent instances of `surname` or either `initials` or `givenname` are
+subsequent instance of `surname` is
 interpreted as belonging to a new contributor of the same role.
+Any given names and surnames MUST follow the surname that they relate to. If the names
+are ordered differently between the first and subsequent name, e.g. _Wozniak, S. & Steve Jobs_,
+that will be taken care of in rendering: they cannot be annotated in that way.
 
 [NOTE]
 --
