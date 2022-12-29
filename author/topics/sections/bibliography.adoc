@@ -795,6 +795,34 @@ If you use this notation to enter any document other than a standard, you *must*
 specify the type of document, using `span:type[]`.
 --
 
+[[emebd-citation]]
+=== Emending relaton citations
+
+Bibliographic `span:...[]` notation can also be used to emend bibliographic entries fetched
+through Relaton [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.4].
+This is particularly important for relaton-doi, the records of which are of variable quality,
+and often miss information.
+
+* Data encoded in the title following the bibliographic anchor with `span:[]` is used to supplement information
+fetched from Relaton
+* If the span information presents information absent in the fetched record, it is added to the record.
+* If the span information presents information corresponding in the fetched record, it overwrites it
+* Information is broken down by type: if an identifier, or URI, or date is of a given type, it overwrites only identifiers of the same type in the fetched record. The same applies to contributors: contributors of a given type overwrite only contributors of the same type in the fetched record.
+* Information is replaced, not additive. For example, if there are multiple authors in the fetched record, they are replaced by the listing of multiple authors in the bibliographic spans.
+
+To illustrate, the following citation
+
+[source,asciidoc]
+----
+* [[[ref1,doi:10.1045/november2010-massart]]], span:pages[8-10], span:surname.author[Johnson], span:givenname.author[Boris], span:date.published[2021]
+----
+
+modifies the record fetched from Crossref as follows:
+
+* The pages span are added to the source record, which contains volume and issue information, but no page information.
+* The authors listed for the source record are overwritten by the single author Boris Johnson.
+* The date published is overwritten by the new date 2021. The date the article was issued, by contrast, is left alone.
+
 [[asciibib]]
 === Entering with AsciiBib
 
