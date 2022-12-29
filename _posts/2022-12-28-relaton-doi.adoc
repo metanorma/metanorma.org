@@ -1,0 +1,235 @@
+---
+layout: post
+title: "relaton-doi exports Crossref citations to bibliographic software"
+date: 2022-12-28
+categories: relaton
+authors:
+  -
+    name: Nick Nicholas
+    email: opoudjis@gmail.com
+    social_links:
+      - https://github.com/opoudjis
+  -
+    name: Andrei Kislichenko
+    email: 
+    social_links:
+      - https://github.com/andrew2net
+
+excerpt: >-
+  relaton now imports Crossref citations via DOI identifiers, and allows
+  them to be integrated into bibliographic software.
+---
+
+== Introduction
+
+For the past couple of decades, the https://www.doi.org[Digital Object Identifier] service
+has been part of the essential infrastructure of digital publishing, registering and
+managing a unique identifier (DOI) for all publications lodged with a DOI registration agency.
+As publishers and agencies have embraced the DOI, these identifiers have become ubiquitous,
+and have been adopted not only for most newly publications, whether electronic or hardcopy,
+but increasingly for past hardcopy publications as well, especially as those publications
+are reissued online.
+
+One of the main advantages to a widely used identifier for publications is that value-added
+services can use that identifier to provide information about the publication. Among a wide range
+of such services, that offered by https://www.crossref.org[Crossref] is of particular interest
+in bibliography. Crossref is a DOI registration agency, and is a consortium of publishers
+originally established to enable stable citations from online academic journal articles to other journal articles.
+That means that it is in the interests of Crossref, not only to register DOIs for publications,
+and use them in online publication, but also to associate those DOIs with bibliographic information
+that can be used in citations.
+
+As a result, Crossref has one of the largest online bibliographic databases in existence, 
+currently including more than 141 million records. Crossref has made this database publicly available 
+in recent years through an https://www.crossref.org/documentation/retrieve-metadata/rest-api/[API],
+and is commited to making citaiton information openly available.
+
+The Crossref API data is natively in a Crossref JSON schema, but it can readily be exported
+into popular bibliographic export formats. In fact, a search on the Crossref home page for DOI `10.1515/9783110889406.257`
+returns https://search.crossref.org/?from_ui=yes&q=10.1515/9783110889406.257[on its landing page]
+links not only to the https://api.crossref.org/v1/works/10.1515/9783110889406.257[Native Crossref JSON record]
+and the https://www.degruyter.com/document/doi/10.1515/9783110889406.257/html[URI of the associated resource],
+but also exports of the JSON record (via Javascript, as "Cite"), both machine-readable (BibTeX, RIS), 
+and as human-readable renderings (APA, Harvard, MLA, Vancouver, Chicago).
+
+With the implementation of the https://github.com/relaton/relaton-doi/[relaton-doi] gem,
+Crossref bibliographic records are now available to the Relaton ecosystem. In the following, we show you
+how to access a Crossref bibliographic record given its DOI identifier, and how to use it in your chosen
+environment. We also outline some of the enhancements we have brought to Crossref data, and some of the 
+caveats to bear in mind while using it.
+
+== Command line
+
+Like all relaton gems, a reference can be fetched from relaton-doi through the 
+https://github.com/relaton/relaton-cli/[relaton CLI].
+
+[source,console]
+----
+gem install relaton-cli
+relaton fetch doi:10.1515/9783110889406.257           # returns record for 10.1515/9783110889406.257 in Relaton XML
+relaton fetch doi:10.1515/9783110889406.257 -f yaml   # returns record for 10.1515/9783110889406.257 in Relaton YAML
+relaton fetch doi:10.1515/9783110889406.257 -f bibtex # returns record for 10.1515/9783110889406.257 in Bibtex
+----
+
+As with any command line tool, the output of these commands can be redirected to a text file and stored.
+The command line tool consumes identifiers from a range of sources, and it requires `doi:` to be prefixed to each DOI,
+so they can be recognised as such.
+
+So if you wish to build up a BibTeX database of bibliographic entries given some DOIs, you 
+might write a shell script to loop through the DOIs, and write each BibTeX object fetched into a file:
+
+[source,sh]
+----
+#!/bin/bash
+StringVal="10.1515/9783110889406.257 10.6028/nist.ir.8245 doi:10.1215/9781478007609-047"
+echo "" > my.bibtex
+for doi in $StringVal; do
+  relaton fetch doi:$doi -f bibtex >> my.bibtex
+done
+----
+
+TODO: https://github.com/relaton/relaton-doi/issues/12 Bibtex export needs to be enriched.
+
+== Ruby
+
+The relaton-doi gem can be used natively in your Ruby code, although this presupposes that you are already
+coding within the relaton Ruby ecosystem. The received objects will be native Relaton objects, which
+will eventually need to be exported to XML, YAML, or BibTeX.
+
+[source,ruby]
+----
+require 'relaton_doi'
+=> true
+
+# get NIST standard
+RelatonDoi::Crossref.get "doi:10.6028/nist.ir.8245"
+[relaton-doi] ["doi:10.6028/nist.ir.8245"] fetching...
+[relaton-doi] ["doi:10.6028/nist.ir.8245"] found 10.6028/nist.ir.8245
+=> #<RelatonNist::NistBibliographicItem:0x00007ff22420d820
+...
+----
+
+== Metanorma
+
+In Metanorma, a DOI identifer prefixed with `doi:` will be recognised in a bibliography, and its
+bibliographic record will be fetched through relaton-doi, and formatted according to the required style
+of the relevant standards body. Because the information will be fetched through relaton-doi, you do not
+need to provide any of the bibliographic information yourself.
+
+[source,asciidoc]
+----
+[bibliography]
+== Bibliography
+
+* [[[ref1,doi:10.1515/9783110889406.257]]]
+----
+
+== Enhancements and caveats
+
+Crossref is an unprecedented boon to users of electronic bibliographies: it is centralised source
+offering access to a huge and growing number of bibliographic records, with a universal and broadly
+discoverable identifier. 
+
+There is a downside to the huge quantity of metadata available from Crossref, and it is the downside one
+would expect: the metadata is highly variable in quality, with inconsistencies in encoding and with 
+critical information often missing. We encourage users to use it as a first pass to populating bibliographic
+information quickly and at scale, but we also recommend that users review the bibliographic data fetched,
+and fill in any gaps they can identify.
+
+As a value-add to the Crossref API, relaton-doi already attempts to remedy some of the clearly missing information:
+
+* Crossref does not normally in the fetched record any details of the *host item* -- the edited volume or proceedings
+that a paper may be included in. So the Crossref record will include the title of the volume the chapter or
+paper is included in, as well as the publisher and place of publication. However, it will not include the editors 
+of the edited volume or proceedings. So 10.1515/9783110889406.257 natively returns, in BibteX:
+
+[source,bibtex]
+----
+@incollection{Heller,
+	doi = {10.1515/9783110889406.257},
+	url = {https://doi.org/10.1515%2F9783110889406.257},
+	publisher = {{DE} {GRUYTER} {MOUTON}},
+	author = {Monica Heller},
+	title = {Gender and public space in a bilingual school},
+	booktitle = {Multilingualism, Second Language Learning, and Gender}
+}
+----
+
+But the editors of the volume _Multilingualism, Second Language Learning, and Gender_ are *not* included in the
+Crossref record. relaton-doi makes a best-effort search, and will in most cases return the editors as well as
+the author. So in the foregoing case, relaton-doi will look up the record for the edited volume 
+_Multilingualism, Second Language Learning, and Gender_, and the record it returns will include its editors:
+
+[source,bibtex]
+----
+        editor = {Aneta Pavlenko, Adrian Blackledge, Ingrid Piller and Marya Teutsch-Dwyer}
+----
+
+TODO: To confirm with actual fixed bibtex
+
+* Some Crossref records, particularly from older bibliographic sources, have messy data incorporating delimiters.
+For example, the record for `10.5962/bhl.title.124254`, an 1852 publication, includes trailing punctuation in its
+title, place of publication, and publisher fields:
+
+[source,bibtex]
+----
+@book{Kuster_1852,
+	doi = {10.5962/bhl.title.124254},
+	url = {https://doi.org/10.5962%2Fbhl.title.124254},
+	year = 1852,
+	publisher = {Verlag von Bauer und Raspe (Julius Merz),},
+	address = {Nürnberg :},
+	author = {H. C. Kuster and Johann Hieronymus Chemnitz and Friedrich Heinrich Wilhelm Martini},
+	title = {Die Gattungen Pupa, Megaspira, Balea und Tornatellina : in Abbildungen nach der Natur mit Beschreibungen /}
+}
+----
+
+relaton-doi cleans up the fields to the extent reasonable.
+
+* On occasion, author and editor names appear in all caps. relaton-doi will change these to titlecase, so long as 
+the name is more than two letters long. You may need to review the results, to catch camelcase exceptions such as
+"MacDonald".
+
+There are however areas where Crossref is missing information, and for which nothing can be done but to emend the
+record after fetching it. In particular:
+
+* Crossref quite often omits the page numbers of a journal article, even though it retains the volume and issue of the article.
+(Page numbers are no longer essential for online access; but if a journal is published in print, or even in a medium emulating
+print (PDF), page numbers are still expected in citations.)
+* Crossref usually does not include the series of a monograph.
+* Some journals restart their volume numbering while keeping the same title; in a few cases, they do so multiple times.
+Bibliographies indicate this where applicable, before the volume number ("New Series", "3rd Series").
+Crossref does not differentiate between different runs (i.e. numberings) of journals, so that information cannot be included
+in any citations,
+* The details of the host item may be impractical to retrieve, particularly if the host item is a large reference work,
+containing many items each with their own DOI.
+* The place of publication is free text, and is not systematically broken down into city, region, country.
+* Occasionally, a personal name is not broken down into forename and surname, but is presented in its entirety as the surname.
+* Records may use abbreviations of organisations instead of the full names, and some records may mix the two in different fields
+(e.g. both "IEEE" and "Institute of Electric and Electronic Engineers").
+* The identifiers of standards and reports are often not included in the record.
+
+== Amending fetched citations in Metanorma
+
+The https://www.metanorma.org/author/topics/document-format/bibliography/#annotated-spans[`span:...\[\]` syntax for bibliographic elements] allows you to enter bibliographic information for an entry in the absence of data from a bibliographic database.
+The same means can be used to add to or emend a reference fetched from Crossref, that we know to be faulty.
+
+* Data encoded in the title following the bibliographic anchor with `span:[]` is used to supplement information
+fetched from Relaton
+* If the span information presents information absent in the fetched record, it is added to the record.
+* If the span information presents information corresponding in the fetched record, it overwrites it
+* Information is broken down by type: if an identifier, or URI, or date is of a given type, it overwrites only identifiers of the same type in the fetched record. The same applies to contributors: contributors of a given type overwrite only contributors of the same type in the fetched record.
+* Information is replaced, not additive. For example, if there are multiple authors in the fetched record, they are replaced by the listing of multiple authors in the bibliographic spans.
+
+To illustrate, the following citation
+
+[source,asciidoc]
+----
+* [[[ref1,doi:10.1045/november2010-massart]]], span:pages[8-10], span:surname.author[Johnson], span:givenname.author[Boris], span:date.published[2021]
+----
+
+modifies the record fetched from Crossref as follows:
+
+* The pages span are added to the source record, which contains volume and issue information, but no page information.
+* The authors listed for the source record are overwritten by the single author Boris Johnson.
+* The date published is overwritten by the new date 2021. The date the article was issued, by contrast, is left alone.
