@@ -233,7 +233,7 @@ Now metadata tagged as `std-meta` for both IEC and ISO documents.
 For IEC documents mnconvert generates a few `permissions` for each `copyright/owner/organization`
 in the Metanorma XML.
 
-== `sec-type` determination
+== 'sec-type' determination
 
 mnconvert expanded for the determination of `sec-type` by titles:
 
@@ -250,15 +250,20 @@ mnconvert expanded for the determination of `sec-type` by titles:
 |===
 
 
-== `content-type` for Annex
+== 'content-type' for Annex
 
 mnconvert adds `@content-type` and `<annex-type>` in accordance with the rules:
+
 * ISO:
+
 ** `@content-type="inform-annex`, `<annex-type>(informative)</annex-type>` for informative Annex
+
 ** `@content-type="normative-annex"`,  `<annex-type>(normative)</annex-type>` for normative Annex
 
 * IEC:
-**- `@content-type="informative` for informative Annex
+
+** `@content-type="informative` for informative Annex
+
 ** `@content-type="normative"` for normative Annex
 
 If `title` starts with `(This annex does not form an integral part `, then `@content-type` isn't added.
@@ -302,7 +307,7 @@ mnconvert encodes lists outside of the preceding paragraph, always for IEC and I
     <label>—</label>
     <p>genuine differences in performance between laboratories;</p>
 ----
-
+====
 
 == Conclusion
 
