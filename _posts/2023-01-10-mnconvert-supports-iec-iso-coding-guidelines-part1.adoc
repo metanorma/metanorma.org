@@ -1,0 +1,313 @@
+---
+layout: post
+title: "Changes in the mnconvert tool in accordance with NISO STS 1.0 – IEC/ISO Coding Guidelines (part 1)"
+date: 2023-01-10
+categories: documentation
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+  -
+    name: Alexander Dyuzhev
+    email: dyuzhev@gmail.com
+    social_links:
+      - https://www.linkedin.com/in/alexander-dyuzhev/
+      - https://github.com/Intelligent2013/
+
+excerpt: >-
+  Metanorma's mnconvert tool produces NISO STS XML in accordance with 
+  NISO STS 1.0 – IEC/ISO Coding Guidelines.
+---
+
+== Introduction
+
+Metanorma software produces data in own Metanorma XML format.
+The IEC/ISO members uses NISO STS XML format in the workflow processes for
+standards-type documents in XML. Metanorma's https://github.com/metanorma/mnconvert[mnconvert tool] allows to convert
+the data from Metanorma XML into NISO STS XML format.
+
+Recently mnconvert's conversion rules updated for IEC/ISO documents conversion
+in accordance with 
+https://www.iso.org/files/live/sites/isoorg/files/developing_standards/resources/docs/NISOSTS-guidelines-v1.0.pdf[NISO STS 1.0 – IEC/ISO Coding Guidelines]
+
+== IEC or ISO Metanorma XML document determination
+
+mnconvert determines the destination NISO STS XML format - ISO or IEC - by the prefix of the elements
+in the source Metanorma XML:
+
+* `iso-standard` for `ISO`, and
+
+* `iec-standard` for `IEC`.
+
+
+== id generation rules
+ 
+* Foreword section
+
+** IEC: `id="sec-foreword"`
+
+** ISO: `id="sec_foreword"`
+
+* Introduction section
+
+** IEC: `id="sec-introduction"`
+
+** ISO: `id="sec_intro"`, `"sec_0"` if there are sub-clauses
+
+* Section
+
+** IEC: `id="sec-X(.Y)*"`,
+
+** ISO: `id="sec_X(.Y)*"`, 
+
+where "X(.Y)*" is the section, clause, subclause number (example, 1.2.1, B.1 for Annex)
+
+* Annex
+
+** IEC: `id="anx-X"`,
+
+** ISO: `id="sec_X"`,
+
+where "X" is the annex letter
+
+* Bibliography section
+
+** IEC: `id="sec-bibliography"`
+
+** ISO: `id="sec_bibl"`
+
+* Bibliography item
+
+** IEC: `id="bib-X"`
+
+** ISO: `id="biblref_X"`,
+
+where "X" is item number
+
+* Index
+
+** IEC: `id="sec-index"`
+
+** ISO: `id="sec_index"`
+
+* Paragraph
+
+** IEC: `id="p-N"`, where N is the sequential number throughout the document
+
+* List item
+
+** IEC: `id="lis-X.Y-Ln-M"`, where "X.Y" is the subclause number, "n" is the list number inside the subclause,
+"M" is the list item number
+
+For nested list: `id="lis-X.Y-Ln-Lk-M"`, where "k" is the parent list-item number
+
+NOTE: lists in non-numbered sections (Foreword, Introduction) don't have `id`.
+
+* Table, numbered
+
+** IEC: `id="tab-X"`,
+
+** ISO: `id="tab_X"`,
+
+where "X" is the table number
+
+* Table, without number
+
+** IEC: `id="tab-informal-X.Y-N"`, where "X.Y" is the subclause number, "n" is the table number in the subclause 
+
+* Figure, numbered
+
+** IEC: `id="fig-X"`,
+
+** ISO: `id="fig_X"`,
+
+where "X" is figure number
+
+* Note
+
+** IEC: `id="not-X.Y-N"`, where "X.Y" is the subclause number, "N" is the note number inside the subclause
+
+NOTE: notes in non-numbered sections (Foreword, Introduction) don't have `id`.
+
+* Table note
+
+** IEC: `id="tno-X-N"`, where "X" is the table number, "N" is note number inside the table.
+
+* Figure note
+
+** IEC: `id="fno-X-N"`, where "X" is the figure number, "N" is note number inside the figure.
+
+* Term section
+
+** IEC: `id="con-X.Y"`, 
+
+** ISO: `id="sec_X.Y"`,
+
+where "X.Y" is the term entry number (section number)
+
+* Term entry
+
+** IEC: `id="te-X.Y"`, 
+
+** ISO: `id="term_X.Y"`, 
+
+where "X.Y" is the term entry number (section number)
+
+* Term
+
+** IEC: `id="ter-term_without_spaces"`, where "term_without_spaces" is the term with replaced spaced,
+non-break space, '(', ')' to underscore
+
+* Note to entry
+
+** IEC: `id="nte-X.Y-N"`, where "X.Y" is the subclause number, "N" is the sequential note number for the current term
+
+
+* Formula, numbered
+
+** IEC: `id="for-N"`,
+
+** ISO: `id="formula_N"`,
+
+where "N" is formula number
+
+* Formula, without number
+
+** IEC: `id="for-informal-X-Y"`, where "X" is the subclause number, "Y" is the sequential formula number
+inside the subclause
+
+* Math
+
+** IEC: `id="mml-mN"`, where "N" is the sequential number throughout the document
+
+* Text footnote
+
+** IEC: `id="foo-N"`, 
+
+** ISO: `id="fn_N"`, 
+
+where "N" is the sequential number throughout the document
+
+* Table footnote
+
+** IEC: `id="tfn-X-Y"`, 
+
+** ISO: `id="table-fn_X-Y"`, 
+
+where "X" is the table number, "Y" is the sequential number if the footnote inside the table
+
+* Figure footnote
+
+** IEC: `id="figfn-X-Y"`, 
+
+** ISO: `id="figure-fn_X-Y"`, 
+
+where "X" is the figure number, "Y" is the sequential number inside the figure
+
+== Links support
+
+If url isn't start with `http:`, `https:`, `ftp:`, `mailto:`, or `link/@target` is different than the text in `link`, 
+then link tagged as `ext-link`. And otherwise tagged as `uri`.
+
+EXAMPLE: `<link target="https://www.iso.org/obp"/>` converts to 
+`<uri>https://www.iso.org/obp</uri>`
+
+EXAMPLE: `<link target="http://www.iso.org/directives">www.iso.org/directives</link>` converts to 
+`<ext-link xlink:href="http://www.iso.org/directives">www.iso.org/directives</ext-link>`
+
+EXAMPLE: `<link target="http://standards.iso.org/iso/10303/tech/step_titles.htm">ISO website</link>` converts to 
+`<ext-link xlink:href="http://standards.iso.org/iso/10303/tech/step_titles.htm">ISO website</ext-link>`
+
+EXAMPLE: `<link target="mailto:gehf@vacheequipment.fic"/>` converts to 
+`<uri>mailto:gehf@vacheequipment.fic</uri></p>`
+
+
+== Metadata tag
+
+Now metadata tagged as `std-meta` for both IEC and ISO documents.
+
+== Multiple copyright information
+
+For IEC documents mnconvert generates a few `permissions` for each `copyright/owner/organization`
+in the Metanorma XML.
+
+== `sec-type` determination
+
+mnconvert expanded for the determination of `sec-type` by titles:
+
+[cols="1,2"]
+|===
+| `sec-type` | Title
+
+| `foreword` | Foreword, Avant-propos, Prólogo / Prólogo de la versión en español, Предисловие
+| `intro` | Introduction, Introducción, Введение
+| `scope` | Scope, Domaine d'application, Objeto y campo de aplicación, Область применения
+| `norm-refs` | Normative references, Références normatives, Referencias normativas, Нормативные ссылки
+| `terms` | Terms and definitions / starts with 'Terms, definitions', Termes et definitions / starts with 'Termes, définitions;, Тérminos y definiciones, Термины и определения
+
+|===
+
+
+== `content-type` for Annex
+
+mnconvert adds `@content-type` and `<annex-type>` in accordance with the rules:
+* ISO:
+** `@content-type="inform-annex`, `<annex-type>(informative)</annex-type>` for informative Annex
+** `@content-type="normative-annex"`,  `<annex-type>(normative)</annex-type>` for normative Annex
+
+* IEC:
+**- `@content-type="informative` for informative Annex
+** `@content-type="normative"` for normative Annex
+
+If `title` starts with `(This annex does not form an integral part `, then `@content-type` isn't added.
+
+
+== IEC index support
+
+
+mnconverts converts indexes in IEC documents into the structure:
+
+[example]
+====
+[source,xml]
+----
+<index-entry id="df-1">
+	<term>ambient air temperature</term>
+	<see-entry>3.8.9</see-entry>
+	<see-entry>df 1</see-entry>
+</index-entry>
+----
+====
+
+
+== Warning, Important and Caution support
+
+mnconvert transforms the Metanorma element `admonition` into NISO STS XML element `non-normative-note` 
+with `@content-type=”warning”`, `“important”` or `“caution”`.
+
+
+== List in paragraph processing
+
+mnconvert encodes lists outside of the preceding paragraph, always for IEC and ISO.
+
+[example]
+====
+[source,xml]
+----
+<p>There may be a variety of reasons for a... These include the following:</p>
+<list list-type="dash">
+  <list-item>
+    <label>—</label>
+    <p>genuine differences in performance between laboratories;</p>
+----
+
+
+== Conclusion
+
+There are more changes in the mnconvert tool, and they will be noticed in the next blog posts.
+
+If you have a questions or suggestions, feel free to file an issue at
+https://github.com/metanorma/mnconvert[mnconvert repo].
+
