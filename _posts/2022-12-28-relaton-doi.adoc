@@ -162,10 +162,18 @@ _Multilingualism, Second Language Learning, and Gender_, and the record it retur
 
 [source,bibtex]
 ----
-        editor = {Aneta Pavlenko, Adrian Blackledge, Ingrid Piller and Marya Teutsch-Dwyer}
+@inbook{heller-a,
+  title = {Gender and public space in a bilingual school},
+  author = {Heller, Monica},
+  editor = {Pavlenko, Aneta and Blackledge, Adrian and Piller, Ingrid and Teutsch-Dwyer, Marya},
+  booktitle = {Multilingualism, Second Language Learning, and Gender},
+  publisher = {DE GRUYTER MOUTON},
+  address = {Berlin},
+  timestamp = {2023-01-15},
+  doi = {10.1515/9783110889406.257},
+  url = {https://doi.org/10.1515%2F9783110889406.257}
+}
 ----
-
-TODO: To confirm with actual fixed bibtex
 
 * Some Crossref records, particularly from older bibliographic sources, have messy data incorporating delimiters.
 For example, the record for `10.5962/bhl.title.124254`, an 1852 publication, includes trailing punctuation in its
@@ -184,7 +192,22 @@ title, place of publication, and publisher fields:
 }
 ----
 
-relaton-doi cleans up the fields to the extent reasonable.
+relaton-doi cleans up the fields to the extent reasonable:
+
+[source,bibtex]
+----
+@book{kuster1852a,
+  title = {Die Gattungen Pupa, Megaspira, Balea und Tornatellina : in Abbildungen nach der Natur mit Beschreibungen},
+  author = {Kuster, H. C. and Chemnitz, Johann Hieronymus and Martini, Friedrich Heinrich Wilhelm},
+  publisher = {Verlag von Bauer und Raspe (Julius Merz)},
+  year = {1852},
+  address = {Nürnberg},
+  timestamp = {2023-01-15},
+  doi = {10.5962/bhl.title.124254},
+  url = {https://doi.org/10.5962%2Fbhl.title.124254}
+}
+----
+
 
 * On occasion, author and editor names appear in all caps. relaton-doi will change these to titlecase, so long as 
 the name is more than two letters long. You may need to review the results, to catch camelcase exceptions such as
