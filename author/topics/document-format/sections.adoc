@@ -347,6 +347,31 @@ or `Metanorma-Extension` (case-insensitive) [added in https://github.com/metanor
 its contents are appended to the `metanorma-extension` element for the document.
 This can be used to add data into a document that is not to be rendered, but which is still needed for processing.
 
+
+[[user-css]]
+==== user-css
+
+A user can specify CSS for inclusion in Metanorma output by embedding that CSS in a source block
+within a `user-css` subclause of  the `Metanorma-Extension` clause [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.8].
+This CSS will be applied to all of PDF, DOC, and HTML; note that DOC only supports CSS 4.
+
+[source,asciidoc]
+---
+== Metanorma-Extension
+
+=== user-css
+
+[source]
+----
+.green { background-color: green} 
+----
+
+....
+
+span:green[this text is highlighted as green]
+---
+
+
 == Symbols and Abbreviations
 
 Symbols and Abbreviations sections are expected to be simple definition lists
