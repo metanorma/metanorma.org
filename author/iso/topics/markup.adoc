@@ -236,6 +236,8 @@ one of:
 
 ==== Systematic order
 
+===== General
+
 // TODO remove: From NN: Systematic order is only permitted in vocabulary documents.
 
 In systematic order, the entry numbers are "serial numbers reflecting
@@ -278,6 +280,8 @@ Definition 2.1, a sub-concept of Term 2
 --
 ====
 
+===== Encoding parent terms without definitions
+
 If a parent term clause (a term clause that contains terms below) is not
 given a definition, the `[.term]` attribute needs to be applied to indicate
 that the parent term is a "term" instead of a "mixed-order grouping".
@@ -310,6 +314,8 @@ Definition 3, a sub-concept of Term 2
 
 ==== Mixed order
 
+===== General
+
 In mixed order,
 
 * entry numbers of divisions are "serial numbers reflecting the structure of
@@ -329,9 +335,8 @@ In mixed order,
 3.2.1.1 Terminological entry in the order of preference.
 ====
 
-This arrangement counts only terminal subclauses within a
-"`Terms and definitions`" clause as terms, and
-all other clauses as groupings.
+This arrangement counts terminal subclauses within a "`Terms and definitions`"
+clause as terms, and all other intermediate clauses as term groupings.
 
 [example]
 .Encoding terms in mixed order with groupings
@@ -356,17 +361,52 @@ Definition C
 ====
 
 NOTE: If there is any text in a term grouping, Metanorma is going to assume that
-you intended for a systematic term.
+the grouping was intended as a systematic term.
 
-To introduce discursive text in a term grouping,
-such text has to be flagged with a `[.boilerplate]` clause as described in
+
+===== Declared term groupings
+
+// TODO: NN REMOVE
+// In vocabulary documents, if a clause has a definition (a normal paragraph that
+// follows the heading definition), it is treated as a term grouping instead of a
+// term (i.e. as mixed order) if it is tagged with the `[.grouping]`...
+
+The role `[.grouping]` explicitly declares a clause as a term grouping. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.3.4].
+
+[source,asciidoc]
+.Encoding terms in mixed order with declared groupings
+--
+== Terms and definitions
+
+[.grouping]
+=== Term grouping 1
+Paragraph 1
+
+==== Term A
+Definition A
+
+==== Term B
+Definition B
+
+[.grouping]
+=== Term grouping 2
+Paragraph 2
+
+==== Term C
+Definition C
+--
+
+===== Replacing boilerplate text in a term grouping
+
+Discursive text in a term grouping are encoded with a `[.boilerplate]` clause
+as described in
 link:/author/topics/document-format/section-terms#overriding-predefined-text[Overriding predefined text].
 
 NOTE: This is the same method as overriding boilerplate text in a
 "Terms and definitions" section.
 
 [example]
-.Encoding terms in mixed order with groupings with grouping description
+.Encoding terms in mixed order with groupings and replaced boilerplate
 ====
 [source,asciidoc]
 --
@@ -398,34 +438,6 @@ NOTE: Without the `[.boilerplate]` and `=== {blank}`, the "The following terms
 are ..." text will be assumed to be the definition of the respective term
 grouping, and the subsequent terms will be assumed to be subterms.
 ====
-
-In vocabulary documents, if a clause has a definition (a normal paragraph that
-follows the heading definition), it is only treated as a subclause instead of a
-term (i.e. as mixed order) if it is tagged with the role attribute
-`[.grouping]`. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.3.4].
-
-[source,asciidoc]
-.Encoding subclause groupings in a terminology clause in mixed order, with groupings providing content
---
-== Terms and definitions
-
-[.grouping]
-=== Term grouping 1 (subclause 1)
-Paragraph 1
-
-==== Term 1
-Definition 1
-
-==== Term 2
-Definition 2
-
-[.grouping]
-=== Term grouping 2 (subclause 2)
-Paragraph 2
-
-==== Term 3
-Definition 3
---
 
 
 === Combined terms and definitions
