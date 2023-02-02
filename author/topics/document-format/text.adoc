@@ -672,11 +672,21 @@ All five built-in Asciidoctor admonition types are recognised by Metanorma:
 * `[WARNING]`
 
 In addition, the following types are recognised by specifying `[type=...]` as
-a block attribute:
+a block attribute on one of the latter four built-in admonition types in block mode (other than NOTE):
 
 * `statement`: typographically separate statements in mathematics, such as propositions, proofs, or theorems.
 * `editorial`: annotation by document editors, intended for all readers of the document and not just its authors.
 * `box`: box element, intended as standalone sidebar which can be referenced from within the document.
+
+[source,asciidoc]
+----
+[TIP,type=box]
+====
+This is a box
+====
+----
+
+Other types can also be entered.
 
 === Whole document admonitions
 
