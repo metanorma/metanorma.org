@@ -1,0 +1,139 @@
+---
+layout: bsi-flavor
+---
+
+= Metanorma BSI document attributes
+
+[[note_general_doc_ref_doc_attrib_ieee]]
+[NOTE]
+====
+Document attributes listed below are unique to the processing of BSI documents
+in Metanorma.
+
+For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author's documentation. That page describes attributes that apply to all Metanorma flavors, not just IEEE SA.
+
+For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
+====
+
+=== Document types
+
+The following document types are recognised in the `:doctype:` document attribute:
+
+BSI document types::
++
+--
+* british-standard
+* draft-for-development
+* published-document
+* privately-subscribed-standard
+* publicly-available-specification
+* flex-standard
+--
+
+Adoptable types, ISO ::
++
+--
+* international-standard
+* technical-specification
+* technical-report
+* guide
+* publicly-available-specification
+* international-workshop-agreement
+--
+
+
+Adoptable types, IEC ::
++
+--
+* international-standard
+* technical-specification
+* technical-report
+* industry-technical-agreement
+--
+
+Adoptable types, CEN and CENELEC ::
++
+--
+* standard
+* technical-specification
+* technical-report
+* guide
+* european-workshop-agreement
+--
+
+The following document types are recognised in the `:docsubtype:` document attribute:
+
+* specification
+* method-of-test
+* method-of-specifying
+* vocabulary
+* code-of-practice
+
+=== Document numbers
+
+In the case of native BS standards, the identifier is compiled from a combination of the `doctype`,
+`docnumber`, and `copyright-year` document attributes, with a numeric `docnumber` value. So
+
+[source,asciidoctor]
+----
+:docnumber: 1000
+:doctype: publicly-available-specification
+:copyright-year: 2021
+----
+
+generates the document identifier "PAS 1000:2021".
+
+In the case of document adoptions, the `docnumber` attribute is expected to be the complete source
+document identifier (including year number), to which `BS` is prefixed. Part numbers of the original
+document should also be included in the `docnumber` attribute, instead of being named with the `partnumber`
+attribute. So
+
+[source,asciidoctor]
+----
+:docnumber: ISO 123-2:1985
+:doctype: technical-report
+----
+
+generates the document identifier "BS ISO 123-2:1985".
+
+Note that the `:copyright-year:` attribute is added to the identifier of a native BSI document,
+but not to that of an adopted document. So a 2022 adoption of ISO 123:1985 will still have the identifer
+"BS ISO 123:1985".
+
+=== Related BSI Standards
+
+The frontispiece of BSI Standards includes text like the following:
+
+____
+The following BSI references relate to the work on this document: +
+Committee reference DEF/1 +
+Draft for comment 20/30387670 DC
+____
+
+This text is created by adding the BSI list of documents that the document relates to
+as a semicolon-delimited list of references, using `:bsi-related:`:
+
+[source,asciidoctor]
+----
+:bsi-related: Committee reference DEF/1;Draft for comment 20/30387670 DC
+----
+
+The introductory phrase is added automatically.
+
+=== Adoption of standard
+
+An adopted external standard is defined as `:adopted-from:`:
+
+[source,asciidoctor]
+----
+:docidentifier: NA to BS EN 1991-1-2
+:adopted-from: EN 1991-1-2
+----
+
+
+[source,asciidoctor]
+----
+:docidentifier: BS ISO 639-2
+:adopted-from: ISO 639-2
+----
+

@@ -1,0 +1,193 @@
+---
+layout: bsi-flavor
+title: Metanorma for BSI markup
+---
+
+== Visual Presentation
+
+=== Cover page images
+
+Any images to be included in the cover page are to be given under the
+document attribute `coverpage-image`, as a comma-delimited list:
+
+[source,asciidoctor]
+----
+:coverpage-image: images/image1.gif,images/image2.gif
+----
+
+=== Font
+BSI documents require the BSI Gesta font to be installed in order to render HTML and PDF
+outputs correctly. The BSI Gesta font cannot be freely distributed, but can be made available
+for use under Metanorma by requesting access to the repository https://github.com/metanorma/fontist-formulas-private
+
+Once you have access to that repository, execute the following commands to make the BSI Gesta font
+available to Metanorma:
+
+[source,console]
+----
+fontist repo setup metanorma https://github.com/metanorma/fontist-formulas-private
+fontist repo update metanorma
+fontist install "BSI Gesta"
+----
+
+
+== Clauses
+
+=== Corrigenda
+
+Corrigenda are specified by a prefatory clause, of type "corrigenda":
+
+[source,asciidoctor]
+----
+[.preface,type=corrigenda]
+== Amendments/corrigenda issued since publication
+[[tab_ace_nat]]
+[cols="1,1",options="header,unnumbered"]
+|===
+|Date |Text affected
+|===
+----
+
+=== Sections
+
+Sections are signalled through floating titles with a "section" option. The "Section _n_" heading of the title
+is prefixed automatically; if it is missing, the title is left blank.
+
+[source,asciidoc]
+----
+[discrete%section]
+== {blank}
+
+== Clause
+
+[discrete%section]
+== Added Considerations
+----
+
+rendered as
+
+____
+*Section 1*
+
+*Clause 1*
+
+*Section 2. Added Considerations*
+____
+
+=== Term sources
+
+Term sources can be not only identical relative to their original; they can also be adapted, quoted,
+or modified.  These are indicated as follows:
+
+[source,asciidoc]
+----
+[.source%adapted]
+<<reference>>
+----
+
+[source,asciidoc]
+----
+[.source%quoted]
+<<reference>>
+----
+
+[source,asciidoc]
+----
+[.source%modified]
+<<reference>>
+----
+
+
+== Blocks
+
+=== Commentaries
+
+Commentaries are entered as notes of type `commentary`,
+with an optional `target` attribute,
+giving the anchor of the block the commentary is referencing. If no target
+is given, the commentary is assumed to be about the subclause containing it.
+
+[source,asciidoc]
+----
+[[reag]]
+=== Reagents
+
+[NOTE,type=commentary,target=reag]
+This is a commentary on the reagents
+
+[[table1]]
+.Reagents in use
+|===
+| A | B
+|===
+----
+
+____
+*7.6 Reagents*
+
+COMMENTARY ON CLAUSE 7.6
+This is a commentary on the reagents
+
+|===
+| A | B
+|===
+_Table 1: Reagents in use_
+----
+____
+
+[source,asciidoc]
+----
+[[reag]]
+=== Reagents
+
+[NOTE,type=commentary]
+This is a commentary on the reagents
+
+[[table1]]
+.Reagents in use
+|===
+| A | B
+|===
+----
+
+____
+*7.6 Reagents*
+
+COMMENTARY ON CLAUSE 7.6
+This is a commentary on the reagents
+
+|===
+| A | B
+|===
+_Table 1: Reagents in use_
+----
+____
+
+
+[source,asciidoc]
+----
+=== Reagents
+
+[NOTE,type=commentary,target=table1]
+This is a commentary on the table
+
+[[table1]]
+.Reagents in use
+|===
+| A | B
+|===
+----
+
+____
+*7.6 Reagents*
+
+COMMENTARY ON TABLE 1
+This is a commentary on the table
+
+|===
+| A | B
+|===
+_Table 1: Reagents in use_
+----
+____
+
