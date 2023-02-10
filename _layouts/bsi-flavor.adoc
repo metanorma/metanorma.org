@@ -1,0 +1,42 @@
+---
+layout: flavor
+
+docs_title: Metanorma for BSI
+title: Author BSI documents using Metanorma
+
+bsi_flavor:
+  title: BSI
+  private: true
+  markup_name: Metanorma for BSI
+  build:
+    cli_flags: "--type bsi -x html"
+  sample:
+    repo_url: https://github.com/metanorma/mn-samples-bsi
+    rendered_url: https://metanorma.github.io/mn-samples-bsi/
+  implemented_by: metanorma-bsi
+  data_models: metanorma-model-bsi
+  docs_entry_points:
+    - path: ./authoring/
+      title: guide
+
+base_url: /author/nist
+
+navigation:
+  items:
+  - title: Get started
+    path: /
+  - title: Sample
+    path: /sample/
+  - title: Usage
+    path: /topics/
+    items:
+    - title: Markup
+      path: /topics/markup/
+  - title: Reference guides
+    path: /ref/
+    items:
+      - title: Document attributes
+        path: /ref/document-attributes/
+---
+
+{{ content }}
