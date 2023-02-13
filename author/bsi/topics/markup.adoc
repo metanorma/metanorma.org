@@ -30,6 +30,43 @@ fontist repo update metanorma
 fontist install "BSI Gesta"
 ----
 
+=== Boilerplate text
+
+By default, coverpage and frontispiece text is automatically added by Metanorma. That includes copyright information,
+draft notices, and contact information about the BSI.
+
+BSI Flex standards include inside front cover material specific to that type of standard, as required by the current Flex style guide:
+
+____
+e) a description of the programme, if applicable, worded as follows:
+   This BSI Flex is part of a wider programme of work around XXXX. For more information, go
+   to: https://www.bsigroup.com/XXX
+
+f) a link to the project website, worded as follows;
+   Information on the development of this BSI Flex can be found at:
+   https://www.bsigroup.com/XXX
+
+g) a statement about BSI Flex standards, worded as follows:
+   BSI Flex standards provide a new, flexible way to develop consensus-based good practice
+   that dynamically adapts to keep pace with fast-changing markets. For more information, go to:
+   https://www.bsigroup.com/en-GB/our-services/standards-services/flex/
+____
+
+Because there is variability in this information, including whether e) and f) are distinct paragraphs,
+the text for e) and f) should be entered as a preface clause of type "flex-coverpage"; any title provided will
+be ignored. For example:
+
+[source,asciidoctor]
+----
+[.preface,type="flex-coverpage"]
+== Flex cover page
+
+This BSI Flex is part of a wider programme of work around CAVs. For more information, go
+to: https://www.bsigroup.com/en-GB/CAV/
+----
+
+The text for g) is the same for all BSI Flex standards, and is supplied automatically after the information
+in e) and f).
 
 == Clauses
 
