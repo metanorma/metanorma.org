@@ -91,6 +91,32 @@ Second edition January 2006
 
 == Clauses
 
+=== Adoption forewords
+
+When BSI adopts a standard from another SDO, it may insert its own foreword before the foreword
+of the original document. If the standard has been adopted via a regional SDO such as CEN,
+that regional SDO may have already added its own foreword.
+
+In order to ensure that the national and regional forewords are shown before the original foreword,
+they need to be specified as prefatory clauses, of type "national-foreword" and "regional-foreword":
+
+[source,asciidoctor]
+----
+[.preface,type=national-foreword]
+== National foreword
+
+BSI has adopted...
+
+[.preface,type=regional-foreword]
+== Regional foreword
+
+CEN has adopted...
+
+[.preface]
+== Foreword
+The ISO standard...
+----
+
 === Corrigenda
 
 Corrigenda are specified by a prefatory clause, of type "corrigenda":
