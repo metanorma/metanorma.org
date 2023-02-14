@@ -83,18 +83,18 @@ In the case of native BS standards, the identifier is compiled from a combinatio
 
 generates the document identifier "PAS 1000:2021".
 
-In the case of document adoptions, the `docnumber` attribute is expected to be the complete source
-document identifier (including year number), to which `BS` is prefixed. Part numbers of the original
-document should also be included in the `docnumber` attribute, instead of being named with the `partnumber`
-attribute. So
+In the case of document adoptions, the `docidentifier` attribute should be used (to which `BS` will be prefixed),
+instead of assembling an identifier out of components, so that the source document identifier can be built up accurately.
+Part numbers of the original document should also be included in the `docidentifier` attribute,
+instead of being named with the `partnumber` attribute. So
 
 [source,asciidoctor]
 ----
-:docnumber: ISO 123-2:1985
+:docidentifier: ISO/TR 123-2:1985
 :doctype: technical-report
 ----
 
-generates the document identifier "BS ISO 123-2:1985".
+generates the document identifier "BS ISO/TR 123-2:1985".
 
 Note that the `:copyright-year:` attribute is added to the identifier of a native BSI document,
 but not to that of an adopted document. So a 2022 adoption of ISO 123:1985 will still have the identifer
