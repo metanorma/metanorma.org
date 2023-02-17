@@ -207,12 +207,18 @@ forms a sidebar for the display of the HTML content of each file.
 The following fields are defined:
 
 * `doctitle`, `docnumber`, etc.: Information derived from the Relaton YAML
-description in the manifest. The field names are as defined for Liquid templates
+description in the manifest of the entire collection. 
+The field names are as defined for Liquid templates
 in Metanorma: see
 link:/builder/topics/metadata-and-boilerplate[Metadata and Boilerplate].
 
 * `navigation`: A nested list giving hyperlinks to the constituent documents,
 following the specification in the `manifest` field of the collection manifest.
+
+* `identifiers`: The identifiers of all documents in the collection, in the 
+depth-first order they appear in the manifest. [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6]
+* `titles`: The titles of all documents in the collection, in the 
+depth-first order they appear in the manifest. [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6]
 
 [[collection-cross-references]]
 == Cross-references
