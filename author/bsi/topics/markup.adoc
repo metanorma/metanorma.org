@@ -335,3 +335,30 @@ The styling can be overridden using attributes as is normal in Asciidoctor, e.g.
 
 Ordered lists in BSI support the `start` attribute, to restart numbering; the value
 of start is always numeric, regardless of how the list numbering is rendered.
+
+=== Figures
+
+Figures can optionally have a `width` attribute, with legal values `full-page-width`, `narrow`,
+and `text-width` (default).
+
+[source,asciidoc]
+----
+[width=narrow]
+image::abc.png[]
+----
+
+=== Tables
+
+Tables can optionally have a `width` attribute, with legal values `full-page-width`, 
+and `text-width` (default). 
+
+[source,asciidoc]
+----
+[width=full-page-width]
+|===
+|A |B
+
+|C |D
+|===
+----
+
