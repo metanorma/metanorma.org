@@ -98,7 +98,10 @@ of the original document. If the standard has been adopted via a regional SDO su
 that regional SDO may have already added its own foreword.
 
 In order to ensure that the national and regional forewords are shown before the original foreword,
-they need to be specified as prefatory clauses, of type "national-foreword" and "regional-foreword":
+they need to be specified as prefatory clauses, of type "national-foreword" and "regional-foreword".
+The `== Foreword` markup is retained for the source document. (Marking it as `.preface` is optional,
+as Metanorma already recognises `== Foreword` as a prefatory clause. Marking the National and Regional 
+forewords as `.preface` is mandatory.)
 
 [source,asciidoctor]
 ----
@@ -119,7 +122,7 @@ The ISO standard...
 
 === Corrigenda
 
-Corrigenda are specified by a prefatory clause, of type "corrigenda":
+Corrigenda are specified by a first-level prefatory clause, of type "corrigenda":
 
 [source,asciidoctor]
 ----
@@ -130,6 +133,37 @@ Corrigenda are specified by a prefatory clause, of type "corrigenda":
 |===
 |Date |Text affected
 |===
+----
+
+=== Forewords
+
+Forewords in BSI typically consist of multiple subclauses, which are not numbered. These subclauses do
+not need to have types allocated to them, as they are not at this time processed any differently.
+
+The following is a representative foreword with subclauses:
+
+[source,asciidoctor]
+----
+== Foreword
+
+=== Publishing information
+
+=== Supersession
+
+=== Relationship with other publications
+
+=== Information about this document
+
+=== Hazard warnings
+
+=== Use of this document
+
+=== Presentational conventions
+
+=== Contractual and legal considerations
+
+// Not a clause heading!
+*Compliance with a British Standard cannot confer immunity from legal obligations.*
 ----
 
 === Sections
