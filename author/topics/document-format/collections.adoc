@@ -535,6 +535,8 @@ This is an introduction added to the Received document
 
 embed::received.adoc[]
 
+The embedded document can be 
+
 == Colophon
 ----
 
@@ -598,3 +600,45 @@ This is content
 
 == Colophon
 ----
+
+Documents can be embedded at multiple levels; the current implementation presupposes
+that any document can only embed a single document, and that the embedding documents
+only involve substituted clauses, or prefatory clauses (e.g. the original foreword,
+supplemented by a regional foreword, and/or a national foreword).
+
+It is possible to cite the embedded document from the embedding document, through
+a cross-reference to an anchor on the `embed::` directive: if no display text is supplied,
+the cross-reference is populated with the document identifier of the 
+embedded document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.10]:
+
+For example, if
+
+[source,asciidoc]
+----
+= Document 1
+:docidentifier: SHQ XYZ 123A
+
+== Introduction
+
+This is an introduction added to the Received document <<id>>
+
+[[id]]
+embed::received.adoc[]
+----
+
+embeds the document
+
+[source,asciidoc]
+----
+= Document 1
+:docidentifier: XYZ 123
+
+== Foreword
+
+This is the foreword
+----
+
+Then `<<id>>` will be rendered as __XYZ 123__, the embedded document identifier;
+and the `<<id>>` cross-reference will hyperlink to the first header within the
+embedded document (the Foreword, in this case).
+
