@@ -427,3 +427,33 @@ should be marked up with `span:units[]`, to alert Metanorma not to render them i
 |Tissue | 12 | 5.9
 |===
 ----
+
+Tables can have a horizontal rule drawn under a number of specified rows, through the `border-under-row`
+attribute: this gives a comma-delimited list of row numbers, under which a thin border should be drawn.
+Row counting starts with the first line of the header, as row #0:
+
+[source,asciidoc]
+----
+[border-under-row="0,2",headerrows=2]
+|===
+|Type |Linear density    |Inside diameter
+|     |span:units[kg/mm]  |span:units[mm]
+   
+|Bone | 47 | 3.4
+|Tissue | 12 | 5.9
+|===
+----
+
+renders as:
+
+....
+=========================================
+Type    Linear density    Inside diameter
+-----------------------------------------
+        kg/mm             mm
+
+Bone    47                3.4
+-----------------------------------------
+Tissue  12                5.9 
+=========================================
+....
