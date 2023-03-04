@@ -404,3 +404,26 @@ and `text-width` (default).
 |===
 ----
 
+Tables can optionally have a second header row consisting of units. Any such header cells
+should be marked up with `span:units[]`, to alert Metanorma not to render them in boldface:
+
+[source,asciidoc]
+----
+[headerrows=2]
+|===
+|Type |Linear density    |Inside diameter
+|     |span:units[kg/mm]  |span:units[mm]
+
+|Bone | 47 | 3.4
+|Tissue | 12 | 5.9
+|===
+
+[headerrows=2]
+|===
+3+>| span:units[Dimensions in millimeters]
+|Type | Linear density | Inside diameter
+
+|Bone | 47 | 3.4
+|Tissue | 12 | 5.9
+|===
+----
