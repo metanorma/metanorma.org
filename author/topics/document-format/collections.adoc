@@ -92,6 +92,12 @@ https://github.com/metanorma/metanorma/releases/tag/v1.3.5].
 This is automatically included when `sectionsplit` is set in the
 Metanorma file, to break a single document up into multiple HTML files.
 
+** `coverpage` gives the location of the HTML coverpage, as an alternative to the
+`-c` argument above [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.7].
+
+** `coverpage-style` gives the style of the PDF and HTML coverpage, if multiple styles are
+offered [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.7].
+
 ** `bare-after-first` compiles the first HTML document in the
 collection complete (with coverpage and boilerplate), and all
 subsequent files with the `bare` option (i.e. without coverpage and
@@ -138,6 +144,8 @@ The following is an example collection manifest:
 ----
 directives:
   - documents-inline
+  - coverpage: index.html
+  - coverpage-style: JACK
 bibdata:
   title:
     type: title-main
