@@ -15,7 +15,7 @@ For _common document attributes_, see link:/author/ref/document-attributes/[Docu
 For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
 ====
 
-=== Document types
+== Document types
 
 The following document types are recognised in the `:doctype:` document attribute:
 
@@ -69,7 +69,7 @@ The following document types are recognised in the `:docsubtype:` document attri
 * vocabulary
 * code-of-practice
 
-=== Document numbers
+== Document numbers
 
 In the case of native BS standards, the identifier is compiled from a combination of the `doctype`,
 `docnumber`, and `copyright-year` document attributes, with a numeric `docnumber` value. So
@@ -100,7 +100,7 @@ Note that the `:copyright-year:` attribute is added to the identifier of a nativ
 but not to that of an adopted document. So a 2022 adoption of ISO 123:1985 will still have the identifer
 "BS ISO 123:1985".
 
-=== Related BSI Standards
+== Related BSI Standards
 
 The frontispiece of BSI Standards includes text like the following:
 
@@ -120,7 +120,7 @@ as a semicolon-delimited list of references, using `:bsi-related:`:
 
 The introductory phrase is added automatically.
 
-=== Adoption of standard
+== Adoption of standard
 
 An adopted external standard is defined as `:adopted-from:`:
 
@@ -137,7 +137,7 @@ An adopted external standard is defined as `:adopted-from:`:
 :adopted-from: ISO 639-2
 ----
 
-=== Expert Commentaries
+== Expert Commentaries
 
 Expert commentaries are of type `:doctype: expert-commentary`, and are commentaries of another
 document; the related document is indicated with `:annotation-of:`.
@@ -156,7 +156,7 @@ possibly organisational affiliation (`:affiliation:`). The position can be discu
 :role: author
 ----
 
-=== Visual appearance
+== Visual appearance
 
 `:coverpage-image:`:: Comma-delimited list of image locations, for images to be included on the PDF cover page. All image locations are relative to the source document.
 `:innercoverpage-image:`:: Same, for images to be included on the PDF inside cover page.
@@ -170,6 +170,8 @@ possibly organisational affiliation (`:affiliation:`). The position can be discu
 `:presentation-metadata-color-list-label:`:: List item bullet and label colour (BSI Flex and PAS only), as #HEX.
 `:presentation-metadata-color-clause-union-background:`:: Background colour on clauses under floating titles (BSI Flex and PAS only), as #HEX
 `:presentation-metadata-color-backpage-background:`:: Background colour on PDF back cover (BSI Flex and PAS only), as #HEX.
+
+`:presentation-metadata-layout-columns:`:: Alternate between one-column and two-column output; default is `1`. `2` is expected for PAS documents authored before 2023.
 
 `:toclevels:`::
 Number of table of contents levels to render. Accepts an integer value. (default: `1` for BSI).
