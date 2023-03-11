@@ -1855,6 +1855,21 @@ of `image1.gif`; that instructs any downstream processing that extracts images
 out of the file (such as `metanorma -e`) to extract this image to the file `image1.gif`,
 instead of using an automatically generated filename.
 
+== Columns
+
+Metanorma has limited support for rendering text in multiple columns. (As of this writing,
+it is limited to BSI, and PDF output only.) Where text is rendered in multiple columns,
+it is possible to override the rendering of individual blocks, with a `columns` attribute,
+setting the count of columns that they should be rendered with instead [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.0]:
+
+[source,asciidoc]
+----
+[columns=1]
+____
+This blockquote spans all columns of the text
+____
+----
+
 == Auto-numbering
 
 === General
