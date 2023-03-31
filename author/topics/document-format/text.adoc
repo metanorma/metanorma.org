@@ -944,6 +944,29 @@ The following syntax will be processed as generating equal width columns.
 NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to
 `[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.
 
+=== Table sources
+
+A table can incorporate an indication of its source,
+which in Metanorma is expected to be a bibliographical reference, just as with
+term sources [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2].
+Any such sources need to appear after the table, and before any notes which will also be
+included in the table.
+
+[source,asciidoc]
+--
+|===
+| Head | Head
+
+| Row  | Row
+|===
+
+[.source]
+<<iso1212>>, reformatted
+
+NOTE: Note 1
+
+NOTE: Note 2
+--
 
 == Mathematical expressions
 
@@ -1487,6 +1510,23 @@ through the `class` attribute [added in https://github.com/metanorma/metanorma-s
 image::logo.jpg[]
 --
 
+=== Figure sources
+
+When a figure is marked up as a block, it can incorporate an indication of its source,
+which in Metanorma is expected to be a bibliographical reference, just as with
+term sources [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2].
+
+[source,asciidoc]
+--
+[figure]
+.Rice husk separation
+====
+image::logo.jpg[]
+
+[.source]
+<<iso1212>>, reformatted
+====
+--
 
 == Passthrough to Metanorma XML and target formats
 
