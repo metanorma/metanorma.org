@@ -1108,7 +1108,7 @@ The following input:
 
 ...
 
-* [[[ISO7301,path(./iso7301.html,ISO 7301)]]]
+* [[[ISO7301,path:(./iso7301.html,ISO 7301)]]]
 --
 
 will render in HTML as:
@@ -1146,6 +1146,30 @@ rendered [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v
 <<ISO7301,lowercase%clause=2>>
 --
 ====
+
+==== Styled cross-references
+
+As with link:/author/topics/document-format/xrefs#xref-styles[internal cross-references], cross-referenced
+citations can have a `style` attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.4].
+As of this writing, the only values allowed are the types of docidentifier value that can be substituted
+for the primary identifier of the reference, for standards documents; those values will need to be looked up in
+Relaton (and the Semantic XML of the document). For example, given the citation
+
+[source,xml]
+----
+<bibitem type="standard" id="bib1">
+...
+<docidentifier type="ISO" primary="true">ISO/FDIS 17664-1</docidentifier>
+<docidentifier type="URN">urn:iso:std:iso-fdis:17664:-1:ed-1:fr</docidentifier>
+...
+</bibitem>
+----
+
+a crossreference `<<bib1>>` will be populated by default with the primary or else the first
+`docidentifier` value found, `ISO/FDIS 17664-1`. However, given `<<bib1,style=URN%>>`, the
+first `docidentifier` value of type `URN` will be sought instead, and the cross-reference
+will be populated by default as `URN urn:iso:std:iso-fdis:17664:-1:ed-1:fr`.
+
 
 === Link-only references
 
