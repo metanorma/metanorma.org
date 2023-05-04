@@ -1360,3 +1360,36 @@ The following encoding will hide the particular bibliographic reference.
 * [[[iso86011,hidden(ISO 8601-1:2019)]]]
 --
 ====
+
+=== CSV notation
+
+The notation shown up to this point for reference processing flags has the potential of being too complicated
+to parse, if deeply nested or if the parentheses of flags are combined with the parentheses of user-supplied
+labels or of "all parts". For that reason, an alternative notation is supported, involving key/value pairs
+delimited by comma and equals signs in the anchor label [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.4].
+For example, the following two references are equivalent:
+
+[source,asciidoc]
+----
+[bibliography]
+== Normative references
+
+* [[[iso8601_1,nofetch((Date-Time)ISO 8601-1:2019)]]], _Date and time — Representations for information interchange — Part 1: Basic rules_
+* [[[iso8601_1a,nofetch=true,usrlabel=Date-Time,code=ISO 8601-1:2019]]], _Date and time — Representations for information interchange — Part 1: Basic rules_
+----
+
+The CSV-based notation has the following keys:
+
+`nofetch`:: `true`|`false`
+`hidden`:: `true`|`false`
+`dropid`:: `true`|`false`
+`local-file`:: (filename of local Relaton cache)
+`repo`:: (repository name)/(document entry)
+`path`:: (file path)
+`number`:: (number, for a numeric ID of a citation)
+`usrlabel`:: (user-supplied label of reference)
+`code`:: (authoritative identifier of reference)
+`footnote`:: (footnote text to associate with the identifier in the references section only)
+
+If no key is supplied in the CSV entry, it is assumed to be a code; e.g. `nofetch=true,usrlabel=Date-Time,ISO 8601-1:2019`
+is interpreted as `nofetch=true,usrlabel=Date-Time,code=ISO 8601-1:2019`.
