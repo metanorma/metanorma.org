@@ -1,7 +1,7 @@
 ---
 layout: docs-base
 html-class: docs-page
-title: Getting started with Metanorma in CI/CD environments
+title: Getting Started with Metanorma in CI/CD Environments
 redirect_from:
   - /setup/cicd
 ---
@@ -10,34 +10,139 @@ Metanorma is often run on continuous integration (CI) and continuous deployment
 
 == Running on CI/CD platforms
 
-We currently support the following CI/CD platforms:
+Because metanorma provides a CLI toolchain it's straightforward to integrate it with any CI/CD platform.
 
-* GitHub Actions
-* GitLab CI
-
-=== Installation
-
-Metanorma provides native packages installable on most major platforms and
-these packages can be installed through a non-interactive console/terminal.
-The full list is available link:/install/[here].
-
-Metanorma also provides additional automated actions for the setup and running
-of Metanorma on CI/CD testers.
+Because we use GitHub/GitLab for development integration with those CI platforms 
 
 === GitHub Actions
 
-The following GitHub Actions can be used to simplify a Metanorma CI workflow:
+An example of the workflow for GitHub Actions may look like this:
 
-* Metanorma setup: https://github.com/marketplace/actions/setup-metanorma[`actions-mn/setup@v2`]
+[source,yml]
+---
+name: generate
 
-* Metanorma CLI actions: https://github.com/actions-mn/cli[`actions-mn/cli/site-gen@main` and more]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
 
-Please refer to our https://github.com/metanorma/mn-samples-iso[ISO samples repository]
-for further reference.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: metanorma/metanorma:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cache Metanorma assets
+        uses: actions-mn/cache@v1
+
+      - name: Metanorma generate site
+        uses: actions-mn/build-and-publish@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          agree-to-terms: true
+
+  deploy:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+---
+
+In the workflow above doesn't fit your needs you can create your own workflow based on a list of actions that metanorma provides:
+
+* https://github.com/actions-mn/setup[`actions-mn/setup`] - used for installing `metanorma` CLI for Ubuntu, MacOS, or Windows
+* https://github.com/actions-mn/cache[`actions-mn/cache`] - caches intermediate metanorma files (fonts, relaton data) to speedup compilation
+* https://github.com/actions-mn/build-and-publish[`actions-mn/build-and-publish`] - do site generation and upload artifact for deployment
+
+The https://github.com/actions-mn/setup[`actions-mn/setup` GitHub Action] can be skipped if you run CI in a Docker environment and use the Metanorma Docker image.
+
+For complete workflow examples just check https://github.com/actions-mn/build-and-publish[README for `actions-mn/build-and-publish` action]
 
 === GitLab CI
 
-Metanorma provides a sample `.gitlab-ci.yml` workflow file that demonstrates
-how to use the Metanorma docker container in the environment.
+An example of the workflow for GitHub Actions may look like this:
 
-* https://github.com/metanorma/metanorma-build-scripts/blob/master/cimas-config/gh-actions/samples/.gitlab-ci.yml[Sample `.gitlab-ci.yml`]
+[source,yml]
+---
+image:
+  name: metanorma/metanorma
+  entrypoint: [ "" ]
+
+cache:
+  paths:
+
+stages:
+  - build
+  - deploy
+
+
+build:
+  stage: build
+  script:
+    - curl -L --retry 3 https://raw.githubusercontent.com/metanorma/ci/main/gemfile-to-bundle-add.sh | bash
+    - bundle install
+    - metanorma site generate --output-dir public --agree-to-terms .
+
+  artifacts:
+    paths:
+      - public
+
+pages:
+  dependencies:
+    - build
+  stage: deploy
+  script:
+    - |
+      curl --location --output artifacts.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" \
+          "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/jobs/artifacts/master/download?job=build"
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+    - main
+---
+
+If it is suitable for you you can reuse it with the following code (to minimize code duplication):
+
+[source,yml]
+---
+include:
+- remote: 'https://raw.githubusercontent.com/metanorma/ci/main/cimas-config/gitlab-ci/samples/docker.shared.yml'
+---
+
+=== Other CI providers
+
+Generally, the integration consists of 2 phases:
+
+* link:/install[installing metanorma toolchain]
+* calling metanorma-cli by shell commands
+
+Most CI providers nowadays allow to run CI from a Docker execution environment:
+
+- https://docs.travis-ci.com/user/docker/[Travis CI]
+- https://circleci.com/docs/using-docker/[CircleCI]
+- https://www.jenkins.io/doc/book/pipeline/docker/[Jenkins]
+- https://devcenter.bitrise.io/en/infrastructure/using-your-own-docker-image.html[Bitrise]
+
+Metanorma provides a wide set of docker images https://hub.docker.com/r/metanorma you can select what is suitable for you
