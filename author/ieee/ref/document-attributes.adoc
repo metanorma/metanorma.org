@@ -28,6 +28,11 @@ For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorm
 ----
 ====
 
+`partnumber`:: The document part number, where applicable [added in https://github.com/metanorma/isodoc/releases/tag/v1.0.12].
+`subpartnumber`:: The document subpart number, where applicable [added in https://github.com/metanorma/isodoc/releases/tag/v1.0.12].
+
+`conformance`:: Specification of the conformance of the document, where applicable (e.g. _Conformance_ `02-2021`)  [added in https://github.com/metanorma/isodoc/releases/tag/v1.0.12].
+
 `draft`:: The draft number. Use together with `:docstage: draft`. Do not include the initial "D".
 +
 .Example for IEEE SA `docstage`
@@ -149,7 +154,7 @@ NOTE: Please see
 https://standards.ieee.org/about/policies/opman/sect5/[Operations Manual, 5.7 Trial-Use standards]
 for more details.
 
-`issued-date`:: The date on which the document was approved.
+`issued-date`:: The date on which the document was approved. (Applicable to drafts.)
 Like all dates in Metanorma, this must be supplied in `YYYY-MM-DD` format.
 +
 .Example for IEEE SA `issued-date`
@@ -220,10 +225,14 @@ generate or modify the "Participants" clause.
 == Document relationships
 
 `:merges:`:: This document incorporates the document(s) with the nominated
-identifiers (semicolon-delimited).
+identifiers (semicolon-delimited). In IEEE identifiers, indicated as _incorporated_.
 
 `:updates:`:: This document is an update of the document(s) with the nominated
-identifiers (semicolon-delimited).
+identifiers (semicolon-delimited). Applies to revisions, as well as to appendices
+and corrigenda.
+
+`:supplements:`:: This document is a supplement of the document with the nominated
+identifier [added in https://github.com/metanorma/isodoc/releases/tag/v1.0.12].
 
 
 [[document-contributors]]
