@@ -652,17 +652,14 @@ are prefixed with this directory.
 Accepts a directory path.
 
 `:break-up-urls-in-tables:`::
-(for Word output only) If present, long strings in table cells
-(longer than 30 characters) are broken up on rendering, to help
-tables fit within the page width.
-No attribute value needed. [added in
-https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.25] +
-+
---
-NOTE: Due to limitations of Microsoft Word tables with long string
-wrapping, this functionality is only applied to Word output [added in
-https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.29].
---
+If present, long strings in table cells are broken up on rendering, to help
+tables fit within the page width.  No attribute value needed. [added in
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.25].
+The current behaviour is: strings are broken by zero-width spaces;
+words are broken up every 10 characters on punctuation (e.g. URIs on / ),
+and every 20 characters if there is no puncutation in the word,
+in order to deal with very narrow columns. (Because the break is zero-width,
+it will not be visible unless it coincides with the end of a column.)
 
 `:suppress-asciimath-dup:`::
 By default, MathML in the Metanorma XML has equivalent AsciiMath added
