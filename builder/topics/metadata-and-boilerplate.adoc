@@ -509,6 +509,14 @@ processing rules apply:
 be used for Metanorma Asciidoc concepts. The Asciidoc is processed by Liquid before it is passed on for processing.
 * Clauses in predefined text often do not have clause titles; as usual for Asciidoc, introduce such titles with
 `=== {blank}`.
+* Clauses in Asciidoctor with no title and no user-assigned anchor are automatically assigned an anchor 
+of the form `_{n}`, where `{n}` is an integer. In order to prevent those anchors colliding in the boilerplate and
+the main document, we overwrite any such anchors in the predefined text with the normal Metanorma default,
+`_` followed by a GUID. Do not use `_{n}` as an anchor in any of your predefined text. 
+* Also be on the lookout
+for any clauses with identical titles in your predefined text and your main document; if no user-defined anchor
+is supplied, they will end up with the same title. To prevent that, the simplest thing to do is to provide
+user-defined anchors for all titled clauses in the predefined text.
 * The values that populate Liquid templates in Metanorma are in Metanorma XML, if they contain any formatting;
 Metanorma automatically treats Asciidoc Liquid variables as Metanorma XML passthrough values. For example,
 the `pub-address` document variable may be specified as document attribute as:
