@@ -603,7 +603,7 @@ The span categories supported are:
 * `initials`: Author initials.
 * `givenname`: Author given name.
 * `organization`: Corporate author.
-* `surname.XXX`: Contributor surname, with role _XXX_ (e.g. _editor_).
+* `surname.XXX`: Contributor surname, with role _XXX_ (e.g. _editor_). 
 * `initials.XXX`: Contributor initials, with role _XXX_ (e.g. _editor_).
 * `givenname.XXX`: Contributor given name, with role _XXX_ (e.g. _editor_).
 * `organization.XXX`: Corporate contributor, with role _XXX_ (e.g. _editor_).
@@ -623,6 +623,16 @@ the title of the book, proceedings, collection containing the item).
 * `issue`: issue or issue range (e.g. _9_, _9-11_)
 * `volume`: volume or volume range (e.g. _9_, _9-11_)
 * `type`: Document type (e.g. _standard_, _book_, _inbook_): suppressed from rendering.
+
+NOTE: The surname must always precede the initials or given name for a given author in spans,
+to prevent ambiguity and confusion in parsing the citation.
+The rendered ordering of initials/given name and surname for the first
+and for subsequent names is determined by the flavour citation stylesheet.
+So `span:surname[Fields], span:initials:[W.C.]`, never `span:initials:[W.C.] span:surname[Fields]`.
+
+NOTE: After the first instances of `surname` and either `initials` or `givenname`, any
+subsequent instances of `surname` or either `initials` or `givenname` are
+interpreted as belonging to a new contributor of the same role.
 
 [example]
 .Example encoding of a bibliographic item inline with semantic markup
@@ -647,10 +657,6 @@ the title of the book, proceedings, collection containing the item).
   span:type[inbook]
 ----
 ====
-
-After the first instances of `surname` and either `initials` or `givenname`, any
-subsequent instances of `surname` or either `initials` or `givenname` are
-interpreted as belonging to a new contributor of the same role.
 
 [NOTE]
 --
