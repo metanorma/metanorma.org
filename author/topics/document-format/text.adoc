@@ -292,6 +292,19 @@ This will render the following links depending on the output format:
 * in PDF, `../parent.pdf` and `../child.pdf`
 ====
 
+=== Hyperlink validation
+
+Hyperlinks are validated and normalised 
+in Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.5.2].
+Hyperlinks are treated as IRIs (internationalised resource identifiers -- i.e. non-ASCII
+Unicode characters are allowed.)
+
+As with Asciidoctor, http(s) links are assumed by default to be intended as hyperlinks,
+and are marked up and rendered as such. Example hyperlinks are often invalid (e.g.
+`http://{domain}`), and Metanorma execution will be aborted if they are found, since they
+cannot be rendered as meaningful hyperlinks. Such links should be escaped by prefixing them
+with a backslash, which will result in them being treated as plain text (e.g. `\http://{domain}`.)
+
 
 === Numeric ranges
 
