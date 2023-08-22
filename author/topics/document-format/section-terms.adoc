@@ -1059,6 +1059,8 @@ source.
 Metanorma allows the encoding of this more complex structure through embedding
 each distinct definition within an open block, with a `[.definition]` role
 attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6].
+Different definitions can be differentiated with different `type` 
+attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.5.3]
 
 [example]
 .Multiple definitions for one designation
@@ -1069,7 +1071,7 @@ attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/
 
 alt:[doohickey]
 
-[.definition]
+[.definition,type="official"]
 --
 device performing an unspecified function
 
@@ -1077,7 +1079,7 @@ device performing an unspecified function
 <<ISO2382,clause 2121372>>
 --
 
-[.definition]
+[.definition,type="unofficial"]
 --
 general metasyntactic variable
 
@@ -1086,7 +1088,7 @@ general metasyntactic variable
 --
 ----
 
-Multiple definitions are rendered in Metanorma as an ordered list of
+Multiple definitions are rendered by default in Metanorma as an ordered list of
 definitions:
 
 .Rendering of multiple definitions for one designation
