@@ -488,6 +488,38 @@ ISO 20483:2013. _Cereals and cereal products -- Determination of moisture conten
 ____
 ====
 
+=== Automatic fetching of joint publications
+
+Metanorma recognises two types of joint publication:
+
+* Joint publications proper (or Merged publications), 
+in which the one document is considered to be published simultaneously
+by two different standards bodies. In the case of ISO and IEC, there are longstanding partnerships with
+each other and with IEC, and this is reflected in the identifier assigned by the standards organisation
+(e.g. ISO/IEC DIR 1). In other cases, the document is assigned a different identifier by each of
+the standards organisations involved, but it is still considered to be the same publication, and is
+described in a single bibliographic entry.
+* Dual publications, for which the publications are treated as separate bibliographic entries, listed
+together with phrasing like "also published as:". In dual publications, the publications are regarded
+as separate activities with separate metadata, rather than a joint coordinated responsibility.
+
+In case the partnership is not acknowledged in the document identifier (the documents are assigned
+two separate identifiers), the two separate bibliographic entries can still be fetched by Relaton,
+and brought together in the Metanorma bibliography  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.1].
+
+* `[[[anchor,merge(CODE1, CODE2)]]]` merges together the two bibliographic entries fetched under
+CODE1 and CODE2: the bibliographic entry is that of CODE1, but the publication information of CODE2
+(the publishing organisation and the distinct document identifier) are added to the entry. For example,
++
+====
+ISO 10712 | ITU-R 232. _ISO title of document_. International Organization for Standardization and International Telecommunications Union.
+====
+
+* `[[[anchor,dual(CODE1, CODE2)]]]` treats the two bibliographic entries separately. For example,
++
+====
+ISO 10712.  _ISO title of document_. International Organization for Standardization. Also published as: ITU-R 232. _ITU title of document_. International Telecommunications Union.
+====
 
 [[other-databases]]
 === Referencing from a Metanorma collection
