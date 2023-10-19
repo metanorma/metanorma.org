@@ -131,6 +131,14 @@ foo: bar
 ____
 ====
 
+Automated titles will only be generated if the terms & definitions clause
+and its immediate children are exhaustively covered by the possibilities above:
+each child element is either a definitions clause or a terms collection, or initial
+boilerplate text, and there is only one of each type or combination of types.
+If there are other clauses mixed in, or if there are multiple collections of terms,
+Metanorma will not replace the terms, because its replacements will likely not be true;
+for example, if there are two subclauses containing terms, no one subclause should be
+named "Terms and definitions" [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.2].
 
 [[source]]
 ==== Concept source
