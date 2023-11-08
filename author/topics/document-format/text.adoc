@@ -93,12 +93,11 @@ renders:
 image::/assets/author/topics/document-format/text/fig-underline.png[Illustration of underlined text in Metanorma]
 ====
 
-
+[[css]]
 === CSS declarations
 
 The `css` command is used to wrap content with a CSS declaration
-(https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/CSS_Declaration[MDN])
-[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
+(https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/CSS_Declaration[MDN]) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
 
 NOTE: CSS declarations are also used within the HTML `style` attribute.
 
@@ -128,6 +127,41 @@ Where:
 
 NOTE: Any font specified in `[css font-family:...]` needs to be passed to Metanorma for processing
 by specifying it in the `:fonts:` document attribute.
+
+=== Custom character sets
+
+When a https://en.wikipedia.org/wiki/Private_Use_Areas[private use codepoint]
+is used in a document, reflecting an agreement between the document author
+and the document renderer, but *not* a standard like Unicode, the custom character set that includes
+that codepoint needs to be flagged. So U+F8D0 is the Klingon letter for "a" in the
+https://www.evertype.com/standards/csur/[Conscript Unicode Registry], but the Kanji-Katakana hybrid of
+訁and コ (equivalent to 講) in the https://www.babelstone.co.uk/Fonts/PUA.html[BabelStone PUA].
+
+In order to flag such a custom interpretation of the codepoint, the interpretation can be named
+in a formatting directive, flagged as `custom-charset` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.3].
+For example:
+
+[source,asciidoc]
+----
+[custom-charset:conscript]#\\uf8d0#
+[custom-charset:babelstone]#\\uf8d0#
+----
+
+In order to be rendered, a font implementing that interpretation needs to be indicated as a processing hint
+for Metanorma. This is done with the Presentation XML metadata directive 
+`:presentation-metadata-custom-charset-font: {name of interpretation}:"{name of font}"`, as a document attribute.
+For instance:
+
+[source,asciidoc]
+----
+:presentation-metadata-custom-charset-font: conscript:"Code 2000"
+:presentation-metadata-custom-charset-font: babelstone:"BabelStone PUA"
+:fonts: "Code 2000","BabelStone PUA"
+----
+
+As with link:/author/topics/document-format/text#css[CSS declarations],
+any font specified as a custom charset font also needs to be passed to Metanorma
+in the `:fonts:` document attribute.
 
 === Identifier
 
