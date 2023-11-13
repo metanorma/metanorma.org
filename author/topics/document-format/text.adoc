@@ -1662,7 +1662,11 @@ pass-format:FORMAT[...]
 
 Where:
 
-* `FORMAT` is a comma-delimited list of target formats.
+* `FORMAT` is a comma-delimited list of target formats. The formats known to Metanorma are:
+`html`, `doc`, `pdf`, `sts` (STS XML), `ieee` (IEEE XML), `rfc` (RFC XML v3), `txt`, `html_alt` (for ISO),
+`isosts` (ISO STS XML)
+* Metanorma will also accept the value `all` 
+(all possible formats)  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.3].
 
 [example]
 .Example of specifying passthrough for selected target formats
@@ -1673,6 +1677,8 @@ pass-format:rfc[<u format="num-lit">ᏚᎢᎵᎬᎢᎬᏒ</u>]
 --
 ====
 
+NOTE: Text that is marked up as pass-format is not subject to substitutions such as smart quotes.
+It can be used to keep straight quotes in a document that otherwise uses smart quotes.
 
 == Source code
 
