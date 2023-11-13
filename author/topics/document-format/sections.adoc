@@ -213,6 +213,19 @@ A manual clause number is specified with the attribute `number`:
 === Zeroth Subclause
 ----
 
+This subclause will be numbered as clause 7.0: the supplied number is the number of just this subclause.
+
+[source,asciidoc]
+----
+== Clause 7
+
+[number=6.2.1]
+=== Zeroth Subclause
+----
+
+This subclause will be 
+
+
 Elements subsequent to the manually numbered element will be auto-numbered
 so as to follow the previous element. This may include incrementing the final
 letter in an alphanumeric clause number (e.g. _7a_ followed by _7b_.)
@@ -220,6 +233,26 @@ letter in an alphanumeric clause number (e.g. _7a_ followed by _7b_.)
 If resumption of auto-numbering is not intended for subsequent clauses
 (e.g. _7bis_ should not be followed by _7bit_),
 an explicit number also needs to be given to those clauses separately.
+
+If a value needs to be supplied for the entire hierarchical branch, that value is given as 
+`branch-number` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.3].
+
+[source,asciidoc]
+----
+== Clause 7
+
+[branch-number=6.2.1]
+=== Zeroth Subclause
+
+=== First subclause
+----
+
+This subclause will be numbered as 6.2.1, not 7.6.2.1. Any subsequent clauses will be numbered
+as if the branch-number clause was not there; 6.2.1 in the example just given will be followed
+by the expected 7.1.
+
+`branch-number` can also be used when an atomic section number is required, as can occur in
+terms and definitions sections inheriting their term identifiers from a termbase.
 
 
 == Prefatory clauses
