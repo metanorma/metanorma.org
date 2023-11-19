@@ -1,0 +1,89 @@
+---
+layout: post
+post title: 'Installing, Downgrading, and Uninstalling "metanorma" Snap Package'
+date: 2023-11-179
+categories: documentation
+---
+
+Snapcraft is a universal Linux packaging system that allows developers to package their applications and dependencies, making it easy to distribute and install software across various Linux distributions. Snaps are self-contained, sandboxed, and come with all the necessary dependencies, providing a consistent experience across different Linux distributions.
+
+In this guide, we'll explore how to install, downgrade, and uninstall the "metanorma" Snap package using Snapcraft.
+
+== Prerequisites
+
+Before proceeding, make sure you have the Snapd service installed on your system. If not, you can install it using the following commands:
+
+[source,sh]
+----
+sudo apt update
+sudo apt install snapd
+----
+
+== Installing "metanorma"
+
+To install the latest version of "metanorma" run the following command in your terminal:
+
+[source,sh]
+----
+sudo snap install metanorma
+----
+
+This command will download and install the latest package from the Snap Store.
+
+== Downgrading "metanorma"
+
+In some cases, you might need to downgrade to a specific version of "metanorma" Snapcraft makes this process straightforward.
+
+=== List installed versions
+
+First, list the available versions of "metanorma" using the following command:
+
+[source,sh]
+----
+sudo snap list metanorma --all
+----
+
+If you have several metanorma versions installed before you will get an output similar to this:
+
+[source,sh]
+----
+Name       Version  Rev  Tracking       Publisher   Notes
+metanorma  1.7.3    212  latest/stable  metanorma  disabled,classic
+metanorma  1.8.1    216  latest/stable  metanorma  classic
+----
+
+=== Revert to a previous one
+
+[source,sh]
+----
+sudo snap revert metanorma
+----
+
+=== Revert to a previous one
+
+[source,sh]
+----
+sudo snap revert metanorma --revision 212
+----
+
+== List available versions
+
+[source,sh]
+----
+snap info metanorma
+----
+
+== Uninstall
+
+To uninstall "metanorma" from your system, use the following command:
+
+[source,sh]
+----
+sudo snap remove metanorma
+----
+
+== Conclusion
+
+Snapcraft simplifies the installation, management, and distribution of software on Linux systems.
+
+Unfortunatelly downgrade process isn't straight-forward but it's still possible
