@@ -107,11 +107,27 @@ Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/
 
 == Document info
 
-`:publisher:`:: The standards agency publishing the standard; can be multiple
-(semicolon-delimited: processed via CSV, recognising quote marks). [added in
-https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0]. +
+`:publisher_{i}:`:: The standards agency publishing the standard. The first publisher is given as
+`:publisher:`; more publishers are added with the suffix `_2`, `_3`, etc., e.g. `:publisher_2:`,
+`:publisher_3:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0]. +
 +
 NOTE: Prior to 1.7.0, this field accepted comma-delimited values [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.1].
++
+NOTE: Prior to 2.7.0, this field accepted semicolon-delimited values [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
+These are processed via CSV, recognising quote marks. This functionality is maintained in later versions,
+but other attributes of organisations are ignored (`publisher_logo`, `pub-address`, etc.)
+
+`:publisher_logo_{i}:`:: The logo of the publisher, specified as an image file; the numbers in the attribute
+align to the `:publisher_{i}:` attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
+
+`:sponsor_{i}:`:: An organization sponsoring the publication of this document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
++
+NOTE: If a person needs to be nominated as the responsible party for a sponsoring organization,
+that person should be treated as a personal contributor (`:surname_{i}:`, `:affiliation_{i}:`, etc.),
+with a `:role:` attribute of `enabler`.
+
+`:sponsor_logo_{i}:`:: The logo of the sponsoring organization, specified as an image file; the numbers in the attribute
+align to the `:sponsor_{i}:` attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
 
 `:copyright-holder:`:: The copyright holder, if distinct from the publisher;
 can be multiple
@@ -324,7 +340,8 @@ The initials(s) of a person who is a contributor to the document.
 
 [[role]] `:role{_i}:`::
 The role of a a person who is a contributor to the document.
-By default, they are coded as an `editor`; they can also be represented as an `author`.
+By default, they are coded as an `editor`; they can also be represented as an `author`,
+or (if they are the responsible party for a sponsoring organization) `enabler`..
 
 `:affiliation{_i}:`::
 The organization that a person who is a contributor to the document is affiliated with.
@@ -337,6 +354,10 @@ is affiliated with [added in https://github.com/metanorma/metanorma-standoc/rele
 The subdivision of the organization that a person who is a contributor to the document
 is affiliated with [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
 Can be multiple (semicolon-delimited: processed via CSV, recognising quote marks).
+
+`:affiliation_logo{_i}:`::
+The logo of the organization that a person who is a contributor to the document
+is affiliated with, specified as an image file [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
 
 `:contributor-credentials{_i}:`::
 The credentials of the person (e.g. "PhD, F.R.Pharm.S"); these are often displayed inline with the
@@ -389,9 +410,11 @@ document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v
 The abbreviation of the subdivision of the organization that is responsible for this
 document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
 
-`:pub-address:`::
+`:pub-address_{i}:`::
 The address of the organization responsible for this document, if it overrides
-the default. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1]. +
+the default. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
+The number of this and subsequent attributes aligns with the number of
+`:publisher_{i}:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1] +
 +
 [NOTE]
 --
@@ -404,23 +427,29 @@ California + \
 United States of America
 ----
 --
++
+NOTE: As of 2.7.0, if `:publisher:` is semicolon-delimited, instead of using numbered attributes,
+this and subsequent publisher attributes are ignored.
 
-`:pub-phone:`::
+`:pub-phone_{i}:`::
 The phone number of the organization responsible for this document, if it overrides
 the default [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
 
-`:pub-fax:`::
+`:pub-fax_{i}:`::
 The fax number of the organization responsible for this document, if it overrides
 the default [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
 
-`:pub-email:`::
+`:pub-email_{i}:`::
 The email of the organization responsible for this document, if it overrides
 the default [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
 
-`:pub-uri:`::
+`:pub-uri_{i}:`::
 The URI of the organization responsible for this document, if it overrides
 the default [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
 
+`:sponsor-address_{i}:`, `:sponsor-phone_{i}:`, `:sponsor-fax_{i}:`, `:sponsor-email_{i}:`, `:sponsor-uri_{i}:`::
+The address, phone number, fax number, email, URI of an organization sponsoring 
+this document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
 
 == Visual appearance
 
