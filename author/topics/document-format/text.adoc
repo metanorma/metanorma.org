@@ -149,13 +149,12 @@ For example:
 
 In order to be rendered, a font implementing that interpretation needs to be indicated as a processing hint
 for Metanorma. This is done with the Presentation XML metadata directive 
-`:presentation-metadata-custom-charset-font: {name of interpretation}:"{name of font}"`, as a document attribute.
-For instance:
+`:presentation-metadata-custom-charset-font: {name of interpretation}:"{name of font}"`, as a document attribute,
+giving a comma-delimited list of charset-font pairs.  For instance:
 
 [source,asciidoc]
 ----
-:presentation-metadata-custom-charset-font: conscript:"Code 2000"
-:presentation-metadata-custom-charset-font: babelstone:"BabelStone PUA"
+:presentation-metadata-custom-charset-font: conscript:"Code 2000",babelstone:"BabelStone PUA"
 :fonts: "Code 2000","BabelStone PUA"
 ----
 
