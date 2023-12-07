@@ -1,0 +1,110 @@
+---
+layout: jis-flavor
+---
+
+= Metanorma JIS document attributes
+
+[[note_general_doc_ref_doc_attrib_jis]]
+[NOTE]
+====
+Document attributes listed below are unique to the processing of JIS documents in Metanorma.
+
+For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author's documentation. That page describes attributes that apply to all Metanorma flavors, not just JIS.
+
+For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
+====
+
+== Document information
+
+`:doctype`::
+Document type. The default is `japanese-industrial-standard`. Supported:
++
+--
+* `japanese-industrial-standard`
+* `technical-report`
+* `technical-specification`
+* `amendment`
+* `expert-commentary`. Personal authors are supported for this document type.
+--
+
+`:title-main-ja:`, `:title-main-en:`::
+Main title of the document, in Japanese or English
+
+`:title-intro-ja:`, `:title-intro-en:`::
+Introduction to title of the document, in Japanese or English
+
+`:title-part-ja:`, `:title-part-en:`::
+Part title of the document, in Japanese or English
+
+`:title-amendment-ja:`, `:title-amendment-en:`::
+Amendment title of the document, in Japanese or English
+
+`:docnumber:`::
+The number for the document.
+
+`:partnumber:`::
+The part number for the document.
+
+`:docseries:`::
+The series for the document.
+
+`:amendment-number:`::
+The amendment number for the document.
+
+`:updates:`::
+Identifier of document that this document is an update of.
+
+`:language:` :: The language of the document (support `en`, `ja`) (default: `ja`)
+
+`:copyright-year:`:: The year associated with the copyright for the document.
+
+== Contributor Information
+
+All the following attributes can be specified multilingually, by adding `-ja` or `-en` after each attribute name
+(e.g. `:fullname-en:`, `:investigative-organization-ja_2`)
+
+`:fullname_{i}:`::
+Name of personal author for this document (for expert commentary)
+
+`:givenname_{i}:`::
+Given Name of personal author for this document (for expert commentary)
+
+`:surname_{i}:`::
+Surname of personal author for this document (for expert commentary)
+
+`:affiliation_{i}:`::
+Name of organization or company for personal author for this document (for expert commentary)
+
+`:address_{i}:`::
+Address of personal author for this document (for expert commentary)
+
+`:email_{i}:`::
+Email of personal author for this document (for expert commentary)
+
+`:role_{i}:`::
+Role of personal author for this document (for expert commentary) (default: `author`)
+
+`:publisher_{i}:`::
+Publisher for this document (default: `JIS`)
+
+`:copyright-holder_{i}:`::
+Copyright holder for this document (default: `JIS`)
+
+`:investigative-organization_{i}`::
+Investigative organization for this document 
+
+`:investigative-committee{i}`::
+Investigative committee for this document 
+
+`:publisher-abbr_{i}:`::
+Abbreviation of publisher for this document
+
+`:publisher-logo_{i}:`::
+Logo of publisher for this document (image file)
+
+`:subdivision_{i}:``
+Subdivision of organization responsible for this document as author and publisher
+
+`:subdivision-abbr_{i}:``
+Abbreviation of subdivision of organization responsible for this document as author and publisher
+
