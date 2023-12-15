@@ -270,6 +270,9 @@ This document attribute applies to a translated document, pointing to the origin
 [[copyright-year]] `:copyright-year:`::
 The year which will be claimed as when the copyright for the document was issued.
 
+`:announced-date:`::
+The date on which the publication of the standard was announced by the issuing authority.
+
 [[issued-date]] `:issued-date:`::
 The date on which the standard was issued (authorised for publication by the issuing authority).
 
@@ -339,9 +342,16 @@ The given name(s) of a person who is a contributor to the document.
 The initials(s) of a person who is a contributor to the document.
 
 [[role]] `:role{_i}:`::
-The role of a a person who is a contributor to the document.
+The role of a person who is a contributor to the document.
 By default, they are coded as an `editor`; they can also be represented as an `author`,
-or (if they are the responsible party for a sponsoring organization) `enabler`..
+or (if they are the responsible party for a sponsoring organization) `enabler`.
+Is meant to draw from the constrained vocabulary of Relaton: `author`, `editor`, `adapter`,
+`translator`, `performer`, `realizer`, `publisher`, `distributor`, `owner`, `authorizer`,
+`enabler`, `subject`; see https://www.relaton.org/specs/model/creator/[Relaton specification].
+
+`:role-description{_i}:`::
+A more detailed description of the role of a person who is a contributor to 
+the document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.5].
 
 `:affiliation{_i}:`::
 The organization that a person who is a contributor to the document is affiliated with.

@@ -58,6 +58,13 @@ Identifier of document that this document is an update of.
 
 `:copyright-year:`:: The year associated with the copyright for the document.
 
+`:announced-date:`:: The date on which the document was announced in the official gazette (needed for inner cover page boilerplate).
+`:revdate:`:: The date on which the document was last updated (needed for inner cover page boilerplate).
+
+NOTE: Dates are expected to be provided in ISO 8601 format, e.g. 2003-01-13. Dates can be provided in the Japanese calendar,
+by appending `-ja` to the attribute name, e.g. `:announced-date-ja: 平成十五年1月13日`. However, without that, Metanorma will
+translate Gregorian dates to Japanese calendar dates in Japanese-language documents.
+
 == Contributor Information
 
 All the following attributes can be specified multilingually, by adding `-ja` or `-en` after each attribute name
@@ -94,7 +101,30 @@ Copyright holder for this document (default: `JIS`)
 Investigative organization for this document 
 
 `:investigative-committee{i}`::
-Investigative committee for this document 
+Investigative committee for this document. Use only if the chairperson or other representative of the
+investigative committee is unknown, otherwise use a personal contributor to specify the representative's
+name, role, and position (as the inner cover boilerplate note names the committee representative). 
+In order to be recognised, the role and role description must be given as below. If a position is not
+given (`:contributor-position:`), "chaiperson" will be supplied, in English or Japanese:
++
+--
+.Investigative committee without chairperson
+[source,asciidoc]
+----
+:investigative-committee: Committee 123
+----
+
+.Investigative committee with chairperson
+[source,asciidoc]
+----
+:fullname_3: MIFUNE Toshiro
+:role_3: authorizer
+:role-description_3: investigative committee
+:affiliation_3: Committee 123
+:contributor-position_3: chairperson
+----
+
+--
 
 `:publisher-abbr_{i}:`::
 Abbreviation of publisher for this document
