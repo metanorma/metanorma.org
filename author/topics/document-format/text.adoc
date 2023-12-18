@@ -93,6 +93,37 @@ renders:
 image::/assets/author/topics/document-format/text/fig-underline.png[Illustration of underlined text in Metanorma]
 ====
 
+=== Ruby
+
+Ruby annotations in East Asian text are provided [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.5]
+using the `ruby:{annotation}[{base text}]` macro, with optional paramters
+`lang=` for language of annotation, `script=` for script of annotation, and `type=` for the type of annotation
+(`pronunciation` or `annotation`, with `pronunciation` as the default value):
+
+[source,asciidoc]
+----
+ruby:とうきょう[東京]
+ruby:とうきょう[lang=ja,script=Hira,type=pronunciation,東京]
+ruby:Tōkyō[type=pronunciation,script=Latn,東京]
+ruby:ライバル[type=annotation,親友]
+ruby:とう[東] ruby:きょう[京]
+ruby:Tō[script=Latn,東]ruby:kyō[script=Latn,京]
+----
+
+Metanorma supports "double-sided" Ruby annotations, with annotations both above and below characters; these are marked up as nested
+Ruby annotation macros, with the deeper nested annotation assumed to be the annotation below the characters.
+
+[source,asciidoc]
+----
+ruby:とう[ruby:tou[東\]] ruby:なん[ruby:nan[南\]] の方角
+ruby:たつみ[ruby:とう[東\]{blank}ruby:なん[南\]]
+ruby:プロテゴ[ruby:まも[護\]{blank}れ]!
+ruby:プロテゴ[れ{blank}ruby:まも[護\]]!
+----
+
+As of this writing, double-sided annotations are not supported in Word, and the nested annotations are realised as bracketed text.
+
+
 [[css]]
 === CSS declarations
 
