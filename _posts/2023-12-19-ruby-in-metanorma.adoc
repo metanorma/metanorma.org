@@ -1,0 +1,109 @@
+---
+layout: post
+post title: 'Metanorma support for Ruby'
+date: 2023-12-19
+categories: documentation
+---
+
+Metanorma is already https://github.com/metanorma/metanorma-jis[supporting Japanese Industrial Standards].
+In order to consolidate its support of East Asian languages such as Japanese, Metanorma has started supporting
+Ruby annotation of text.
+
+https://en.wikipedia.org/wiki/Ruby_character[Ruby characters] are small annotations that appear alongside
+characters in East Asian languages; they are primarily used to indicate the pronunciation of characters,
+and are particularly common in that function in Japanese, where they are referred to as _furigana_:
+
+.Example of _furigana_ used to annotate the Japanese kanji for "Tokyo" with pronunciation guides.
+image::/assets/blog/2023-12-19_1.png[]
+
+Because annotations are meant to explain characters, they are not themselves expected to be ideographic characters,
+and are instead given in syllabaries or alphabets associated with phonetic guides, such as Hiragana, Katakana, or 
+Romaji (Latin script) in Japanese, and Pinyin or Bopomofo in Chinese.
+
+It is possible to annotate characters with text indicating the meaning instead of, or as well as, the pronunciation
+of the character:
+
+.Example of semantic annotation in Ruby:  親友 _shin'yū_ "close friend" annotated with the English loanword ライバル _raibaru_ "rival", to mean "a rival who is also friend" (cf. English _frenemy_)
+image::/assets/blog/2023-12-19_2.png[]
+
+And annotations can be double-sided, with an annotation either side of the characters being annotated:
+
+.Example of "double-sided" Ruby, 護れ _mamore_ "protect" annotated phonetically in two languages: マモ _mamo_ in Japanese, and プロテゴ _protego_ in English
+image::/assets/blog/2023-12-19_3.png[]
+
+It is even possible for double-sided annotations to have different scope; in the example above,  _mamo_  annotates only the Kanji  護, while _protego_ annotates the full word 護れ.
+
+In the following example, each character is phonetically glossed: 東 as とう _Tō_, 南 as なん _nan_, But the entire name is glossed as たつみ _Tatsumi_:
+_tōnan_ is the expect Japanese pronunciation of 東南 "southeast", but _tatsumi_ is an archaic Japanese word for "sotheast", and therefore a legitimate
+reading of the same two characters.
+
+.Tō + nan = Tatsumi no hōgaku: "in the direction of the southeast"
+image::/assets/blog/2023-12-19_4.png[]
+
+Ruby support has proven quite challenging in digital typography:
+
+* The initial 2001 https://www.w3.org/TR/ruby/[W3C specification on HTML support of Ruby] has proven very complex to implement, 
+and even the https://www.w3.org/International/articles/ruby/markup[2016 HTML5 approach] has not been taken up by browsers.
+The contemporary approach taken in the https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ruby[Living HTML specification]
+is drastically simpler; see https://strictquirks.nl/standards/the-situation-with-ruby-2020.xhtml[The situation with `<ruby>` in 2020]
+for details on the challenges encountered.
+* A much greater role has been given to https://www.w3.org/International/articles/ruby/styling.en[CSS support of Ruby] than was 
+originally envisioned. Browser support of Ruby styling remains uneven as of this writing (e.g. for https://caniuse.com/?search=ruby-position[`ruby-position`]).
+* Microsoft Word does not natively support double-sided Ruby annotations: they presuppose only one annotation per set of characters.
+* The default PDF generation tools, Apache FOP and XSL-FO, do not natively support Ruby at all.
+
+Our concern in Metanorma has been to provide a model for encoding Ruby that is not tethered to an obsolete or overly complicated encoding model, 
+that enables semantic treatment and processing of annotations, and that allows a reasonable range of rendering options. 
+That includes the distinction between semantic and phonetic annotations, the identification
+of script and language of annotation, and support for double-sided and for partly-overlapping annotations. While edge cases will require
+full annotation markup and bookmarks to succeed, the model we have arrived at provides reasonable coverage of any Ruby likely to arise in
+standards documents such as Japanese Industrial Standards.
+
+In the simplest case, Ruby annotations are marked up as `ruby:{annotation}[{annotated character(s)]`. The following are how
+the phonetic guides to "Tokyo" above would be marked up:
+
+[source,asciidoc]
+----
+ruby:とうきょう[東京]
+ruby:トウキョウ[東京]
+ruby:Tōkyō[東京]
+----
+
+Annotations can be broken down per character:
+
+
+[source,asciidoc]
+----
+ruby:とう[東]ruby:きょう[京]
+ruby:トウ[東]ruby:キョウ[京]
+ruby:Tō[東]ruby:kyō[京]
+----
+
+The script and language of the annotation can be provided optionally, using https://en.wikipedia.org/wiki/ISO_15924[ISO-15924] and
+https://en.wikipedia.org/wiki/ISO_639[ISO-639] codes, introduced by `script=` and `lang=`, and followed by comma:
+
+
+[source,asciidoc]
+----
+ruby:とうきょう[script=Hira,東京]
+ruby:トウキョウ[script=Kana,lang=ja,東京]
+ruby:Tōkyō[lang=ja,script=Latn,東京]
+----
+
+The type of Ruby can also be given, with `type=pronunciation` and `type=annotation`; `type=pronunciation` is assumed by default:
+
+[source,asciidoc]
+----
+ruby:ライバル[type=annotation,親友]
+----
+
+Double-sided Ruby is supported, with `ruby:[]` macro nesting; this is consistent with HTML 5, and is the only approach supported in Living HTML.
+In any nesting of Asciidoctor macros, the closing bracket of the nested macro instance needs to be escaped; so `ruby:[ ... ruby:[...\] ... ]`.
+Metanorma assumes that in double-sided Ruby, the outer annotation appears before the characters annotated, and the inner annotation appears after them.
+(In Word, where double-sided Ruby is not supported, the inner annotation appears after the characters in brackets, as a workaround.)
+
+[source,asciidoc]
+----
+ruby:プロテゴ[ruby:まも[護\]{blank}れ]!
+ruby:たつみ[ruby:とう[東\]ruby:なん[南\]]
+----
