@@ -203,6 +203,33 @@ Errata tables must have a header row containing the headings _Date, Type, Change
 |===
 ----
 
+As an alternative to this markup, semantic markup of document history can be added to the document,
+link:/author/topics/document-format/meta-attributes#doc-history-misc-container[using Misc container] [added in https://github.com/metanorma/metanorma-nist/releases/tag/v2.4.0].
+The change type is represented as `amend` classification `type`. The foregoing example would be marked up as follows:
+
+[source, asciidoctor]
+----
+[.preface]
+== Misc container
+
+=== document history
+
+[source,yaml]
+----
+- date:
+  - type: updated
+    value: 2019-01-01
+  amend:
+    description: Repaginated
+    classification:
+      - key: type
+        value: Minor
+    location: 
+      - page=1-12
+|2019-01-01 |Minor |Repaginated |1-12
+|===
+----
+
 == Clauses
 
 === Terms and definitions
