@@ -219,13 +219,17 @@ Even the foregoing does not capture the full complexity of contributor metadata:
 can hold multiple affiliations. More complex contributor metadata is presented using YAML embedded in
 the link:/author/topics/document-format/section#misc-container[`Misc-Container` clause] of the document,
 in the subclause `contributor metadata` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.6].
+
 The YAML is given as an array of objects, one for each contributor; it uses the foregoing document attributes as keys, 
 but in addition, organisational details are specified under an `affiliations` key, again as an array of objects.
 Organisational details includes the name and subdivision of the organisation, the position held within the organisation,
 but not credentials. Unlike the case for document attributes, contact details can be associated with either the individual,
 or the affiliation.
 
-The foregoing example is presented in YAML as follows:
+The YAML is in the https://www.relaton.org/specs/relaton-yaml/[YAML format used by Relaton]: it is an array of
+`contributor` objects, without the expected `contributor` heading. Compared to Metanorma document attributes, the structure
+of Relaton YAML is somewhat more pedantic. By way of illustration, the foregoing example is presented in YAML as follows,
+with the second contributor's contact details specific to them and not their company:
 
 [source,adoc]
 --
@@ -236,34 +240,53 @@ The foregoing example is presented in YAML as follows:
 
 [source,yaml]
 ----
-- fullname: Fred Flintstone
-  role: author
-  contributor-credentials: PhD, F.R.Pharm.S.
-  contributor-uri: http://slate.example.com
-  address: 18 Rubble Way, Bedrock
-  phone: 123
-  fax: 456
-  affiliations:
-    - contributor-position: Vice President, Medical Devices Quality & Compliance -- Strategic programmes
-      affiliation: Slate Rock and Gravel Company
-      affiliation_abbrev: SRG
-      affiliation_subdiv: Hermeneutics Unit; Exegetical Subunit
-- surname: Rubble
-  givenname: Barney
-  initials: B. X.
-  role: editor
-  role-description: consulting editor
-  contributor-credentials: PhD, F.R.Pharm.S.
-  affiliations:
-    - contributor-position: Former Chair ISO TC 210
-      affiliation: Rockhead and Quarry Cave Construction Company 
-      affiliation_abbrev: RQCCC
-      affiliation_subdiv: Hermeneutics Unit; Exegetical Subunit
-      contributor-uri: http://slate.example.com
-      address: 6A Rubble Way, Bedrock
-      email: barney@rockhead.example.com
-      phone: 789
-      fax: 012 
+- role: author
+  person:
+    name:
+      completename: Fred Flintstone
+    credential:
+    - PhD, F.R.Pharm.S.
+    affiliation:
+    - name:
+        content: Vice President, Medical Devices Quality & Compliance -- Strategic programmes
+      organization:
+        name: Slate Rock and Gravel Company
+        abbreviation: SRG
+        subdivision: Hermeneutics Unit; Exegetical Subunit
+        contact:
+          - formatted_address: 6 Rubble Way, Bedrock
+          - uri: http://slate.example.com
+          - phone: 123
+          - phone:
+              type: fax
+              value: 456
+- role:
+    type: editor
+    description: consulting editor
+  person:
+    name:
+      surname: Rubble
+      given:
+        forename: Barney
+        formatted_initials: B. X.
+    credential:
+    - PhD, F.R.Pharm.S.
+    affiliation:
+    - name:
+        content: Former Chair ISO TC 210
+      organization:
+        name: Rockhead and Quarry Cave Construction Company
+        abbreviation: RQCCC
+        subdivision: Hermeneutics Unit; Exegetical Subunit
+    contact:
+      - address: 
+          street: 6A Rubble Way
+          city: Bedrock
+      - email: barney@rockhead.example.com
+      - phone: 789
+      - phone:
+          type: fax
+          value: 012
 ----
 --
 
