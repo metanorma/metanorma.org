@@ -290,4 +290,95 @@ with the second contributor's contact details specific to them and not their com
 ----
 --
 
+== Document history
 
+=== Document attributes
+
+There is limited support for metadata about document history in document attributes: dates in the document history
+can be given with link:/author/ref/document-attributes/#timestamps[`:*-date:`] attributes, and some flavours of Metanorma
+allow the identifier of a prior version of the documemnt to be given under `:updated-by:`. 
+
+=== Misc container
+
+Several flavours of Metanorma expect detailed document history to be specified for documents, and present that
+document history within the document, typically in prefatory material. Metanorma addresses this expectation by requiring
+the document history to be specified semantically, in a consistent fashion across Metanorma flavours, rather than
+using a custom representation of document history for each flavour. In order to ensure consistency and rigour, Metanorma
+uses two formalised semantic models for document history:
+
+* The https://www.relaton.org/specs[Relaton model] for the different versions of the document, which are treated as
+related bibliographic items;
+* The link:/author/topics/document-format/section[machine-readable representation of document changes] within Metanorma.
+
+The two are represented with a modified version of the https://www.relaton.org/specs/relaton-yaml/[YAML format used by Relaton],
+embedded in the link:/author/topics/document-format/section#misc-container[`Misc-Container` clause] of the document,
+in the subclause `document history` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.6].
+
+The following adjustments to the YAML are made:
+
+* The different versions of the document are specified as an array of bibliographic record objects.
+* By default, the version described is related to the current document through the relation `updatedBy` (the described document
+is updated by the current document). Different types of relation can be specified through the attribute `relation.type`,
+so long as they are drawn from the https://www.relaton.org/model/relations/[Relaton Mmodel of document relations];
+plausible values are `draftOf` (the described document is an unpblished draft of the current document);
+`merges` (the described document was merged into the current document); `splits` (the described document was split
+into a number of documents, including the current document).
+* The changes made in the given version of the document are presented as an array of `amend` objects. The following
+elements of `amend` are recognised:
++
+--
+`description`:: The description of the change, as Metanorma Asciidoc; can span multiple blocks of text, and contain
+Asciidoc formatting such as lists and tables.
+`keyword`:: A list of strings used to classify the change, which can be used for filtering in the rendering of the document history.
+Examples of such classifications include change severities (Minor, Major), change scope (the SDO it relates to),
+change type (editorial, content), and so on.
+`contributor`:: The persons or organisations responsible for the change, specified as Relaton YAML contributor objects.
+`location`:: The locations where the change has been applied, specified as a list of Metanorma document notations, using
+link:/author/topics/document-format/bibliography#localities[Metanorma locality notation], as with bibliographic cross-references.
+(`whole` means the change applies to the entire document.)
+--
+
+The following is an illustration of document history markup. Document flavours may impose their own requirements on which
+fields are mandatory.
+
+[source,adoc]
+--
+[.preface]
+== misc-container
+
+=== document history
+
+[source,yaml]
+----
+- date:
+  - type: published
+    value:  2012-04
+  edition: 1.0.0
+  contributor
+  - person:
+      name:
+        abbreviation: JMS
+        completename: J. Michael Straczynski
+  amend:
+    - description: Approved edition of S-102
+- date:
+  - type: updated
+    value:  2017-03
+  edition: 2.0.0
+  contributor
+  - organization:
+      name: S-102PT
+  amend:
+    - description: >
+        Updated clause 4.0 and 12.0.
+
+        Populated clause 9.0.
+      location:
+        - clause=4.0
+        - clause=12.0
+        - clause=9.0
+    - description: Deleted contents of Annex B in preparation for updated S-100 Part 10C guidance. 
+      location:
+        - annex=B
+----
+--
