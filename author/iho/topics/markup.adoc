@@ -518,3 +518,100 @@ Repetition.footnote:abc[]
 ----
 
 // end::inline-iho[]
+
+
+== Metadata
+// tag::document-history[]
+
+Semantic markup of document history can be added to the document,
+link:/author/topics/document-format/meta-attributes#doc-history-misc-container[using Misc container] 
+and Relaton YAML [added in https://github.com/metanorma/metanorma-iho/releases/tag/v0.9.0].
+The following information is required:
+
+* The date of the document version.
+* The version of the document.
+* Description of changes.
+* The (personal or corporate) author responsible for the changes.
+
+The author is expected to be specified with an acronym (or initials, in the case of a person);
+Relaton requires a proper name to be specified for contributors, but the `abbreviation` field
+should be used alongside it. 
+
+The following illustrates what semantic markup of IHO document history should look like:
+
+[source, asciidoctor]
+----
+[.preface]
+== Misc container
+
+=== document history
+
+[source,yaml]
+----
+     - date:
+        - type: published
+          value:  2012-04
+        edition: 1.0.0
+        contributor:
+        - organization:
+            name: International Hydrographic Organization
+            subdivision: Transfer Standard Maintenance and Application Development
+            abbreviation: TSMAD
+        amend:
+          - description: Approved edition of S-102
+      - date:
+        - type: published
+          value:  2017-03
+        edition: 2.0.0
+        contributor:
+        - organization:
+            name: International Hydrographic Organization
+            subdivision: S-102 Project Team
+            abbreviation: S-102PT
+        amend:
+          description: >
+            Updated clause 4.0 and 12.0.
+
+            Populated clause 9.0 and Annex B.
+          location:
+            - clause=4.0
+            - clause=12.0
+            - clause=9.0
+            - annex=B
+      - date:
+        - type: updated
+          value:  2017-05
+        edition: 2.0.0
+        contributor:
+        - organization:
+            name: International Hydrographic Organization
+            subdivision: S-102 Project Team
+            abbreviation: S-102PT
+        amend:
+          description: >
+            Modified clause 9.0 based on feedback at S-100WG2 meeting.
+          location:
+            - clause=9.0
+      - date:
+        - type: updated
+          value:  2018-02
+        edition: 2.0.0
+        contributor:
+        - person:
+            name:
+              completename: Cliff Kottman
+              abbreviation: CK
+        amend:
+          description: >
+            Modified clause 9.0. Deleted contents of Annex B in preparation for updated S-100 Part 10C guidance. Added Annex F: S-102 Dataset Size and Production, Annex G: Gridding Example, Annex H: Statement added for Multi-Resolution Gridding, Annex I: Statement for future S-102 Tiling.
+          location:
+            - clause=9.0
+            - annex=B
+            - annex=F
+            - annex=G
+            - annex=H
+            - annex=I
+----
+
+
+// end::document-history[]
