@@ -1,0 +1,189 @@
+---
+layout: bsi-flavor
+---
+
+= Metanorma BSI document attributes
+
+[[note_general_doc_ref_doc_attrib_ieee]]
+[NOTE]
+====
+Document attributes listed below are unique to the processing of BSI documents
+in Metanorma.
+
+For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author's documentation. That page describes attributes that apply to all Metanorma flavors, not just IEEE SA.
+
+For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
+====
+
+== Document types
+
+The following document types are recognised in the `:doctype:` document attribute:
+
+BSI document types::
++
+--
+* british-standard
+* draft-for-development
+* published-document
+* privately-subscribed-standard
+* publicly-available-specification
+* flex-standard
+--
+
+Adoptable types, ISO ::
++
+--
+* international-standard
+* technical-specification
+* technical-report
+* guide
+* publicly-available-specification
+* international-workshop-agreement
+--
+
+
+Adoptable types, IEC ::
++
+--
+* international-standard
+* technical-specification
+* technical-report
+* industry-technical-agreement
+--
+
+Adoptable types, CEN and CENELEC ::
++
+--
+* standard
+* technical-specification
+* technical-report
+* guide
+* european-workshop-agreement
+--
+
+The following document types are recognised in the `:docsubtype:` document attribute:
+
+* specification
+* method-of-test
+* method-of-specifying
+* vocabulary
+* code-of-practice
+
+== Document numbers
+
+In the case of native BS standards, the identifier is compiled from a combination of the `doctype`,
+`docnumber`, and `copyright-year` document attributes, with a numeric `docnumber` value. So
+
+[source,asciidoctor]
+----
+:docnumber: 1000
+:doctype: publicly-available-specification
+:copyright-year: 2021
+----
+
+generates the document identifier "PAS 1000:2021".
+
+In the case of document adoptions, the `docidentifier` attribute should be used (to which `BS` will be prefixed),
+instead of assembling an identifier out of components, so that the source document identifier can be built up accurately.
+Part numbers of the original document should also be included in the `docidentifier` attribute,
+instead of being named with the `partnumber` attribute. So
+
+[source,asciidoctor]
+----
+:docidentifier: ISO/TR 123-2:1985
+:doctype: technical-report
+----
+
+generates the document identifier "BS ISO/TR 123-2:1985".
+
+Note that the `:copyright-year:` attribute is added to the identifier of a native BSI document,
+but not to that of an adopted document. So a 2022 adoption of ISO 123:1985 will still have the identifer
+"BS ISO 123:1985".
+
+== Related BSI Standards
+
+The frontispiece of BSI Standards includes text like the following:
+
+____
+The following BSI references relate to the work on this document: +
+Committee reference DEF/1 +
+Draft for comment 20/30387670 DC
+____
+
+This text is created by adding the BSI list of documents that the document relates to
+as a semicolon-delimited list of references, using `:bsi-related:`:
+
+[source,asciidoctor]
+----
+:bsi-related: Committee reference DEF/1;Draft for comment 20/30387670 DC
+----
+
+The introductory phrase is added automatically.
+
+== Adoption of standard
+
+An adopted external standard is defined as `:adopted-from:`:
+
+[source,asciidoctor]
+----
+:docidentifier: NA to BS EN 1991-1-2
+:adopted-from: EN 1991-1-2
+----
+
+
+[source,asciidoctor]
+----
+:docidentifier: BS ISO 639-2
+:adopted-from: ISO 639-2
+----
+
+== Expert Commentaries
+
+Expert commentaries are of type `:doctype: expert-commentary`, and are commentaries of another
+document; the related document is indicated with `:annotation-of:`.
+
+The author of the commentary is indicated as the author of the document, including credentials
+(indicated with `:contributor-credentials:`) and their position (`:contributor-position:`) and
+possibly organisational affiliation (`:affiliation:`). The position can be discursive.
+
+[source,asciidoctor]
+----
+:docidentifier: BS ISO 639-2
+:annotation-of: ISO 639-2
+:fullname: Eamonn Hoxey
+:contributor-credentials: PhD, F.R.Pharm.S.
+:contributor-position: Vice President, Medical Devices Quality & Compliance -- Strategic programmes, Johnson & Johnson Medical Ltd, Former Chair ISO TC 210, Quality management and related general aspects for medical devices, and Principal UK Expert to ISO TC 210 WG 1, Quality Management Systems.
+:role: author
+----
+
+== Visual appearance
+
+`:coverpage-image:`:: Comma-delimited list of image locations, for images to be included on the PDF cover page. All image locations are relative to the source document.
+`:innercoverpage-image:`:: Same, for images to be included on the PDF inside cover page.
+`:tocside-image:`:: Same, for images to be included on the PDF Table of Contents side page.
+`:backpage-image:`:: Same, for images to be included on the PDF back page.
+
+`:presentation-metadata-color-cover-background:`:: Background colour on PDF front cover (BSI Flex and PAS only), as #HEX.
+`:presentation-metadata-color-cover-title:`:: Title colour on PDF front cover (PAS only), as #HEX.
+`:presentation-metadata-color-secondary-shade-1:`:: Colour on PDF text accents (headings, titles and odd table header rows, BSI Flex and PAS only), as #HEX.
+`:presentation-metadata-color-secondary-shade-2:`:: Colour (lighter accents) on PDF even (odd for preface) table header rows (BSI Flex and PAS only), as #HEX.
+`:presentation-metadata-color-secondary-shade-3:`:: Colour (even lighter accents) on PDF odd (even for preface) table body rows (BSI Flex and PAS only), as #HEX.
+`:presentation-metadata-color-secondary-shade-4:`:: Colour (much lighter accent) for background on PDF preface and even table body rows (BSI Flex and PAS only), as #HEX.
+`:presentation-metadata-color-list-label:`:: List item bullet and label colour (BSI Flex and PAS only), as #HEX.
+`:presentation-metadata-color-clause-union-background:`:: Background colour on clauses under floating titles (BSI Flex and PAS only), as #HEX
+`:presentation-metadata-color-backpage-background:`:: Background colour on PDF back cover (BSI Flex and PAS only), as #HEX.
+
+`:presentation-metadata-layout-columns:`:: Alternate between one-column and two-column output; default is `1`. `2` is expected for PAS documents authored before 2023.
+
+`:toclevels:`::
+Number of table of contents levels to render. Accepts an integer value. (default: `1` for BSI).
+Can be overridden with output-specific options (`htmltoclevels`, `doctoclevels`).
+
+`:htmltoclevels:`::
+Number of table of contents levels to render in HTML output; used to override
+`:toclevels:` for HTML output. Accepts an integer value. (default: `1` for BSI).
+
+`:doctoclevels:`::
+Number of table of contents levels to render in Microsoft Word "DOC" output;
+used to override `:toclevels:` for Word DOC output. Accepts an integer value.
+(default: `1` for BSI).

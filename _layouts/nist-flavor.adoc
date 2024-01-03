@@ -1,0 +1,42 @@
+---
+layout: flavor
+
+docs_title: Metanorma for NIST
+title: Author NIST documents using Metanorma
+
+nist_flavor:
+  title: NIST
+  private: true
+  markup_name: Metanorma for NIST
+  build:
+    cli_flags: "--type nist -x html"
+  sample:
+    repo_url: https://github.com/metanorma/mn-samples-nist
+    rendered_url: https://metanorma.github.io/mn-samples-nist/
+  implemented_by: metanorma-nist
+  data_models: metanorma-model-nist
+  docs_entry_points:
+    - path: ./authoring/
+      title: guide
+
+base_url: /author/nist
+
+navigation:
+  items:
+  - title: Get started
+    path: /
+  - title: Usage
+    path: /topics/
+    items:
+    - title: Formats
+      path: /topics/formats/
+    - title: Markup
+      path: /topics/markup/
+  - title: Reference guides
+    path: /ref/
+    items:
+      - title: Document attributes
+        path: /ref/document-attributes/
+---
+
+{{ content }}

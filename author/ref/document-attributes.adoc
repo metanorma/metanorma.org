@@ -141,6 +141,14 @@ The numeric component of the document identifier.
 The full identifier is formed by prefixing and suffixing this element with other strings
 derived from metadata.
 
+`:docidentifier:`::
+As an alternative to `docnumber` and other attributes (such as `doctype` and `docstage`),
+which form the full identifier by combining multiple attributes, this attribute contains a
+full specification of the document identifier and overrides the composition of the document
+identifier [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.9].
+This value is used for document identifiers that do not follow normal SDO conventions,
+including for documents that are adoptions from other SDOs. 
+
 `:edition:`::
 The document edition.
 
@@ -340,6 +348,10 @@ The given name(s) of a person who is a contributor to the document.
 
 `:initials{_i}:`::
 The initials(s) of a person who is a contributor to the document.
+
+`:contributor-credentials{_i}:`::
+Credentials of the person, appearing after their name in Metanorma flavour-specific
+contexts [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.9].
 
 [[role]] `:role{_i}:`::
 The role of a person who is a contributor to the document.

@@ -207,7 +207,8 @@ forms a sidebar for the display of the HTML content of each file.
 The following fields are defined:
 
 * `doctitle`, `docnumber`, etc.: Information derived from the Relaton YAML
-description in the manifest. The field names are as defined for Liquid templates
+description in the manifest of the entire collection. 
+The field names are as defined for Liquid templates
 in Metanorma: see
 link:/builder/topics/metadata-and-boilerplate[Metadata and Boilerplate].
 
@@ -220,6 +221,8 @@ It contains the following fields:
 ** title: the list title
 ** docrefs: a hyperlinked list of the documents at that level of the manifest
 ** children: an array of child manifests
+* `prefatory-content`: Prefatory content from the collection manifest [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6].
+* `final-content`: Final content from the collection manifest [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6].
 
 [[collection-cross-references]]
 == Cross-references
@@ -535,6 +538,8 @@ This is an introduction added to the Received document
 
 embed::received.adoc[]
 
+The embedded document can be 
+
 == Colophon
 ----
 
@@ -604,3 +609,45 @@ embedded document is in a different directory from the containing document: Asci
 of specifying asset location relative to the current document, as opposed to the initial document.
 For that reason, if you embed documents that reference files, you will need to put both documents in the
 same folder, in a flat hierarchy.
+
+Documents can be embedded at multiple levels; the current implementation presupposes
+that any document can only embed a single document, and that the embedding documents
+only involve substituted clauses, or prefatory clauses (e.g. the original foreword,
+supplemented by a regional foreword, and/or a national foreword).
+
+It is possible to cite the embedded document from the embedding document, through
+a cross-reference to an anchor on the `embed::` directive: if no display text is supplied,
+the cross-reference is populated with the document identifier of the 
+embedded document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.10]:
+
+For example, if
+
+[source,asciidoc]
+----
+= Document 1
+:docidentifier: SHQ XYZ 123A
+
+== Introduction
+
+This is an introduction added to the Received document <<id>>
+
+[[id]]
+embed::received.adoc[]
+----
+
+embeds the document
+
+[source,asciidoc]
+----
+= Document 1
+:docidentifier: XYZ 123
+
+== Foreword
+
+This is the foreword
+----
+
+Then `<<id>>` will be rendered as __XYZ 123__, the embedded document identifier;
+and the `<<id>>` cross-reference will hyperlink to the first header within the
+embedded document (the Foreword, in this case).
+
