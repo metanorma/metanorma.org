@@ -330,7 +330,7 @@ elements of `amend` are recognised:
 --
 `description`:: The description of the change, as Metanorma Asciidoc; can span multiple blocks of text, and contain
 Asciidoc formatting such as lists and tables.
-`keyword`:: A list of strings used to classify the change, which can be used for filtering in the rendering of the document history.
+`classification`:: A list of key/value pairs used to classify the change, which can be used for filtering in the rendering of the document history.
 Examples of such classifications include change severities (Minor, Major), change scope (the SDO it relates to),
 change type (editorial, content), and so on.
 `contributor`:: The persons or organisations responsible for the change, specified as Relaton YAML contributor objects.
@@ -378,6 +378,11 @@ fields are mandatory.
         - clause=4.0
         - clause=12.0
         - clause=9.0
+      classification:
+        - key: severity
+          value: major
+        - key: type
+          value: editorial
     - description: Deleted contents of Annex B in preparation for updated S-100 Part 10C guidance. 
       location:
         - annex=B
