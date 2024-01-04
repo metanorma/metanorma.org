@@ -255,3 +255,126 @@ ____
 This document was prepared by the OGC Architecture Domain Working Group.
 ____
 ====
+
+== Document history
+
+Semantic markup of document history can be added to the document,
+link:/author/topics/document-format/meta-attributes#doc-history-misc-container[using Misc container]
+and Relaton YAML [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.5.0].
+Document history is realised as a final "Revision history" annex.
+
+The official structure for document history is as follows:
+
+Date:: represented as `date`, with type `published`, `updated` (modifications to document),
+or `issued` (circulated drafts).
+Release:: represented as `edition`, or `version/draft`.
+Author:: represented as one or more `contributor` objects, following Relaton YAML.
+The role of the contributor can be specified optionally, as `role/type`, to differentiate
+editors from the default role of `author`.
+Paragraph modified:: represented as `amend/location`, with locality specified as in bibliographic
+cross-references; note that `whole` is used in Relaton to specify the entire document (and will be rendered
+as "all" in the generated document).
+Description:: represented as `amend/description`, can contain inline and block Asciidoc markup.
+
+The following is an illustration of semantic document history markup for OGC.
+
+[source, asciidoctor]
+--
+[.preface]
+== Misc container
+
+=== document history
+
+[source,yaml]
+----
+- date:
+  - type: published
+    value:  2012-04-02
+  version:
+    draft: Draft
+  contributor:
+    person:
+      name:
+        completename: R Thakkar
+  amend:
+    location: whole
+    description: Original draft document
+- date:
+  - type: published
+    value:  2002-08-30
+  version:
+    draft: 0.1 02-077
+  contributor:
+    - person:
+        name:
+          completename: Kurt Buehler
+       role:
+         type: editor
+    - person:
+        name:
+          completename: George Percivall
+       role:
+         type: editor
+    - person:
+        name:
+          completename: Sam Bacharach
+       role:
+         type: editor
+    - person:
+        name:
+          completename: Carl Reed
+       role:
+         type: editor
+    - person:
+        name:
+          completename: Cliff Kottman
+       role:
+         type: editor
+    - person:
+        name:
+          completename: Chuck Heazel
+       role:
+         type: editor
+    - person:
+        name:
+          completename: John Davidson
+       role:
+         type: editor
+    - person:
+        name:
+          completename: Yaser Bisher
+       role:
+         type: editor
+    - person:
+        name:
+          completename: Harry Niedzwiadek
+       role:
+         type: editor
+    - person:
+        name:
+          completename: John Evans
+        role:
+         type: editor
+   - person:
+        name:
+          completename: Jeffrey Simon
+       role:
+         type: editor
+  amend:
+    description: Initial version of ORM. Doc OGC
+- date:
+  - type: published
+    value:  2018-06-04
+  version:
+    draft: 1.0
+  contributor:
+    person:
+      name:
+        completename: Gabby Getz
+  amend:
+    description: |
+      * Put _3D Tiles_ specification document into OGC document template
+      * Miscellaneous updates
+----
+--
+
