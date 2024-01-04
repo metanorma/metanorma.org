@@ -329,7 +329,7 @@ elements of `amend` are recognised:
 +
 --
 `description`:: The description of the change, as Metanorma Asciidoc; can span multiple blocks of text, and contain
-Asciidoc formatting such as lists and tables.
+Asciidoc formatting such as lists and tables. (The YAML literal style needs to be used for blocks of Asciidoc: `description: |`.)
 `classification`:: A list of tag/value pairs used to classify the change, which can be used for filtering in the rendering of the document history.
 Examples of such classifications include change severities (Minor, Major), change scope (the SDO it relates to),
 change type (editorial, content), and so on.
@@ -337,6 +337,7 @@ change type (editorial, content), and so on.
 `location`:: The locations where the change has been applied, specified as a list of Metanorma document notations, using
 link:/author/topics/document-format/bibliography#localities[Metanorma locality notation], as with bibliographic cross-references.
 (`whole` means the change applies to the entire document.)
+`change`:: The type of change (`add`, `modify`, `delete`, `replace`). Defaults to `modify`.
 --
 
 The following is an illustration of document history markup. Document flavours may impose their own requirements on which
@@ -370,7 +371,7 @@ fields are mandatory.
   - organization:
       name: S-102PT
   amend:
-    - description: >
+    - description: |
         Updated clause 4.0 and 12.0.
 
         Populated clause 9.0.
