@@ -139,37 +139,16 @@ publishes the document under.)
 The following document attributes are specific to NIST:
 
 
-`:series:`:: The publication series that the document belongs to. Legal values are:
-+
---
-*  nist-ams
-*  building-science
-*  nist-fips
-*  nist-gcr
-*  nist-hb
-*  itl-bulletin
-*  jpcrd
-*  nist-jres
-*  letter-circular
-*  nist-monograph
-*  nist-ncstar
-*  nist-nsrds
-*  nistir
-*  product-stadnards
-*  nist-sp
-*  nist-tn
-*  other
-*  csrc-white-paper
-*  csrc-book
-*  csrc-use-case
-*  csrc-building-block
-*  nist-cswp
-*  nist-csts
---
+`:series:`:: The publication series that the document belongs to. Legal values are given
+as the keys of the 
+https://github.com/metanorma/pubid-nist/blob/main/series.yaml[pubid-nist series listing] [added in https://github.com/metanorma/metanorma-nist/releases/tag/v2.4.0]. For legacy purposes, `nist-*` is converted  to `NIST *` in all caps; and `nist-cswp`
+(Cybersecurity White Papers) is converted to the correct `CSRC White Paper`.
+`nist-csts` is also supported as an ad hoc series.
 
 Documents belonging to different series are expected to be rendered differently. As of this
 writing, styling has been provided for `nist-cswp` (Cybersecurity White Papers),
-`nist-csts` (Cybersecurity Technical Specifications, added in v1.2.10), and for `nist-sp` (SP-800).
+`nist-csts` (Cybersecurity Technical Specifications) [added in https://github.com/metanorma/metanorma-nist/releases/tag/v1.2.10], 
+and for `nist-sp` (SP-800).
 
 `:series-title:`:: (Added in v1.2.10)
 `:series-mrprefix:`:: (Added in v1.2.10)
