@@ -190,3 +190,11 @@ Number of table of contents levels to render in HTML output; used to override
 Number of table of contents levels to render in Microsoft Word "DOC" output;
 used to override `:toclevels:` for Word DOC output. Accepts an integer value.
 (default: `1` for BSI).
+
+`:document-scheme:`::
+Picks the form of document presentation to be used. If `with-publication-information` is given,
+the document history of the document is given in the old style, with full publication history
+(enumerating all editions), and with four columns for amendments (date issued, date effective,
+amendment designation, description). If it is not, the document history is given in the new style:
+no publication history, and two columns for amendments (date issued, description). The
+scheme is ignored in Flex and PAS, which use full document history, but two columns for amendments.
