@@ -1040,6 +1040,12 @@ wording ("`and`").
 ----
 ====
 
+NOTE: If references are joined with semicolons and connectives, but the locality is not supplied
+for a cross-reference, it is filled in by referring to the preceding conjoined 
+cross-reference [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.0].
+For example, `<<ref1,clause=3.2;and!4.7;to!4.9;and!9>>` is
+corrected internally to the more explicit `<<ref1,clause=3.2;and!clause=4.7;to!clause=4.9;and!clause=9>>`.
+
 Trailing text after the sequence of `locality=reference` (or
 `locality{space}reference`) is treated as custom text for the cross-reference,
 as would occur normally in a typical cross-reference.
