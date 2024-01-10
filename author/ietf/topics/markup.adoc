@@ -542,12 +542,16 @@ Content content content
 <<crossreference>> <1>
 <<crossreference,text>> <2>
 <<crossreference,format=(counter|title|none|default): text>> <3>
-http://example.com/[linktext] <4>
+http://example.com/[] <4>
+http://example.com/[linktext] <5>
+http://example.com/[style=angle%] <6>
 ----
 <1> `<xref target="crossreference"/>`
 <2> `<xref target="crossreference">text</xref>`
 <3> `<xref format="counter|title|none|default" target="crossreference">text</xref>`
-<4> `<eref href="http://example.com/">linktext</eref>`
+<4> `<eref href="http://example.com/"/>`
+<5> `<eref href="http://example.com/">linktext</eref>`
+<6> `<eref href="http://example.com/" brackets="angle"/>` [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v3.3.1]
 
 Note that fragments (e.g. `crossreference#fragment`) are not supported on the
 `xref/@target` attribute: the RFC XML specification requires that the
