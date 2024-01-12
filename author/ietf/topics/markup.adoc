@@ -571,14 +571,17 @@ default, naming and numbering the referenced object.
 <<crossreference#fragment,section_number (of|comma|parens|bare)>> <4>
 <<crossreference#fragment,section_number (of|comma|parens|bare): text>> <5>
 ----
-<1> `<relref target="crossreference"/>`
-<2> `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>`
-<3> `<relref displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>`
-<4> `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>`
-<5> `<relref relative="fragment" displayFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>`
+<1> `<xref target="crossreference"/>`
+<2> `<xref sectionFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>`
+<3> `<xref sectionFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>`
+<4> `<xref relative="fragment" sectionFormat="of|comma|parens|bare" section="section_number" target="crossreference"/>`
+<5> `<xref relative="fragment" sectionFormat="of|comma|parens|bare" section="section_number" target="crossreference">text</relref>`
 
 Localities other than `clause` and `section` are ignored in the generated
 RFC XML v3.
+
+Metanorma has switched to `xref` in its RFC XML output from the deprecated 
+`relref` [added in https://github.com/metanorma/metanorma-ietf/releases/tag/v3.3.1].
 
 === Footnotes
 
