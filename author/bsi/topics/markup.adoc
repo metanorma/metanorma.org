@@ -437,6 +437,40 @@ Ninth (present) edition
 ____
 
 
+=== Change markup
+
+In at least some documents, changes to documents in corrigenda and amendments are marked up with
+arrows identifying the corrigendum or amendment. In order to replicate this markup,
+changes should be notated as empty reviewer comments of type "corrigenda", with the reviewer identifier
+as the conventional addendum or corrigendum label [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.1].
+
+[source,asciidoc]
+----
+[reviewer=A1,from=anchor1,to=anchor2,type=corrigenda]
+****
+****
+
+
+[cols=3]
+|===
+|[[anchor1]]IIB-P or Q 
+| Portland cement with 21% to 35% pozzolana 
+| CEM II/B-P or Q, CIIB-P or Q [[anchor2]]
+|===
+----
+
+Rendered as:
+
+____
+
+[cols=3]
+|===
+|`[A~1~>]` IIB-P or Q
+| Portland cement with 21% to 35% pozzolana
+| CEM II/B-P or Q, CIIB-P or Q `[<A~1~]`
+|===
+____
+
 === Forewords
 
 Forewords in BSI typically consist of multiple subclauses, which are not numbered. These subclauses do
@@ -789,3 +823,4 @@ is done by creating a cell spanning across all columns:
 3+| A paragraph containing a provision of the standard.
 |===
 ----
+
