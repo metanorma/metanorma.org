@@ -634,10 +634,13 @@ The span categories supported are:
 * `surname`: Author surname.
 * `initials`: Author initials.
 * `givenname`: Author given name.
+* `fullname`: Combination of author surname and initials or given names, according to strcit syntax 
+(see below) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.0]
 * `organization`: Corporate author.
 * `surname.XXX`: Contributor surname, with role _XXX_ (e.g. _editor_). 
 * `initials.XXX`: Contributor initials, with role _XXX_ (e.g. _editor_).
 * `givenname.XXX`: Contributor given name, with role _XXX_ (e.g. _editor_).
+* `fullname.XXX`: Contributor full name, with role _XXX_ (e.g. _editor_).
 * `organization.XXX`: Corporate contributor, with role _XXX_ (e.g. _editor_).
 * `title`: Title.
 * `in_title`: Title of containing bibiographic item (for types `inbook, inproceedings, incollection`,
@@ -670,6 +673,14 @@ So `span:surname[Fields], span:initials:[W.C.]`, never `span:initials:[W.C.] spa
 NOTE: After the first instances of `surname` and either `initials` or `givenname`, any
 subsequent instances of `surname` or either `initials` or `givenname` are
 interpreted as belonging to a new contributor of the same role.
+
+NOTE: `span:fullname[]` is intended as a convenience method to substitute `span:surname[]`,
+`span:initials[]`, `span:givenname[]` in a single macro. It has a strict syntax, and any
+special cases need to be marked up with the separate, explicit name parts instead:
+
+* The surname is a single word (space-delimited), occuring at the end. So in `span:fullname[A. D. Navarro Cortez]`, only _Cortez_ is a surname: to make _Navarro Cortez_ a surname, you will need to mark it up as `span:initials[A. D.] span:surname[Navarro Cortez]`. But in `span:fullname[A. D. Navarro-Cortez]`, the surname is _Navarro-Cortez_.
+* Anything before the surname is a given name. So in `span:fullnamename[J. Edgar Hoover]`, both _J._ and _Edgar_ are processed as given names.
+* If everything before the surname ends in a full stop, they are all deemed initials. So in `span:fullname[A. D. Navarro Cortez]`, _A. D._ are parsed as initials.
 
 [example]
 .Example encoding of a bibliographic item inline with semantic markup
