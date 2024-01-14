@@ -1180,6 +1180,8 @@ as a numbered label (_Requirement Class 6_).
 NOTE: As a limitation of syntax, URIs cannot be processed correctly within
 `<<..>>`. The `xref:...[]` command needs to be used instead.
 
+==== Cross-reference styles
+
 To make the cross-reference render the identifier value of the instance itself,
 while still hyperlinking to the correct identifier, you can specify `style=id%`
 as the cross-reference text, as follows.
@@ -1199,6 +1201,32 @@ Renders as:
 
 This will also highlight the URI text as subject to truncation, with reference
 to identifier bases.
+
+In some flavours (ISO as of this writing), the automatically generated cross-references 
+within requirements (listings of provisions, tests, child and parent requirements) is different
+from the default rendering of cross-references in documents. In order to use the same
+cross-reference style as occurs inside of requirements, you can specify 
+`style=modspec%` [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.3.1].
+
+For example, in ISO, in the main body of text
+
+====
+[source,adoc]
+----
+xref:http://www.example.com/req/crs/crs-uri[style=modspec%]
+
+xref:http://www.example.com/req/crs/crs-uri[]
+----
+
+Renders as:
+
+____
+Requirement 2: Widgets
+
+Table 9, Requirement 2
+____
+
+====
 
 [[identifier-base]]
 ==== Identifier base pattern
