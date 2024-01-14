@@ -452,6 +452,23 @@ NOTE: The standards board membership is provided by the working group secretary
 or the IEEE editor during editing. If the information is not provided in the
 document, dummy values will be provided to match those in the IEEE templates.
 
+=== Name markup
+
+The forenames and surnames of participants should be marked up semantically as such,
+for correct generation of Word styles. This is done with the markup 
+`span:surname[]`, `span:forename[]`, and [added in https://github.com/metanorma/metanorma-ieee/releases/tag/v1.2.1].
+There is no need to mark up the role of participants or their status as companies, as this is already semantically
+differentiated in markup.
+
+[source,adoc]
+----
+item::
+name::: span:forename[Justin] span:surname[Refice]
+role::: Chair
+item::
+name::: span:forename[Mark] span:surname[Strickland]
+role::: Vice Chair
+----
 
 end::preliminary-ieee[]
 
