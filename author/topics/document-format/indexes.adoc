@@ -184,6 +184,35 @@ levels deep.
 In some flavours, a separate table of contents is inserted for figures, tables,
 and recommendations.
 
+=== Automated table of contents generation
+
+The table of contents is generated automatically for Word, HTML, and PDF output.
+
+* In Word, it takes the form of a normal Word Table of Contents; the page numbers
+are not populated when the document is generated, and the table of contents needs
+to be refreshed (Right Click: Update Field).
+* In HTML, it takes the form of a side panel. In PDF, it takes the form of an
+introductory table of contents; because the PDF is generated from HTML in Metanorma,
+there are no page numbers in the table of contents.
+
+By default, the table of contents includes two levels of heading. More levels of
+heading can be set by using the document attribute `:toclevels:`; e.g.
+`:toclevels: 3` for three levels of heading included. The number of levels of heading
+to include can be set separately for HTML and for DOC/PDF, by using the document
+attributes `:htmltoclevels:`, `:pdftoclevels:` and `:doctoclevels:`.
+
+The location of the table of contents is set by default for each flavour, and is normally
+at the start of the document preface. If the user wishes to insert a signpost for tables of content,
+the clause type `toc` is reserved to indicate
+where the table of contents will go. But Metanorma by default will not allow any flexibility
+in where the table of contents will be rendered --- and will move it to the start of the preface.
+
+[source,adoc]
+----
+[.preface,type=toc]
+== Table of contents
+----
+
 === Using the `toc` command to generate a ToC
 
 A manual table of contents command has been added to
