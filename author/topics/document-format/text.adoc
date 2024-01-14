@@ -193,6 +193,8 @@ As with link:/author/topics/document-format/text#css[CSS declarations],
 any font specified as a custom charset font also needs to be passed to Metanorma
 in the `:fonts:` document attribute.
 
+== Semantic elements
+
 === Identifier
 
 The `identifier` command, used to indicate that its contents are an identifier
@@ -292,6 +294,27 @@ in the Metanorma document, with CSS classes matching the span:
 
 span:green[this text is highlighted as green]
 ---
+
+=== Dates
+
+The `date` command is used to introduce dates and date-times as semantic 
+elements  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.5].
+The value of the `date:[]` macro is an ISO-8601 formatted date or date-time.
+The second argument given in the macro, if present, is a 
+https://ruby-doc.org/stdlib-3.0.0/libdoc/date/rdoc/DateTime.html#method-i-strftime[`strftime` formatting description
+of the date]. (Space can be specified as `%_`.)
+Month and day names and abbreviations, if requested in the formatting string, are internationalised
+to the document language.
+
+[source,asciidoctor]
+----
+date[2012-02-02]
+date[2012-02-02, %F]
+date[2012-02-02, %A %d %B] # Thursday 2 February
+date[2012-02-02T21:04:05, %F%_%l%_%p]
+----
+
+== Other
 
 
 === Nesting of styles
