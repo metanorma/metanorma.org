@@ -279,9 +279,11 @@ The predefined text at the start of the clause is adjusted to
 reflect both possibilities.
 
 In order to replace (override) the predefined text with custom
-content, an initial subclause with the style attribute
+content, an initial open block with the style attribute
 `[.boilerplate]` can be used to do
-so [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
+so [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.0].
+
+(Formerly, a clause with that style attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].)
 
 Input:
 
@@ -289,24 +291,21 @@ Input:
 .Overridden predefined text
 ====
 [source,asciidoc]
---
+----
 == Terms and definitions
 
 [.boilerplate]
-=== My predefined text (<<<=== this will be stripped)
-
+--
 This is predefined text that overwrites the default.
 
 * No, it does not follow ISO requirements
 * And no, it does not follow IEC requirements either
-
-=== Term 1
 --
 
-Where:
+=== Term 1
+----
 
-* The title of the predefined text clause will be stripped (so you could equally
-  use `=== {blank}`);
+Where:
 
 * The custom predefined text is encoded as a subclause, so that
   its extent can be made unambiguous in initial processing.
