@@ -734,7 +734,8 @@ special cases need to be marked up with the separate, explicit name parts instea
 [source,asciidoc]
 ----
 * [[[A, B]]],
-  span:surname[Wozniak], span:initials[S.] & span:givenname[Steve] span:surname[Jobs].
+  span:surname[Wozniak], span:initials[S.], span:surname[Jobs], span:givenname[Steve],
+    & surname:[Hoover], span:initials[J.] span:givenname[Edgar].
   span:date.issued[1991].
   span:date[1996].
   span:title[_Work_].
@@ -758,8 +759,11 @@ distinction between the title of the paper (_Work_), and the title of the book i
 the paper (_Collected Essays_).
 
 After the first instances of `surname` and either `initials` or `givenname`, any
-subsequent instances of `surname` or either `initials` or `givenname` are
+subsequent instance of `surname` is
 interpreted as belonging to a new contributor of the same role.
+Any given names and surnames MUST follow the surname that they relate to. If the names
+are ordered differently between the first and subsequent name, e.g. _Wozniak, S. & Steve Jobs_,
+that will be taken care of in rendering: they cannot be annotated in that way.
 
 [NOTE]
 --
