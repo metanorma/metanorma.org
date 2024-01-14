@@ -1210,6 +1210,22 @@ f -= lambda x (a * x + b)
 WARNING: Some math expressions are NOT supported by AsciiMath. In that case it
 is necessary to use LaTeX math or MathML input.
 
+[WARNING]
+.Encoding brackets inside stem:[]
+====
+When we encode inline math expressions that contain brackets we have have to
+make sure of two things:
+
+. The closing bracket must be escaped, `\]`.
+
+. If the opening bracket is the first character of the expression, there should be
+a white space between `stem:[` and the opening bracket; i.e. `stem:[ [...`.
+Otherwise, the engine may interpret the double-opening brackets `[[`  as the
+beginning of an anchor definition.
+
+As an example, suppose we want to encode this inline expression: stem:[[x_n,y_n\]]. +
+The correct encoding to avoid misinterpretations would be: `\stem:[ [x_n,y_n\]]`
+====
 
 === Using LaTeX math
 
