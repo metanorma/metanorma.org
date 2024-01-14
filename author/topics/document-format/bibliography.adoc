@@ -642,6 +642,10 @@ The span categories supported are:
 * `title`: Title.
 * `in_title`: Title of containing bibiographic item (for types `inbook, inproceedings, incollection`,
 the title of the book, proceedings, collection containing the item).
+* `in_surname`, `in_initials`, `in_givenname`, `in_organization`: Name of contributor for containing
+bibliographic item (for types `inbook, inproceedings, incollection`, the author or more usually editor
+of the book, proceedings, collection containing the item. So `in_surname.editor`, `in_givenname.editor`
+give the name of the editor of the book or proceedings that a paper is included in).
 * `series`: Series title. (For articles, this is the journal title.)
 * `docid`: Document identifier.
 * `docid.XXX`: Document identifier, of type _XXX_.
@@ -655,6 +659,7 @@ the title of the book, proceedings, collection containing the item).
 * `issue`: issue or issue range (e.g. _9_, _9-11_)
 * `volume`: volume or volume range (e.g. _9_, _9-11_)
 * `type`: Document type (e.g. _standard_, _book_, _inbook_): suppressed from rendering.
+The list of valid document types is given in https://www.relaton.org/specs/model/bibtype/[Relaton model -- Bibitem type].
 
 NOTE: The surname must always precede the initials or given name for a given author in spans,
 to prevent ambiguity and confusion in parsing the citation.
@@ -690,6 +695,15 @@ interpreted as belonging to a new contributor of the same role.
 ----
 ====
 
+Note the distinction in the example between Wozniak and Jobs (authors of the paper),
+and Gates and UNICEF (editors of the book including the paper). Similarly, note the
+distinction between the title of the paper (_Work_), and the title of the book including
+the paper (_Collected Essays_).
+
+After the first instances of `surname` and either `initials` or `givenname`, any
+subsequent instances of `surname` or either `initials` or `givenname` are
+interpreted as belonging to a new contributor of the same role.
+
 [NOTE]
 --
 For presentations,
@@ -697,6 +711,18 @@ For presentations,
 * `title` is the title of the presentation
 * `series` is the title of the conference
 * `organization.distributor` is the organizer of the conference
+--
+
+[IMPORTANT]
+--
+The rendering of different bibliographic types is quite different in the various
+stylesheets that SDOs follow, and strange things will happen if Metanorma gets the
+bibliographic type wrong. Under Metanorma, the default bibliographic type is "standard",
+and most SDOs render standards in bibliographies with very little data (no author, no
+publisher, no date outside of the document identifier, and so on). 
+
+If you use this notation to enter any document other than a standard, you *must*
+specify the type of document, using `span:type[]`.
 --
 
 [[asciibib]]
