@@ -272,6 +272,27 @@ rendering.
 NOTE: Only certain Metanorma flavors support enhanced rendering for
 semantically-tagged content.
 
+The semantic label is realised in Metanorma as a `class` attribute. That means
+that distinct rendering of spans can be specified by embedding 
+link:/author/topics/document-format/sections#user-css[custom CSS]
+in the Metanorma document, with CSS classes matching the span:
+
+[source,asciidoc]
+---
+== Metanorma-Extension
+
+=== user-css
+
+[source]
+----
+.green { background-color: green}
+----
+
+....
+
+span:green[this text is highlighted as green]
+---
+
 
 === Nesting of styles
 
