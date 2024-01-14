@@ -489,6 +489,51 @@ ISO 20483:2013. _Cereals and cereal products -- Determination of moisture conten
 ____
 ====
 
+One of the online bibliographic databases Metanorma allows access to is the CrossRef registry
+of DOI identifiers [added in https://github.com/relaton/relaton-cli/releases/tag/v1.14.0]. That means that
+any book, journal article, conference paper or dataset that has been identified with a DOI identifier
+can be cited by providing its DOI identifier as its bibliographic tag. Metanorma will import the bibliographic
+details of the reference from CrossRef, and format them in the required format of the current Metanorma flavour.
+
+[example]
+.Example of specifying an auto-fetched DOI reference
+====
+The following will trigger auto-fetching:
+
+[source,asciidoc]
+--
+* [[[ref1,doi:10.1045/november2010-massart]]]
+--
+
+and gets rendered as:
+
+____
+Massart D., Shulman E., Nicholas N., Ward N., &#x26; Bergeron F. Taming the Metadata Beast: ILOX. _D-Lib Magazine_ Vol. 16 No. 11/12. November 2010. Available from: <a href="http://dx.doi.org/10.1045/november2010-massart">http://dx.doi.org/10.1045/november2010-massart</a>
+____
+====
+
+This functionality has also been extended to the OpenLibrary registry of 
+ISBN identifiers [added in https://github.com/relaton/relaton-cli/releases/tag/v1.17.2].
+This is triggered by an identifier string prefixed with "ISBN ".
+
+[example]
+.Example of specifying an auto-fetched ISBN reference
+====
+The following will trigger auto-fetching:
+
+[source,asciidoc]
+--
+* [[[ref1,ISBN 978-0-12-064481-0]]]
+--
+
+and gets rendered as:
+
+____
+Arvo, J. _Graphics gems II_. 1991. Boston, London: AP Professional.
+____
+====
+
+
 === Automatic fetching of joint publications
 
 Metanorma recognises two types of joint publication:
