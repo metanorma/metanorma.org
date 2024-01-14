@@ -1116,7 +1116,6 @@ cross-reference, like `http://www.example.com/req/crs/crs-uri` instead of
 _Requirement Class 6_.
 ====
 
-
 ==== Referencing using predefined anchors
 
 This can be extended to cross-references. If the anchor of the requirement is
@@ -1132,9 +1131,10 @@ known, a normal cross-reference can be marked up, as shown below.
 
 Renders (assuming that this is the 10th Requirement):
 
-_Requirement 10_
+____
+Requirement 10: `http://www.example.com/req/crs/crs-uri`
+____
 ====
-
 
 ==== Referencing using instance identifiers
 
@@ -1162,7 +1162,7 @@ identifier:: http://www.example.com/req/crs/crs-uri
 ====
 ----
 
-It is possible to reference a ModSpec instance using its identifier instead of
+--- it is possible to reference a ModSpec instance using its identifier instead of
 the anchor, as follows.
 
 .Cross-reference to a ModSpec instance using its identifier, displaying the instance's name
@@ -1175,7 +1175,9 @@ xref:http://www.example.com/req/crs/crs-uri[]
 
 Renders (assuming that this is the 10th Requirement):
 
-_Requirement 10_
+____
+Requirement 10: `http://www.example.com/req/crs/crs-uri`
+____
 ====
 
 Metanorma treats them as fully equivalent, and will render them in the same way,
@@ -1184,9 +1186,38 @@ as a numbered label (_Requirement Class 6_).
 NOTE: As a limitation of syntax, URIs cannot be processed correctly within
 `<<..>>`. The `xref:...[]` command needs to be used instead.
 
-==== Cross-reference styles
+==== Cross-reference rendering
 
-To make the cross-reference render the identifier value of the instance itself,
+Following Modspec practice, all cross-references to Modspec instances from within another
+Modspec instance are rendered
+along with the URI identifier of that instance where available; the URI is truncated
+with reference to an identifier base (see <<identifier-base>>).
+
+So a reference to  `<<id1>>` or to `xref:http://www.example.com/req/crs/crs-uri[]` made within
+a Modspec instance will render as
+
+____
+Requirement 10: `http://www.example.com/req/crs/crs-uri`
+____
+
+If the reference occurs outside a Modspec instance however, e.g. in a normal clause,
+it will be made like any other cross-reference to a requirement, without the URI.
+
+____
+Clause 7.3.2, Requirement 10
+____
+
+If you want the reference made outside a Modspec instance to render as if it is inside a Modspec
+instance, with the URI, use `style=modspec%`:
+
+[source,adoc]
+----
+xref:http://www.example.com/req/crs/crs-uri[style=modspec%]
+
+<<id1,style=modspec%>>
+----
+
+To make the cross-reference render the URI identifier value of the instance itself,
 while still hyperlinking to the correct identifier, you can specify `style=id%`
 as the cross-reference text, as follows.
 
