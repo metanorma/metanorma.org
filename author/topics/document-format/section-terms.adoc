@@ -1442,16 +1442,12 @@ term:[rice] from which the husk only has been removed
 
 ==== Stem expressions
 
-AsciiDoc does not permit macros to be nested inside other macros.
+AsciiDoc permits macros to be nested inside other macros.
 
-Therefore the following markup which introduces a stem expression
-as an admitted term, is considered illegal.
-
-NOTE: The use of stem expressions as preferred terms is not a problem,
-because the macro appears as a header.
+Therefore the following markup shows that stem expressions can be used
+as both admitted terms and preferred terms.
 
 [example]
-.Bad `stem` example
 ====
 [source,asciidoc]
 --
@@ -1461,27 +1457,6 @@ alt:[stem:[t_A]]
 Time to launch.
 --
 ====
-
-However, Metanorma will treat any standalone paragraph in a term section,
-consisting of just a stem macro, as an admitted term:
-
-[example]
-.Good `stem` example
-====
-[source,asciidoc]
---
-=== stem:[t_90]
-
-stem:[t_A]
-
-Time to launch.
---
-
-.Illustration of a term that uses stem expressions.
-image::/assets/author/topics/document-format/section-terms/fig-term-stem.png[Illustration of a term that uses stem expressions]
-====
-
-
 
 [[citeterms]]
 === Referencing concepts through mentions

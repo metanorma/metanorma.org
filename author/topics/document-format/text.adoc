@@ -1093,6 +1093,30 @@ header to the first row of the table
 Therefore, you will need to apply the header tag (`h|`) to every cell of the first
 row to define it as the header.
 
+=== Table sources
+
+A table can incorporate an indication of its source,
+which in Metanorma is expected to be a bibliographical reference, just as with
+term sources [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2].
+Any such sources need to appear after the table, and before any notes which will also be
+included in the table.
+
+[source,asciidoc]
+--
+|===
+| Head | Head
+
+| Row  | Row
+|===
+
+[.source]
+<<iso1212>>, reformatted
+
+NOTE: Note 1
+
+NOTE: Note 2
+--
+
 == Mathematical expressions
 
 === General
@@ -1663,6 +1687,23 @@ through the `class` attribute [added in https://github.com/metanorma/metanorma-s
 image::logo.jpg[]
 --
 
+=== Figure sources
+
+When a figure is marked up as a block, it can incorporate an indication of its source,
+which in Metanorma is expected to be a bibliographical reference, just as with
+term sources [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2].
+
+[source,asciidoc]
+--
+[figure]
+.Rice husk separation
+====
+image::logo.jpg[]
+
+[.source]
+<<iso1212>>, reformatted
+====
+--
 
 == Passthrough to Metanorma XML and target formats
 
