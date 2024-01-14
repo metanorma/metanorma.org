@@ -115,10 +115,40 @@ gem 'metanorma-ribose'
 ----
 ====
 
+** Install the flavor with GitHub Actions
+command
++
+[TIP]
+.Installing a flavor through GH actions
+====
+
+[source,yaml]
+----
+...
+- uses: actions-mn/setup-flavors@main
+  with:
+    extra-flavors: ribose
+...
+----
+
+OR for private flavor
+
+[source,yaml]
+----
+...
+- uses: actions-mn/setup-flavors@main
+  with:
+    extra-flavors: nist
+    github-pakages-token: ${{ secrets.YOUR_GITHUB_PAT_TOKEN }}
+...
+----
+
+====
+
 * If you use Metanorma through Docker, using the official Metanorma Docker
 images, additional flavors can be installed using `Gemfile`, and then running
 the
-https://github.com/metanorma/metanorma-build-scripts/blob/main/gemfile-to-bundle-add.sh[gemfile-to-bundle-add.sh]
+https://github.com/metanorma/ci/blob/main/gemfile-to-bundle-add.sh[gemfile-to-bundle-add.sh]
 script to add those to the running container.
 +
 [TIP]
@@ -130,6 +160,6 @@ run within the Docker container:
 
 [source,sh]
 ----
-curl -L https://raw.githubusercontent.com/metanorma/metanorma-build-scripts/main/gemfile-to-bundle-add.sh | bash
+curl -L https://raw.githubusercontent.com/metanorma/ci/main/gemfile-to-bundle-add.sh | bash
 ----
 ====
