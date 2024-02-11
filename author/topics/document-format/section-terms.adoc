@@ -1240,6 +1240,11 @@ This example adds the "IEV" termbase with a chosen anchor `ievtermbank`.
 --
 ====
 
+Note that the clause  should be in quotes, to indicate it is a single cross-reference;
+a reference like `<<ievtermbank,clause=103-104>>` would be interpreted as the clause
+range 103 through 104. However, Metanorma will treat a reference with two hyphens
+as a single cross-reference [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.2].
+
 Formally, in accordance with IEC/TC 1 advised practice, IEV references should be
 cited as `IEC 60050-nnn:yyyy`, where `n` is the top-level clause, and `yyyy` is
 the year when that particular specification was published.
@@ -1255,7 +1260,7 @@ The following source:
 
 [source,adoc]
 ----
-<<ievtermbank,clause=113-01-07>>
+<<ievtermbank,clause="113-01-07">>
 ----
 
 will be rendered as:
