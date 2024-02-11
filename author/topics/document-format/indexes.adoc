@@ -140,6 +140,24 @@ ____
 *** technique, _see also_ Jimi Hendrix
 ____
 
+Only one target is to be given per macro; if there are multiple targets, they need to be
+specified in separate macros. Metanorma will concatenate them correctly.
+
+[source,adoc]
+--
+index:also[guitar,electric,technique,Jimi Hendrix]
+index:also[guitar,electric,technique,Eric Clapton]
+--
+
+Rendered as:
+
+____
+* guitar
+** electric
+*** technique, _see also_ Jimi Hendrix, Eric Clapton
+____
+
+
 === Index placement
 
 If any index terms are present in a document, and the current flavour supports
