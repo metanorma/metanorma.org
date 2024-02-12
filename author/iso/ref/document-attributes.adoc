@@ -36,6 +36,13 @@ For ISO 10303-2:2022, the `partnumber` is `2`.
 For ISO 8000-118, the `partnumber` is `118`.
 ====
 
+`:docidentifier:`:: The full document identiifer assembled out of component metadata,
+rather than relying on the provided metadata to build it up.
+
+NOTE: For a committee document, provide the N-document number for this attribute.
+The N-document number is normally specified to Metanorma as `:tc-docnumber` for drafts:
+see <<distribution-group,Distribution group>>.
+
 `:doctype:`:: Has its possible values defined by
 https://www.iso.org/deliverables-all.html[ISO deliverables: The different types of ISO publications]
 (mandatory). Permitted types are:
@@ -48,6 +55,7 @@ https://www.iso.org/deliverables-all.html[ISO deliverables: The different types 
 `guide`:: Guide (Guide)
 `technical-corrigendum`::: Technical Corrigendum (Cor) [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
 `amendment`::: Amendment (Amd) [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
+`committee-document`::: Commitee Document (for internal documents) [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.2]
 
 `:updates-document-type:`:: (only when `doctype` is set to `amendment` or `technical-corrigendum`)
 The document type that this amendment or technical corrigendum is
@@ -542,6 +550,7 @@ For ISO/TC 154/WG 5 "Date and time":
 ----
 ====
 
+[[distribution-group]]
 === Distribution group
 
 `:tc-docnumber:`:: The document number assigned by a *distribution group*
