@@ -131,6 +131,14 @@ foo: bar
 ____
 ====
 
+Automated titles will only be generated if the terms & definitions clause
+and its immediate children are exhaustively covered by the possibilities above:
+each child element is either a definitions clause or a terms collection, or initial
+boilerplate text, and there is only one of each type or combination of types.
+If there are other clauses mixed in, or if there are multiple collections of terms,
+Metanorma will not replace the terms, because its replacements will likely not be true;
+for example, if there are two subclauses containing terms, no one subclause should be
+named "Terms and definitions" [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.2].
 
 [[source]]
 ==== Concept source
@@ -271,9 +279,11 @@ The predefined text at the start of the clause is adjusted to
 reflect both possibilities.
 
 In order to replace (override) the predefined text with custom
-content, an initial subclause with the style attribute
+content, an initial open block with the style attribute
 `[.boilerplate]` can be used to do
-so [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
+so [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.0].
+
+(Formerly, a clause with that style attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].)
 
 Input:
 
@@ -281,24 +291,21 @@ Input:
 .Overridden predefined text
 ====
 [source,asciidoc]
---
+----
 == Terms and definitions
 
 [.boilerplate]
-=== My predefined text (<<<=== this will be stripped)
-
+--
 This is predefined text that overwrites the default.
 
 * No, it does not follow ISO requirements
 * And no, it does not follow IEC requirements either
-
-=== Term 1
 --
 
-Where:
+=== Term 1
+----
 
-* The title of the predefined text clause will be stripped (so you could equally
-  use `=== {blank}`);
+Where:
 
 * The custom predefined text is encoded as a subclause, so that
   its extent can be made unambiguous in initial processing.
@@ -664,6 +671,9 @@ one or more processes creating or using product data
 ----
 ====
 
+Duplicate designations under the same term of the same type are removed, with
+a warning [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.8];
+e.g. the section heading "application" followed by `preferred:[application]`.
 
 ===== Admitted designations
 
@@ -793,8 +803,9 @@ boolean (`true` or `false`)
 
 `absent`:: the designation is absent; value is boolean (`true` or `false`)
 
-`letter-symbol`:: the designation is not a linguistic expression, but a letter or
-symbol; value is boolean (`true` or `false`)
+`letter-symbol`:: the designation is not a linguistic expression, but a letter,
+symbol, formula, or equation; value is boolean (`true` or `false`), or else [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.2]
+one of `letter`, `symbol`, `formula`, `equation`.
 
 
 Grammar of the designation is encoded as keys within the tag `grammar`:
@@ -1056,6 +1067,8 @@ source.
 Metanorma allows the encoding of this more complex structure through embedding
 each distinct definition within an open block, with a `[.definition]` role
 attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6].
+Different definitions can be differentiated with different `type` 
+attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.5.3]
 
 [example]
 .Multiple definitions for one designation
@@ -1066,7 +1079,7 @@ attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/
 
 alt:[doohickey]
 
-[.definition]
+[.definition,type="official"]
 --
 device performing an unspecified function
 
@@ -1074,7 +1087,7 @@ device performing an unspecified function
 <<ISO2382,clause 2121372>>
 --
 
-[.definition]
+[.definition,type="unofficial"]
 --
 general metasyntactic variable
 
@@ -1083,7 +1096,7 @@ general metasyntactic variable
 --
 ----
 
-Multiple definitions are rendered in Metanorma as an ordered list of
+Multiple definitions are rendered by default in Metanorma as an ordered list of
 definitions:
 
 .Rendering of multiple definitions for one designation
@@ -1227,6 +1240,11 @@ This example adds the "IEV" termbase with a chosen anchor `ievtermbank`.
 --
 ====
 
+Note that the clause  should be in quotes, to indicate it is a single cross-reference;
+a reference like `<<ievtermbank,clause=103-104>>` would be interpreted as the clause
+range 103 through 104. However, Metanorma will treat a reference with two hyphens
+as a single cross-reference [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.2].
+
 Formally, in accordance with IEC/TC 1 advised practice, IEV references should be
 cited as `IEC 60050-nnn:yyyy`, where `n` is the top-level clause, and `yyyy` is
 the year when that particular specification was published.
@@ -1242,7 +1260,7 @@ The following source:
 
 [source,adoc]
 ----
-<<ievtermbank,clause=113-01-07>>
+<<ievtermbank,clause="113-01-07">>
 ----
 
 will be rendered as:
@@ -1291,6 +1309,28 @@ stem:[int_(t_2)^(t_1) bb(d) t]
 * [[[ievtermbank,IEV]]], _IEV: Electropedia_
 --
 ====
+
+You may wish to go against IEC practice, and cite IEC 60050 as an entire document, 
+instead of converting references to individual parts of IEC 60050.
+In that case, you need to use `IEC 60050 (all parts)` instead of `IEV` in your
+bibliography. So a reference to
+
+[source,asciidoc]
+----
+[.source]
+<<ievtermbank,clause="103-01-02">>
+
+...
+
+[bibliography]
+== Bibliography
+
+* [[[ievtermbank,IEC 60050 (all parts)]]], _IEV: Electropedia_
+----
+
+will have the bibliographic entry reference IEC 60050, instead of resolving that entry to
+IEC 60050-103.
+
 
 ===== Citing terminological entries with numeric identifiers
 
@@ -1429,16 +1469,12 @@ term:[rice] from which the husk only has been removed
 
 ==== Stem expressions
 
-AsciiDoc does not permit macros to be nested inside other macros.
+AsciiDoc permits macros to be nested inside other macros.
 
-Therefore the following markup which introduces a stem expression
-as an admitted term, is considered illegal.
-
-NOTE: The use of stem expressions as preferred terms is not a problem,
-because the macro appears as a header.
+Therefore the following markup shows that stem expressions can be used
+as both admitted terms and preferred terms.
 
 [example]
-.Bad `stem` example
 ====
 [source,asciidoc]
 --
@@ -1448,27 +1484,6 @@ alt:[stem:[t_A]]
 Time to launch.
 --
 ====
-
-However, Metanorma will treat any standalone paragraph in a term section,
-consisting of just a stem macro, as an admitted term:
-
-[example]
-.Good `stem` example
-====
-[source,asciidoc]
---
-=== stem:[t_90]
-
-stem:[t_A]
-
-Time to launch.
---
-
-.Illustration of a term that uses stem expressions.
-image::/assets/author/topics/document-format/section-terms/fig-term-stem.png[Illustration of a term that uses stem expressions]
-====
-
-
 
 [[citeterms]]
 === Referencing concepts through mentions
@@ -1518,6 +1533,11 @@ In this syntax, only the `term` argument is mandatory.
 * `identifier`: an identifier for the concept being cited (optional).
 
 * `term`: the concept designation being cited (mandatory).
++
+If a domain is used to disambiguate between two terms with the same designation, then
+the domain must be prefixed to the term 
+in angle brackets [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.9];
+e.g. {{<rice> whole rice}}. The domain may be dropped if the designation is unambiguous within the document.
 +
 The term must match the source term title for case, because case can be used to
 differentiate terms (e.g. _international standard_ and
@@ -2121,19 +2141,18 @@ The following rendering options, introduced with `options="..."`, are defined
 for concept mentions.
 
 `ital`:: italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
-
-`ref`:: provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
-
 `noital`:: do not italicise the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
 
+`bold`:: boldface the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.2]
+`nobold`:: do not boldface the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.2]
+
+`ref`:: provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
 `noref`:: do not provide a reference for the rendered term [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.1]
 
 `linkmention`:: hyperlink the rendered term to a term definition [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
-
 `nolinkmention`:: do not hyperlink the rendered term to a term definition [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
 
 `linkref`:: hyperlink the reference for the term to a term definition [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
-
 `nolinkref`:: do not hyperlink the reference for the term to a term definition [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6]
 
 If these options are missing, Metanorma applies the defaults for the current
@@ -2141,25 +2160,27 @@ flavour.
 
 The default behaviour in Metanorma is:
 
-* for all terms (italics and cited): `ital,ref,nolinkmention,linkref`
+* for all terms (italics and cited): `ital,nobold,ref,nolinkmention,linkref`
 
-* for acronyms (no special rendering): `noital,noref,nolinkmention,nolinkref`
+* for acronyms (no special rendering): `noital,nobold,noref,nolinkmention,nolinkref`
 
 NOTE: In Metanorma for IEEE, the default behaviour is
-`noital,noref,nolinkmention,nolinkref` for all terms (i.e. no special rendering
+`noital,nobold,noref,nolinkmention,nolinkref` for all terms (i.e. no special rendering
 for a term cited within a term definition.)
 
 
 In ISO, the default behaviour for terms is refined:
 
 * for terms outside the "`Terms and definitions`" section:
-  `noital,noref,nolinkmention,nolinkref` (no special rendering);
+  `noital,nobold,noref,nolinkmention,nolinkref` (no special rendering);
 
 * for the first mention of a term within the "`Terms and definitions`"
-  section: `ital,ref,nolinkmention,linkref` (italics, cited, hyperlinked);
+  section: `ital,nobold,ref,nolinkmention,linkref` (italics, cited, hyperlinked);
 
 * for all subsequent mentions within the "`Terms and definitions`" section:
-  `ital,noref,nolinkmention,linkref` (italics, hyperlinked, no citation).
+  `ital,nobold,noref,nolinkmention,linkref` (italics, hyperlinked, no citation).
+
+In BSI, the default behaviour for terms is: `noital,bold,ref,nolinkmention,linkref`
 
 [example]
 .Using cited concepts with various options

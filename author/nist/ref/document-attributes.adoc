@@ -1,0 +1,406 @@
+---
+layout: nist-flavor
+---
+
+= Metanorma NIST document attributes
+
+[[note_general_doc_ref_doc_attrib_nist]]
+[NOTE]
+====
+Document attributes listed below are unique to the processing of IEEE SA documents
+in Metanorma.
+
+For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author's documentation. That page describes attributes that apply to all Metanorma flavors, not just IEEE SA.
+
+For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
+====
+
+== Document information
+
+The general Metanorma document attributes relevant to NIST documents include:
+
+`:edition:`:: The document version; e.g. `2.0`.
+
+`:revdate:`:: The date the document was last updated.
+
+`:copyright-year:`:: The year which will be claimed as when the copyright for
+the document was issued.
+
+`:title-main:`:: The main component of the title of the document
+(mandatory). If absent, the first line of the AsciiDoc document, which contains the title
+introduced with `=`, is used.
+
+`:uri:`:: The URI to which this standard is published.
+
+`:status:`:: Document status/stage. The permitted types are:
++
+--
+* `draft-internal`
+* `draft-wip`
+* `draft-prelim`
+* `draft-public`
+* `draft-approval`
+* `final` (default: document is published)
+* `final-review`
+--
+
+`:substage:`:: Document substage. Indicates active status of draft or publication.
+If a draft or publication is inactive, that is reflected in the coverpage. The
+permitted types are:
++
+--
+* `active` (default)
+* `retired` (applies only to drafts, when they are abandoned). The `:abandoned-date:` must
+be provided, to indicate when the draft was abandoned.
+* `withdrawn` (applies to drafts, when when they are superseded by the next draft stage,
+and to published documents when they are superseded or no longer valid.
+--
+
+`:language:`::
+Two-letter code (ISO 639-1) of the language the document is written in. Defaults to `en`.
+If multiple languages are used in the document, comma-delimited; e.g. `en,fr`.
+
+
+The following document attributes are specific to NIST:
+
+`:title-sub:`:: The subtitle of the document.
+
+`:title-main-short:`:: Shortened form of the title of the document. For use in Word header.
+If not provided, `:title-main:` is used.
+
+`:title-sub-short:`:: Shortened form of The subtitle of the document. For use in Word header.
+If not provided, `:title-sub:` is used.
+
+`:title-document-class:`:: The title of the document class that the document belongs to;
+e.g. "Computer Security" for SP 800.
+
+`:keywords:`:: Comma-delimited list of the keywords associated with the document.
+
+`:iteration:`:: The iteration of a stage, in case there have been multiple drafts.
+Can be a number, or text (e.g. "initial", "final").
+
+== Document identifier
+The general Metanorma document attributes relevant to NIST documents include:
+
+`:docnumber:`:: The internal identifier referring to this document. The identifier is a number;
+the prefix, e.g. "NIST SP", is supplied by the `:series:` attribute. The NIST identifier is
+docnumber-edition (if edition is present)
+
+`:docidentifier:`:: The document identifier for the document. Normally this should not be supplied,
+as the document identifier is composed from the document series, document number, document volume,
+and edition/revision (e.g. _NIST SP 800 Revision 1_).
+
+If the `:docidentifier:` value is provided, it will override this composed value.
+
+CSWP publications do not have a distinct `:docidentifier:` or `:docnumber:`: they are identified
+by their `:issued-date:`.
+
+
+
+The following document attributes are specific to NIST:
+
+`:revision:`:: The document revision; e.g. `1` (Revision 1). Will be stored in Metanorma XML
+under the `<edition>` tag, with the prefix `Revision `.
+
+`:version:`:: The document version, when titled as version. Will be stored in Metanorma XML
+under the `<edition>` tag, with the prefix `Version `.
+
+`:volume:`::
+The number of the volume of a standard. Is ignored if a precomposed
+document identifier (`:docidentifier:`) is supplied.
+Is prefixed with "Volume" or "Vol." in display.
+
+`:part:`::
+The part number of a standard. Is only used to generate machine readable NIST identifier (nist-mr).
+
+`:section:`::
+The section number of a standard. Is only used to generate machine readable NIST identifier (nist-mr).
+
+`:supplement:`::
+The supplement number of a standard. Is only used to generate machine readable NIST identifier (nist-mr).
+Can be supplied with an empty value to indicate that this is a supplement of a standard.
+
+`:index:`::
+The index number of a standard. Is only used to generate machine readable NIST identifier (nist-mr).
+Can be supplied with an empty value to indicate that this is an index of a standard.
+
+`:update:`::
+The update number of a standard. Is only used to generate machine readable NIST identifier (nist-mr).
+
+`:addendum:`::
+The document is an addendum to a document. Used to generate machine readable NIST identifier (nist-mr),
+and to style document as addendum.
+
+`:doi:`:: DOI URL for document (distinct from `:uri:`, which is the URL that NIST
+publishes the document under.)
+
+
+== Document series
+The following document attributes are specific to NIST:
+
+
+`:series:`:: The publication series that the document belongs to. Legal values are given
+as the keys of the 
+https://github.com/metanorma/pubid-nist/blob/main/series.yaml[pubid-nist series listing] [added in https://github.com/metanorma/metanorma-nist/releases/tag/v2.4.0]. For legacy purposes, `nist-*` is converted  to `NIST *` in all caps; and `nist-cswp`
+(Cybersecurity White Papers) is converted to the correct `CSRC White Paper`.
+`nist-csts` is also supported as an ad hoc series.
+
+Documents belonging to different series are expected to be rendered differently. As of this
+writing, styling has been provided for `nist-cswp` (Cybersecurity White Papers),
+`nist-csts` (Cybersecurity Technical Specifications) [added in https://github.com/metanorma/metanorma-nist/releases/tag/v1.2.10], 
+and for `nist-sp` (SP-800).
+
+`:series-title:`:: (Added in v1.2.10)
+`:series-mrprefix:`:: (Added in v1.2.10)
+`:series-abbrev:`:: (Added in v1.2.10) The formal documents published by NIST belong to a registered
+list of series, each with a predefined title and abbreviation. Non-formal documents instead belong
+to ad hoc series defined for the purposes of Metanorma, such as `nist-csts`. That particular series
+acts as an umbrella for user-defined series of publications; so when it is used, the user needs to provide
+a title (e.g. "Automated Cryptographic Validation Protocol") and abbreviation (e.g. ACVP) for the user-defined
+series. The user also needs to provide the prefix by which the series will be identified in the machine-readable
+NIST identifier, when it is at variance with the abbreviation.
++
+--
+In this case, CSTS is retained as the primary series of the publication (and all CSTS documents
+are rendered the same way), and ACVP is modelled as a secondary series specific to CSTS. However,
+the series information rendered for the document involves the user-defined series, not CSTS itself.
+--
+
+
+== Document dates
+
+The general Metanorma document attributes relevant to NIST documents include:
+
+`:issued-date:`:: The date on which the document was authorised to be published.
+Referred to within NIST as the "Publication Date". This is the date used on the document
+cover page. Only applies to public documents;
+drafts instead have a `:circulated-date:` attribute.
+
+`:published-date:`:: The publication date for the document, when it was physically released.
+Referred to within NIST as the "Release Date". This date is not used on the document cover
+page; `:issued-date:` is used instead. The Release Date is included in NIST bibliographic metadata.
+
+`:obsoleted-date:`::
+The date at which a document is considered no longer valid (withdrawn). If a document
+is not currently withdrawn (as indicated through `:substage: withdrawn`),
+but will be in the future, that is still indicated in the rendering of the document.
+
+`:confirmed-date:`::
+The date at which a document has been reviewed according to the NIST ERB 5-year review process,
+and has been confirmed to be relevant and valid to date. If this attribute is present,
+the date is included in the cover page.
+
+`:updated-date:`::
+The date at which a document has been updated without being considered a distinct new publication.
+Used to indicate the date of errata releases.
+
+`:circulated-date:`::
+The date at which a draft is circulated. Displayed on the cover page of drafts.
+MANDATORY FOR DRAFTS.
+
+
+
+The following document attributes are specific to NIST:
+
+`:comment-from:`:: The beginning of the period during which comments may be submitted to the NIST
+document draft. ISO-8601 date.
+
+`:comment-to:`:: The end of the period during which comments may be submitted to the NIST document
+draft. The end of the period may change, and may be left open-ended (omitted). ISO-8601 date.
+
+`:comment-extended:`:: The date on which the during which comments may be submitted to the NIST document
+draft was extended.
+
+`:superseded-date:`::
+The date at which both this document and the document superseding it  come into effect,
+as a transition period before this document is withdrawn. May be identical to `:obsoleted-date:`,
+in which case there is no such transition period. Is indicated in withdrawn publication
+cover page; if not provided, the value of `:obsoleted-date:` is given.
+
+`:abandoned-date:`::
+The date at which work on a document is abandoned. At that date, the document is considered
+retired (`substage: retired`). In NIST, only drafts may be retired. If the document
+is not currently retired (as indicated through `:substage: retired`),
+but will be in the future, that is still indicated in the rendering of the document.
+
+
+
+== Document relationships
+
+The general Metanorma document attributes relevant to NIST documents include:
+
+`:merges:`:: This document incorporates the document(s) with the nominated
+identifiers (semicolon-delimited).
+
+`:updates:`:: This document is an update of the document(s) with the nominated
+identifiers (semicolon-delimited).
+
+The following document attributes are specific to NIST:
+
+`:obsoletes:`:: 
+One or more NIST document that this NIST document standard renders obsolete; implies that the obsoleted
+document is withdrawn, and no longer in effect. Comma delimited. 
+Format is document identifier, e.g. _SP 800-53A Rev. 1_
+
+`:obsoleted-by:`::
+One or more corresponding NIST document that this NIST document standard is obsoleted by; requires that
+this document is withdrawn, and no longer in effect. Comma delimited.
+Format is document identifier, e.g. _SP 800-53A Rev. 1_.
+Is the relation between a withdrawn draft, and the next draft in the approval process.
+
+`:supersedes:`::
+One or more NIST document that this NIST document standard supersedes; the superseded
+document may still remain in effect. Comma delimited.
+Format is document identifier, e.g. _SP 800-53A Rev. 1_
+
+NOTE: The distinction between `obsoletes` and `supersedes` is the withdrawal date of the
+original document (`obsoleted-date`); that means that the distinction is predictable given that external information.
+The distinction between `obsoleted-by` and `superseded-by`, in the same way, is made by
+the withdrawal date of the current document. Relaton does not differentiate between the two relations
+for that reason.
+
+`:superseded-by`::
+One or more corresponding NIST document that this NIST document standard is superseded by;
+this document may still remain in effect. Comma delimited.
+Format is document identifier, e.g. _SP 800-53A Rev. 1_
+Is *not* the relation between a withdrawn draft, and the next draft in the approval process
+(since the earlier draft is automatically no longer in effect).
+
+
+[[document-contributors]]
+== Document contributors
+
+
+The general Metanorma document attributes relevant to NIST documents include:
+
+`:technical-committee:`:: The name of the relevant committee producing the document.
+
+`:fullname{_i}:`, `:affiliation{_i}:`, `:address{_i}`::
+The full name of a person who is a contributor to the document,
+their organization, and the address of that person or organization.
+In NIST, only the city is given as the address.
+A second person is indicated by using a numeric suffix: `:fullname:`, `:fullname_2:`, `fullname_3:`, &c.
+The same convention applies to all the following attributes.
+
+[[surname]] `:surname{_i}:`::
+The surname of a person who is a contributor to the document.
+
+[[givenname]] `:givenname{_i}:`::
+The given name(s) of a person who is a contributor to the document.
+
+`:initials{_i}:`::
+The initials(s) of a person who is a contributor to the document.
+
+[[role]] `:role{_i}:`::
+The role of a a person who is a contributor to the document.
+By default, they are coded as an `editor`; they can also be represented as an `author`.
+
+`:affiliation{_i}:`::
+The organizational affiliation of a person who is a contributor to the document.
+
+`:address{_i}:`::
+The organizational address of a person who is a contributor to the document.
+
+The following document attributes are specific to NIST:
+
+`:nist-division:`:: Name of NIST division responsible for document. Added to authority
+statement as document contact, and to coverage of withdrawn published document.
+Default value is "Computer Security Division, Information Technology Laboratory".
+
+`:nist-division-address`:: Address of NIST division responsible for document.
+Added to authority statement as document contact. Use line breaks (in Asciidoctor:
+` + \`) if necessary. Default value is
+"100 Bureau Drive (Mail Stop 8930) Gaithersburg, MD 20899-8930"
+
+`:doc-email:`:: Email contact for document
+
+`:sponsor:`::
+The name of the organization that has sponsored the document, if applicable. The attribute can
+contain multiple lines and Metanorma formatting.
+
+`:sponsor-logo:`::
+The logo of the sponsoring organization, if applicable.
+
+== Superseding document appearance
+
+The following document attributes are specific to NIST, and are used to capture details of the document superseding the present document, which populate the present document's coverpage:
+
+`:superseding-status:`:: Document status/stage of the superseding document, if this document is
+superseded or withdrawn. Used for withdrawn drafts. Used for withdrawn published documents,
+if an entry for the superseding document is not available on the CSRC website (where it can be
+retrieved through the `:obsoleted-by:` document attribute.)
+
+`:superseding-iteration:`:: The iteration of the stage of the superseding document,
+in case there have been multiple drafts.  Can be a number, or text (e.g. "initial", "final").
+Used for withdrawn drafts.
+
+`:superseding-title:`:: The title of the draft document superseding this document.
+If not supplied, the current title is assumed to have been retained. Used for withdrawn drafts.
+Used for withdrawn published documents,
+if an entry for the superseding document is not available on the CSRC website (where it can be
+retrieved through the `:obsoleted-by:` document attribute.)
+
+`:superseding-subtitle:`:: The subtitle of the draft document superseding this document.
+If not supplied, the current subtitle is assumed to have been retained. Used for withdrawn drafts.
+Used for withdrawn published documents,
+if an entry for the superseding document is not available on the CSRC website (where it can be
+retrieved through the `:obsoleted-by:` document attribute.)
+
+`:superseding-circulated-date:`::
+The date at which the draft document superseding this document is circulated. Used for withdrawn drafts.
+
+`:superseding-issued-date:`::
+The date at which the document superseding this document was authorised to be published.
+Used for withdrawn published documents,
+if an entry for the superseding document is not available on the CSRC website (where it can be
+retrieved through the `:obsoleted-by:` document attribute.)
+
+`:superseding-doi:`::
+The DOI of the document superseding this document. Used for withdrawn drafts.
+Used for withdrawn published documents,
+if an entry for the superseding document is not available on the CSRC website (where it can be
+retrieved through the `:obsoleted-by:` document attribute.)
+
+`:superseding-url:`::
+The URL of the document superseding this document. Used for withdrawn drafts.
+Used for withdrawn published documents,
+if an entry for the superseding document is not available on the CSRC website (where it can be
+retrieved through the `:obsoleted-by:` document attribute.)
+
+`:superseding-authors:`::
+The authors of the superseding document. Comma-delimited. Used for withdrawn published documents,
+if an entry for the superseding document is not available on the CSRC website (where it can be
+retrieved through the `:obsoleted-by:` document attribute.)
+
+`:bib-additional-note:`:: Additional note (optional), used on coverpage of withdrawn and retired drafts, and as
+"Related Information" on coverpage of withdrawn published documents.
+
+`:bib-withdrawal-note:`:: Withdrawal note, used on coverpage of withdrawn published documents.
+
+`:bib-withdrawal-announcement-link:`:: Hyperlink to announcement of withdrawal, used on coverpage of withdrawn published documents.
+
+
+== Visual appearance
+The following document attributes are specific to NIST:
+
+`:call-for-patent-claims:`:: Include the Call for Patent Claims in document drafts,
+and the Patent Disclosure Notice in finalised documents. (Not applicable to CSWP.)
+
+`:commitment-to-licence:`:: Indicate in the Patent Disclosure Notice that
+notice and commitment to license have been received. (Not applicable to CSWP.)
+
+`:patent-contact:`:: Contact for the Call for Patent Claims or Patent Disclosure Notice.
+If not supplied, `:doc-email:` is used. (Not applicable to CSWP.)
+
+`:biblio-as-appendix:`:: By default, bibliographies are treated as separate from appendixes in output:
+they are published in front of any appendixes. This is the prescribed behaviour for NIST documents moving
+forward. If present, bibliographies are treated in the legacy manner: they are treated like appendixes,
+and are given an appendix number according to where in the document they occur.
+
+`:boilerplate-authority:`:: Nominate a Metanorma XML file encoding the authority statement of the document,
+to overwrite the default authority statement included in the gem
+(https://github.com/metanorma/metanorma-nist/blob/main/lib/metanorma/nist/nist_intro.xml[`lib/metanorma/nist/nist_intro.xml`], 
+https://github.com/metanorma/metanorma-nist/blob/main/lib/metanorma/nist/nist_intro_cswp.xml[`lib/asciidoctor/nist/nist_intro_cswp.xml`]),
+in case the document is historical, and needs to be generated with a previous authority statement.
+
+

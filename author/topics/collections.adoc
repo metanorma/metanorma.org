@@ -20,13 +20,6 @@ Metanorma XML):
 * PDF: treated as a single document, composed of the individual Metanorma
   documents.
 
-NOTE: Collections are a work in progress as of this writing, and their
-functionality is in flux as they are starting to be applied to flavours.
-
-NOTE: Currently collections are used in the BIPM flavour, and are in the process
-of being applied to ISO standards.
-
-
 == Compiling collections
 
 Collections are compiled using the `metanorma` executable, as follows:
@@ -71,10 +64,8 @@ Specifically, it:
 
 * uses the HTML index page template `collection_cover.html`.
 
-Currently the `metanorma collection` executable presupposes that the individual
+The `metanorma collection` executable presupposes that the individual
 metanorma collections are already compiled into XML.
-// I don't know how to make that not happen, and would ask that Abu Nashir addresses that.
-
 The compilation of the collection resolves any cross-references between files in
 the collection in preprocessing, so that they become simple hyperlinks.
 
@@ -101,6 +92,12 @@ https://github.com/metanorma/metanorma/releases/tag/v1.3.5].
 This is automatically included when `sectionsplit` is set in the
 Metanorma file, to break a single document up into multiple HTML files.
 
+** `coverpage` gives the location of the HTML coverpage, as an alternative to the
+`-c` argument above [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.7].
+
+** `coverpage-style` gives the style of the PDF and HTML coverpage, if multiple styles are
+offered [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.7].
+
 ** `bare-after-first` compiles the first HTML document in the
 collection complete (with coverpage and boilerplate), and all
 subsequent files with the `bare` option (i.e. without coverpage and
@@ -125,7 +122,7 @@ in nested hierarchy (`manifest`)
 
 ** `docref` lists the documents to be used at that level of the manifest: it is
 a list of file paths relative to the manifest file (`fileref`) and document
-identifiers (`identifier`).
+identifiers (`identifier`). The documents are expected to be Metanorma Semantic XML documents.
 
 ** If `attachment` is `true`, the file is not a Metanorma document but an
 attachment, and is passed-through (i.e. not processed) [added in
@@ -147,6 +144,8 @@ The following is an example collection manifest:
 ----
 directives:
   - documents-inline
+  - coverpage: index.html
+  - coverpage-style: JACK
 bibdata:
   title:
     type: title-main
@@ -199,6 +198,88 @@ final-content:
   Hic explicit
 ----
 
+=== Site manifest
+
+As noted, the collection manifest is expected to reference Semantic XML documents.
+The starting point for generating a collection is Metanorma Asciidoctor
+documents; in order to specify a collection and generate it as straightforwardly
+as possible, the collection manifest should be accompanied by a 
+link:/_pages/install/usage#metanorma-site[site manifest], named `metanorma.ym1`, 
+specifying both the 
+component Asciidoctor files, and the collection manifest, as dependency files.
+Site compilation will compile both the component files, and the collection
+depending on them. This is done by running `metanorma site generate` in the same
+directory as `metanorma.ym1`.
+
+Since Metanorma site compilation compiles documents to a `_site/documents` directory,
+the collection manifest needs to reference the Semantic XML documents in that 
+same `_site/documents` directory. 
+
+The following two files are examples of a site manifest and a collection manifest
+compiled through  `metanorma site generate`.
+
+`metanorma.yml`:
+
+[source,yaml]
+----
+---
+metanorma:
+  source:
+    files:
+      - document.1.adoc
+      - document.2.adoc
+      - collection.yml
+    
+  collection:
+    organization: "British Standards Institute"
+    name: "Retroﬁtting dwellings for improved energy efﬁciency — Speciﬁcation and guidance"
+----
+
+In the site manifest, the files to be compiled are listed under `metanorma.source.files`;
+any YAML file in the list is assumed to be a collection manifest.
+
+The collection is specified in the site manifest with two attributes: a name for the 
+collection document, and an organization treated as the corporate author of the collection.
+Both will feature in the index file of the documents generated in the site (`_site/index.html`),  
+and correspond to `bibdata.title.content` and `bibdata.copyright.owner.name` in the collection manifest.
+
+`collection.yml`:
+
+[source,yaml]
+----
+---
+directives:
+  - documents-inline
+bibdata:
+  type: collection
+  docid:
+    type: bsi
+    id: bsidocs
+format:
+  - xml
+  - html
+  - presentation
+  - pdf
+manifest:
+  docref:
+    - fileref: _site/documents/document.1.xml
+      identifier: bsidocs-1
+    - fileref: _site/documents/document.2.xml
+      identifier: bsidocs-2
+prefatory-content:
+|
+
+final-content:
+|
+----
+
+Note that document.1.adoc and document.2.adoc are compiled to `_site` as part
+of site compilation. The fileref attributes in the collection manifest need to point
+to the Semantic XML where the site compilation deposits them, under `_site/documents`.
+The collection generation also generates the collection in the same location, so there
+is no need to specify a collection destination directory, `--output-folder` under `metanorma collection`.
+
+
 === Index page template
 
 The HTML index page template is currently realised as a Liquid template, which
@@ -207,12 +288,22 @@ forms a sidebar for the display of the HTML content of each file.
 The following fields are defined:
 
 * `doctitle`, `docnumber`, etc.: Information derived from the Relaton YAML
-description in the manifest. The field names are as defined for Liquid templates
+description in the manifest of the entire collection. 
+The field names are as defined for Liquid templates
 in Metanorma: see
 link:/builder/topics/metadata-and-boilerplate[Metadata and Boilerplate].
 
 * `navigation`: A nested list giving hyperlinks to the constituent documents,
 following the specification in the `manifest` field of the collection manifest.
+
+* `nav_object`: The same nested list, presented as a recursive object, in order to allow
+users to select only a subset of the navigation list for presentation [added in https://github.com/metanorma/metanorma/releases/tag/v1.6.4].
+It contains the following fields:
+** title: the list title
+** docrefs: a hyperlinked list of the documents at that level of the manifest
+** children: an array of child manifests
+* `prefatory-content`: Prefatory content from the collection manifest [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6].
+* `final-content`: Final content from the collection manifest [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6].
 
 [[collection-cross-references]]
 == Cross-references
@@ -528,6 +619,8 @@ This is an introduction added to the Received document
 
 embed::received.adoc[]
 
+The embedded document can be 
+
 == Colophon
 ----
 
@@ -591,3 +684,51 @@ This is content
 
 == Colophon
 ----
+
+NOTE: As with Asciidoctor `include::[]`, Asciidoctor is unable to locate assets such as images if the
+embedded document is in a different directory from the containing document: Asciidoctor lacks a mechanism
+of specifying asset location relative to the current document, as opposed to the initial document.
+For that reason, if you embed documents that reference files, you will need to put both documents in the
+same folder, in a flat hierarchy.
+
+Documents can be embedded at multiple levels; the current implementation presupposes
+that any document can only embed a single document, and that the embedding documents
+only involve substituted clauses, or prefatory clauses (e.g. the original foreword,
+supplemented by a regional foreword, and/or a national foreword).
+
+It is possible to cite the embedded document from the embedding document, through
+a cross-reference to an anchor on the `embed::` directive: if no display text is supplied,
+the cross-reference is populated with the document identifier of the 
+embedded document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.10]:
+
+For example, if
+
+[source,asciidoc]
+----
+= Document 1
+:docidentifier: SHQ XYZ 123A
+
+== Introduction
+
+This is an introduction added to the Received document <<id>>
+
+[[id]]
+embed::received.adoc[]
+----
+
+embeds the document
+
+[source,asciidoc]
+----
+= Document 1
+:docidentifier: XYZ 123
+
+== Foreword
+
+This is the foreword
+----
+
+Then `<<id>>` will be rendered as __XYZ 123__, the embedded document identifier;
+and the `<<id>>` cross-reference will hyperlink to the first header within the
+embedded document (the Foreword, in this case).
+

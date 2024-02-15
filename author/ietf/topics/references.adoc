@@ -27,6 +27,10 @@ corresponding online source. However, that data will be fetched not in its nativ
 XML, as with the rest of Metanorma; a reference to `* [\[[ISO639-2,ISO 639-2]]]` would not be treated any
 differently.
 
+NOTE: Metanorma will automatically convert references containing other references (with `relation[@type = 'includes']`
+into `referencegroup` elements [added in https://github.com/relaton/relaton-ietf/releases/tag/v3.3.1]. That
+includes references automatically fetched by Relaton.
+
 That said, any references recognised as being to IETF standards will include the URI for their RFC XML source,
 and they will be replaced with an `xi:include` link to that URI as an external reference, as is recommended
 by default for IETF references. That means that the generated RFC XML v3 will still end up referencing
@@ -40,7 +44,7 @@ The document identifier is prefixed to the document title, as there is no separa
 in RFC XML.
 
 A reference not auto-fetched from online sources is either a preformatted citation treated as a block,
-or else a full citation, entered through AsciiBib. If the citation is preformatted, it is converted
+or else a full citation, entered through AsciiBib or bibliographic spans notation. If the citation is preformatted, it is converted
 to a standalone `reference/title`, with no authors or dates. If the citation is broken down into elements,
 it is processed as with auto-fetched references:
 
@@ -91,7 +95,6 @@ Who was Dmitri Shostakovich? The USSR's official figurehead composer and son of 
 As of this writing, the following features of RFC XML v3 referencing are not supported:
 
 * `displayreference`
-* `referencegroup`
 * Raw RFC XML included in document source, or referenced directly from document source.
 
 == Internet draft versions

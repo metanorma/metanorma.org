@@ -53,7 +53,7 @@ in the AsciiDoc source
 (e.g. `\<<``formulaB-1``>>` generates either "`Formula (B.1)`" or "`B.6, Formula (B.1)`",
 depending on where in the document it occurs.)
 
-
+[[xref-styles]]
 == Cross-reference styles
 
 Metanorma supports multiple cross-reference styles [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.6].
@@ -297,13 +297,13 @@ both prevent URIs from being used themselves as document anchors.
 
 In order to specify the aliases of anchors manually, you will need to specify a table
 with anchor `_misccontainer_anchor_aliases` under the
-(link:/author/topics/document-format/section#misc-container[`Misc-Container` clause]) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7].
+(link:/author/topics/document-format/section#misc-container[`Metanorma-Extension` clause]) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7].
 Each row of that table will have the anchor as its first cell, and aliases of the anchor as the other
 cells; there can be more than one alias of an anchor.
 
 [source,asciidoctor]
 ----
-== Misc-Container
+== metanorma-extension
 
 [[_misccontainer_anchor_aliases]]
 |===
@@ -378,6 +378,19 @@ Metanorma AsciiDoc:
 http://www.example.com[text to go into the hyperlink]
 
 http://www.example2.com[text to go into the second hyperlink,title=This is a tooltip for the link]
+--
+====
+
+Hyperlinks can also have a rendering style set with a flavour-specific value [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.1];
+this option is currently only used in IETF. This is specified by appending `,style=...` after the text in the URL macro:
+
+[example]
+====
+[source,adoc]
+--
+http://www.example.com[style=brackets]
+
+http://www.example2.com[text to go into the hyperlink,style=brackets]
 --
 ====
 

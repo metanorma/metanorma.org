@@ -36,6 +36,13 @@ For ISO 10303-2:2022, the `partnumber` is `2`.
 For ISO 8000-118, the `partnumber` is `118`.
 ====
 
+`:docidentifier:`:: The full document identiifer assembled out of component metadata,
+rather than relying on the provided metadata to build it up.
+
+NOTE: For a committee document, provide the N-document number for this attribute.
+The N-document number is normally specified to Metanorma as `:tc-docnumber` for drafts:
+see <<distribution-group,Distribution group>>.
+
 `:doctype:`:: Has its possible values defined by
 https://www.iso.org/deliverables-all.html[ISO deliverables: The different types of ISO publications]
 (mandatory). Permitted types are:
@@ -48,6 +55,7 @@ https://www.iso.org/deliverables-all.html[ISO deliverables: The different types 
 `guide`:: Guide (Guide)
 `technical-corrigendum`::: Technical Corrigendum (Cor) [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
 `amendment`::: Amendment (Amd) [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
+`committee-document`::: Commitee Document (for internal documents) [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.2]
 
 `:updates-document-type:`:: (only when `doctype` is set to `amendment` or `technical-corrigendum`)
 The document type that this amendment or technical corrigendum is
@@ -92,6 +100,38 @@ stage "`60`" (published), where a substage of "`60`" is assumed.
 `true`::: The document is a horizontal standard.
 `false`::: (default) The document is not a horizontal standard.
 
+`:fast-track:`:: Whether the document is a fast-track standard. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.0]
+
+`true`::: The document is a fast-track standard.
+`false`::: (default) The document is not a fast-track standard.
+
+`:document-scheme:`:: Specifies the version of the ISO document specification that should be used in generating
+the Metanorma document. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.1]
+Currently used only to specify the  PDF layout. 
++
+--
+`2024`: The PDF layout as of 2024 (default)
+`2013`: The previous PDF layout, published in 2013.
+`2012`: The previous PDF layout, published in mid-2012 (1989 with logo change).
+`1989`
+`1987`
+`1972`
+`1951`: The first available published ISO format.
+--
+
+`:semantic-metadata-feedback-link:`:: Specifies the URL for any feedback to be provided for the 
+ISO standard. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.1]
+Expected for the PDF layout as of 2024, used to generate cover page QR code.
+
+`:library-ics:`:: The ICS (International Categorization for Standards) number for the standard.
+There may be more than one ICS for a document; if so, they should be comma-delimited.
+
+`:classification:`:: The Universal Decimal Classification for the standard, used instead of the ICS
+for legacy presentations of ISO. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.2] 
+Values are prefixed with `UDC:`. If multiple values are present, the classification token is repeated,
+and comma delimited; e.g. `:classification: UDC:563.5.081, UDC:537.71`. Note that UDC uses punctuation symbols,
+including colon, but not comma.
+
 === Document identifier
 
 ==== General
@@ -112,8 +152,9 @@ This is the abbreviation of the publishing organization, typically `ISO` if
 ISO is the only publisher.
 
 If the document is published under co-publishing agreements, it can contain the
-abbreviations of other publishing SDOs, delimited by `/` after `ISO`. An `IWA`
-document has publisher abbreviation of `IWA`.
+abbreviations of other publishing SDOs, delimited by `;` after `ISO`. An `IWA`
+document has publisher abbreviation of `IWA`. (These will be rendered with the expected
+`/` in the document identifier.)
 
 The prefixes occur in the order that they are given in `publisher`.
 
@@ -122,11 +163,11 @@ Attributes:
 `:publisher:`:: Publisher of the document. Accepted values are:
 
 `ISO`::: ISO.
-`ISO/IEC`::: Joint ISO and IEC. (e.g. ISO/IEC JTC 1 and ISO/IEC JTC 2 documents)
-`IEC/ISO`::: Joint IEC and ISO. (e.g. IEC/ISO SMART documents)
-`ISO/IEC/IEEE`::: Joint ISO/IEC/IEEE.
-`ISO/IEEE`::: Joint ISO/IEEE.
-`ISO/SAE`::: Joint ISO/SAE.
+`ISO;IEC`::: Joint ISO and IEC. (e.g. ISO/IEC JTC 1 and ISO/IEC JTC 2 documents)
+`IEC;ISO`::: Joint IEC and ISO. (e.g. IEC/ISO SMART documents)
+`ISO;IEC;IEEE`::: Joint ISO/IEC/IEEE.
+`ISO;IEEE`::: Joint ISO/IEEE.
+`ISO;SAE`::: Joint ISO/SAE.
 `IWA`::: International Workshop Agreement.
 
 
@@ -372,17 +413,19 @@ depending on where the deliverable gets distributed to (optional).
 in the drafting stage.
 
 `:technical-committee-number:`:: The number of the relevant ISO
-technical committee.
+technical committee (or equivalent body).
 
-`:technical-committee-type:`:: The type of the relevant technical committee.
+`:technical-committee-type:`:: The type of the relevant technical committee or
+equivalent body.
 Typical values are:
 
 `TC`::: (default) technical committee
 `JTC`::: joint technical committee
 `PC`::: project committee
 `JPC`::: joint project committee
+`Other`::: group not otherwise described (type acronym omitted from rendering) [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.3.4]
 
-`:technical-committee:`:: The name of the relevant ISO technical committee
+`:technical-committee:`:: The name of the relevant ISO technical committee or equivalent
 (mandatory)
 
 `:subcommittee-number:`:: The number of the relevant ISO subcommittee.
@@ -392,6 +435,7 @@ Typical values are:
 
 `SC`::: (default) subcommittee
 `JSC`::: joint subcommittee
+`Other`::: group not otherwise described (type acronym omitted from rendering)  [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.3.4]
 
 `:subcommittee:`:: The name of the relevant ISO subcommittee.
 
@@ -411,6 +455,7 @@ Typical values are:
 `CORG`::: co-ordination group
 `JCG`::: joint co-ordination group
 `CAG`::: chair advisory group
+`Other`::: group not otherwise described (type acronym omitted from rendering)  [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.3.4]
 
 `:workgroup:`:: The name of the relevant ISO working group.
 +
@@ -522,6 +567,7 @@ For ISO/TC 154/WG 5 "Date and time":
 ----
 ====
 
+[[distribution-group]]
 === Distribution group
 
 `:tc-docnumber:`:: The document number assigned by a *distribution group*
@@ -600,3 +646,10 @@ submission of the stage 40 onwards (DIS/FDIS) documents to ISO
 editors. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.2.3].
 
 `false`::: Retain background colors of semantically-annotated spans.
+
+== Validation
+
+`:validate-years:`:: If not set, four-digit numbers that could plausibly be years (between 1900 and 2050)
+are not warned about. If set, 
+they are included in validation [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.4.4].
+

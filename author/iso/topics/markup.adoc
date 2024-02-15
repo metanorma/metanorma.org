@@ -110,7 +110,27 @@ spanning multiple-blocks.
 --
 ======
 
-== Editorial notes
+== Notes
+=== Units statements
+ISO standards, and standards that inherit formatting from them (IEC, BSI),
+can have unit statements on their figures and tables, indicating the unit of
+measurement used in the tabulated data. Unit statements are entered as
+`[NOTE,type=units]`, and are rendered in the top-right corner of the figure or 
+table [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.3.6].
+
+[source,asciidoctor]
+----
+|===
+|Location |Distance
+
+|Over there | 6
+|===
+
+[NOTE,type=units]
+Distances in kilometres
+----
+
+=== Editorial notes
 
 Editorial notes can be added to an ISO document, to differentiate feedback from
 ISO editors to the readers of a circulated draft, from feedback to the authors
@@ -285,14 +305,45 @@ any intermediate sections are treated as subclauses.
 
 === Term grouping 1 (subclause 1)
 
-==== Term
+==== Term A
 
-==== Term
+==== Term B
 
 === Term grouping 2 (subclause 2)
 
-==== Term
+==== Term C
 --
+
+As a further complication: if there is any text in a term grouping, Metanorma is going
+to assume that you intended a systematic term after all. If you want to introduce discursive
+text (e.g. boilerplate) in a term grouping, that text has to be flagged the same way
+as it would at the start of a terms & definitions section, with a `[.boilerplate]` clause
+as discussed in link:/author/topics/document-format/section-terms#overriding-predefined-text[Overriding predefined text]:
+
+[source,asciidoc]
+.Encoding subclause groupings in a terminology clause in mixed order
+--
+== Terms and definitions
+
+=== Term grouping 1 (subclause 1)
+
+[.boilerplate]
+==== {blank}
+For the purposes of this document, the following terms and definitions apply:
+
+==== Term A
+
+==== Term B
+
+=== Term grouping 2 (subclause 2)
+
+==== Term C
+--
+
+Without the `[.boilerplate]` and `=== {blank}`, the "For the purposes of this document" will be assumed
+to be the definition of the term "Term grouping 1 (subclause 1)", and Term A and Term B will be assumed
+to be its subterms.
+
 
 === Combined terms and definitions
 
