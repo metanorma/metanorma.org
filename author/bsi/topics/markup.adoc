@@ -190,7 +190,7 @@ the dates for the latter should be given with `type: updated`, whereas the forme
 The following is an illustration of semantic document history markup for BSI:
 
 [source, asciidoctor]
---  
+--
 [.preface]
 == Misc-container
   
@@ -324,6 +324,7 @@ The following is an illustration of semantic document history markup for BSI:
   amend:
     description: SEE FOREWORD
 ----
+--
 
 It has the following renderings:
 
@@ -434,6 +435,7 @@ Ninth (present) edition
 
 | September 2021 | Amendment 1, tagged: SEE FOREWORD
 | September 2022 | Amendment 2, tagged: SEE FOREWORD
+|===
 ____
 
 
@@ -534,7 +536,7 @@ The BSI predefined text for bibliographies ("For dated references, only the edit
 inserted by default. To prevent this, insert a blank boilerplate note:
 
 [source,asciidoc]
-----
+-----
 == Bibliography
 [bibliography]
 === Standards publications
@@ -542,7 +544,7 @@ inserted by default. To prevent this, insert a blank boilerplate note:
 --
 --
 ==== {blank}
-----
+-----
 
 === Term sources
 
@@ -599,7 +601,7 @@ giving the anchor of the block the commentary is referencing. If no target
 is given, the commentary is assumed to be about the subclause containing it.
 
 [source,asciidoc]
-----
+-----
 [[reag]]
 === Reagents
 
@@ -611,7 +613,7 @@ This is a commentary on the reagents
 |===
 | A | B
 |===
-----
+-----
 
 ____
 *7.6 Reagents*
@@ -623,11 +625,10 @@ This is a commentary on the reagents
 | A | B
 |===
 _Table 1: Reagents in use_
-----
 ____
 
 [source,asciidoc]
-----
+-----
 [[reag]]
 === Reagents
 
@@ -639,7 +640,7 @@ This is a commentary on the reagents
 |===
 | A | B
 |===
-----
+-----
 
 ____
 *7.6 Reagents*
@@ -651,12 +652,11 @@ This is a commentary on the reagents
 | A | B
 |===
 _Table 1: Reagents in use_
-----
 ____
 
 
 [source,asciidoc]
-----
+-----
 === Reagents
 
 [NOTE,type=commentary,target=table1]
@@ -667,7 +667,7 @@ This is a commentary on the table
 |===
 | A | B
 |===
-----
+-----
 
 ____
 *7.6 Reagents*
@@ -679,7 +679,6 @@ This is a commentary on the table
 | A | B
 |===
 _Table 1: Reagents in use_
-----
 ____
 
 === Foreword notes
@@ -691,7 +690,7 @@ without their labels, and with the right type: `product-certification, `assessed
 `test-lab-accreditation`.
 
 [source,asciidoc]
-----
+-----
 == Foreword
 
 ...
@@ -702,7 +701,7 @@ Users of this part of BS 1234 are advised to consider
 the desirability of quality system assessment and registration against the appropriate
 standard in the BS EN ISO 9000 series by an accredited third-party certification body. 
 ====
-----
+-----
 
 ____
 *Assessed capability.* Users of this part of BS 1234 are advised to consider
