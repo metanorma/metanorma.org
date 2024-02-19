@@ -1,0 +1,263 @@
+---
+layout: post
+post title: 'Convert ISO/NISO STS standards to Metanorma using mnconvert'
+date: 2022-11-17
+categories: documentation
+---
+
+Imagine that you have a typically long XML file compliant with
+ISO STS or NISO STS, which you want to shift to other file formats, such as
+`.html`, `.doc` and `.pdf`. The file should be encoded as a Metanorma
+AsciiDoc first, but this can be a really tedious task even with the most advanced
+text editor at your disposal. Here is where _mnconvert_ come
+in handy, to fasten the conversion process by a substantial amount.
+
+== What are ISO STS and NISO STS?
+
+Both ISO STS and NISO STS allude to the definition of elements and attributes
+(i.e., tag sets) to describe, in a semantic and structured manner,
+the metadata and the full content of standard documents.
+
+On one hand, ISO STS implements a proper tag set (based on
+https://jats.niso.org/jatswiki/index.php/Main_Page[JATS]) for encoding
+any ISO standard. On the other hand, NISO STS was created to be an
+extension of ISO STS and be able to provide a more generic tag set
+that other standards organizations could adopt. In other words, NISO STS
+is a superset of ISO STS, and is currently widely adopted to describe
+any scientific, technical, or medical text in the world.
+
+For more in-depth information about ISO STS, visit
+https://www.iso.org/schema/isosts/v1.1/doc/index.html[ISO Standards Tag Set documentation].
+
+For more in-depth information about NISO STS, visit
+https://www.niso-sts.org/TagLibrary/niso-sts-TL-1-2-html/index.html[NISO STS documentation].
+
+== What is _mnconvert_?
+
+link:https://github.com/metanorma/mnconvert[_mnconvert_] is a
+tool that transfers the content of an XML
+document compliant with ISO/NISO STS to Metanorma AsciiDoc. It was
+developed with the intent of speeding up the conversion process.
+
+_mnconvert_ is a Java program packed into a JAR file that you will
+need to reference in your command execution.
+
+Quick guidance on requirements for tool installation and usage is given
+below. For more information, please refer to
+https://github.com/metanorma/mnconvert#readme[_mnconvert_
+documentation].
+
+=== Requirements
+
+To use _mnconvert_, you need to meet the following criteria:
+
+* Have Java JDK installed in your system. You can download
+an installer at: https://www.oracle.com/java/technologies/downloads/#jdk19-windows.
+(If you think you have Java JDK already but are not sure, just execute
+`java -version` to confirm.);
+* Have the latest JAR release of _mnconvert_ available for download
+at: https://github.com/metanorma/_mnconvert_/releases;
+* Have `make` and `maven` build tools installed as per instructions in
+https://www.baeldung.com/install-maven-on-windows-linux-mac;
+* Have an XML file compliant with ISO/NISO STS (i.e., XML STS).
+
+=== Usage
+
+The command structure of _mnconvert_ is:
+
+[source]
+--
+java -jar <JAR_path\JAR_filename>.jar <XML_path\XML_filename>.xml [options]
+--
+
+For illustrative purposes, let's assume that:
+
+* the JAR and XML files are located in the same folder,
+* we are using JAR release 1.27.0, i.e. `mnconvert-1.27.0.jar`,
+* the XML STS file we want to convert is named `standard.xml`.
+
+Taking these assumptions into account, the command simplifies to:
+
+[source]
+--
+java -jar mnconvert-1.27.0.jar standard.xml [options]
+--
+
+If we don't specify any optional parameters (listed in the section below),
+the default
+behavior of the program is to convert the given XML file to Metanorma AsciiDoc,
+placing the converted files in the same location as the XML file. The filename of
+the main document will be kept the same as in the provided XML file, but with
+`.adoc` extension. Sections and images (if any) will be placed in separate
+subfolders, named `sections` and `images`, respectively, as in the commonly
+used structure of our document
+https://github.com/metanorma/iso-27002/tree/main/sources[samples].
+
+=== Optional parameters for conversion
+
+While _mnconvert_ tool can be used without any additional options,
+you might find them useful for adaptation of the conversion results.
+
+Some of the available options are:
+
+`--output` or `-o`::  to specify an output path different to the XML
+file.
+
+`--output-format` or `-of`:: to specify the output format, `xml` or
+`adoc`, being `adoc` the default value.
+
+`--imagesdir` or `-img`:: to specify an `:imagesdir:` attribute value.
+Default is "images".
+
+`--mathml` or `-m`:: to specify the MathML version of the XML STS.
+`2` for MathML version 2, or `3` for MathML version 3.
+
+`--check-type` or `-ct`:: to perform a validation check of the XML
+file against ISO/NISO STS. Values are: `xsd-niso` (check against NISO
+XSD), `dtd-niso` (check against NISO DTD), and `iso-dtd` (check against
+ISO DTD).
+
+Full list of options is available in
+https://github.com/metanorma/mnconvert#readme[_mnconvert_
+documentation].
+
+== Converting ISO/NISO STS to Metanorma AsciiDoc
+
+Once the initial conversion with _mnconvert_ tool is done as described in
+the previous sections, it is quite likely that some
+adjustments will need to be made to get a properly encoded Metanorma AsciiDoc.
+In other words, we need to validate that the Metanorma encoding rules
+are correctly applied.
+https://www.metanorma.org/author/topics/document-format/[Metanorma
+documentation]
+will be our best ally in this chore. This should be a quick validation
+though, given that the _mnconvert_ tool does the majority of the work.
+However, the complexity of the validation depends on the source XML file itself.
+
+There are some areas that are suggested to pay special attention to.
+They are listed in the section below.
+
+=== Areas to validate after using _mnconvert_
+
+* Verify if the attribute values of the document are correct.
++
+--
+This part tends to be almost flawless after the conversion (if the
+XML source is encoded properly).
+However, given the importance of this area, it is a good practice to take
+a quick look. Make sure that all attributes used for describing (sub)committees
+are available and check whether the document is published as a `draft` or not.
+--
+
+* Remove unnecessary non-breaking spaces.
++
+--
+XML STS documents tend to include numerous non-breaking spaces to avoid
+the split of continuity of some expressions by a line break; for example,
+the white space in a percentage expression (e.g., "75&nbsp;%") should
+not be broken by a line break. Nonetheless, some of the non-breaking
+spaces are not necessary
+in Metanorma encoding. To name one, non-breaking spaces in reference
+declarations are not needed. Therefore, we ought to remove this kind of spaces,
+if any.
+--
+
+* Verify if the initial text of the Normative references clause corresponds
+to the usual predefined text, or if it is any other different.
++
+--
+In the Normative references clause, the initial paragraph will be
+encoded like this after using _mnconvert_:
+
+[source,asciidoc]
+----
+[NOTE,type=boilerplate]
+====
+The following referenced documents are indispensable for the application
+of this document. For dated references, only the edition cited applies.
+For undated references, the latest edition of the referenced document
+(including any amendments) applies.
+====
+----
+
+If this is the case, we can remove this NOTE block as this text is
+provided automatically by Metanorma.
+If the text differs anyhow, it could mean that the standard's author wanted
+to override the predefined text, in which case, this markup does the
+job and probably should not be removed.
+--
+
+* Verify the encoding of the Terms and definitions clause.
++
+--
+It is advised to use `[source="REFERENCE_ANCHOR1,REFERENCE_ANCHOR_2"]`
+syntax before the clause definition to generate a predefined text for the
+Terms and definitions clause.
+Especially pay attention to the encoding when this clause contains sub-clauses.
+And of course, don't forget to check whether the terms are correctly mentioned
+using `{{...}}` or `term:[...]` syntax.
+--
+
+* Verify the encoding of the source code blocks.
++
+--
+Source code blocks mainly contain the code without any line breaks. Insert
+the line breaks and indentations where needed (or, if there are too many lines,
+just copy and paste the whole code from the XML source) and check whether all the
+blocks are encoded properly with the `[source]` attribute. It is preferable
+to specify which programming language is used in the code block.
+
+Sometimes, there is a need to introduce markup into the source code. If any
+term is boldfaced, italicized, or underlined, it should be surrounded by 
+delimiters `{{{...}}}` for enabling markup; you also have the option of
+https://docs.asciidoctor.org/asciidoc/latest/subs/apply-subs-to-blocks/#the-subs-attribute[the subs attribute]
+configured as `subs="verbatim,quotes"`, to enable rich text inside code.
+--
+
+* Check the references in Bibliography and Normative references sections.
++
+--
+It can happen that some reference is listed in both sections. If that is
+the case, remove the reference from the Bibliography and make sure that all the
+cross-references are then made with the anchor given in the Normative references
+section.
+
+Also, make sure that there are no cross-references pointing to the document itself
+and that correct identifiers are given for auto-fetching the references.
+--
+
+* Verify the cross-references.
++
+--
+Original text often refers to the bibliographic entries differently, which makes
+it hard for _mnconvert_ to convert all of them perfectly. That is mostly
+noticeable in references to some specific clause, or even paragraph from some
+bibliographic entry. Therefore, make sure to avoid hanging clauses in
+cross-references.
+
+Anchors mostly use underscores for dividing separate words/numbers which
+specify some reference. In the AsciiDoc files generated by _mnconvert_, it is
+possible that an anchor will include unnecessary whitespace before or after
+an underscore, or two underscores instead of one. It is recommended to
+confirm that the same anchor is used for the same reference throughout the
+document and remove any needless whitespace to avoid broken cross-references.
+--
+
+* Make a quick validation of the document's encoding in general.
++
+--
+Last but not least, make sure the document complies with the best practices
+for encoding a document in Metanorma AsciiDoc. Remove non-ASCII characters,
+split lines longer than 100 characters into shorter ones, remove `width`
+parameters in tables and take a quick look at the encoding in general.
+
+NOTE: It is a good practice to use regular expressions for finding non-ASCII
+characters. In this type of conversions, it is especially handy since it
+finds unnoticeable non-ASCII whitespaces.
+
+NOTE: Source XML files can also be generated with the help of OCR. Therefore,
+it is possible that some characters will be wrongly written in the source file,
+e.g. number `1` written as `l` and vice versa. It is advised
+to check whether there are such typos in the converted AsciiDoc and to correct
+them.
+--

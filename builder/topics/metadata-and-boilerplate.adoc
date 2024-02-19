@@ -442,6 +442,10 @@ introductory page template;
 ** `<div id="boilerplate-license-destination"/>` appears in the title page template for the flavour;
 ** the CSS styling for the front page draft warning is styled as `boilerplate-license`.
 
+A user-supplied boilerplate file need not provide all four statements [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.2].
+If the user-supplied element is missing an element in the default for the flavour, the default is retained. 
+If the element is to be deleted, provide it as an empty title.
+
 The following predefined text from metanorma-csa exemplifies all four statements in a predefined text,
 and its processing as a Liquid template.
 
@@ -497,6 +501,27 @@ and its processing as a Liquid template.
 </boilerplate>
 ----
 
+The following user-provided predefined text will delete the license statement, and override the legal statement,
+leaving the copyright statement and feedback statement of the flavour alone:
+
+[source,xml]
+----
+<boilerplate>
+  <license-statement/>
+
+  <legal-statement>
+    <clause>
+      <p>All rights reserved. Unless otherwise specified, no part of this
+        publication may be reproduced or utilized otherwise in any form or by any
+        means, electronic or mechanical, including photocopying, or posting on the
+        internet or an intranet, without prior written permission. Permission can
+        be requested from the address below.
+      </p>
+    </clause>
+  </legal-statement>
+</boilerplate>
+----
+
 === ADOC
 
 Predefined text can also be specified in Metanorma Asciidoc, with the file suffix `.adoc`
@@ -533,7 +558,8 @@ Metanorma will treat any instance of `{{ pub_address}}` in Asciidoc predefined t
 (i.e. when converting the Asciidoc predefined text to Metanorma XML, the contents of `{{pub_address}}` will be left alone.)
 --
 
-The following is the Asciidoctor equivalent of the `boilerplate` Metanorma XML just given:
+The following is the Asciidoctor equivalent of the `boilerplate` Metanorma XML just given. This is for
+a complete boilerplate document:
 
 [source,adoc]
 ----
@@ -575,7 +601,20 @@ mailto:copyright@cloudsecurityalliance.com[copyright@cloudsecurityalliance.com] 
 https://www.cloudsecurityalliance.com[www.cloudsecurityalliance.com]
 ----
 
+And this will do a partial update, as above:
 
+[source,adoc]
+----
+== license-statement
+
+== legal-statement
+=== {blank}
+All rights reserved. Unless otherwise specified, no part of this
+publication may be reproduced or utilized otherwise in any form or by any
+means, electronic or mechanical, including photocopying, or posting on the
+internet or an intranet, without prior written permission. Permission can
+be requested from the address below.
+----
 
 == Cover page notes
 
