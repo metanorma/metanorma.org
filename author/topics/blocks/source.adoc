@@ -1,0 +1,148 @@
+---
+layout: author-docs
+title: Source code
+---
+== Source code
+
+=== Basics
+
+tag::tutorial[]
+
+Metanorma AsciiDoc supports code blocks via the `[source]` block.
+
+The source code block takes a pre-formatted text block rendered in monospace
+font, with line breaks and space indentations preserved.
+
+The syntax is as follows:
+
+[source,asciidoc]
+--
+[source]
+----
+Rendered in monospace text
+----
+--
+
+[example]
+.Example of rendering source code without language specification
+====
+[source,asciidoc]
+--
+[source]
+----
+Identifier(latitude, longitude, elevation, elevationType)
+
+  return concat(
+    "ISO.NLI",
+    EncodePoint(latitude, longitude),
+    EncodeElevation(elevation, elevationType)
+  )
+----
+--
+====
+
+
+It is possible to specify the computer language used in the `[source]` block
+to enable source code highlighting (syntax highlighting) for supported
+languages.
+
+Metanorma integrates the http://coderay.rubychan.de[CodeRay syntax highlighter]
+which supports the following list of languages represented by codes:
+
+* `c`
+* `clojure`
+* `css`
+* `delphi`
+* `diff`
+* `erb`
+* `go`
+* `groovy`
+* `haml`
+* `html`
+* `java`
+* `java_script`
+* `json`
+* `lua`
+* `php`
+* `python`
+* `raydebug`
+* `ruby`
+* `sass`
+* `sql`
+* `taskpaper`
+* `xml`
+* `yaml`
+
+NOTE: The full list of supported file extensions is provided by https://github.com/rubychan/coderay/blob/c25e8ef53cef6e72b98547139a6a27bdd4f1aaf3/lib/coderay/helpers/file_type.rb#L79-L131[CodeRay]).
+
+
+[source,asciidoc]
+--
+[source,language]
+----
+Rendered in monospace with syntax highlighting
+----
+--
+
+[example]
+.Example of rendering source code with language specification and syntax highlighting
+====
+[source,asciidoc]
+--
+.Ruby code for MyIdentifier#format <1>
+[source,ruby] <2>
+---- <3>
+class MyIdentifier <4>
+  def format(string)
+    "did:#{string}"
+  end
+end
+---- <5>
+--
+<1> (Optional) Title for source block
+<2> (Optional) `ruby` here denotes the language used within the source block.
+<3> Starting source delimiter of 4 `-` signs
+<4> Source content
+<5> Ending source delimiter of 4 `-` signs
+
+====
+
+end::tutorial[]
+
+
+=== Markup in source code blocks
+
+It is sometimes necessary to introduce markup into source code. For example,
+hyperlinking words in source code to external definitions, or else introducing
+formatting in lieu of automated highlighting.
+
+In order to achieve this, Metanorma allows inline AsciiDoc markup to be
+introduced into source code, isolating it from the rest of the source code
+through
+delimiters. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.4]
+
+By default, the delimiters are `{{{` and `}}}`. These can be overridden (in case
+`{{{` and `}}}` are already used in the document) through the document attributes
+`:sourcecode-markup-start:` and `sourcecode-markup-end:`.
+
+[example]
+.Example of applying inline formatting to source code blocks
+====
+[source,asciidoc]
+----
+[source,ruby]
+--
+{{{*def*}}} method1(x)
+  {{{<<method2-definition,method2>>}}}(x) + 3
+end
+--
+----
+
+renders as:
+
+--
+*def* method1(x) +
+&nbsp;&nbsp;&nbsp;&nbsp;link:/[method2](x) + 3 +
+end
+--
+====

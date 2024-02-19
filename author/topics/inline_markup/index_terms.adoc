@@ -1,0 +1,217 @@
+---
+layout: author-docs
+title: Index terms
+---
+
+=== General
+
+Metanorma supports index entries with primary, secondary and tertiary
+index terms. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+
+Primary index terms are listed under the first-level index,
+the secondary index terms are listed under the primary index terms' sub-index,
+and the tertiary index terms are listed under the secondary index term's sub-index.
+
+.Illustration of an index in Metanorma with primary and secondary indexes are shown.
+image::/assets/author/topics/document-format/text/fig-index.png[Illustration of an index in Metanorma with primary and secondary indexes are shown,width=70%]
+
+Index term behavior differs per rendered output format:
+
+* In PDF, indexes are rendered as references to page numbers.
+* In HTML and DOC, indexes are rendered as references to the nearest
+  labelled block; a note, example, figure, formula etc., if the index
+  term is contained within it, or a clause or subclause, otherwise.
+
+Index term links are only rendered in certain flavours, and do not
+appear otherwise in DOC, PDF or HTML output.
+
+NOTE: Currently, only the ISO, IETF and BIPM flavours render
+index terms.
+
+NOTE: Metanorma always processes index terms and creates the corresponding XML.
+However, not all flavors render an "Index" section. Check out the
+link:/flavors/[flavor documentation] for your SDO to see if it supports
+indexing.
+
+
+=== Getting started
+
+tag::tutorial[]
+Before you define an index term, your document needs a section where the index
+terms can appear. To create an index, define a level 1 section (`==`) marked with
+the style index at the end of your document.
+
+[source,adoc]
+----
+[index]
+== Index
+----
+
+Index entries can consist of up to three levels using a comma to separate the terms.
+
+Metanorma provides two options to create an index entry:
+
+* Visible index terms are words within the text that are annotated with an index
+entry using double parentheses. `\((Level 1 index term))`
+
+* Hidden index terms are index entries that are not visible in the final output
+and are generated using triple parentheses.
+`(\((Level 1 index term, Level 2 index term, Level 3 index term)))`.
+These allow the index to include optional subterms and sub-subterms; they also
+allow the index term to differ from what actually appears in the text.
+
+Let's have a look at an example:
+
+[source,adoc]
+----
+The Lady of the Lake, her arm clad in the purest shimmering samite,
+held aloft Excalibur from the bosom of the water,
+signifying by divine providence that I, ((Arthur)), <1>
+was to carry Excalibur (((Sword, Broadsword, Excalibur))). <2>
+----
+<1> `\((Arthur))` will be displayed as `Arthur` in the text and carries a first level index entry
+<2> `(\((Sword, Broadsword, Excalibur)))` will not appear in the text, but a three level index entry will be generated.
+
+end::tutorial[]
+
+
+=== Index placement
+
+If any index terms are present in a document, and the current flavour supports
+indexes, then an index section will be automatically generated and appended to
+the end of the document.
+
+To override the title of the index section, or indicate where it should be
+placed, use the index section markup shown below.
+
+[source,adoc]
+--
+[index]
+== Index
+--
+
+Any index will be appended after any content you may choose to place in the
+index section, but indexes typically appear with no preface.
+
+
+[[auto-index-terms]]
+=== Automated index terms
+
+If the document attribute `:index-terms:` is used, all terms (and symbols) are
+indexed automatically in postprocessing.
+
+The document does not need to include explicit index terms for
+them [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.3].
+
+
+
+
+=== Rendered index term syntax
+
+Metanorma index entries are entered through two different
+syntaxes. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+
+Rendered index term: `+((Term))+`
+
+* Produces the output "`Term`"; and
+* Links to the primary index term of the same name, "`Term`".
+
+Hidden index term: `+(((IndexTerm1)))+`,
+`+(((IndexTerm1, IndexTerm2)))+` or
+`+(((IndexTerm1, IndexTerm2, IndexTerm3)))+`
+
+* Produces no output; and
+* Links to the primary index term `IndexTerm1`. And if provided, links to
+  the secondary nesting, `IndexTerm2` and the tertiary nesting `IndexTerm3`.
+
+[example]
+.Example of specifying rendered index term and hidden index terms
+====
+[source,adoc]
+--
+The Lady of the Lake, her arm clad in the purest shimmering samite,
+held aloft Excalibur from the bosom of the water,
+signifying by divine providence that I, ((Arthur)),
+was to carry Excalibur (((Sword, Broadsword, Excalibur))).
+--
+====
+
+=== Rich-text formatting in index terms
+
+Rich-text formatting in index terms is
+supported [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
+
+[source,adoc]
+--
+signifying by divine providence that I, ((*Arthur*)),
+was to carry Excalibur (((Sword~E~, stem:[sqrt(E)], Excalibur))).
+--
+
+NOTE: Formatting of index terms is ignored in IETF rendering.
+
+
+=== Entry ranges
+
+Metanorma supports index entries that involve
+ranges [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0],
+using the command `index-range:to[...]`.
+
+The command itself accepts an AsciiDoc index entry, such as
+`+((...))+` or `+(((...)))+`.
+
+The index entry range starts at the location of the `index-range`
+command, in the same way as the index command it contains; the end of
+the range is the element with the anchor `to`, and that is expected
+to be provided as a bookmark.
+
+[source,adoc]
+--
+signifying by divine providence that I, index-range:end-range-1[((*Arthur*))],
+was to carry Excalibur index-range:end-range-2[(((Sword~A~, stem:[sqrt(2)], Excalibur)))].
+
+...
+
+and so forth.[[end-range-1]]
+
+...
+
+_Sic explicit fabula._[[end-range-2]]
+--
+
+The preceding example has a visible index entry for _**Arthur**_,
+ranging from the location of `+*Arthur*+` up to `end-range-1`, and
+a hidden index entry for _Sword~A~_, ranging from the location of
+`+Sword~A~+` up to `end-range-2`.
+
+
+=== Cross-references
+
+Metanorma also supports "`see`" and "`see also`" cross-references between
+index terms [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.5],
+using the `index` command.
+
+The command takes at least two parameters:
+
+* the primary index term to be cross-referenced;
+* the target of the cross-reference;
+* optionally, the secondary and tertiary index term to be cross-referenced.
+
+[source,adoc]
+--
+index:see[Satchmo,Louis Armstrong]
+index:see[James Brown,influences,Hank Ballard and the Midnighters]
+index:also[guitar,electric,technique,Jimi Hendrix]
+--
+
+Rendered as:
+
+____
+* Satchmo, _see_ Louis Armstrong
+* James Brown
+** influences, _see_ Hank Ballard and the Midnighters
+* guitar
+** electric
+*** technique, _see also_ Jimi Hendrix
+____
+
+

@@ -1,0 +1,206 @@
+---
+layout: author-docs
+title: Images
+---
+
+== Images
+
+=== General
+
+The inclusion of images in Metanorma AsciiDoc is through the `image` command.
+
+Metanorma AsciiDoc supports most of the features of `image` defined in Asciidoctor AsciiDoc.
+For more information, please refer to the typical `image` command attributes available at:
+https://docs.asciidoctor.org/asciidoc/latest/macros/images/[Asciidoctor].
+
+There are two types of AsciiDoc images, block and inline.
+
+=== Block image
+tag::tutorial[]
+
+A block image is displayed as a discrete element, i.e., on its own line, in a document.
+
+The syntax used to enter a block image is as follows.
+The `image::` line is preceded by a blank line, entered on a line by itself,
+and then followed by a blank line.
+
+[source,adoc]
+----
+image::{PATH}[]
+----
+
+Where `PATH` is the image path.
+
+In Metanorma, block images are always entered as a figure. Please refer to the
+link:/author/topics/blocks/figures[Figures] documentation.
+
+[source, AsciiDoc]
+----
+[[my-anchor]] <1>
+.Title for image <2>
+image::images/path.png[Alt text] <3>
+----
+<1> Optional anchor for referencing
+<2> Image title
+<3> Image command with path and optional alt text. If no alt text is provided, leave the square brackets at the end empty (`image::path[]`).
+
+end::tutorial[]
+
+
+=== Inline image
+
+An inline image is displayed in the flow of another element, such as a paragraph.
+
+This is useful when you want to incorporate buttons or other icons into the text flow.
+
+
+=== Data URIs
+
+Metanorma allows https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs[Data URIs] as the URL for an image:
+
+[source,asciidoc]
+--
+image::data:image/png;base64,ivBO...[alt text]
+--
+
+NOTE: Data URIs are not typically supported by AsciiDoc processors.
+
+
+=== Image directory location
+
+The root path for all `image` paths can be defined at the document-level,
+through the document attribute `:imagesdir:`.
+
+[source,adoc]
+----
+= Document title
+:imagesdir: my-images/ <1>
+
+...
+image::myimage01.png[] <2>
+----
+<1> The document attribute `:imagesdir:` will set all root paths of the `image` command to the specified path.
+<2> The reference to `myimage01.png` is joined with the path set at `:imagesdir:`, which results to
+`my-images/myimage01.png`.
+
+More details of the `:imagesdir:` attribute can be found at
+https://docs.asciidoctor.org/asciidoc/latest/macros/images-directory/[AsciiDoc documentation].
+
+
+=== Attributes
+
+==== Image size
+
+The size of an image can be modified via the `height` and `width` attributes.
+
+By default, both `height` and `width` are set to the value `auto`, which means
+that the image will be shown according to the best visual settings determined
+by Metanorma.
+
+Image dimensions can also be fixed with pixel values with `px`.
+
+NOTE: The pixel is the only supported unit in image sizing right now.
+
+====
+.Image resizing specifying `height` and `width` attributes in pixels
+[source]
+----
+[height=150px,width=100px]
+image::logo.jpg[]
+----
+====
+
+In the `height` and `width` attributes, the `px` suffix may be omitted.
+
+
+====
+.Image resizing with values omitting `px` unit
+[source,asciidoc]
+--
+[height=150,width=100]
+image::logo.jpg[]
+--
+====
+
+The `auto` value indicates that the dimension does not have a fixed size but
+retain the aspect ratio of the original image.
+
+====
+.Aspect ratio is retained with `width` set to `auto` based on the value of `height`
+[source,asciidoc]
+--
+[height=150,width=auto]
+image::logo.jpg[]
+--
+====
+
+An unspecified dimension is considered `auto`.
+
+====
+.Aspect ratio is retained when setting `height` but not `width`
+[source,asciidoc]
+--
+[height=150]
+image::logo.jpg[]
+--
+====
+
+NOTE: Treatment of image resizing may slightly differ across output formats.
+
+
+=== Captions and titles
+
+As elsewhere in Metanorma, the caption of an image (of the figure containing the image)
+is set with a line prefixed with dot above the image.
+
+[source,asciidoc]
+--
+.Caption
+image::logo.jpg[]
+--
+
+[source,asciidoc]
+--
+image::logo.jpg[title=Caption]
+--
+
+NOTE: Similar to Asciidoctor AsciiDoc, the `title` attribute is treated as
+identical to the dot-prefixed caption.
+
+
+Metanorma supports a `title` attribute on images for accessibility, which is
+distinct from the figure caption.
+This is entered in Metanorma as the `titleattr` attribute:
+
+[source,asciidoc]
+--
+[titleattr=Title Attribute]
+image::logo.jpg
+--
+
+Or
+
+[source,asciidoc]
+--
+image::logo.jpg[titleattr=Title Attribute]
+--
+
+Both captions and titles could be used together.
+
+[source,asciidoc]
+--
+.Rice husk separation in rice farm at Breton near Dinan
+image::logo.jpg[titleattr=Photo of rice husks being separated]
+--
+
+NOTE: The `titleattr` attribute does not get rendered in Word output due to Word
+limitations. Word only supports a single image "`Alt Text`", which would be set
+by the caption.
+Word's description of "`Alt Text`" is:
+"`How would you describe this object and its context to someone who is blind?`".
+
+
+==== Other attributes
+
+NOTE: For general attributes of the `image` command, please refer to the https://docs.asciidoctor.org/asciidoc/latest/macros/image-ref/[AsciiDoc image documentation]. The following paragraphs describe Metanorma-specific behavior.
+

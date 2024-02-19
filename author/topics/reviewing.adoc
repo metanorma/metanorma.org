@@ -1,0 +1,59 @@
+---
+layout: author-docs
+title: Reviewing documents
+---
+
+You can annotate a Metanorma AsciiDoc document with comments and `TODO`s to indicate a pending action.
+
+[NOTE]
+====
+Reviewer notes are only rendered
+if `link:/author/ref/document-attributes/#draft[:draft:]` attribute has been specified
+for the document(s).
+====
+
+== Reviewer comments
+To create a comment:
+
+. Define the start of the comment by creating an anchor `\[[start]]`.
+. Define where the comment should end by creating an anchor `\[[end]]` (optional). 
+. Add the comments metadata: `[reviewer="Your Name",date=YYYYMMDDT0000,from=start,to=end]` +
+The `date` and `to` attributes are optional. The timestamp in the `date` attribute is optional, too. The `from` and `to` elements can be bookmarks which cover no space.
+. Begin the comment block using four asterisks `\****`.
+. Enter your comment.
+. Close the comment block with four asterisks `\****`.
+
+.Example of a comment
+[source,asciidoc]
+--
+=== Address Profile Definition (AddressProfileDescription)
+
+This is a clause address [[A]]proflie[[B]] definition
+
+[reviewer="Nick Nicholas",date=20180125T0121,from=A,to=B]
+****
+proflie?!
+****
+--
+
+which renders
+
+.Illustration of a reviewer comment covering a span of text. (the `:draft:` attribute needs to be set in the document in order to render any reviewer notes.)
+// TODO: image not found
+// image::/assets/author/topics/document-format/reviewer-notes/fig-reviewer-note-example.png[Illustration of a reviewer comment covering a span of text]
+
+== TODO expressions
+
+Metanorma treats `TODO` as an admonition label, and converts it into a reviewer note.
+The `from`, `to` `reviewer` and `date` attributes are all treated as optional.
+
+.Example of a TODO
+[source,asciidoc]
+----
+TODO: This is treated as a reviewer note.
+
+[TODO]
+====
+This is also treated as a reviewer note
+====
+----

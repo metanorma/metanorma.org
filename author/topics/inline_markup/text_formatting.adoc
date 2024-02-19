@@ -1,0 +1,341 @@
+---
+layout: author-docs
+title: Text formatting
+---
+= Text formatting
+tag::tutorial[]
+tag::text-markup[]
+
+Metanorma supports extensive inline formatting functionality.
+The following formatting macros are available in Metanorma.
+
+== Basic markup
+
+AsciiDoc allows you to:
+
+* Emphasize words in *bold* using asterisks
+* _Italicise_ words with underscores
+* Apply `monospace` format using backticks
+* Specify superscript and subscript characters (CO~2~, x^4^)
+
+.Example of basic inline markup
+====
+[source,adoc]
+----
+*bold*
+_italic_
+`monospace`
+^superscript^
+~subscript~
+----
+
+Renders as:
+
+*bold*
+_italic_
+`monospace`
+^superscript^
+~subscript~
+====
+
+end::text-markup[]
+
+=== Strikethrough
+
+The `strike` command renders text with a middle line strikethrough.
+
+The syntax is as follows:
+
+[source,asciidoc]
+----
+[strike]#text#
+----
+
+Where:
+
+* `text` is the text to be rendered with the strikethrough style
+
+[example]
+.Illustration of strikethrough text in Metanorma.
+====
+[source,asciidoc]
+----
+[strike]#strike through text#
+----
+
+renders:
+
+image::/assets/author/topics/inline_formatting/fig-strikethrough.png[Illustration of strikethrough text]
+====
+
+
+=== Small caps
+
+The `smallcap` command renders text in small capital letters.
+
+The syntax is as follows:
+
+[source,asciidoc]
+----
+[smallcap]#text#
+----
+
+Where:
+
+* `text` is the text to be rendered in small caps
+
+[example]
+.Illustration of small caps text
+====
+[source,asciidoc]
+----
+[smallcap]#small caps text#
+----
+
+renders:
+
+image::/assets/author/topics/inline_formatting/fig-smallcaps.png[Illustration of small caps text in Metanorma]
+====
+
+=== Underline
+
+The underline command renders text with an underline. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.2].
+
+The syntax is as follows:
+
+[source,asciidoc]
+----
+[underline]#text#
+----
+
+Where:
+
+* `text` is the text to be underlined
+
+[example]
+.Illustration of underlined text
+====
+[source,asciidoc]
+----
+[underline]#underline text#
+----
+
+renders:
+
+image::/assets/author/topics/inline_formatting/fig-underline.png[Illustration of underlined text in Metanorma]
+====
+
+
+
+=== Numeric ranges
+
+Numeric ranges, like dates (e.g., _1981&ndash;1995_), make use of
+_en dashes_ in between the numbers, usually without any white space around.
+
+At the time writing, there is no AsciiDoc encoding to render en dashes.
+
+In Metanorma, there is a vision of implementing a semantic encoding for
+numeric ranges, perhaps an option like `range:[n,m]` or shorthands like `n..m`.
+
+For the time being, the existent workaround for such cases is
+the use of entity codes, more specifically:
+
+[source,adoc]
+----
+&&#x200c;ndash;
+----
+
+[example]
+.Examples of encoding numeric ranges
+====
+[source,asciidoc]
+----
+See chapters 15&ndash;17...
+
+Issues 18&ndash;20 are in fact a single issue...
+
+_Laser Physics_ *17* 1017&ndash;1024 (2007).
+----
+
+renders:
+
+____
+See chapters 15&ndash;17...
+
+Issues 18&ndash;20 are in fact a single issue...
+
+_Laser Physics_ *17* 1017&ndash;1024 (2007).
+____
+====
+
+
+=== Character substitutions
+
+tag::char-subs[]
+
+Metanorma AsciiDoc supports
+https://docs.asciidoctor.org/asciidoc/latest/subs/replacements/[Asciidoctor-style character substitutions]
+as shown in <<table-char-sub>>.
+
+Metanorma AsciiDoc also recognises HTML and XML character references,
+and decimal and hexadecimal Unicode code points.
+
+[[table-char-sub]]
+.Supported Metanorma AsciiDoc character substitutions
+[cols="a,2a,a"]
+|===
+|Source  |Rendered as | Note
+
+|pass:[(C)]  | (C) (Unicode 'Copyright Sign' `U+00A9`)|
+|pass:[(R)]  | (R) (Unicode 'Registered Sign' `U+00AE`)|
+|pass:[(TM)] | (TM) (Unicode 'Trade Mark Sign' `U+2122`)|
+|`-`  | &#8212; (Unicode 'Em Dash' `U+2014`) | See NOTE below.
+|pass:[...]  | ... (Unicode 'Horizontal Ellipsis' `U+2026`)|
+|pass:[->]   | -> (Unicode 'Rightwards Arrow' `U+2192`)|
+|pass:[=>]   | => (Unicode 'Rightwards Double Arrow' `U+21D2`)|
+|pass:[<-]   | <- (Unicode 'Leftwards Arrow' `U+2190`)|
+|pass:[<=]   | <= (Unicode 'Leftwards Double Arrow' `U+21D0`)|
+|`'`    | Smart single quote, smart apostrophe |
+|`"`    | Smart double quote |
+
+|===
+
+NOTE: Replacement of `-` only occurs when placed between two word
+characters, between a word character and a line boundary, or flanked
+by spaces. Flanking spaces (as in `x -- y`) are rendered as thin
+spaces (Unicode 'Thin Space' `U+2009`).
+
+// `--` is rendered as an en-dash (&#8211;), which is not catered for by escapes.
+
+end::char-subs[]
+
+end::tutorial[]
+
+
+=== CSS declarations
+
+The `css` command is used to wrap content with a CSS declaration
+(https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/CSS_Declaration[MDN])
+[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
+
+This feature only applies to HTML output.
+
+NOTE: CSS declarations are also used within the HTML `style` attribute.
+
+The syntax is as follows:
+
+[source,asciidoc]
+--
+[css {css-directive}]#{styled-text}#
+--
+
+Where:
+
+* `{css-directive}` is a CSS declaration
+
+* `{styled-text}` is text where the CSS declaration is to be applied
+
+[example]
+.Example of applying a custom CSS declaration to content
+====
+[source,asciidoc]
+--
+[css font-family:"Noto Sans JP"]#お好み焼き#
+
+[css font-family:"Noto Sans Canadian Aboriginal"]#ᓀᐦᐃᔭᐍᐏᐣ#
+--
+====
+
+
+=== Identifier
+
+The `identifier` command, used to indicate that its contents are an identifier
+as semantic markup (and not to be processed as a
+hyperlink) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.2].
+
+The syntax is as follows:
+
+[source,asciidoc]
+----
+identifier:[my-identifier]
+----
+
+Where:
+
+* `my-identifier` is the identifier to be encoded.
+
+
+This functionality is very useful for encoding URIs, which can be virtually
+indistinguishable from URLs that can be resolved. URIs very often cannot
+be resolved since they are simply namespaced identifiers.
+
+[example]
+.Example of rendering a URI using the `identifier` command
+====
+[source,asciidoc]
+--
+identifier:[https://schemas.isotc211.org/19115/-1/mdb/1.3]
+--
+
+renders:
+
+____
+`https&#x200c;://schemas.isotc211.org/19115/-1/mdb/1.3`
+____
+====
+
+[example]
+.Example of rendering a URN using the `identifier` command
+====
+[source,asciidoc]
+----
+identifier:[urn:iso:std:iso:8601:-1:en]
+----
+
+renders:
+
+____
+`urn:iso:std:iso:8601:-1:en`
+____
+====
+
+
+=== Semantic spans
+
+The `span` command is used to introduce semantic markup into
+Metanorma text [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
+
+The syntax is as follows:
+
+[source,asciidoc]
+----
+span:category[text]
+----
+
+Where:
+
+* `category` is a semantic label for the content given as `text`
+* `text` is the textual content
+
+Here, the _text_ is tagged as belonging to _category_.
+
+A semantically-tagged text with `span` is not normally rendered any different to
+normal, although the semantic markup introduced can be used to influence
+rendering.
+
+NOTE: Only certain Metanorma flavors support enhanced rendering for
+semantically-tagged content.
+
+
+=== Nesting of styles
+
+Character styles can be nested within each other, with both constrained and
+unconstrained formatting marks.
+
+[source,asciidoc]
+--
+*Boldmono__space__*
+--
+
+NOTE: See https://docs.asciidoctor.org/asciidoc/latest/text/[Asciidoctor Text].
+

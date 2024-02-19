@@ -1,0 +1,233 @@
+---
+layout: author-docs
+title: Automatic reference lookup using Relaton
+---
+== General
+
+For references to certain standards, Metanorma will attempt to look up references online
+during document build automatically.
+
+https://www.relaton.org/[Relaton] is used to look up the reference details for
+standards known to have online bibliographic sources.
+
+NOTE: Some online bibliographic sources from supported standards bodies
+directly serve Relaton bibliographic data formats (e.g. Relaton XML, Relaton YAML).
+
+
+== Reference lookup syntax
+
+For bibliographic standards to be looked up via Relaton,
+the standard document identifier needs to be encoded in a format recognized by Relaton as a key:
+
+ISO deliverables:: `ISO(identifier)`, or any identifier prefixed with `ISO`
+
+IEC deliverables:: `IEC(identifier)`, or any identifier prefixed with `IEC`.
+For the IEC Electropedia termbank (IEV), simply use `IEV`.
+
+ITU deliverables:: `ITU(identifier)` (e.g. `ITU(H.265)`), or any identifier prefixed with `ITU`
+
+IETF documents:: `IETF(identifier)` (e.g. `IETF(I-D.-burger-xcon-mmodels)`), or any identifier prefixed with `RFC`
+
+NIST documents:: `NIST(identifier)` (e.g. `NIST(SP 800-116r1)`, `NIST FIPS 202`), or any identifier prefixed with `NIST`
+
+OGC documents:: `OGC(identifier)` (e.g. `OGC(14-083r2)`, `OGC 14-083r2`), or any identifier prefixed with `OGC`
+
+Chinese standards:: `CN(identifier)` (e.g. `CN(JB/T 13368-2018)`)
+
+[[iso-iec-dir-syntax]] ISO/IEC Directives::
+`ISO/IEC DIR {n}`, `ISO/IEC DIR {n} + {flavor} SUP`, or `ISO/IEC DIR {flavor} SUP`.
+`n`::: is the number of directive
+`flavor`::: is either `ISO` or `IEC`.
++
+The following references are supported at this time:
++
+* `ISO/IEC DIR 1 IEC SUP`: "`Procedures for the technical work -- Procedures specific to IEC`"
+* `ISO/IEC DIR 1 ISO SUP`: "`Consolidated ISO Supplement -- Procedures specific to ISO`"
+* `ISO/IEC DIR 1`: "`Procedures for the technical work`"
+* `ISO/IEC DIR 2 IEC`: "`Principles and rules for the structure and drafting of ISO and IEC documents`"
+* `ISO/IEC DIR 2 ISO`: "`Principles and rules for the structure and drafting of ISO and IEC documents`"
+* `ISO/IEC DIR IEC SUP`: "`Procedures specific to IEC`"
+* `ISO/IEC DIR JTC 1 SUP`: "`Procedures specific to JTC 1`"
++
+NOTE: These bibliographic entries are provided via the <<static-entry-cache>> as their
+metadata are not available in machine-readable format online.
+Documents in the <<static-entry-cache>> may differ from the latest online version.
+
+The full bibliographic details of the item are automatically fetched from
+the authoritative online bibliography source, and inserted into a Relaton XML
+file stored locally.
+
+NOTE: Only parts of the bibliographic details are used to render the reference
+in Metanorma, namely: document identifier, title, publication date.
+
+[[nofetch]]
+== Disabling automatic lookup
+
+=== For entire document
+
+The presence of the link:/author/ref/document-attributes/#reference-lookup[`:no-isobib:`]
+document attribute will disable the `isobib` bibliographic lookup engine for the
+entire document:
+
+* Bibliographic items will not be automatically looked up via `isobib`;
+* The `isobib` bibliographic caches are not used.
+
+[example]
+.Example of using `:no-isobib:` to disable bibliographic lookup for whole document
+====
+[source,asciidoc]
+----
+= ISO 8601-1:2019/Amd 1:2022
+:docnumber: 8601
+:partnumber: 1
+:mn-document-class: iso
+:no-isobib:
+----
+====
+
+=== For a bibliographic item
+
+To turn off automatic lookup for a particular bibliographic item, simply wrap
+the individual reference identifier in `nofetch(...)`, then the reference details for that
+item are not looked up, though other items still will be [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.8].
+
+[example]
+.Example of using `nofetch(...)` to disable bibliographic lookup for one item
+====
+[source,asciidoc]
+----
+[bibliography]
+== Bibliography
+
+* [[[ref1,nofetch(ISO 639-1)]]], ISO 639-1.
+* [[[ref1,ISO 639-2]]], ISO 639-2.
+----
+====
+
+== Citing from termbanks
+
+=== General
+
+Relaton is also used to automatically fetch references from termbanks.
+
+The only supported termbank today is the IEV.
+
+=== International Electrotechnical Vocabulary (IEV, the IEC 60500 series)
+
+If any entries in Terms and Definitions cite terms sourced from the http://www.electropedia.org[IEV Electropedia],
+it is queried during validation to retrieve the correct citation information
+for creating the reference.
+
+[source,asciidoc]
+--
+[bibliography]
+== Bibliography
+
+* [[[ievterms,IEV]]]
+--
+
+These queries are routed through the `iev` gem.
+
+
+== Lookup result caching
+
+=== General
+
+Fetching every single reference with web queries can be slow,
+especially for larger documents across multiple compilation runs.
+
+NOTE: Each web query may take a few seconds per reference, depending
+on connection/service speed and delay.
+
+Metanorma supports Relaton entry caching, for which a Relaton
+database is created to store fetched bibliographic items (the "`cache store`").
+
+The cache store(s) enable reuse of previously fetched bibliographic items
+so they do not need to be re-fetched each time a document is processed.
+
+This is especially helpful in these conditions:
+
+* Internet connectivity is unavailable (e.g. on a plane without WiFi);
+* the online bibliographic source goes temporarily offline or awry (e.g. maintenance, upgrades).
+
+NOTE: Relaton cache stores are realized in form of a directory.
+
+
+=== Caching at the system-level (global cache)
+
+Results of reference lookups made across all documents
+are cached in the global cache store `~/.relaton/cache`.
+
+
+=== Caching at the directory-level (local cache)
+
+The local cache is enabled by setting the
+link:/author/ref/document-attributes/#caches[`:local-cache:` or `:local-cache-only:` document attributes].
+
+If enabled, the results of all Relaton searches done to date in
+a given directory are stored in the local cache store.
+
+The local cache is normally created at the default location `relaton/cache`
+relative to the top-level Metanorma file.
+
+To override this location, a value can be given to the
+`:local-cache:` or `:local-cache-only:` attribute.
+This specified directory name will be used to create the local cache store.
+
+The local cache overrides entries in the global cache, and can be
+manually edited.
+
+Due to its nature being a portable directory, it is simple to
+transfer bibliographic entries to other authors or systems
+for reproducible compilation.
+
+It is also often used for creating a self-sufficient,
+immediately compilable Metanorma document package for interchange.
+
+Last but not least, the local cache store can be committed
+into version control systems (e.g. Git) for faster (and more reproducible)
+continuous integration build times. It also prevents CI build failures
+caused by bibliographic sources being temporarily unavailable.
+
+[[static-entry-cache]]
+=== Static entry cache
+
+The static entry cache is distributed with the `relaton` gem and always enabled.
+It contains bibliographic entries that are often used but cannot be obtained
+in machine-readable formats online. See <<iso-iec-dir-syntax>> for entries
+of this type.
+
+To add a new document to the static entry cache, please create an issue
+on https://github.com/relaton/relaton/issues.
+
+
+=== Disabling caching
+
+If the document attribute `:no-isobib-cache:` is set, the reference details for
+items are still looked up via `isobib`, but the `isobib` caches are not used.
+
+
+=== Caching of undated references
+
+Any entry in the cache that corresponds to an undated reference fetches its details
+from the latest available entry at the bibliographic source.
+
+=== Cache expiry
+
+If the entry is more than 60 days old, it is refetched.
+
+=== Caching of IEV entries
+
+The results of all `iev` searches done to date across all documents are cached
+in the global Relaton cache file at `~/.relaton/cache`.
+
+The results of all `iev` searches done to date in a given directory
+are stored in the same directory as the current document,
+by default to the cache store `iev/cache`.
+
+IEV entries in a local cache will be stored under the local Relaton cache store,
+whose location can be changed as mentioned above.
+
+The directory name for the IEV cache is the Relaton cache store's location
+with inner directory `_iev`.
+

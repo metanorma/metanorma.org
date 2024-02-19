@@ -1,0 +1,126 @@
+---
+layout: author-docs
+title: Passthrough to output formats
+---
+== Passthrough to output formats
+
+=== Passthrough blocks
+
+Passthrough text, such as XML tags, intended to be rendered in a target format
+unaltered, can be entered as a passthrough
+block [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.27].
+
+This functionality enables automated processing, custom tagging, hacking into
+intermediary formats and experimental development of Metanorma output.
+
+WARNING: A broken Metanorma XML file will cause rendering of target formats to
+also break. Use with caution.
+
+Passthrough intended to be rendered in Metanorma XML (such as Metanorma XML tags),
+generated from Metanorma AsciiDoc input, can be entered as a
+passthrough block [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1],
+with no format indication.
+
+[example]
+.Using passthrough XML tags in the Metanorma XML target
+====
+[source,asciidoc]
+--
+++++
+<bibitem>
+++++
+--
+====
+
+WARNING: Passthrough text may break the structure of the output
+format -- it is the user's responsibility to ensure the integrity
+of the resulting structure (e.g. XML) is retained.
+
+Passthrough intended to be rendered in a target format must be specified with
+a format indication corresponding to one or more of the existing output formats
+of Metanorma in a comma-delimited manner
+(not limited to: `html`, `doc`, `pdf`, `rfc`, `sts`).
+
+[example]
+.Using passthrough XML tags in the RFC XML target
+====
+[source,asciidoc]
+--
+[format=rfc]
+++++
+<artset>
+<artwork>
+++++
+--
+====
+
+=== Passthrough inline text
+
+Metanorma AsciiDoc supports the following syntaxes for inline passthrough.
+
+Passthrough of text that does not involve XML structural syntax can be realized
+in any of the following syntaxes:
+
+[source,adoc]
+----
+// syntax 1
++this is passed through+
+
+// syntax 2
++++this is passed through too+++
+
+// syntax 3
+pass:[also passed-through]
+----
+
+[example]
+.Example of specifying passthrough text
+====
+[source,asciidoc]
+--
+This is a special pass:[𝒞𝓪𝓼𝓮].
+--
+====
+
+For passthrough of XML syntax or tags to Metanorma XML, which will require
+special character processing, use the following command:
+
+[source,adoc]
+----
+pass:c[xml-content]
+----
+
+Where:
+
+* `xml-content` is content that contains XML or SGML tags
+
+[example]
+.Example of specifying passthrough XML content
+====
+[source,asciidoc]
+--
+pass:c[<u format="num-lit">ᏚᎢᎵᎬᎢᎬᏒ</u>]
+--
+====
+
+If the passthrough text is intended for one or more target formats, the formats
+needs to be specified with the `pass-format`
+command [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.7].
+
+[source,adoc]
+----
+pass-format:FORMAT[...]
+----
+
+Where:
+
+* `FORMAT` is a comma-delimited list of target formats.
+
+[example]
+.Example of specifying passthrough for selected target formats
+====
+[source,asciidoc]
+--
+pass-format:rfc[<u format="num-lit">ᏚᎢᎵᎬᎢᎬᏒ</u>]
+--
+====

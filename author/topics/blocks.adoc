@@ -1,0 +1,47 @@
+---
+layout: author-docs
+---
+= Blocks
+
+tag::tutorial[]
+Information that forms a logical segment, such as a paragraph or a list, is called a block.
+Most blocks start and end with a https://asciidoctor.org/docs/asciidoc-writers-guide/#delimited-blocks[delimiter] which is a matching sequence of characters. The delimiters tell the compiler that the text they contain belongs together. 
+
+.Examples for different blocks
+[source, AsciiDoc]
+------
+I’m a paragraph and I don’t need a block delimiter. 
+<1>
+. I’m a list item and also do not need a delimiter
+. I’m the second list item
+. I'm list item number three
+
+//// <2>
+I’m a comment.
+////
+
+[source, python] <3>
+----
+print("Hello World!")
+----
+------
+
+<1> Paragraphs and lists are types of blocks that do not need any delimiters. They are separated by a blank line in between blocks.
+<2> Comments use four slashes as a delimiter `////`. No other block uses slashes to begin and end a block.
+<3> All other types of blocks rely on delimiters, such as four dashes `----` or four equal signs `====`. This block contains a code sample written in python.
+
+
+There are many types of blocks in AsciiDoc, such as:
+* Paragraphs
+* Lists
+* Tables
+* Images
+* Admonitions (Note, Caution, Warning, etc.)
+* Examples
+* Code samples
+* Mathematic formulas
+* Term definitions
+* Comments
+* Reviewer Notes
+
+end::tutorial[]
