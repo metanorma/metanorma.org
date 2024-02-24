@@ -159,6 +159,27 @@ Where:
 NOTE: Any font specified in `[css font-family:...]` needs to be passed to Metanorma for processing
 by specifying it in the `:fonts:` document attribute.
 
+=== Capitalisation
+
+Capitalisation may be applied automatically in the rendering of documents, despite not being present in the source material;
+for example, titles and captions may be title-cased or put in all caps. In order to prevent a span of text automatically 
+having its case changed, use CSS styling to set its CSS text-transform property to "none" [added in https://github.com/metanorma/isodoc/releases/tag/v2.8.5]:
+
+[example]
+.Example of a word in a title not to be capitalised
+====
+[source,asciidoc]
+--
+:title: [css text-transform:none]#IoT# and content standards
+
+...
+
+=== Approaches to [css text-transform:none]#IoT#
+--
+====
+
+As shown, such styling extends to document titles as document attributes.
+
 === Custom character sets
 
 When a https://en.wikipedia.org/wiki/Private_Use_Areas[private use codepoint]
