@@ -1,5 +1,5 @@
 tag::exercise-2-1[]
-Now it’s your turn. Fill the document with the following attributes: 
+Now it's your turn. Fill the document with the following attributes:
 [%interactive]
 * [ ] Document title
 * [ ] Your name
@@ -13,14 +13,14 @@ Now it’s your turn. Fill the document with the following attributes:
 .Hint
 [%collapsible]
 ====
-To declare an attribute, follow the syntax `:attribute: value`. 
+To declare an attribute, follow the syntax `:attribute: value`.
 
 For example: `:publisher: Ribose Inc.`
 ====
 end::exercise-2-1[]
 
 tag::exercise-2-2[]
-Look at the prepopulated Metanorma document. There are many clauses describing the content but there are sections missing to form a correct standard document. 
+Look at the prepopulated Metanorma document. There are many clauses describing the content but there are sections missing to form a correct standard document.
 Add the following sections:
 
 [%interactive]
@@ -44,9 +44,9 @@ Add lists to the prepopulated document.
 ====
 Ordered list items start with a dot, followed by a blank: `. List item`.
 
-Unordered list items start with an asterisk, followed by a blank: `* List item`. 
+Unordered list items start with an asterisk, followed by a blank: `* List item`.
 
-To write a definition list, follow the syntax: 
+To write a definition list, follow the syntax:
 `term:: Definition`
 ====
 end::exercise-2-3-1[]
@@ -113,7 +113,7 @@ end::exercise-2-3-3[]
 tag::exercise-2-3-4[]
 Insert an image of a rice plant in line 17 by following the steps below:
 [%interactive]
-* [ ] Add an image macro.  
+* [ ] Add an image macro.
 * [ ] Populate the `image::` macro with this link: +
 ----
  https://upload.wikimedia.org/wikipedia/commons/2/27/Oryza_sativa_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-232.jpg
@@ -130,7 +130,7 @@ C:: crop panicle
 .Hint
 [%collapsible]
 ====
-The syntax for images is: `image::URL[]`. 
+The syntax for images is: `image::URL[]`.
 
 Make sure to include the square brackets after the link.
 ====
@@ -151,7 +151,7 @@ To create admonitions that span several lines, you need to declare a block.
 ----
 [NOTE]
 ====
-This is a long note. 
+This is a long note.
 It contains three lines.
 Line three.
 ====
@@ -160,7 +160,7 @@ Line three.
 end::exercise-2-3-5[]
 
 tag::exercise-2-3-6[]
-There are some code samples in the document but they are not neatly packed into `source` blocks, so they cause trouble. 
+There are some code samples in the document but they are not neatly packed into `source` blocks, so they cause trouble.
 
 [%interactive]
 * [ ] Create a source block with the attribute `ruby` for the code in lines 14-29.
@@ -193,7 +193,7 @@ Format the text using the following formatting:
 end::exercise-2-4-1[]
 
 tag::exercise-2-4-2[]
-Let's add some index entries to the text. 
+Let's add some index entries to the text.
 [%interactive]
 * [ ] Add a visible index entry to "UN Millennium Development project" in line 17
 * [ ] Add an invisible three level index entry after NERICA in line 21: NERICA, economy, Green revolution
@@ -212,13 +212,13 @@ end::exercise-2-4-2[]
 tag::exercise-2-4-3[]
 Let's add some references to the sample document.
 
-Internal references: 
+Internal references:
 [%interactive]
 * [ ] Create an anchor for the table called `table1`
 * [ ] Reference the table in lines 30 and 36.
 
-Bibliographic references: 
-The text references some standards which don't have a matching entry in the bibliography section. Add the following references: 
+Bibliographic references:
+The text references some standards which don't have a matching entry in the bibliography section. Add the following references:
 [%interactive]
 * [ ] ISO712, ISO712:2009, _Cereals and cereal products — Determination of moisture content — Reference method_
 * [ ] ISO7301, ISO 7301:2011, _Rice -- Specification_
@@ -246,30 +246,30 @@ Enter the command `metanorma document.adoc` into the terminal and see what happe
 end::exercise-3-2[]
 
 tag::exercise-4[]
-The following document doesn't compile because there are some errors. 
+The following document doesn't compile because there are some errors.
 
 . Enter `metnanorma exercise-4.adoc` to trigger the build process
 . Have a look at the error messages
-. Try to debug the document. If you get stuck, have a look at the hints. 
+. Try to debug the document. If you get stuck, have a look at the hints.
 . Once you solved the errors, run `metanorma exercise-4.adoc` again to see if the document compiles.
 
 .Hint Error 1
 [%collapsible]
 ====
 Lines 12 and 43: Both sections have the anchor `\[[prefatory-clause]]` assigned.
-You can solve this error by renaming the anchors. 
+You can solve this error by renaming the anchors.
 ====
 
 .Hint Error 2
 [%collapsible]
 ====
 Line 76: The file that should be included cannot be found.
-Since the scope section already contains text, you can delete the reference. 
+Since the scope section already contains text, you can delete the reference.
 ====
 
 .Hint Error 3
 [%collapsible]
 ====
-Line 420: The image attribute contains a whitespace after `image::`, so the path is invalid. Delete the whitespace. 
+Line 420: The image attribute contains a whitespace after `image::`, so the path is invalid. Delete the whitespace.
 ====
 end::exercise-4[]

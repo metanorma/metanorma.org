@@ -15,7 +15,7 @@ include::../author/concepts/wysiwyg_vs_wysiwym.adoc[tag=tutorial]
 === What is Metanorma?
 include::../author/concepts/what_is_Metanorma.adoc[tag=tutorial]
 
-Let’s explore the workflow of Metanorma in the next lesson.
+Let's explore the workflow of Metanorma in the next lesson.
 >> Start next lesson
 
 //Lesson 1-2
@@ -29,17 +29,22 @@ Before we dive into AsciiDoc, let's summarize what we've covered so far.
 //Lesson 1-3
 === Summary
 
-Let’s recap what we’ve learned so far:
+Let's recap what we've learned so far:
 
 * Metanorma uses a what you see is what you mean (WYSIWYM) approach, meaning that the text you write is what you *want* to see.
+
 * You need to render documents to have a correct visible output. The appearance is controlled in a stylesheet.
+
 * Metanorma is an umbrella term for several things and consists of: +
 The Metanorma toolchain, document models and a XML schema of these document models.
+
 * Metanorma documents use Metanorma AsciiDoc markup
+
 * When you want to generate an output, the AsciiDoc document is converted into XML in order to be checked against the XML schema.
+
 * If the document is valid, Metanorma generates an HTML, PDF and Microsoft Word (`.doc`) output.
 
-Now that we have covered the fundamentals, let’s have a look at AsciiDoc.
+Now that we have covered the fundamentals, let's have a look at AsciiDoc.
 >> Start next lesson
 
 //Lesson 2
@@ -50,6 +55,7 @@ include::../tutorials/learning_objectives.adoc[tag=learningobjectives-2]
 include::../author/concepts/intro_to_asciidoc.adoc[tag=tutorial, leveloffset=+2]
 
 We will have a look at these different levels of markup in the following lessons.
+
 You can do the exercises either in the browser, or on your local machine. If you choose to use your local machine, you will need to link:/install/[install Metanorma] and set up a new Metanorma project.
 
 >> Start next lesson
@@ -62,7 +68,7 @@ include::../author/topics/metadata.adoc[tag=tutorial]
 include::../tutorials/exercises.adoc[tag=exercise-2-1]
 
 
-Let’s add some sections to our document in the next lesson.
+Let's add some sections to our document in the next lesson.
 >> Start next lesson
 
 //Lesson 2-2
@@ -73,14 +79,14 @@ include::../author/topics/sections.adoc[tag=tutorial]
 [[exercise-2-2]]
 include::../tutorials/exercises.adoc[tag=exercise-2-2]
 
-We’ve built the basic structure of a Metanorma document. Let’s add some content to our document in the next lesson.
+We've built the basic structure of a Metanorma document. Let's add some content to our document in the next lesson.
 >> Start next lesson
 
 //Lesson 2-3
 == Blocks
 include::../author/topics/blocks.adoc[tag=tutorial]
 
-Let’s look at lists in the next lesson.
+Let's look at lists in the next lesson.
 >> Start next lesson
 
 //Lesson 2-3-1
@@ -91,14 +97,14 @@ include::../author/topics/blocks/lists.adoc[tags=tutorial,leveloffset=+2]
 [[exercise-2-3-1]]
 include::../tutorials/exercises.adoc[tag=exercise-2-3-1]
 
-Great work! Let’s have a look at term definitions in the next lesson.
+Great work! Let's have a look at term definitions in the next lesson.
 >> Start next lesson
 
 //Lesson 2-3-2; Incorporate Tutorial content into author/topics/terms/ when reworking terms_definitions.adoc
 
 === Term definitions
 If you want to cite a term throughout the standard, include it in the terms and definitions section. Term definitions vary from definition lists, as they are more granular and provide metadata to mark features such as alternative terms or deprecated terms.
-Let’s have a look at a term entry:
+Let's have a look at a term entry:
 
 [source, AsciiDoc]
 ----
@@ -150,7 +156,7 @@ include::../author/topics/blocks/tables.adoc[tag=tutorial]
 [[exercise-2-3-3]]
 include::../tutorials/exercises.adoc[tag=exercise-2-3-3]
 
-Let’s look at inserting images next.
+Let's look at inserting images next.
 >> Start next lesson
 
 //Lesson 2-3-4
@@ -160,7 +166,7 @@ include::../author/topics/blocks/images.adoc[tag=tutorial]
 [[exercise-2-3-4]]
 include::../tutorials/exercises.adoc[tag=exercise-2-3-4]
 
-Let’s look at admonitions next.
+Let's look at admonitions next.
 >> Start next lesson
 
 //Lesson 2-3-5
@@ -179,14 +185,14 @@ Great progress so far! Let's look at code samples in the next lesson.
 // [[exercise-2-3-6]]
 include::../tutorials/exercises.adoc[tag=exercise-2-3-6]
 
-We’re done with blocks - good job! The next lesson covers inline markup.
+We're done with blocks - good job! The next lesson covers inline markup.
 >> Start next lesson
 
 //Lesson 2-4
 == Inline Markup
 include::../author/topics/inline_markup.adoc[tag=tutorial]
 
-Let’s look at these features in the following lessons.
+Let's look at these features in the following lessons.
 >> Start next lesson
 
 //Lesson 2-4-1
@@ -197,7 +203,7 @@ include::..//author/topics/inline_markup/footnotes.adoc[tag=tutorial]
 [[exercise-2-4-1]]
 include::../tutorials/exercises.adoc[tag=exercise-2-4-1]
 
-Let’s look at a more advanced form of inline formatting: index entries
+Let's look at a more advanced form of inline formatting: index entries
 >> Start next lesson
 
 //Lesson 2-4-2
@@ -218,21 +224,25 @@ include::../author/topics/sections/entering-bib.adoc[tag=tutorial]
 include::../tutorials/exercises.adoc[tag=exercise-2-4-3]
 
 
-Let’s summarize what we’ve learnt so far.
+Let's summarize what we've learnt so far.
 >> Start next lesson
 
 //Lesson 2-4-4
 === Summary
 
-We’ve covered a lot of ground, so here is a quick summary for you:
+We've covered a lot of ground, so here is a quick summary for you:
 
 * Each Metanorma document contains metadata in the header using the colon notation `:attribute:`.
+
 * A Metanorma document consists of several predefined sections. The document model of your organization dictates which are optional and which are mandatory. Sections are invoked using equal signs `=`.
+
 * Blocks are entities that belong together, such as paragraphs, lists, tables, etc. Paragraphs and lists do not need to be marked by delimiters. The remaining block types begin and end with a delimiter, for example four dashes `----`.
+
 * Inline markup is used for text formatting and references. You can reference:
 ** an external source (`URL[Link text]`)
 ** Metadata (`{attribute}`)
 ** Places in the document by setting an anchor (`[[anchor-id]]`) and referencing the anchor (`<<anchor-id>>`)
+
 ** Bibliographic entries +
 [source, AsciiDoc]
 ----
@@ -240,7 +250,7 @@ We’ve covered a lot of ground, so here is a quick summary for you:
 <<anchor>>
 ----
 
-You did a great job so far! Let’s talk about reviewing documents in the next lesson.
+You did a great job so far! Let's talk about reviewing documents in the next lesson.
 >> Start next lesson
 
 //Lesson 3
@@ -267,14 +277,15 @@ Now that we've commented on the content, let's create a draft of the document.
 To render a draft that your peers should review, you need to add these metadata to the document header:
 
 * `:draft:`: Tells the compiler to display comments in the final output
+
 * `:status: draft` Defines the current document stage. +
 NOTE: Some flavors, for example ISO, use `:docstage:` and a status code to indicate in what stage the document is.
 
-To compile a Metanorma document you must enter the name of the application `Metanorma` and the document you want to compile `document.adoc`.
+To compile a Metanorma document you must enter the command `metanorma` and the document you want to compile `document.adoc`.
 
 [source, shell]
 ----
-Metanorma document.adoc
+metanorma document.adoc
 ----
 With this command you trigger the Metanorma toolchain to:
 
@@ -313,8 +324,9 @@ To compile a Metanorma document:
 . Enter the following command: +
 [source, shell]
 ----
-Metanorma document.adoc
+metanorma document.adoc
 ----
+
 With this command you trigger the Metanorma toolchain to:
 
 * Read the AsciiDoc input
@@ -322,26 +334,30 @@ With this command you trigger the Metanorma toolchain to:
 * Check the XML against the document model (XML schema)
 * Create HTML, PDF, and DOC output
 
-You can also manipulate the way Metanorma compiles a document by setting flags. Flags are appended to the build command, like this:
+You can also manipulate the way Metanorma compiles a document by setting flags.
+
+Flags are appended to the build command, like this:
 
 .Example of a build command with a flag
 [source, shell]
 ----
-Metanorma document.adoc -x html
+metanorma document.adoc -x html
 ----
 
 You can use the following flags to manipulate the building process:
 
 * `-t`: Sets the flavor of the document +
 NOTE: Either define the flavor in the metadata using `mn-document-class` or use `-t flavor`
+
 * `-x`: Sets the output format(s) of the document
+
 * `-o`: Enter a path that the output should be saved to.
 
 To see the full list of possible build commands, open the Metanorma help on the command line.
 
 [source, shell]
 ----
-Metanorma help compile
+metanorma help compile
 ----
 
 >> Start next lesson
@@ -364,7 +380,7 @@ Let's summarize what we've learnt in this lesson:
 * To generate a Metanorma document, enter the following command: +
 [source, shell]
 ----
-Metanorma document.adoc
+metanorma document.adoc
 ----
 
 * More often than not, we encounter errors that we need to fix:
