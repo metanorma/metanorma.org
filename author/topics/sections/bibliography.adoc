@@ -1,0 +1,1534 @@
+---
+layout: author-docs
+---
+
+= References and bibliography
+
+== General
+
+In standard documents typically there are two types of references, namely
+the "`normative references`" and the "`bibliography`" (informative references).
+
+The following fixed clause names identifies a bibliography:
+
+* `Normative references`
+* `Bibliography`
+
+
+Every bibliographic section must be preceded by the style attribute
+`[bibliography]` so that references they contain may be recognized as such:
+
+[source,asciidoc]
+----
+[bibliography]
+== Bibliography
+
+* [[[id1,1]]] _First reference_
+* [[[id2,2]]] _Second reference_
+* [[[id3,3]]] _Third reference_
+----
+
+[example]
+.Example of creating the "`Normative references`" clause in an ISO deliverable
+====
+In ISO, the "`Normative references`" clause is stated in
+Clause 2 (ISO Directives Part 2, Clause 15), while the "`Bibliography`"
+section is set as the last unnumbered section at the end of document
+(ISO Directives Part 2, Clause 21). It should be typeset as the following:
+
+[source,asciidoc]
+----
+...
+// This is Clause 2 of an ISO deliverable
+[bibliography]
+== Normative references
+
+* [[[ISO8601-1,ISO 8601-1:2019]]] _First normative reference_
+* [[[ISO8601-2,ISO 8601-2:2019]]] _Second normative reference_
+
+...
+
+// This is after the last clause of an ISO deliverable
+[bibliography]
+== Bibliography
+
+* [[[ISO10241-1,ISO 10241-1]]] _First bibliographic reference_
+...
+----
+====
+
+Normative and informative references are normally recognised by the
+distinct title given them, specific to the flavour; however, the normative
+status of the bibliographic section can be given explicitly with
+a `normative` boolean attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.7]:
+
+[source,asciidoc]
+----
+[bibliography,normative=true]
+== References normative
+
+...
+
+[bibliography,normative=false]
+== References informative
+----
+
+Bibliography sections can be split into subsections.
+Metanorma AsciiDoc requires each subsection containing references
+to be styled with `[bibliography]`, and raises an (ignorable)
+warning if the subsections are contained in a section itself
+styled with `[bibliography]`.
+
+[example]
+.Example of having multiple bibliography sub-sections
+====
+[source,asciidoc]
+--
+== Bibliography
+
+[bibliography]
+=== Part 1
+
+* [[[id1,1]]] _First reference_
+* [[[id2,2]]] _Second reference_
+* [[[id3,3]]] _Third reference_
+
+[bibliography]
+=== Part 2
+
+* [[[id4,4]]] _Fourth reference_
+* [[[id5,5]]] _Fifth reference_
+* [[[id6,6]]] _Sixth reference_
+--
+====
+
+NOTE: A warning will be raised if `== Bibliography` in the above EXAMPLE was
+preceded by `[bibliography]`.
+
+[NOTE]
+====
+In Metanorma IETF, the bibliography sections "`Normative references`"
+and "`Informative references`" are separate, where the
+"`Informative references`" section is optional:
+
+[source,asciidoc]
+--
+[bibliography]
+== Normative references
+
+* [[[id1,1]]], _First normative reference_
+...
+
+// Optional
+[bibliography]
+== Informative references
+
+* [[[idn, n]]], _First informative reference_
+...
+
+--
+
+See link:/author/ietf/topics/references/[References (AsciiRFC v3)]
+for further details.
+====
+
+=== Numbering and ordering
+
+All entries in a bibliography section, whether standards or generic,
+are renumbered incrementally in the Metanorma XML. If the number for
+generic references is updated, all citations of that reference will
+be updated as well.
+
+By default, Metanorma does not change the ordering of references in the
+bibliography sections from what has been entered by the authors.
+Some Metanorma flavours *will* reorder references to suit document
+requirements.
+
+That said, all references in a references section are grouped together,
+even if there is intervening text in the source document. Only notes
+are left attached to their reference, in order to enable annotated
+bibliographies.
+
+=== Predefined text
+
+Any initial text in a Normative Reference section (before the first
+reference) is replaced by predefined text specific to the Metanorma flavour.
+
+In order to override this, initial text can be provided by the user
+as a open block with "`boilerplate`" [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.0]
+(formerly: a note of type "`boilerplate`" [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.2])
+
+[source,asciidoc]
+----
+== Normative references
+
+[.boilerplate]
+--
+The following contract document is referred to in the text in such a
+way that some or all of its content constitutes requirements of this
+document.
+--
+----
+
+
+== Entering individual references
+
+=== General
+
+Bibliographic entries are entered as unordered lists in Metanorma AsciiDoc
+within a dedicated clause or section.
+
+A single bibliographic entry must be preceded by a bibliographic anchor, in
+_triple brackets_, as shown in the following syntax:
+
+[source,asciidoc]
+--
+* [[[{anchor},{document identifier or reference tag}]]], _{reference list text}_
+--
+
+The following data elements are needed in a reference entry:
+
+* anchor
+* document identifier or reference tag
+* reference list text
+
+anchor:: a user-defined string that is an internal identifier used  for
+cross-referencing within the current document. This string is typically composed
+with ASCII characters and hyphens or underscores. Other characters are not
+recommended. +
++
+WARNING: See link:/author/topics/document-format/text#text-ref-allowed-anchors[Anchor ID syntax]
+for allowed characters in anchor IDs.
+
+document identifier:: the authoritative document identifier of the bibliographic item.
+Standardized deliverables such as International Standards from ISO and IEC are
+assigned authoritative identifiers, such as "ISO 8601-1" or "ISO 8601-1:2019".
+This is often used for auto-fetching of bibliographic details (see <<auto-fetch>>).
+When a document identifier is used, the reference tag is also set to be identical.
+
+reference tag:: a user-defined string used for rendering a mention of this
+bibliographic item in the resulting output. This is typically in a format
+defined by the user, or publication conventions adopted by the user.
+See <<reference-tags>> for more information.
+
+reference list text:: a user-defined, pre-formatted description about the
+bibliographic item. This text is either formatted according to ISO 690:2021, or
+publication conventions like MLA, APA or the Chicago Manual of Style.
+If encoded in the ISO 690:2021 format, the resulting citation will be a
+machine-readable one.
+
+
+=== Types of references
+
+There are multiple ways of entering bibliographic items in Metanorma for
+referencing as shown in <<entering-refs>>.
+
+The most commonly-used methods are:
+
+* <<autofetch>>;
+* <<annotated-spans>>;
+* <<asciibib>>; and
+* <<preformatted-citation>>.
+
+It is strongly recommended that the <<auto-fetch,automatic fetching>> method be
+used for data consistency and ease of use whenever possible (especially for
+references to standards supported by Relaton).
+
+If automatic fetching is not available for a particular reference, and if
+machine-readability or accurate rendering is important, either
+use <<annotated-spans,annotated citation spans>> or <<asciibib,AsciiBib>> for
+entering structured and detailed bibliographic information within a document.
+
+The basic form of a reference is a
+<<pre-formatted reference,pre-formatted reference>>, which relies on the user to
+supply a properly formatted reference.
+
+
+[[reference-tags]]
+== Reference tags
+
+=== Implied reference tags
+
+Bibliographic entries for standards are expected to have the standard
+document identifier as the item label. References to well-defined
+standards codes use the document identifiers for citations
+(e.g. `ISO 20483:2013`).
+
+This is entered as:
+
+[source,asciidoc]
+--
+* [[[{anchor},{document identifier as reference tag}]]], _{reference list text}_
+--
+
+[example]
+.Example of implied reference tags
+====
+[source,asciidoc]
+--
+* [[[ISO20483,ISO 20483:2013]]], _Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,ISO 6540:1980]]]. _Maize -- Determination of moisture content (on milled grains and on whole grains)_
+--
+
+gets rendered as:
+
+____
+* ISO 20483:2013. _Cereals and cereal products -- Determination of moisture content -- Reference method_
+* ISO 6540:1980. _Maize -- Determination of moisture content (on milled grains and on whole grains)_
+____
+====
+
+A well-defined standards code as the item label will by default result in the
+reference details for the bibliographic entry being auto-fetched, provided that
+auto-fetching has been defined for that class of standard (<<autofetch>>).
+
+
+=== Numeric reference tags
+
+Generic references in bibliographies, as opposed to standards
+references, use numbers, which are rendered bracketed, like `[1]`.
+
+This is entered as:
+
+[source,asciidoc]
+--
+* [[[{anchor},{number}]]], _{reference list text}_
+--
+
+[example]
+.Example of specifying numeric reference tags
+====
+[source,asciidoc]
+--
+* [[[ISO20483,1]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,1]]]. _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
+--
+
+gets rendered as:
+
+____
+* [1] _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [2] _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
+____
+====
+
+NOTE: To indicate usage of the numeric reference system, any number
+can be entered into the reference tag field. All references are
+automatically re-sorted and auto-incremented during compilation.
+
+Normative references must use either standard document identifiers, or named reference tags.
+
+NOTE: Numeric references cannot be used for entries in normative references, as bibliography numbering starts at 1.
+Execution will abort if a numeric reference tag is found in normative references, in order to prevent
+numbering confusion [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.4].
+
+
+=== Named reference tags
+
+==== General
+
+References can be tagged with user-supplied alphanumeric labels,
+in addition to numbers or standard document identifiers.
+
+These are indicated by wrapping the label within the bibliographic
+anchor in brackets.
+
+==== Named reference tag with fully specified bibliographic entry
+
+If the reference text is fully specified, and where no auto-fetching of
+the bibliographic entry is necessary, a user-supplied label is entered
+using the following syntax:
+
+[source,asciidoc]
+--
+* [[[{anchor},({reference tag})]]], _{reference list text}_
+--
+
+NOTE: These alphanumeric labels will not result in the bibliographic
+entry being auto-fetched.
+
+[example]
+.Sample named reference tag with fully specified bibliographic entry
+====
+[source,asciidoc]
+--
+* [[[ISO20483,(CerMoist)]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,(MaiMoist)]]]. _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
+--
+
+gets rendered as:
+
+____
+* [CerMoist] _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [MaiMoist] _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
+____
+====
+
+
+==== Named reference tag with automatic reference fetching
+
+Users can provide both their own alphanumeric label, and the
+well-defined reference identification code for the standards document.
+
+This will result in the bibliographic entry being auto-fetched, so long
+as that auto-fetch is supported for that class of references
+[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.15]:
+
+If a named reference is to be auto-fetched, it is entered by prefixing
+the named reference tag (in parentheses) to the document identifier:
+
+[source,asciidoc]
+--
+* [[[{anchor},({reference tag}){reference identification code}]]], _{reference list text}_
+--
+
+[[ex-named-ref]]
+[example]
+.Example of named reference tag fetched automatically
+====
+[source,adoc]
+----
+* [[[ISO20483,(CerMoist)ISO 20483]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,(MaiMoist)ISO 6540]]]. _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
+----
+====
+
+Rich-text formatting is supported within the named reference tag, including
+footnotes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.3].
+
+This is useful for cases where a cited reference is out-of-date but unsuitable
+to be updated.
+
+[example]
+.Example of rich-text formatting in named reference tag
+====
+[source,adoc]
+----
+* [[[ISO9000,(ISO 9000:2005 footnote:[Superseded by ISO 9000:2015.])ISO 9000:2005]]]
+----
+====
+
+[example]
+.Example of added footnote to a named reference tag (ISO/IEC 17025:2017)
+====
+[source,adoc]
+----
+* [[[ISO_IEC_Guide_99_2007,(ISO/IEC Guide 99:2007 footnote:[Also known as JCGM 200])ISO/IEC Guide 99:2007]]]
+
+* [[[ISO_IEC_17000_2004,ISO/IEC 17000:2004]]]
+----
+
+.Footnote in ISO/IEC 17025:2017 on ISO/IEC Guide 99:2007
+image::/assets/author/topics/document-format/bibliography/ref-with-footnote.png[Footnote in ISO/IEC 17025:2017 on ISO/IEC Guide 99:2007]
+====
+
+WARNING: It is strongly advised not to use rich-text formatting within named
+reference tags, as it can lead to unexpected results and problems with
+copy-pasting.
+
+==== Numeric reference tag with automatic reference fetching
+
+An automatically-fetched reference can be assigned a numeric reference tag, by
+using the same previous method with the sole difference of putting a number
+instead of a name.
+
+This approach is useful when working with flavors whose reference system is
+named by default, such as ITU.
+
+[example]
+.Example of numeric reference tag with automatic fetching
+====
+[source,adoc]
+----
+* [[[h760,(1)ITU-T H.760]]] Recommendation ITU-T H.760 (2009), _Overview of multimedia application frameworks for IPTV services_.
+
+* [[[x1255,(1)ITU-T X.1255]]] Recommendation ITU-T X.1255 (2013), _Framework for discovery of identity management information_.
+----
+====
+
+NOTE: Any number can be entered between the parentheses.
+The references will be incrementally re-sorted according to standard drafting
+rules specified by the flavor during compilation.
+
+NOTE: In the case of encoding bibliography items in ISO deliverables, this
+practice is not necessary -- the reference system used in the bibliography of
+ISO deliverables is already numeric by default. Numeric tags do not need to be
+explicitly specified.
+
+[[entering-refs]]
+== Entering bibliographic references
+
+[[autofetch]]
+=== Automatic fetching via Relaton ("auto-fetch")
+
+https://www.relaton.org/[Relaton] can fetch bibliographic entries
+for any standards known to have online bibliographic databases.
+
+Any bibliographic entry recognized through its document identifier prefix
+will by default have its bibliographic entry fetched by the appropriate
+Relaton extension.
+
+The fetched data overrides any content about the item provided in the document,
+since the online bibliography is treated as the source of truth for that
+standards document.
+
+The format of the standard identifier required for automatic lookup is documented at
+link:/author/topics/building/reference-lookup/[Automatic reference lookup].
+
+NOTE: Currently Metanorma supports auto-fetching document identifiers
+from: ISO, IEC, IETF, GB, NIST, OGC, CalConnect and many more.
+
+[example]
+.Example of specifying an auto-fetched reference
+====
+The following will trigger auto-fetching:
+
+[source,asciidoc]
+--
+* [[[ref1,ISO 20483]]]
+--
+
+and gets rendered as:
+
+____
+ISO 20483:2013. _Cereals and cereal products -- Determination of moisture content -- Reference method_
+____
+====
+
+One of the online bibliographic databases Metanorma allows access to is the CrossRef registry
+of DOI identifiers [added in https://github.com/relaton/relaton-cli/releases/tag/v1.14.0]. That means that
+any book, journal article, conference paper or dataset that has been identified with a DOI identifier
+can be cited by providing its DOI identifier as its bibliographic tag. Metanorma will import the bibliographic
+details of the reference from CrossRef, and format them in the required format of the current Metanorma flavour.
+
+[example]
+.Example of specifying an auto-fetched DOI reference
+====
+The following will trigger auto-fetching:
+
+[source,asciidoc]
+--
+* [[[ref1,doi:10.1045/november2010-massart]]]
+--
+
+and gets rendered as:
+
+____
+Massart D., Shulman E., Nicholas N., Ward N., &#x26; Bergeron F. Taming the Metadata Beast: ILOX. _D-Lib Magazine_ Vol. 16 No. 11/12. November 2010. Available from: <a href="http://dx.doi.org/10.1045/november2010-massart">http://dx.doi.org/10.1045/november2010-massart</a>
+____
+====
+
+This functionality has also been extended to the OpenLibrary registry of
+ISBN identifiers [added in https://github.com/relaton/relaton-cli/releases/tag/v1.17.2].
+This is triggered by an identifier string prefixed with "ISBN ".
+
+[example]
+.Example of specifying an auto-fetched ISBN reference
+====
+The following will trigger auto-fetching:
+
+[source,asciidoc]
+--
+* [[[ref1,ISBN 978-0-12-064481-0]]]
+--
+
+and gets rendered as:
+
+____
+Arvo, J. _Graphics gems II_. 1991. Boston, London: AP Professional.
+____
+====
+
+
+=== Automatic fetching of joint publications
+
+Metanorma recognises two types of joint publication:
+
+* Joint publications proper (or Merged publications),
+in which the one document is considered to be published simultaneously
+by two different standards bodies. In the case of ISO and IEC, there are longstanding partnerships with
+each other and with IEC, and this is reflected in the identifier assigned by the standards organisation
+(e.g. ISO/IEC DIR 1). In other cases, the document is assigned a different identifier by each of
+the standards organisations involved, but it is still considered to be the same publication, and is
+described in a single bibliographic entry.
+* Dual publications, for which the publications are treated as separate bibliographic entries, listed
+together with phrasing like "also published as:". In dual publications, the publications are regarded
+as separate activities with separate metadata, rather than a joint coordinated responsibility.
+
+In case the partnership is not acknowledged in the document identifier (the documents are assigned
+two separate identifiers), the two separate bibliographic entries can still be fetched by Relaton,
+and brought together in the Metanorma bibliography  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.1].
+
+* `[[[anchor,merge(CODE1, CODE2)]]]` merges together the two bibliographic entries fetched under
+CODE1 and CODE2: the bibliographic entry is that of CODE1, but the publication information of CODE2
+(the publishing organisation and the distinct document identifier) are added to the entry. For example,
++
+====
+ISO 10712 | ITU-R 232. _ISO title of document_. International Organization for Standardization and International Telecommunications Union.
+====
+
+* `[[[anchor,dual(CODE1, CODE2)]]]` treats the two bibliographic entries separately. For example,
++
+====
+ISO 10712.  _ISO title of document_. International Organization for Standardization. Also published as: ITU-R 232. _ITU title of document_. International Telecommunications Union.
+====
+
+[[other-databases]]
+=== Referencing from a Metanorma collection
+
+Metanorma allows bibliographic entries to be specified for retrieval from a
+Metanorma
+collection [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
+
+Details on author/topics/document-format/collections#collection-cross-references
+This is achieved with the following syntax:
+
+[source,asciidoc]
+--
+* [[[anchor,repo:(repository-name/document-entry,document-identifier)]]]
+--
+
+This retrieves item `document-entry` from repository `repository-name`; the document
+identifier "document-identifier" is retained in order for citations to remain well-formed.
+
+By default, `repo:(repository-name/document-entry)` is left in the Metanorma XML as
+a document identifier, of type `repo`; it will typically be resolved in post-processing.
+
+NOTE: The `repo:(...)` function is mutually exclusive to `path:(...)`, they
+cannot be used together.
+
+NOTE: Bibliographical information about the entry is *not* auto-fetched via Relaton.
+
+
+[[hyperlink-biblio]]
+=== Referencing from Metanorma or Relaton files
+
+Metanorma allows bibliographic entries to be specified by either relative or absolute
+paths [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1],
+where a path leads to a Metanorma XML or a Relaton RXL reference file.
+
+This is achieved with the following syntax:
+
+[source,asciidoc]
+--
+* [[[anchor,path:(hyperlink,document-identifier)]]]
+--
+
+As with `repo:()` bibliographic entries, the document identifier
+`document-identifier` is retained in order for citations to remain well-formed.
+
+If the hyperlink is local, Metanorma will look for an XML (Metanorma XML) or RXL
+(Relaton XML) file at the nominated location with the same filename, and read in
+the bibliographic metadata from there.
+
+All citations of this entry in the document (referencing `anchor`) will be
+rendered with the hyperlink in HTML.
+
+NOTE: The `path:(...)` function is mutually exclusive to `repo:(...)`, they
+cannot be used together.
+
+NOTE: Bibliographical information about the entry is *not* auto-fetched via Relaton.
+
+
+[[preformatted-citation]]
+=== Entering pre-formatted citations
+
+For generic references, by default, Metanorma only supports formatted citations,
+which are given as such in the AsciiDoc source.
+
+[example]
+.Example of a pre-formatted citation
+====
+[source,asciidoc]
+----
+[bibliography]
+== Normative references
+
+* [[[edge_mesh,Edge Mesh]]], Y. SAHNI, J. CAO, S. ZHANG and L. YANG.
+_Edge Mesh: A New Paradigm to Enable Distributed Intelligence in Internet of Things_.
+In: IEEE Access, vol. 5, pp. 16441-16458, 2017, doi: 10.1109/ACCESS.2017.2739804.
+----
+
+This is rendered as:
+
+____
+[1] Y. SAHNI, J. CAO, S. ZHANG and L. YANG. _Edge Mesh: A New Paradigm to Enable Distributed Intelligence in Internet of Things._
+In: IEEE Access, vol. 5, pp. 16441-16458, 2017, doi: 10.1109/ACCESS.2017.2739804.
+____
+====
+
+NOTE: The NIST flavour of Metanorma currently supports rendering of generic
+references, on an experimental basis. See the
+link:/author/topics/building/reference-lookup[Automatic reference lookup]
+topic for more details.
+
+[[annotated-spans]]
+=== Annotating pre-formatted citations using semantic elements
+
+While a pre-formatted citation is not explicitly broken down into its semantic
+components, it may be expedient to mark up segments of the citation
+semantically, to provide information which is useful for parsing.
+
+[example]
+In order to generate an author-date citation, it is necessary to indicate the
+author surnames and publication date.
+
+For that reason, a limited number of span categories can be used to annotate a
+pre-formatted
+citation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
+
+These are not an exhaustive list of bibliographic fields, and if more detail is
+required (or a dynamically generated citation is to be generated), one of the
+following explicit bibliographic entry methods should be used instead.
+
+The span categories supported are:
+
+* `surname`: Author surname.
+* `initials`: Author initials.
+* `givenname`: Author given name.
+* `fullname`: Combination of author surname and initials or given names, according to strcit syntax
+(see below) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.0]
+* `organization`: Corporate author.
+* `surname.XXX`: Contributor surname, with role _XXX_ (e.g. _editor_).
+* `initials.XXX`: Contributor initials, with role _XXX_ (e.g. _editor_).
+* `givenname.XXX`: Contributor given name, with role _XXX_ (e.g. _editor_).
+* `fullname.XXX`: Contributor full name, with role _XXX_ (e.g. _editor_).
+* `organization.XXX`: Corporate contributor, with role _XXX_ (e.g. _editor_).
+* `title`: Title.
+* `in_title`: Title of containing bibiographic item (for types `inbook, inproceedings, incollection`,
+the title of the book, proceedings, collection containing the item).
+* `in_surname`, `in_initials`, `in_givenname`, `in_organization`: Name of contributor for containing
+bibliographic item (for types `inbook, inproceedings, incollection`, the author or more usually editor
+of the book, proceedings, collection containing the item. So `in_surname.editor`, `in_givenname.editor`
+give the name of the editor of the book or proceedings that a paper is included in).
+* `series`: Series title. (For articles, this is the journal title.)
+* `docid`: Document identifier.
+* `docid.XXX`: Document identifier, of type _XXX_.
+* `publisher`: Publisher.
+* `pubplace`: Place of publication.
+* `date`: Date published.
+* `date.XXX`: Date with type _XXX_ (e.g. _published_, _created_, _issued_)
+* `edition`: Edition
+* `version`: Version
+* `note`: Note (can also be used for miscellaneous content)
+* `uri`: URI.
+* `uri.XXX`: URI, of type _XXX_.
+* `pages`: page or page range (e.g. _9_, _9-11_)
+* `issue`: issue or issue range (e.g. _9_, _9-11_)
+* `volume`: volume or volume range (e.g. _9_, _9-11_)
+* `type`: Document type (e.g. _standard_, _book_, _inbook_): suppressed from rendering.
+The list of valid document types is given in https://www.relaton.org/specs/model/bibtype/[Relaton model -- Bibitem type].
+
+NOTE: The surname must always precede the initials or given name for a given author in spans,
+to prevent ambiguity and confusion in parsing the citation.
+The rendered ordering of initials/given name and surname for the first
+and for subsequent names is determined by the flavour citation stylesheet.
+So `span:surname[Fields], span:initials:[W.C.]`, never `span:initials:[W.C.] span:surname[Fields]`.
+
+NOTE: After the first instances of `surname` and either `initials` or `givenname`, any
+subsequent instances of `surname` or either `initials` or `givenname` are
+interpreted as belonging to a new contributor of the same role.
+
+NOTE: `span:fullname[]` is intended as a convenience method to substitute `span:surname[]`,
+`span:initials[]`, `span:givenname[]` in a single macro. It has a strict syntax, and any
+special cases need to be marked up with the separate, explicit name parts instead:
+
+* The surname is a single word (space-delimited), occuring at the end. So in `span:fullname[A. D. Navarro Cortez]`, only _Cortez_ is a surname: to make _Navarro Cortez_ a surname, you will need to mark it up as `span:initials[A. D.] span:surname[Navarro Cortez]`. But in `span:fullname[A. D. Navarro-Cortez]`, the surname is _Navarro-Cortez_.
+* Anything before the surname is a given name. So in `span:fullnamename[J. Edgar Hoover]`, both _J._ and _Edgar_ are processed as given names.
+* If everything before the surname ends in a full stop, they are all deemed initials. So in `span:fullname[A. D. Navarro Cortez]`, _A. D._ are parsed as initials.
+
+[example]
+.Example encoding of a bibliographic item inline with semantic markup
+====
+[source,asciidoc]
+----
+* [[[A, B]]],
+  span:surname[Wozniak], span:initials[S.], span:surname[Jobs], span:givenname[Steve],
+    & surname:[Hoover], span:initials[J.] span:givenname[Edgar].
+  span:date.issued[1991].
+  span:date[1996].
+  span:title[_Work_].
+  In span:in_surname.editor[Gates], span:in_initials.editor[W. H] &
+  span:in_organization[UNICEF],
+  span:in_title[Collected Essays].
+  _span:series[Bibliographers Anonymous]._
+  span:docid.ISO[ISO 1234].
+  span:pubplace[Geneva]:
+  span:publisher[International Standardization Organization].
+  span:uri.citation[http://www.example.com].
+  vol. span:volume[5],
+  pp. span:pages[2-21]
+  span:type[inbook]
+----
+====
+
+Note the distinction in the example between Wozniak and Jobs (authors of the paper),
+and Gates and UNICEF (editors of the book including the paper). Similarly, note the
+distinction between the title of the paper (_Work_), and the title of the book including
+the paper (_Collected Essays_).
+
+After the first instances of `surname` and either `initials` or `givenname`, any
+subsequent instance of `surname` is
+interpreted as belonging to a new contributor of the same role.
+Any given names and surnames MUST follow the surname that they relate to. If the names
+are ordered differently between the first and subsequent name, e.g. _Wozniak, S. & Steve Jobs_,
+that will be taken care of in rendering: they cannot be annotated in that way.
+
+[NOTE]
+--
+For presentations,
+
+* `title` is the title of the presentation
+* `series` is the title of the conference
+* `organization.distributor` is the organizer of the conference
+--
+
+[IMPORTANT]
+--
+The rendering of different bibliographic types is quite different in the various
+stylesheets that SDOs follow, and strange things will happen if Metanorma gets the
+bibliographic type wrong. Under Metanorma, the default bibliographic type is "standard",
+and most SDOs render standards in bibliographies with very little data (no author, no
+publisher, no date outside of the document identifier, and so on).
+
+If you use this notation to enter any document other than a standard, you *must*
+specify the type of document, using `span:type[]`.
+--
+
+[[asciibib]]
+=== Entering with AsciiBib
+
+Bibliographic entries can be entered in the AsciiBib format.
+
+AsciiBib is a bibliography entry format that uses AsciiDoc definition lists to
+capture the structure of Relaton XML.
+
+This approach is documented in
+https://www.relaton.org/asciibib/[relaton.org].
+
+[example]
+.Example of entering an entry using AsciiBib (ISO 123) with an AsciiBib ID
+====
+[source,asciidoc]
+--
+[bibliography]
+== Normative references
+
+[%bibitem]
+=== Rubber latex -- Sampling
+id:: iso123
+docid::
+type::: ISO
+id::: ISO 123
+docid::
+type::: ABC
+id::: 32784
+type:: standard
+--
+====
+
+The `id` attribute of `%bibitem` clauses (the anchor of the clause) can be
+overridden by a Metanorma AsciiDoc anchor on the
+clause [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
+
+This can be required for Metanorma AsciiDoc to process cross-references correctly.
+
+NOTE: Metanorma AsciiDoc anchors must not be preceded by `_`, as Metanorma
+AsciiDoc uses that to indicate anchors it inserts automatically, which are not
+supplied in the source.
+
+[example]
+.Example of entering an entry using AsciiBib (ISO 123) with an AsciiDoc anchor
+====
+[source,asciidoc]
+--
+[bibliography]
+== Normative references
+
+[[iso123]]
+[%bibitem]
+=== Rubber latex -- Sampling
+id:: iso123
+docid::
+type::: ISO
+id::: ISO 123
+docid::
+type::: ABC
+id::: 32784
+type:: standard
+--
+====
+
+
+=== Entering with Relaton XML (EXPERT only)
+
+WARNING: This functionality is strongly discouraged due to the ease of breaking
+the resulting Metanorma XML. It is useful only for limited use cases and
+only intended for experts.
+
+Bibliographic entries can also be given as raw https://www.relaton.org[Relaton XML],
+in an AsciiDoc passthrough block.
+
+Of course, any Relaton XML BibItem entries need to be valid, and using correct
+`id` attributes.
+
+[example]
+.Example of entering an entry using Relaton XML (ISO 1)
+====
+[source,asciidoc]
+--
+[bibliography]
+== Normative references
+
+++++
+<bibitem id="doc1">
+<docidentifier>ISO 1</docidentifier>
+<title>Geometrical product specifications (GPS) -- Standard reference temperature for the specification of geometrical and dimensional properties</title>
+</bibitem>
+++++
+--
+====
+
+
+[[citations_localities]]
+== Citations and localities
+
+=== General
+
+Citations of references in Metanorma are formulated as cross-references.
+
+The anchor cross-referenced is the internal identifier given for the
+bibliographic entry.
+
+[example]
+.Example of specifying a reference anchor (`ref1` is the anchor)
+====
+[source,adoc]
+----
+<<ref1,part=IV,chapter=3,paragraph=12>>
+----
+====
+
+Metanorma AsciiDoc works in a similar way to typical AsciiDoc: any text in a
+cross-reference that follows a comma constitutes custom text for the
+cross-reference.
+
+A cross-reference `\<<ISO7301,the foregoing reference>>` will be rendered as
+"`the foregoing reference`", and hyperlinked to the `ISO7301` reference.
+
+[[localities]]
+=== Localities
+
+==== General
+
+Citations can include details of where in the document the citation is located.
+
+These localities are entered by suffixing the lowercase type of locality, then
+an equals sign, then the locality value or range of values.
+
+Multiple instances of locality and reference can be provided, delimited by comma
+or colon.
+
+The references cannot contain spaces. Any text following the sequence of
+localities will be displayed instead of the localities.
+
+[[locality-types]]
+==== Locality types
+
+The following locality types are recognised in Metanorma:
+
+* `section`: a general section
+* `clause`: a clause
+* `part`: a document part
+* `paragraph`: a paragraph
+* `chapter`: a chapter
+* `page`: a page
+* `line`: a line identified by the line number
+* `table`: a table
+* `annex`: an annex
+* `figure`: a figure
+* `example`: an example
+* `note`: a note
+* `formula`: a mathematical formula
+* `list`: a list
+* `time`: a particular time
+* `anchor`: an anchor
+* `whole`: whole
+* `title`: the title
+
+Except for the locality types of `whole` and `title`, all locality types require
+explicit specification of an identifier to make sense.
+
+.Example locality types that are used on their own
+[example]
+====
+* `whole`
+* `title`
+====
+
+.Example locality types that need to be used with identifiers
+[example]
+====
+* `note 1` (or `note=1`)
+* `page 77-99` (or `page="77-79"`)
+* `annex A` (or `annex=A`)
+* `line 399` (or `line=399`)
+====
+
+Locality types not listed here shall be entered using the mechanism described at
+<<custom-locality>>.
+
+==== Simple locality
+
+A simple locality is specified with a unique location identifier or free text.
+
+[example]
+.Example of referencing locality in Metanorma citations
+====
+[source,asciidoc]
+----
+<<ISO7301,clause=3.1-3.4>>
+
+NOTE: This table is based on <<ISO7301,table=1>>.
+
+Sampling shall be carried out in accordance with <<xxx,section="5-3-1,bis">>
+----
+====
+
+[example]
+.Example that renders a reference as free text
+====
+[source,asciidoc]
+----
+// renders as: "the foregoing reference"
+<<ISO712,the foregoing reference>>
+----
+====
+
+To refer to the "`whole`" item, or the title within a block, the corresponding keyword is used
+(`whole`, `title`), without an argument.
+
+[example]
+.Example of referencing with a "whole" locality
+====
+[source,asciidoc]
+----
+// renders as: "ISO 712, Whole of text"
+<<ISO712,whole>>
+----
+====
+
+
+==== Hierarchical locality
+
+A hierarchical location is specified through consecutive narrower localities.
+
+[example]
+.Example of referencing a hierarchical locality
+====
+[source,asciidoc]
+----
+// renders as "`Part IV, Chapter 3, paragraph 12`"
+<<ref1,part=IV,chapter=3,paragraph=12>>
+----
+====
+
+[example]
+.Example that renders the reference with (multiple) hierarchical localities
+====
+[source,asciidoc]
+----
+// renders as: "ISO 712, Section 5, Page 8-10"
+<<ISO712,section=5, page 8-10>>
+----
+====
+
+[example]
+.Example of referencing locality with additional text
+====
+[source,asciidoc]
+----
+// renders as "ISO 712, 5:8-10"
+// ("5:8-10" treated as replacement text for all the foregoing)
+<<ISO712,section=5, page=8-10: 5:8-10>>
+----
+====
+
+==== Discontinuous locality
+
+Discontinuous localities can be named by repeating the same locality type.
+
+[example]
+.Example of referencing a discontinuous locality
+====
+[source,asciidoc]
+----
+// renders as "`page 4, page 7`"
+<<ref1,page=4,page=7>>
+----
+====
+
+Discontinuous localities can also be specified by delimiting sequences of
+localities with semicolon [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.24] +
+
+[example]
+.Example of referencing discontinuous hierarchical localities
+====
+[source,asciidoc]
+----
+// renders as "`Part IV, Chapter 3; Part VI, Chapter 9`"
+<<ref1,part=IV,chapter=3;part=VI,chapter=9>>
+----
+====
+
+==== Complex locality
+
+Complex relations between discontinuous references can be specified by
+prefixing conjoining verbs to sequences of localities separated
+by semicolon [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
+
+This will result in overt connectives between the references, which will be
+internationalised.
+
+Conjoining verbs include:
+
+* `and!`
+* `or!`
+* `from!`
+* `to!`
+
+[example]
+.Example of referencing a complex locality
+====
+[source,asciidoc]
+----
+// renders as: "`Chapters 3 and 7`"
+<<chapter=3;and!chapter=7>>
+----
+====
+
+[example]
+.Example of referencing a complex locality that contains a hierarchical locality
+====
+[source,asciidoc]
+----
+// renders as: "Part IV, Chapter 3 or Part VI, Chapter 9"
+<<ref1,part=IV,chapter=3;or!part=VI,chapter=9>>
+----
+====
+
+NOTE: This is similar to the behavior in
+link:/author/topics/document-format/xrefs/#combined-xrefs[Combination of cross-references].
+
+As with cross-references, more than two references combined by "`and`" should be
+marked up with semicolons. Internationalisation during rendering will take care
+of separating the references by colon, and inserting any necessary conjunction
+wording ("`and`").
+
+[example]
+.Example of referencing multiple references that are complex localities
+====
+[source,asciidoc]
+----
+<<ref1,clause=3.2;clause=4.7;clause=4.9;clause=9>>
+// or
+<<ref1,clause=3.2;and!clause=4.7;and!clause=4.9;and!clause=9>>
+----
+====
+
+NOTE: If references are joined with semicolons and connectives, but the locality is not supplied
+for a cross-reference, it is filled in by referring to the preceding conjoined
+cross-reference [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.0].
+For example, `<<ref1,clause=3.2;and!4.7;to!4.9;and!9>>` is
+corrected internally to the more explicit `<<ref1,clause=3.2;and!clause=4.7;to!clause=4.9;and!clause=9>>`.
+
+Trailing text after the sequence of `locality=reference` (or
+`locality{space}reference`) is treated as custom text for the cross-reference,
+as would occur normally in a typical cross-reference.
+
+The locality can appear in quotations if it contains special characters (like
+dashes or commas).
+
+[[custom-locality]]
+==== Custom locality
+
+Locality types not listed in <<locality-types>> are entered using the
+"custom locality" functionality.
+
+Metanorma accepts a fixed list of locality types in cross-references (see
+<<locality-types>>), which is not meant to be exhaustive of all possible
+locality types.
+
+[example]
+`annex` is recognized as a generic reference to annexes in documents, but it
+does not recognize appendixes (instead of annexes), or as distinct from annexes
+(as is the case in ISO deliverables).
+
+A custom locality is entered by prefixing the locality type with `locality:`.
+
+A custom locality has the following properties:
+
+* The locality type will be rendered as text preceding the equal sign.
+
+* The locality type shall not contain commas, colons, or space.
+
+* The locality type is meant to be valid for all languages.
++
+NOTE: The custom locality `locality:appendix` would be used for both English
+and French texts.
+
+* Localization of custom locality types is managed through inclusion in the
+internationalization YAML file for that language, which has to be customized
+as part of the Metanorma flavor implementation.
++
+NOTE: The custom locality `locality:appendix` is realized as French _Appendice_
+through configuration in the Metanorma flavor implementation.
+
+
+[example]
+.Example of referencing a custom locality the `locality:` prefix
+====
+This encoding:
+
+[source,asciidoc]
+----
+<<ISO-IEC_DIR_1_ISO_SUP,annex=SL,locality:appendix=2,clause=3.2>>
+----
+
+Renders as:
+
+____
+"ISO/IEC DIR 2, Annex SL, Appendix 2, Clause 3.2"
+____
+====
+
+
+==== Locality plus custom text
+
+Any text after the bibliographic localities is still treated as custom
+cross-reference text.
+
+As with references without localities, the custom cross-reference text is the
+only text that is displayed in the document; but the cross-reference still
+captures the specific locality of the reference, e.g. for cross-reference
+generation.
+
+[example]
+.Example of referencing with bibliographic localities with additional custom text
+====
+[source,asciidoc]
+----
+<<ISO7301,clause=5,table=1,the foregoing reference>>
+----
+
+rendered as:
+
+____
+the foregoing reference
+____
+====
+
+==== Anchor locality
+
+Exceptionally, the `anchor` locality is only used in HTML, to generate
+anchor links to other HTML pages [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
+
+It is intended for use with bibliographic anchors linking to URLs (`repo:()`, `path:()`):
+see <<other-databases>> and <<hyperlink-biblio>>.
+
+
+[example]
+.Example of using the `anchor` locality for rendering in HTML output
+====
+The following input:
+
+[source,asciidoc]
+--
+<<ISO7301,clause=2,table=1a,page=7-9,anchor=xyz>>
+
+...
+
+* [[[ISO7301,path:(./iso7301.html,ISO 7301)]]]
+--
+
+will render in HTML as:
+
+[source,html]
+--
+<a href="./iso7301.html#xyz">ISO 7301, Clause 2, Table 1a, page 7-9</a>
+--
+====
+
+==== Case and dropped locality labels
+
+The `capital%`, `lowercase%` and `droploc%` options used for internal
+cross-references can also be used as prefixes to localities, modifying how those
+localities are
+rendered [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.9].
+
+
+[example]
+.Example of using `droploc` in a citation locality
+====
+[source,asciidoc]
+--
+// renders as "ISO 7301, 2"
+<<ISO7301,droploc%clause=2>>
+--
+====
+
+[example]
+.Example of using `lowercase` in a citation locality
+====
+[source,asciidoc]
+--
+// renders as "ISO 7301, clause 2"
+<<ISO7301,lowercase%clause=2>>
+--
+====
+
+==== Styled cross-references
+
+As with link:/author/topics/document-format/xrefs#xref-styles[internal cross-references], cross-referenced
+citations can have a `style` attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.4].
+As of this writing, the only values allowed are the types of docidentifier value that can be substituted
+for the primary identifier of the reference, for standards documents; those values will need to be looked up in
+Relaton (and the Semantic XML of the document). For example, given the citation
+
+[source,xml]
+----
+<bibitem type="standard" id="bib1">
+...
+<docidentifier type="ISO" primary="true">ISO/FDIS 17664-1</docidentifier>
+<docidentifier type="URN">urn:iso:std:iso-fdis:17664:-1:ed-1:fr</docidentifier>
+...
+</bibitem>
+----
+
+a crossreference `<<bib1>>` will be populated by default with the primary or else the first
+`docidentifier` value found, `ISO/FDIS 17664-1`. However, given `<<bib1,style=URN%>>`, the
+first `docidentifier` value of type `URN` will be sought instead, and the cross-reference
+will be populated by default as `URN urn:iso:std:iso-fdis:17664:-1:ed-1:fr`.
+
+
+=== Link-only references
+
+A standards document can be cross-referenced in Metanorma without that document
+appearing in the document references.
+
+Such cross-reference is treated as equivalent to a cross-reference
+to a hidden citation, as documented in <<hidden-citations>>.
+
+Link-only references can be added to Metanorma AsciiDoc using the following
+command:
+
+[source,adoc]
+----
+++std-link:[...]++
+----
+
+Where the `std-link` command contains the same text as a normal cross-reference
+to a standard, including localities and other directives.
+There is no need for an explicit bibliographic entry. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
+
+The following two examples are equivalent:
+
+[example]
+.Link-only reference of ISO 123 using `std-link`
+====
+[source,asciidoc]
+----
+std-link:[ISO 123,droploc%clause=3]
+----
+====
+
+[example]
+.Link-only reference of ISO 123 using a hidden citation
+====
+[source,asciidoc]
+----
+<<ref1,droploc%clause=3>>
+
+[bibliography]
+== Bibliography
+
+* [[[ref1,hidden(ISO 123)]]]
+----
+====
+
+=== Combination of citations
+
+Simple citations can be combined with connectives, in a similar fashion to cross-references
+(link:/author/topics/building/xrefs/#combined-xrefs[Combination of cross-references]),
+and which will be internationalised as
+appropriate [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7].
+
+[example]
+.Example of rendering a range of citations
+====
+The following citation range:
+
+[source,adoc]
+----
+<<from!context;to!improvement>>
+----
+
+is rendered as:
+
+____
+From [3] to [7]
+____
+====
+
+
+== Reference processing flags
+
+=== General
+
+Various processing flags can be entered at the document identifier element to
+specify different reference processing behaviour. All such flags are optional.
+
+Reference processing flags need to be entered according to the following pattern
+(in this order):
+
+[source,adoc]
+----
+[[[{anchor},nofetch(hidden(dropid({document identifier or reference tag})))]]]
+----
+
+`nofetch()`:: Disable automatic lookup of references. See <<disable-auto-fetch>>
+
+`hidden()`:: Do not show this item in the bibliography. See <<hidden-citations>>.
+
+`dropid()`:: Do not display the document identifier. See <<dropid>>.
+
+
+NOTE: The `repo:()` and `path:()` functions are to be entered as document
+identifiers in this pattern.
+
+[[disable-auto-fetch]]
+=== Disable auto-fetch with `nofetch()`
+
+See link:/author/topics/building/reference-lookup/#nofetch[Automatic reference lookup: Disabling automatic lookup].
+
+
+[[dropid]]
+=== Ignoring document identifiers with `dropid()`
+
+The document identifier is critical to formulating both citations and
+bibliographies. There are times, however, where the supplied document identifier
+is to be ignored in bibliographies.
+
+When a manual bibliographic item is entered (not auto-fetched),
+with a user-defined anchor and the document identifier in triple brackets,
+followed by bibliographic details provided as text.
+
+In this case, the bibliographic item is rendered with the document identifier
+placed in brackets after the provided bibliographic details, as it is shown in
+<<dropid-example-1>>.
+
+[[dropid-example-1]]
+[example]
+.Example of a manually-entered bibliographic item with document identifier shown after bibliographic details
+====
+[source,asciidoc]
+----
+* [[[id1,ELOT 743]]], _Transliteration of Greek into Roman script._
+----
+
+Notice that the document identifier is placed in brackets after the provided
+bibliographic details:
+
+____
+[1] _Transliteration of Greek into Roman script._ [ELOT 743]
+____
+====
+
+There are situations where it is useful to suppress the document identifier in
+the bibliography, for example:
+
+* the bibliographic item is not a standard, so the identifier should not be
+used;
+
+* there is no authoritative form for the document identifier for this
+bibliographic item.
+
+The `dropid()` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.4]
+citation processing flag can be used to suppress the appearance of the document
+identifier in the bibliography.
+
+[example]
+.Example of using `dropid(...)` to drop rendering of a document identifier in the bibliography
+====
+[source,asciidoc]
+----
+* [[[id1,dropid(GIBBON)]]], Gibbon, Edward. 1776-1789. _Decline and fall of the Roman Empire._ London: Strahan & Cadell.
+----
+
+The resulting rendering omits the document identifier:
+
+____
+[1] Gibbon, Edward. 1776-1789. _Decline and fall of the Roman Empire._ London: Strahan & Cadell.
+____
+====
+
+
+
+[[hidden-citations]]
+=== Hiding citations with `hidden()`
+
+It is possible to add a citation to a document while suppressing its rendering
+in all rendered outputs.
+
+This is done so that the Metanorma Semantic XML will still contain information
+about the citation, and can use it, for instance, to populate cross-references
+to that document.
+
+A hidden citation can be added to a Metanorma document by wrapping the reference
+tag in `hidden(...)`. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.0]
+
+[example]
+.Example of hiding a named reference (ISO 8601-1:2019)
+====
+The following encoding will hide the particular bibliographic reference.
+
+[source,asciidoc]
+--
+[bibliography]
+== Normative references
+
+* [[[iso86011,hidden(ISO 8601-1:2019)]]]
+--
+====
+
+=== CSV notation
+
+The notation shown up to this point for reference processing flags has the potential of being too complicated
+to parse, if deeply nested or if the parentheses of flags are combined with the parentheses of user-supplied
+labels or of "all parts". For that reason, an alternative notation is supported, involving key/value pairs
+delimited by comma and equals signs in the anchor label [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.4].
+For example, the following two references are equivalent:
+
+[source,asciidoc]
+----
+[bibliography]
+== Normative references
+
+* [[[iso8601_1,nofetch((Date-Time)ISO 8601-1:2019)]]], _Date and time — Representations for information interchange — Part 1: Basic rules_
+* [[[iso8601_1a,nofetch=true,usrlabel=Date-Time,code=ISO 8601-1:2019]]], _Date and time — Representations for information interchange — Part 1: Basic rules_
+----
+
+The CSV-based notation has the following keys:
+
+`nofetch`:: `true`|`false`
+`hidden`:: `true`|`false`
+`dropid`:: `true`|`false`
+`local-file`:: (filename of local Relaton cache)
+`repo`:: (repository name)/(document entry)
+`path`:: (file path)
+`number`:: (number, for a numeric ID of a citation)
+`usrlabel`:: (user-supplied label of reference)
+`code`:: (authoritative identifier of reference)
+
+If no key is supplied in the CSV entry, it is assumed to be a code; e.g. `nofetch=true,usrlabel=Date-Time,ISO 8601-1:2019`
+is interpreted as `nofetch=true,usrlabel=Date-Time,code=ISO 8601-1:2019`.

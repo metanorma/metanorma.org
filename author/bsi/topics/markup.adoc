@@ -1,0 +1,825 @@
+---
+layout: bsi-flavor
+title: Metanorma for BSI markup
+---
+
+== Visual Presentation
+
+=== Cover page images
+
+Any images to be included in the cover page are to be given under the
+document attribute `coverpage-image`, as a comma-delimited list:
+
+[source,asciidoctor]
+----
+:coverpage-image: images/image1.gif,images/image2.gif
+----
+
+The inner cover images, Table of Contents side images, and back page images are treated in the same way,
+with the respective atttributes `innercoverpage-image`, `tocside-image`, and `backpage-image`.
+
+Note that even if an `:imagesdir:` directory is specified, the image locations should be given
+relative to the source document, for consistency with other attributes.
+
+When preparing cover images for rendering in BSI PDF, bear in mind the following:
+
+For BSI Flex:
+
+* the cover page size is 210×297mm,
+* the recommended main image (picture) size is 210×147mm,
+* the recommended top margin for the main image is 85mm (the cover page title(s) renders in the area before the image, and the document identifier renders in the ares after the image),
+* the document identifier renders on-the-fly in the area after the image, with top-margin 236mm,
+* any sponsor logo(s) at the left bottom should be provided in addition to the cover page image,
+* the BSI logo at the right bottom renders on-the-fly, and there no need to include it as a cover page image.
+
+image::bsiflex.png[]
+
+For BSI PAS:
+
+* the front and back cover page size is 210×297mm,
+* the document identifier and title(s) displays in color (as determined by the document attribute `:presentation-metadata-color-cover-title:`, default value is `#ffffff1), in the block (shown in yellow box below) with margins at page sizes: left margin 15mm, top margin 12.5mm, right margin 25mm. Therefore the background of the cover page image should allow those margins to be  correctly visualised,
+* any sponsor logo(s) at the left bottom should be provided in addition to the cover page image,
+* the BSI logo at the right bottom renders on-the-fly, and there no need to include it as a cover page image.
+
+image::bsipas.png[]
+
+=== Collection cover page style
+
+In Metanorma Collections, the Collection cover page style is determined by the first document type in the collection.
+The style for the collection cover page can be chosen by the attribute `coverpage-style:` in the collection manifest file:
+
+```
+directives:
+  - coverpage-style: ...
+```
+
+Currently supported values for `coverpage-style:`: `BSI` (or `BS`) and `PAS`.
+
+NOTE: 'PAS' style cover page is using for BSI Flex collection also.
+
+=== Columns
+
+By default, BSI documents are output with one column per page. For PAS documents authored before 2023,
+output is expected to be two columns per page for the document proper; this is indicated by the document attribute
+`:presentation-metadata-layout-columns: 2`.
+
+=== Font
+BSI documents require the BSI Gesta font to be installed in order to render HTML and PDF
+outputs correctly. The BSI Gesta font cannot be freely distributed, but can be made available
+for use under Metanorma by requesting access to the repository https://github.com/metanorma/fontist-formulas-private
+
+Once you have access to that repository, execute the following commands to make the BSI Gesta font
+available to Metanorma:
+
+[source,console]
+----
+fontist repo setup metanorma https://github.com/metanorma/fontist-formulas-private
+fontist repo update metanorma
+fontist install "BSI Gesta"
+----
+
+=== Boilerplate text
+
+By default, coverpage and frontispiece text is automatically added by Metanorma. That includes copyright information,
+draft notices, and contact information about the BSI.
+
+BSI Flex standards include inside front cover material specific to that type of standard, as required by the current Flex style guide:
+
+____
+e) a description of the programme, if applicable, worded as follows:
+   This BSI Flex is part of a wider programme of work around XXXX. For more information, go
+   to: https://www.bsigroup.com/XXX
+
+f) a link to the project website, worded as follows;
+   Information on the development of this BSI Flex can be found at:
+   https://www.bsigroup.com/XXX
+
+g) a statement about BSI Flex standards, worded as follows:
+   BSI Flex standards provide a new, flexible way to develop consensus-based good practice
+   that dynamically adapts to keep pace with fast-changing markets. For more information, go to:
+   https://www.bsigroup.com/en-GB/our-services/standards-services/flex/
+____
+
+Because there is variability in this information, including whether e) and f) are distinct paragraphs,
+the text for e) and f) should be entered as a preface clause of type "flex-coverpage"; any title provided will
+be ignored. For example:
+
+[source,asciidoctor]
+----
+[.preface,type="flex-coverpage"]
+== Flex cover page
+
+This BSI Flex is part of a wider programme of work around CAVs. For more information, go
+to: https://www.bsigroup.com/en-GB/CAV/
+----
+
+The text for g) is the same for all BSI Flex standards, and is supplied automatically after the information
+in e) and f).
+
+BSI Flex and PAS documents also include a publication history (labelled "Release history" in BSI Flex);
+it appears after g) in BSI Flex, and in the bottom of the Publication and Copyright Information.
+The publication history is enterd with a preface clause of type "publication-history"; any title
+supplied is overwritten with the title specific to the document type. For example:
+
+[source,asciidoctor]
+----
+[.preface,type="publication-history"]
+== Release history
+
+First published November 2001
+
+Second edition January 2006
+----
+
+== Clauses
+
+=== Adoption forewords
+
+When BSI adopts a standard from another SDO, it may insert its own foreword before the foreword
+of the original document. If the standard has been adopted via a regional SDO such as CEN,
+that regional SDO may have already added its own foreword.
+
+In order to ensure that the national and regional forewords are shown before the original foreword,
+they need to be specified as prefatory clauses, of type "national-foreword" and "regional-foreword".
+The `== Foreword` markup is retained for the source document. (Marking it as `.preface` is optional,
+as Metanorma already recognises `== Foreword` as a prefatory clause. Marking the National and Regional 
+forewords as `.preface` is mandatory.)
+
+[source,asciidoctor]
+----
+[.preface,type=national-foreword]
+== National foreword
+
+BSI has adopted...
+
+[.preface,type=regional-foreword]
+== Regional foreword
+
+CEN has adopted...
+
+[.preface]
+== Foreword
+The ISO standard...
+----
+
+=== Document history
+
+Semantic markup of document history can be added to the document,
+link:/author/topics/document-format/meta-attributes#doc-history-misc-container[using Metanorma extension]
+and Relaton YAML [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.0].
+Document history is realised as one or two subclauses of the copyright information, given in the
+initial boilerplate text of the document.
+
+There are three forms of document history renderings:
+
+* If `:document-scheme: with-publication-information` is given,
+the document history of the document is given in the old style, with full publication history
+(enumerating all editions), and with four columns for amendments (date issued, date effective,
+amendment designation, description).
+* If `:document-scheme:` is not specified, the document history is given in the new style:
+no publication history, and two columns for amendments (date issued, description).
+* The document scheme is ignored in Flex and PAS, which use full document history, but two columns for amendments.
+(The publication history is titled "Release history" in Flex.)
+
+The full document history tracks changes in document identifier; for that reason, BSI document histories
+should specify the preferred identifier.
+
+In order to differentiate editions in the document history from versions in the amendment history,
+the dates for the latter should be given with `type: updated`, whereas the former should be given with `type: published`.
+
+The following is an illustration of semantic document history markup for BSI:
+
+[source, asciidoctor]
+--
+[.preface]
+== Misc-container
+  
+=== document history
+      
+[source,yaml]
+----
+- date:
+  - type: published
+    value: 1976-03
+  docid:
+    - type: BSI
+      id: BS 5500
+  edition: 1
+- date:
+  - type: published
+    value: 1982-01
+  docid:
+    - type: BSI
+      id: BS 5500
+  edition: 2
+- date:
+  - type: published
+    value: 1985-01
+  docid:
+    - type: BSI
+      id: BS 5500
+  edition: 3
+- date:
+  - type: published
+    value: 1988-01
+  docid:
+    - type: BSI
+      id: BS 5500
+  edition: 4
+- date:
+  - type: published
+    value: 1991-01
+  docid:
+    - type: BSI
+      id: BS 5500
+  edition: 5
+- date:
+  - type: published
+    value: 1994-01
+  docid:
+    - type: BSI
+      id: BS 5500
+  edition: 6
+- date:
+  - type: published
+    value: 1997-01
+  docid:
+    - type: BSI
+      id: BS 5500
+  edition: 7
+- date:
+  - type: published
+    value: 2000-01
+  docid:
+    - type: BSI
+      id: PD 5500
+  edition: 1
+- date:
+  - type: published
+    value: 2003-01
+  docid:
+    - type: BSI
+      id: PD 5500
+  edition: 2
+- date:
+  - type: published
+    value: 2006-01
+  docid:
+    - type: BSI
+      id: PD 5500
+  edition: 3
+- date:
+  - type: published
+    value: 2009-01
+  docid:
+    - type: BSI
+      id: PD 5500
+  edition: 4
+- date:
+  - type: published
+    value: 2012-01
+  docid:
+    - type: BSI
+      id: PD 5500
+  edition: 5
+- date:
+  - type: published
+    value: 2015-01
+  docid:
+    - type: BSI
+      id: PD 5500
+  edition: 6
+- date:
+  - type: published
+    value: 2018-01
+  docid:
+    - type: BSI
+      id: PD 5500
+  edition: 7
+- date:
+  - type: published
+    value: 2021-01
+  docid:
+    - type: BSI
+      id: PD 5500
+  edition: 8
+- date:
+  - type: updated
+    value: 2021-09
+  - type: implemented
+    value: 2022-01
+  docid:
+    - type: BSI
+      id: Amendment 1, tagged
+  amend:
+    description: SEE FOREWORD
+- date:
+  - type: updated
+    value: 2022-09
+  - type: implemented
+    value: 2023-01
+  docid:
+    - type: BSI
+      id: Amendment 2, tagged
+  amend:
+    description: SEE FOREWORD
+----
+--
+
+It has the following renderings:
+
+* New style:
++
+___
+*Amendments issued since publication*
+
+|===
+| Date | Text affected
+
+| September 2021 | Amendment 1, tagged: SEE FOREWORD
+| September 2022 | Amendment 2, tagged: SEE FOREWORD
+|===
+___
+
+* Old style:
++
+____
+*Publication history*
+
+First published as BS 5500 March 1976
+
+Second edition January 1982
+
+Third edition January 1985
+
+Fourth edition January 1988
+
+Fifth edition January 1991
+
+Sixth edition January 1994
+
+Seventh edition January 1997
+
+First published as PD 5500 January 2000
+
+Second edition January 2003
+
+Third edition January 2006
+
+Fourth edition January 2009
+
+Fifth edition January 2012
+
+Sixth edition January 2015
+
+Seventh edition January 2018
+
+Eighth edition January 2021
+
+Ninth (present) edition 
+
+
+*Amendments/corrigenda issued since publication*
+
+|===
+|Issue Date | Effective Date | Amendment designation | Comments
+
+| September 2021 | January 2022 | Amendment 1, tagged|  SEE FOREWORD
+| September 2022 | January 2023 | Amendment 2, tagged|  SEE FOREWORD
+|===
+____
+
+* Flex style:
++
+____
+
+*Publication history*
+
+First published as BS 5500 March 1976
+
+Second edition January 1982
+
+Third edition January 1985
+
+Fourth edition January 1988
+
+Fifth edition January 1991
+
+Sixth edition January 1994
+
+Seventh edition January 1997
+
+First published as PD 5500 January 2000
+
+Second edition January 2003
+
+Third edition January 2006
+
+Fourth edition January 2009
+
+Fifth edition January 2012
+
+Sixth edition January 2015
+
+Seventh edition January 2018
+
+Eighth edition January 2021
+
+Ninth (present) edition
+
+
+*Amendments issued since publication*
+
+|===
+| Date | Text affected
+
+| September 2021 | Amendment 1, tagged: SEE FOREWORD
+| September 2022 | Amendment 2, tagged: SEE FOREWORD
+|===
+____
+
+
+=== Change markup
+
+In at least some documents, changes to documents in corrigenda and amendments are marked up with
+arrows identifying the corrigendum or amendment. In order to replicate this markup,
+changes should be notated as empty reviewer comments of type "corrigenda", with the reviewer identifier
+as the conventional addendum or corrigendum label [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.1].
+
+[source,asciidoc]
+----
+[reviewer=A1,from=anchor1,to=anchor2,type=corrigenda]
+****
+****
+
+
+[cols=3]
+|===
+|[[anchor1]]IIB-P or Q 
+| Portland cement with 21% to 35% pozzolana 
+| CEM II/B-P or Q, CIIB-P or Q [[anchor2]]
+|===
+----
+
+Rendered as:
+
+____
+
+[cols=3]
+|===
+|`[A~1~>]` IIB-P or Q
+| Portland cement with 21% to 35% pozzolana
+| CEM II/B-P or Q, CIIB-P or Q `[<A~1~]`
+|===
+____
+
+=== Forewords
+
+Forewords in BSI typically consist of multiple subclauses, which are not numbered. These subclauses do
+not need to have types allocated to them, as they are not at this time processed any differently.
+
+The following is a representative foreword with subclauses:
+
+[source,asciidoctor]
+----
+== Foreword
+
+=== Publishing information
+
+=== Supersession
+
+=== Relationship with other publications
+
+=== Information about this document
+
+=== Hazard warnings
+
+=== Use of this document
+
+=== Presentational conventions
+
+=== Contractual and legal considerations
+
+// Not a clause heading!
+*Compliance with a British Standard cannot confer immunity from legal obligations.*
+----
+
+=== Sections
+
+Sections are signalled through floating titles with a "section" option. The "Section _n_" heading of the title
+is prefixed automatically; if it is missing, the title is left blank.
+
+[source,asciidoc]
+----
+[discrete%section]
+== {blank}
+
+== Clause
+
+[discrete%section]
+== Added Considerations
+----
+
+rendered as
+
+____
+*Section 1*
+
+*Clause 1*
+
+*Section 2. Added Considerations*
+____
+
+==== Bibliography
+
+The BSI predefined text for bibliographies ("For dated references, only the edition cited applies..." &c.) is
+inserted by default. To prevent this, insert a blank boilerplate note:
+
+[source,asciidoc]
+-----
+== Bibliography
+[bibliography]
+=== Standards publications
+[NOTE,type=boilerplate]
+--
+--
+==== {blank}
+-----
+
+=== Term sources
+
+Term sources can be not only identical relative to their original; they can also be adapted, quoted,
+or modified.  These are indicated as follows:
+
+[source,asciidoc]
+----
+[.source%adapted]
+<<reference>>
+----
+
+[source,asciidoc]
+----
+[.source%quoted]
+<<reference>>
+----
+
+[source,asciidoc]
+----
+[.source%modified]
+<<reference>>
+----
+
+=== Colophon sections
+
+Expert commentaries are expected to include colophon sections: Author, technical reviewers, disclaimers:
+
+[source,asciidoc]
+----
+[.colophon,type="authors"]
+== Author
+
+Eamonn Hoxey ...
+
+[.colophon,type="reviewers"]
+== Reviewers
+
+This commentary was peer-reviewed by ....
+
+[.colophon,type="disclaimer"]
+== Disclaimer
+
+This commentary is commissioned text from expert authorities...
+----
+
+== Blocks
+
+=== Commentaries
+
+Commentaries are entered as notes of type `commentary`,
+with an optional `target` attribute,
+giving the anchor of the block the commentary is referencing. If no target
+is given, the commentary is assumed to be about the subclause containing it.
+
+[source,asciidoc]
+-----
+[[reag]]
+=== Reagents
+
+[NOTE,type=commentary,target=reag]
+This is a commentary on the reagents
+
+[[table1]]
+.Reagents in use
+|===
+| A | B
+|===
+-----
+
+____
+*7.6 Reagents*
+
+COMMENTARY ON CLAUSE 7.6
+This is a commentary on the reagents
+
+|===
+| A | B
+|===
+_Table 1: Reagents in use_
+____
+
+[source,asciidoc]
+-----
+[[reag]]
+=== Reagents
+
+[NOTE,type=commentary]
+This is a commentary on the reagents
+
+[[table1]]
+.Reagents in use
+|===
+| A | B
+|===
+-----
+
+____
+*7.6 Reagents*
+
+COMMENTARY ON CLAUSE 7.6
+This is a commentary on the reagents
+
+|===
+| A | B
+|===
+_Table 1: Reagents in use_
+____
+
+
+[source,asciidoc]
+-----
+=== Reagents
+
+[NOTE,type=commentary,target=table1]
+This is a commentary on the table
+
+[[table1]]
+.Reagents in use
+|===
+| A | B
+|===
+-----
+
+____
+*7.6 Reagents*
+
+COMMENTARY ON TABLE 1
+This is a commentary on the table
+
+|===
+| A | B
+|===
+_Table 1: Reagents in use_
+____
+
+=== Foreword notes
+
+BSI requires certain templated language to be incorporated into the foreword if applicable.
+Of these, the paragraphs relating to _Product certification/inspection/testing_,
+_Assessed capability_ and _Test laboratory accreditation_ should be entered as notes,
+without their labels, and with the right type: `product-certification, `assessed-capability`,
+`test-lab-accreditation`.
+
+[source,asciidoc]
+-----
+== Foreword
+
+...
+
+[NOTE,type=assessed-capability]
+====
+Users of this part of BS 1234 are advised to consider
+the desirability of quality system assessment and registration against the appropriate
+standard in the BS EN ISO 9000 series by an accredited third-party certification body. 
+====
+-----
+
+____
+*Assessed capability.* Users of this part of BS 1234 are advised to consider
+the desirability of quality system assessment and registration against the appropriate
+standard in the BS EN ISO 9000 series by an accredited third-party certification body.
+____
+
+=== Lists
+
+Ordered lists are by default numbered according to BSI 0.2 Clause 23: rotating between
+alphabetic, then arabic, then roman, both for multiple ordered lists at the same level,
+and for levels of nesting within ordered lists.
+
+The styling can be overridden using attributes as is normal in Asciidoctor, e.g.
+`[loweralpha]`, but in that case Metanorma will issue a warning.
+
+Ordered lists in BSI support the `start` attribute, to restart numbering; the value
+of start is always numeric, regardless of how the list numbering is rendered.
+
+=== Figures
+
+Figures can optionally have a `width` attribute, with legal values `full-page-width`, `narrow`,
+and `text-width` (default).
+
+[source,asciidoc]
+----
+[width=narrow]
+image::abc.png[]
+----
+
+[source,asciidoc]
+----
+[.figure,width=narrow]
+====
+image::abc.png[]
+====
+----
+
+=== Tables
+
+Tables can optionally have a `width` attribute, with legal values `full-page-width`, 
+and `text-width` (default). 
+
+[source,asciidoc]
+----
+[width=full-page-width]
+|===
+|A |B
+
+|C |D
+|===
+----
+
+Tables can optionally have a second header row consisting of units. Any such header cells
+should be marked up with `span:units[]`, to alert Metanorma not to render them in boldface:
+
+[source,asciidoc]
+----
+[headerrows=2]
+|===
+|Type |Linear density    |Inside diameter
+|     |span:units[kg/mm]  |span:units[mm]
+
+|Bone | 47 | 3.4
+|Tissue | 12 | 5.9
+|===
+
+[headerrows=2]
+|===
+3+>| span:units[Dimensions in millimeters]
+|Type | Linear density | Inside diameter
+
+|Bone | 47 | 3.4
+|Tissue | 12 | 5.9
+|===
+----
+
+Tables can have a horizontal rule drawn under a number of specified rows, through the `border-under-row`
+attribute: this gives a comma-delimited list of row numbers, under which a thin border should be drawn.
+Row counting starts with the first line of the header, as row #0:
+
+[source,asciidoc]
+----
+[border-under-row="0,2",headerrows=2]
+|===
+|Type |Linear density    |Inside diameter
+|     |span:units[kg/mm]  |span:units[mm]
+   
+|Bone | 47 | 3.4
+|Tissue | 12 | 5.9
+|===
+----
+
+renders as:
+
+....
+=========================================
+Type    Linear density    Inside diameter
+-----------------------------------------
+        kg/mm             mm
+
+Bone    47                3.4
+-----------------------------------------
+Tissue  12                5.9 
+=========================================
+....
+
+Tables can contain a paragraph describing the provisions, although that is not preferred. This
+is done by creating a cell spanning across all columns:
+
+[source,asciidoc]
+----
+|===
+|Type  |Length  |Inside diameter
+
+|A     |l_1     |d_1
+|B     |l_1     |d_2
+3+| A paragraph containing a provision of the standard.
+|===
+----
+

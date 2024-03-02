@@ -93,14 +93,42 @@ renders:
 image::/assets/author/topics/document-format/text/fig-underline.png[Illustration of underlined text in Metanorma]
 ====
 
+=== Ruby
 
+Ruby annotations in East Asian text are provided [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.5]
+using the `ruby:{annotation}[{base text}]` macro, with optional paramters
+`lang=` for language of annotation, `script=` for script of annotation, and `type=` for the type of annotation
+(`pronunciation` or `annotation`, with `pronunciation` as the default value):
+
+[source,asciidoc]
+----
+ruby:とうきょう[東京]
+ruby:とうきょう[lang=ja,script=Hira,type=pronunciation,東京]
+ruby:Tōkyō[type=pronunciation,script=Latn,東京]
+ruby:ライバル[type=annotation,親友]
+ruby:とう[東] ruby:きょう[京]
+ruby:Tō[script=Latn,東]ruby:kyō[script=Latn,京]
+----
+
+Metanorma supports "double-sided" Ruby annotations, with annotations both above and below characters; these are marked up as nested
+Ruby annotation macros, with the deeper nested annotation assumed to be the annotation below the characters.
+
+[source,asciidoc]
+----
+ruby:とう[ruby:tou[東\]] ruby:なん[ruby:nan[南\]] の方角
+ruby:たつみ[ruby:とう[東\]{blank}ruby:なん[南\]]
+ruby:プロテゴ[ruby:まも[護\]{blank}れ]!
+ruby:プロテゴ[れ{blank}ruby:まも[護\]]!
+----
+
+As of this writing, double-sided annotations are not supported in Word, and the nested annotations are realised as bracketed text.
+
+
+[[css]]
 === CSS declarations
 
 The `css` command is used to wrap content with a CSS declaration
-(https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/CSS_Declaration[MDN])
-[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
-
-This feature only applies to HTML output.
+(https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/CSS_Declaration[MDN]) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
 
 NOTE: CSS declarations are also used within the HTML `style` attribute.
 
@@ -128,6 +156,65 @@ Where:
 --
 ====
 
+NOTE: Any font specified in `[css font-family:...]` needs to be passed to Metanorma for processing
+by specifying it in the `:fonts:` document attribute.
+
+=== Capitalisation
+
+Capitalisation may be applied automatically in the rendering of documents, despite not being present in the source material;
+for example, titles and captions may be title-cased or put in all caps. In order to prevent a span of text automatically 
+having its case changed, use CSS styling to set its CSS text-transform property to "none" [added in https://github.com/metanorma/isodoc/releases/tag/v2.8.5]:
+
+[example]
+.Example of a word in a title not to be capitalised
+====
+[source,asciidoc]
+--
+:title: [css text-transform:none]#IoT# and content standards
+
+...
+
+=== Approaches to [css text-transform:none]#IoT#
+--
+====
+
+As shown, such styling extends to document titles as document attributes.
+
+=== Custom character sets
+
+When a https://en.wikipedia.org/wiki/Private_Use_Areas[private use codepoint]
+is used in a document, reflecting an agreement between the document author
+and the document renderer, but *not* a standard like Unicode, the custom character set that includes
+that codepoint needs to be flagged. So U+F8D0 is the Klingon letter for "a" in the
+https://www.evertype.com/standards/csur/[Conscript Unicode Registry], but the Kanji-Katakana hybrid of
+訁and コ (equivalent to 講) in the https://www.babelstone.co.uk/Fonts/PUA.html[BabelStone PUA].
+
+In order to flag such a custom interpretation of the codepoint, the interpretation can be named
+in a formatting directive, flagged as `custom-charset` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.3].
+For example:
+
+[source,asciidoc]
+----
+[custom-charset:conscript]#\\uf8d0#
+[custom-charset:babelstone]#\\uf8d0#
+----
+
+In order to be rendered, a font implementing that interpretation needs to be indicated as a processing hint
+for Metanorma. This is done with the Presentation XML metadata directive 
+`:presentation-metadata-custom-charset-font: {name of interpretation}:"{name of font}"`, as a document attribute,
+giving a comma-delimited list of charset-font pairs.  For instance:
+
+[source,asciidoc]
+----
+:presentation-metadata-custom-charset-font: conscript:"Code 2000",babelstone:"BabelStone PUA"
+:fonts: "Code 2000","BabelStone PUA"
+----
+
+As with link:/author/topics/document-format/text#css[CSS declarations],
+any font specified as a custom charset font also needs to be passed to Metanorma
+in the `:fonts:` document attribute.
+
+== Semantic elements
 
 === Identifier
 
@@ -207,6 +294,48 @@ rendering.
 
 NOTE: Only certain Metanorma flavors support enhanced rendering for
 semantically-tagged content.
+
+The semantic label is realised in Metanorma as a `class` attribute. That means
+that distinct rendering of spans can be specified by embedding 
+link:/author/topics/document-format/sections#user-css[custom CSS]
+in the Metanorma document, with CSS classes matching the span:
+
+[source,asciidoc]
+-----
+== Metanorma-Extension
+
+=== user-css
+
+[source]
+----
+.green { background-color: green}
+----
+
+....
+
+span:green[this text is highlighted as green]
+-----
+
+=== Dates
+
+The `date` command is used to introduce dates and date-times as semantic 
+elements  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.5].
+The value of the `date:[]` macro is an ISO-8601 formatted date or date-time.
+The second argument given in the macro, if present, is a 
+https://ruby-doc.org/stdlib-3.0.0/libdoc/date/rdoc/DateTime.html#method-i-strftime[`strftime` formatting description
+of the date]. (Space can be specified as `%_`.)
+Month and day names and abbreviations, if requested in the formatting string, are internationalised
+to the document language.
+
+[source,asciidoctor]
+----
+date[2012-02-02]
+date[2012-02-02, %F]
+date[2012-02-02, %A %d %B] # Thursday 2 February
+date[2012-02-02T21:04:05, %F%_%l%_%p]
+----
+
+== Other
 
 
 === Nesting of styles
@@ -291,6 +420,19 @@ This will render the following links depending on the output format:
 * in HTML, `../parent.html` and `../child.html`
 * in PDF, `../parent.pdf` and `../child.pdf`
 ====
+
+=== Hyperlink validation
+
+Hyperlinks are validated and normalised 
+in Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.5.2].
+Hyperlinks are treated as IRIs (internationalised resource identifiers -- i.e. non-ASCII
+Unicode characters are allowed.)
+
+As with Asciidoctor, http(s) links are assumed by default to be intended as hyperlinks,
+and are marked up and rendered as such. Example hyperlinks are often invalid (e.g.
+`http://{domain}`), and Metanorma execution will be aborted if they are found, since they
+cannot be rendered as meaningful hyperlinks. Such links should be escaped by prefixing them
+with a backslash, which will result in them being treated as plain text (e.g. `\http://{domain}`.)
 
 
 === Numeric ranges
@@ -491,6 +633,21 @@ immediately previous one.
 --
 ====
 
+== Column breaks
+
+Some Metanorma flavours apply column formatting to document texts. As of this writing,
+this applies to BSI in PDF. For such texts, it can be useful to specify a column break
+to be observed in rendering, rather than let the end of the column by determined automatically.
+To that end, Metanorma supports a column break directive [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.2].
+This directive needs to appear on a separate paragraph on its own:
+
+[source,asciidoc]
+--
+
+columnbreak::[]
+
+--
+
 
 == Block quotes
 
@@ -540,7 +697,7 @@ image::/assets/author/topics/document-format/text/fig-block-quote.png[Illustrati
 
 === Folding notes
 
-Notes that are not at the end of a clause are folded into the preceding block,
+Notes are folded into the preceding block,
 if that block is not delimited (so that the user could not choose to include or exclude a note).
 That is, notes are folded into a preceding list, formula, figure, or table.
 
@@ -630,9 +787,6 @@ Bibliographic note
 
 === General
 
-Admonitions ("`NOTE`", "`IMPORTANT`", "`WARNING`", "`CAUTION`" etc.)
-are typically inserted into the main content of a document providing
-guidance or request readers to exercise caution.
 
 [source,asciidoc]
 ----
@@ -661,6 +815,32 @@ This notice must not be ignored.
 ====
 ----
 
+=== Types
+
+All five built-in Asciidoctor admonition types are recognised by Metanorma:
+
+* `[NOTE]` (which is treated as a Metanorma Note)
+* `[TIP]`
+* `[IMPORTANT]`
+* `[CAUTION]`
+* `[WARNING]`
+
+In addition, the following types are recognised by specifying `[type=...]` as
+a block attribute on one of the latter four built-in admonition types in block mode (other than NOTE):
+
+* `statement`: typographically separate statements in mathematics, such as propositions, proofs, or theorems.
+* `editorial`: annotation by document editors, intended for all readers of the document and not just its authors.
+* `box`: box element, intended as standalone sidebar which can be referenced from within the document.
+
+[source,asciidoc]
+----
+[TIP,type=box]
+====
+This is a box
+====
+----
+
+Other types can also be entered.
 
 === Whole document admonitions
 
@@ -944,6 +1124,39 @@ The following syntax will be processed as generating equal width columns.
 NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to
 `[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.
 
+For long tables that need to continue onto the next page in the DOC or PDF rendering of a document,
+Metanorma, by default, will automatically repeat the header after every page break.
+To suppress this behavior, you can apply the `noheader` value to the `options` attribute
+using its formal (`options=noheader`) or shorthand (`%noheader`) syntax.
+There is a caveat that this option will also deactivate the implicit assignment of the
+header to the first row of the table
+(see link:https://docs.asciidoctor.org/asciidoc/latest/tables/add-header-row/#implicitly-assign-header-to-the-first-row[Implicitly assign header to the first row]).
+Therefore, you will need to apply the header tag (`h|`) to every cell of the first
+row to define it as the header.
+
+=== Table sources
+
+A table can incorporate an indication of its source,
+which in Metanorma is expected to be a bibliographical reference, just as with
+term sources [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2].
+Any such sources need to appear after the table, and before any notes which will also be
+included in the table.
+
+[source,asciidoc]
+--
+|===
+| Head | Head
+
+| Row  | Row
+|===
+
+[.source]
+<<iso1212>>, reformatted
+
+NOTE: Note 1
+
+NOTE: Note 2
+--
 
 == Mathematical expressions
 
@@ -1015,6 +1228,22 @@ f -= lambda x (a * x + b)
 WARNING: Some math expressions are NOT supported by AsciiMath. In that case it
 is necessary to use LaTeX math or MathML input.
 
+[WARNING]
+.Encoding brackets inside stem:[]
+====
+When we encode inline math expressions that contain brackets we have have to
+make sure of two things:
+
+. The closing bracket must be escaped, `\]`.
+
+. If the opening bracket is the first character of the expression, there should be
+a white space between `stem:[` and the opening bracket; i.e. `stem:[ [...`.
+Otherwise, the engine may interpret the double-opening brackets `[[`  as the
+beginning of an anchor definition.
+
+As an example, suppose we want to encode this inline expression: stem:[[x_n,y_n\]]. +
+The correct encoding to avoid misinterpretations would be: `\stem:[ [x_n,y_n\]]`
+====
 
 === Using LaTeX math
 
@@ -1224,6 +1453,31 @@ stem:[m_S]:: is the mass, in grams, of the test sample.
 
 == Figures
 
+=== Blocks
+
+An image block in isolation is treated as a figure:
+
+[source,asciidoc]
+--
+.Figure title
+image::figure-path.png[]
+--
+
+A more complex figure can be marked up as an example block, with the `[figure]` style attribute:
+
+[source,asciidoc]
+--
+[figure]
+.Figure title
+====
+image::figure-path.png[]
+
+This is some random explanatory text
+
+NOTE: And this is a note
+====
+--
+
 === Key
 
 Like formulae, figures can be followed by a definition list for the variables used in the figure.
@@ -1397,6 +1651,9 @@ image::logo.jpg[]
 --
 ====
 
+Image sizes can also be specified with percentages of the original width,
+e.g. `width='50%'` [added in https://github.com/metanorma/isodoc/releases/tag/v2.8.0].
+
 NOTE: Treatment of image resizing may slightly differ across output formats.
 
 
@@ -1460,7 +1717,7 @@ For accessibility, preformatted blocks can be provided with an `alt` text
 attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
 
 [sources,asciidoc]
---
+----
 [alt=ASCII art of a dog]
 ....
      ___^_
@@ -1471,7 +1728,7 @@ attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/
  /     ___     0 |
 /      /  \___ _/
 ....
---
+----
 
 === Figure classes
 
@@ -1487,6 +1744,23 @@ through the `class` attribute [added in https://github.com/metanorma/metanorma-s
 image::logo.jpg[]
 --
 
+=== Figure sources
+
+When a figure is marked up as a block, it can incorporate an indication of its source,
+which in Metanorma is expected to be a bibliographical reference, just as with
+term sources [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2].
+
+[source,asciidoc]
+--
+[figure]
+.Rice husk separation
+====
+image::logo.jpg[]
+
+[.source]
+<<iso1212>>, reformatted
+====
+--
 
 == Passthrough to Metanorma XML and target formats
 
@@ -1600,7 +1874,11 @@ pass-format:FORMAT[...]
 
 Where:
 
-* `FORMAT` is a comma-delimited list of target formats.
+* `FORMAT` is a comma-delimited list of target formats. The formats known to Metanorma are:
+`html`, `doc`, `pdf`, `sts` (STS XML), `ieee` (IEEE XML), `rfc` (RFC XML v3), `txt`, `html_alt` (for ISO),
+`isosts` (ISO STS XML)
+* Metanorma will also accept the value `all` 
+(all possible formats)  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.3].
 
 [example]
 .Example of specifying passthrough for selected target formats
@@ -1611,6 +1889,8 @@ pass-format:rfc[<u format="num-lit">ᏚᎢᎵᎬᎢᎬᏒ</u>]
 --
 ====
 
+NOTE: Text that is marked up as pass-format is not subject to substitutions such as smart quotes.
+It can be used to keep straight quotes in a document that otherwise uses smart quotes.
 
 == Source code
 
@@ -1651,35 +1931,21 @@ It is possible to specify the computer language used in the `[source]` block
 to enable source code highlighting (syntax highlighting) for supported
 languages.
 
-Metanorma integrates the http://coderay.rubychan.de[CodeRay syntax highlighter]
-which supports the following list of languages represented by codes:
+Metanorma integrates the 
+https://github.com/rouge-ruby/rouge[Rouge syntax highlighter]
+which applies to all of HTML, DOC, and PDF output [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.2].
+(Before that date, it used the client-side https://github.com/googlearchive/code-prettify[Google Code Prettify],
+which only applied to HTML output.)
 
-* `c`
-* `clojure`
-* `css`
-* `delphi`
-* `diff`
-* `erb`
-* `go`
-* `groovy`
-* `haml`
-* `html`
-* `java`
-* `java_script`
-* `json`
-* `lua`
-* `php`
-* `python`
-* `raydebug`
-* `ruby`
-* `sass`
-* `sql`
-* `taskpaper`
-* `xml`
-* `yaml`
+Syntax highlighting is enabled by default; it is turned off through the document attribute 
+`:source-highlighter: false` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.2].
 
-NOTE: The full list of supported file extensions is provided by https://github.com/rubychan/coderay/blob/c25e8ef53cef6e72b98547139a6a27bdd4f1aaf3/lib/coderay/helpers/file_type.rb#L79-L131[CodeRay]).
+The full list of languages supported is given in https://rouge-ruby.github.io/docs/file.Languages.html[Rouge Languages],
+with the language names that Rouge recognises; e.g. _Literate CoffeeScript_ is specified as `literate_coffeescript`.
 
+Line numbering can optionally be specified for a source code snippet through the `%linenums` option
+(i.e. by entering `[source%linenums,...]` instead of just `[source,...]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.2]. It can be enabled by default for code snippets through the document attribute `source-linenums-option: true`.
+Line numbering requires syntax highlighting to be enabled.
 
 [source,asciidoc]
 --
@@ -1690,11 +1956,11 @@ Rendered in monospace with syntax highlighting
 --
 
 [example]
-.Example of rendering source code with language specification and syntax highlighting
+.Example of rendering source code with language specification, line numbering, and syntax highlighting
 ====
 [source,asciidoc]
 --
-[source,ruby]
+[source%linenums,ruby]
 ----
 class MyIdentifier
   def format(string)
@@ -1855,6 +2121,21 @@ of `image1.gif`; that instructs any downstream processing that extracts images
 out of the file (such as `metanorma -e`) to extract this image to the file `image1.gif`,
 instead of using an automatically generated filename.
 
+== Columns
+
+Metanorma has limited support for rendering text in multiple columns. (As of this writing,
+it is limited to BSI, and PDF output only.) Where text is rendered in multiple columns,
+it is possible to override the rendering of individual blocks, with a `columns` attribute,
+setting the count of columns that they should be rendered with instead [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.0]:
+
+[source,asciidoc]
+----
+[columns=1]
+____
+This blockquote spans all columns of the text
+____
+----
+
 == Auto-numbering
 
 === General
@@ -1942,7 +2223,7 @@ E (3)
 ____
 ====
 
-
+// tag::unnumbered[]
 === Unnumbered elements
 
 Sometimes a document element needs to be excluded from auto-numbering.
@@ -2048,6 +2329,21 @@ stem:[forall v_{i}] *bounce* stem:[v_{i}] off the wall
 --
 ====
 
+Numbering can be suppressed for all instances of a Metanorma XML block type
+throughout a document, through the document attribute `:block-unnumbered:`,
+which takes as its argument a comma-delimited list of Metanorma XML block 
+names [added in https://github.com/metanorma/isodoc/releases/tag/v2.4.6]:
+
+[source,asciidoc]
+----
+:block-unnumbered: sourcecode, figure
+----
+
+A block instance will remain numbered if it is explicitly set to
+`unnumbered=false`, or if it has a manually set anchor (recognised as not
+prefixed with an underscore --- `[[_anchor]]` will be ignored) [added in https://github.com/metanorma/isodoc/releases/tag/v2.4.9].
+
+// end::unnumbered[]
 
 === Prevention of double-numbering
 

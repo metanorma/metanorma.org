@@ -28,6 +28,11 @@ For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorm
 ----
 ====
 
+`partnumber`:: The document part number, where applicable [added in https://github.com/metanorma/isodoc/releases/tag/v1.0.12].
+`subpartnumber`:: The document subpart number, where applicable [added in https://github.com/metanorma/isodoc/releases/tag/v1.0.12].
+
+`conformance`:: Specification of the conformance of the document, where applicable (e.g. _Conformance_ `02-2021`)  [added in https://github.com/metanorma/isodoc/releases/tag/v1.0.12].
+
 `draft`:: The draft number. Use together with `:docstage: draft`. Do not include the initial "D".
 +
 .Example for IEEE SA `docstage`
@@ -137,6 +142,8 @@ Document subtype. Choices:
 `amendment`:: Document is an amendment
 `corrigendum`:: Document is an corrigendum
 `erratum`:: Document is an erratum
+`icap`:: Document is an ICAP (IEEE Conformity Assessment Program) document (applies only to `whitepaper`)
+`industry-connections-report`:: Document is an Industry Connnections Report document (applies only to `whitepaper`)
 --
 
 `trial-use`:: Document published for a limited period of time.
@@ -149,7 +156,7 @@ NOTE: Please see
 https://standards.ieee.org/about/policies/opman/sect5/[Operations Manual, 5.7 Trial-Use standards]
 for more details.
 
-`issued-date`:: The date on which the document was approved.
+`issued-date`:: The date on which the document was approved. (Applicable to drafts.)
 Like all dates in Metanorma, this must be supplied in `YYYY-MM-DD` format.
 +
 .Example for IEEE SA `issued-date`
@@ -216,14 +223,19 @@ clauses.
 Metanorma will not supply the "Word usage" subclause and will not
 generate or modify the "Participants" clause.
 
+`:program:`:: Program under which a white paper was authored [added in https://github.com/metanorma/metanorma-ieee/releases/tag/v1.1.6].
 
 == Document relationships
 
 `:merges:`:: This document incorporates the document(s) with the nominated
-identifiers (semicolon-delimited).
+identifiers (semicolon-delimited). In IEEE identifiers, indicated as _incorporated_.
 
 `:updates:`:: This document is an update of the document(s) with the nominated
-identifiers (semicolon-delimited).
+identifiers (semicolon-delimited). Applies to revisions, as well as to appendices
+and corrigenda.
+
+`:supplements:`:: This document is a supplement of the document with the nominated
+identifier [added in https://github.com/metanorma/isodoc/releases/tag/v1.0.12].
 
 
 [[document-contributors]]
@@ -306,6 +318,7 @@ An IEEE SA working group can be one of two modes
 * Individual-based: members are individual contributors
 
 `working-group`:: The working group responsible for the document.
+Include any final "Working Group" text in the group name.
 +
 .Example for IEEE SA `working-group`
 [example]
@@ -315,6 +328,8 @@ An IEEE SA working group can be one of two modes
 :working-group: Spatial Web Working Group
 ----
 ====
+
+(Rendered as: _the Spatial Web Working Group had the following membership:..._)
 
 Members of the working group are to be listed in the
 link:/author/ieee/topics/markup#participants[Participants clause].
@@ -329,6 +344,8 @@ The balloting group is composed of voting members of the working group, or the
 committee that the working group belongs to.
 
 `balloting-group`:: The Standards Association balloting group responsible for the document.
+Do not supply the final "Standards Association balloting group" text in the group name;
+that is supplied by Metanorma.
 `balloting-group-type`:: The type of the Standards Association balloting group responsible for the document,
 _individual_ or _entity_ (default: _individual_).
 
@@ -344,6 +361,49 @@ in the document preface.
 Members of the IEEE SA Standardization Board (SASB) are to be listed in the
 link:/author/ieee/topics/markup#participants[Participants clause].
 
+=== Personal authors
+
+White papers require personal authors to be specified, as follows:
+
+* `:surname:`, `:surname_2:`, `:surname_3:`: Surname of personal authors
+* `:givenname:`, `:givenname_2:`, `:givenname_3:`: Given name of personal authors
+* `:contributor-position:`, `:contributor-position_2:`, `:contributor-position_3:`: Job title of personal authors
+
+=== Sponsors
+
+The sponsoring bodies, if any, are indicated through the `:sponsor:` and `:sponsor-subdivision:`
+attributes. As with other author values, multiple instances of sponsoring organisations and their
+subdivisions are indicated as `:sponsor_2:` and `:sponsor-subdivision_2:`, `:sponsor_3:` and `:sponsor-subdivision_3:`, etc.
+
+The values of `:sponsor-subdivision_{i}:` in turn
+can be multiple (semicolon-delimited: processed via CSV, recognising quote marks),
+and they can also be hierarchical, with multiple levels of subdivision (comma-delimited,
+from larger to smaller) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3];
+the different hierarchical levels can optionally be prefixed with type and a colon.
+On the front line, if it is a sponsor, "IEEE" is prefixed to the first subdivision, rather than being rendered on a separate line.
+
+The following is an example of how two divisions of the IEEE are indicated as sponsoring the document:
+
+[source,adoc]
+----
+:sponsor: IEEE
+:sponsor-subdivision: "Power & Energy Society", Power System Communications Committee; Communications Society, Standards Committee
+----
+
+rendered as:
+
+____
+Sponsored by the +
+*Power System Communications Committee* +
+of the +
+*IEEE Power & Energy Society* +
+and the +
+*Standards Committee* +
+of the +
+*IEEE Communications Society*
+____
+
+NOTE: the quotation marks are needed to process the CSV correctly.
 
 == Visual appearance
 

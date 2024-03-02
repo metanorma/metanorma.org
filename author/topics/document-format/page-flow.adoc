@@ -1,0 +1,115 @@
+---
+layout: author-docs
+title: Page flow
+---
+= Page flow
+
+== Page breaks and orientation
+
+=== General
+
+Page breaks can be given a page orientation, which applies from that
+point forward until the next page break with a page
+orientation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.17].
+
+Page orientation only appears in paged output, such as in Word.
+
+To set content to landscape mode, the syntax is:
+
+[source,asciidoc]
+--
+[%landscape]
+<<<
+--
+
+To set content to portrait mode, the syntax is:
+
+[source,asciidoc]
+--
+[%portrait]
+<<<
+--
+
+If no orientation option is given, the text after the page break
+remains in the same orientation as that before. In Word, page breaks
+changing orientation are realised as distinct sections.
+
+In Metanorma, documents are split into three sections by default:
+
+* a cover page,
+* a preface, and
+* the main document body (including annexes and bibliography)
+* (some documents also have a colophon)
+
+The page orientation is reset at the start of the main document body to `portrait`.
+
+[example]
+.Example of switching from portrait to landscape and back to portrait in the same document
+====
+[source,asciidoc]
+--
+// Content following this directive will be shown in landscape mode
+[%landscape]
+<<<
+
+...
+
+// Content following this directive will return to portrait mode
+[%portrait]
+<<<
+
+...
+--
+====
+
+=== Avoiding page breaks
+
+The "`keep with next`" feature is useful if you want to indicate that
+a document element must belong on the same page with another element,
+on a paginated
+medium [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
+
+NOTE: "`Keep with next`" is often considered as the opposite of a forced
+"`page break`", i.e. a "`page unbreak`".
+
+Metanorma supports the following boolean attributes for the avoidance
+of page breaks:
+
+`keep-with-next`:: The block with this attribute specified will be rendered
+on the same page with the next document element.
+
+`keep-lines-together`:: The block with this attribute specified will force
+the paragraph to render all its content on the same page.
+
+The syntax is as follows:
+
+[source,asciidoc]
+--
+[keep-with-next=true]
+{Paragraph or block}
+--
+
+and
+
+[source,asciidoc]
+--
+[keep-lines-together=true]
+{Paragraph}
+--
+
+The following syntax indicates that these two paragraphs will always be
+presented on the same page, even if the textual layout allows them to be
+split into two pages.
+
+[example]
+.Example of using keep-with-next to avoid page breaks
+====
+[source,asciidoc]
+--
+[keep-with-next=true]
+This is a paragraph.
+
+This is a paragraph that will be on the same page as the
+immediately previous one.
+--
+====

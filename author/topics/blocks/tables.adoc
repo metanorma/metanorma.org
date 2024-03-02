@@ -1,0 +1,216 @@
+---
+layout: author-docs
+title: Tables
+---
+== General
+
+Tables are useful for displaying data of the same structure.
+
+Metanorma AsciiDoc tables are required to handle the full range of complexity
+of standardization documents, and is therefore significantly more
+powerful than typical AsciiDoc tables.
+
+NOTE: Typical AsciiDoc already handles tables very well for a non-XML markup language.
+
+
+== Basics
+
+tag::tutorial[]
+Metanorma AsciiDoc supports all basic table syntaxes of AsciiDoc, including:
+
+* cells spanning multiple rows and columns;
+* horizontal alignment;
+* vertical alignment [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3].
+
+Given AsciiDoc is a plain-text format, it uses specific symbols to determine
+where new table rows and columns begin.
+
+.Example of a simple AsciiDoc table
+[source,adoc]
+----
+[cols="1,1"] <1>
+.A table with a title <2>
+|=== <3>
+|Cell in column 1, header row |Cell in column 2, header row <4>
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2 <5>
+|=== <6>
+----
+<1> Optional table attributes that specifies the table structure.
+The numbers specify the relative amount of spacing between the columns.
+`cols="x,x"` indicates that there are two columns.
+<2> The table title can be assigned by beginning a line with a dot `.`. Make
+sure that there is no space between the dot and the first word of the heading.
+<3> Starting table delimiter `|===`
+<4> Header row. The line immediately after the starting delimiter is the header row.
+To add a column, add a vertical bar `|` before the text that should be in the column.
+<5> When using the `[cols]` attribute, columns in the same row can appear on different lines of AsciiDoc text.
+Otherwise, they need to all be on the same line of text, like in <4>.
+<6> Closing table delimiter `|===`
+
+end::tutorial[]
+
+TIP: For table formatting options, such as joining cells or
+setting text alignment, please refer to
+https://docs.asciidoctor.org/asciidoc/latest/tables/align-by-cell/[AsciiDoc table documentation].
+
+
+== Column widths
+
+Table columns can have their widths set [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3].
+Table column widths must be enumerated explicitly per column to generate column widths.
+
+* `[cols="a,a"]` would define two columns of equal widths.
+
+* `[cols="4,2,4"]` would define three columns. The first and last
+column's width would be four times the relative width and the middle column
+would be half as broad.
+
+[example]
+.Example of table with equal width columns
+====
+The following syntax will be processed as generating equal width columns.
+
+[source,adoc]
+----
+[cols="1,1,1"]
+----
+====
+
+NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to
+`[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.
+
+
+== Table widths
+
+The table width can be set with the `width`
+attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21].
+
+It could be either:
+
+* a percentage (e.g. `70%`); or
+* a pixel count (e.g. `500px`).
+
+NOTE: The `width` attribute value aligns with HTML CSS and HTML 4 behavior.
+
+[source,asciidoc]
+----
+[width=70%]
+|===
+| Vehicle | Passenger
+
+| Mazda 3 | Bob
+| Tesla Model Y | Alice
+
+|===
+----
+
+Will result in the table width spanning 70% of the rendered output medium.
+
+NOTE: This feature is not supported in typical AsciiDoc.
+
+== Notes and footnotes
+
+Metanorma AsciiDoc tables behave differently from typical AsciiDoc
+with notes and footnotes due to the requirements of standardization documents.
+
+Specifically:
+
+* table cell footnotes (`footnote:[...]`) are rendered inside the table;
+* notes (`NOTE: ...`) following the table are rendered inside the table footer.
+
+NOTE: Typical AsciiDoc renders table cell footnotes inside the cell,
+and notes trailing the table outside the table.
+
+
+== Multiple header rows
+
+Metanorma AsciiDoc supports the option of multiple header rows via attribute
+`headerrows` to deal with the complexity of standardization documents' tables
+requiring labels, variables, and units to lining up in the header.
+
+[source,adoc]
+----
+[headerrows=2]
+|===
+.2+|Sample 3+^| Value
+| Test A | Test B | Test C
+
+| Component 1 | Pass | Fail | Pass
+
+|===
+----
+
+This renders as:
+
+|===
+.2+h|Sample 3+^h| Value
+h| Test A h| Test B h| Test C
+
+| Component 1 | Pass | Fail | Pass
+
+|===
+
+NOTE: This feature is not supported in typical AsciiDoc.
+
+
+== Accessibility metadata
+
+Metanorma AsciiDoc supports assigning accessibility metadata for tables,
+including alt text and summary text, via table attributes.
+
+`alt`:: alternate text that describes the table;
+`summary`:: summary text that describes a summary of the content provided by the table.
+
+Both are rendered as a summary of the table for accessibility.
+
+NOTE: Alternate text is shown when the table can not be displayed (HTML only).
+
+.Example of assigning alt text and summary text
+====
+[source,asciidoc]
+----
+[alt=Table of tested components,summary=Table of components being tested in Tests A to C]
+.2+|Sample 3+^| Value
+| Test A | Test B | Test C
+
+| Component 1 | Pass | Fail | Pass
+
+|===
+----
+====
+
+NOTE: This feature is not supported in typical AsciiDoc.
+
+
+
+== Complex table examples
+
+[[table-example-1]]
+=== Example table 1
+
+.Example of a more complex table
+[source,adoc]
+----
+[headerrows=2,alt=Table of maximum mass fraction of defects in husked rice,summary=Table enumerating the permissible mass fraction of defects in husked and various classes of milled rice,width=70%]
+|===
+.2+|Defect 4+^| Maximum permissible mass fraction of defects in husked rice +
+stem:[w_max]
+| in husked rice | in milled rice (non-glutinous) | in husked parboiled rice | in milled parboiled rice
+
+| Extraneous matter: organic footnote:[Organic extraneous matter includes foreign seeds, husks, bran, parts of straw, etc.] | 1,0 | 0,5 | 1,0 | 0,5
+
+|===
+----
+
+which renders:
+
+.Illustration of a table in Metanorma (DOC output). Configuration: 70% of width, two header rows, one normal row, one footnote.
+image::/assets/author/topics/document-format/text/fig-table.png[Illustration of a table in Metanorma (DOC output). Configuration: 70% of width, two header rows, one normal row, one footnote]
+
+=== Example table 2
+
+https://raw.githubusercontent.com/metanorma/mn-samples-iso/main/sources/international-standard/body/body-en.adoc[Table 1 in the Metanorma ISO Rice example document] illustrates
+a large range of table formatting options. Search for `#table1`.
+

@@ -1,0 +1,159 @@
+---
+layout: author-docs
+title: Table of contents
+---
+== Table of contents
+
+=== General
+
+A table of contents is provided at the start of a Metanorma document rendering,
+either as:
+
+* prefatory material in electronic document formats (PDF, Word); or
+* a sidebar in the HTML output.
+
+This table is typically a listing of all clauses of the document, and runs two
+levels deep.
+
+In some flavours, a separate table of contents is inserted for figures, tables,
+and recommendations.
+
+
+=== Output formats
+
+Metanorma generates a table of contents automatically for Word, HTML, and PDF
+output based on clause headings.
+
+* In Word, it takes the form of a normal Word Table of Contents. After
+generating the Word output, the page numbers are not populated. You need to
+refresh the table of contents by right-clicking on a field and choosing `Update
+Field`.
+
+* In HTML, the table of contents takes the form of a side panel.
+
+* In PDF, it takes the form of an introductory table of contents.
+
+
+=== Document attributes
+
+By default, the table of contents includes two levels of heading.
+
+More levels of heading can be set by using the document attribute `:toclevels:`.
+
+e.g. `:toclevels: 3` for three levels of heading included.
+
+The number of levels of heading to include can be set separately for HTML/PDF
+and for DOC, by using the document attributes `:htmltoclevels:` and
+`:doctoclevels:`.
+
+
+
+=== Using the `toc` command to generate a ToC
+
+A manual table of contents command has been added to
+Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.5].
+
+This is intended for a local table of contents, e.g., at the start of an
+appendix.
+
+The table of contents `toc` command is utilized as follows.
+
+[source,adoc]
+----
+toc:["xpath1:depth1","xpath2:depth2","xpath3:depth3"...]
+----
+
+Where,
+
+* `depth` is a number indicating the depth of indentation of the ToC
+entry (default value `1`)
+
+* `xpath` is the XPath of the title being indexed in the Metanorma XML.
+
+For instance, in the following command:
+
+[source,adoc]
+----
+toc:["//clause[@id = 'clause1'\]/clause/title","//clause[@id = 'clause1'\]/clause/clause/title:2"]
+----
+
+* all titles of subclauses of the clause with ID `clause1` are at the first
+  depth level of the manual table of contents (defaults to depth `1`)
+
+* all titles of sub-subclauses of the clause with ID `clause1` are at the second
+  depth level of the manual table of contents
+
+This means that the table of contents will have of the first-level clause with
+ID `clause1`, running three levels deep.
+
+
+=== Manually specifying a ToC
+
+A manual table of contents can also be provided as a clause of type
+`toc` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.7]
+without using the `toc` command.
+
+Any table of contents entries within that manual table of contents are expected
+to be provided as cross-references within unordered lists.
+
+The table of contents can contain subclauses, each with its own list of
+cross-references, and other text.
+
+[example]
+.Example of manually specifying a ToC
+======
+[source,adoc]
+----
+[type=toc]
+=== Table of contents
+
+This is a table of contents.
+
+==== First subsection
+
+* <<xref1>>
+* <<xref2,This is a modified title>>
+
+==== Second subsection
+
+* <<xref3>>
+* <<xref4>>
+----
+======
+
+=== Variant titles
+
+Clauses in Metanorma normally have only one title, and that title is used to
+identify the clause in the table of contents.
+
+However, a manually created table of contents can make use of variant titles
+instead.
+
+Variant titles [added in
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.5] are entered
+as paragraphs with a `variant-title` role attribute within a clause, as follows:
+
+[source,adoc]
+----
+=== Proper title
+
+[.variant-title,type=toc]
+This is the variant title
+
+Text of section.
+----
+
+Variant titles are not rendered in the body of the text. However, any variant
+titles of type `toc` are used instead of the title as the entry text for a
+manual table of contents.
+
+NOTE: Of course, if an explicit cross-reference text is given in a `toc` clause,
+that takes priority.
+
+Variant titles are also used to generate the automated all-of-document table of
+contents for HTML and PDF
+documents [added in https://github.com/metanorma/isodoc/releases/tag/v1.8.5].
+They are not used in Word DOC output, because tables of contents for Word
+documents are generated dynamically from the current heading.
+
+Variant titles are not currently used to generate the tables of other entities.

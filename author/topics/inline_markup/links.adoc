@@ -1,0 +1,133 @@
+---
+layout: author-docs
+title: Adding links and cross-references
+---
+tag::tutorial[]
+References are an integral part of standards. The main mechanism for references are anchors and destinations. There are four types of references:
+
+* Hyperlinks to an external source, for example a link to a website
+* Metadata references
+* Internal references to a section, image, table, etc.
+* link:author/topics/sections/entering-bib.adoc[Bibliographic entries]
+
+== Hyperlinks
+
+AsciiDoc lets you include links to external sources, and sources to files within the same project.
+
+To reference an *internal* source:
+
+. Use the https://docs.asciidoctor.org/asciidoc/latest/macros/link-macro/[link macro] to include a link to a file. The syntax looks like this: `\link:PATH[]`.
+. Add link text in square brackets after the path.
++
+.Example of an internal link
+[source, AsciiDoc]
+----
+Download the latest link:downloads/report.pdf[Report]!
+----
+end::tutorial[]
+
+*Updating file extension automatically*
+
+Links to other Metanorma documents are expected to change their suffix depending on whether they are rendered as HTML, PDF, or DOC.
+
+To update file extensions automatically, add `updatetype=true` into the square brackets.
+The link path must be https://www.w3schools.com/html/html_filepaths.asp[relative] and can not contain a file suffix.
+
+.Example of how to use the `updatetype` option
+[source,asciidoc]
+--
+link:../parent[updatetype=true]
+link:../child[This Is The Child Document,updatetype=true]
+--
+
+This will link to `../parent.html` and `../child.html` in HTML, and to
+ `../parent.pdf` and `../child.pdf` in PDF.
+
+tag::tutorial[]
+To reference an *external* source:
+
+. Paste the URL into the document.
+. Add link text in square brackets after the URL (optional) `URL[Link text]`.
++
+.Example of an external link
+[source, AsciiDoc]
+----
+http://www.iso.org/[International Organization for Standardization].
+----
+end::tutorial[]
+*Adding acessibility in URIs*
+
+To add acessibility URIs, use the `,title=...` option in the square brackets.
+The option corresponds to HTML's alt text `a@title` attribute.
+
+[example]
+====
+[source,asciidoc]
+--
+http://www.iso.org[International Organization for Standardization,title=This is a tooltip for the link]
+--
+====
+
+tag::tutorial[]
+== Metadata references
+
+Every document contains a set of metadata to describe the document. You can insert a metadata reference by putting the attribute in curly braces `{attribute}`. The reference will be replaced with the value in the rendered output.
+
+[source, AsciiDoc]
+----
+:technical-committee-number: 2
+:technical-committee: Fasteners
+:subcommittee-number: 11
+:subcommittee: Fasteners with metric external thread
+
+This document was prepared by Technical Committee ISO/TC {technical-committee-number}, _{technical-committee}_, Subcommittee SC {subcommittee-number}, _{subcommittee}_.
+----
+
+== Internal references
+
+To link to an important section, table, figure, formula, or list item in your document:
+
+. Set an anchor using double square brackets before the content you want to reference: `\[[anchor]]`.
++
+.Example for an anchor preceding an image
+[source, AsciiDoc]
+----
+[[figureC-1]]
+.Typical gelatinization curve
+image::images/rice_image2.png[Image of the gelatinization curve]
+----
++
+.Rendered image caption
+image::/assets/author/tutorials/references_img_anchor.jpg[]
+
+. To reference an anchor, type the anchor name like this `\<<anchor>>`.
++
+[source, AsciiDoc]
+----
+ <<figureC-1>> gives an example of a typical gelatinization curve.
+----
++
+.Rendered reference
+image::/assets/author/tutorials/references_img_target.jpg[]
+
+. To set an alternative text other than the anchor text, append the text inside the brackets using a comma.
++
+[source, AsciiDoc]
+----
+<<figureC-1, The diagram>> gives an example of a typical gelatinization curve.
+----
+
+// Include in Auto Numbering topic??
+=== Auto-numbering of references
+Metanorma automatically numbers and names references; because they are autonumbered, they will be renumbered automatically if you insert any new text of the same type.
+
+Since the markup will be converted into XML, the anchor must follow the https://www.w3.org/TR/xml-names11/[XML namespace conventions]. Therefore, an anchor name name must not contain:
+
+* colons
+* whitespaces
+* words starting with numbers
+
+
+If you want to learn more about the technical aspects of cross-references, read link:author/concepts/deep-dive-cross-references.adoc[Deep-dive into cross-references].
+end::tutorial[]
+

@@ -68,6 +68,10 @@ for further details.
 The identifier for the document, including the series, the document number, and any suffix,
 but excluding the bureau. For instance, `H.781`, `G.108.2`, `G.709/Y.1331`.
 
+`:td-number:`::
+Temporary Document number for the document [added in https://github.com/metanorma/metanorma-itu/releases/tag/v2.2.5].
+Used for study group meetings.
+
 `:amendment-number:`:: Number of amendment, if this is an amendment [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
 `:amendment-title:`:: Title of amendment, if this is an amendment [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
 `:corrigendum-number:`:: Number of corrigendum, if this is a corrigendum [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
@@ -293,6 +297,10 @@ supplement of [added in https://github.com/metanorma/metanorma-itu/releases/tag/
 In ITU, quotes and apostrophes default to straight.
 When this attribute is set, Metanorma will convert quotes and apostrophes to smart quotes and smart apostrophes.
 In the rest of Metanorma, if this attribute is not supplied, quotes and apostrophes default to "`smart`".
+
+`:document-schema:`::
+Used to specify the document scheme that this document aligns to [added in https://github.com/metanorma/metanorma-itu/releases/tag/v2.3.7].
+If the value `legacy` is provided, the resulting behaviour is as with the document attribute `:legacy-do-not-insert-missing-sections:`.
 
 `:legacy-do-not-insert-missing-sections:`::
 If set, do not insert the sections "`Scope`", "`References`", "`Definitions`", "`Abbreviations and acronyms`",

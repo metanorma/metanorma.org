@@ -1,0 +1,662 @@
+---
+layout: ogc-flavor
+---
+
+= Writing OGC documents using Metanorma
+
+== Document type and stage
+
+[[note_general_doc_ref_doc_attrib_ogc]]
+[NOTE]
+====
+Document attributes listed below are unique to the processing of OGC documents in Metanorma.
+
+For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author's documentation. That page describes attributes that apply to all Metanorma flavors, not just OGC.
+
+For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/topics/document-format/meta-attributes/[the corresponding topic].
+====
+
+`:abbrev:`::
+The standard abbreviation of the document, used e.g. in URIs
+
+`:doctype:`::
+*Mandatory.*
+Document type. Choices:
++
+--
+* `standard`: Standard (a document subtype is necessary, see <<ogc-docsubtype>>) (_default_)
+* `abstract-specification-topic`: Abstract Specification
+* `best-practice`: Best Practice (a document subtype is necessary, see <<ogc-docsubtype>>)
+* `change-request-supporting-document`: Change Request Supporting Document
+* `community-practice`: Community Practice
+* `community-standard`: Community Standard
+* `discussion-paper`: Discussion Paper
+* `engineering-report`: Engineering Report
+* `other`: Note, Primer, etc.
+* `policy`: Policy, Policy -- Name Type Specification
+* `reference-model`: Reference Model
+* `release-notes`: Release Notes
+* `test-suite`: Test Suite
+* `user-guide`: User Guide
+* `white-paper`: White Paper
+--
+
+[[ogc-docsubtype]]
+`:docsubtype:`:: Document subtype.
+Choices:
++
+--
+* For `doctype` set to `standard`:
+** `implementation`: Implementation (_default_)
+** `conceptual-model`: Conceptual model
+** `conceptual-model-and-encoding`: Conceptual model and encoding
+** `conceptual-model-and-implementation`: Conceptual model and implementation
+** `encoding`: Encoding
+** `extension`: Extension
+** `profile`: Profile
+** `profile-with-extension`: Profile with extension
+
+* For `doctype` set to `best-practice`:
+** `general`: General (_default_)
+** `encoding`: Encoding
+** `extension`: Extension
+** `profile`: Profile
+** `profile-with-extension`: Profile with extension
+--
+
+`:status:`::
+Document status/stage. Synonym: `:docstage:`.
+Choices:
++
+--
+* `swg-draft`: SWG Draft. This is the draft created after the TC approval and PC approval votes.
+* `oab-review`: OAB Review. This is the intended draft for the "`OAB + OGC-NA Review`".
+* `public-rfc`: Public RFC. This is the draft for the (30 days) public comment period.
+* `tc-vote`: TC Vote. This is the intended draft for the TC adoption and PC adoption votes.
+* `approved`: Published. This is the document intended to be published, after comments are handled with the TC chair (after `tc-vote`). `published` is allowed as a synonym of `approved`  [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.5].
+* `deprecated`: Deprecated. This document has been deprecated.
+* `retired`: Retired. This document has been retired and no longer considered normative.
+--
+
+`:edition:`::
+The version number of the document. Dot-delimited, consists of a major version number, a minor version number,
+and an optional patch version number; e.g. `2.3.1`: major version 2, minor version 3, patch version 1.
+
+`:keywords:`::
+Comma-delimited list of the keywords associated with the document.
+
+[NOTE]
+--
+Abbreviations are sometimes used to designate that a document has a
+certain document type, document subtype and document stage.
+This is a mapping from legacy OGC document values to the current normalized
+list:
+
+"`AS`" Abstract Specification:: Now `:doctype: abstract-specification-topic`.
+"`BP`" Best Practice:: Now `:doctype: best-practice`.
+"`CAN`" Candidate Standard:: Now `:doctype: standard` and `:docstage: swg-draft`.
+"`CC`" Conformance Class:: Not a standalone document, but a part of a document with `:doctype: standard`. No longer exists.
+"`CR`" Change Request:: Now `:doctype: change-request-supporting-document`; the actual Change Request is a database entry.
+"`CS`" Community Standard:: Now `:doctype: community-standard`.
+"`CP`" Community Practice:: Now `:doctype: community-practice`.
+"`DP`" Discussion Paper:: Now `:doctype: discussion-paper`.
+"`DP-Draft`" Draft Discussion Paper:: Now `:doctype: discussion-paper` with `:docstage: swg-draft`.
+"`IPR`" Interoperability Program Report -- Engineering Specification:: Now `:doctype: engineering-report`.
+"`IS`" Implementation Standard:: Now `:doctype: standard`, `:docsubtype: implementation`.
+"`ISC`" Implementation Standard Corrigendum:: Now `:doctype: standard`, `:docsubtype: implementation` (TBD to indicate `corrigendum`).
+"`ISx`" Extension Package Standard:: Now `:doctype: standard`, `:docsubtype: extension`.
+"`Notes`" Notes:: Now `:doctype: other`, there is no specific type for "`Notes`".
+"`ORM`" OGC Reference Model:: Now `:doctype: reference-model`.
+"`PC`" Profile Corrigendum:: Now `:doctype: standard`, `:docsubtype: profile` (TBD to indicate `corrigendum`).
+"`PER`" Public Engineering Report:: Now `:doctype: engineering-report`.
+"`POL`" Policy:: Now `:doctype: policy`.
+"`POL-NTS`" Policy -- Name Type Specification:: Now `:doctype: engineering-report`, there is no specific indication for "`NTS`".
+"`Primer`" Primer:: Now `:doctype: other`, there is no specific type for "`Primer`".
+"`Profile`" Profile:: Now `:doctype: standard`, `:docsubtype: profile`.
+"`RFC`" Request for Comment:: Now `:doctype: standard` and `:docstage: public-rfc`.
+"`Retired`" Retired document:: This is a document stage indicated `:docstage: retired`.
+"`SAP`" Standard Application Profile:: Now `:doctype: standard`, `:docsubtype: profile`.
+"`TS`":: Test Suite (TBD)
+"`WhitePaper`" Whitepaper:: Now `:doctype: white-paper`.
+--
+
+=== Author info
+
+`:committee:`::
+*Mandatory.*
+Name of relevant committee producing the document. Use one of:
++
+--
+* `technical`: Technical Committee
+* `planning`: Planning Committee
+* `strategic-member-advisory`: Strategic Member Advisory Committee
+--
+
+`:subcommittee-type:`::
+The type of the relevant subcommittee producing the document.
+
+`:subcommittee-number:`::
+The number of the relevant subcommittee producing the document.
+
+`:workingGroup:`::
+*Mandatory.*
+Name of relevant working group producing the document.
+
+`:workgroup-type:`::
+Type of the relevant workgroup producing the document.
+
+`:workgroup-number:`::
+Number of the relevant workgroup producing the document.
+
+`:submitting-organizations:`::
+Semicolon-delimited list of the submitting organizations
+for this document. The organization names themselves may contain commas.
++
+[example]
+--
+EXAMPLE: _University of Calgary, Canada; National Central University, Taiwan_
+--
+
+`:editor:`::
+Same as `link:/author/ref/document-attributes/#fullname[:fullname:]`
+alongside `link:/author/ref/document-attributes/#role[:role:]` specified as `editor`.
+
+
+=== URIs and IDs
+
+`:external-id:`::
+External identifier referring to this document. If not supplied, a default value is
+generated: `http://www.opengis.net/doc/{abbrevation of doctype}/{abbrev}/{version}`.
+(Version is omitted if not provided. If `:abbrev:` and `:doctype:` are not provided,
+the default value is not generated.
+
+`:referenceURLID:`::
+Identifier embedded into a document type-specific external URL.
+
+`:previous-uri:`::
+URI of previous version of the document.
+
+`:docnumber:`::
+The document number assigned to the OGC document (without the "`OGC`" prefix). +
++
+The number is formulated following the following rules:
++
+* The final two digits of the year are used at the start of the number (`YY`).
+* A three digit number is assigned sequentially for each document in the year (`NNN`).
+* The first edition of a document has the document number `YY-NNN`; for example, `00-027` is OGC document 027 first published in 2000.
+* Minor editorial changes and corrigenda do not result in a change to the document number
+* The `YY-NNN` identifier for a document (the document number root) is maintained if the document undergoes content changes (revisions). These revisions are numbered sequentially, and are indicated with `r` followed by the revision number. So `05-020r27` is revision 27 of OGC document 020 first published in 2005. (Revision 27 may appear years later than 2005.)
+* A new major version of a document receives a new document number, including likely a new year.
+
+=== Mapping to OGC legacy AsciiDoc
+
+Metanorma-OGC permits legacy OGC AsciiDoc template attributes,
+and are treated as synonyms of the corresponding Metanorma attributes:
+
+|===
+| OGC Metanorma AsciiDoc                    | OGC legacy AsciiDoc
+
+| `:copyright-year:`                        | `:copyrightYear`
+| `:workgroup:`                             | `:workingGroup:`
+| `:published-date:`                        | `:publicationDate:`
+| `:issued-date:`                           | `:approvalDate:`
+| `:received-date:`                         | `:submissionDate:`
+| `:docnumber:`                             | `:docReference:`
+| `:fullname:`, with `:role:` = `editor`    | `:editor:`
+| `:edition:`                               | `:version:`
+
+|===
+
+== Markup
+
+=== General
+
+The rendering of OGC documents has changed over the years. Metanorma formats OGC documents
+following current practice:
+
+* All body text is left justified, with no exceptions allowed.
+* Where section obligations are named (i.e. in annex names), they are only given as
+"normative" or "informative"; the alternate text of "non-normative" is disallowed.
+* Ordered lists follow ISO style numbering, i.e. "a), b), c) ...", with no exceptions allowed.
+
+=== Inline formatting
+
+Metanorma-OGC supports highlighting of text [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.16]:
+
+[source,asciidoc]
+----
+This is #text to be highlighted#.
+----
+
+=== Sections
+
+The Normative References section may be named just "`References`", reflecting OGC practice.
+
+=== Preliminary elements
+
+
+==== General
+
+The following clauses are preliminary elements, and are moved into the frontispiece
+of the document (in Metanorma, the document preface).
+
+The OGC DocTeam has specified that all these elements are *MANDATORY* in OGC documents (in this order):
+
+* Abstract
+* Keywords
+* Preface
+* Security Considerations [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.5]
+* Submitting Organizations
+* Submitters
+
+The Foreword and Introduction are not recognised as part of the document preface
+by default [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.2].
+
+[NOTE]
+--
+Additional preliminary sections are *allowed* but not encouraged.
+There are two mechanisms for adding additional content as preliminary elements:
+
+. Add their content in the <<ogc-full-preface,Full Preface>> as additional sub-sections
+. Add them as <<ogc-additional-prelim,additional preliminary elements>>
+--
+
+==== Abstract
+
+The abstract is recognized as the first clause with an `abstract` style attribute:
+
+[source,asciidoc]
+----
+[abstract]
+== Abstract
+
+This standard describes a conceptual and logical model for the exchange
+of groundwater data, as well as a GML/XML encoding with examples.
+----
+
+==== Preface
+
+===== General
+
+The "`Preface`" can be specified in two ways, depending on whether
+it is a "`simple clause`", or a "`full clause`".
+
+===== Simple preface clause
+
+If the "`Preface`" does not contain subclauses, it is considered
+a simple preface clause.
+
+A simple preface clause is entered as text after the `.Preface` label,
+placed between the AsciiDoc document attributes and the first AsciiDoc
+section title. It should not be given a section title of its own.
+
+[source,asciidoc]
+----
+:received-date: 2019-01-01
+
+.Preface
+
+Your preface text...
+
+More preface text...
+----
+
+[[ogc-full-preface]]
+===== Full preface clause
+
+If the "`Preface`" contains subclauses, it needs to be encoded as
+a full preface clause.
+
+A full preface clause is recognized as a full Metanorma AsciiDoc section, with the
+title "`Preface`". Simple preface content can also be encoded this way.
+\[added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.1]
+
+[source,asciidoc]
+----
+:received-date: 2019-01-01
+
+== Preface
+
+Your preface text...
+
+=== Preface sub-clause
+
+More preface text...
+----
+
+
+==== Keywords
+
+"`Keywords`" are entered as document attributes as `:keywords:`, with the
+value as a comma-delimited list.
+
+Prefatory text is generated automatically.
+
+EXAMPLE:
+
+[source,adoc]
+----
+:keywords: ogcdoc, OGC document, groundwater, hydrogeology, GWML2
+----
+
+==== Security Considerations
+
+The Security Considerations section is entered as a clause with the title "`Security Considerations`"
+
+EXAMPLE:
+
+[source,adoc]
+----
+== Security Considerations
+
+The following security considerations apply...
+----
+
+If the Security Considerations are not provided in the source document, the clause is inserted with the text
+"`No security considerations have been made for this standard.`"
+
+==== Submitting Organizations
+
+"`Submitting Organizations`" are entered using the `:submitting-organizations:` document attribute.
+The values are entered using a semi-colon delimited list.
+
+Prefatory text is generated automatically.
+
+EXAMPLE:
+
+[source,adoc]
+----
+:submitting-organizations: Geological Survey of Canada (GSC), Canada; U.S. Geological Survey (USGS), United States of America
+----
+
+
+==== Submitters
+
+"`Submitters`" are entered using a table, contained in a section with the title `Submitters`.
+
+EXAMPLE:
+
+[source,adoc]
+----
+== Submitters
+
+|===
+|Name |Affiliation |OGC member
+
+|Steve Liang | University of Calgary, Canada / SensorUp Inc. | Yes
+|===
+----
+
+EXAMPLE:
+
+[source,adoc]
+----
+== Submitters
+
+All questions regarding this submission should be directed to the editor or the submitters:
+
+|===
+|Name |Affiliation
+
+|Boyan Brodaric |GSC
+|Alexander Kmoch |U Salzburg
+|===
+----
+
+
+[[ogc-additional-prelim]]
+==== Additional preliminary elements
+
+The OGC DocTeam has specified that additional preliminary elements are *allowed*
+but not *encouraged*. This is useful for document backwards-compatibility and
+cross-published standards at other SDOs.
+
+Additional preliminary elements should be encoded under the `[.preface]` element,
+and they will be rendered *after* the five mandatory preliminary elements.
+
+Functionality implemented in https://github.com/metanorma/metanorma-ogc/issues/83.
+
+EXAMPLE:
+
+[source,adoc]
+----
+.Preface
+
+...
+
+[.preface]
+== Intended audience
+
+...
+
+----
+
+
+=== Examples
+
+Unlike the normal case in Metanorma, examples can have captions:
+
+[source,asciidoc]
+----
+[example]
+.Example caption
+====
+Text
+====
+----
+
+=== Recommendations, requirements, and permissions
+
+In this clause we will use the term "`requirement`" to refer to the
+generic class of recommendations, requirements and permissions.
+
+NOTE: This subsection supplements
+link:/author/topics/document-format/requirements[Requirement, Recommendation, and Permission blocks]
+in general Metanorma documentation.
+
+==== Requirement verifications (tests)
+
+A requirement with `type=verification` is cross-referenced and captioned as
+a "`{Requirement} Test`". It is rendered differently from the
+actual requirement itself.
+
+NOTE: Verifications for Recommendations will be captioned as
+Recommendation Tests, similarly for Requirement Tests and
+Permission Tests.
+
+Requirement verifications are excluded from the
+"`Table of Requirements`" in Word output
+[added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.10].
+
+A requirement with `type=abstracttest` is cross-referenced and captioned as
+an "Abstract Test", and is otherwise rendered identically to a
+Requirement Verification [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.4].
+
+==== Requirement classes
+
+A requirement with `type=class` is cross-referenced and captioned as
+a "`{Requirement} Class`", and is rendered differently to the actual
+requirement itself
+[added in https://github.com/metanorma/metanorma-ogc/releases/tag/v0.2.11].
+
+NOTE: Classes for Recommendations will be captioned as
+Recommendation Classes, similarly for Requirement Classes and
+Permission Classes.
+
+Requirement Classes must use the following Metanorma Requirement attributes:
+
+* Target Type. Specified in the `subject` attribute.
+* Name. Specified as the requirement's title.
+* Dependencies (optional). Specified with the `inherit` attribute (which can take multiple semicolon-delimited values).
+* Nesting (optional). Requirements contained in a class are presented as nested requirements.
+
+A requirement with `type=conformanceclass` is cross-referenced and captioned as
+a "Conformance Class", and is otherwise rendered identically to a
+Requirement Class [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.4].
+
+[example]
+========
+[source,asciidoc]
+--
+[requirement,type="class",label="http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]",obligation="requirement",subject="Encoding of logical models",inherit="urn:iso:dis:iso:19156:clause:7.2.2;urn:iso:dis:iso:19156:clause:8;http://www.opengis.net/doc/IS/GML/3.2/clause/2.4;O&M Abstract model, OGC 10-004r3, clause D.3.4;http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used"]
+.GWML2 core logical model
+====
+
+[requirement,type="general",label="/req/core/encoding"]
+======
+======
+
+[requirement,type="general",label="/req/core/quantities-uom"]
+======
+======
+
+[recommendation,type="general",label="/req/core/codelist"]
+======
+======
+
+[requirement,type="general",label="/req/core/codelistURI"]
+======
+======
+
+[requirement,type="general",label="/req/core/identifier"]
+======
+======
+
+[requirement,type="general",label="/req/core/feature"]
+======
+======
+
+====
+--
+========
+
+Embedded requirements (such as are found within Requirement Classes) will automatically
+insert cross-references to the non-embedded requirements with the same
+label [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.0.8]:
+
+[source,asciidoc]
+--
+[requirement,type="class",label="/req/conceptual"]
+.GWML2 core logical model
+====
+
+[requirement,type="general",label="/req/core/encoding"]
+======
+======
+
+====
+
+[requirement,type="general",label="/req/core/encoding"]
+====
+Encoding requirement
+====
+--
+
+renders as:
+
+____
+*Requirement Class 3: GWML2 core logical model* +
+/req/conceptual
+
+| Requirement 1:   | /req/core/encoding
+
+
+*Requirement 1:*
+/req/core/encoding
+
+Encoding requirement
+____
+
+==== Rendering requirements
+
+NOTE: In order to match the Metanorma encoding of requirements to existing OGC
+AsciiDoc markup of requirements, users can refer to the rendering of Metanorma
+requirements which is aligned the existing, tabular OGC encoding of
+requirements.
+
+An OGC requirement is rendered as follows:
+
+* It is a table
+
+* The CSS class of the requirement table is the `type` attribute of the
+requirement.
++
+The only types recognised are:
+
+** `verification`,
+** `abstracttest`,
+** `class`,
+** `conformanceclass`, and
+** `recommend` (default).
+
+* The heading of the table (spanning two columns) is its name (the AsciiDoc role
+or style of the requirement, e.g. `[.permission] or [permission]`), optionally
+followed by its title (the caption of the requirement, e.g. `.Title`).
+
+* The title of the table (spanning two columns) is its `label` attribute.
+
+* The initial rows of the body of the table are:
+
+** The `obligation` attribute of the requirement, if given: _Obligation_
+followed by the attribute value
+
+** The `subject` attribute of the requirement, if given: _Target Type_ (for
+Class or Conformance Class requirement) or _Subject_, followed by the attribute
+value
+
+** The `inherit` attribute of the requirement, if given: _Dependency_ followed
+by the attribute value
+
+** The `classification` attributes of the requirement, if given: the
+classification tag (in capitals), followed by the classification value.
+
+* The remaining rows of the requirement are the components of the requirement,
+encoded as table rows instead of as a definition table (as they are by default
+in Metanorma).
+
+** Components can include nested requirements; these are expected in the class
+of Class and Conformance Class requirements.
+
+** Components can include descriptive text.
+
+** Components can include open blocks marked with role attributes.
++
+The components recognized are:
+
+*** `[.specification]`
+*** `[.measurement-target]`
+*** `[.verification]`
+*** `[.import]`
+*** Other components are not currently supported.
+
+==== Legacy Metanorma AsciiDoc syntax
+
+For legacy reasons, a second Metanorma AsciiDoc syntax is permitted for
+recommendations, requirements and permissions.
+
+In this syntax, Metanorma AsciiDoc tables are used to express the
+data needed for requirements:
+
+* Type of requirement. Specified in the first table cell,
+  one of `Recommendation`, `Requirement` or `Permission`.
+  Optionally followed by a number
+  (which is ignored in parsing; the elements are renumbered
+  automatically in rendering.)
+* Internal label. First paragraph of the second table cell.
+* Body of requirement. Second and subsequent paragraphs of the second table cell.
+
+[example]
+====
+[source,asciidoc]
+----
+[[recommendation1]]
+|===
+|Recommendation |/ogc/recommendation/wfs/2 +
+
+If the API definition document uses the OpenAPI Specification 3.0,
+the document SHOULD conform to the
+<<rc_oas30,OpenAPI Specification 3.0 requirements class>>.
+|===
+----
+====
+

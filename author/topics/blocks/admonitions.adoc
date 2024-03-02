@@ -1,0 +1,289 @@
+---
+layout: author-docs
+title: Admonitions
+---
+tag::tutorial[]
+
+== General
+
+Admonition blocks are typically inserted into the main content of a document
+providing guidance or request readers to exercise caution.
+
+== Types of admonitions
+
+Metanorma supports the following admonition types:
+
+NOTE:: Informative guidance.
+TIP:: Useful information.
+EDITOR:: Editor's notes that will appear in a draft document.
+IMPORTANT:: Important information on the application of the document.
+WARNING:: Information that includes safety concerns.
+CAUTION:: Information that the reader must be aware.
+TODO:: Author's or editor's internal notes, not rendered.
+
+The following types of admonitions require an atypical syntax for access:
+
+DANGER:: Information that can lead to safety concerns if not covered.
+SAFETY PRECAUTION:: Information that relates to safety precautions.
+
+NOTE: Typical AsciiDoc only supports NOTE, TIP, IMPORTANT and WARNING.
+
+
+== Specifying admonitions
+
+There are two ways to declare an admonition: in a single paragraph and as a block.
+
+
+=== Single paragraph admonitions
+
+Start a new line with the admonition type in all caps and a colon and write your
+admonition.
+
+.Example for a single paragraph note
+[source,adoc]
+----
+NOTE: Advice on when to use which admonition type is specified in ANSI Z535.6.
+----
+
+=== Block admonitions
+
+The syntax for a block admonition is as follows.
+
+[source,adoc]
+----
+[NOTE] <1>
+==== <2>
+Content of the admonition block. <3>
+
+Unlike an admonition paragraph, it may contain any AsciiDoc content.
+==== <4>
+----
+<1> Admonition type in all caps enclosed in square brackets
+<2> Block start delimiter with 4 `=` signs.
+<3> Multi-paragraph admonition content.
+<4> Block end delimiter with 4 `=` signs.
+
+
+.Example of specifying other types of admonitions
+======
+[source,asciidoc]
+----
+== General requirements
+
+[NOTE]
+====
+This is just a note providing guidance.
+====
+
+[IMPORTANT]
+====
+This is an important message.
+====
+
+== Safety requirements
+
+[WARNING]
+====
+This important notice applies to safety concerns.
+====
+
+[CAUTION]
+====
+This notice must not be ignored.
+====
+----
+======
+
+end::tutorial[]
+
+=== Specifying DANGER and SAFETY
+
+If the admonitions "`Danger`" and "`Safety Precaution`" are needed, they should
+be indicated through a `type` attribute, which will override the admonition type
+appearing.
+
+[example]
+.Example of specifying Danger and Safety Precaution messages
+======
+[source,adoc]
+--
+[type=Danger]
+CAUTION: Do not perform maintenance tasks while the machine is still operating.
+
+[WARNING,type=Safety Precaution]
+====
+This is a safety precaution
+
+spanning multiple-blocks.
+====
+--
+======
+
+
+=== Folding notes
+
+==== General
+
+Notes that are not at the end of a clause are folded into the preceding block,
+if that block is not delimited (so that the user could not choose to include or exclude a note).
+
+That is, notes immediately following these block types are automatically folded
+into the preceding element:
+
+* list
+* formula
+* figure
+* table
+
+
+==== Prevent folding
+
+To prevent a note from folding into the preceding block, add the attribute
+`keep-separate` to the
+note [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.29].
+
+NOTE: Extended to apply to tables [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6].
+
+[source,asciidoc]
+--
+* A
+* B
+* C
+
+[NOTE,keep-separate=true]
+====
+Note not folded into its preceding block
+====
+--
+
+Without the `keep-separate=true` markup, the note would be attached to the list,
+and numbered accordingly.
+
+
+[source,asciidoc]
+--
+[NOTE]
+This note will be folded in the preceding block.
+
+NOTE: This one too.
+--
+
+Notes may be given a type through the attribute
+`type` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
+
+[source,asciidoc]
+--
+[NOTE,type=bibliographic]
+====
+Bibliographic note
+====
+--
+
+
+
+=== Whole document admonitions
+
+Admonitions ("`NOTE`", "`IMPORTANT`", "`WARNING`", "`CAUTION`" etc.)
+in the document body (i.e. within a main body clause) can be
+stated to apply to the entire document by moving them to the
+start of the document body, before the main sequence of clauses.
+
+This can be done by giving them the attribute
+`beforeclauses=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.30].
+
+[source,asciidoc]
+----
+== Scope
+
+[IMPORTANT,beforeclauses=true]
+====
+This important notice applies to the entire document.
+====
+
+My scope text...
+----
+
+
+=== Preface admonitions
+
+Admonitions in the document prefaces (including in the Foreword) can be stated
+to apply to the entire preface by moving them to the start of the preface,
+before the Foreword. This can be done by giving them the same attribute
+`beforeclauses=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.2].
+
+[source,asciidoc]
+----
+= Document title
+:document-attribute: XXXX
+
+[IMPORTANT,beforeclauses=true]
+====
+This important notice applies to the entire document.
+====
+
+== Foreword
+
+My foreword text...
+----
+
+=== Cover page admonitions
+
+An admonition in the document prefaces can instead be flagged to be rendered on
+the cover page of the document, through
+`coverpage=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.8].
+
+[source,asciidoc]
+----
+= Document title
+:document-attribute: XXXX
+
+[IMPORTANT,coverpage=true]
+====
+This important notice appears on the cover page.
+====
+
+== Foreword
+
+My foreword text...
+----
+
+Normally, the label of the type of admonition (_NOTE_, _IMPORTANT_, etc) is
+inserted at the start of the admonition in rendering. This may not be desirable,
+especially for coverpage admonitions.
+
+Inserting the admonition type is suppressed through
+`notag=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.8].
+
+[source,asciidoc]
+----
+= Document title
+:document-attribute: XXXX
+
+[IMPORTANT,coverpage=true,notag=true]
+====
+This important notice appears on the cover page.
+====
+
+== Foreword
+
+My foreword text...
+----
+
+
+=== Explicitly-defined terminology entry notes
+
+Normally, notes are only tagged as term notes when they appear in the context of a terms section.
+
+Rarely, term notes need to be presented in isolation, including in ISO Amendments or
+Technical Corrigenda.
+
+To achieve that, mark the note up with
+`%termnote` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.2].
+
+[source,asciidoc]
+--
+[NOTE%termnote]
+====
+Bibliographic note
+====
+--

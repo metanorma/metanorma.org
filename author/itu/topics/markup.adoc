@@ -25,6 +25,33 @@ _considering_
 ...
 ----
 
+If any editors are indicated in the document header, they will be listed
+in the preface, before the acknowledgements (if present) or else at the end of
+the preface  [added in https://github.com/metanorma/metanorma-itu/releases/tag/v2.1.13]:
+
+[source,asciidoc]
+----
+:fullname: Andreas Reis
+:affiliation: World Health Organization
+:role: editor
+:email: reisa@who.int
+:fullname_2: Sameer Pujari
+:affiliation_2: World Health Organization
+:role_2: editor
+:email_2: pujaris@who.int
+----
+
+Renders as:
+
+____
+|===
+h|Editors:  |Andreas Reis     | E-mail: pujaris@who.int
+|           |World Health Organization
+|           |Sameer Pujari    | E-mai: pujaris@who.int
+|           |World Health Organization
+|===
+____
+
 == Lists
 
 The "`ITU Author's Guide`" specifies that ordered lists by default
@@ -154,6 +181,16 @@ web site, so that their reference details can be looked up online. That abbrevia
 can vary from the abbreviation used in documents: e.g. `ITU-T G Suppl. 41`,
 not (as in the Editing Guidelines) `ITU-T G-Sup.41`.
 
+In order to provide numeric tags for references, as is expected in the bibliography of common text with ISO/IEC,
+use user-supplied numeric identifiers:
+
+
+[source,asciidoc]
+--
+* [[[b-CMake,(1)b-CMake]]], Kitware (2018), _CMake_. https://cmake.org/.
+* [[[ISO20483,(2)ISO 20483]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+--
+
 == Definitions
 
 === Title
@@ -225,6 +262,18 @@ e.g.
 
 NOTE: This editorial rule is mandated by the ITU Editorial Team,
 but is not described in the ITU-T Author's Guide.
+
+Table titles and column titles are automatically 
+capitalised [added in https://github.com/metanorma/isodoc/releases/tag/v2.4.3].
+To prevent this, you will need to set the capitalisation of the initial word to "none", using CSS:
+
+[source,asciidoc]
+----
+.[css text-transform:none]#iPod# specifications
+|===
+| Feature | .[css text-transform:none]#iPod# metric
+|===
+----
 
 == Index
 

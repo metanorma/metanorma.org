@@ -4,8 +4,7 @@ layout: author-docs
 
 = Document attributes
 
-This is the list of link:/author/topics/document-format/meta-attributes[document attributes]
-supported by all flavors of Metanorma.
+This is the list of document attributes supported by all flavors of Metanorma.
 
 [TIP]
 ====
@@ -107,11 +106,27 @@ Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/
 
 == Document info
 
-`:publisher:`:: The standards agency publishing the standard; can be multiple
-(semicolon-delimited: processed via CSV, recognising quote marks). [added in
-https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0]. +
+`:publisher_{i}:`:: The standards agency publishing the standard. The first publisher is given as
+`:publisher:`; more publishers are added with the suffix `_2`, `_3`, etc., e.g. `:publisher_2:`,
+`:publisher_3:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0]. +
 +
 NOTE: Prior to 1.7.0, this field accepted comma-delimited values [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.1].
++
+NOTE: Prior to 2.7.0, this field accepted semicolon-delimited values [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
+These are processed via CSV, recognising quote marks. This functionality is maintained in later versions,
+but other attributes of organisations are ignored (`publisher_logo`, `pub-address`, etc.)
+
+`:publisher_logo_{i}:`:: The logo of the publisher, specified as an image file; the numbers in the attribute
+align to the `:publisher_{i}:` attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
+
+`:sponsor_{i}:`:: An organization sponsoring the publication of this document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
++
+NOTE: If a person needs to be nominated as the responsible party for a sponsoring organization,
+that person should be treated as a personal contributor (`:surname_{i}:`, `:affiliation_{i}:`, etc.),
+with a `:role:` attribute of `enabler`.
+
+`:sponsor_logo_{i}:`:: The logo of the sponsoring organization, specified as an image file; the numbers in the attribute
+align to the `:sponsor_{i}:` attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
 
 `:copyright-holder:`:: The copyright holder, if distinct from the publisher;
 can be multiple
@@ -124,6 +139,21 @@ NOTE: Prior to 1.7.0, this field accepted comma-delimited values [added in https
 The numeric component of the document identifier.
 The full identifier is formed by prefixing and suffixing this element with other strings
 derived from metadata.
+
+`:docidentifier:`::
+As an alternative to `docnumber` and other attributes (such as `doctype` and `docstage`),
+which form the full identifier by combining multiple attributes, this attribute contains a
+full specification of the document identifier and overrides the composition of the document
+identifier [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.9].
+This value is used for document identifiers that do not follow normal SDO conventions,
+including for documents that are adoptions from other SDOs. 
+
+`:docidentifier-additional:`::
+This attribute provides additional primary identifiers for the document, to be used alongside
+the native identifier generated from `docnumber` or `docidentifier` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.2].
+It is intended for copublished standards with multiple primary identifiers.
+The list of identifiers is comma-delimited, and is specified as TYPE:VALUE; e.g.
+`:docidentifier-additional: IDF:IDF 21, RFC:RFC 97`
 
 `:edition:`::
 The document edition.
@@ -174,8 +204,9 @@ Comma-delimited list of keywords associated with the document.
 
 `:classification:`::
 Comma-delimited list of classification tokens, expressed as `type:value` pairs; if no prefix is given to a value,
-"default" is supplied as the type [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.1]
-
+"default" is supplied as the type [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.1].
+There can only be one value per type in a token; if there are multiple classification values of the same type, 
+repeat the type in a new token; e.g.  `:classification: Dewey:563.5.081, Dewey:537.71`.
 
 [[draft]] `:draft:`::
 The document draft.
@@ -207,11 +238,11 @@ value is included in the document attribute:
 
 `:semantic-metadata-{name}:`::
 Comma-delimited list of values, relating to `name` as semantic metadata about the document.
-Stored in the document under `//misc-container/semantic-metadata/{name}`, with repeating tags for each value.
+Stored in the document under `//metanorma-extension/semantic-metadata/{name}`, with repeating tags for each value.
 
 `:presentation-metadata-{name}:`::
 Comma-delimited list of values, relating to `name` as presentation metadata about the document.
-Stored in the document under `//misc-container/presentation-metadata/{name}`, with repeating tags for each value.
+Stored in the document under `//metanorma-extension/presentation-metadata/{name}`, with repeating tags for each value.
 
 [[document-relations]]
 == Document relations
@@ -249,10 +280,14 @@ This document attribute applies to a translated document, pointing to the origin
 `:doc-uri:`:: The URI to which the DOC representation of this standard is published.
 `:relaton-uri:`:: The URI to which the Relaton XML representation of this standard is published.
 
+[[timestamps]]
 == Timestamps
 
 [[copyright-year]] `:copyright-year:`::
 The year which will be claimed as when the copyright for the document was issued.
+
+`:announced-date:`::
+The date on which the publication of the standard was announced by the issuing authority.
 
 [[issued-date]] `:issued-date:`::
 The date on which the standard was issued (authorised for publication by the issuing authority).
@@ -268,6 +303,10 @@ The date on which the first version of the standard was created.
 
 `:updated-date:`::
 The date on which the current version of the standard was updated.
+
+`:corrected-date:`::
+The date on which the current version of the standard was corrected, without that correction amounting to a distinct
+update [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.3].
 
 `:obsoleted-date:`::
 The date on which the standard was obsoleted/revoked.
@@ -318,9 +357,21 @@ The given name(s) of a person who is a contributor to the document.
 `:initials{_i}:`::
 The initials(s) of a person who is a contributor to the document.
 
+`:contributor-credentials{_i}:`::
+Credentials of the person, appearing after their name in Metanorma flavour-specific
+contexts [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.9].
+
 [[role]] `:role{_i}:`::
-The role of a a person who is a contributor to the document.
-By default, they are coded as an `editor`; they can also be represented as an `author`.
+The role of a person who is a contributor to the document.
+By default, they are coded as an `editor`; they can also be represented as an `author`,
+or (if they are the responsible party for a sponsoring organization) `enabler`.
+Is meant to draw from the constrained vocabulary of Relaton: `author`, `editor`, `adapter`,
+`translator`, `performer`, `realizer`, `publisher`, `distributor`, `owner`, `authorizer`,
+`enabler`, `subject`; see https://www.relaton.org/specs/model/creator/[Relaton specification].
+
+`:role-description{_i}:`::
+A more detailed description of the role of a person who is a contributor to 
+the document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.5].
 
 `:affiliation{_i}:`::
 The organization that a person who is a contributor to the document is affiliated with.
@@ -332,7 +383,21 @@ is affiliated with [added in https://github.com/metanorma/metanorma-standoc/rele
 `:affiliation_subdiv{_i}:`::
 The subdivision of the organization that a person who is a contributor to the document
 is affiliated with [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
-Can be multiple (semicolon-delimited: processed via CSV, recognising quote marks).
+The subdivisions can be multiple (semicolon-delimited: processed via CSV, recognising quote marks),
+and they can also be hierarchical, with multiple levels of subdivision (comma-delimited,
+from larger to smaller) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3];
+the different hierarchical levels can optionally be prefixed with type and a colon.
+
+`:affiliation_logo{_i}:`::
+The logo of the organization that a person who is a contributor to the document
+is affiliated with, specified as an image file [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
+
+`:contributor-credentials{_i}:`::
+The credentials of the person (e.g. "PhD, F.R.Pharm.S"); these are often displayed inline with the
+person's name [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.9].
+
+`:contributor-position{_i}:`::
+The position of the person within the organization [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.9].
 
 `:address{_i}:`::
 The organizational address of a person who is a contributor to the document.
@@ -373,14 +438,20 @@ The fax number of a person who is a contributor to the document.
 `:subdivision:`::
 The subdivision of the organization that is responsible for this
 document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
+The subdivisions can be multiple (semicolon-delimited: processed via CSV, recognising quote marks),
+and they can also be hierarchical, with multiple levels of subdivision (comma-delimited,
+from larger to smaller) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3];
+the different hierarchical levels can optionally be prefixed with type and a colon.
 
 `:subdivision-abbr:`::
 The abbreviation of the subdivision of the organization that is responsible for this
 document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
 
-`:pub-address:`::
+`:pub-address_{i}:`::
 The address of the organization responsible for this document, if it overrides
-the default. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1]. +
+the default. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
+The number of this and subsequent attributes aligns with the number of
+`:publisher_{i}:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1] +
 +
 [NOTE]
 --
@@ -393,23 +464,54 @@ California + \
 United States of America
 ----
 --
++
+NOTE: As of 2.7.0, if `:publisher:` is semicolon-delimited, instead of using numbered attributes,
+this and subsequent publisher attributes are ignored.
 
-`:pub-phone:`::
+`:pub-phone_{i}:`::
 The phone number of the organization responsible for this document, if it overrides
 the default [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
 
-`:pub-fax:`::
+`:pub-fax_{i}:`::
 The fax number of the organization responsible for this document, if it overrides
 the default [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
 
-`:pub-email:`::
+`:pub-email_{i}:`::
 The email of the organization responsible for this document, if it overrides
 the default [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
 
-`:pub-uri:`::
+`:pub-uri_{i}:`::
 The URI of the organization responsible for this document, if it overrides
 the default [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.1].
 
+`:sponsor-address_{i}:`, `:sponsor-phone_{i}:`, `:sponsor-fax_{i}:`, `:sponsor-email_{i}:`, `:sponsor-uri_{i}:`::
+The address, phone number, fax number, email, URI of an organization sponsoring 
+this document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
+
+`:sponsor-subdivision_{i}:`::
+The subdivision of the organization that is sponsoring this document.
+The subdivisions can be multiple (semicolon-delimited: processed via CSV, recognising quote marks),
+and they can also be hierarchical, with multiple levels of subdivision (comma-delimited,
+from larger to smaller) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3];
+the different hierarchical levels can optionally be prefixed with type and a colon.
+
+`:authorizer_{i}:`::
+The organisation that authorised this document  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3].
+
+`:authorizer_logo_{i}:`::
+The logo of the sponsoring organization, specified as an image file; the numbers in the attribute
+align to the `:authorizer_{i}:` attributes   [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3].
+
+`:authorizer-address_{i}:`, `:authorizer-phone_{i}:`, `:authorizer-fax_{i}:`, `:authorizer-email_{i}:`, `:authorizer-uri_{i}:`::
+The address, phone number, fax number, email, URI of an organization authorizing 
+this document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3].
+
+`:authorizer-subdivision_{i}:`::
+The subdivision of the organization that is authorizing this document.
+The subdivisions can be multiple (semicolon-delimited: processed via CSV, recognising quote marks),
+and they can also be hierarchical, with multiple levels of subdivision (comma-delimited,
+from larger to smaller) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3];
+the different hierarchical levels can optionally be prefixed with type and a colon.
 
 == Visual appearance
 
@@ -621,14 +723,21 @@ https://github.com/pbhogan/sterile/blob/main/lib/sterile/data/smart_format_rules
 Number of table of contents levels to render. Accepts an integer value. (default: `2`).
 Can be overridden with output-specific options (`htmltoclevels`, `doctoclevels`).
 
-`:htmltoclevels:`::
+`:toclevels-html:`::
 Number of table of contents levels to render in HTML output; used to override
 `:toclevels:` for HTML output. Accepts an integer value. (default: `2`).
+Formerly `:htmltoclevels:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.5].
 
-`:doctoclevels:`::
+`:toclevels-doc:`::
 Number of table of contents levels to render in Microsoft Word "DOC" output;
 used to override `:toclevels:` for Word DOC output. Accepts an integer value.
 (default: `2`).
+Formerly `:doctoclevels:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.5].
+
+`:toclevels-pdf:`::
+Number of table of contents levels to render in PDF output;
+used to override `:toclevels:` for PDF output [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.5].
+Accepts an integer value. (default: `2`)  
 
 `:toc-figures:`::
 Introduce table of contents for figures [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
@@ -652,17 +761,14 @@ are prefixed with this directory.
 Accepts a directory path.
 
 `:break-up-urls-in-tables:`::
-(for Word output only) If present, long strings in table cells
-(longer than 30 characters) are broken up on rendering, to help
-tables fit within the page width.
-No attribute value needed. [added in
-https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.25] +
-+
---
-NOTE: Due to limitations of Microsoft Word tables with long string
-wrapping, this functionality is only applied to Word output [added in
-https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.29].
---
+If present, long strings in table cells are broken up on rendering, to help
+tables fit within the page width.  No attribute value needed. [added in
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.25].
+The current behaviour is: strings are broken by zero-width spaces;
+words are broken up every 10 characters on punctuation (e.g. URIs on / ),
+and every 20 characters if there is no puncutation in the word,
+in order to deal with very narrow columns. (Because the break is zero-width,
+it will not be visible unless it coincides with the end of a column.)
 
 `:suppress-asciimath-dup:`::
 By default, MathML in the Metanorma XML has equivalent AsciiMath added
@@ -683,6 +789,14 @@ https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.4]
 `:sourcecode-markup-end:`::
 Final delimiter for markup inserted in sourcecode [added in
 https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.4]
+
+`:source-highlighter:`::
+Whether to use a source highlighter for sourcecode; default value is true [added in
+https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.2]
+
+`:source-linenums-option:`::
+Provided a source highlighter is being used, whether to display line numbers; default value is false [added in
+https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.2]
 
 `:bare:`::
 (optional)
@@ -708,6 +822,11 @@ pattern only affects the rendering of cross-references, not the underlying XML
 representation of the ModSpec instances. See more details at
 link:/author/topics/document-format/requirements-modspec/#identifier-base[ModSpec identifier base]. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7].
 
+`:block-unnumbered:`::
+(optional)
+A comma-delimited list of Metanorma block names, which should have numbering
+suppressed throughout the document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.6].
+Typically will be used for sourcecode fragemnts: `:block-unnumbered: sourcecode`.
 
 == PDF protection and permissions
 

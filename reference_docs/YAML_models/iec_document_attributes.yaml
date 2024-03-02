@@ -1,0 +1,127 @@
+version: v3.4.5 #Verify versions
+
+inherits_from:
+  # Also may be referred to as “parent flavor”
+  flavor: standoc
+  version: v1.x.x
+
+document_attributes:
+#--- Parts and subparts  ---#
+  partnumber:
+    tags: [""]
+    title: "Part number"
+    description: |
+      IEC documents can have both parts and subparts, unlike ISO documents which only supports parts. +
+      Both `{part}` and `{subpart}` only accept numerals.
+    value_spec: "other: `{part}` or `{part}`-`{subpart}`"
+
+#--- Document relations ---#
+  translated-from:
+    tags: ["Document relations"]
+    title: "Translated from"
+    description: |
+      Document identifier that the current document is a translation of.
+
+      IEC documents can be translated by IEC-CO and tagged with the `translated-from` attribute. This is used to derive the correct status code.
+    more_information: "See link:/author/ref/document-attributes[general Metanorma document attributes] for more information."
+
+#--- Document type ---#
+  doctype:
+    tags: ["Document info"]
+    title: "Document type"
+    description: |
+      Type of document. +
+      Unlike ISO, IEC does not have `international-workshop-agreement`, and does have `interpretation-sheet`."
+    value_spec: "enum: international-standard, technical-specification, technical-report, publicly-available-specification, guide, interpretation-sheet"
+  required: true
+
+
+#--- Project stage and substage of document ---#
+  docstage:
+    tags: ["Document info"]
+    title: "Document stage"
+    description: "Project stage code of document."
+    more_information: |
+      The codes in the first entry form are drawn from the
+      https://www.iso.org/stage-codes.html[ISO International Harmonized Stage Codes].
+
+      The mapping to IEC stage codes is taken from
+      https://www.iec.ch/members_experts/refdocs/iec/isoiecdir1-consolidatediecsup%7Bed15.0.RLV%7Den.pdf[ISO/IEC DIR 1:2019 + IEC SUP:2019, Annex SH],
+      updated against the current discussion of stage codes in
+      https://www.iec.ch/standardsdev/resources/processes/stage_codes.htm[IEC Processes & Procedures -- Stage Codes] and
+      https://www.iec.ch/standardsdev/resources/processes/workflows.htm[IEC Processes & Procedures -- Workflow].
+    required: true
+    example: |
+      Following is a BPUB document in final proof (ISO stage 60, substage 00):
+
+      [source,asciidoc]
+      ----
+      :docstage: 60
+      :docsubstage: 00
+      ----
+      
+      and this, is an NFDIS document that has reached approval stage, but it has been rejected, and will be returned to drafting:
+
+      [source,asciidoc]
+      ----
+      :docstage: 50
+      :docsubstage: 92
+      ----
+
+  docsubstage:
+    tags: ["Project stage and substage of document"]
+    title: "Document substage"
+    description: "Project substage code of document."
+
+  stage:
+    tags: ["Project stage and substage of document"]
+    title: "Stage"
+    description: |
+      Project stage abbreviation.
+
+      An IEC project stage abbreviation code entered under `:stage:` will be recognised,
+      and broken down into the corresponding ISO harmonized stage and substage codes
+      shown in the table automatically.
+
+      For example, `:stage: ACD` is equivalent to setting `:docstage: 20` and `:docsubstage: 99`.
+
+      In the case of A2CD... A9CD and 2CD... 9CD, the numeral value of the `:iteration:` attribute
+      will also be set accordingly.
+
+      For example, `:stage: 8CD` is equivalent to setting `:docstage: 35`, `:docsubstage: 20` and `:iteration: 8`.
+    required: "don't know"
+
+#--- Cover page attributes ---#
+  accessibility-color-inside:
+    tags: ["Cover page attributes"]
+    title: "Accessibility color inside"
+    description: "Indication that document contains colour content."
+    value_spec: boolean
+    value_default: false
+    added_in_version: v1.2.10
+
+  price-code:
+    tags: ["Cover page attributes"]
+    title: "Price code"
+    description: "Price code group of publication, as documented in the https://www.iec.ch/members_experts/tools/pdf/IEC_DATA_FEEDS.pdf[IEC Data Feeds: Technical documentation document]."
+    added_in_version: v1.2.10
+
+  cen-processing:
+    tags: ["Cover page attributes"]
+    title: "CEN processing"
+    description: "CEN (European Committee for Standardization) processing."
+    value_spec: boolean
+    value_default: false
+    added_in_version: v1.2.11
+
+  secretary:
+    tags: ["Cover page attributes"]
+    title: "Secretary"
+    description: "Secretary of the secretariat."
+    added_in_version: v1.2.12
+
+  interest-to-committees:
+    tags: ["Cover page attributes"]
+    title: "Interest to committees"
+    description: "Draft is of interest to the following committees."
+    added_in_version: v1.2.12

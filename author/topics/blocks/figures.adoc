@@ -1,0 +1,159 @@
+---
+layout: author-docs
+title: Figures
+---
+
+== Figures
+
+=== General
+
+In standardization documents, figures are used as document elements to present
+non-textual material so that they are independently referable.
+
+In Metanorma, the usage of the `image` command will result in a figure.
+Please refer to link:/author/topics/blocks/images[images] for details
+of the `image` command.
+
+
+
+=== Key
+
+Like formulae, figures can be followed by a definition list for the variables used in the figure.
+This definition list is marked up with `[%key]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3].
+
+The syntax is as follows:
+
+[source,asciidoc]
+--
+[[some-anchor]] <1>
+.Figure title <2>
+image::figure-path.png[] <3>
+
+[%key] <4>
+{some-id}:: {some-description} <5>
+--
+<1> Optional anchor for referencing
+<2> Title of the figure
+<3> The image command with path
+<4> Specification of figure key section
+<5> Key entry: `{some-description}` is text that describes information about the thing
+represented by `{some-id}`
+
+
+[example]
+.Example of providing a key for a figure (ISO Rice document)
+====
+[source,asciidoc]
+--
+.Typical gelatinization curve
+image::rice_images/rice_image2.png[]
+footnote:[The time stem:[t_90] was estimated to be 18,2 min for this example.]
+
+[%key]
+stem:[w]:: mass fraction of gelatinized kernels, expressed in per cent
+stem:[t]:: cooking time, expressed in minutes
+stem:[t_90]:: time required to gelatinize 90 % of the kernels
+P:: point of the curve corresponding to a cooking time of stem:[t_90]
+
+NOTE: These results are based on a study carried out on three different types of kernel.
+--
+====
+
+The key definition list can also be preceded by a paragraph consisting of
+`\*Key*`, though that is not recommended.
+
+[example]
+.Example of providing a key for a figure using the `\*Key*` syntax (ISO Rice document)
+====
+[source,asciidoc]
+----
+.Typical gelatinization curve
+image::rice_images/rice_image2.png[alt text]
+footnote:[The time stem:[t_90] was estimated to be 18,2 min for this example.]
+
+*Key*
+
+stem:[w]:: mass fraction of gelatinized kernels, expressed in per cent
+stem:[t]:: cooking time, expressed in minutes
+stem:[t_90]:: time required to gelatinize 90 % of the kernels
+P:: point of the curve corresponding to a cooking time of stem:[t_90]
+
+NOTE: These results are based on a study carried out on three different types of kernel.
+----
+====
+
+
+
+=== Discursive figures
+
+A discursive figure, containing text as well as images, can be marked up as an
+example, with a `[.figure]` role [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.7]:
+
+[source,asciidoc]
+--
+[.figure]
+.Typical gelatinization curve
+====
+image::rice_images/rice_image2.png[alt text]
+
+This is lots of discursive text
+====
+--
+
+
+=== Subfigures
+
+Subfigures (which appear in ISO formats, for example) are entered by including
+images in an example block.
+
+[source,asciidoc]
+--
+.Stages of gelatinization
+====
+.Initial stages: No grains are fully gelatinized (ungelatinized starch granules are visible inside the kernels)
+image::rice_images/rice_image3_1.png[]
+
+.Intermediate stages: Some fully gelatinized kernels are visible
+image::rice_images/rice_image3_2.png[]
+
+.Final stages: All kernels are fully gelatinized
+image::rice_images/rice_image3_3.png[]
+====
+--
+
+
+
+=== Preformatted blocks
+
+Figures can include preformatted blocks, as well as images.
+
+For accessibility, preformatted blocks can be provided with an `alt` text
+attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
+
+[sources,asciidoc]
+--
+[alt=ASCII art of a dog]
+....
+     ___^_
+   /    | \__/\
+    \   /  ^ ^|
+   / \_/   0  0_
+  /             \
+ /     ___     0 |
+/      /  \___ _/
+....
+--
+
+=== Figure classes
+
+Figures in documents can belong to different classes (e.g. _Plate_, _Chart_, _Diagram_),
+each of which can be auto-numbered and captioned differently. In order to achieve this,
+the desired class can be indicated
+through the `class` attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.5].
+
+[source,asciidoc]
+--
+[class=plate]
+.Rice husk separation in rice farm at Breton near Dinan
+image::logo.jpg[]
+--

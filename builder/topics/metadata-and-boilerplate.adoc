@@ -385,10 +385,12 @@ or not depends on the value of `bibdata/status`.)
 
 * Under the `metanorma/*` directory of the gem:
 
-** The Metanorma predefined text file (`boilerplate.xml`)
+** The Metanorma predefined text file (`boilerplate.xml`, `boilerplate.adoc`)
 
 [[boilerplate]]
 == Predefined text
+
+=== XML
 
 The `boilerplate` element in Metanorma XML follows after `bibdata`, and
 contains text that is repeatedly included in each instance of the
@@ -440,6 +442,10 @@ introductory page template;
 ** `<div id="boilerplate-license-destination"/>` appears in the title page template for the flavour;
 ** the CSS styling for the front page draft warning is styled as `boilerplate-license`.
 
+A user-supplied boilerplate file need not provide all four statements [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.2].
+If the user-supplied element is missing an element in the default for the flavour, the default is retained. 
+If the element is to be deleted, provide it as an empty title.
+
 The following predefined text from metanorma-csa exemplifies all four statements in a predefined text,
 and its processing as a Liquid template.
 
@@ -454,7 +460,7 @@ and its processing as a Liquid template.
 
   {% if unpublished %}
   <license-statement>
-    <clause>
+    <clause id="draft-warning">
     <title>Warning for Drafts</title>
 
     <p>This document is not a CSA Standard. It is distributed for review and
@@ -493,6 +499,121 @@ and its processing as a Liquid template.
     </clause>
   </feedback-statement>
 </boilerplate>
+----
+
+The following user-provided predefined text will delete the license statement, and override the legal statement,
+leaving the copyright statement and feedback statement of the flavour alone:
+
+[source,xml]
+----
+<boilerplate>
+  <license-statement/>
+
+  <legal-statement>
+    <clause>
+      <p>All rights reserved. Unless otherwise specified, no part of this
+        publication may be reproduced or utilized otherwise in any form or by any
+        means, electronic or mechanical, including photocopying, or posting on the
+        internet or an intranet, without prior written permission. Permission can
+        be requested from the address below.
+      </p>
+    </clause>
+  </legal-statement>
+</boilerplate>
+----
+
+=== ADOC
+
+Predefined text can also be specified in Metanorma Asciidoc, with the file suffix `.adoc`
+[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.6]. The following special
+processing rules apply:
+
+* Top-level clauses ending in `-statement` are converted into the equivalent `boilerplate` tags; so
+`== copyright-statement` corresponds to Metanorma XML `<copyright-statement>`.
+* The Asciidoctor is a Liquid template, just as for XML, so `{{ ... }}` is reserved for Liquid, and cannot
+be used for Metanorma Asciidoc concepts. The Asciidoc is processed by Liquid before it is passed on for processing.
+* Clauses in predefined text often do not have clause titles; as usual for Asciidoc, introduce such titles with
+`=== {blank}`.
+* Clauses in Asciidoctor with no title and no user-assigned anchor are automatically assigned an anchor 
+of the form `_{n}`, where `{n}` is an integer. In order to prevent those anchors colliding in the boilerplate and
+the main document, we overwrite any such anchors in the predefined text with the normal Metanorma default,
+`_` followed by a GUID. Do not use `_{n}` as an anchor in any of your predefined text. 
+* Also be on the lookout
+for any clauses with identical titles in your predefined text and your main document; if no user-defined anchor
+is supplied, they will end up with the same title. To prevent that, the simplest thing to do is to provide
+user-defined anchors for all titled clauses in the predefined text.
+* The values that populate Liquid templates in Metanorma are in Metanorma XML, if they contain any formatting;
+Metanorma automatically treats Asciidoc Liquid variables as Metanorma XML passthrough values. For example,
+the `pub-address` document variable may be specified as document attribute as:
++
+[source,adoc]
+----
+:pub-address: 1 John St + \
+London
+----
++
+--
+But its value in Liquid will be `1 John St<br/>London`, since Liquid interpolation is developed for Metanorma XML.
+Metanorma will treat any instance of `{{ pub_address}}` in Asciidoc predefined text as `pass:[{{pub_address}]`
+(i.e. when converting the Asciidoc predefined text to Metanorma XML, the contents of `{{pub_address}}` will be left alone.)
+--
+
+The following is the Asciidoctor equivalent of the `boilerplate` Metanorma XML just given. This is for
+a complete boilerplate document:
+
+[source,adoc]
+----
+== copyright-statement
+=== {blank}
+© {{ docyear }} Cloud Security Alliance, LLC.
+
+{% if unpublished %}
+== license-statement
+[[draft-warning]]
+=== Warning for Drafts
+
+This document is not a CSA Standard. It is distributed for review and
+comment, and is subject to change without notice and may not be referred to as
+a Standard. Recipients of this draft are invited to submit, with their
+comments, notification of any relevant patent rights of which they are aware
+and to provide supporting documentation.
+{% endif %}
+
+== legal-statement
+=== {blank}
+All rights reserved. Unless otherwise specified, no part of this
+publication may be reproduced or utilized otherwise in any form or by any
+means, electronic or mechanical, including photocopying, or posting on the
+internet or an intranet, without prior written permission. Permission can
+be requested from the address below.
+
+== feedback-statement
+=== {blank}
+Cloud Security Alliance
+
+[align="left"]
+2212  Queen Anne Ave N +
+Seattle +
+WA 98109 +
+United States of America +
+ +
+mailto:copyright@cloudsecurityalliance.com[copyright@cloudsecurityalliance.com] +
+https://www.cloudsecurityalliance.com[www.cloudsecurityalliance.com]
+----
+
+And this will do a partial update, as above:
+
+[source,adoc]
+----
+== license-statement
+
+== legal-statement
+=== {blank}
+All rights reserved. Unless otherwise specified, no part of this
+publication may be reproduced or utilized otherwise in any form or by any
+means, electronic or mechanical, including photocopying, or posting on the
+internet or an intranet, without prior written permission. Permission can
+be requested from the address below.
 ----
 
 == Cover page notes

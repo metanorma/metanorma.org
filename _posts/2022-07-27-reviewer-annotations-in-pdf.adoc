@@ -1,0 +1,94 @@
+---
+layout: post
+title: "Reviewer annotations are available now in Metanorma PDFs"
+date: 2022-07-27
+categories: documentation
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+  -
+    name: Alexander Dyuzhev
+    email: dyuzhev@gmail.com
+    social_links:
+      - https://www.linkedin.com/in/alexander-dyuzhev/
+      - https://github.com/Intelligent2013/
+
+excerpt: >-
+  Metanorma-generated PDFs contain now reviewer notes and comments annotated
+  by Metanorma reviewer comments AsciiDoc markup feature.
+---
+
+== Introduction
+
+As you may know you can annotate a Metanorma AsciiDoc document with comments and
+'TODO's text: link:/author/topics/document-format/reviewer-notes/[Reviewer notes and comments]
+Until recently, the Metanorma-generated DOC and HTML only contained reviewer notes.
+Now reviewer notes available in the generated PDFs.
+
+
+== How Metanorma publishes reviewer notes in PDF
+
+Let's take an example from https://github.com/metanorma/mn-samples-iso/blob/main/sources/international-standard/body/body-en.adoc
+```
+[reviewer=ISO,date=2017-01-01,from=foreword,to=foreword]
+****
+A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.
+
+For further information on the Foreword, see *ISO/IEC Directives, Part 2, 2016, Clause 12.*
+****
+```
+
+It's standalone reviewer note that doesn't relate to concrete text and shows at the end of the section.
+
+The following example demonstrates how this reviewer note renders in a generated PDF document:
+* small orange icon with a tool-tip
+* comment's text in the Acrobat Reader Comment tool panel
+
+.Reviewer note in a generated PDF document
+image::/assets/blog/2022-07-27_1.png[Reviewer note in a generated PDF document]
+
+
+In the second example we add reviewer note for the concrete word in the text:
+```
+This second edition cancels and replaces the [[start_review1]]second[[end_review1]] edition (ISO {docnumber}-{partnumber}:2009), which has been technically revised.
+...
+
+[reviewer=ISO,date=2022-07-01,from=start_review1,to=end_review1]
+****
+Instead of _second_ should be _first_.
+****
+```
+
+The following example demonstrates how this 'in-lined' reviewer note renders in a generated PDF document:
+* small orange icon with a tool-tip
+* highlighted text
+* comment's text in the Acrobat Reader Comment tool panel
+
+.In-lined reviewer note in a generated PDF document
+image::/assets/blog/2022-07-27_2.png[In-lined reviewer note in a generated PDF document]
+
+
+== How reviewer notes renders in the popular PDF readers
+
+The PDF readers have different support for the reviewer notes ('comments' in terms of PDF) and rich text (bold, italic) in them.
+
+.Compatibility of PDF comments across popular PDF readers
+|===
+| PDF viewer application | Comments support | Rich text support
+
+| Adobe Reader      | ✅ | ✅
+| Foxit PDF Reader  | ✅ | doesn't display rich text from the generated PDF, but text can be formatted as rich text
+| Preview (macOS)   | ✅ | ❌, text displays as plain text only
+| Skim (macOS)      | ✅ | ❌, text displays as plain text only
+| Firefox (browser) | ✅ | doesn't display bolded text, only italic
+| Safari (browser)  | shows only orange icon | doesn't display text at all
+| Microsoft Word    | ❌ | ❌
+|===
+
+
+== References
+
+* link:/author/topics/document-format/reviewer-notes/[Reviewer notes and comments]

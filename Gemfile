@@ -26,7 +26,7 @@ group :jekyll_plugins do
   gem "jekyll-asciidoc"
   gem "jekyll-redirect-from"
   gem "git"
-  gem "jekyll-theme-open-project-helpers"
+  gem "jekyll-theme-open-project-helpers", "~> 2.1.9"
   gem "kramdown-parser-gfm"
   gem "kramdown-syntax-coderay"
 end

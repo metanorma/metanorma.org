@@ -1,0 +1,74 @@
+---
+layout: author-docs
+title: Adding a term entry
+---
+tag::tutorial[]
+
+Many standard documents contain a terminology section (or clause) that contains
+definitions for terms used within the document.
+
+This section is typically called "`Terms and definitions`" and is recognized
+by its section title. The designated name of this section differs per flavor,
+so please check documentation of the particular flavor being used.
+
+== Creating a terms and definitions section
+
+It is important for a standards document to utilize terms unambiguously,
+and therefore typically it will contain a definitive terms and
+definition section.
+
+.Syntax for a "Terms and definitions" section
+[source,adoc]
+----
+== Terms and definitions
+----
+
+NOTE: The "Terms and definitions" section heading differs per SDO, please
+refer to the appropriate documentation.
+
+== Entering a terminology entry
+
+To enter a terminology entry:
+
+. Start a new subsection under the "Terms and definitions" section.
+. The term (the "designation") is entered as this section's heading.
+. The definition is entered as this section's content.
+
+.Syntax for a simple terminology entry
+[source,adoc]
+----
+== Terms and definitions
+
+=== satellite
+
+artificial body placed in orbit around a planetary body
+----
+
+The terminology model in Metanorma is comprehensive as a superset of what is
+defined in ISO 10241-1. Please refer to documentation for advanced features.
+
+
+== Referencing a terminology entry
+
+A citation to a terminology entry is called a "concept mention".
+
+Concept mentions are entered using `{{..}}` double braces, where
+the content of the double braces is the term (the "designation") itself.
+
+.Syntax for a concept mention
+[source,adoc]
+----
+== Terms and definitions
+
+=== satellite
+
+artificial body placed in orbit around a planetary body
+
+...
+
+== Another section
+
+The {{satellite}} has risen over the moon.
+----
+
+end::tutorial[]
