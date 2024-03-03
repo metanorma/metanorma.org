@@ -203,7 +203,7 @@ for allowed characters in anchor IDs.
 document identifier:: the authoritative document identifier of the bibliographic item.
 Standardized deliverables such as International Standards from ISO and IEC are
 assigned authoritative identifiers, such as "ISO 8601-1" or "ISO 8601-1:2019".
-This is often used for auto-fetching of bibliographic details (see <<auto-fetch>>).
+This is often used for auto-fetching of bibliographic details (see <<autofetch,auto-fetch>>).
 When a document identifier is used, the reference tag is also set to be identical.
 
 reference tag:: a user-defined string used for rendering a mention of this
@@ -230,7 +230,7 @@ The most commonly-used methods are:
 * <<asciibib>>; and
 * <<preformatted-citation>>.
 
-It is strongly recommended that the <<auto-fetch,automatic fetching>> method be
+It is strongly recommended that the <<autofetch,automatic fetching>> method be
 used for data consistency and ease of use whenever possible (especially for
 references to standards supported by Relaton).
 
@@ -461,6 +461,8 @@ explicitly specified.
 [[autofetch]]
 === Automatic fetching via Relaton ("auto-fetch")
 
+==== General
+
 https://www.relaton.org/[Relaton] can fetch bibliographic entries
 for any standards known to have online bibliographic databases.
 
@@ -472,11 +474,13 @@ The fetched data overrides any content about the item provided in the document,
 since the online bibliography is treated as the source of truth for that
 standards document.
 
+==== Standards identifier / Document identifier lookup
+
 The format of the standard identifier required for automatic lookup is documented at
 link:/author/topics/building/reference-lookup/[Automatic reference lookup].
 
-NOTE: Currently Metanorma supports auto-fetching document identifiers
-from: ISO, IEC, IETF, GB, NIST, OGC, CalConnect and many more.
+NOTE: Currently Metanorma supports auto-fetching document identifiers supported
+by Relaton, see https://www.relaton.org/guides/[here] for the full list.
 
 [example]
 .Example of specifying an auto-fetched reference
@@ -495,11 +499,20 @@ ISO 20483:2013. _Cereals and cereal products -- Determination of moisture conten
 ____
 ====
 
-One of the online bibliographic databases Metanorma allows access to is the CrossRef registry
-of DOI identifiers [added in https://github.com/relaton/relaton-cli/releases/tag/v1.14.0]. That means that
-any book, journal article, conference paper or dataset that has been identified with a DOI identifier
-can be cited by providing its DOI identifier as its bibliographic tag. Metanorma will import the bibliographic
-details of the reference from CrossRef, and format them in the required format of the current Metanorma flavour.
+==== DOI identifier lookup
+
+DOI identifiers are supported as auto-fetch targets [added in
+https://github.com/relaton/relaton-cli/releases/tag/v1.14.0] through the
+Crossref bibliographic information service.
+
+This means that any book, journal article, conference paper or dataset that has
+a DOI and bibliographic information at Crossref can be cited by providing its
+DOI identifier as its bibliographic tag. Metanorma will import the bibliographic
+details of the reference from Relaton and format them in the required format of
+the current Metanorma flavour.
+
+This is triggered by an identifier string prefixed with `doi:` or `DOI `,
+followed by the full DOI identifier.
 
 [example]
 .Example of specifying an auto-fetched DOI reference
@@ -514,13 +527,19 @@ The following will trigger auto-fetching:
 and gets rendered as:
 
 ____
-Massart D., Shulman E., Nicholas N., Ward N., &#x26; Bergeron F. Taming the Metadata Beast: ILOX. _D-Lib Magazine_ Vol. 16 No. 11/12. November 2010. Available from: <a href="http://dx.doi.org/10.1045/november2010-massart">http://dx.doi.org/10.1045/november2010-massart</a>
+Massart D., Shulman E., Nicholas N., Ward N., &#x26; Bergeron F. Taming the Metadata Beast: ILOX. _D-Lib Magazine_ Vol. 16 No. 11/12. November 2010. Available from: link:http://dx.doi.org/10.1045/november2010-massart"
 ____
 ====
 
-This functionality has also been extended to the OpenLibrary registry of
-ISBN identifiers [added in https://github.com/relaton/relaton-cli/releases/tag/v1.17.2].
-This is triggered by an identifier string prefixed with "ISBN ".
+==== ISBN identifier lookup
+
+ISBN identifiers are supported as auto-fetch targets [added in
+https://github.com/relaton/relaton-cli/releases/tag/v1.14.0] through the
+OpenLibrary API
+service [added in https://github.com/relaton/relaton-cli/releases/tag/v1.17.2].
+
+This is triggered by an identifier string prefixed with `isbn:` or `ISBN `,
+with the number following the ISBN-10 or ISBN-13 number, with or without dashes.
 
 [example]
 .Example of specifying an auto-fetched ISBN reference
@@ -551,10 +570,11 @@ each other and with IEC, and this is reflected in the identifier assigned by the
 (e.g. ISO/IEC DIR 1). In other cases, the document is assigned a different identifier by each of
 the standards organisations involved, but it is still considered to be the same publication, and is
 described in a single bibliographic entry.
+
 * Dual publications, for which the publications are treated as separate bibliographic entries, listed
 together with phrasing like "also published as:". In dual publications, the publications are regarded
 as separate activities with separate metadata, rather than a joint coordinated responsibility.
-
++
 In case the partnership is not acknowledged in the document identifier (the documents are assigned
 two separate identifiers), the two separate bibliographic entries can still be fetched by Relaton,
 and brought together in the Metanorma bibliography  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.1].
@@ -631,13 +651,13 @@ NOTE: Bibliographical information about the entry is *not* auto-fetched via Rela
 
 
 [[preformatted-citation]]
-=== Entering pre-formatted citations
+=== Entering pre-formatted references
 
-For generic references, by default, Metanorma only supports formatted citations,
-which are given as such in the AsciiDoc source.
+For generic references, by default, Metanorma only supports formatted
+references, which are given as such in the AsciiDoc source.
 
 [example]
-.Example of a pre-formatted citation
+.Example of a pre-formatted reference
 ====
 [source,asciidoc]
 ----
@@ -663,22 +683,22 @@ link:/author/topics/building/reference-lookup[Automatic reference lookup]
 topic for more details.
 
 [[annotated-spans]]
-=== Annotating pre-formatted citations using semantic elements
+=== Annotating pre-formatted references using semantic elements
 
-While a pre-formatted citation is not explicitly broken down into its semantic
-components, it may be expedient to mark up segments of the citation
+While a pre-formatted reference is not explicitly broken down into its semantic
+components, it may be expedient to mark up segments of the reference
 semantically, to provide information which is useful for parsing.
 
 [example]
-In order to generate an author-date citation, it is necessary to indicate the
+In order to generate an author-date reference, it is necessary to indicate the
 author surnames and publication date.
 
 For that reason, a limited number of span categories can be used to annotate a
 pre-formatted
-citation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
+reference [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
 
 These are not an exhaustive list of bibliographic fields, and if more detail is
-required (or a dynamically generated citation is to be generated), one of the
+required (or a dynamically generated reference is to be generated), one of the
 following explicit bibliographic entry methods should be used instead.
 
 The span categories supported are:
@@ -717,21 +737,25 @@ give the name of the editor of the book or proceedings that a paper is included 
 * `issue`: issue or issue range (e.g. _9_, _9-11_)
 * `volume`: volume or volume range (e.g. _9_, _9-11_)
 * `type`: Document type (e.g. _standard_, _book_, _inbook_): suppressed from rendering.
-The list of valid document types is given in https://www.relaton.org/specs/model/bibtype/[Relaton model -- Bibitem type].
+
+The list of valid document types is given in
+https://www.relaton.org/specs/model/bibtype/[Relaton model -- Bibitem type].
 
 NOTE: The surname must always precede the initials or given name for a given author in spans,
-to prevent ambiguity and confusion in parsing the citation.
+to prevent ambiguity and confusion in parsing the reference.
 The rendered ordering of initials/given name and surname for the first
-and for subsequent names is determined by the flavour citation stylesheet.
-So `span:surname[Fields], span:initials:[W.C.]`, never `span:initials:[W.C.] span:surname[Fields]`.
+and for subsequent names is determined by the flavour reference stylesheet.
+So `span:surname[Fields], span:initials:[W.C.]`,
+never `span:initials:[W.C.] span:surname[Fields]`.
 
-NOTE: After the first instances of `surname` and either `initials` or `givenname`, any
-subsequent instances of `surname` or either `initials` or `givenname` are
-interpreted as belonging to a new contributor of the same role.
+NOTE: After the first instances of `surname` and either `initials` or
+`givenname`, any subsequent instances of `surname` or either `initials` or
+`givenname` are interpreted as belonging to a new contributor of the same role.
 
-NOTE: `span:fullname[]` is intended as a convenience method to substitute `span:surname[]`,
-`span:initials[]`, `span:givenname[]` in a single macro. It has a strict syntax, and any
-special cases need to be marked up with the separate, explicit name parts instead:
+NOTE: `span:fullname[]` is intended as a convenience method to substitute
+`span:surname[]`, `span:initials[]`, `span:givenname[]` in a single macro. It
+has a strict syntax, and any special cases need to be marked up with the
+separate, explicit name parts instead:
 
 * The surname is a single word (space-delimited), occuring at the end. So in `span:fullname[A. D. Navarro Cortez]`, only _Cortez_ is a surname: to make _Navarro Cortez_ a surname, you will need to mark it up as `span:initials[A. D.] span:surname[Navarro Cortez]`. But in `span:fullname[A. D. Navarro-Cortez]`, the surname is _Navarro-Cortez_.
 * Anything before the surname is a given name. So in `span:fullnamename[J. Edgar Hoover]`, both _J._ and _Edgar_ are processed as given names.
@@ -796,33 +820,66 @@ specify the type of document, using `span:type[]`.
 --
 
 [[emebd-citation]]
-=== Emending relaton citations
+=== Overriding auto-fetched reference fields
 
-Bibliographic `span:...[]` notation can also be used to emend bibliographic entries fetched
-through Relaton [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.4].
-This is particularly important for relaton-doi, the records of which are of variable quality,
-and often miss information.
+The bibliographic `span:...[]` notation can be used to emend bibliographic
+entries fetched through
+Relaton [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.4].
 
-* Data encoded in the title following the bibliographic anchor with `span:[]` is used to supplement information
-fetched from Relaton
-* If the span information presents information absent in the fetched record, it is added to the record.
-* If the span information presents information corresponding in the fetched record, it overwrites it
-* Information is broken down by type: if an identifier, or URI, or date is of a given type, it overwrites only identifiers of the same type in the fetched record (e.g. `span:docid.BSI[BSI EN 8000]`, `span:date.published[2010]`). The same applies to contributors: contributors of a given type overwrite only contributors of the same type in the fetched record.
-  * For document identifiers, you will need the type of the SDO issuing the document, which is typically the standard organisation abbreviation. Look at the Semantic XML of the document for the currently fetched document, to make sure.
-* Information is replaced, not additive. For example, if there are multiple authors in the fetched record, they are replaced by the listing of multiple authors in the bibliographic spans.
+NOTE: This is particularly important for DOI auto-fetched information, as the
+Crossref records are of variable quality, and often lack crucial information for
+citations.
 
-To illustrate, the following citation
+* Data encoded in the title following the bibliographic anchor with `span:[]` is
+used to supplement auto-fetched information.
 
+* If the `span` information presents information absent in the fetched record,
+it is added to the record.
+
+* If the `span` information presents information corresponding in the fetched
+record, it overwrites it.
+
+* Information is broken down by type:
+
+** If an identifier, or URI, or date is of a given type, it overwrites only
+identifiers of the same type in the fetched record
+(e.g. `span:docid.BSI[BSI EN 8000]`, `span:date.published[2010]`).
+
+** The same applies to contributors: contributors of a given type overwrite only
+contributors of the same type in the fetched record.
+
+** For document identifiers, you will need the type of the SDO issuing the
+document, which is typically the standard organization abbreviation. Look at the
+Semantic XML of the document for the currently fetched document, to make sure.
+
+* Information is replaced, not additive.
++
+[example]
+If there are multiple authors in the fetched record, they are replaced by the
+listing of multiple authors in the bibliographic spans.
+
+To illustrate, the following citation modifies the record fetched from Crossref.
+
+.Metanorma bibliographic entry with DOI identifier fetch and data override
 [source,asciidoc]
 ----
-* [[[ref1,doi:10.1045/november2010-massart]]], span:pages[8-10], span:surname.author[Johnson], span:givenname.author[Boris], span:date.published[2021]
+* [[[ref1,doi:10.1045/november2010-massart]]],
+  span:surname.author[Johnson], span:givenname.author[Boris],
+  span:pages[8-10],
+  span:date.published[2021]
 ----
 
-modifies the record fetched from Crossref as follows:
+The modifications are:
 
-* The pages span are added to the source record, which contains volume and issue information, but no page information.
-* The authors listed for the source record are overwritten by the single author Boris Johnson.
-* The date published is overwritten by the new date 2021. The date the article was issued, by contrast, is left alone.
+* The pages span are added to the source record, which contains volume and issue
+information, but no page information.
+
+* The authors listed for the source record are overwritten by the single author
+"Boris Johnson".
+
+* The date published is overwritten by the new date 2021. The date the article
+was issued, by contrast, is left alone.
+
 
 [[asciibib]]
 === Entering with AsciiBib

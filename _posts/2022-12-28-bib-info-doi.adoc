@@ -1,0 +1,143 @@
+---
+layout: post
+title: Bibliographic information auto-fetch using DOIs now supported
+date: 2022-12-28
+categories: relaton
+authors:
+  -
+    name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+      - https://github.com/opoudjis
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+
+excerpt: >-
+  Metanorma now supports auto-fetching bibliographic information using
+  DOI identifiers through the latest Relaton-DOI.
+---
+
+== Introduction
+
+Users have long wished for auto-fetching bibliographic information using
+publishing identifiers, such as the
+https://www.doi.org[Digital Object Identifier (DOI)], which has been a fixture
+of digital publishing since 1997.
+
+The "DOI identifier" (ratified as ISO 26324
+(https://www.iso.org/standard/43506.html[ISO 26324:2012],
+https://www.iso.org/standard/81599.html[ISO 26324:2022]))
+is a unique identifier for a publication, registered at the DOI service operated
+by the DOI Foundation through a DOI registration agency.
+
+Today, the DOI has become ubiquitous with many publishers and agencies have
+embracing it for not only new publications, but also past publications,
+especially as those publications are reissued online.
+
+== Relaton now supports DOI retrival
+
+https://www.relaton.org[Relaton], which Metanorma depends on for bibliographic
+information retrieval, has just announced support for DOI identifier lookups
+using the https://www.crossref.org[Crossref] service.
+
+More information on the new features of Relaton-DOI can be found here:
+
+* https://www.relaton.org/blog/2022-12-28-relaton-doi/[Support for DOI bibliographic information auto-fetch through CrossRef]
+
+
+== Using DOI auto-fetch in Metanorma bibliographies
+
+Entering a DOI identifier with the `doi:` prefix at the "reference subject
+field" (after the comma that delimits the "reference anchor") will indicate to
+Metanorma that the bibliographic record will be fetched through Relaton
+(Relaton-DOI to be exact, from the Crossref service). The reference will be
+formatted according to the required style of the relevant publishing body.
+
+Since this information is fetched through Relaton, you do not need to provide
+any of the bibliographic information yourself.
+
+NOTE: There are certain caveats with data completeness and correctness from
+Crossref, detailed at the
+https://www.relaton.org/blog/2022-12-28-relaton-doi/[Relaton blog post].
+
+.Metanorma bibliography using DOI identifier auto-fetch
+[source,asciidoc]
+----
+[bibliography]
+== Bibliography
+
+* [[[ref1,doi:10.1515/9783110889406.257]]]
+----
+
+
+== Amending bibliographic information fetched using DOIs in Metanorma
+
+While Relaton-DOI provides auto-fetched bibliographic information from Crossref,
+such Crossref data is not always complete or sufficient for
+referencing purposes (challenges mentioned at the
+https://www.relaton.org/blog/2022-12-28-relaton-doi/[Relaton blog post]).
+
+This means that if the Crossref provided information for a DOI is insufficient,
+the user must supplement (override) that information.
+
+In Metanorma, the
+link:/author/topics/document-format/bibliography/#annotated-spans[`span:...[\]` syntax for bibliographic elements]
+allows you to enter bibliographic information for an entry in the absence of
+data from a bibliographic database.
+
+The same means can be used to add to or emend a reference fetched from Crossref,
+that we know to be faulty.
+
+* Data encoded in the title following the bibliographic anchor with `span:[]` is
+used to supplement auto-fetched information.
+
+* If the `span` information presents information absent in the fetched record,
+it is added to the record.
+
+* If the `span` information presents information corresponding in the fetched
+record, it overwrites it.
+
+* Information is broken down by type: if an identifier, or URI, or date is of a
+given type, it overwrites only identifiers of the same type in the fetched
+record. The same applies to contributors: contributors of a given type overwrite
+only contributors of the same type in the fetched record.
+
+* Information is replaced, not additive.
++
+[example]
+If there are multiple authors in the fetched record, they are replaced by the
+listing of multiple authors in the bibliographic spans.
+
+To illustrate, the following citation modifies the record fetched from Crossref.
+
+.Metanorma bibliographic entry with DOI identifier fetch and data override
+[source,asciidoc]
+----
+* [[[ref1,doi:10.1045/november2010-massart]]],
+  span:surname.author[Johnson], span:givenname.author[Boris],
+  span:pages[8-10],
+  span:date.published[2021]
+----
+
+The modifications are:
+
+* The pages span are added to the source record, which contains volume and issue
+information, but no page information.
+
+* The authors listed for the source record are overwritten by the single author
+"Boris Johnson".
+
+* The date published is overwritten by the new date 2021. The date the article
+was issued, by contrast, is left alone.
+
+== Conclusion
+
+Metanorma users citing publications with DOI identifiers can now keep
+their fingers "freer" than succumbing to the chore of entering citation
+information.
+
+When the auto-fetched information from Crossref is insufficient, no fret
+-- at least there is a way to fix that data to your liking!
