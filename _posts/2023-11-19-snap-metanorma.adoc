@@ -1,28 +1,75 @@
 ---
 layout: post
-post title: 'Installing, Downgrading, and Uninstalling "metanorma" Snap Package'
+title: 'Managing Metanorma versions on Linux using Snap'
 date: 2023-11-19
 categories: documentation
+authors:
+  -
+    name: Alexander Bobrikovich
+    email: alex.bobrikovich@ribose.com
+    social_links:
+      - https://github.com/CAMOBAP
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+
+excerpt: >-
+  Easily manage Metanorma versions on Linux using Snap packages.
 ---
 
-Snapcraft is a universal Linux packaging system that allows developers to package their applications and dependencies, making it easy to distribute and install software across various Linux distributions. Snaps are self-contained, sandboxed, and come with all the necessary dependencies, providing a consistent experience across different Linux distributions.
+== Introduction
 
-In this guide, we'll explore how to install, downgrade, and uninstall the "metanorma" Snap package using Snapcraft.
+There are occasions where a user may want to switch between multiple Metanorma
+versions, for example:
 
-== Prerequisites
+* publishing a document of older schema no longer supported by newer Metanorma versions
+* verifying older documents using old schema
+* (the unfortunate) case that a document fails to compile by newer Metanorma versions
 
-Before proceeding, make sure you have the Snapd service installed on your system. If not, you can install it using the following commands:
+On Linux, users typically use Metanorma through Docker containers or the "metanorma"
+Snap package.
 
+This article describes how to easily manage Metanorma versions through Snap,
+just with a few commands.
+
+
+== Snap packages
+
+https://snapcraft.io[Snapcraft] is a universal Linux packaging system,
+originally developed by https://canonical.com[Canonical] of
+https://ubuntu.com[Ubuntu Linux] fame, that allows developers to package their
+applications and dependencies, making it easy to distribute and install software
+across various Linux distributions.
+
+Snaps (a "Snap package") are self-contained, sandboxed, and come with all the
+necessary dependencies, providing a consistent experience across different Linux
+distributions.
+
+
+== Installing Snap
+
+On a Linux system, make sure you have the `snapd` service installed. `snapd`
+is the "snap daemon", which is needed to install and utilize snap packages.
+
+`snapd` can be installed it using the following commands on Ubuntu systems:
+
+.Installing `snapd`
 [source,sh]
 ----
 sudo apt update
 sudo apt install snapd
 ----
 
-== Installing "metanorma"
+== Installing the Metanorma snap package
 
-To install the latest version of "metanorma" run the following command in your terminal:
+The Metanorma snap package is aptly named `metanorma`.
 
+To install the latest version of snap `metanorma`, run the following command in
+your shell:
+
+.Installing the `metanorma` snap package
 [source,sh]
 ----
 sudo snap install metanorma
@@ -30,14 +77,19 @@ sudo snap install metanorma
 
 This command will download and install the latest package from the Snap Store.
 
-== Downgrading "metanorma"
 
-In some cases, you might need to downgrade to a specific version of "metanorma" Snapcraft makes this process straightforward.
+== Downgrading the Metanorma snap package
+
+In some cases, you might need to downgrade to a specific version of `metanorma`.
+
+Snapcraft makes this process straightforward.
 
 === List installed versions
 
-First, list the available versions of "metanorma" using the following command:
+First, list the available versions of the `metanorma` snap package using the
+following command:
 
+.Command to list installed versions of the `metanorma` snap package
 [source,sh]
 ----
 sudo snap list metanorma --all
@@ -45,6 +97,7 @@ sudo snap list metanorma --all
 
 If you have several metanorma versions installed before you will get an output similar to this:
 
+.Listing installed versions of the `metanorma` snap package
 [source,sh]
 ----
 Name       Version  Rev  Tracking       Publisher   Notes
@@ -52,15 +105,17 @@ metanorma  1.7.3    212  latest/stable  metanorma  disabled,classic
 metanorma  1.8.1    216  latest/stable  metanorma  classic
 ----
 
-=== Revert to a previous one
+=== Revert to a previous version
 
+.Reverting the `metanorma` snap package to a previous version
 [source,sh]
 ----
 sudo snap revert metanorma
 ----
 
-=== Revert to a previous one
+=== Revert to a specific previous version
 
+.Reverting the `metanorma` snap package to a specific previous version
 [source,sh]
 ----
 sudo snap revert metanorma --revision 212
@@ -68,6 +123,7 @@ sudo snap revert metanorma --revision 212
 
 == List available versions
 
+.Listing available version of the `metanorma` snap package
 [source,sh]
 ----
 snap info metanorma
@@ -75,8 +131,10 @@ snap info metanorma
 
 == Uninstall
 
-To uninstall "metanorma" from your system, use the following command:
+To uninstall the `metanorma` snap package from your system, use the following
+command:
 
+.Uninstall the `metanorma` snap package
 [source,sh]
 ----
 sudo snap remove metanorma
@@ -84,6 +142,9 @@ sudo snap remove metanorma
 
 == Conclusion
 
-Snapcraft simplifies the installation, management, and distribution of software on Linux systems.
+When using the Snap version of `metanorma` on Linux, the benefits of the
+Snapcraft approach are evident -- simplified installation, version management,
+and distribution of software.
 
-Unfortunatelly downgrade process isn't straight-forward but it's still possible
+While the downgrade process may not be the most straightforward, it is never
+further than a couple command presses!
