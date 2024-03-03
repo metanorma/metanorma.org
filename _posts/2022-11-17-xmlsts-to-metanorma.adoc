@@ -1,36 +1,61 @@
 ---
 layout: post
-post title: 'Convert ISO/NISO STS standards to Metanorma using mnconvert'
+title: Convert ISO/NISO STS standards to Metanorma using mnconvert
 date: 2022-11-17
 categories: documentation
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+  -
+    name: Alexander Dyuzhev
+    email: dyuzhev@gmail.com
+    social_links:
+      - https://www.linkedin.com/in/alexander-dyuzhev/
+      - https://github.com/Intelligent2013/
+
+excerpt: >-
+  Metanorma now supports converting ISO STS and NISO STS XML formats
+  into Metanorma formats through its `mnconvert` tool.
 ---
 
-Imagine that you have a typically long XML file compliant with
-ISO STS or NISO STS, which you want to shift to other file formats, such as
-`.html`, `.doc` and `.pdf`. The file should be encoded as a Metanorma
-AsciiDoc first, but this can be a really tedious task even with the most advanced
-text editor at your disposal. Here is where _mnconvert_ come
-in handy, to fasten the conversion process by a substantial amount.
+== Introduction
 
-== What are ISO STS and NISO STS?
+Imagine that you have a typically long XML file compliant with ISO STS or NISO
+STS, which you want to shift to other file formats, such as `.html`, `.doc` and
+`.pdf`.
+
+The file needs to be first encoded as Metanorma AsciiDoc content, but this can
+be a really tedious task even with the most advanced text editor at your
+disposal.
+
+Metanorma now provides a new tool, _mnconvert_, which enables such conversion.
+
+
+== ISO STS and NISO STS
 
 Both ISO STS and NISO STS allude to the definition of elements and attributes
 (i.e., tag sets) to describe, in a semantic and structured manner,
-the metadata and the full content of standard documents.
+the metadata and the full content of standard documents in XML.
 
-On one hand, ISO STS implements a proper tag set (based on
-https://jats.niso.org/jatswiki/index.php/Main_Page[JATS]) for encoding
-any ISO standard. On the other hand, NISO STS was created to be an
-extension of ISO STS and be able to provide a more generic tag set
-that other standards organizations could adopt. In other words, NISO STS
-is a superset of ISO STS, and is currently widely adopted to describe
-any scientific, technical, or medical text in the world.
+ISO STS is an ISO internal XML format that was tailored from
+https://jats.niso.org/jatswiki/index.php/Main_Page[JATS], used for encoding
+and PDF-printing ISO standards.
+
+NISO STS, is meant to be the superset of ISO STS. A number of ISO members, the national standards bodies,
+wanted to adopt ISO STS for national standards publishing. They took ISO STS to
+NISO, and created NISO STS, which is a more generic tag set than ISO STS.
+It also supports notions of national and regional adoption of standards, so it
+is more extensive than ISO STS.
 
 For more in-depth information about ISO STS, visit
 https://www.iso.org/schema/isosts/v1.1/doc/index.html[ISO Standards Tag Set documentation].
 
 For more in-depth information about NISO STS, visit
 https://www.niso-sts.org/TagLibrary/niso-sts-TL-1-2-html/index.html[NISO STS documentation].
+
 
 == What is _mnconvert_?
 
@@ -47,6 +72,7 @@ below. For more information, please refer to
 https://github.com/metanorma/mnconvert#readme[_mnconvert_
 documentation].
 
+
 === Requirements
 
 To use _mnconvert_, you need to meet the following criteria:
@@ -55,17 +81,20 @@ To use _mnconvert_, you need to meet the following criteria:
 an installer at: https://www.oracle.com/java/technologies/downloads/#jdk19-windows.
 (If you think you have Java JDK already but are not sure, just execute
 `java -version` to confirm.);
+
 * Have the latest JAR release of _mnconvert_ available for download
 at: https://github.com/metanorma/_mnconvert_/releases;
+
 * Have `make` and `maven` build tools installed as per instructions in
 https://www.baeldung.com/install-maven-on-windows-linux-mac;
+
 * Have an XML file compliant with ISO/NISO STS (i.e., XML STS).
 
 === Usage
 
 The command structure of _mnconvert_ is:
 
-[source]
+[source,console]
 --
 java -jar <JAR_path\JAR_filename>.jar <XML_path\XML_filename>.xml [options]
 --
@@ -78,7 +107,7 @@ For illustrative purposes, let's assume that:
 
 Taking these assumptions into account, the command simplifies to:
 
-[source]
+[source,console]
 --
 java -jar mnconvert-1.27.0.jar standard.xml [options]
 --
