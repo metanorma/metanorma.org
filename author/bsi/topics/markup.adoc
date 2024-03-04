@@ -10,7 +10,7 @@ title: Metanorma for BSI markup
 Any images to be included in the cover page are to be given under the
 document attribute `coverpage-image`, as a comma-delimited list:
 
-[source,asciidoctor]
+[source,adoc]
 ----
 :coverpage-image: images/image1.gif,images/image2.gif
 ----
@@ -104,7 +104,7 @@ Because there is variability in this information, including whether e) and f) ar
 the text for e) and f) should be entered as a preface clause of type "flex-coverpage"; any title provided will
 be ignored. For example:
 
-[source,asciidoctor]
+[source,adoc]
 ----
 [.preface,type="flex-coverpage"]
 == Flex cover page
@@ -121,7 +121,7 @@ it appears after g) in BSI Flex, and in the bottom of the Publication and Copyri
 The publication history is enterd with a preface clause of type "publication-history"; any title
 supplied is overwritten with the title specific to the document type. For example:
 
-[source,asciidoctor]
+[source,adoc]
 ----
 [.preface,type="publication-history"]
 == Release history
@@ -142,10 +142,10 @@ that regional SDO may have already added its own foreword.
 In order to ensure that the national and regional forewords are shown before the original foreword,
 they need to be specified as prefatory clauses, of type "national-foreword" and "regional-foreword".
 The `== Foreword` markup is retained for the source document. (Marking it as `.preface` is optional,
-as Metanorma already recognises `== Foreword` as a prefatory clause. Marking the National and Regional 
+as Metanorma already recognises `== Foreword` as a prefatory clause. Marking the National and Regional
 forewords as `.preface` is mandatory.)
 
-[source,asciidoctor]
+[source,adoc]
 ----
 [.preface,type=national-foreword]
 == National foreword
@@ -193,9 +193,9 @@ The following is an illustration of semantic document history markup for BSI:
 --
 [.preface]
 == Misc-container
-  
+
 === document history
-      
+
 [source,yaml]
 ----
 - date:
@@ -376,7 +376,7 @@ Seventh edition January 2018
 
 Eighth edition January 2021
 
-Ninth (present) edition 
+Ninth (present) edition
 
 
 *Amendments/corrigenda issued since publication*
@@ -455,8 +455,8 @@ as the conventional addendum or corrigendum label [added in https://github.com/m
 
 [cols=3]
 |===
-|[[anchor1]]IIB-P or Q 
-| Portland cement with 21% to 35% pozzolana 
+|[[anchor1]]IIB-P or Q
+| Portland cement with 21% to 35% pozzolana
 | CEM II/B-P or Q, CIIB-P or Q [[anchor2]]
 |===
 ----
@@ -480,7 +480,7 @@ not need to have types allocated to them, as they are not at this time processed
 
 The following is a representative foreword with subclauses:
 
-[source,asciidoctor]
+[source,adoc]
 ----
 == Foreword
 
@@ -699,7 +699,7 @@ without their labels, and with the right type: `product-certification, `assessed
 ====
 Users of this part of BS 1234 are advised to consider
 the desirability of quality system assessment and registration against the appropriate
-standard in the BS EN ISO 9000 series by an accredited third-party certification body. 
+standard in the BS EN ISO 9000 series by an accredited third-party certification body.
 ====
 -----
 
@@ -742,8 +742,8 @@ image::abc.png[]
 
 === Tables
 
-Tables can optionally have a `width` attribute, with legal values `full-page-width`, 
-and `text-width` (default). 
+Tables can optionally have a `width` attribute, with legal values `full-page-width`,
+and `text-width` (default).
 
 [source,asciidoc]
 ----
@@ -789,7 +789,7 @@ Row counting starts with the first line of the header, as row #0:
 |===
 |Type |Linear density    |Inside diameter
 |     |span:units[kg/mm]  |span:units[mm]
-   
+
 |Bone | 47 | 3.4
 |Tissue | 12 | 5.9
 |===
@@ -805,7 +805,7 @@ Type    Linear density    Inside diameter
 
 Bone    47                3.4
 -----------------------------------------
-Tissue  12                5.9 
+Tissue  12                5.9
 =========================================
 ....
 

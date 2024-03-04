@@ -162,7 +162,7 @@ by specifying it in the `:fonts:` document attribute.
 === Capitalisation
 
 Capitalisation may be applied automatically in the rendering of documents, despite not being present in the source material;
-for example, titles and captions may be title-cased or put in all caps. In order to prevent a span of text automatically 
+for example, titles and captions may be title-cased or put in all caps. In order to prevent a span of text automatically
 having its case changed, use CSS styling to set its CSS text-transform property to "none" [added in https://github.com/metanorma/isodoc/releases/tag/v2.8.5]:
 
 [example]
@@ -200,7 +200,7 @@ For example:
 ----
 
 In order to be rendered, a font implementing that interpretation needs to be indicated as a processing hint
-for Metanorma. This is done with the Presentation XML metadata directive 
+for Metanorma. This is done with the Presentation XML metadata directive
 `:presentation-metadata-custom-charset-font: {name of interpretation}:"{name of font}"`, as a document attribute,
 giving a comma-delimited list of charset-font pairs.  For instance:
 
@@ -296,7 +296,7 @@ NOTE: Only certain Metanorma flavors support enhanced rendering for
 semantically-tagged content.
 
 The semantic label is realised in Metanorma as a `class` attribute. That means
-that distinct rendering of spans can be specified by embedding 
+that distinct rendering of spans can be specified by embedding
 link:/author/topics/document-format/sections#user-css[custom CSS]
 in the Metanorma document, with CSS classes matching the span:
 
@@ -318,16 +318,16 @@ span:green[this text is highlighted as green]
 
 === Dates
 
-The `date` command is used to introduce dates and date-times as semantic 
+The `date` command is used to introduce dates and date-times as semantic
 elements  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.5].
 The value of the `date:[]` macro is an ISO-8601 formatted date or date-time.
-The second argument given in the macro, if present, is a 
+The second argument given in the macro, if present, is a
 https://ruby-doc.org/stdlib-3.0.0/libdoc/date/rdoc/DateTime.html#method-i-strftime[`strftime` formatting description
 of the date]. (Space can be specified as `%_`.)
 Month and day names and abbreviations, if requested in the formatting string, are internationalised
 to the document language.
 
-[source,asciidoctor]
+[source,adoc]
 ----
 date[2012-02-02]
 date[2012-02-02, %F]
@@ -423,7 +423,7 @@ This will render the following links depending on the output format:
 
 === Hyperlink validation
 
-Hyperlinks are validated and normalised 
+Hyperlinks are validated and normalised
 in Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.5.2].
 Hyperlinks are treated as IRIs (internationalised resource identifiers -- i.e. non-ASCII
 Unicode characters are allowed.)
@@ -1877,7 +1877,7 @@ Where:
 * `FORMAT` is a comma-delimited list of target formats. The formats known to Metanorma are:
 `html`, `doc`, `pdf`, `sts` (STS XML), `ieee` (IEEE XML), `rfc` (RFC XML v3), `txt`, `html_alt` (for ISO),
 `isosts` (ISO STS XML)
-* Metanorma will also accept the value `all` 
+* Metanorma will also accept the value `all`
 (all possible formats)  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.3].
 
 [example]
@@ -1931,13 +1931,13 @@ It is possible to specify the computer language used in the `[source]` block
 to enable source code highlighting (syntax highlighting) for supported
 languages.
 
-Metanorma integrates the 
+Metanorma integrates the
 https://github.com/rouge-ruby/rouge[Rouge syntax highlighter]
 which applies to all of HTML, DOC, and PDF output [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.2].
 (Before that date, it used the client-side https://github.com/googlearchive/code-prettify[Google Code Prettify],
 which only applied to HTML output.)
 
-Syntax highlighting is enabled by default; it is turned off through the document attribute 
+Syntax highlighting is enabled by default; it is turned off through the document attribute
 `:source-highlighter: false` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.2].
 
 The full list of languages supported is given in https://rouge-ruby.github.io/docs/file.Languages.html[Rouge Languages],
@@ -2331,7 +2331,7 @@ stem:[forall v_{i}] *bounce* stem:[v_{i}] off the wall
 
 Numbering can be suppressed for all instances of a Metanorma XML block type
 throughout a document, through the document attribute `:block-unnumbered:`,
-which takes as its argument a comma-delimited list of Metanorma XML block 
+which takes as its argument a comma-delimited list of Metanorma XML block
 names [added in https://github.com/metanorma/isodoc/releases/tag/v2.4.6]:
 
 [source,asciidoc]
