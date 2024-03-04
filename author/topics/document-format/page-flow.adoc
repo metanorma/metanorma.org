@@ -113,3 +113,46 @@ This is a paragraph that will be on the same page as the
 immediately previous one.
 --
 ====
+
+
+== Columns
+
+Metanorma has limited support for rendering text in multiple columns.
+
+NOTE: As of this writing, it is limited to BSI, and PDF output only.
+
+Where text is rendered in multiple columns, it is possible to override the
+rendering of individual blocks, with a `columns` attribute, setting the count of
+columns that they should be rendered with
+instead [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.0]:
+
+[source,asciidoc]
+----
+[columns=1]
+____
+This blockquote spans all columns of the text
+____
+----
+
+
+== Column breaks
+
+Some Metanorma flavours apply column formatting to document texts.
+
+NOTE: As of this writing, this applies to BSI in PDF.
+
+For such texts, it can be useful to specify a column break to be observed in
+rendering, rather than let the end of the column by determined automatically.
+
+To that end, Metanorma supports a "column break"
+directive [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.2].
+
+This directive needs to appear on a separate paragraph on its own
+(note the empty space before and after):
+
+[source,asciidoc]
+--
+
+columnbreak::[]
+
+--

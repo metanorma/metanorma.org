@@ -2,9 +2,9 @@
 layout: author-docs
 title: Passthrough to output formats
 ---
-== Passthrough to output formats
+= Passthrough to output formats
 
-=== Passthrough blocks
+== Passthrough blocks
 
 Passthrough text, such as XML tags, intended to be rendered in a target format
 unaltered, can be entered as a passthrough
@@ -54,7 +54,7 @@ of Metanorma in a comma-delimited manner
 --
 ====
 
-=== Passthrough inline text
+== Passthrough inline text
 
 Metanorma AsciiDoc supports the following syntaxes for inline passthrough.
 
@@ -92,7 +92,7 @@ pass:c[xml-content]
 
 Where:
 
-* `xml-content` is content that contains XML or SGML tags
+`xml-content`:: content that contains XML or SGML tags
 
 [example]
 .Example of specifying passthrough XML content
@@ -114,7 +114,20 @@ pass-format:FORMAT[...]
 
 Where:
 
-* `FORMAT` is a comma-delimited list of target formats.
+`FORMAT`:: comma-delimited list of target formats.
++
+Possible values are:
+
+`html`::: HTML
+`doc`::: Word DOC
+`pdf`::: PDF
+`sts`::: STS XML
+`ieee`::: IEEE XML
+`rfc`::: RFC XML v3
+`txt`::: TXT
+`html_alt`::: HTML with alternative styling, for ISO only
+`isosts`::: ISO STS XML
+`all`::: all possible formats [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.3].
 
 [example]
 .Example of specifying passthrough for selected target formats
@@ -124,3 +137,6 @@ Where:
 pass-format:rfc[<u format="num-lit">ᏚᎢᎵᎬᎢᎬᏒ</u>]
 --
 ====
+
+NOTE: Text that is marked up as `pass-format` is not subject to substitutions such as smart quotes.
+It can be used to keep straight quotes in a document that otherwise uses smart quotes.

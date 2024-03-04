@@ -26,7 +26,25 @@ The following types of admonitions require an atypical syntax for access:
 DANGER:: Information that can lead to safety concerns if not covered.
 SAFETY PRECAUTION:: Information that relates to safety precautions.
 
-NOTE: Typical AsciiDoc only supports NOTE, TIP, IMPORTANT and WARNING.
+NOTE: Typical AsciiDoc only supports NOTE, TIP, IMPORTANT, CAUTION and WARNING.
+
+In addition, the following types are recognised by specifying `[type=...]` as a
+block attribute on one of the latter four built-in admonition types in block
+mode (other than NOTE):
+
+* `statement`: typographically separate statements in mathematics, such as propositions, proofs, or theorems.
+* `editorial`: annotation by document editors, intended for all readers of the document and not just its authors.
+* `box`: box element, intended as standalone sidebar which can be referenced from within the document.
+
+[source,asciidoc]
+----
+[TIP,type=box]
+====
+This is a box
+====
+----
+
+Other types can also be entered.
 
 
 == Specifying admonitions
@@ -179,6 +197,25 @@ Bibliographic note
 ====
 --
 
+
+=== Explicitly-defined terminology entry notes
+
+Normally, notes are only tagged as term notes when they appear in the context of
+a terms section.
+
+Rarely, term notes need to be presented in isolation, including in ISO
+Amendments or Technical Corrigenda.
+
+To achieve that, mark the note up with
+`%termnote` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.2].
+
+[source,asciidoc]
+--
+[NOTE%termnote]
+====
+Bibliographic note
+====
+--
 
 
 === Whole document admonitions
