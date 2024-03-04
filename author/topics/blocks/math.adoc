@@ -2,7 +2,9 @@
 layout: author-docs
 title: Mathematical Expressions
 ---
-== Mathematical Expressions
+== Mathematical expressions
+
+=== General
 
 Metanorma AsciiDoc accepts mathematical input in these formats:
 
@@ -36,12 +38,10 @@ The `\stem:[]` and `[stem]` blocks can also be used if the document attribute
 `:stem: asciimath` has been specified in the document.
 
 AsciiMath is converted into MathML using the
-https://github.com/asciidoctor/asciimath[asciimath] gem.
+https://github.com/plurimath/plurimath[plurimath] gem.
 
-The syntax of AsciiMath recognised by the `asciimath` gem is more strict
+The syntax of AsciiMath recognized by `plurimath` can be more strict
 than the common MathJax processor of AsciiMath.
-
-For example, `asciimath` insists on numerators being bracketed.
 
 [example]
 .Usage of AsciiMath in IEV (IEV 103-01-03)
@@ -70,6 +70,22 @@ f -= lambda x (a * x + b)
 WARNING: Some math expressions are NOT supported by AsciiMath. In that case it
 is necessary to use LaTeX math or MathML input.
 
+[WARNING]
+.Encoding brackets inside stem:[]
+====
+When we encode inline math expressions that contain brackets we have have to
+make sure of two things:
+
+. The closing bracket must be escaped, `\]`.
+
+. If the opening bracket is the first character of the expression, there should be
+a white space between `stem:[` and the opening bracket; i.e. `stem:[ [...`.
+Otherwise, the engine may interpret the double-opening brackets `[[`  as the
+beginning of an anchor definition.
+
+As an example, suppose we want to encode this inline expression: stem:[[x_n,y_n\]]. +
+The correct encoding to avoid misinterpretations would be: `\stem:[ [x_n,y_n\]]`
+====
 
 === Using LaTeX math
 
@@ -162,13 +178,13 @@ should be re-arranged as:
 --
 ====
 
-== Formulae
+=== Formulae
 
-=== General
+==== General
 
 Formulae are marked up as `[stem]` blocks.
 
-=== Equations
+==== Equations
 
 In most flavours, equations and inequalities are both referenced in the same
 way, as "`Formula`".
@@ -177,7 +193,7 @@ In some flavours (e.g. ITU), they are referenced differently as "`Equations`"
 and "`Inequalities`".
 
 
-=== Inequalities
+==== Inequalities
 
 Inequalities are indicated through the option attribute `%inequality`:
 
@@ -209,7 +225,7 @@ renders as:
 image::/assets/author/topics/document-format/text/fig-stem-inequality.png[Example of a block stem inequality in Metanorma]
 ====
 
-=== Key
+==== Key
 
 Explanation of symbols used in the formula is specified in a "key" list, which is
 specified as a definition list with the `[%key]`
@@ -275,4 +291,3 @@ stem:[m_D]:: is the mass, in grams, of grains with that defect;
 stem:[m_S]:: is the mass, in grams, of the test sample.
 ----
 ====
-
