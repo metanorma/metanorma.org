@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Changes in the mnconvert tool in accordance with NISO STS 1.0 – IEC/ISO Coding Guidelines (part 1)"
+title: "mnconvert supports IEC/ISO NISO STS Coding Guidelines 1.0"
 date: 2023-01-08
 categories: documentation
 authors:
@@ -17,20 +17,22 @@ authors:
       - https://github.com/Intelligent2013/
 
 excerpt: >-
-  Metanorma's mnconvert tool produces NISO STS XML in accordance with 
-  NISO STS 1.0 – IEC/ISO Coding Guidelines.
+  mnconvert now produces NISO STS XML in accordance with
+  IEC/ISO NISO STS Coding Guidelines.
 ---
 
 == Introduction
 
-Metanorma software produces data in own Metanorma XML format.
-The IEC/ISO members uses NISO STS XML format in the workflow processes for
-standards-type documents in XML. Metanorma's https://github.com/metanorma/mnconvert[mnconvert tool] allows to convert
-the data from Metanorma XML into NISO STS XML format.
+IEC and ISO now use the NISO STS XML format in internal workflow processes for publication and distribution
+to its members.
 
-Recently mnconvert's conversion rules updated for IEC/ISO documents conversion
-in accordance with 
-https://www.iso.org/files/live/sites/isoorg/files/developing_standards/resources/docs/NISOSTS-guidelines-v1.0.pdf[NISO STS 1.0 – IEC/ISO Coding Guidelines]
+Metanorma's https://github.com/metanorma/mnconvert[mnconvert] allows easy
+conversion from NISO STS XML format into Metanorma, as well as from Metanorma's
+Semantic XML format to NISO STS.
+
+mnconvert now supports IEC/ISO STS conversion in accordance with
+https://www.iso.org/files/live/sites/isoorg/files/developing_standards/resources/docs/NISOSTS-guidelines-v1.0.pdf[IEC/ISO Coding Guidelines for NISO STS 1.0]
+
 
 == IEC or ISO Metanorma XML document determination
 
@@ -43,7 +45,7 @@ in the source Metanorma XML:
 
 
 == id generation rules
- 
+
 * Foreword section
 
 ** IEC: `id="sec-foreword"`
@@ -60,7 +62,7 @@ in the source Metanorma XML:
 
 ** IEC: `id="sec-X(.Y)*"`,
 
-** ISO: `id="sec_X(.Y)*"`, 
+** ISO: `id="sec_X(.Y)*"`,
 
 where "X(.Y)*" is the section, clause, subclause number (example, 1.2.1, B.1 for Annex)
 
@@ -115,7 +117,7 @@ where "X" is the table number
 
 * Table, without number
 
-** IEC: `id="tab-informal-X.Y-N"`, where "X.Y" is the subclause number, "N" is the table number in the subclause 
+** IEC: `id="tab-informal-X.Y-N"`, where "X.Y" is the subclause number, "N" is the table number in the subclause
 
 ** ISO:` id="tab_X"`, where "X" - any letter
 
@@ -143,7 +145,7 @@ NOTE: notes in non-numbered sections (Foreword, Introduction) don't have `id`.
 
 * Term section
 
-** IEC: `id="con-X.Y"`, 
+** IEC: `id="con-X.Y"`,
 
 ** ISO: `id="sec_X.Y"`,
 
@@ -151,9 +153,9 @@ where "X.Y" is the term entry number (section number)
 
 * Term entry
 
-** IEC: `id="te-X.Y"`, 
+** IEC: `id="te-X.Y"`,
 
-** ISO: `id="term_X.Y"`, 
+** ISO: `id="term_X.Y"`,
 
 where "X.Y" is the term entry number (section number)
 
@@ -186,15 +188,15 @@ inside the subclause
 
 * Text footnote
 
-** IEC: `id="foo-N"`, 
+** IEC: `id="foo-N"`,
 
-** ISO: `id="fn_N"`, 
+** ISO: `id="fn_N"`,
 
 where "N" is the sequential number throughout the document
 
 * Table footnote
 
-** IEC: `id="tfn-X-Y"`, 
+** IEC: `id="tfn-X-Y"`,
 
 ** ISO: `id="table-fn_X-Y"`, or `id="table-fn_N"`
 
@@ -202,27 +204,27 @@ where "X" is the table number, "Y" is the sequential number if the footnote insi
 
 * Figure footnote
 
-** IEC: `id="figfn-X-Y"`, 
+** IEC: `id="figfn-X-Y"`,
 
-** ISO: `id="figure-fn_X-Y"`, 
+** ISO: `id="figure-fn_X-Y"`,
 
 where "X" is the figure number, "Y" is the sequential number inside the figure
 
 == Links support
 
-If url isn't start with `http:`, `https:`, `ftp:`, `mailto:`, or `link/@target` is different than the text in `link`, 
+If url isn't start with `http:`, `https:`, `ftp:`, `mailto:`, or `link/@target` is different than the text in `link`,
 then link tagged as `ext-link`. And otherwise tagged as `uri`.
 
-EXAMPLE: `<link target="https://www.iso.org/obp"/>` converts to 
+EXAMPLE: `<link target="https://www.iso.org/obp"/>` converts to
 `<uri>https://www.iso.org/obp</uri>`
 
-EXAMPLE: `<link target="http://www.iso.org/directives">www.iso.org/directives</link>` converts to 
+EXAMPLE: `<link target="http://www.iso.org/directives">www.iso.org/directives</link>` converts to
 `<ext-link xlink:href="http://www.iso.org/directives">www.iso.org/directives</ext-link>`
 
-EXAMPLE: `<link target="http://standards.iso.org/iso/10303/tech/step_titles.htm">ISO website</link>` converts to 
+EXAMPLE: `<link target="http://standards.iso.org/iso/10303/tech/step_titles.htm">ISO website</link>` converts to
 `<ext-link xlink:href="http://standards.iso.org/iso/10303/tech/step_titles.htm">ISO website</ext-link>`
 
-EXAMPLE: `<link target="mailto:gehf@vacheequipment.fic"/>` converts to 
+EXAMPLE: `<link target="mailto:gehf@vacheequipment.fic"/>` converts to
 `<uri>mailto:gehf@vacheequipment.fic</uri></p>`
 
 
@@ -268,7 +270,7 @@ mnconvert adds `@content-type` and `<annex-type>` in accordance with the rules:
 
 ** `@content-type="normative"` for normative Annex
 
-If `title` starts with `(This annex does not form an integral part `, then `@content-type` isn't added.
+If `title` starts with `This annex does not form an integral part `, then `@content-type` isn't added.
 
 
 == IEC index support
@@ -291,7 +293,7 @@ mnconverts converts indexes in IEC documents into the structure:
 
 == Warning, Important and Caution support
 
-mnconvert transforms the Metanorma element `admonition` into NISO STS XML element `non-normative-note` 
+mnconvert transforms the Metanorma element `admonition` into NISO STS XML element `non-normative-note`
 with `@content-type=”warning”`, `“important”` or `“caution”`.
 
 
@@ -311,10 +313,218 @@ mnconvert encodes lists outside of the preceding paragraph, always for IEC and I
 ----
 ====
 
+
+
+== Abbreviation list determination
+
+mnconvert recognizes abbreviation list if:
+
+* preceding title contains the substring 'Abbrev'
+
+or
+
+* definition term `@id` starts with the prefix `abb-` or `abb_`
+
+and sets the attribute `@list-type="abbreviation"`.
+
+== Part of speech support
+
+mnconvert now supports `tbx:partOfSpeech` conversion.
+
+Metanorma XML example:
+[source,xml]
+----
+<preferred><expression>
+<name>date and time representation</name>
+<grammar><isAdjective>true</isAdjective></grammar></expression>
+</preferred>
+----
+
+Output NISO STS XML example:
+[source,xml]
+----
+<tbx:term>date and time representation</tbx:term>
+<tbx:partOfSpeech value="adj"/>
+----
+
+== Forms of the term support
+
+mnconvert supports these forms of the term:
+
+* acronym
+
+* abbreviation
+
+* fullForm
+
+* symbol
+
+The support for:
+
+* formula
+
+* equation
+
+will be added later.
+
+
+== 'See' note support
+
+mnconvert updated for `tbx:see` processing. Now mnconvert:
+
+* generates `NOTE` in adoc for the element `tbx:see`, and adds prefix `See `and suffix `for more information.` (prefix and suffix support in `en`, `fr` and `ru` languages, see below).
+
+[example]
+====
+NISO STS XML:
+
+[source,xml]
+----
+<tbx:see target="sec_A"/>
+----
+
+converts to Metanorma Adoc:
+
+[source,xml]
+----
+NOTE: See <<sec_A>> for more information.
+----
+====
+
+* generates `tbx:see` in Metanorma XML to NISO STS XML conversion for `termnote` with the prefix `See `and suffix `for more information.` (prefix and suffix support in `en`, `fr` and `ru` languages, see below).
+
+[example]
+====
+Metanorma XML:
+[source,xml]
+----
+<termnote id="_">
+<p id="_">See <xref target="sec_A"/> for more information.</p>
+</termnote>
+----
+
+converts to NISO STS XML:
+
+[source,xml]
+----
+<tbx:see target="sec_A"/>
+----
+====
+
+Supported strings for prefix:
+
+en:: `See`
+
+fr:: `Voir`
+
+ru:: `См.`
+
+Supported strings for suffix:
+
+en:: `for more information.`
+
+fr:: `pour plus d'informations.`
+
+ru:: `для дополнительной информации.`
+
+
+== Refined support for `tbx:source`
+
+mnconvert generates `tbx:source` for ISO documents without `std` inside.
+
+[example]
+====
+Before:
+[source,xml]
+----
+<tbx:source>
+<std type="dated">
+<std-ref>ISO 7301:2011</std-ref>, Clause 3.1</std>
+</tbx:source>
+----
+
+After:
+[source,xml]
+----
+<tbx:source>ISO 7301:2011, Clause 3.1</tbx:source>
+----
+====
+
+== Subject field support
+
+
+mnconvert now converts the NISO STS XML element `tbx:subjectField` into
+
+Metanorma Adoc
+[source,asciidoc]
+----
+domain:[dispute resolution]
+----
+and
+
+Metanorma XML:
+[source,xml]
+----
+<domain>dispute resolution</domain>
+----
+
+into NISO STS XML
+[source,xml]
+----
+<tbx:subjectField>dispute resolution</tbx:subjectField>
+----
+
+== Refined support for `@ref-type` in `xref`
+
+mnconvert supports the values `xref/@ref-type`:
+
+* `app`,
+
+* `bibr`,
+
+* `disp-formula`,
+
+* `fig`,
+
+* `fn`,
+
+* `list`,
+
+* `sec`,
+
+* `table`,
+
+* `table-fn`,
+
+* `other`.
+
+
+== Refined processing of `sup`
+
+The tag `<sup>` around footnote number removed for IEC documents.
+
+
+== Figure key support
+
+mnconvert encodes the figure key as:
+
+ISO::  `fig/table-wrap/table` with an attribute `@content-type="fig-index"`.
+
+IEC::  `fig/def-list` with an attribute `@list-content="figure"`.
+
+
+== Refined processing of table header cell format
+
+mnconvert updated for Metanorma XML to NISO STS XML conversion of ISO documents
+-- table header cell's text enclosed now in the bold element.
+
+
+== Table width processing
+
+`table/@width` processing removed for IEC document.
+
+
 == Conclusion
 
-There are more changes in the mnconvert tool, and they will be noticed in the next blog posts.
-
-If you have a questions or suggestions, feel free to file an issue at
-https://github.com/metanorma/mnconvert[mnconvert repo].
-
+Questions or suggestions, please feel free to file an issue at
+the https://github.com/metanorma/mnconvert[mnconvert repo] at GitHub!
