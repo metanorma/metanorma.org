@@ -140,14 +140,14 @@ The following document attributes are specific to NIST:
 
 
 `:series:`:: The publication series that the document belongs to. Legal values are given
-as the keys of the 
+as the keys of the
 https://github.com/metanorma/pubid-nist/blob/main/series.yaml[pubid-nist series listing] [added in https://github.com/metanorma/metanorma-nist/releases/tag/v2.4.0]. For legacy purposes, `nist-*` is converted  to `NIST *` in all caps; and `nist-cswp`
 (Cybersecurity White Papers) is converted to the correct `CSRC White Paper`.
 `nist-csts` is also supported as an ad hoc series.
 
 Documents belonging to different series are expected to be rendered differently. As of this
 writing, styling has been provided for `nist-cswp` (Cybersecurity White Papers),
-`nist-csts` (Cybersecurity Technical Specifications) [added in https://github.com/metanorma/metanorma-nist/releases/tag/v1.2.10], 
+`nist-csts` (Cybersecurity Technical Specifications) [added in https://github.com/metanorma/metanorma-nist/releases/tag/v1.2.10],
 and for `nist-sp` (SP-800).
 
 `:series-title:`:: (Added in v1.2.10)
@@ -237,9 +237,9 @@ identifiers (semicolon-delimited).
 
 The following document attributes are specific to NIST:
 
-`:obsoletes:`:: 
+`:obsoletes:`::
 One or more NIST document that this NIST document standard renders obsolete; implies that the obsoleted
-document is withdrawn, and no longer in effect. Comma delimited. 
+document is withdrawn, and no longer in effect. Comma delimited.
 Format is document identifier, e.g. _SP 800-53A Rev. 1_
 
 `:obsoleted-by:`::
@@ -308,7 +308,7 @@ statement as document contact, and to coverage of withdrawn published document.
 Default value is "Computer Security Division, Information Technology Laboratory".
 
 `:nist-division-address`:: Address of NIST division responsible for document.
-Added to authority statement as document contact. Use line breaks (in Asciidoctor:
+Added to authority statement as document contact. Use line breaks (in AsciiDoc:
 ` + \`) if necessary. Default value is
 "100 Bureau Drive (Mail Stop 8930) Gaithersburg, MD 20899-8930"
 
@@ -399,7 +399,7 @@ and are given an appendix number according to where in the document they occur.
 
 `:boilerplate-authority:`:: Nominate a Metanorma XML file encoding the authority statement of the document,
 to overwrite the default authority statement included in the gem
-(https://github.com/metanorma/metanorma-nist/blob/main/lib/metanorma/nist/nist_intro.xml[`lib/metanorma/nist/nist_intro.xml`], 
+(https://github.com/metanorma/metanorma-nist/blob/main/lib/metanorma/nist/nist_intro.xml[`lib/metanorma/nist/nist_intro.xml`],
 https://github.com/metanorma/metanorma-nist/blob/main/lib/metanorma/nist/nist_intro_cswp.xml[`lib/asciidoctor/nist/nist_intro_cswp.xml`]),
 in case the document is historical, and needs to be generated with a previous authority statement.
 
