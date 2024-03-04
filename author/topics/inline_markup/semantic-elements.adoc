@@ -1,0 +1,125 @@
+---
+layout: author-docs
+title: Semantic elements
+---
+= Semantic elements
+
+== Identifier
+
+The `identifier` command, used to indicate that its contents are an identifier
+as semantic markup (and not to be processed as a
+hyperlink) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.2].
+
+The syntax is as follows:
+
+[source,asciidoc]
+----
+identifier:[my-identifier]
+----
+
+Where:
+
+* `my-identifier` is the identifier to be encoded.
+
+
+This functionality is very useful for encoding URIs, which can be virtually
+indistinguishable from URLs that can be resolved. URIs very often cannot
+be resolved since they are simply namespaced identifiers.
+
+[example]
+.Example of rendering a URI using the `identifier` command
+====
+[source,asciidoc]
+--
+identifier:[https://schemas.isotc211.org/19115/-1/mdb/1.3]
+--
+
+renders:
+
+____
+`https&#x200c;://schemas.isotc211.org/19115/-1/mdb/1.3`
+____
+====
+
+[example]
+.Example of rendering a URN using the `identifier` command
+====
+[source,asciidoc]
+----
+identifier:[urn:iso:std:iso:8601:-1:en]
+----
+
+renders:
+
+____
+`urn:iso:std:iso:8601:-1:en`
+____
+====
+
+
+== Semantic spans
+
+The `span` command is used to introduce semantic markup into
+Metanorma text [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
+
+The syntax is as follows:
+
+[source,asciidoc]
+----
+span:category[text]
+----
+
+Where:
+
+* `category` is a semantic label for the content given as `text`
+* `text` is the textual content
+
+Here, the _text_ is tagged as belonging to _category_.
+
+A semantically-tagged text with `span` is not normally rendered any different to
+normal, although the semantic markup introduced can be used to influence
+rendering.
+
+NOTE: Only certain Metanorma flavors support enhanced rendering for
+semantically-tagged content.
+
+The semantic label is realised in Metanorma as a `class` attribute. That means
+that distinct rendering of spans can be specified by embedding
+link:/author/topics/document-format/sections#user-css[custom CSS]
+in the Metanorma document, with CSS classes matching the span:
+
+[source,asciidoc]
+-----
+== Metanorma-Extension
+
+=== user-css
+
+[source]
+----
+.green { background-color: green}
+----
+
+....
+
+span:green[this text is highlighted as green]
+-----
+
+== Dates
+
+The `date` command is used to introduce dates and date-times as semantic
+elements  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.5].
+The value of the `date:[]` macro is an ISO-8601 formatted date or date-time.
+The second argument given in the macro, if present, is a
+https://ruby-doc.org/stdlib-3.0.0/libdoc/date/rdoc/DateTime.html#method-i-strftime[`strftime` formatting description
+of the date]. (Space can be specified as `%_`.)
+Month and day names and abbreviations, if requested in the formatting string, are internationalised
+to the document language.
+
+[source,adoc]
+----
+date[2012-02-02]
+date[2012-02-02, %F]
+date[2012-02-02, %A %d %B] # Thursday 2 February
+date[2012-02-02T21:04:05, %F%_%l%_%p]
+----
+

@@ -58,14 +58,9 @@ https://docs.asciidoctor.org/asciidoc/latest/tables/align-by-cell/[AsciiDoc tabl
 
 == Column widths
 
-Table columns can have their widths set [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3].
+Table columns can also have their widths set [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3].
+
 Table column widths must be enumerated explicitly per column to generate column widths.
-
-* `[cols="a,a"]` would define two columns of equal widths.
-
-* `[cols="4,2,4"]` would define three columns. The first and last
-column's width would be four times the relative width and the middle column
-would be half as broad.
 
 [example]
 .Example of table with equal width columns
@@ -81,6 +76,16 @@ The following syntax will be processed as generating equal width columns.
 NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to
 `[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.
 
+For long tables that need to continue onto the next page in the DOC or PDF rendering of a document,
+Metanorma, by default, will automatically repeat the header after every page break.
+
+To suppress this behavior, you can apply the `noheader` value to the `options` attribute
+using its formal (`options=noheader`) or shorthand (`%noheader`) syntax.
+There is a caveat that this option will also deactivate the implicit assignment of the
+header to the first row of the table
+(see link:https://docs.asciidoctor.org/asciidoc/latest/tables/add-header-row/#implicitly-assign-header-to-the-first-row[Implicitly assign header to the first row]).
+Therefore, you will need to apply the header tag (`h|`) to every cell of the first
+row to define it as the header.
 
 == Table widths
 
@@ -122,6 +127,12 @@ Specifically:
 
 NOTE: Typical AsciiDoc renders table cell footnotes inside the cell,
 and notes trailing the table outside the table.
+
+[TIP]
+====
+Table 1 in the Metanorma ISO Rice example document illustrates a large range of
+table formatting options.
+====
 
 
 == Multiple header rows
@@ -190,6 +201,7 @@ NOTE: This feature is not supported in typical AsciiDoc.
 [[table-example-1]]
 === Example table 1
 
+
 .Example of a more complex table
 [source,adoc]
 ----
@@ -214,3 +226,28 @@ image::/assets/author/topics/document-format/text/fig-table.png[Illustration of 
 https://raw.githubusercontent.com/metanorma/mn-samples-iso/main/sources/international-standard/body/body-en.adoc[Table 1 in the Metanorma ISO Rice example document] illustrates
 a large range of table formatting options. Search for `#table1`.
 
+
+
+== Table sources
+
+A table can incorporate an indication of its source,
+which in Metanorma is expected to be a bibliographical reference, just as with
+term sources [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2].
+Any such sources need to appear after the table, and before any notes which will also be
+included in the table.
+
+[source,asciidoc]
+--
+|===
+| Head | Head
+
+| Row  | Row
+|===
+
+[.source]
+<<iso1212>>, reformatted
+
+NOTE: Note 1
+
+NOTE: Note 2
+--

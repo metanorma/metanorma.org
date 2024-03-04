@@ -15,6 +15,30 @@ Please refer to link:/author/topics/blocks/images[images] for details
 of the `image` command.
 
 
+=== Blocks
+
+An image block in isolation is treated as a figure:
+
+[source,asciidoc]
+--
+.Figure title
+image::figure-path.png[]
+--
+
+A more complex figure can be marked up as an example block, with the `[figure]` style attribute:
+
+[source,asciidoc]
+--
+[figure]
+.Figure title
+====
+image::figure-path.png[]
+
+This is some random explanatory text
+
+NOTE: And this is a note
+====
+--
 
 === Key
 
@@ -83,6 +107,17 @@ NOTE: These results are based on a study carried out on three different types of
 ====
 
 
+=== Data URLs as images
+
+Metanorma allows Data URLs as the URL for an image:
+
+[source,asciidoc]
+--
+image::data:image/png;base64,ivBO[alt text]
+--
+
+NOTE: Data URLs are not typically supported by AsciiDoc processors.
+
 
 === Discursive figures
 
@@ -121,6 +156,118 @@ image::rice_images/rice_image3_3.png[]
 ====
 --
 
+=== Image size
+
+The size of an image can be modified via the `height` and `width` attributes.
+
+By default, both `height` and `width` are set to the value `auto`, which means
+that the image will be shown according to the best visual settings determined
+by Metanorma.
+
+Image dimensions can also be fixed with pixel values with `px`.
+
+NOTE: The pixel is the only supported unit in image sizing right now.
+
+====
+.Image resizing specifying `height` and `width` attributes in pixels
+[source]
+----
+[height=150px,width=100px]
+image::logo.jpg[]
+----
+====
+
+In the `height` and `width` attributes, the `px` suffix may be omitted.
+
+
+====
+.Image resizing with values omitting `px` unit
+[source,asciidoc]
+--
+[height=150,width=100]
+image::logo.jpg[]
+--
+====
+
+The `auto` value indicates that the dimension does not have a fixed size but
+retain the aspect ratio of the original image.
+
+====
+.Aspect ratio is retained with `width` set to `auto` based on the value of `height`
+[source,asciidoc]
+--
+[height=150,width=auto]
+image::logo.jpg[]
+--
+====
+
+An unspecified dimension is considered `auto`.
+
+====
+.Aspect ratio is retained when setting `height` but not `width`
+[source,asciidoc]
+--
+[height=150]
+image::logo.jpg[]
+--
+====
+
+Image sizes can also be specified with percentages of the original width,
+e.g. `width='50%'` [added in https://github.com/metanorma/isodoc/releases/tag/v2.8.0].
+
+NOTE: Treatment of image resizing may slightly differ across output formats.
+
+
+=== Captions and titles
+
+As elsewhere in Metanorma, the caption of an image (of the figure containing the image)
+is set with a line prefixed with dot above the image.
+
+[source,asciidoc]
+--
+.Caption
+image::logo.jpg[]
+--
+
+[source,asciidoc]
+--
+image::logo.jpg[title=Caption]
+--
+
+NOTE: Similar to Asciidoctor AsciiDoc, the `title` attribute is treated as
+identical to the dot-prefixed caption.
+
+
+Metanorma supports a `title` attribute on images for accessibility, which is
+distinct from the figure caption.
+This is entered in Metanorma as the `titleattr` attribute:
+
+[source,asciidoc]
+--
+[titleattr=Title Attribute]
+image::logo.jpg
+--
+
+Or
+
+[source,asciidoc]
+--
+image::logo.jpg[titleattr=Title Attribute]
+--
+
+Both captions and titles could be used together.
+
+[source,asciidoc]
+--
+.Rice husk separation in rice farm at Breton near Dinan
+image::logo.jpg[titleattr=Photo of rice husks being separated]
+--
+
+NOTE: The `titleattr` attribute does not get rendered in Word output due to Word
+limitations. Word only supports a single image "`Alt Text`", which would be set
+by the caption.
+Word's description of "`Alt Text`" is:
+"`How would you describe this object and its context to someone who is blind?`".
 
 
 === Preformatted blocks
@@ -131,7 +278,7 @@ For accessibility, preformatted blocks can be provided with an `alt` text
 attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.10].
 
 [sources,asciidoc]
---
+----
 [alt=ASCII art of a dog]
 ....
      ___^_
@@ -142,7 +289,7 @@ attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/
  /     ___     0 |
 /      /  \___ _/
 ....
---
+----
 
 === Figure classes
 
@@ -156,4 +303,22 @@ through the `class` attribute [added in https://github.com/metanorma/metanorma-s
 [class=plate]
 .Rice husk separation in rice farm at Breton near Dinan
 image::logo.jpg[]
+--
+
+=== Figure sources
+
+When a figure is marked up as a block, it can incorporate an indication of its source,
+which in Metanorma is expected to be a bibliographical reference, just as with
+term sources [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2].
+
+[source,asciidoc]
+--
+[figure]
+.Rice husk separation
+====
+image::logo.jpg[]
+
+[.source]
+<<iso1212>>, reformatted
+====
 --

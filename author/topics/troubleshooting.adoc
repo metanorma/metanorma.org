@@ -3,28 +3,39 @@ layout: author-docs
 title: Troubleshooting
 ---
 tag::tutorial[]
-There can be many reasons why you can't compile a Metanorma AsciiDoc document into the final output, but you can easily fix them when you are familiar with typical errors.
 
-Metanorma tells you what's wrong in the terminal while it is building the document. The errors are also stored in an Error file `.err` in the same directory where your original document is stored, so you can debug them later.
+There can be many reasons why you can't compile a Metanorma AsciiDoc document
+into the final output, but you can easily fix them when you are familiar with
+typical errors.
+
+Metanorma tells you what's wrong in the terminal while it is building the
+document. The errors are also stored in an Error file `.err` in the same
+directory where your original document is stored, so you can debug them later.
 
 == How to troubleshoot a document
 
-The best way to troubleshoot a document is to break up the content in several parts to narrow down the location of the error.
-Regardless of troubleshooting, it is a good practice to divide a document into sections. You can then compile each section separately, or compile several of them in order to locate the error easier.
-For example, if you assume there could be some error in Foreword section and want to exclude it from being rendered, you can easily comment out the section.
+The best way to troubleshoot a document is to break up the content in several
+parts to narrow down the location of the error.
+
+Regardless of troubleshooting, it is a good practice to divide a document into
+sections. You can then compile each section separately, or compile several of
+them in order to locate the error easier.
+
+For example, if you assume there could be some error in Foreword section and
+want to exclude it from being rendered, you can easily comment out the section.
 
 .Example for a modular document setup
-[source,Asciidoc]
-====
-`Header with Metadata...``
+[source,adoc]
+----
+Header with Metadata...
 
-`//include::sections/00-foreword.adoc[]`
+//include::sections/00-foreword.adoc[]
 
-`include::sections/01-introduction.adoc[]`
-`include::sections/02-scope.adoc[]`
+\include::sections/01-introduction.adoc[]
+\include::sections/02-scope.adoc[]
 
 ...
-====
+----
 
 === Where to start troubleshooting?
 
@@ -180,15 +191,17 @@ image::path/file.jpg[]
 end::rendering-errors[]
 
 ==== Index term is showing up multiple times
+
 If an index term that only should appear once, appears several times, check the parentheses used in the index entries for this term.
+
 The syntax for index entries looks like this:
 
-[source, Asciidoc]
-====
+[source,adoc]
+----
 Visible index terms: `\((Level 1 index term))`
 
 Hidden index terms: `(\((Level 1 index term, Level 2 index term, Level 3 index term)))`
-====
+----
 
 
 === Cross-reference errors
@@ -251,17 +264,16 @@ Did you mean?  to_s
 To solve issues with automatic lookup, we can set the `nofetch()` attribute:
 
 .Example of disabled automatic lookup for one bibliographic entry
-[source,asciidoc]
-====
+[source,adoc]
+----
 [bibliography]
 == References
 
 * [[[bt2267-10,nofetch(ITU-R BT.2267-10)]]], Report ITU-R BT.2267-10 (2019), _Integrated broadcast-broadband systems._
-====
+----
 
 === Errors that are bugs
 
 Metanorma is under continuous development, so it is possible to face an error that you can not fix because it is a bug. If you need help with a persisting error or if you found a bug, please create a new issue on Github in your organization's repository (`metanorma-ORGNAME`), for example `metanorma-iso`.
-
 
 * https://github.com/metanorma[Metanorma Github]

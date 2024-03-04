@@ -10,23 +10,39 @@ include::../../author/concepts/metanorma_workflow.adoc[tags=creation]
 
 Follow these steps to create a new Metanorma document:
 
-. Open a text editor, for example, https://atom.io/[Atom] or https://code.visualstudio.com/[Visual Studio Code].
-. Create a new AsciiDoc document by creating a new file with the extension `.adoc` (AsciiDoc).
+. Open a text editor, for example, https://atom.io/[Atom] or
+https://code.visualstudio.com/[Visual Studio Code].
+
+. Create a new AsciiDoc document by creating a new file with the extension
+`.adoc` (AsciiDoc).
 +
 The file should look like this: `filename.adoc`
-. Write the document header that contains metadata about your project. A header contains attributes and values, such as: `doctype: standard`. Please refer to the link:/author/topics/metadata/[Adding metadata] section to learn more about the document header.
+
+. Write the document header that contains metadata about your project. A header
+contains attributes and values, such as: `doctype: standard`. Please refer to
+the link:/author/topics/metadata/[Adding metadata] section to learn more about
+the document header.
+
 . Write down your content using Metanorma AsciiDoc markup.
+
 . Save the file to the desired location.
 
 
 == How to use a template
-NOTE: Not all organizations have templates, and not all document types are supported. Head to the https://github.com/orgs/metanorma/repositories?q=template[Metanorma GitHub] repositories to check availability.
+
+NOTE: Not all organizations have templates, and not all document types are
+supported. Head to the
+https://github.com/orgs/metanorma/repositories?q=template[Metanorma GitHub]
+repositories to check availability.
+
 tag::template-steps[]
 . Open a new terminal window on your computer.
+
 . Use the `cd` command to navigate to the folder where the documents should be copied to.
-. To copy the template to your machine, use the `new` command and specify the organization type and document. 
+
+. To copy the template to your machine, use the `new` command and specify the organization type and document.
 +
-`metanorma new PROJECT-NAME -t ORGANIZATION -d DOCUMENT-TYPE` 
+`metanorma new PROJECT-NAME -t ORGANIZATION -d DOCUMENT-TYPE`
 +
 These examples illustrate how to use `metanorma new` in different setups:
 +
@@ -34,57 +50,67 @@ These examples illustrate how to use `metanorma new` in different setups:
 [%collapsible]
 ======
 [source]
-====
-`metanorma new my-new-standard -t ogc -d standard`
-====
+----
+metanorma new my-new-standard -t ogc -d standard
+----
 ======
 +
 .Metanorma in Docker (MacOS)
 [%collapsible]
 ======
 [source]
-====
-`docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma new my-new-standard -t ogc -d standard`
-====
+----
+docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma new my-new-standard -t ogc -d standard
+----
 ======
 +
 .Metanorma in Docker (Windows)
 [%collapsible]
 ======
 [source]
-====
-`docker run -v "%cd%":/metanorma/ -w /metanorma metanorma/metanorma metanorma new my-new-standard -t ogc -d standard`
-====
+----
+docker run -v "%cd%":/metanorma/ -w /metanorma metanorma/metanorma metanorma new my-new-standard -t ogc -d standard
+----
 ======
 
-. Edit the copied files with a text editor of your choice. 
+. Edit the copied files with a text editor of your choice.
 
-The Metanorma link:/_posts/2019-04-26-metanorma-templates-and-metanorma-new.adoc[blog post about templates] discusses the technical details of templates.
+The Metanorma
+link:/blog/2019-04-26-metanorma-templates-and-metanorma-new[blog post about templates]
+discusses the technical details of templates.
+
 end::template-steps[]
+
 == How to import a Word document
+
 Before you can import Word files, you need to install:
 
 * https://www.libreoffice.org/[Libre Office] v5
-* Word2AsciiDoc tool
+* reverse_adoc
 
-.Installing the Word2AsciiDoc tool
+.Installing `reverse_adoc`
 [source, shell]
-====
+----
 sudo gem install reverse_adoc
-====
+----
 
 . Open a new terminal window on your computer.
 . Use the `cd` command to navigate to the folder containing the word documents to be converted.
 . Run the following command, specifying the original Word file and the name of the AsciiDoc file:
 +
 [source, shell]
-====
+----
 w2a input.docx -o output.adoc
-====
+----
 
-The Word2AsciiDoc tool is still in development. Please refer to the https://github.com/metanorma/reverse_adoc[Reverse AsciiDoc Github repository] for all technical details.
+Please refer to the
+https://github.com/metanorma/reverse_adoc[Reverse AsciiDoc Github repository]
+for details.
 
 === Organizing your project
 
-After creating your Metanorma document, decide how you want to organize your files. Our best practice guidance helps you decide what strategy fits for your project. 
+After creating your Metanorma document, decide how you want to organize your
+files. Our best practice guidance helps you decide what strategy fits for your
+project.
+
 //LINK to BEST PRACTICE: PROJECT ORGANIZATION
