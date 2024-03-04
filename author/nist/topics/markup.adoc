@@ -80,7 +80,7 @@ by NIST..."). (Not applicable to CSWP.)
 `boilerplate/feedback-statement/clause[@id = 'authority4']`:: The public comment period, for drafts
 `boilerplate/feedback-statement/clause[@id = 'authority5']`:: The contact details for comments
 
-The authority statement has been marked up in Metanorma XML rather than Asciidoctor because of its complexity.
+The authority statement has been marked up in Metanorma XML rather than AsciIDoc because of its complexity.
 If you wish to supply a different authority statement, you will need to provide a piece of Metanorma XML corresponding
 to the existing default statement (available from
 https://github.com/metanorma/metanorma-nist/blob/main/lib/metanorma/nist/nist_intro.xml[`lib/metanorma/nist/nist_intro.xml`],
@@ -96,7 +96,7 @@ a city for that organization. This information is given using the `:fullname:`, 
 and `:address:` document attributes, with separate organization and address listings for each
 author. Metanorma will take care of grouping authors together by organization.
 
-[source,asciidoctor]
+[source,adoc]
 --
 :fullname: Hildegard Ferraiolo
 :affiliation: Computer Security Division, Information Technology Laboratory
@@ -128,7 +128,7 @@ The following sections are automatically moved to the document preface.
 * Keywords (drawn from document attribute, see above)
 
 In addition, any clause that has the `preface` style attribute is also moved to the document preface,
-regardless of where it appears in the source Asciidoctor document. These clauses
+regardless of where it appears in the source AsciIDoc document. These clauses
 appear in the document preface in the order they are given in the source document.
 Examples of preface clauses include:
 
@@ -142,7 +142,7 @@ Examples of preface clauses include:
 * Note to Readers
 * Trademark Information
 
-[source,asciidoctor]
+[source,adoc]
 --
 [preface]
 === Acknowledgemnts
@@ -164,7 +164,7 @@ As with all Metanorma gems, the foreword is considered to be any text before the
 section title. The foreword is used to capture the introductory statement on the publication
 series that precedes the abstract, and its title is entered as a caption:
 
-[source,asciidoctor]
+[source,adoc]
 ----
 = Document
 :title-main: NIST Report
@@ -180,7 +180,7 @@ of Standards and Technology (NIST) promotes the U.S. economy and public welfare.
 This is any section that appears with the role attribute `[.executive-summary]`.
 It is rendered after all other preface sections:
 
-[source,asciidoctor]
+[source,adoc]
 ----
 [.executive-summary]
 == Executive Summary
@@ -190,7 +190,7 @@ This is an executive summary
 
 === Errata
 
-Errata are marked up as an Asciidoctor table with role attribute `[.errata]`.
+Errata are marked up as an AsciIDoc table with role attribute `[.errata]`.
 Errata tables must have a header row containing the headings _Date, Type, Change, Pages_:
 
 [source, asciidoctor]
@@ -241,7 +241,7 @@ title "Glossary" or "Terminology" is treated as a Terms & Definitions section.
 
 Glossaries are given as definition lists with role attribute `[.glossary]`:
 
-[source,asciidoctor]
+[source,adoc]
 ----
 [.glossary]
 stem:[A= {x_1, x_2, ..., x_k}]:: The alphabet, i.e., the set of all possible symbols that a (digitized) noise source produces.
@@ -251,7 +251,7 @@ stem:[A= {x_1, x_2, ..., x_k}]:: The alphabet, i.e., the set of all possible sym
 
 Bibliographies in NIST are contained within annexes:
 
-[source,asciidoctor]
+[source,adoc]
 ----
 [appendix]
 == References
@@ -275,7 +275,7 @@ the bibliography does not have a distinct title.
 Pseudocode shall be marked up as an example, with style attribute `[pseudocode]`
 (implemented as a macro):
 
-[source,asciidoctor]
+[source,adoc]
 ----
 [pseudocode]
 ====
@@ -291,7 +291,7 @@ _Output:_ Shuffled _S=(s1,...,sL)_
 
 Pseudocode will respect initial indentation in paragraph lines, with line breaks:
 
-[source,asciidoctor]
+[source,adoc]
 ----
 [pseudocode]
 ====
@@ -309,7 +309,7 @@ They will be rendered as figures, but are not included in the count of figures o
 Recommendations, requirements, and permissions shall be marked up as examples,
 with style attribute "recommendation", "requirement", "permission":
 
-[source,asciidoctor]
+[source,adoc]
 ----
 [[recommend63]]
 [recommendation]
@@ -328,7 +328,7 @@ Variables within sourcecode are rendered as non-monospace italicised text. To in
 such variables, `{{{ ... }}}` shall be used as markup within the sourcecode block,
 which will be converted to the tag `nistvariable` in Metanorma XML:
 
-[source,asciidoctor]
+[source,adoc]
 ---
 [source]
 ----
@@ -357,10 +357,10 @@ Encoding an ordered list as steps:
 === Tables
 
 For accessibility, NIST authors are expected to insert titles into tables in Word documents as summaries.
-The equivalent in Metanorma is to include alt text in any hyperlinks in Asciidoctor, using the `alt` attribute
+The equivalent in Metanorma is to include alt text in any hyperlinks in AsciIDoc, using the `alt` attribute
 of tables, as illustrated in the following:
 
-[source,asciidoctor]
+[source,adoc]
 --
 [[table-crossreference-id]]
 .Table caption
@@ -377,10 +377,10 @@ of tables, as illustrated in the following:
 === Hyperlinks
 
 For accessibility, NIST authors are expected to insert tool tips into the hyperlinks they generate in Word documents.
-The equivalent in Metanorma is to include alt text in any hyperlinks in Asciidoctor, using the `title` attribute
+The equivalent in Metanorma is to include alt text in any hyperlinks in AsciIDoc, using the `title` attribute
 of hyperlinks, as illustrated in the following:
 
-[source,asciidoctor]
+[source,adoc]
 --
 http://www.example.com[See the example.com link,title=tooltip text]
 --
@@ -394,11 +394,11 @@ sponsor is involved, manual intervention will be required on the title page.
 
 The sponsor logo (`:sponsor-logo:`) is an image file, and it appears on the left hand side of the Word
 title page, oppose the NIST logo. The sponsor name (`:sponsor:`) appears underneath the logo. The attribute
-can be just the name, or it can be a multi-line attribute, containing Asciidoctor markup. In that case,
-it should be entered using Asciidoctor conventions for multi-line document attributes, with `\ +` used for
+can be just the name, or it can be a multi-line attribute, containing AsciIDoc markup. In that case,
+it should be entered using AsciIDoc conventions for multi-line document attributes, with `\ +` used for
 line breaks:
 
-[source,asciidoctor]
+[source,adoc]
 ----
 :sponsor-logo:fema.gif
 :sponsor: *Department of Homeland Security* \ + Janet Napolitano, _Secretary_ \ + *Federal Emergency Management Association* \ + Craig Fugate, _Administrator_ \ + *United States Fire Administration* \+ Kelvin J. Cochran, _Assistant Administrator_
