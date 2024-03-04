@@ -22,59 +22,61 @@ The following document types are recognised in the `:doctype:` document attribut
 BSI document types::
 +
 --
-* british-standard
-* draft-for-development
-* published-document
-* privately-subscribed-standard
-* publicly-available-specification
-* flex-standard
+* `british-standard`
+* `draft-for-development`
+* `published-document`
+* `privately-subscribed-standard`
+* `publicly-available-specification`
+* `flex-standard`
 --
 
-Adoptable types, ISO ::
+Adoptable types, ISO::
 +
 --
-* international-standard
-* technical-specification
-* technical-report
-* guide
-* publicly-available-specification
-* international-workshop-agreement
+* `international-standard`
+* `technical-specification`
+* `technical-report`
+* `guide`
+* `publicly-available-specification`
+* `international-workshop-agreement`
 --
 
 
-Adoptable types, IEC ::
+Adoptable types, IEC::
 +
 --
-* international-standard
-* technical-specification
-* technical-report
-* industry-technical-agreement
+* `international-standard`
+* `technical-specification`
+* `technical-report`
+* `industry-technical-agreement`
 --
 
-Adoptable types, CEN and CENELEC ::
+Adoptable types, CEN and CENELEC::
 +
 --
-* standard
-* technical-specification
-* technical-report
-* guide
-* european-workshop-agreement
+* `standard`
+* `technical-specification`
+* `technical-report`
+* `guide`
+* `european-workshop-agreement`
 --
 
-The following document types are recognised in the `:docsubtype:` document attribute:
+The following document types are recognized in the `:docsubtype:` document attribute:
 
-* specification
-* method-of-test
-* method-of-specifying
-* vocabulary
-* code-of-practice
+* `specification`
+* `method-of-test`
+* `method-of-specifying`
+* `vocabulary`
+* `code-of-practice`
 
 == Document numbers
 
 In the case of native BS standards, the identifier is compiled from a combination of the `doctype`,
-`docnumber`, and `copyright-year` document attributes, with a numeric `docnumber` value. So
+`docnumber`, and `copyright-year` document attributes, with a numeric `docnumber` value.
 
-[source,asciidoctor]
+So
+
+[source,adoc]
 ----
 :docnumber: 1000
 :doctype: publicly-available-specification
@@ -85,10 +87,13 @@ generates the document identifier "PAS 1000:2021".
 
 In the case of document adoptions, the `docidentifier` attribute should be used (to which `BS` will be prefixed),
 instead of assembling an identifier out of components, so that the source document identifier can be built up accurately.
-Part numbers of the original document should also be included in the `docidentifier` attribute,
-instead of being named with the `partnumber` attribute. So
 
-[source,asciidoctor]
+Part numbers of the original document should also be included in the `docidentifier` attribute,
+instead of being named with the `partnumber` attribute.
+
+So
+
+[source,adoc]
 ----
 :docidentifier: ISO/TR 123-2:1985
 :doctype: technical-report
@@ -113,7 +118,7 @@ ____
 This text is created by adding the BSI list of documents that the document relates to
 as a semicolon-delimited list of references, using `:bsi-related:`:
 
-[source,asciidoctor]
+[source,adoc]
 ----
 :bsi-related: Committee reference DEF/1;Draft for comment 20/30387670 DC
 ----
@@ -124,14 +129,14 @@ The introductory phrase is added automatically.
 
 An adopted external standard is defined as `:adopted-from:`:
 
-[source,asciidoctor]
+[source,adoc]
 ----
 :docidentifier: NA to BS EN 1991-1-2
 :adopted-from: EN 1991-1-2
 ----
 
 
-[source,asciidoctor]
+[source,adoc]
 ----
 :docidentifier: BS ISO 639-2
 :adopted-from: ISO 639-2
@@ -147,9 +152,9 @@ document; the related document is indicated with `:annotation-of:`.
 
 The author of the commentary is indicated as the author of the document, including credentials
 (indicated with `:contributor-credentials:`) and their position (`:contributor-position:`) and
-possibly organisational affiliation (`:affiliation:`). The position can be discursive.
+possibly organizational affiliation (`:affiliation:`). The position can be discursive.
 
-[source,asciidoctor]
+[source,adoc]
 ----
 :docidentifier: BS ISO 639-2
 :annotation-of: ISO 639-2
