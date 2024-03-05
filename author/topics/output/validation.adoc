@@ -89,7 +89,28 @@ Images:: Issue with images
 Include:: Issue with includes
 +
 --
-* Specified include file does not exist
+* Specified include file does not exist.
++
+---
+NOTE: This issue also arises if the include is block-commented: Asciidoctor does not take block comments into account when it
+processes includes. Metanorma is more strict in enforcing the existence of included files than Asciidoctor is natively.
+To prevent bad includes from aborting execution, either put a `:novalid:` document attribute in the document,
+to prevent checking for fatal errors, or else comment out the include with a line comment instead of a block comment:
+
+[source,asciidoc]
+----
+//include:missing-file[]
+----
+
+instead of 
+
+[source,asciidoc]
+----
+////
+include:missing-file[]
+////
+----
+---
 --
 Maths:: Issue with mathematical expressions
 +
