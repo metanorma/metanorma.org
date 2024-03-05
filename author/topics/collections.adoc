@@ -203,17 +203,17 @@ final-content:
 As noted, the collection manifest is expected to reference Semantic XML documents.
 The starting point for generating a collection is Metanorma Asciidoctor
 documents; in order to specify a collection and generate it as straightforwardly
-as possible, the collection manifest should be accompanied by a 
-link:/_pages/install/usage#metanorma-site[site manifest], named `metanorma.ym1`, 
-specifying both the 
+as possible, the collection manifest should be accompanied by a
+link:/_pages/install/usage#metanorma-site[site manifest], named `metanorma.ym1`,
+specifying both the
 component Asciidoctor files, and the collection manifest, as dependency files.
 Site compilation will compile both the component files, and the collection
 depending on them. This is done by running `metanorma site generate` in the same
 directory as `metanorma.ym1`.
 
 Since Metanorma site compilation compiles documents to a `_site/documents` directory,
-the collection manifest needs to reference the Semantic XML documents in that 
-same `_site/documents` directory. 
+the collection manifest needs to reference the Semantic XML documents in that
+same `_site/documents` directory.
 
 The following two files are examples of a site manifest and a collection manifest
 compiled through  `metanorma site generate`.
@@ -229,7 +229,7 @@ metanorma:
       - document.1.adoc
       - document.2.adoc
       - collection.yml
-    
+
   collection:
     organization: "British Standards Institute"
     name: "Retroﬁtting dwellings for improved energy efﬁciency — Speciﬁcation and guidance"
@@ -238,9 +238,9 @@ metanorma:
 In the site manifest, the files to be compiled are listed under `metanorma.source.files`;
 any YAML file in the list is assumed to be a collection manifest.
 
-The collection is specified in the site manifest with two attributes: a name for the 
+The collection is specified in the site manifest with two attributes: a name for the
 collection document, and an organization treated as the corporate author of the collection.
-Both will feature in the index file of the documents generated in the site (`_site/index.html`),  
+Both will feature in the index file of the documents generated in the site (`_site/index.html`),
 and correspond to `bibdata.title.content` and `bibdata.copyright.owner.name` in the collection manifest.
 
 `collection.yml`:
@@ -288,10 +288,10 @@ forms a sidebar for the display of the HTML content of each file.
 The following fields are defined:
 
 * `doctitle`, `docnumber`, etc.: Information derived from the Relaton YAML
-description in the manifest of the entire collection. 
+description in the manifest of the entire collection.
 The field names are as defined for Liquid templates
 in Metanorma: see
-link:/builder/topics/metadata-and-boilerplate[Metadata and Boilerplate].
+link:/develop/topics/metadata-and-boilerplate[Metadata and Boilerplate].
 
 * `navigation`: A nested list giving hyperlinks to the constituent documents,
 following the specification in the `manifest` field of the collection manifest.
@@ -619,7 +619,7 @@ This is an introduction added to the Received document
 
 embed::received.adoc[]
 
-The embedded document can be 
+The embedded document can be
 
 == Colophon
 ----
@@ -698,7 +698,7 @@ supplemented by a regional foreword, and/or a national foreword).
 
 It is possible to cite the embedded document from the embedding document, through
 a cross-reference to an anchor on the `embed::` directive: if no display text is supplied,
-the cross-reference is populated with the document identifier of the 
+the cross-reference is populated with the document identifier of the
 embedded document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.10]:
 
 For example, if

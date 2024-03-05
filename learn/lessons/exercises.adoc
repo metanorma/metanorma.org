@@ -1,0 +1,308 @@
+////
+Case construct, see:
+https://shopify.github.io/liquid/tags/control-flow/
+////
+:page-liquid:
+
+The code for this exercise is available on https://github.com/metanorma/metanorma-learn/tree/master/sources/standard[GitHub].
+
+The corresponding file is named `{{include.content}}.adoc`
+
+{% case {{include.content}} %}
+  {% when "exercise-2-1" %}
+Now it’s your turn. Fill the document with the following attributes:
+
+[%interactive]
+* [ ] Document title
+* [ ] Your name
+* [ ] Your organization using the `:publisher:` attribute
+* [ ] Your organization's address
+* [ ] The document class: `ogc`
+* [ ] The document type: `standard`
+* [ ] The language
+* [ ] The copyright year
+
+.Hint
+[%collapsible]
+====
+To declare an attribute, follow the syntax `:attribute: value`.
+
+For example: `:publisher: Ribose Inc.`
+====
+
+  {% when "exercise-2-2" %}
+Look at the prepopulated Metanorma document.
+There are many clauses describing the content but there are sections missing to form a correct standard document.
+Add the following sections:
+
+[%interactive]
+* [ ] Abstract on line 19
+* [ ] Introduction on line 23
+* [ ] Scope on line 28
+* [ ] Conformance on line 41
+* [ ] Normative references on line 45
+* [ ] Terms and definitions on line 60
+* [ ] Bibliography on line 95
+
+  {% when "exercise-2-3-1" %}
+Add lists to the prepopulated document.
+
+[%interactive]
+* [ ] Add an ordered list in lines 23-27
+* [ ] Add a definition list in lines 34-50
+* [ ] Add an unordered list in lines 56-58
+
+.Hint
+[%collapsible]
+====
+Ordered list items start with a dot, followed by a blank: `. List item`.
+
+Unordered list items start with an asterisk, followed by a blank: `* List item`.
+
+To write a definition list, follow the syntax:
+`term:: Definition`
+====
+
+  {% when "exercise-2-3-2" %}
+Create a term definition entry for the term "job":
+[%interactive]
+* [ ] Add an alternative term ("task")
+* [ ] Add a deprecated term ("process")
+* [ ] Add a definition: The (processing) job is a server-side object created by a processing service for a particular process execution.
+
+.Hint
+[%collapsible]
+======
+The structure for a term definition looks like this:
+[source, AsciiDoc]
+----
+=== Term
+alt:[alternative term]
+deprecated:[deprecated term]
+
+definition
+----
+======
+
+  {% when "exercise-2-3-3" %}
+Let's compare rice against wheat in a table:
+[%interactive]
+* [ ] Create an empty three column table with five rows.
+* [ ] Add a table title: Namespace conventions.
+* [ ] Use the `cols` attribute to specify the ratio between the colums. Let's set the ratio to 2:3:4 so that the URI and Description rows are larger than the first row.
+* [ ] Populate the table like this: +
+
+[cols="2,3,4"]
+.Namespace conventions
+|===
+|Prefix	|Namespace URI	|Description
+|ows	|http://www.opengis.net/ows/2.0	|OWS Common 2.0 XML Schema
+|xlink	|http://www.w3.org/1999/xlink	|Definitions for XLINK
+|xml	|http://www.w3.org/XML/1998/namespace	|XML (required for xml:lang)
+|xs	|http://www.w3.org/2001/XMLSchema	|XML Schema
+|===
+
+
+.Hint
+[%collapsible]
+======
+The structure for a three column table looks like this:
+[source, AsciiDoc]
+----
+|===
+|||
+|||
+|||
+|===
+----
+======
+  {% when "exercise-2-3-4" %}
+Insert a diagram of of a rice plant in line 17 by following the steps below:
+[%interactive]
+* [ ] Add an image macro.
+* [ ] Populate the `image::` macro with this link: +
+----
+https://en.wikipedia.org/wiki/Open_Geospatial_Consortium#/media/File:GeoServer_GeoNetwork_with_web_app.svg
+----
+[%interactive]
+* [ ] Add a picture title: Relationship between clients/servers and OGC protocols
+* [ ] Create a key with three entries +
+----
+GeoNetwork:: Catalog application to manage spatially referenced resources
+GeoServer:: Open-source server for sharing geospatial data
+Data stores:: Contain databases and shape files.
+----
+
+.Hint
+[%collapsible]
+====
+The syntax for images is: `image::URL[]`.
+
+Make sure to include the square brackets after the link.
+====
+
+  {% when "exercise-2-3-5" %}
+Turn the existing text into admonitions:
+[%interactive]
+* [ ] Turn the text in line 22 into an `IMPORTANT` admonition.
+* [ ] Turn the text in line 24 into a `WARNING` admonition.
+* [ ] Turn the text in lines 26-27 into a `NOTE` admonition.
+
+.Hint
+[%collapsible]
+======
+To create admonitions that span several lines, you need to declare a block.
+[source, AsciiDoc]
+----
+[NOTE]
+====
+This is a long note.
+It contains three lines.
+Line three.
+====
+----
+======
+
+  {% when "exercise-2-3-6" %}
+There are some code samples in the document but they are not neatly packed into `source` blocks, so they cause trouble.
+
+[%interactive]
+* [ ] Create a source block with the attribute `ruby` for the code in lines 20-35.
+* [ ] Create a source block with the attribute `python` for the code in line 38.
+* [ ] Create a source block with the attribute `java` for the code in lines 41-45.
+
+.Hint
+[%collapsible]
+======
+Source code blocks look like this:
+
+[source, Asciidoc]
+----
+[source, language]
+====
+Code
+====
+----
+======
+
+  {% when "exercise-2-4-1" %}
+Format the text using the following formatting:
+[%interactive]
+* [ ] Add underline formatting to the sentence in line 23
+* [ ] Add bold formatting to "worldwide" in line 25
+* [ ] Add smallcaps formatting to "FAIR" in line 27
+* [ ] Add italic formatting to _the OGC Innovation Program_ in line 30
+* [ ] Add a footnote on line 30 to explain the OGC Innovation Program. Footnote text: See all active initatives at the OGC wesite. https://www.ogc.org/projects/initiatives/active.
+
+  {% when "exercise-2-4-2" %}
+Let's add some index entries to the text.
+[%interactive]
+* [ ] Add a visible index entry to "OGC" on line 25
+* [ ] Add an invisible three level index entry after "FAIR" on line 27: FAIR, findability, accessibility
+* [ ] Add an invisible two level index entry on line 30 after "OGC Innovation Program": OGC Innovation Program, innovation
+* [ ] Create a new index section at the bottom of the document
+
+.Hint
+[%collapsible]
+====
+Visible index terms: `\((Level 1 index term))`
+
+Hidden index terms: `(\((Level 1 index term, Level 2 index term, Level 3 index term)))`
+====
+
+  {% when "exercise-2-4-3" %}
+Let's add some references to the sample document.
+
+Internal references:
+[%interactive]
+* [ ] Create an anchor for the table called `tab-properties-of-the-descriptiontype-structure`
+* [ ] Replace the word "ANCHOR" in line 44 with a reference to the table.
+
+Bibliographic references:
+The text references some standards which don't have a matching entry in the bibliography section. Add the following bibliographic references:
+
+[%interactive]
+* [ ] dcat, W3C vocab-dcat, W3C: *Data Catalog Vocabulary,* W3C Recommendation 16 January 2014, https://www.w3.org/TR/vocab-dcat/
+
+* [ ] iso19101, ISO 19101, ISO: *ISO 19101-1:2014 -- Geographic information -- Reference model -- Part 1: Fundamentals* https://www.iso.org/standard/59164.html
+
+.Hint
+[%collapsible]
+====
+Setting an anchor: `\[[anchor]]`
+
+Referencing an anchor: `\<<anchor>>`
+====
+
+  {% when "exercise-3-1" %}
+The text contains some typos. Mark the errors using comments.
+[%interactive]
+* [ ] Line 25: commnuity
+* [ ] Line 27: agencys
+* [ ] Line 20: colaborative
+
+  {% when "exercise-3-2" %}
+Let's check out what happens when we compile `exercise-3-2.adoc`
+To compile our document:
+
+. Open a new terminal
+. Start Docker using Docker Desktop.
+. Go to the directory where your Metanorma document(s) are stored. For example:
++
+[source,sh]
+----
+$ cd Documents/Metanorma/metanorma-tutorial
+----
+. Start the container and compile the document. To learn more about the command syntax and options, read the https://www.metanorma.org/software/metanorma-cli/docs/usage/[metanorma-cli documentation].
++
+NOTE: The https://github.com/fontist/fontist[fontist] automatically installs all needed fonts. The `--agree-to-terms` option agrees to all font license agreements that come up during the compilation process. If you don't set this option, you will be asked to agree to the licenses during the compilation process which might break it.
++
+.Docker on Linux and macOS
+[source,sh]
+----
+docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t ogc exercises/exercise-3-2.adoc --agree-to-terms
+----
++
+.Docker on Windows
+[source,sh]
+----
+docker run -v "%cd%":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t ogc exercises/exercise-3-2.adoc --agree-to-terms
+----
+
+.Hint Result
+[%collapsible]
+====
+. Relaton fetches checks the cited standards if it can fetch some information automatically.
+.
+====
+
+  {% when "exercise-4-2" %}
+The following document doesn't compile because there are some errors.
+
+. Enter `metnanorma exercise-4-2.adoc` to trigger the build process.
+. Have a look at the error messages.
+. Try to debug the document. If you get stuck, have a look at the hints.
+. Once you solved the errors, run the compilation command again to see if the document is build.
+
+.Hint Error 1
+[%collapsible]
+====
+Lines 47 and 66: Both sections have the anchor `\[[prefatory-clause]]` assigned.
+You can solve this error by renaming one of the anchors.
+====
+
+.Hint Error 2
+[%collapsible]
+====
+Line 76: The file that should be included cannot be found.
+Since the scope section already contains text, you can delete the reference.
+====
+
+.Hint Error 3
+[%collapsible]
+====
+Line 236: The image attribute contains a whitespace after `image::`, so the path is invalid. Delete the whitespace.
+====
+  {% else %}
+     Couldn't load exercise.
+{% endcase %}

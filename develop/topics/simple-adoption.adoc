@@ -1,0 +1,599 @@
+---
+layout: develop-docs
+---
+= Creating your own Metanorma flavor
+
+== How do I adapt Metanorma for my own publications?
+
+[TIP]
+====
+.Summary
+The easiest way to adopt StanDoc is to use the
+https://github.com/metanorma/metanorma-generic[metanorma-generic gem],
+supplying your own stylesheets and HTML files for styling,
+which is described on this page.
+{blank}[Renamed from `metanorma-acme` as of https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.5]
+
+This gem can work with YAML file where you can customize the behaviour of the
+flavour without needing to write any code. It will only deal with
+fairly simple standards flavours.
+====
+
+== General
+
+Metanorma Generic is a base implementation that facilitates easy creation
+of your own Metanorma flavor without programming.
+
+Specifically, Metanorma Generic allows you to specify configuration options
+to customize presentation attributes without needing to create a
+packaged Ruby Gem.
+
+Customizations of the document workflow, however, will require
+programming. In this case, Metanorma Generic provides a solid base
+for building your very own Metanorma flavour in a Ruby Gem.
+
+
+[[yaml-config]]
+=== Customization via YAML
+
+A simple Metanorma flavour can be created using Metanorma Generic's
+ability to use a `metanorma.yml` config file.
+
+Place a `metanorma.yml` file in the same directory as your Metanorma
+AsciiDoc file, and populate it with any necessary attributes.
+
+The following shows the default values that you can override with if
+necessary.
+
+[source,yaml]
+--
+# Content of `metanorma.yml`
+metanorma_name: generic
+organization_name_short: Acme
+organization_name_long: Acme Corp.
+document_namespace: https://www.metanorma.org/standards/generic
+xml_root_tag: 'generic-standard'
+logo_path: lib/isodoc/generic/html/logo.jpg
+logo_paths: []
+validate_rng_file: lib/metanorma/generic/generic.rng
+htmlcoverpage: lib/isodoc/generic/html/html_generic_titlepage.html
+htmlintropage: lib/isodoc/generic/html/html_generic_intro.html
+htmlstylesheet: lib/isodoc/generic/html/htmlstyle.css
+scripts: lib/isodoc/generic/html/scripts.html
+standardstylesheet: lib/isodoc/generic/html/generic.css
+header: lib/isodoc/generic/html/header.html
+wordcoverpage: lib/isodoc/generic/html/word_generic_titlepage.html
+wordintropage: lib/isodoc/generic/html/word_generic_intro.html
+wordstylesheet: lib/isodoc/generic/html/wordstyle.css
+i18nyaml: lib/isodoc/generic/html/i18n-en.yml
+boilerplate: lib/metanorma/generic/boilerplate.xml
+docid_template: "{{ organization_name_short }} {{ docnumeric }}"
+published_stages: ["published", "withdrawn"]
+committees: []
+relations: []
+default_stage: "published"
+metadata_extensions: []
+stage_abbreviations: (initials of stage)
+doctypes: []
+default_doctype: "standard"
+html_bodyfont:  "Overpass",sans-serif
+html_headerfont: "Overpass",sans-serif
+html_monospacefont: "Space Mono",monospace
+word_bodyfont: "Arial",sans-serif
+word_headerfont: "Arial",sans-serif
+word_monospacefont: "Courier New",monospace
+termsdefs_titles:
+  - Terms and definitions
+  - Terms, definitions, symbols and abbreviated terms
+  - Terms, definitions, symbols and abbreviations
+  - Terms, definitions and symbols
+  - Terms, definitions and abbreviations
+  - Terms, definitions and abbreviated terms
+symbols_titles:
+  - Symbols and abbreviated terms
+  - Symbols
+  - Abbreviated terms
+  - Abbreviations
+normative_references_titles:
+  - Normative references
+bibliography_titles
+  - Bibliography
+webfont:
+  - https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,600,600i&display=swap
+  - https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,300;0,600;1,300;1,600&display=swap
+--
+
+*Key*:
+
+`metanorma_name`:: Short name of the Metanorma flavour,
+for use in invoking the gem as software [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
+For example, `metanorma -t {short name} document.adoc` or `:mn-document-class: {short name}`.
+
+`organization_name_short`/`organization_name_long`:: Name of your organization
+
+`document_namespace`:: attribute for creating Metanorma Standoc XML, will be used for as namespace name for XML tags generated
+
+`xml_root_tag`:: attribute for creating Metanorma Standoc XML, will be used as tag name for root tag
+
+`logo_path`:: path to a single logo file, used for metanorma metadata. As with *all file locations in the configuration*, these are relative paths from the gem root
+
+`logo_paths`:: list of paths of multiple logo files, used for metanorma metadata, and treated as an array (e.g. `{{ logo_paths[0] }}` [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8]. For example,
++
+--
+[source,yaml]
+----
+  - lib/isodoc/generic/html/logo1.jpg
+  - lib/isodoc/generic/html/logo2.jpg
+  - lib/isodoc/generic/html/logo3.jpg
+----
+--
+
+`validate_rng_file`:: validation file with rules used in your flavour, see https://github.com/metanorma/metanorma-generic/blob/main/lib/metanorma/generic/generic.rng for example. This and all other file directory paths are relative to the gem root.
+
+`htmlcoverpage`/`htmlintropage`/`htmlstylesheet`/`scripts`::
+paths used for styling HTML output files.
+Accepts a path to a CSS (`.css`) or SASS/SCSS (`.sass`, `.scss`) file.
++
+[example]
+====
+See
+https://github.com/metanorma/metanorma-generic/tree/main/lib/isodoc/generic/html
+for examples.
+====
++
+[NOTE]
+--
+In order to use SASS/SCSS stylesheets (`.sass`, `.scss`), which can include
+variables like `html_bodyfont` and `html_headerfont`, require the `sassc` gem to
+compile such files into normal CSS (`.css`). You will need to add the line `gem
+"sassc"` to your `Gemfile` to achieve this.
+
+Alternatively, you can provide a pure CSS (`.css`) stylesheet by resolving all
+variables inside a SASS/SCSS stylesheet. e.g. resolve all the `$` variables by
+filling in CSS-compliant values.
+--
+
+`wordcoverpage`/`wordintropage`/`wordstylesheet`/`header`:: paths used for styling word output files, for examples see https://github.com/metanorma/metanorma-generic/tree/main/lib/isodoc/generic/html
+
+`docid_template`:: template to generate a document identifer, using
+https://shopify.github.io/liquid/[Liquid template language], and metadata values
+(see link:/develop/topics/metadata-and-boilerplate/#default-metadata[Default metadata values]);
+the config file values can also be used in the Liquid template [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.1].
+
+`i18nyaml`:: YAML file to be used for internationalisation and
+labels [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.3].
+The configuration may instead be a hash of language abbreviations to
+files [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.4]; e.g.:
++
+--
+[source,yaml]
+----
+  en: yaml-en.yml
+  fr: yaml-fr.yml
+----
+--
+
+`boilerplate`:: Predefined text file for inclusion in Metanorma XML [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.4].
+The configuration may be a single file, or a hash of language abbreviations to
+files, as with `i18nyaml`. For the format of boilerplate files, see link:/develop/topics/metadata-and-boilerplate/#boilerplate[Predefined text].
+
+`published_stages`:: list of stages considered published
+
+`committees`:: list of legal committee values [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.4]
+
+`relations`:: list of recognised relations to other documents, expressed through document attributes [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.4]
+
+`stage_abbreviations`:: hash of stages and their corresponding abbreviations. If not supplied, the initials of the stage are used, as is the default for Metanorma. This structure is used to configure stages.
+
+`doctypes`:: array or hash of legal document types [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
+If it is an array, only the document types are given; if it is a hash [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.7.3],
+the document types are mapped to abbreviations. So either may appear:
++
+--
+[source,yaml]
+----
+doctypes:
+  - standard
+  - guide
+----
+
+[source,yaml]
+----
+doctypes:
+  standard:
+  guide: G
+----
+--
+
+`default_doctype`:: default doctype [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8]. if not supplied, the first element of doctypes is used; if that is not supplied either, "standard" is used.
+
+`html_bodyfont`:: The default font to use in HTML output for body text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+
+`html_headerfont`:: The default font to use in HTML output for headers [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+
+`html_monospacefont`:: The default font to use in HTML output for monospace text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+
+`word_bodyfont`:: The default font to use in DOC output for body text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+
+`word_headerfont`:: The default font to use in DOC output for headers [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+
+`word_monospacefont`:: The default font to use in DOC output for monospace text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
+
+`metadata_extensions`:: A set of fields to be added to `bibdata/ext` for the document, as metadata. These can be entered in one of two formats:
+** A list of single-value fields to add to `bibdata/ext` for the document, as metadata; they will be populated through document attributes with the same name [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.7]. For example,
++
+--
+[source,yaml]
+----
+metadata_extensions:
+  - security
+  - comment-period
+----
+--
+
+** A nested list of fields, representing the target XML structure [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.7.1]. Each field corresponds to the corresponding document attribute. CSV-delimited values can be indicated with the special key `_list: true`; fields to be treated as attributes, with `_attribute: true`. If the field is to have a different name in the XML structure, that name is given with the special key `_output`. For example:
++
+--
+[source,yaml]
+----
+metadata_extensions:
+  comment-period:
+    comment-period-type:
+        _output: type
+        _attribute: true
+    comment-period-from:
+        _output: from
+        _list: true
+    comment-period-to:
+         _output: to
+    reply-to:
+  security:
+----
+
+given the Metanorma AsciiDoc document attributes:
+
+[source,asciidoc]
+----
+:comment-period-from: A,B,C
+:comment-period-to: D
+:comment-period-type: E
+:reply-to: F
+:security: X
+----
+
+will generate the metadata extensions:
+
+[source,xml]
+----
+<ext>
+  <comment-period type="E">
+    <from>A</from>
+    <from>B</from>
+    <from>C</from>
+    <to>D</to>
+    <reply-to>F</reply-to>
+  </comment-period>
+  <security>X</security>
+</ext>
+----
+--
+
+** The Liquid metadata template exports `/bibdata/ext` as a Ruby object under
+`metadata_extensions` [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.7.1],
+in order to preserve its structure; so the foregoing example maps to:
++
+--
+[source,ruby]
+----
+:metadata_extensions=>{
+  "comment-period_type"=>"E",
+  "comment-period"=>{
+    "from"=>["A", "B", "C"],
+    "to"=>"D",
+     "reply-to"=>"F"
+   },
+   "security"=>"X"}
+----
+--
+
+
+`webfont`:: A list of URLs of web fonts, to be loaded into HTML output [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8]. For example,
++
+--
+[source,yaml]
+----
+  - https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,600,600i&display=swap
+  - https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,300;0,600;1,300;1,600&display=swap
+----
+--
+
+`termsdefs_titles`:: Titles which will be automatically recognised as introducing Terms sections [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
+
+`symbols_titles`:: Titles which will be automatically recognised as introducing Symbols/Abbreviations sections [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
+
+`normref_titles`:: Titles which will be automatically recognised as introducing Normative References sections [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
+
+`bibliography_titles`:: Titles which will be automatically recognised as introducing Bibliography sections [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
+
+
+A document may specify its own `metanorma.yml` instance, to override that of the
+gem configuration. That is done using a `:customize:` document attribute. [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.2]
+
+[source,adoc]
+----
+= Title
+:customize: config/my_metanorma.yml
+----
+
+=== Customization via Ruby Gem
+
+==== General
+
+Metanorma Generic also supports configuration via Ruby code.
+By following the steps below you can create your own Ruby Gem for your Metanorma flavour.
+
+NOTE: Examples are borrowed from https://github.com/metanorma/metanorma-ribose repository.
+
+
+==== Step 1: Create an empty Gem
+
+Initialize an empty Ruby Gem:
+
+[source,sh]
+----
+bundle init
+----
+
+Then add `metanorma-generic` as a dependency in your `{gem-name}.gemspec` file.
+
+`{gem-name}` is typically `metanorma-{your-flavor-name}`.
+For example, for Metanorma Ribose, it is `metanorma-ribose`.
+
+
+==== Step 2: Create your Metanorma configuration in Ruby
+
+In this step you will create:
+
+* `lib/metanorma-{your-flavor-name}.rb`
+
+`lib/metanorma-{your-flavor-name}.rb` is the entry point for your gem.
+
+For example, this is `lib/metanorma-ribose.rb`:
+
+[source,ruby]
+--
+Metanorma::Generic.configure do |config|
+  config.organization_name_long = 'Ribose Inc.'
+  config.organization_name_short = 'Ribose'
+  config.document_namespace = 'https://open.ribose.com/standards/ribose'
+
+  isodoc_rsd_html_folder = File.join(
+    File.expand_path('isodoc', __dir__), 'ribose', 'html'
+  )
+
+  config.wordstylesheet = File.join(
+    isodoc_rsd_html_folder, 'wordstyle.css'
+  )
+  config.standardstylesheet = File.join(isodoc_rsd_html_folder, 'ribose.css')
+  config.header = File.join(isodoc_rsd_html_folder, 'header.html')
+  config.wordcoverpage = File.join(
+    isodoc_rsd_html_folder, 'word_rsd_titlepage.html'
+  )
+  config.wordintropage = File.join(isodoc_rsd_html_folder,
+                                   'word_rsd_intro.html')
+  config.htmlstylesheet = File.join(isodoc_rsd_html_folder,
+                                    'htmlstyle.css')
+  config.htmlcoverpage = File.join(isodoc_rsd_html_folder,
+                                   'html_rsd_titlepage.html')
+  config.htmlintropage = File.join(isodoc_rsd_html_folder,
+                                   'html_rsd_intro.html')
+  config.scripts = File.join(isodoc_rsd_html_folder, 'scripts.html')
+  config.logo_path = File.join(isodoc_rsd_html_folder, 'logo.png')
+  config.xml_root_tag = 'ribose-standard'
+
+  rsd_rng_folder = File.join(File.expand_path('metanorma', __dir__), 'ribose')
+  config.validate_rng_file = File.join(rsd_rng_folder, 'ribose.rng')
+end
+
+require 'metanorma/ribose'
+require 'isodoc/generic'
+
+require 'asciidoctor' unless defined? Asciidoctor::Converter
+require 'metanorma/ribose'
+--
+
+In this configuration, you have to provide paths to your style definitions:
+* Word Doc: using `config.word*`
+* HTML: using `config.html*`
+
+Please refer to <<yaml-config>> for a detailed explanation for each configuration option.
+
+
+==== Step 3: Define your flavor in the Metanorma framework
+
+In this step you will create these folders:
+
+* `lib/metanorma/{your-flavor-name}/`
+* `lib/isodoc/{your-flavor-name}/`
+
+And these files:
+
+* `lib/metanorma/{your-flavor-name}.rb`
+* `lib/metanorma/{your-flavor-name}/processor.rb`
+* `lib/metanorma/{your-flavor-name}/version.rb`
+* `lib/metanorma/{your-flavor-name}/converter.rb`
+* `lib/isodoc/{your-flavor-name}.rb`
+* `lib/isodoc/{your-flavor-name}/metadata.rb`
+* `lib/isodoc/{your-flavor-name}/{converter-type}.rb` (one converter per output format)
+
+For example, in `metanorma-ribose`, you would have these files:
+
+* `lib/metanorma/ribose.rb`
+* `lib/metanorma/ribose/processor.rb`
+* `lib/metanorma/ribose/version.rb`
+* `lib/metanorma/ribose/converter.rb`
+* `lib/isodoc/ribose.rb`
+* `lib/isodoc/ribose/metadata.rb`
+* `lib/isodoc/ribose/html_converter.rb`
+* `lib/isodoc/ribose/word_converter.rb`
+
+
+The first file `lib/metanorma/{your-flavor-name}.rb` defines your module,
+and links your flavor's processor to the Metanorma processor framework, and
+also your input converters.
+
+[source,ruby]
+--
+# lib/metanorma/ribose.rb
+require "metanorma"
+require "metanorma/ribose/processor"
+require "metanorma/ribose/converter"
+
+module Metanorma
+  module Rsd
+  end
+end
+
+# This line registers your Metanorma Processor to the Metanorma Registry
+Metanorma::Registry.instance.register(Metanorma::Rsd::Processor)
+--
+
+
+`lib/isodoc/{your-flavor-name}/metadata.rb` links your configuration
+to IsoDoc by inheriting the `IsoDoc::Generic::Metadata` class:
+
+[source,ruby]
+--
+# lib/isodoc/ribose/metadata.rb
+require "isodoc"
+
+module IsoDoc
+  module Rsd
+    class Metadata < IsoDoc::Generic::Metadata
+      def configuration
+        Metanorma::Rsd.configuration
+      end
+    end
+  end
+end
+--
+
+
+Inherit `IsoDoc::Generic` convertors depending on the types of outputs
+your flavour wishes to support, using the previously created `Metadata`
+file.
+
+The following code from `lib/isodoc/ribose/html_convert.rb` shows an example
+where the HTML convertor is inherited to provide HTML output for Ribose,
+and to read in `IsoDoc::Generic::Metadata`.
+
+[source,ruby]
+--
+# lib/isodoc/ribose/html_convert.rb
+require "isodoc"
+require "isodoc/generic/html_convert"
+require "isodoc/ribose/metadata"
+
+module IsoDoc
+  module Rsd
+    class HtmlConvert < IsoDoc::Generic::HtmlConvert
+      def configuration
+        Metanorma::Rsd.configuration
+      end
+
+      def metadata_init(lang, script, labels)
+        @meta = Metadata.new(lang, script, labels)
+      end
+    end
+  end
+end
+--
+
+`lib/metanorma/{your-flavor-name}/processor.rb` defines your flavor's
+Processor by inheriting from `Metanorma::Processor`.
+This is the entry point for content processing.
+
+[source,ruby]
+--
+# lib/metanorma/ribose/processor.rb
+require "metanorma/processor"
+
+module Metanorma
+  module Rsd
+    class Processor < Metanorma::Processor
+
+      def initialize
+        @short = :ribose
+        @input_format = :asciidoc
+        @asciidoctor_backend = :ribose
+      end
+
+      def output_formats
+        super.merge(
+          html: "html",
+          doc: "doc",
+          pdf: "pdf"
+        )
+      end
+
+      def version
+        "Metanorma::Rsd #{Metanorma::Rsd::VERSION}"
+      end
+
+      def input_to_isodoc(file, filename)
+        Metanorma::Input::Asciidoc.new.process(file, filename, @asciidoctor_backend)
+      end
+
+      def output(isodoc_node, outname, format, options={})
+        case format
+        when :html
+          IsoDoc::Rsd::HtmlConvert.new(options).convert(outname, isodoc_node)
+        when :doc
+          IsoDoc::Rsd::WordConvert.new(options).convert(outname, isodoc_node)
+        when :pdf
+          IsoDoc::Rsd::PdfConvert.new(options).convert(outname, isodoc_node)
+        else
+          super
+        end
+      end
+    end
+  end
+end
+--
+
+Create the version file indicating your flavor's gem version at
+`lib/metanorma/{your-flavor-name}/version.rb`
+
+[source,ruby]
+--
+# lib/metanorma/ribose/version.rb
+require "metanorma/ribose"
+
+module Metanorma
+  module Rsd
+    VERSION = "0.0.1".freeze
+  end
+end
+--
+
+
+`lib/metanorma/{your-flavor-name}/converter.rb`
+registers your new flavour to be used in `Metanorma::Cli`.
+
+[source,ruby]
+--
+# lib/metanorma/ribose/converter.rb
+require "metanorma/standoc/converter"
+require 'metanorma/generic/converter'
+
+module Metanorma
+  module Rsd
+    # A {Converter} implementation that generates Ribose output, and a document
+    # schema encapsulation of the document for validation
+    #
+    class Converter < Metanorma::Generic::Converter
+      register_for "ribose"
+    end
+  end
+end
+--
