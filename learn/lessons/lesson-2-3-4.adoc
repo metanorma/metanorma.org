@@ -1,0 +1,35 @@
+---
+layout: learn
+title: Images
+---
+:page-liquid:
+//include::/author/topics/blocks/images.adoc[tag=tutorial]
+
+A block image is displayed as a discrete element, i.e., on its own line, in a document. A block image is designated by image macro name and followed by two colons (`image::PATH[]`). It’s preceded by a blank line, entered on a line by itself, and then followed by a blank line.
+
+In standard documents images are informative and you might want to reference an image in the text. As with all references, you need to define an anchor. You can also explain a graphic by adding a key. The entries of the key follow the syntax of a definition list (`key::Explanation`).
+
+[source, AsciiDoc]
+----
+[[figureC-1]] <1>
+.Typical gelatinization curve <2>
+image::images/input_output_diagram.png[UML diagram of inputs and outputs] <3>
+
+[%key] <4>
+input:: What goes into a process <5>
+Output:: Result of the inpput's transformation
+
+----
+<1> Anchor for references
+<2> Image title
+<3> Image macro `image::path/file.jpg[alt text]`. If you don’t want to include alt text, you still need to append empty square brackets at the end of the macro.
+<4> [%key] indicates that the image has a key.
+<5> Key entries
+
+== Practice time
+
+{% include_relative /exercises.adoc content="exercise-2-3-4" %}
+
+Let’s look at admonitions next.
+
+link:/learn/lessons/lesson-2-3-5/[Start next lesson »]

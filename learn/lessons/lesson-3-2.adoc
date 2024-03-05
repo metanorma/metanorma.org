@@ -1,0 +1,32 @@
+---
+layout: learn
+title: Rendering a draft document
+---
+:page-liquid:
+
+To render a draft that your peers should review, you need to add these metadata to the document header:
+
+* `:draft:`: Tells the compiler to display comments in the final output
+* `:status: draft` Defines the current document stage. +
+NOTE: Some flavors, for example ISO, use `:docstage:` and a status code to indicate in what stage the document is.
+
+To compile a Metanorma document you must enter the name of the application `Metanorma` and the document you want to compile `document.adoc`.
+
+[source, shell]
+----
+Metanorma document.adoc
+----
+With this command you trigger the Metanorma toolchain to:
+
+* Read the AsciiDoc input
+* Convert it into XML
+* Check the XML against the document model (XML schema)
+* Create HTML, PDF, and DOC output
+
+== Practice time
+
+{% include_relative /exercises.adoc content="exercise-3-2" %}
+
+Now that you are familiar with the simplest way of creating a Metanorma document, let's look at different ways to compile documents in the next lesson.
+
+link:/learn/lessons/lesson-4/[Start next lesson »]

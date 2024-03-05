@@ -1,0 +1,40 @@
+---
+layout: develop-docs
+---
+
+= About Microsoft Word HTML
+
+Word HTML is used by Metanorma to generate DOC output.
+
+Word HTML, and the Word HTML version of CSS, are *restricted* compared to the HTML and CSS
+you are likely familiar with. Word HTML is a subset of HTML 4;
+Word HTML CSS has a weakened set of selectors, and a range of Microsoft-specific extensions
+(prefixed with `@` or `mso-`).
+
+The weakened set of selectors means you cannot assume that classes are inherited by their children;
+normal CSS would apply formatting on a `div` class to its child paragraphs, for example,
+but Word HTML would expect you to repeat that class definition for `p`.
+
+[TIP]
+====
+Some of the necessary caveats are listed in https://github.com/metanorma/html2doc/blob/main/README.adoc. The styling of lists in particular is quite different to normal CSS, and requires a Word-specific selector to define list styles (the `:ulstyle ` and `:olstyle ` parameter of `WordConvert.new()`).
+====
+
+Word HTML and CSS is not well-documented
+(even though there is a 1500 page manual from Microsoft);
+fortunately saving Word documents to HTML will reveal
+the Word HTML and Word HTML CSS that can be used to generate the same formatting.
+
+The stylesheets need to follow the conventions of Word HTML,
+and should be formulated by saving Word documents as HTML,
+and extracting their CSS stylesheets.
+
+Note that the CSS is prefixed with a set of font definitions;
+these too should be obtained by saving Word documents as HTML.
+
+[NOTE]
+====
+For more on why Word HTML is used,
+instead of OOXML or HTML 5 embedded into DOCX,
+see https://github.com/metanorma/html2doc/wiki/Why-not-docx%3F
+====

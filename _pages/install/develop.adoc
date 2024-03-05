@@ -1,0 +1,155 @@
+---
+layout: docs-base
+html-class: docs-page
+title: Development installation
+---
+= Development installation
+
+== General
+
+The `metanorma` command-line executable can be installed by manually
+installing the `metanorma-cli` Ruby gem.
+
+[IMPORTANT]
+====
+Typical users should install Metanorma according to the steps at
+the link:/author/install/[Installation guide].
+
+The instructions provided here are intended for Metanorma developers, since
+a number of third-party dependencies will also need to be installed manually.
+====
+
+== Install Ruby
+
+Depending on your platform, please refer to:
+
+* link:/install/macos#macos-install-ruby[macOS]
+
+* link:/install/windows#windows-install-ruby[Windows]
+
+* link:/install/linux#linux-install-ruby[Linux]
+
+
+== Other Ruby Resources
+
+Further details (or FAQ) on Ruby installation please visit the official
+https://www.ruby-lang.org/en/documentation/installation[Ruby installation guide].
+
+
+== Installing the Metanorma CLI gem
+
+Once Ruby is installed, you can install `metanorma-cli` as a gem:
+
+[source,console]
+----
+gem install metanorma-cli
+----
+
+Installing this gem will also install all publicly available Metanorma flavors.
+
+
+== Dependencies
+
+=== Java
+
+You will have to have a Java runtime installed.
+
+Use the following commands on various platforms:
+
+macOS:: Run `brew cask install java`
+
+Linux:: Follow https://www.java.com/en/download/help/linux_install.html[official instructions]
+
+Windows:: Run `choco install -y javaruntime`
+
+
+=== PlantUML (optional)
+
+If your documents include
+link:/author/topics/document-format/diagrams/[PlantUML diagrams],
+PlantUML will have to be installed.
+
+Specifically, you must have an accessible executable called `plantuml` in your
+terminal path.
+
+macOS:: Run `brew install plantuml`.
+
+Linux:: Link the PlantUML jar file into a command line executable.
+Please refer to the https://plantuml.com[official PlantUML site] for
+installation instructions.
+
+Windows:: Run `choco install -y plantuml`.
+
+If PlantUML diagrams used within a document but there PlantUML is not installed,
+the PlantUML diagram source will be incorporated into the output document as
+source code (i.e. `[source]` style).
+
+
+=== Graphviz
+
+Graphviz is required by LutaML (and PlantUML) to draw diagrams.
+
+macOS:: Run `brew install graphviz`.
+
+Linux:: Install the appropriate
+https://graphviz.org/download/#linux[available packages] (`apt` or `yum`)
+
+Windows:: Run `choco install -y graphviz`
+
+
+=== xml2rfc
+
+Metanorma IETF requires usage of the `xml2rfc` Python package.
+
+To install Python:
+
+macOS:: `brew install python3`
+
+Windows:: `choco install -y python`
+
+Then install `xml2rfc` with:
+
+[source,console]
+----
+pip3 install xml2rfc
+----
+
+
+=== Inkscape (optional)
+
+Inkscape is needed for SVG-to-EMF conversion functionality.
+
+macOS:: Run `brew install inkscape`
+
+Linux:: See Linux instructions https://inkscape.org/release/[here]
+
+Windows:: Run `choco install -y inkscape`
+
+
+=== LaTeXML (optional, deprecated)
+
+NOTE: `LaTeXML` was previously used by Metanorma for LaTeX functionality
+but Plurimath now handles all LaTeX math processing.
+
+Most of the packages from various package manager listed on
+https://dlmf.nist.gov/LaTeXML/get.html are outdated.
+
+Since `LaTeXML` is a `perl` module, a reliable way to install it is with the
+https://metacpan.org/dist/App-cpanminus/view/bin/cpanm[`cpanm` package manager]
+
+[source,console]
+----
+curl -L https://cpanmin.us | perl - --sudo App::cpanminus
+cpanm --notest LaTeXML
+# or
+cpanm --notest git://github.com/brucemiller/LaTeXML.git@9a0e7dc5
+----
+
+Alternatively, it also can be installed in the following ways (always check the
+version, because the packages may be outdated):
+
+macOS:: Run `brew install latexml`
+
+Linux (with Snap installed):: Run `snap install latexml`
+
+Windows:: `choco install -y latexml`

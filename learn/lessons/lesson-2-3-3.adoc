@@ -1,0 +1,36 @@
+---
+layout: learn
+title: Tables
+---
+:page-liquid:
+
+//include::/author/topics/blocks/tables.adoc[tag=tutorial]
+Tables are a useful tool to collect and display measured data. As AsciiDoc is all text input, it uses specific symbols to determine where new table rows and columns begin. A simple table looks like this:
+
+[source, AsciiDoc]
+----
+[cols="1,1"] <1>
+.A table with a title <2>
+|=== <3>
+|Cell in column 1, header row |Cell in column 2, header row <4>
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2 <5>
+|=== <6>
+----
+<1> Attribute that specifies the table. `cols=”x,x”` tells the compiler that there are two columns. `[cols="1,1"]` The numbers specify the amount of spacing. For example, `[cols="4,2,4"]` would define three columns. The first and last column’s width would be four times the relative width and the middle column would be half as broad. This attribute is optional.
+NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to
+`[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.
+<2> You can add a table title by beginning the line with a dot `.`. Make sure that there is no space between the dot and the first word of the heading.
+<3> Starting delimiter `|===`
+<4> The first line after the delimiter is the header row. To add a column, add a vertical bar `|` before the text that should be in the column.
+<5> When you use the `[cols]` attribute, columns in the same row can appear on different lines of AsciiDoc text; otherwise, they need to all be on the same line of text, like in <4>.
+<6> Closing delimiter `|===`
+
+== Practice time
+
+{% include_relative /exercises.adoc content="exercise-2-3-3" %}
+
+Let’s look at inserting images next.
+
+link:/learn/lessons/lesson-2-3-4/[Start next lesson »]
