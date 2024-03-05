@@ -54,9 +54,9 @@ The modules involve classes which rely on inheritance from other classes; the cu
 
 In the case of `Metanorma::X` classes, the changes you will need to make involve the intermediate XML representation of your document, which is built up through Nokogiri Builder; e.g. adding different enums, or adding new elements. The adaptations in `Metanorma::Generic::Converter` are limited (and are almost all to do with reading in properties from a config file), and most projects can take them across as is.
 
-The customizations needed for `Metanorma::Sample::Processor` are minor, and involve invoking methods specific to the gem for document generation.
+The customizations needed for `Metanorma::Generic::Processor` are minor, and involve invoking methods specific to the gem for document generation.
 
-The customizations needed for `Isodoc::Sample` are more extensive. Three base classes are involved:
+The customizations needed for `Isodoc::Generic` are more extensive. Three base classes are involved:
 
 * `Isodoc::Metadata` processes the metadata about the document stored
 in `//bibdata`. This information typically ends up in the document
@@ -206,7 +206,7 @@ end
 [source,ruby]
 --
 def version
-  "Metanorma::Sample #{Metanorma::Sample::VERSION}"
+  "Metanorma::Generic #{Metanorma::Generic::VERSION}"
 end
 --
 
@@ -226,11 +226,11 @@ end
 def output(isodoc_node, outname, format, options={})
   case format
   when :html
-    IsoDoc::Sample::HtmlConvert.new(options).convert(outname, isodoc_node)
+    IsoDoc::Generic::HtmlConvert.new(options).convert(outname, isodoc_node)
   when :doc
-    IsoDoc::Sample::WordConvert.new(options).convert(outname, isodoc_node)
+    IsoDoc::Generic::WordConvert.new(options).convert(outname, isodoc_node)
   when :pdf
-    IsoDoc::Sample::PdfConvert.new(options).convert(outname, isodoc_node)
+    IsoDoc::Generic::PdfConvert.new(options).convert(outname, isodoc_node)
   else
     super
   end
@@ -358,6 +358,7 @@ end
 Initialise the HTML Converter:
 
 * Set the default fonts for the HTML rendering, which will be used to populate the HTML CSS stylesheet.
+Also add default font sizes [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.0].
 
 [source,ruby]
 --
@@ -366,6 +367,11 @@ def default_fonts(options)
     bodyfont: (options[:script] == "Hans" ? '"SimSun",serif' : '"Overpass",sans-serif'),
     headerfont: (options[:script] == "Hans" ? '"SimHei",sans-serif' : '"Overpass",sans-serif'),
     monospacefont: '"Space Mono",monospace'
+    monospacefont: '"Space Mono",monospace',
+    normalfontsize: "1.0em",
+    monospacefontsize: "0.8em",
+    smallerfontsize: "0.9em",
+    footnotefontsize: "0.8em"
   }
 end
 --
@@ -397,6 +403,7 @@ end
 --
 
 * Set distinct default fonts and HTML assets for the Word rendering.
+Also add default font sizes [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.0].
 
 [source,ruby]
 --
@@ -406,6 +413,10 @@ class WordConvert < IsoDoc::WordConvert
       bodyfont: (options[:script] == "Hans" ? '"SimSun",serif' : '"Arial",sans-serif'),
       headerfont: (options[:script] == "Hans" ? '"SimHei",sans-serif' : '"Arial",sans-serif'),
       monospacefont: '"Courier New",monospace'
+      normalfontsize: "12.0pt",
+      monospacefontsize: "11.0pt",
+      smallerfontsize: "10.0pt",
+      footnotefontsize: "9.0pt"
     }
   end
 
