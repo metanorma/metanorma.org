@@ -31,8 +31,8 @@ Oryza sativafootnote:[Sativa means "cultivated"], is rice that is farmed commerc
 
 == Multi-paragraph footnotes
 
-The multi-paragraph footnote command `footnoteblock:[id]` allows for specification
-of multi-paragraph content within a
+The multi-paragraph footnote command `footnoteblock:[id]` allows for
+specification of multi-paragraph content within a
 footnote, through a named note block. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.4].
 
 The `id` is the identifier of a note containing the contents of the footnote.
@@ -81,8 +81,8 @@ end::tutorial[]
 == Named footnotes and duplicate footnotes
 
 In some cases, identical footnote content can apply to multiple places.
-Metanorma AsciiDoc supports named footnotes that facilitate reuse without repeated
-definitions.
+Metanorma AsciiDoc supports named footnotes that facilitate reuse without
+repeated definitions.
 
 By default, Metanorma already detects whether footnote text is reused.
 When the text of a footnote is repeated in two different places, the same
@@ -123,7 +123,7 @@ Another outrageous statement.footnote:disclaimer[]
 Footnotes immediately placed after a table are considered a "table footnote",
 which renders the footnote at the table footer, within the table.
 
-A table footnote is numbered separately.
+Table footnotes are numbered separately from normal footnotes.
 
 
 === Figure footnotes
@@ -131,7 +131,7 @@ A table footnote is numbered separately.
 Footnotes immediately placed after a figure are considered a "figure footnote",
 which renders the footnote at the bottom of the figure.
 
-A figure footnote is numbered separately.
+Figure footnotes are numbered separately from normal footnotes.
 
 === Document title footnotes
 
@@ -139,7 +139,8 @@ Footnotes on document titles are recognised [added in https://github.com/metanor
 but by default they are not rendered, because of how document title pages are
 processed separately in Metanorma via Liquid templates.
 
-Document title footnotes are moved into `/bibdata/note[@type =
-"title-footnote"]`, and are treated as document metadata, as are document titles
-themselves. The location of the footnote within the title is not preserved.
+Document title footnotes are moved into
+`/bibdata/note[@type = "title-footnote"]`,
+and are treated as document metadata, as are document titles themselves. The
+location of the footnote within the title is not preserved.
 

@@ -1,56 +1,46 @@
 ---
 layout: author-docs
-title: Adding links and cross-references
+title: Links and cross-references
 ---
+= Links and cross-references
+
 tag::tutorial[]
-References are an integral part of standards. The main mechanism for references are anchors and destinations. There are four types of references:
+References are an integral part of standards. The main mechanism for references
+are anchors and destinations. There are four types of references:
 
 * Hyperlinks to an external source, for example a link to a website
 * Metadata references
 * Internal references to a section, image, table, etc.
-* link:author/topics/sections/entering-bib.adoc[Bibliographic entries]
+* link:/author/topics/sections/entering-bib[Bibliographic entries]
 
 == Hyperlinks
 
-AsciiDoc lets you include links to external sources, and sources to files within the same project.
+Metanorma AsciiDoc lets you include links to external sources, and sources to
+files within the same project.
 
 To reference an *internal* source:
 
-. Use the https://docs.asciidoctor.org/asciidoc/latest/macros/link-macro/[link macro] to include a link to a file. The syntax looks like this: `\link:PATH[]`.
+. Use the `link:` command to include a link to a file. The syntax looks like
+this: `\link:PATH[]`.
+
 . Add link text in square brackets after the path.
 +
 .Example of an internal link
-[source, AsciiDoc]
+[source,adoc]
 ----
 Download the latest link:downloads/report.pdf[Report]!
 ----
 end::tutorial[]
 
-*Updating file extension automatically*
-
-Links to other Metanorma documents are expected to change their suffix depending on whether they are rendered as HTML, PDF, or DOC.
-
-To update file extensions automatically, add `updatetype=true` into the square brackets.
-The link path must be https://www.w3schools.com/html/html_filepaths.asp[relative] and can not contain a file suffix.
-
-.Example of how to use the `updatetype` option
-[source,asciidoc]
---
-link:../parent[updatetype=true]
-link:../child[This Is The Child Document,updatetype=true]
---
-
-This will link to `../parent.html` and `../child.html` in HTML, and to
- `../parent.pdf` and `../child.pdf` in PDF.
-
 tag::tutorial[]
+
 To reference an *external* source:
 
 . Paste the URL into the document.
 . Add link text in square brackets after the URL (optional) `URL[Link text]`.
 +
 .Example of an external link
-[source, AsciiDoc]
+[source,adoc]
 ----
 http://www.iso.org/[International Organization for Standardization].
 ----
@@ -73,7 +63,7 @@ tag::tutorial[]
 
 Every document contains a set of metadata to describe the document. You can insert a metadata reference by putting the attribute in curly braces `{attribute}`. The reference will be replaced with the value in the rendered output.
 
-[source, AsciiDoc]
+[source,adoc]
 ----
 :technical-committee-number: 2
 :technical-committee: Fasteners
@@ -85,12 +75,13 @@ This document was prepared by Technical Committee ISO/TC {technical-committee-nu
 
 == Internal references
 
-To link to an important section, table, figure, formula, or list item in your document:
+To link to an important section, table, figure, formula, or list item in your
+document:
 
 . Set an anchor using double square brackets before the content you want to reference: `\[[anchor]]`.
 +
 .Example for an anchor preceding an image
-[source, AsciiDoc]
+[source,adoc]
 ----
 [[figureC-1]]
 .Typical gelatinization curve
@@ -102,32 +93,98 @@ image::/assets/author/tutorials/references_img_anchor.jpg[]
 
 . To reference an anchor, type the anchor name like this `\<<anchor>>`.
 +
-[source, AsciiDoc]
+[source,adoc]
 ----
- <<figureC-1>> gives an example of a typical gelatinization curve.
+<<figureC-1>> gives an example of a typical gelatinization curve.
 ----
 +
 .Rendered reference
 image::/assets/author/tutorials/references_img_target.jpg[]
 
-. To set an alternative text other than the anchor text, append the text inside the brackets using a comma.
+. To set an alternative text other than the anchor text, append the text inside
+the brackets using a comma.
 +
-[source, AsciiDoc]
+[source,adoc]
 ----
 <<figureC-1, The diagram>> gives an example of a typical gelatinization curve.
 ----
 
 // Include in Auto Numbering topic??
-=== Auto-numbering of references
-Metanorma automatically numbers and names references; because they are autonumbered, they will be renumbered automatically if you insert any new text of the same type.
+== Auto-numbering of references
 
-Since the markup will be converted into XML, the anchor must follow the https://www.w3.org/TR/xml-names11/[XML namespace conventions]. Therefore, an anchor name name must not contain:
+Metanorma automatically numbers and names references; because they are
+autonumbered, they will be renumbered automatically if you insert any new text
+of the same type.
+
+Since the markup will be converted into XML, the anchor must follow the
+https://www.w3.org/TR/xml-names11/[XML namespace conventions].
+
+Therefore, an anchor name name must not contain:
 
 * colons
 * whitespaces
 * words starting with numbers
 
 
-If you want to learn more about the technical aspects of cross-references, read link:author/concepts/deep-dive-cross-references.adoc[Deep-dive into cross-references].
+If you want to learn more about the technical aspects of cross-references, read
+link:/author/concepts/deep-dive-cross-references[Deep-dive into cross-references].
+
+
+== Format-independent links
+
+// *Updating file extension automatically*
+
+Typical links created by the `link` command require the correct file path that
+includes the file suffix (e.g. `.html` for HTML documents).
+
+When linking a Metanorma document to another Metanorma document, which can be
+rendered into multiple output formats with different suffixes
+(such as in HTML, PDF or DOC), the option `update-type=true` can be specified
+to achieve format-independent
+links [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.4].
+
+When the option `update-type=true` is given, the rendered link will provide the
+correct file paths dependent on the output format.
+
+The following conditions must be satisfied to use format-independent links:
+
+* The link shall be relative and not absolute
+* The link shall not have a file suffix
+
+
+[example]
+.Example of links to other Metanorma documents
+====
+[source,asciidoc]
+----
+link:../parent[update-type=true]
+link:../child[This is the child document,update-type=true]
+----
+
+This will render the following links depending on the output format:
+
+* in HTML, `../parent.html` and `../child.html`
+* in PDF, `../parent.pdf` and `../child.pdf`
+====
+
+== Hyperlink validation
+
+Hyperlinks are validated and normalized in
+Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.5.2].
+
+Hyperlinks are treated as IRIs (internationalized resource identifiers, where
+non-ASCII Unicode characters are allowed.)
+
+As with normal AsciiDoc, `http(s)` links are assumed by default to be intended
+as hyperlinks, and are marked up and rendered as such.
+
+Example hyperlinks are often invalid (e.g. `http://{domain}`), and Metanorma
+execution will be aborted if they are found, since they cannot be rendered as
+meaningful hyperlinks.
+
+Such links should be escaped by prefixing them with a backslash, which will
+result in them being treated as plain text (e.g. `\http://{domain}`.)
+
+
 end::tutorial[]
 
