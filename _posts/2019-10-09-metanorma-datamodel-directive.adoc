@@ -1,27 +1,30 @@
 ---
 layout: post
-title:  "Metanorma datamodel directive"
-date:   2019-10-09
+title: "Metanorma datamodel directive"
+date: 2019-10-09
 categories: about
-author:
-  name: Peter Tam
-  email: peter.tam@ribose.com
-  use_picture: assets
-  social_links:
-    - https://github.com/PeterTKY
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+  -
+    name: Peter Tam
+    email: peter.tam@ribose.com
+    use_picture: assets
+    social_links:
+      - https://github.com/PeterTKY
 excerpt: >-
-    Metanorma now supports directive for building datamodels.
-redirect_from:
-  - /blog/10-09-2019/metanorma-datamodel-directive/
-extra_scripts:
-  - src: /assets/js/hoverable-illustrations.js
+  Metanorma now supports directive for building datamodels.
 ---
-= Metanorma datamodel directive
 
-As a standard author, we may have to define and describe relationships among
-data within systems in our scope. Usually we would draw some diagrams to
-visualize such relationships and add definitions and descriptions to the
-elements in those diagrams.
+Standard authors often have to define and describe relationships among data
+within systems in our scope. This gives rise to the need of defining
+"data models".
+
+Typically, one would draw diagrams to visualize those relationships, and add
+definitions and descriptions to the elements in those diagrams.
 
 It works for the process but it is tedious because we have to identify all the
 elements within the diagrams that need to be documented. Sometimes we may also
@@ -34,12 +37,14 @@ single element within the standard, we will have to search for each occurrences
 within the diagrams and definitions. Errata will appear if we miss any one of
 the occurrence.
 
-The datamodel directive of Metanorma is a tool to ease the situation. It is a
+The `datamodel` directive of Metanorma is a tool to ease the situation. It is a
 tool to unify the creation of datamodel diagrams and the rendering of elements'
 description and definitions. Its purpose is to reduce the manual process
-involving the management of datamodels.
+involving the management of data models.
 
 == Build our datamodel
+
+=== Assumptions
 
 For the ease of elaboration, let's assume we are going to document a datamodel
 of forests that is planted with apple trees and orange trees. We build the
@@ -55,34 +60,33 @@ To build Metanorma's datamodels, we have to build two major things, models
 and views. Let's build our models first to start things over. We have the
 following models for forests:
 
-. Forest
-. Tree
-.. AppleTree
-.. OrangeTree
-. Fruit
+. `Forest`
+. `Tree`
+.. `AppleTree`
+.. `OrangeTree`
+. `Fruit`
 
 And each model will have its attributes:
 
-. Forest(id, name)
-. Tree(id, fruitKind, position)
-. AppleTree
-. OrangeTree
-. Fruit(kind)
+. `Forest(id, name)`
+. `Tree(id, fruitKind, position)`
+. `AppleTree`
+. `OrangeTree`
+. `Fruit(kind)`
 
 We know that apples are only on apple trees and oranges are only on orange
 trees. We have to define such constraints for the corresponding models:
 
-. AppleTree's constraints:
-.. fruitKind="apple"
-. OrangeTree's constraints:
-.. fruitKind="orange"
+. ``AppleTree``'s constraints:
+.. `fruitKind="apple"`
+. ``OrangeTree``'s constraints:
+.. `fruitKind="orange"`
 
 Finally, we can actually start defining our models. In Metanorma, the file
 path of our models is
 `<project_root>/sources/models/models/**(<model_path>)/<model_name>.yml`.
 
 .sources/models/models/Forest.yml
-
 [source,yaml]
 ----
 name: Forest
@@ -366,7 +370,7 @@ Some introduction of the Forest overview...
 
 [datamodel]
 ....
-include::../models/views/Overview.yml[]
+\include::../models/views/Overview.yml[]
 ....
 ----
 
@@ -383,7 +387,7 @@ Some introduction of the Forest datamodel...
 
 [datamodel]
 ....
-include::../models/views/Forest.yml[]
+\include::../models/views/Forest.yml[]
 ....
 ----
 
@@ -397,7 +401,7 @@ Some introduction of the Tree datamodel...
 
 [datamodel]
 ....
-include::../models/views/Tree.yml[]
+\include::../models/views/Tree.yml[]
 ....
 ----
 
@@ -414,7 +418,6 @@ diagrams and the description of them separately, not to mention some models and
 their definitions may occur multiple times. It made it easy to miss the update
 of some of the occurences.
 
-I hope the new syntax of the datamodel directive of Metanorma can help define
-datamodel more easily in a maintainable way, and readers will be happy to read
-our document with a logical presentation of datamodels.
-
+We believe the new syntax of the datamodel directive of Metanorma can help
+define datamodel more easily in a maintainable way, and readers will be happy to
+read documents with logical presentation of datamodels.
