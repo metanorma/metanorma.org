@@ -717,40 +717,100 @@ following explicit bibliographic entry methods should be used instead.
 
 The span categories supported are:
 
-* `surname`: Author surname.
-* `initials`: Author initials.
-* `givenname`: Author given name.
-* `fullname`: Combination of author surname and initials or given names, according to strcit syntax
+`surname`::
+Author surname.
+
+`initials`::
+Author initials.
+
+`givenname`::
+Author given name.
+
+`fullname`::
+Combination of author surname and initials or given names, according to strcit syntax
 (see below) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.0]
-* `organization`: Corporate author.
-* `surname.XXX`: Contributor surname, with role _XXX_ (e.g. _editor_).
-* `initials.XXX`: Contributor initials, with role _XXX_ (e.g. _editor_).
-* `givenname.XXX`: Contributor given name, with role _XXX_ (e.g. _editor_).
-* `fullname.XXX`: Contributor full name, with role _XXX_ (e.g. _editor_).
-* `organization.XXX`: Corporate contributor, with role _XXX_ (e.g. _editor_).
-* `title`: Title.
-* `in_title`: Title of containing bibiographic item (for types `inbook, inproceedings, incollection`,
+
+`organization`::
+Corporate author.
+
+`surname.XXX`::
+Contributor surname, with role _XXX_ (e.g. _editor_).
+
+`initials.XXX`::
+Contributor initials, with role _XXX_ (e.g. _editor_).
+
+`givenname.XXX`::
+Contributor given name, with role _XXX_ (e.g. _editor_).
+
+`fullname.XXX`::
+Contributor full name, with role _XXX_ (e.g. _editor_).
+
+`organization.XXX`::
+Corporate contributor, with role _XXX_ (e.g. _editor_).
+
+`title`::
+Title.
+
+`in_title`::
+Title of containing bibiographic item (for types `inbook, inproceedings, incollection`,
 the title of the book, proceedings, collection containing the item).
-* `in_surname`, `in_initials`, `in_givenname`, `in_organization`: Name of contributor for containing
-bibliographic item (for types `inbook, inproceedings, incollection`, the author or more usually editor
-of the book, proceedings, collection containing the item. So `in_surname.editor`, `in_givenname.editor`
-give the name of the editor of the book or proceedings that a paper is included in).
-* `series`: Series title. (For articles, this is the journal title.)
-* `docid`: Document identifier.
-* `docid.XXX`: Document identifier, of type _XXX_.
-* `publisher`: Publisher.
-* `pubplace`: Place of publication.
-* `date`: Date published. (All dates must be in YYYY-MM-DD format, as with the rest of Metanorma input.)
-* `date.XXX`: Date with type _XXX_ (e.g. _published_, _created_, _issued_)
-* `edition`: Edition
-* `version`: Version
-* `note`: Note (can also be used for miscellaneous content)
-* `uri`: URI.
-* `uri.XXX`: URI, of type _XXX_.
-* `pages`: page or page range (e.g. _9_, _9-11_)
-* `issue`: issue or issue range (e.g. _9_, _9-11_)
-* `volume`: volume or volume range (e.g. _9_, _9-11_)
-* `type`: Document type (e.g. _standard_, _book_, _inbook_): suppressed from rendering.
+
+`in_surname`, `in_initials`, `in_givenname`, `in_organization`::
+Name of contributor for containing bibliographic item
++
+For types `inbook, inproceedings, incollection`, the author or more usually
+editor of the book, proceedings, collection containing the item.
++
+So `in_surname.editor`, `in_givenname.editor` give the name of the editor of the
+book or proceedings that a paper is included in.
+
+`series`::
+Series title. (For articles, this is the journal title.)
+
+`docid`::
+Document identifier.
+
+`docid.XXX`::
+Document identifier, of type _XXX_.
+
+`publisher`::
+Publisher.
+
+`pubplace`::
+Place of publication.
+
+`date`::
+Date published. (All dates must be in YYYY-MM-DD format, as with the rest of Metanorma input.)
+
+`date.XXX`::
+Date with type _XXX_ (e.g. _published_, _created_, _issued_)
+
+`edition`::
+Edition
+
+`version`::
+Version
+
+`note`::
+Note (can also be used for miscellaneous content)
+
+`uri`::
+URI.
+
+`uri.XXX`::
+URI, of type _XXX_.
+
+`pages`::
+page or page range (e.g. _9_, _9-11_)
+
+`issue`::
+issue or issue range (e.g. _9_, _9-11_)
+
+`volume`::
+volume or volume range (e.g. _9_, _9-11_)
+
+`type`::
+Document type (e.g. _standard_, _book_, _inbook_): suppressed from rendering.
 
 The list of valid document types is given in
 https://www.relaton.org/specs/model/bibtype/[Relaton model -- Bibitem type].
@@ -771,9 +831,18 @@ NOTE: `span:fullname[]` is intended as a convenience method to substitute
 has a strict syntax, and any special cases need to be marked up with the
 separate, explicit name parts instead:
 
-* The surname is a single word (space-delimited), occuring at the end. So in `span:fullname[A. D. Navarro Cortez]`, only _Cortez_ is a surname: to make _Navarro Cortez_ a surname, you will need to mark it up as `span:initials[A. D.] span:surname[Navarro Cortez]`. But in `span:fullname[A. D. Navarro-Cortez]`, the surname is _Navarro-Cortez_.
-* Anything before the surname is a given name. So in `span:fullnamename[J. Edgar Hoover]`, both _J._ and _Edgar_ are processed as given names.
-* If everything before the surname ends in a full stop, they are all deemed initials. So in `span:fullname[A. D. Navarro Cortez]`, _A. D._ are parsed as initials.
+* The surname is a single word (space-delimited), occurring at the end.
+So in `span:fullname[A. D. Navarro Cortez]`, only _Cortez_ is a surname.
++
+To make _Navarro Cortez_ a surname, you will need to mark it up as `span:initials[A. D.] span:surname[Navarro Cortez]`.
++
+But in `span:fullname[A. D. Navarro-Cortez]`, the surname is _Navarro-Cortez_.
+
+* Anything before the surname is a given name. So in
+`span:fullnamename[J. Edgar Hoover]`, both _J._ and _Edgar_ are processed as given names.
+
+* If everything before the surname ends in a full stop, they are all deemed
+initials. So in `span:fullname[A. D. Navarro Cortez]`, _A. D._ are parsed as initials.
 
 [example]
 .Example encoding of a bibliographic item inline with semantic markup
@@ -808,6 +877,7 @@ the paper (_Collected Essays_).
 After the first instances of `surname` and either `initials` or `givenname`, any
 subsequent instance of `surname` is
 interpreted as belonging to a new contributor of the same role.
+
 Any given names and surnames MUST follow the surname that they relate to. If the names
 are ordered differently between the first and subsequent name, e.g. _Wozniak, S. & Steve Jobs_,
 that will be taken care of in rendering: they cannot be annotated in that way.
@@ -824,25 +894,40 @@ For presentations,
 [IMPORTANT]
 --
 The rendering of different bibliographic types is quite different in the various
-stylesheets that SDOs follow, and strange things will happen if Metanorma gets the
-bibliographic type wrong. Under Metanorma, the default bibliographic type is "standard",
-and most SDOs render standards in bibliographies with very little data (no author, no
+stylesheets that SDOs follow, and strange things will happen if Metanorma gets
+the bibliographic type wrong.
+
+Under Metanorma, the default bibliographic type is `standard`, and most SDOs
+render standards in bibliographies with very little data (no author, no
 publisher, no date outside of the document identifier, and so on).
 
 If you use this notation to enter any document other than a standard, you *must*
 specify the type of document, using `span:type[]`.
 --
 
-[IMPORTANT]
---
-If your flavour requires date last accessed to be supplied for references with URLs,
-you should use `date.accessed[....]` to do so (e.g. append `span:date.accessed[2020-01-01]`
-at the end of the reference.) If you do not do so, Metanorma will try to access the URLs
-in the reference when it styles them to align to the flavour's bibliographical stylesheet
-(using the `relaton-render` gem). If the URI is not accessible, no date last accessed will
-be given. However, SDO expectationis that authors should provide dates last accessed 
+=== Last access date auto-retrieval and override
+
+Metanorma supports auto-retrieval of URLs in order to set the "last accessed"
+date for a bibliographic item with URL.
+
+This is performed through the `relaton-render` gem, where the URLs in the
+reference will be tried for access, and Metanorma styles the result to align to
+the flavour's bibliographical stylesheet.
+
+[example]
+Append `span:date.accessed[2020-01-01]` at the end of the reference.
+
+If your flavour requires date last accessed to be supplied for references with
+URLs, you should use `date.accessed[...]` to do so.
+
+If you do not do so, Metanorma will try to access the URLs in the reference
+automatically.
+
+If the URI is not accessible, no date last accessed will be given.
+
+Typically, SDO expectation is that authors should provide dates last accessed
 for references they have reviewed themselves.
---
+
 
 [[emebd-citation]]
 === Overriding auto-fetched reference fields
@@ -1115,24 +1200,60 @@ localities will be displayed instead of the localities.
 
 The following locality types are recognised in Metanorma:
 
-* `section`: a general section
-* `clause`: a clause
-* `part`: a document part
-* `paragraph`: a paragraph
-* `chapter`: a chapter
-* `page`: a page
-* `line`: a line identified by the line number
-* `table`: a table
-* `annex`: an annex
-* `figure`: a figure
-* `example`: an example
-* `note`: a note
-* `formula`: a mathematical formula
-* `list`: a list
-* `time`: a particular time
-* `anchor`: an anchor
-* `whole`: whole
-* `title`: the title
+`section`::
+a general section
+
+`clause`::
+a clause
+
+
+`part`::
+a document part
+
+`paragraph`::
+a paragraph
+
+`chapter`::
+a chapter
+
+`page`::
+a page
+
+`line`::
+a line identified by the line number
+
+`table`::
+a table
+
+`annex`::
+an annex
+
+`figure`::
+a figure
+
+`example`::
+an example
+
+`note`::
+a note
+
+`formula`::
+a mathematical formula
+
+`list`::
+a list
+
+`time`::
+a particular time
+
+`anchor`::
+an anchor
+
+`whole`::
+whole
+
+`title`::
+the title
 
 Except for the locality types of `whole` and `title`, all locality types require
 explicit specification of an identifier to make sense.
@@ -1483,7 +1604,7 @@ Relaton (and the Semantic XML of the document). For example, given the citation
 </bibitem>
 ----
 
-a crossreference `<<bib1>>` will be populated by default with the primary or else the first
+A crossreference `<<bib1>>` will be populated by default with the primary or else the first
 `docidentifier` value found, `ISO/FDIS 17664-1`. However, given `<<bib1,style=URN%>>`, the
 first `docidentifier` value of type `URN` will be sought instead, and the cross-reference
 will be populated by default as `URN urn:iso:std:iso-fdis:17664:-1:ed-1:fr`.
@@ -1681,10 +1802,14 @@ The following encoding will hide the particular bibliographic reference.
 
 === CSV notation
 
-The notation shown up to this point for reference processing flags has the potential of being too complicated
-to parse, if deeply nested or if the parentheses of flags are combined with the parentheses of user-supplied
-labels or of "all parts". For that reason, an alternative notation is supported, involving key/value pairs
+The notation shown up to this point for reference processing flags has the
+potential of being too complicated to parse, if deeply nested or if the
+parentheses of flags are combined with the parentheses of user-supplied labels
+or of "all parts".
+
+For that reason, an alternative notation is supported, involving key/value pairs
 delimited by comma and equals signs in the anchor label [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.4].
+
 For example, the following two references are equivalent:
 
 [source,asciidoc]
