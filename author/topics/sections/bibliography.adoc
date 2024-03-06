@@ -740,7 +740,7 @@ give the name of the editor of the book or proceedings that a paper is included 
 * `docid.XXX`: Document identifier, of type _XXX_.
 * `publisher`: Publisher.
 * `pubplace`: Place of publication.
-* `date`: Date published.
+* `date`: Date published. (All dates must be in YYYY-MM-DD format, as with the rest of Metanorma input.)
 * `date.XXX`: Date with type _XXX_ (e.g. _published_, _created_, _issued_)
 * `edition`: Edition
 * `version`: Version
@@ -831,6 +831,17 @@ publisher, no date outside of the document identifier, and so on).
 
 If you use this notation to enter any document other than a standard, you *must*
 specify the type of document, using `span:type[]`.
+--
+
+[IMPORTANT]
+--
+If your flavour requires date last accessed to be supplied for references with URLs,
+you should use `date.accessed[....]` to do so (e.g. append `span:date.accessed[2020-01-01]`
+at the end of the reference.) If you do not do so, Metanorma will try to access the URLs
+in the reference when it styles them to align to the flavour's bibliographical stylesheet
+(using the `relaton-render` gem). If the URI is not accessible, no date last accessed will
+be given. However, SDO expectationis that authors should provide dates last accessed 
+for references they have reviewed themselves.
 --
 
 [[emebd-citation]]
