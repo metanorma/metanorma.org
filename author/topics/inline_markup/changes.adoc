@@ -52,7 +52,7 @@ If the `change` attribute has the value `modify`, the replacement text needs to 
 represented as a final blockquote within the change clause.
 
 [source,asciidoc]
-----
+--
 [change=modify,locality="page=14,clause=4.3.1",title="Array based unstructured mesh",path="./source"]
 ==== {blank}
 
@@ -62,21 +62,27 @@ Remove the EXPRESS definition of this entity and replace with:_
 ____
 [%unnumbered]
 [source,html]
------
+----
 *)
 ENTITY array_based_unstructured_mesh
 ...
 (*
------
-____
 ----
+____
+--
 
 The replacement text may contain assets that need to be numbered on rendering, in order to reflect
-how they should look in the target document. Replacement text cannot rely on auto-numbering, and its
-content is by default skipped in auto-numbering; but the starting point for any auto-numbering can
-be defined for an asset with the macro `autonumber:asset_class[value]`, giving the starting value
-for auto-numbering an asset class within the change clause; for example `autonumber:table[2]` means
-start numbering any tables in the replacement text from 2.
+how they should look in the target document.
+
+Replacement text cannot rely on auto-numbering, and its content is by default
+skipped in auto-numbering. However, the starting point for any auto-numbering
+can be defined for an asset with the macro `autonumber:asset_class[value]`,
+giving the starting value for auto-numbering an asset class within the change
+clause.
+
+[example]
+`autonumber:table[2]` means start numbering any tables in the replacement text
+from 2.
 
 [source,asciidoc]
 ----
@@ -102,15 +108,14 @@ ____
 |===
 
 NOTE: This is not generalised further.
-
 ____
-
 ----
+
 
 If the starting value is empty, the asset is treated as unnumbered:
 
 [source,asciidoc]
-----
+--
 [change=replace,locality="clause=4.2.2,note=1"]
 == 4.2.2
 autonumber:note[]
@@ -120,7 +125,7 @@ ____
 [NOTE]
 The calendar year used in the week calendar...
 ____
-----
+--
 
 [[corrigenda]]
 == Corrigenda
@@ -135,4 +140,5 @@ del:[The use of echo cancellers on the VBD channel, as per Rec. ITU-T G.168.]
 ... or other forms of redundancy add:[(e.g. per <<rfc2198>>)]
 --
 
-For more complicated corrigenda involving changes, you may use link:/author/topics/document-format/annotation#reviewer[reviewer notes].
+For more complicated corrigenda involving changes, you may
+use link:/author/topics/document-format/annotation#reviewer[reviewer notes].

@@ -48,14 +48,29 @@ end::editing[]
 
 == Validation
 
-Before you can generate any outputs, the AsciiDoc document needs to be checked against the document model to ensure it follows the rules of your SDO. Since the document model is defined in an XML schema, the compiler converts the AsciiDoc document into an XML file. The XML file is then checked against the SDO's XML schema. Metanorma will log all deviations from the SDO's structure or formatting on the terminal and into an error file.
+Before you can generate any output, the Metanorma document needs to be checked
+against the document model to ensure it follows the rules of your SDO.
 
-* ❌ Invalid XML: The XML file does not comply with the XML schema, or with the formatting rules defined by the SDO.
-All errors are logged to the terminal and are saved to an Error file (.`err.html`). Often the document will render successful despite errors, but the error messages point out potential issues with the document structure.
+Since the document model is defined in an XML schema, the compiler converts the
+Metanorma document into a Metanorma XML file. This XML file is then checked
+against the SDO's XML schema. Metanorma will log all deviations from the SDO's
+structure or formatting on the terminal and into an error file.
 
-* ✅ Valid XML: The XML file complies with the XML schema and the compiler can proceed to generate an output.
+❌ Invalid XML::
+The XML file does not comply with the XML schema, or with the formatting rules
+defined by the SDO.
++
+All errors are logged to the terminal and are saved to an error file
+(.`err.html`). Often the document will render successful despite errors, but the
+error messages point out potential issues with the document structure.
+
+✅ Valid XML::
+The XML file complies with the XML schema and the compiler can proceed to
+generate an output.
 
 == Output generation
+
+=== General
 
 The Metanorma toolchain compiles documents in the following formats:
 
@@ -64,28 +79,46 @@ The Metanorma toolchain compiles documents in the following formats:
 * PDF
 * Microsoft Word
 
-*Metanorma XML*
+=== Metanorma XML
 
-Metanorma always generates an XML output first because it is the intermediate format used to drive the other formats. The Metanorma XML file marks up the semantic content of the standards document and is therefore used during the validation stage. Metanorma then generates a presentation version of the XML (`.presentation.xml`), which resolves cross-references, captions, and internationalisation, and is used as the basis of all other formats.
+Metanorma always generates an XML output first because it is the intermediate
+format used to drive the other formats. The Metanorma XML file marks up the
+semantic content of the standards document and is therefore used during the
+validation stage. Metanorma then generates a presentation version of the XML
+(`.presentation.xml`), which resolves cross-references, captions, and
+internationalisation, and is used as the basis of all other formats.
 
-*HTML*
+=== HTML
 
-The HTML output is in HTML 5. All HTML output has a sidebar with a Javascript-generated table of contents, which is two section levels deep. Audio and video files are not supported.
+The HTML output is in HTML 5. All HTML output has a sidebar with a
+Javascript-generated table of contents, which is two section levels deep. Audio
+and video files are not supported.
 
-*PDF*
+=== PDF
 
-Metanorma generates PDF output from XML. The styling comes from an https://www.xml.com/articles/2017/01/01/what-is-xsl-fo/[XSL-FO] stylesheet. A processing engine (Apache FOP) interprets the stylesheet and generates the PDF.
+Metanorma generates PDF output from XML. The styling comes from an
+https://www.xml.com/articles/2017/01/01/what-is-xsl-fo/[XSL-FO] stylesheet. A
+processing engine (Apache FOP) interprets the stylesheet and generates the PDF.
 
-*Microsoft Word*
+=== Microsoft Word
 
-Metanorma can also generate a `.doc` Word output. Metanorma does not output `.docx` because it is easier to support all of the formatting requirements in a `.doc` file.
+Metanorma can also generate a `.doc` Word output. Metanorma does not output
+`.docx` because it is easier to support all of the formatting requirements in a
+`.doc` file.
 
 == Review
 
-Standards documents require collaboration and every SDO has its own process for reviews. Metanorma does support authors and reviewers by providing metadata that indicate in which phase the document is in and who reviewed it. You can add your remarks to a document with comments or create a to-do if you want someone to act.
+Standards documents require collaboration and every SDO has its own process for
+reviews. Metanorma does support authors and reviewers by providing metadata that
+indicate in which phase the document is in and who reviewed it. You can add your
+remarks to a document with comments or create a to-do if you want someone to
+act.
 
 == Publication
-Once you and your reviewers agree that the standard is ready for publishing, you send it to your standard developing organization (SDO). The SDO will publish your document in their preferred channels, such as online or print.
+
+Once you and your reviewers agree that the standard is ready for publishing, you
+send it to your standard developing organization (SDO). The SDO will publish
+your document in their preferred channels, such as online or print.
 
 end::tutorial[]
 
