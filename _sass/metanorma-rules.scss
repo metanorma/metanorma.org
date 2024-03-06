@@ -68,12 +68,6 @@ body.overview section.documentation {
   }
 }
 
-.cta .button .tutorial {
-  @include cta-button($primary-dark-color, #ffffff);
-  border-radius: 25px;
-  &:hover {background-color: #9c60c1ff};
-}
-
 
 .web-build-ui {
   &.conditional {
@@ -294,5 +288,32 @@ body > .underlay > header {
 
   > .documentation:only-child {
     @include docs-page($primary-dark-color);
+  }
+}
+
+/* Learn layout style */
+body.layout--learn {
+  article > header > nav.subitems {
+    display: none;
+  }
+
+  .ulist.checklist > ul.checklist {
+    list-style: none;
+  }
+
+  .cta.tutorial {
+    .button {
+      @include cta-button($primary-dark-color, #ffffff);
+      border-radius: 25px;
+      &:hover {background-color: #9c60c1ff};
+    }
+  }
+
+
+  details {
+    summary.title {
+      background-color: #28388A !important;
+      &:hover {background-color: #9c60c1ff !important};
+    }
   }
 }
