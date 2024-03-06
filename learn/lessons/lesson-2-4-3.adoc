@@ -31,7 +31,7 @@ Download the latest link:downloads/report.pdf[Report]!
 To reference an *external* source:
 
 . Paste the URL into the document.
-. Add link text in square brackets after the URL (optional) `URL[Link text]`.
+. Add link text in square brackets after the URL (optional) `URL[Link text]`. 
 +
 .Example of an external link
 [source, AsciiDoc]
@@ -41,7 +41,7 @@ http://www.iso.org/[International Organization for Standardization].
 
 == Metadata references
 
-Every document contains a set of metadata to describe the document. You can insert a metadata reference by putting the attribute in curly braces `{attribute}`. The reference will be replaced with the value in the rendered output.
+Every document contains a set of metadata to describe the document. You can insert a metadata reference by putting the attribute in curly braces `{attribute}`. The reference will be replaced with the value in the rendered output. 
 
 [source, AsciiDoc]
 ----
@@ -57,14 +57,14 @@ This document was prepared by Technical Committee ISO/TC {technical-committee-nu
 //create new screenshots and update example
 To link to an important section, table, figure, formula, or list item in your document:
 
-. Set an anchor using double square brackets before the content you want to reference: `\[[anchor]]`.
+. Set an anchor using double square brackets before the content you want to reference: `\[[anchor]]`. 
 +
 .Example for an anchor preceding an image
 [source, AsciiDoc]
 ----
 [[figureC-1]]
-.Typical gelatinization curve
-image::images/rice_image2.png[Image of the gelatinization curve]
+.Typical gelatinization curve 
+image::images/rice_image2.png[Image of the gelatinization curve] 
 ----
 +
 .Rendered image caption
@@ -89,7 +89,7 @@ image::/assets/author/learn/references_img_target.jpg[]
 
 // Include in Auto Numbering topic??
 === Auto-numbering of references
-Metanorma automatically numbers and names references; because they are autonumbered, they will be renumbered automatically if you insert any new text of the same type.
+Metanorma automatically numbers and names references; because they are autonumbered, they will be renumbered automatically if you insert any new text of the same type. 
 
 Since the markup will be converted into XML, the anchor must follow the https://www.w3.org/TR/xml-names11/[XML namespace conventions]. Therefore, an anchor name name must not contain:
 
@@ -104,12 +104,12 @@ If you want to learn more about the technical aspects of cross-references, read 
 //include::/author/topics/sections/entering_bib.adoc[tag=tutorial]
 
 Most standard documents contain two sections with bibliographic references, namely the “normative references” and the “bibliography” (informative references).
-Every bibliographic section must be preceded by the style attribute `[bibliography]` so that bibliographic references are recognized as such.
+Every bibliographic section must be preceded by the style attribute `[bibliography]` so that bibliographic references are recognized as such. 
 
 == Entering a bibliographic entry
 To enter a reference entry:
 
-. Start a new unordered list (`*`) item.
+. Start a new unordered list (`*`) item. 
 . Enter triple square brackets (`[[[]]]`) which contain:
 +
 * The anchor name used to reference this entry
@@ -122,19 +122,19 @@ To enter a reference entry:
 * [[[anchor,document identifier or reference tag]]], _reference list text_
 ----
 
-. After the triple brackets, you may include the reference text in italics, for example the title of the document.
+. After the triple brackets, you may include the reference text in italics, for example the title of the document. 
 +
-NOTE: Metanorma uses https://www.relaton.org/[Relaton] to link:author/concepts/automatic-reference-lookup.adoc[automatically fetch resource descriptions] from the SDO's web site. If Metanorma recognizes a document identifier, it will overwrite any title you provide with the authoritative title of the reference.
+NOTE: Metanorma uses https://www.relaton.org/[Relaton] to link:author/concepts/automatic-reference-lookup.adoc[automatically fetch resource descriptions] from the SDO's web site. If Metanorma recognizes a document identifier, it will overwrite any title you provide with the authoritative title of the reference. 
 
 == Referencing a bibliographic entry
-To cite an entry from your bibliography:app-name:
+To cite an entry from your bibliography:app-name: 
 
 . Enter the anchor name like this: `\<<ISO20483>>`.
 . To specify a location within the cited document, you can add https://www.metanorma.org/author/topics/document-format/bibliography/#localities[localities] in the brackets like so: `\<<ISO20483, part=IV,chapter=3,paragraph=12>>`.
 
 == Bibliography example
 
-The following code sample illustrates how a bibliography section looks like in AsciiDoc Metanorma.
+The following code sample illustrates how a bibliography section looks like in AsciiDoc Metanorma. 
 
 .Example for a bibliography section
 [source, AsciiDoc]
@@ -151,10 +151,12 @@ Gets rendered as:
 * ISO 6540:1980. _Maize — Determination of moisture content (on milled grains and on whole grains)_
 
 
-== Practice time
+=== Practice time
 
 {% include_relative /exercises.adoc content="exercise-2-4-3" %}
 
 Let’s summarize what we’ve learnt so far.
 
-link:/learn/lessons/lesson-2-5/[Start next lesson »]
++++
+<div class="cta tutorial"><a class="button" href="/learn/lessons/lesson-2-5/">Start next lesson »</a></div>
++++

@@ -4,13 +4,13 @@ https://shopify.github.io/liquid/tags/control-flow/
 ////
 :page-liquid:
 
-The code for this exercise is available on https://github.com/metanorma/metanorma-learn/tree/master/sources/standard[GitHub].
+The code for this exercise is available on https://github.com/metanorma/metanorma-tutorial/tree/master/sources/standard[GitHub]. 
 
 The corresponding file is named `{{include.content}}.adoc`
 
 {% case {{include.content}} %}
   {% when "exercise-2-1" %}
-Now it’s your turn. Fill the document with the following attributes:
+Now it’s your turn. Fill the document with the following attributes: 
 
 [%interactive]
 * [ ] Document title
@@ -25,14 +25,14 @@ Now it’s your turn. Fill the document with the following attributes:
 .Hint
 [%collapsible]
 ====
-To declare an attribute, follow the syntax `:attribute: value`.
+To declare an attribute, follow the syntax `:attribute: value`. 
 
 For example: `:publisher: Ribose Inc.`
-====
+==== 
 
   {% when "exercise-2-2" %}
-Look at the prepopulated Metanorma document.
-There are many clauses describing the content but there are sections missing to form a correct standard document.
+Look at the prepopulated Metanorma document. 
+There are many clauses describing the content but there are sections missing to form a correct standard document. 
 Add the following sections:
 
 [%interactive]
@@ -57,9 +57,9 @@ Add lists to the prepopulated document.
 ====
 Ordered list items start with a dot, followed by a blank: `. List item`.
 
-Unordered list items start with an asterisk, followed by a blank: `* List item`.
+Unordered list items start with an asterisk, followed by a blank: `* List item`. 
 
-To write a definition list, follow the syntax:
+To write a definition list, follow the syntax: 
 `term:: Definition`
 ====
 
@@ -119,7 +119,7 @@ The structure for a three column table looks like this:
   {% when "exercise-2-3-4" %}
 Insert a diagram of of a rice plant in line 17 by following the steps below:
 [%interactive]
-* [ ] Add an image macro.
+* [ ] Add an image macro.  
 * [ ] Populate the `image::` macro with this link: +
 ----
 https://en.wikipedia.org/wiki/Open_Geospatial_Consortium#/media/File:GeoServer_GeoNetwork_with_web_app.svg
@@ -136,7 +136,7 @@ Data stores:: Contain databases and shape files.
 .Hint
 [%collapsible]
 ====
-The syntax for images is: `image::URL[]`.
+The syntax for images is: `image::URL[]`. 
 
 Make sure to include the square brackets after the link.
 ====
@@ -156,7 +156,7 @@ To create admonitions that span several lines, you need to declare a block.
 ----
 [NOTE]
 ====
-This is a long note.
+This is a long note. 
 It contains three lines.
 Line three.
 ====
@@ -164,7 +164,7 @@ Line three.
 ======
 
   {% when "exercise-2-3-6" %}
-There are some code samples in the document but they are not neatly packed into `source` blocks, so they cause trouble.
+There are some code samples in the document but they are not neatly packed into `source` blocks, so they cause trouble. 
 
 [%interactive]
 * [ ] Create a source block with the attribute `ruby` for the code in lines 20-35.
@@ -195,7 +195,7 @@ Format the text using the following formatting:
 * [ ] Add a footnote on line 30 to explain the OGC Innovation Program. Footnote text: See all active initatives at the OGC wesite. https://www.ogc.org/projects/initiatives/active.
 
   {% when "exercise-2-4-2" %}
-Let's add some index entries to the text.
+Let's add some index entries to the text. 
 [%interactive]
 * [ ] Add a visible index entry to "OGC" on line 25
 * [ ] Add an invisible three level index entry after "FAIR" on line 27: FAIR, findability, accessibility
@@ -213,13 +213,13 @@ Hidden index terms: `(\((Level 1 index term, Level 2 index term, Level 3 index t
   {% when "exercise-2-4-3" %}
 Let's add some references to the sample document.
 
-Internal references:
+Internal references: 
 [%interactive]
 * [ ] Create an anchor for the table called `tab-properties-of-the-descriptiontype-structure`
 * [ ] Replace the word "ANCHOR" in line 44 with a reference to the table.
 
-Bibliographic references:
-The text references some standards which don't have a matching entry in the bibliography section. Add the following bibliographic references:
+Bibliographic references: 
+The text references some standards which don't have a matching entry in the bibliography section. Add the following bibliographic references: 
 
 [%interactive]
 * [ ] dcat, W3C vocab-dcat, W3C: *Data Catalog Vocabulary,* W3C Recommendation 16 January 2014, https://www.w3.org/TR/vocab-dcat/
@@ -243,12 +243,12 @@ The text contains some typos. Mark the errors using comments.
 
   {% when "exercise-3-2" %}
 Let's check out what happens when we compile `exercise-3-2.adoc`
-To compile our document:
+To compile our document: 
 
 . Open a new terminal
 . Start Docker using Docker Desktop.
-. Go to the directory where your Metanorma document(s) are stored. For example:
-+
+. Go to the directory where your Metanorma document(s) are stored. For example: 
++ 
 [source,sh]
 ----
 $ cd Documents/Metanorma/metanorma-tutorial
@@ -273,15 +273,15 @@ docker run -v "%cd%":/metanorma/ -w /metanorma metanorma/metanorma metanorma com
 [%collapsible]
 ====
 . Relaton fetches checks the cited standards if it can fetch some information automatically.
-.
+. 
 ====
 
   {% when "exercise-4-2" %}
-The following document doesn't compile because there are some errors.
+The following document doesn't compile because there are some errors. 
 
 . Enter `metnanorma exercise-4-2.adoc` to trigger the build process.
-. Have a look at the error messages.
-. Try to debug the document. If you get stuck, have a look at the hints.
+. Have a look at the error messages. 
+. Try to debug the document. If you get stuck, have a look at the hints. 
 . Once you solved the errors, run the compilation command again to see if the document is build.
 
 .Hint Error 1
@@ -295,13 +295,13 @@ You can solve this error by renaming one of the anchors.
 [%collapsible]
 ====
 Line 76: The file that should be included cannot be found.
-Since the scope section already contains text, you can delete the reference.
+Since the scope section already contains text, you can delete the reference. 
 ====
 
 .Hint Error 3
 [%collapsible]
 ====
-Line 236: The image attribute contains a whitespace after `image::`, so the path is invalid. Delete the whitespace.
+Line 236: The image attribute contains a whitespace after `image::`, so the path is invalid. Delete the whitespace. 
 ====
   {% else %}
      Couldn't load exercise.
