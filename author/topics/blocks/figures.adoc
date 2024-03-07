@@ -1,23 +1,25 @@
 ---
 layout: author-docs
-title: Figures
+title: Figures and images
 ---
 
-== Figures
+== Figures and images
 
 === General
 
 In standardization documents, figures are used as document elements to present
-non-textual material so that they are independently referable.
+non-textual material so that they are independently referable, and are considered
+to be referenceable document blocks.
+Images can also be used as elements appearing inline within a block, such as a paragraph.
 
 In Metanorma, the usage of the `image` command will result in a figure.
 Please refer to link:/author/topics/blocks/images[images] for details
-of the `image` command.
+of the `image` command. This page discusses only the markup specific to figures as blocks,
+using the image macro `image::[]`.
 
+=== Block markup
 
-=== Blocks
-
-An image block in isolation is treated as a figure:
+An image block macro in isolation is treated as a figure:
 
 [source,asciidoc]
 --
@@ -107,18 +109,6 @@ NOTE: These results are based on a study carried out on three different types of
 ====
 
 
-=== Data URLs as images
-
-Metanorma allows Data URLs as the URL for an image:
-
-[source,asciidoc]
---
-image::data:image/png;base64,ivBO[alt text]
---
-
-NOTE: Data URLs are not typically supported by AsciiDoc processors.
-
-
 === Discursive figures
 
 A discursive figure, containing text as well as images, can be marked up as an
@@ -206,13 +196,6 @@ An unspecified dimension is considered `auto`.
 --
 image::logo.jpg[height=150]
 --
-====
-
-Image sizes can also be specified with percentages of the original width,
-e.g. `width='50%'` [added in https://github.com/metanorma/isodoc/releases/tag/v2.8.0].
-
-NOTE: Treatment of image resizing may slightly differ across output formats.
-
 
 
 === Captions and titles
