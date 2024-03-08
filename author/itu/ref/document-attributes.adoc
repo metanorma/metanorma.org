@@ -1,8 +1,7 @@
 ---
 layout: itu-flavor
+title: Metanorma ITU document attributes
 ---
-
-= Metanorma ITU document attributes
 
 [[note_general_doc_ref_doc_attrib_itu]]
 [NOTE]
@@ -17,32 +16,30 @@ For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorm
 == Document information
 
 `doctype`::
-Document type. Choices:
-+
---
-* `recommendation` (default): This document is an ITU Recommendation.
-* `recommendation-supplement`: This document is a Supplement of an ITU Recommendation.
-* `recommendation-amendment`: This document is an Amendment of an ITU Recommendation.
-* `recommendation-corrigendum`: This document is a Corrigendum of an ITU Recommendation.
-* `recommendation-errata`: This document is an Errata of an ITU Recommendation.
-* `recommendation-annex`: This document is an Annex of an ITU Recommendation.
-* `focus-group`: This document is the output of a Focus Group.
-* `implementers-guide`: This document is an ITU Implementers Guide.
-* `technical-paper`: This document is an ITU Technical Paper.
-* `technical-report`: This document is an ITU Technical Report.
-* `joint-itu-iso-iec`: This document is a "`Common Text`" Recommendation between ITU and ISO/IEC JTC 1.
-* `resolution`: This document is an ITU Resolution.
-* `service-publication`: This document is an ITU Service Publication (e.g. an Annex to the ITU Operational Bulletin).
---
+Document type. Choices below.
+
+`recommendation`::: (default) This document is an ITU Recommendation.
+`recommendation-supplement`::: This document is a Supplement of an ITU Recommendation.
+`recommendation-amendment`::: This document is an Amendment of an ITU Recommendation.
+`recommendation-corrigendum`::: This document is a Corrigendum of an ITU Recommendation.
+`recommendation-errata`::: This document is an Errata of an ITU Recommendation.
+`recommendation-annex`::: This document is an Annex of an ITU Recommendation.
+`focus-group`::: This document is the output of a Focus Group.
+`implementers-guide`::: This document is an ITU Implementers Guide.
+`technical-paper`::: This document is an ITU Technical Paper.
+`technical-report`::: This document is an ITU Technical Report.
+`joint-itu-iso-iec`::: This document is a "`Common Text`" Recommendation between ITU and ISO/IEC JTC 1.
+`resolution`::: This document is an ITU Resolution.
+`service-publication`::: This document is an ITU Service Publication (e.g. an Annex to the ITU Operational Bulletin).
 
 `:status:`::
-Document status. Synonym: `:docstage:`. Choices:
+Document status. Synonym: `:docstage:`. Choices below.
 +
 --
-* `in-force`: This document is In-force.
-* `in-force-prepublished`: This document is In-force but the text is not final.
-* `superseded`: This document has been superseded.
-* `withdrawn`: This document has been withdrawn.
+`in-force`::: This document is In-force.
+`in-force-prepublished`::: This document is In-force but the text is not final.
+`superseded`::: This document has been superseded.
+`withdrawn`::: This document has been withdrawn.
 
 NOTE: If the document is a draft, use the general `:draft:` document
 attribute instead of `:status:` to indicate so (see
@@ -50,14 +47,28 @@ link:/author/ref/document-attributes/[Document attributes reference]).
 
 In general, the document stages are:
 
-* Draft Recommendation (the text of the Recommendation is being developed and may be quite mature, but it has not yet been approved)
-* Once the text is mature, the SG may decide to "`Consent it`" (APP) or "`Determine it`" (TAP). The draft Recommendation is then in "`Consented`" (AAP) or "`Determined`" (TAP) state.
-* As soon as it has been approved, the Recommendation is no longer a draft Recommendation, but an in-force Recommendation.
-* TSB then prepublishes the Recommendation. Prepublished Recommendations are in-force texts that are not yet in their final form.
-  Because they are not final, they are made available only to the Membership.
-* TSB copy-edits and publishes the Recommendation. This final in-force version is made available to all for free download.
-* If the Recommendation is revised, it will be superseded by the revision as soon as the revision is approved.
-* Recommendations are seldom withdrawn, but it may happen when the SG decides to do so.
+* Draft Recommendation (the text of the Recommendation is being developed and
+may be quite mature, but it has not yet been approved)
+
+* Once the text is mature, the SG may decide to "`Consent it`" (APP) or
+"`Determine it`" (TAP). The draft Recommendation is then in "`Consented`" (AAP)
+or "`Determined`" (TAP) state.
+
+* As soon as it has been approved, the Recommendation is no longer a draft
+Recommendation, but an in-force Recommendation.
+
+* TSB then prepublishes the Recommendation. Prepublished Recommendations are
+in-force texts that are not yet in their final form.
+Because they are not final, they are made available only to the Membership.
+
+* TSB copy-edits and publishes the Recommendation. This final in-force version
+is made available to all for free download.
+
+* If the Recommendation is revised, it will be superseded by the revision as
+soon as the revision is approved.
+
+* Recommendations are seldom withdrawn, but it may happen when the SG decides to
+do so.
 
 Please refer to the Traditional Approval Process (TAP) (https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1])
 and the Alternative Approval Process (AAP) (https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8])
@@ -65,21 +76,31 @@ for further details.
 --
 
 `:docnumber:`::
-The identifier for the document, including the series, the document number, and any suffix,
-but excluding the bureau. For instance, `H.781`, `G.108.2`, `G.709/Y.1331`.
+The identifier for the document, including the series, the document number, and
+any suffix, but excluding the bureau. For instance, `H.781`, `G.108.2`,
+`G.709/Y.1331`.
 
 `:td-number:`::
 Temporary Document number for the document [added in https://github.com/metanorma/metanorma-itu/releases/tag/v2.2.5].
 Used for study group meetings.
 
-`:amendment-number:`:: Number of amendment, if this is an amendment [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
-`:amendment-title:`:: Title of amendment, if this is an amendment [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
-`:corrigendum-number:`:: Number of corrigendum, if this is a corrigendum [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
-`:corrigendum-title:`:: Title of corrigendum, if this is a corrigendum [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
+`:amendment-number:`::
+Number of amendment, if this is an amendment [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
+
+`:amendment-title:`::
+Title of amendment, if this is an amendment [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
+
+`:corrigendum-number:`::
+Number of corrigendum, if this is a corrigendum [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
+
+`:corrigendum-title:`::
+Title of corrigendum, if this is a corrigendum [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
+
 
 `:recommendationnumber:`:: For implementation guides, the
 recommendation that this document is an implementation guide
 for [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.8].
++
 If this is a guide for multiple recommendations, they are
 slash-delimited. If this is a guide for a subseries of recommendations,
 the recommendations as specified as `.\*`, e.g. `H.350.*`.
@@ -99,7 +120,7 @@ Second level subseries, for example: "`Digital Signage`"
 `:intended-type:`::
 Intended type for this document (for technical reports) (`R`, `C`, `TD`) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
 
-`:language:` :: The language of the document (only `en` for now; will eventually support
+`:language:`:: The language of the document (only `en` for now; will eventually support
 `ar`, `zh`, `en`, `fr`, `ru`, `es`)  (default: `en`)
 
 `:provisional-name:`:: A provisional identifier allocated to the document if the proper
@@ -126,10 +147,14 @@ front cover [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1
 
 `:collection-title:`::
 The collection of documents that this document appears in [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16];
-e.g. "Recommendations", "Articles", "Final Acts". Appears on the top left of the cover page for some collections.
+Appears on the top left of the cover page for some collections.
++
+[example]
+"Recommendations", "Articles", "Final Acts".
 
 `:slogan-title:`::
-The slogan that this document is branded with, in connection with an event [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
+The slogan that this document is branded with, in connection with an
+event [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
 
 `:document-scheme:`::
 Switch between old and new PDF formats [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
@@ -153,7 +178,8 @@ Question, Study Group and Work Group.
 --
 
 `:sector:`::
-The standardization sector for the document, if one of the defined bureaus does not apply [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
+The standardization sector for the document, if one of the defined bureaus does
+not apply [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
 
 `:group_{i}:`::
 Mandatory. Project group that the document belongs to.
@@ -176,12 +202,11 @@ Project subgroup that the document belongs to.
 
 `:subgrouptype_{i}:`::
 Type of Project subgroup that the document belongs to. Permitted values:
-+
---
-* `tsag`: TSAG
-* `study-group`: Study Group
-* `work-group`: Working Group of a Study Group
---
+
+`tsag`::: TSAG
+`study-group`::: Study Group
+`work-group`::: Working Group of a Study Group
+
 
 `:subgroupacronym_{i}:`::
 Acronym of Project subgroup that the document belongs to.
@@ -197,12 +222,11 @@ Project workgroup that the document belongs to.
 
 `:workgrouptype_{i}:`::
 Type of Project workgroup that the document belongs to. Permitted values:
-+
---
-* `tsag`: TSAG
-* `study-group`: Study Group
-* `work-group`: Working Group of a Study Group
---
+
+`tsag`::: TSAG
+`study-group`::: Study Group
+`work-group`::: Working Group of a Study Group
+
 
 `:workgroupacronym_{i}:`::
 Acronym of Project workgroup that the document belongs to.
@@ -260,14 +284,12 @@ Date to which Recommendation status applies
 
 `:approval-process:`::
 Approval Process for Recommendation status. Legal values are:
-+
---
-* `tap`: Traditional Approval Process (TAP), as described in
+
+`tap`::: Traditional Approval Process (TAP), as described in
 https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1, Section 9].
 
-* `aap`: Alternative Approval Process (AAP), as described in
+`aap`::: Alternative Approval Process (AAP), as described in
 https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8].
---
 
 `:approval-status:`::
 Approval status code for Recommendation status. Legal values are:
@@ -276,24 +298,24 @@ Approval status code for Recommendation status. Legal values are:
 * If `:approval-process:` is set to `tap`: (refer to
   https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1],
   Figure 9.1 "`Approval of new and revised Recommendations using TAP -- Sequence of events`")
-** `determined`: Determined
-** `in-force`: In-force
+*`determined`::: Determined
+*`in-force`::: In-force
 
 * If `:approval-process:` is set to `aap`: (refer to
   https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8],
   Figure 1 "`Sequence of Events`")
-** `a`: Approved
-** `ac`: Approved with Substantial Changes
-** `aj`: Additional Review Judgement
-** `ar`: Additional Review
-** `at`: Approved with Typographical Corrections
-** `lc`: Last Call
-** `c`: Consented
-** `lj`: Last Call Judgment (includes Last Call Comment resolution)
-** `na`: Not Approved
-** `ri`: Re-Initiate Last Call
-** `sg`: Referred to Study Group Approval
-** `tap`: Moved to TAP (ITU-T A.8 / §5.2)
+*`a`::: Approved
+*`ac`::: Approved with Substantial Changes
+*`aj`::: Additional Review Judgement
+*`ar`::: Additional Review
+*`at`::: Approved with Typographical Corrections
+*`lc`::: Last Call
+*`c`::: Consented
+*`lj`::: Last Call Judgment (includes Last Call Comment resolution)
+*`na`::: Not Approved
+*`ri`::: Re-Initiate Last Call
+*`sg`::: Referred to Study Group Approval
+*`tap`::: Moved to TAP (ITU-T A.8 / §5.2)
 --
 
 `:edition:`:: In the case of Resolutions, this attribute is used to indicate whether the current
@@ -334,6 +356,8 @@ clauses for ease of lookup (so _Figure 6-3, 6-4_, instead of _Figure 21, 22_.)
 Note that equations in ITU are always numbered hierarchically.
 
 `:coverpage-image:`::
-Comma-delimited list of image locations, for images to be included on the PDF cover page of
-ITU "Service Publications" (and title page for logos) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16]. 
-All image locations are relative to the source document.
+Comma-delimited list of image locations, for images to be included on the PDF
+cover page of ITU "Service Publications" (and title page for logos). All image
+locations are relative to the source
+document. [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
+
