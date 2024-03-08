@@ -1,8 +1,10 @@
 {% assign contact_link = "mailto:" | append: site.contact_email %}
 
-<div class="search-widget">
-  <input type="search" id="siteSearchInput" placeholder="Type to search…">
-</div>
+{% if site.algolia_search %}
+	<div class="search-widget">
+  		<input type="search" id="siteSearchInput" placeholder="Type to search…">
+	</div>
+{% endif %}
 
 {% include nav-page-link.html htmlclass="install" url="/install/" title="Install" active_for_nested=true %}
 
@@ -24,6 +26,8 @@
 
 {% include nav-page-link.html htmlclass="blog" url="/blog/" title="Blog" active_for_nested=true %}
 
-<a href="javascript: void 0;" class="search" aria-label="site search button"
-	><i class="fas fa-search"></i
-></a>
+{% if site.algolia_search %}
+	<a href="javascript: void 0;" class="search" aria-label="site search button"
+		><i class="fas fa-search"></i
+	></a>
+{% endif %}
