@@ -7,20 +7,33 @@ title: Images
 
 === General
 
-The inclusion of images in Metanorma AsciiDoc is through the `image` command.
+Images are inserted into a Metanorma AsciiDoc document through the `image`
+command.
 
-Metanorma AsciiDoc supports most of the features of `image` defined in Asciidoctor AsciiDoc.
-For more information, please refer to the typical `image` command attributes available at:
-https://docs.asciidoctor.org/asciidoc/latest/macros/images/[Asciidoctor].
+There are two types of AsciiDoc images:
 
-There are two types of AsciiDoc images, block and inline.
+* block image;
+* inline image.
+
+Metanorma AsciiDoc supports most of the features of `image` defined in
+Asciidoctor AsciiDoc.
+
+Please refer to link:/author/topics/blocks/figures[figures] for details on how
+to use images within figures.
+
+This page mainly describe Metanorma AsciiDoc behavior.
+For typical `image` command attributes, refer to
+https://docs.asciidoctor.org/asciidoc/latest/macros/images/[Asciidoctor AsciiDoc].
+
 
 === Block image
 tag::tutorial[]
 
-A block image is displayed as a discrete element, i.e., on its own line, in a document.
+A *block image* is displayed as a discrete element, i.e., on its own line,
+in a document.
 
 The syntax used to enter a block image is as follows.
+
 The `image::` line is preceded by a blank line, entered on a line by itself,
 and then followed by a blank line.
 
@@ -32,8 +45,10 @@ image::{PATH}[]
 Where `PATH` is the image path.
 
 In Metanorma, block images are always entered as a figure. Please refer to the
-link:/author/topics/blocks/figures[Figures] documentation.
+documentation on link:/author/topics/blocks/figures[Figures].
 
+.Including a block image
+====
 [source,adoc]
 ----
 [[my-anchor]] <1>
@@ -42,74 +57,94 @@ image::images/path.png[Alt text] <3>
 ----
 <1> Optional anchor for referencing
 <2> Image title
-<3> Image command with path and optional alt text. If no alt text is provided, leave the square brackets at the end empty (`image::path[]`).
+<3> Image command with path and optional alt text. If no alt text is provided,
+leave the square brackets at the end empty (`image::path[]`).
+====
 
 end::tutorial[]
 
 
 === Inline image
 
-An inline image is displayed in the flow of another element, such as a paragraph.
+An *inline image* is displayed in the flow of another element, such as a
+paragraph.
 
-This is useful when you want to incorporate buttons or other icons into the text flow.
+This is useful when you want to incorporate buttons or other icons inside the
+text flow.
 
-Inline images are marked up using the inline image macro: `image:[]` instead of `image::[]`:
+Inline images are inserted using the inline image command:
+`image:[]` (instead of `image::[]`).
 
+.Including an inline image into text flow
+====
 [source,adoc]
 ----
 This is an inline image:{PATH}[], appearing within a paragraph.
 ----
+====
 
 Where `PATH` is the image path.
 
 
 === Data URIs
 
-Metanorma allows https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs[Data URIs] as the URL for an image:
+Metanorma allows
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs[Data URIs]
+as the address for an image:
 
+.Including an image via Data URI
+====
 [source,asciidoc]
 --
 image::data:image/png;base64,ivBO...[alt text]
 --
+====
 
-NOTE: Data URIs are not typically supported by AsciiDoc processors.
+NOTE: Data URIs are only supported by Metanorma AsciiDoc, not other AsciiDoc
+processors.
 
 
-=== Image directory location
+=== Image directory root path
 
 The root path for all `image` paths can be defined at the document-level,
 through the document attribute `:imagesdir:`.
 
+.Setting an image directory root path
+[example]
+====
 [source,adoc]
 ----
 = Document title
-:imagesdir: my-images/ <1>
+:imagesdir: my-images <1>
 
 ...
 image::myimage01.png[] <2>
 ----
-<1> The document attribute `:imagesdir:` will set all root paths of the `image` command to the specified path.
-<2> The reference to `myimage01.png` is joined with the path set at `:imagesdir:`, which results to
-`my-images/myimage01.png`.
+<1> The document attribute `:imagesdir:` will set all root paths of the `image`
+command to the specified path.
+<2> The reference to `myimage01.png` is joined with the path set at
+`:imagesdir:`, which results to `my-images/myimage01.png`.
+====
 
-More details of the `:imagesdir:` attribute can be found at
-https://docs.asciidoctor.org/asciidoc/latest/macros/images-directory/[AsciiDoc documentation].
+More details of the `:imagesdir:` attribute can be found at documentation of
+https://docs.asciidoctor.org/asciidoc/latest/macros/images-directory/[Asciidoctor AsciiDoc].
 
 
 === Attributes
 
 ==== Image size
 
-The size of an image can be modified via the `height` and `width` attributes.
+Size of an image can be modified via the `height` and `width` attributes.
 
-By default, both `height` and `width` are set to the value `auto`, which means
+* By default, both `height` and `width` are set to the value `auto`, which means
 that the image will be shown according to the best visual settings determined
 by Metanorma.
 
-Image dimensions can also be fixed with pixel values with `px`.
+* Image dimensions can be fixed with pixel values with `px`.
 
-NOTE: The pixel is the only supported unit in image sizing right now.
+NOTE: The pixel is the only currently supported unit in image sizing.
 
+[example]
 ====
 .Image resizing specifying `height` and `width` attributes in pixels
 [source]
@@ -120,7 +155,7 @@ image::logo.jpg[height=150px,width=100px]
 
 In the `height` and `width` attributes, the `px` suffix may be omitted.
 
-
+[example]
 ====
 .Image resizing with values omitting `px` unit
 [source,asciidoc]
@@ -146,7 +181,6 @@ An unspecified dimension is considered `auto`.
 .Aspect ratio is retained when setting `height` but not `width`
 [source,asciidoc]
 --
-[height=150]
 image::logo.jpg[height=150]
 --
 ====
@@ -156,5 +190,7 @@ NOTE: Treatment of image resizing may slightly differ across output formats.
 
 ==== Other attributes
 
-NOTE: For general attributes of the `image` command, please refer to the https://docs.asciidoctor.org/asciidoc/latest/macros/image-ref/[AsciiDoc image documentation]. The following paragraphs describe Metanorma-specific behavior.
+NOTE: For general attributes of the `image` command, please refer to the
+https://docs.asciidoctor.org/asciidoc/latest/macros/image-ref/[Asciidoctor AsciiDoc]
+documentation.
 
