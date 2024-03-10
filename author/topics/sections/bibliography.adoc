@@ -7,7 +7,7 @@ layout: author-docs
 == General
 
 In standard documents typically there are two types of references, namely
-the "`normative references`" and the "`bibliography`" (informative references).
+the "`Normative references`" and the "`Bibliography`" (informative references).
 
 The following fixed clause names identifies a bibliography:
 
@@ -60,7 +60,8 @@ section is set as the last unnumbered section at the end of document
 Normative and informative references are normally recognised by the
 distinct title given them, specific to the flavour; however, the normative
 status of the bibliographic section can be given explicitly with
-a `normative` boolean attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.7]:
+a `normative` boolean
+attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.7]:
 
 [source,asciidoc]
 ----
@@ -577,34 +578,46 @@ ____
 
 Metanorma recognises two types of joint publication:
 
-* Joint publications proper (or Merged publications),
-in which the one document is considered to be published simultaneously
-by two different standards bodies. In the case of ISO and IEC, there are longstanding partnerships with
-each other and with IEC, and this is reflected in the identifier assigned by the standards organisation
-(e.g. ISO/IEC DIR 1). In other cases, the document is assigned a different identifier by each of
-the standards organisations involved, but it is still considered to be the same publication, and is
-described in a single bibliographic entry.
+* Joint publications proper (or merged publications), in which the one document
+is considered to be published simultaneously by two different standards bodies.
++
+In the case of ISO and IEC, there are longstanding partnerships with each other
+and with IEC, and this is reflected in the identifier assigned by the standards
+organisation (e.g. ISO/IEC DIR 1).
++
+In other cases, the document is assigned a different identifier by each of the
+standards organisations involved, but it is still considered to be the same
+publication, and is described in a single bibliographic entry.
 
-* Dual publications, for which the publications are treated as separate bibliographic entries, listed
-together with phrasing like "also published as:". In dual publications, the publications are regarded
-as separate activities with separate metadata, rather than a joint coordinated responsibility.
+* Dual publications, for which the publications are treated as separate
+bibliographic entries, listed together with phrasing like "also published as:".
++
+In dual publications, the publications are regarded as separate activities with
+separate metadata, rather than a joint coordinated responsibility.
 +
 In case the partnership is not acknowledged in the document identifier (the documents are assigned
 two separate identifiers), the two separate bibliographic entries can still be fetched by Relaton,
-and brought together in the Metanorma bibliography  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.1].
+and brought together in the Metanorma
+bibliography [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.1].
 
-* `[[[anchor,merge(CODE1, CODE2)]]]` merges together the two bibliographic entries fetched under
-CODE1 and CODE2: the bibliographic entry is that of CODE1, but the publication information of CODE2
-(the publishing organisation and the distinct document identifier) are added to the entry. For example,
+* `[[[anchor,merge(CODE1, CODE2)]]]` merges together the two bibliographic
+entries fetched under `CODE1` and `CODE2`: the bibliographic entry is that of
+`CODE1`, but the publication information of `CODE2` (the publishing organisation
+and the distinct document identifier) are added to the entry.
 +
+.Rendering of a jointly published bibliographic item
 ====
-ISO 10712 | ITU-R 232. _ISO title of document_. International Organization for Standardization and International Telecommunications Union.
+ISO 10712 | ITU-R 232. _ISO title of document_.
+International Organization for Standardization and International Telecommunications Union.
 ====
 
-* `[[[anchor,dual(CODE1, CODE2)]]]` treats the two bibliographic entries separately. For example,
+* `[[[anchor,dual(CODE1, CODE2)]]]` treats the two bibliographic entries separately.
 +
+.Rendering of a dual-published bibliographic item
 ====
-ISO 10712.  _ISO title of document_. International Organization for Standardization. Also published as: ITU-R 232. _ITU title of document_. International Telecommunications Union.
+ISO 10712.
+_ISO title of document_. International Organization for Standardization.
+Also published as: ITU-R 232. _ITU title of document_. International Telecommunications Union.
 ====
 
 [[other-databases]]
@@ -686,7 +699,8 @@ In: IEEE Access, vol. 5, pp. 16441-16458, 2017, doi: 10.1109/ACCESS.2017.2739804
 This is rendered as:
 
 ____
-[1] Y. SAHNI, J. CAO, S. ZHANG and L. YANG. _Edge Mesh: A New Paradigm to Enable Distributed Intelligence in Internet of Things._
+[1] Y. SAHNI, J. CAO, S. ZHANG and L. YANG.
+_Edge Mesh: A New Paradigm to Enable Distributed Intelligence in Internet of Things._
 In: IEEE Access, vol. 5, pp. 16441-16458, 2017, doi: 10.1109/ACCESS.2017.2739804.
 ____
 ====
@@ -727,7 +741,7 @@ Author initials.
 Author given name.
 
 `fullname`::
-Combination of author surname and initials or given names, according to strcit syntax
+Combination of author surname and initials or given names, according to strict syntax
 (see below) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.0]
 
 `organization`::
@@ -752,20 +766,20 @@ Corporate contributor, with role _XXX_ (e.g. _editor_).
 Title.
 
 `in_title`::
-Title of containing bibiographic item (for types `inbook, inproceedings, incollection`,
-the title of the book, proceedings, collection containing the item).
+Title of containing bibliographic item. For types `inbook`, `inproceedings`, `incollection`,
+the title of the book, proceedings, collection containing the item.
 
 `in_surname`, `in_initials`, `in_givenname`, `in_organization`::
 Name of contributor for containing bibliographic item
 +
-For types `inbook, inproceedings, incollection`, the author or more usually
+For types `inbook`, `inproceedings`, `incollection`, the author or more usually
 editor of the book, proceedings, collection containing the item.
 +
 So `in_surname.editor`, `in_givenname.editor` give the name of the editor of the
 book or proceedings that a paper is included in.
 
 `series`::
-Series title. (For articles, this is the journal title.)
+Series title. For articles, this is the journal title.
 
 `docid`::
 Document identifier.
@@ -780,7 +794,7 @@ Publisher.
 Place of publication.
 
 `date`::
-Date published. (All dates must be in YYYY-MM-DD format, as with the rest of Metanorma input.)
+Date published. All dates in Metanorma are entered in ISO 8601-1:2019 `YYYY-MM-DD` format.
 
 `date.XXX`::
 Date with type _XXX_ (e.g. _published_, _created_, _issued_)
@@ -810,10 +824,12 @@ issue or issue range (e.g. _9_, _9-11_)
 volume or volume range (e.g. _9_, _9-11_)
 
 `type`::
-Document type (e.g. _standard_, _book_, _inbook_): suppressed from rendering.
-
-The list of valid document types is given in
-https://www.relaton.org/specs/model/bibtype/[Relaton model -- Bibitem type].
+Document type. List of valid document types given in
+https://www.relaton.org/model/bibtype/[Relaton model -- Bibitem type].
+The type is suppressed from rendering.
++
+[example]
+_standard_, _book_, _inbook_
 
 NOTE: The surname must always precede the initials or given name for a given author in spans,
 to prevent ambiguity and confusion in parsing the reference.
@@ -832,11 +848,11 @@ has a strict syntax, and any special cases need to be marked up with the
 separate, explicit name parts instead:
 
 * The surname is a single word (space-delimited), occurring at the end.
-So in `span:fullname[A. D. Navarro Cortez]`, only _Cortez_ is a surname.
+See the examples below.
 +
-To make _Navarro Cortez_ a surname, you will need to mark it up as `span:initials[A. D.] span:surname[Navarro Cortez]`.
-+
-But in `span:fullname[A. D. Navarro-Cortez]`, the surname is _Navarro-Cortez_.
+`span:fullname[A. D. Navarro Cortez]`::: surname is _Cortez_.
+`span:initials[A. D.] span:surname[Navarro Cortez]`::: surname is _Navarro Cortez_.
+`span:fullname[A. D. Navarro-Cortez]`::: surname is _Navarro-Cortez_.
 
 * Anything before the surname is a given name. So in
 `span:fullnamename[J. Edgar Hoover]`, both _J._ and _Edgar_ are processed as given names.
@@ -992,7 +1008,7 @@ was issued, by contrast, is left alone.
 
 [[bibtex]]
 === Importing bibliographic records from other formats
-Metanorma can import files containing bibliographic records in other 
+Metanorma can import files containing bibliographic records in other
 formats [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.9].
 To date, only Bibtex is supported.
 
@@ -1004,7 +1020,7 @@ attribute:
 :relaton-data-source: path/to/bibtex-file
 ----
 
-In order to specify multiple external Bibtex files, use `relaton-data-source-{id}` 
+In order to specify multiple external Bibtex files, use `relaton-data-source-{id}`
 document attributes, where the value of `{id}` is the source identifier
 used to differentiate each import file:
 
@@ -1016,7 +1032,7 @@ used to differentiate each import file:
 
 References to a bibliographic item imported this way are expressed in the bibliography
 with the bibliographic anchor `local-file(SOURCE, KEY)`, where `SOURCE` is the name
-of the source identifier for the import file, and `KEY` is the identifier of the 
+of the source identifier for the import file, and `KEY` is the identifier of the
 reference in the import file. So given the import statements above,
 
 [source,asciidoc]
@@ -1025,7 +1041,7 @@ reference in the import file. So given the import statements above,
 * [[[ref1, local-file(bib1, tc211)]]]
 ----
 
-will import the reference inside the Bibtex file `path/to/first/bibtex-file` 
+will import the reference inside the Bibtex file `path/to/first/bibtex-file`
 (the value of `relaton-data-source-bib1`) that starts as e.g.
 
 [source]
@@ -1110,9 +1126,11 @@ type:: standard
 
 === Suppressing display
 
-It is expected that if a citation is made in the main body of the document, its corresponding reference
-will be included in the bibliography. It is however possible to suppress display of that reference in the
-bibliography, by wrapping it in `hidden()` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.4].
+It is expected that if a citation is made in the main body of the document, its
+corresponding reference will be included in the bibliography. It is however
+possible to suppress display of that reference in the bibliography, by wrapping
+it in
+`hidden()` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.4].
 
 [source,asciidoc]
 --
