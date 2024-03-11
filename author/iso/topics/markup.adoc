@@ -238,8 +238,6 @@ one of:
 
 ===== General
 
-// TODO remove: From NN: Systematic order is only permitted in vocabulary documents.
-
 In systematic order, the entry numbers are "serial numbers reflecting
 the position of the respective concept within a concept system".
 
@@ -366,12 +364,9 @@ the grouping was intended as a systematic term.
 
 ===== Declared term groupings
 
-// TODO: NN REMOVE
-// In vocabulary documents, if a clause has a definition (a normal paragraph that
-// follows the heading definition), it is treated as a term grouping instead of a
-// term (i.e. as mixed order) if it is tagged with the `[.grouping]`...
-
-The role `[.grouping]` explicitly declares a clause as a term grouping. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.3.4].
+The role `[.grouping]` explicitly declares a clause as a term grouping,
+and not a term. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.3.4].
+It is used to enforce mixed order divisions of terms.
 
 [source,asciidoc]
 .Encoding terms in mixed order with declared groupings
@@ -395,50 +390,6 @@ Paragraph 2
 ==== Term C
 Definition C
 --
-
-===== Replacing boilerplate text in a term grouping
-
-Discursive text in a term grouping are encoded with a `[.boilerplate]` clause
-as described in
-link:/author/topics/document-format/section-terms#overriding-predefined-text[Overriding predefined text].
-
-NOTE: This is the same method as overriding boilerplate text in a
-"Terms and definitions" section.
-
-[example]
-.Encoding terms in mixed order with groupings and replaced boilerplate
-====
-[source,asciidoc]
---
-== Terms and definitions
-
-=== Term grouping 1
-
-[.boilerplate]
-==== {blank}
-The following terms are adopted from ISO 10303-2.
-
-==== Term A
-Definition A
-
-==== Term B
-Definition B
-
-=== Term grouping 2
-
-[.boilerplate]
-==== {blank}
-The following terms are adopted from ISO 10303-11.
-
-==== Term C
-Definition C
---
-
-NOTE: Without the `[.boilerplate]` and `=== {blank}`, the "The following terms
-are ..." text will be assumed to be the definition of the respective term
-grouping, and the subsequent terms will be assumed to be subterms.
-====
-
 
 === Combined terms and definitions
 
