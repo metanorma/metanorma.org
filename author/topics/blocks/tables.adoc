@@ -96,8 +96,9 @@ It could be either:
 
 * a percentage (e.g. `70%`); or
 * a pixel count (e.g. `500px`).
+* `full-page-width` and `text-width`, used only in PDF [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6]
 
-NOTE: The `width` attribute value aligns with HTML CSS and HTML 4 behavior.
+NOTE: The non-PDF `width` attribute values align with HTML CSS and HTML 4 behavior.
 
 [source,asciidoc]
 ----
@@ -112,6 +113,16 @@ NOTE: The `width` attribute value aligns with HTML CSS and HTML 4 behavior.
 ----
 
 Will result in the table width spanning 70% of the rendered output medium.
+
+[source,asciidoc]
+----
+[width=full-page-width]
+|===
+|A |B
+
+|C |D
+|=== 
+----
 
 NOTE: This feature is not supported in typical AsciiDoc.
 
