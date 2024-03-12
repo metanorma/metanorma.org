@@ -185,6 +185,26 @@ image::logo.jpg[height=150]
 --
 ====
 
+
+The `width` attribute, can also have the values `full-page-width`, `narrow`,
+and `text-width`, which is used in PDF to indicate how wide an image is rendered
+against text, particularly if the text is formatted in 
+multiple columns [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6].
+
+[source,asciidoc]
+----
+[width=narrow]
+image::abc.png[]
+----
+
+[source,asciidoc]
+----
+[.figure,width=narrow]
+====
+image::abc.png[]
+====
+----
+
 NOTE: Treatment of image resizing may slightly differ across output formats.
 
 
