@@ -88,7 +88,6 @@ documents, not the document model of a particular SDO.
 .UML representation of section classes in Metanorma StanDoc
 image::https://raw.githubusercontent.com/metanorma/metanorma-model-standoc/main/images/StandardDoc_Sections.png[UML representation of section classes in Metanorma StanDoc]
 
-
 Flavours may overrule these pre-defined section titles with titles of their own,
 or may choose not to recognise at least some of them as special sections.
 
@@ -175,6 +174,68 @@ https://en.wikipedia.org/wiki/Letter_case#Title_case[title case].
 ====
 A dedicated topic link:../section-terms/[expands on "`Terms and definitions`" section grammar].
 ====
+
+Automated title recognition (by English titles such as _Scope_, _Normative references_, etc.)
+applies only at the topmost level of clause. If a clause is to be recognised with a special
+type and nested at a deeper clause level, the `heading` attribute still needs to be
+used [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6]; otherwise,
+the clauses will be treated as normal clauses, without the special semantics or formatting
+of those clause types. For example,
+
+[source,adoc]
+----
+== General
+
+[heading=scope]
+=== Scope
+
+[bibliography,heading=normative references]
+=== Normative references
+
+[heading=terms and definitions]
+=== Terms and definitions
+----
+
+In most flavours of Metanorma, if the title is indicated or guessed correctly,
+it is overwritten by the standard title required by the SDO and internationalisation;
+for example, in ISO, 
+
+[source,adoc]
+----
+[heading=foreword]
+== Fore Word
+----
+
+will still be rendered as
+
+____
+*Foreword*
+____
+
+in English, and 
+
+____
+*Avant-propos*
+____
+
+in French; the supplied text is ignored.
+
+Moreover, the title of a Terms and definitions clause will be determined automatically,
+based on its contents; a `Terms and definitions` clause which contains a symbols clause
+but not an abbreviated terms clause will automatically be titled _Terms, definitions and symbols_
+in English (_Termes, définitions et symboles_ in French.
+
+In order to force the provided title to be retained in the clause, despite the SDO requirements
+for the flavour of Metanorma, use the attribute 
+`keeptitle=true` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6]. For example,
+
+[source,adoc]
+----
+[heading=foreword,keeptitle=true]
+== Fore Word
+----
+
+will be encoded and rendered as a foreword, but it will retain its title as _Fore Word_.
 
 
 === Blank subclause headings
