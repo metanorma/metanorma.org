@@ -92,14 +92,31 @@ row to define it as the header.
 The table width can be set with the `width`
 attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21].
 
-It could be either:
+`width`:: Width of table. Valid values listed below.
 
-* a percentage (e.g. `70%`); or
-* a pixel count (e.g. `500px`).
-* `full-page-width` and `text-width`, used only in PDF [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6]
+`{percentage}%`:::
+a percentage (e.g. `70%`)
+
+`{pixels}px`:::
+a pixel count (e.g. `500px`)
+
+`full-page-width`:::
+PDF-specific. Specifies that the table spans the whole page width
+regardless of the number of columns on the page.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6]
++
+NOTE: This feature is not supported in typical AsciiDoc.
+
+`text-width`::: PDF-specific. Specified that the table will be as wide as
+the text column that contains it.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6]
++
+NOTE: This feature is not supported in typical AsciiDoc.
 
 NOTE: The non-PDF `width` attribute values align with HTML CSS and HTML 4 behavior.
 
+.Table width spanning 70% of the rendered output medium
+====
 [source,asciidoc]
 ----
 [width=70%]
@@ -111,9 +128,10 @@ NOTE: The non-PDF `width` attribute values align with HTML CSS and HTML 4 behavi
 
 |===
 ----
+====
 
-Will result in the table width spanning 70% of the rendered output medium.
-
+.Table width spanning full page width in PDF regardless of number of columns
+====
 [source,asciidoc]
 ----
 [width=full-page-width]
@@ -121,10 +139,10 @@ Will result in the table width spanning 70% of the rendered output medium.
 |A |B
 
 |C |D
-|=== 
+|===
 ----
+====
 
-NOTE: This feature is not supported in typical AsciiDoc.
 
 == Notes and footnotes
 

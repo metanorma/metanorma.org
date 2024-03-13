@@ -134,19 +134,54 @@ https://docs.asciidoctor.org/asciidoc/latest/macros/images-directory/[Asciidocto
 
 ==== Image size
 
+===== General
+
 Size of an image can be modified via the `height` and `width` attributes.
 
-* By default, both `height` and `width` are set to the value `auto`, which means
-that the image will be shown according to the best visual settings determined
-by Metanorma.
+`height`:: Height of image. Valid values listed below.
 
-* Image dimensions can be fixed with pixel values with `px`.
+`auto`:::
+(default) Image will be shown according to the best visual settings determined
+by Metanorma
+
+`{pixels}px`:::
+Fixed height in pixels (px). The `px` suffix can be omitted.
+
+`width`:: Width of image. Valid values listed below.
+
+`auto`:::
+(default) Image will be shown according to the best visual settings determined
+by Metanorma
+
+`{pixels}px`:::
+Fixed width in pixels (px). The `px` suffix can be omitted.
+
+`full-page-width`:::
+PDF-specific. Specifies that the image spans the whole page width
+regardless of the number of columns on the page.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6]
++
+NOTE: This feature is not supported in typical AsciiDoc.
+
+`narrow`::: PDF-specific. Specifies that the image will stay within a text
+column.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6]
++
+NOTE: This feature is not supported in typical AsciiDoc.
+
+`text-width`::: PDF-specific. Specified that the image will be as wide as
+the text column that contains it.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6]
++
+NOTE: This feature is not supported in typical AsciiDoc.
 
 NOTE: The pixel is the only currently supported unit in image sizing.
 
+===== Fixed dimensions
+
 [example]
-====
 .Image resizing specifying `height` and `width` attributes in pixels
+====
 [source]
 ----
 image::logo.jpg[height=150px,width=100px]
@@ -156,19 +191,22 @@ image::logo.jpg[height=150px,width=100px]
 In the `height` and `width` attributes, the `px` suffix may be omitted.
 
 [example]
+.Image resizing with values omitting `px` unit in `height` and `width`
 ====
-.Image resizing with values omitting `px` unit
 [source,asciidoc]
 --
 image::logo.jpg[height=150,width=100]
 --
 ====
 
+
+===== Scaling according to aspect ratio
+
 The `auto` value indicates that the dimension does not have a fixed size but
 retain the aspect ratio of the original image.
 
-====
 .Aspect ratio is retained with `width` set to `auto` based on the value of `height`
+====
 [source,asciidoc]
 --
 image::logo.jpg[height=150,width=auto]
@@ -177,8 +215,8 @@ image::logo.jpg[height=150,width=auto]
 
 An unspecified dimension is considered `auto`.
 
-====
 .Aspect ratio is retained when setting `height` but not `width`
+====
 [source,asciidoc]
 --
 image::logo.jpg[height=150]
@@ -186,17 +224,27 @@ image::logo.jpg[height=150]
 ====
 
 
-The `width` attribute, can also have the values `full-page-width`, `narrow`,
-and `text-width`, which is used in PDF to indicate how wide an image is rendered
-against text, particularly if the text is formatted in 
-multiple columns [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6].
+===== PDF-specific width values
 
+In the PDF paged layout, the `width` attribute can take on additional values.
+
+The values `full-page-width`, `narrow`, and `text-width` are used in PDF to
+indicate how wide an image is rendered against text, particularly if the text is
+formatted in multiple
+columns [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6].
+
+
+.Setting `width=narrow` for an image in PDF
+====
 [source,asciidoc]
 ----
 [width=narrow]
 image::abc.png[]
 ----
+====
 
+.Setting `width=narrow` for a figure in PDF
+=====
 [source,asciidoc]
 ----
 [.figure,width=narrow]
@@ -204,6 +252,7 @@ image::abc.png[]
 image::abc.png[]
 ====
 ----
+=====
 
 NOTE: Treatment of image resizing may slightly differ across output formats.
 
