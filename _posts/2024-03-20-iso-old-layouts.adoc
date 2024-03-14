@@ -1,0 +1,136 @@
+---
+layout: post
+title: "PDF generation updated for a historical ISO layouts from 1951 to 2012"
+date: 2024-03-20
+categories: documentation
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+  -
+    name: Alexander Dyuzhev
+    email: dyuzhev@gmail.com
+    social_links:
+      - https://www.linkedin.com/in/alexander-dyuzhev/
+      - https://github.com/Intelligent2013/
+
+excerpt: >-
+  Metanorma XML to PDF supports a old ISO layouts.
+---
+
+== Introduction
+
+Metanorma-ISO now supports the PDF rendering in a historical layouts. We've
+distinguished a few periods when ISO significally changed the layout of the
+document:
+
+* from 1951 to 1971
+
+* from 1972 to 1986
+
+* from 1987 to 1989
+
+* from 1989 to 2012
+
+For each period we've added the PDF generation in unique layout.
+
+The layout may be choosed by the document attribute `:document-scheme:`.
+This attribute specifies the version of the ISO document specification that 
+should be used in generating the Metanorma document.
+The available values are: `1951`, `1972`, `1987`, `1989`, `2012`, `2013` and `2024` (default).
+
+Note: The layout `2012` is similar to `1989`, but with changed logo in mid-2012.
+
+
+== Copyright statements
+
+Copyright text changed from year to year. Currently, Metanorma support a few predefined 
+copyright texts for different layout:
+
+* for layout version 1951: +
+```
+COPYRIGHT RESERVED
+
+The copyright of ISO Recommendations and ISO Standards
+belongs to ISO Member Bodies. Reproduction of these 
+documents, in any country, may be authorized therefore only
+by the national standards organization of that country, being
+a member of ISO.
+
+For each individual country the only valid standard is the national standard of that country.
+
+Printed in Switzerland
+
+Also issued in French and Russian. Copies to be obtained through the national standards organizations.
+```
+
+* for layout version 1972 and 1987: +
+```
+International Organization for Standardization, YEAR
+
+Printed in Switzerland
+
+```
+
+* for layout version 1989: +
+```
+International Organization for Standardization YEAR
+
+All rights reserved. Unless otherwise specified, no part of this publication may be reproduced
+or utilized in any form or by any means, electronic or mechanical, including photocopying and
+microfilm, without permission in writing from the publisher.
+
+International Organization for Standardization
+Case postale 56 &#x2022; CH-1211 Gen&#xE8;ve 20 &#x2022; Switzerland
+Internet&#xa0;&#xa0;&#xa0;central@iso.ch
+X.400&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;c=ch; a=400net; p=iso; o=isocs; s=central
+
+Printed in Switzerland
+```
+
+* for all another layouts: +
+```
+International Organization for Standardization YEAR
+
+All rights reserved. Unless otherwise specified, or required in the context of its implementation,
+no part of this publication may be
+reproduced or utilized otherwise in any form or by any means, electronic or
+mechanical, including photocopying, or posting on the internet or an intranet,
+without prior written permission. Permission can be requested from either ISO
+at the address below or ISO's member body in the country of the requester.
+
+ISO copyright office +
+CP 401 &#x2022; Ch. de Blandonnet 8 +
+CH-1214 Vernier, Geneva +
+Phone: +41 22 749 01 11 +
+Email: copyright@iso.org +
+Website: www.iso.org
+
+
+Published in Switzerland
+```
+
+
+Sure, these copyrights may no cover the all copyright texts during all periods of publications,
+therefore instead of predefined text you can specify your copyright text in adoc format. Put the
+boilerplate.aodc in your folder with document:
+
+```
+== copyright-statement
+
+=== COPYRIGHT
+
+[[boilerplate-message]]
+The custom copyright test.
+
+[[boilerplate-place]]
+Published in Switzerland
+
+Some additional text.
+```
+
+
+More information about boilerplate predefined text see 
+at https://www.metanorma.org/develop/topics/metadata-and-boilerplate/#boilerplate
