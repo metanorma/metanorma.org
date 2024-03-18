@@ -163,12 +163,6 @@ regardless of the number of columns on the page.
 +
 NOTE: This feature is not supported in typical AsciiDoc.
 
-`narrow`::: PDF-specific. Specifies that the image will stay within a text
-column.
- [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6]
-+
-NOTE: This feature is not supported in typical AsciiDoc.
-
 `text-width`::: PDF-specific. Specified that the image will be as wide as
 the text column that contains it.
  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6]
@@ -228,26 +222,26 @@ image::logo.jpg[height=150]
 
 In the PDF paged layout, the `width` attribute can take on additional values.
 
-The values `full-page-width`, `narrow`, and `text-width` are used in PDF to
+The values `full-page-width` and `text-width` are used in PDF to
 indicate how wide an image is rendered against text, particularly if the text is
 formatted in multiple
 columns [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6].
 
 
-.Setting `width=narrow` for an image in PDF
+.Setting `width=full-page-width` for an image in PDF
 ====
 [source,asciidoc]
 ----
-[width=narrow]
+[width=full-page-width]
 image::abc.png[]
 ----
 ====
 
-.Setting `width=narrow` for a figure in PDF
+.Setting `width=full-page-width` for a figure in PDF
 =====
 [source,asciidoc]
 ----
-[.figure,width=narrow]
+[.figure,width=full-page-width]
 ====
 image::abc.png[]
 ====
