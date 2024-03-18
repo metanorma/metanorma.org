@@ -5,6 +5,71 @@ title: Metanorma for ISO markup
 
 = Metanorma for ISO markup
 
+== Document layouts
+
+=== General
+
+Metanorma ISO supports multiple layouts of ISO documents through the
+`:document-scheme:` document attribute.
+
+Specific instructions on using these layouts are described below.
+
+=== 2024 (latest)
+
+The following attributes should be set:
+
+* `:semantic-metadata-feedback-link:` which is used to generate cover page QR code.
+* `:library-ics:` to set the ICS code(s).
+
+=== 2013
+
+The following attributes should be set:
+
+* `:library-ics:` to set the ICS code(s).
+
+=== 2012
+
+The 2012 PDF layout, published in mid-2012, is equal to the 1989 layout with an
+ISO logo update.
+
+The following attributes should be set:
+
+* `:library-ics:` to set the ICS code(s).
+
+
+=== 1989
+
+The following attributes should be set.
+
+From publication year 1994 and onwards:
+
+* `:library-ics:` to set the ICS code(s).
+
+Prior to publication year 1994:
+
+* `:classification:` to set the UDC code(s).
+
+=== 1987
+
+The following attributes should be set:
+
+* `:classification:` to set the UDC code(s).
+
+=== 1972
+
+The following attributes should be set:
+
+* `:classification:` to set the UDC code(s).
+
+=== 1951
+
+The first available published ISO format.
+
+The following attributes should be set:
+
+* `:classification:` to set the UDC code(s).
+
+
 == Lists
 
 === Unordered lists
@@ -596,7 +661,7 @@ ATS:: abstract test suite
 
 In the document scheme used by ISO between 1987 and 1989, clauses were organised
 into higher-level numbered sections. In order to realise this formatting, use
-`type=section` [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.5], and 
+`type=section` [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.5], and
 `heading=` to indicate the special clause types for subclauses of sections:
 
 [source,adoc]
