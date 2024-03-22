@@ -79,8 +79,20 @@ preferred by ISO/CS.
 
 === Ordered lists
 
-Ordered list numbering enforce the ISO/IEC DIR 2 labelling convention,
-therefore the `type` attribute is ignored in ordered lists.
+Ordered list numbering enforces the ISO/IEC DIR 2 labelling convention as a default:
+a) 1) i) A) I).
+However, the style attribute is respected in ordered lists
+if provided [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.5]:
+
+[source,adoc]
+----
+[arabic]
+. A
+. B
+[lowerroman]
+.. C
+.. D
+----
 
 The `start` attribute is supported in ISO by Metanorma, but not by IEC or
 BSI [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2].
