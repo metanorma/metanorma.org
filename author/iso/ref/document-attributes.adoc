@@ -52,12 +52,13 @@ https://www.iso.org/deliverables-all.html[ISO deliverables: The different types 
 `technical-report`::: Technical Report (TR)
 `publicly-available-specification`::: Publicly Available Specification (PAS)
 `international-workshop-agreement`::: International Workshop Agreement (IWA)
-`guide`:: Guide (Guide)
+`guide`::: Guide (Guide)
 `technical-corrigendum`::: Technical Corrigendum (Cor) [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
 `amendment`::: Amendment (Amd) [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
-`committee-document`::: Commitee Document (for internal documents) [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.2]
+`committee-document`::: Committee Document (for internal documents) [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.2]
 
-`:updates-document-type:`:: (only when `doctype` is set to `amendment` or `technical-corrigendum`)
+`:updates-document-type:`::
+(only when `doctype` is set to `amendment` or `technical-corrigendum`)
 The document type that this amendment or technical corrigendum is
 updating [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25].
 
@@ -692,13 +693,20 @@ individual mappings shown [added in https://github.com/metanorma/metanorma-iso/r
 to use [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.1.2].
 Options are:
 
-`simple`::: using the styles of the https://www.iso.org/iso-templates.html[ISO Simple Template] (default for stages before 40)
-`dis`::: using the styles of the "`ISO Edited DIS template`", introduced by the
-ISO editors at the DIS stage of editing, through to publication. (default for stages 40 through 95)
+`simple`:::
+Commonly called the "Simple Template".
+Using the styles of the https://www.iso.org/iso-templates.html[ISO Simple Template] (default for stages before 40).
 
-`:iso-word-bg-strip-color:`:: The "`ISO Edited DIS template`" introduces
-background colouring of spans in order to ensure correct semantic markup, as
-validated by ISO editors.
+`dis`:::
+Commonly called the "DIS Template".
+Using the styles of the "`ISO Edited DIS template`", introduced by the ISO
+editors at the DIS stage of editing, through to publication. (default for stages
+40 through 95)
+
+`:iso-word-bg-strip-color:`::
+(only for the `dis` template)
+The "`ISO Edited DIS template`" introduces background colouring of spans in
+order to ensure correct semantic markup, as validated by ISO editors.
 
 `true`::: (default) Remove background colors of semantically-annotated
 spans (equivalent to "Pattern: Clear"). This option is _necessary_ for draft
@@ -706,6 +714,7 @@ submission of the stage 40 onwards (DIS/FDIS) documents to ISO
 editors. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.2.3].
 
 `false`::: Retain background colors of semantically-annotated spans.
+
 
 == Validation
 
