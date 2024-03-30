@@ -3,41 +3,41 @@ layout: learn
 title: What is Metanorma?
 ---
 == What you get is what you see vs. What you get is what you mean
-//include::/author/concepts/wysiwyg_vs_wysiwym.adoc[tag=tutorial]
+//include::/author/basics/wysiwym.adoc[tag=tutorial]
 
-Word is probably your go-to application for casual writing, such as letters, invitations - and with good reason, because Word has many benefits, such as: 
+Word is probably your go-to application for casual writing, such as letters, invitations - and with good reason, because Word has many benefits, such as:
 
 * Creating documents quickly
 * An intuitive interface
 * Printer prints exactly what you see on your screen = What you see is what you get (WYSIWYG)
 
 .Word is a WYSIWYG application
-image::/assets/author/concepts/word_WSYIWYG.png[Word is a WYSIWYG application]
+image::/assets/author/basics/wysiwyg.png[Word is a WYSIWYG application]
 
 However, have you ever written a longer text, with many references, like a scientific text? Then you might have experienced some pain with Word: It tends to mess up the formatting, even if you use templates. Reference management in Word is also no fun, but the worst: Word tends to crash for very long documents, like standards.
 
-Because of these issues, another approach to creating documents is popular: “What you see is what you mean” (WYSIWYM). This concept differs from WYSIWYG because you separate the content and the layout into separate files. To tell the compiler how the text should look or behave, you use markup language. You may have heard about Markdown or LaTeX, which are popular markup languages, but Metanorma uses AsciiDoc. 
+Because of these issues, another approach to creating documents is popular: “What you see is what you mean” (WYSIWYM). This concept differs from WYSIWYG because you separate the content and the layout into separate files. To tell the compiler how the text should look or behave, you use markup language. You may have heard about Markdown or LaTeX, which are popular markup languages, but Metanorma uses AsciiDoc.
 
-The benefit is that you can publish different outputs from one source, for example into PDF or HTML. Since the layout is stored in a separate file, each output can even be styled differently. 
+The benefit is that you can publish different outputs from one source, for example into PDF or HTML. Since the layout is stored in a separate file, each output can even be styled differently.
 
 .Metanorma uses AsciiDoc text as an input and can deliver different outputs, such as PDF and HTML. A stylesheet determines how the outcome looks like.
-image::/assets/author/concepts/metanorma_WSYIWYM.png[What you see is what you mean]
+image::/assets/author/basics/wsyiwym.png[What you see is what you mean]
 
 == What is Metanorma?
-//include::/author/concepts/what_is_metanorma.adoc[tag=tutorial]
+//include::/author/basics/what_is_metanorma.adoc[tag=tutorial]
 
 Metanorma is actually not one thing, but three:
 
-. The Metanorma toolchain: This is the software that you use to create documents and generate output. 
-. Document metamodels: Metanorma provides a document structure for standardization documents, specified in https://www.isotc154.org/projects/iso-36001/[ISO 36001]. Since each organization has different requirements for their standard documents, they use a https://www.metanorma.org/flavors/[“flavor”] of Metanorma. A flavor is a document model that provides additional metadata to reflect the SDO’s needs. 
-. XML schemas: To use the defined document metamodels, there needs to be a machine-readable file so that documents can be checked against their intended structure. 
+. The Metanorma toolchain: This is the software that you use to create documents and generate output.
+. Document metamodels: Metanorma provides a document structure for standardization documents, specified in https://www.isotc154.org/projects/iso-36001/[ISO 36001]. Since each organization has different requirements for their standard documents, they use a https://www.metanorma.org/flavors/[“flavor”] of Metanorma. A flavor is a document model that provides additional metadata to reflect the SDO’s needs.
+. XML schemas: To use the defined document metamodels, there needs to be a machine-readable file so that documents can be checked against their intended structure.
 
 Metanorma consists of several layers of complexity, see the figure below.
-The basis for each metanorma document is AsciiDoc. Since AsciiDoc itself has limited functionalities for authoring standards, Metanorma extends AsciiDoc as one part of the Metanorma toolchain (1). Metanorma AsciiDoc provides advanced features, such as automatically linking the correct standard in a bibliography section. 
+The basis for each metanorma document is AsciiDoc. Since AsciiDoc itself has limited functionalities for authoring standards, Metanorma extends AsciiDoc as one part of the Metanorma toolchain (1). Metanorma AsciiDoc provides advanced features, such as automatically linking the correct standard in a bibliography section.
 The final layer of complexity are flavour-specific document rules and best practices based on the document metamodels (2). For example, ISO documents must include a "Scope" section, whereas NIST requires an "Acknowledgements" section.
 
 .Metanorma extends AsciiDoc provide a powerful tool for standard organizations
-image::/assets/author/concepts/complexity_pyramid.png[Three layers of complexity: AsciiDoc - Metanorma AsciiDoc - Flavour specific document rules]
+image::/assets/author/basics/complexity_pyramid.png[Three layers of complexity: AsciiDoc - Metanorma AsciiDoc - Flavour specific document rules]
 
 Metanorma has many advantages when you want to edit standards:
 
