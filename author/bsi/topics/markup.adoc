@@ -16,7 +16,7 @@ document attribute `coverpage-image`, as a comma-delimited list:
 ----
 
 The inner cover images, Table of Contents side images, and back page images are treated in the same way,
-with the respective atttributes `innercoverpage-image`, `tocside-image`, and `backpage-image`.
+with the respective attributes `innercoverpage-image`, `tocside-image`, and `backpage-image`.
 
 Note that even if an `:imagesdir:` directory is specified, the image locations should be given
 relative to the source document, for consistency with other attributes.
@@ -37,7 +37,7 @@ image::/assets/author/bsi/topics/bsiflex.png[]
 For BSI PAS:
 
 * the front and back cover page size is 210×297mm,
-* the document identifier and title(s) displays in color (as determined by the document attribute `:presentation-metadata-color-cover-title:`, default value is `#ffffff1), in the block (shown in yellow box below) with margins at page sizes: left margin 15mm, top margin 12.5mm, right margin 25mm. Therefore the background of the cover page image should allow those margins to be  correctly visualised,
+* the document identifier and title(s) displays in color (as determined by the document attribute `:presentation-metadata-color-cover-title:`, default value is `#ffffff`), in the block (shown in yellow box below) with margins at page sizes: left margin 15mm, top margin 12.5mm, right margin 25mm. Therefore the background of the cover page image should allow those margins to be  correctly visualised,
 * any sponsor logo(s) at the left bottom should be provided in addition to the cover page image,
 * the BSI logo at the right bottom renders on-the-fly, and there no need to include it as a cover page image.
 
@@ -48,10 +48,11 @@ image::/assets/author/bsi/topics/bsipas.png[]
 In Metanorma Collections, the Collection cover page style is determined by the first document type in the collection.
 The style for the collection cover page can be chosen by the attribute `coverpage-style:` in the collection manifest file:
 
-```
+[source,yaml]
+----
 directives:
   - coverpage-style: ...
-```
+----
 
 Currently supported values for `coverpage-style:`: `BSI` (or `BS`) and `PAS`.
 
@@ -64,12 +65,16 @@ output is expected to be two columns per page for the document proper; this is i
 `:presentation-metadata-layout-columns: 2`.
 
 === Font
-BSI documents require the BSI Gesta font to be installed in order to render HTML and PDF
-outputs correctly. The BSI Gesta font cannot be freely distributed, but can be made available
-for use under Metanorma by requesting access to the repository https://github.com/metanorma/fontist-formulas-private
 
-Once you have access to that repository, execute the following commands to make the BSI Gesta font
-available to Metanorma:
+BSI documents require the "BSI Gesta" font to be installed in order to render
+HTML and PDF outputs correctly.
+
+The "BSI Gesta" font cannot be freely distributed, but can be made available
+for use under Metanorma by requesting access to the private repository:
+https://github.com/metanorma/fontist-formulas-private
+
+Once you have access to that repository, execute the following commands to make
+the "BSI Gesta" font available to Metanorma:
 
 [source,console]
 ----
@@ -189,7 +194,7 @@ the dates for the latter should be given with `type: updated`, whereas the forme
 
 The following is an illustration of semantic document history markup for BSI:
 
-[source, asciidoctor]
+[source,adoc]
 --
 [.preface]
 == Misc-container
@@ -473,6 +478,7 @@ ____
 |===
 ____
 
+
 === Forewords
 
 Forewords in BSI typically consist of multiple subclauses, which are not numbered. These subclauses do
@@ -541,8 +547,11 @@ in _Rules for the structure and drafting of UK standards_ 2022:
 
 ==== Bibliography
 
-The BSI predefined text for bibliographies ("For dated references, only the edition cited applies..." &c.) is
-inserted by default. To prevent this, insert a blank boilerplate note:
+The BSI predefined text for bibliographies
+("For dated references, only the edition cited applies..." etc.) is
+inserted by default.
+
+To prevent this, insert a blank boilerplate note:
 
 [source,asciidoc]
 -----
