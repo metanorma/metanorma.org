@@ -258,13 +258,22 @@ Clauses 7 to 9
 ____
 ====
 
-=== Changing cross-reference labels and prefixes
-If instead you want to insert a custom label for a cross-reference, as opposed to the label specific to the content
-and following the rules for that kind of conent, the you would use
-`label=...%` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6].
-Note that this is almost always a violation of SDO style, and is not recommended.
+== Custom cross-reference labels and prefixes
 
-For example, you could change "Clause" to "Subclause":
+To insert a custom label for a cross-reference, as opposed to the label specific
+to the content and following the rules for that kind of content, use the syntax
+`label=...%` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6].
+
+The label should appear as it will rendered, including with the right
+capitalisation.
+
+NOTE: This is almost *always* a violation of SDO style, and is not recommended.
+
+.Example of rendering a subclause reference with custom prefix "Subclause"
+[example]
+====
+You could change "Clause" to "Subclause" instead of what is expected for a
+subclause by Metanorma for ISO (whether _Clause 7.9_ or just _7.9_).
 
 [source,asciidoc]
 ----
@@ -276,13 +285,12 @@ to be rendered as
 ____
 Subclause 7.9
 ____
+====
 
-instead of what is expected for a subclause by the Metanorma flavour (whether _Clause 7.9_ or just _7.9_).
-The label should appear as it will rendered, includind with the right capitalisation.
-
-NOTE: This approach changes only the label of the item being pointed to. If the  Metanorma flavour
-qualifies the cross-reference with a reference to its container, e.g. _Clause 5 Note 2_, `label` will only
-alter the label of the item (_Note_), and not that of its container (_Clause_).
+NOTE: This approach changes only the label of the item being pointed to. If the
+Metanorma flavour qualifies the cross-reference with a reference to its
+container, e.g. _Clause 5 Note 2_, `label` will only alter the label of the item
+(_Note_), and not that of its container (_Clause_).
 
 
 [[text-ref-allowed-anchors]]

@@ -8,8 +8,6 @@ NOTE: This article looks at the technical details of cross-references in
 Metanorma AsciiDoc. If you want to learn how to insert cross-references, read
 link:/author/topics/inline_markup/links[Adding links and cross-references]
 
-=== General
-
 The basic mechanism for cross-references is setting anchors to place that should be referenced.
 
 .Example of an anchor and a reference
@@ -25,7 +23,7 @@ The requirements are...
 As seen in <<anchor-id>>...
 --
 
-=== Valid anchor IDs
+== Valid anchor IDs
 
 Anchor IDs of any type (cross-references, items, bibliographies, etc.) are directly
 converted into XML, and therefore *must not* contain the following:
@@ -42,20 +40,22 @@ to delimit namespaces and containers from anchor IDs [added in https://github.co
 
 == Unambiguous referencing
 
-=== General
-
 Cross-reference text in Metanorma adheres to guidance given in
 *ISO/IEC DIR 2* for internal cross-references, in order to guarantee unambiguous referencing.
 
-In particular, if a formula, example, figure, list, list item or table is cross-referenced outside its (sub)clause, the clause containing the item is always given in the cross-reference, unless the item is being referenced in the same clause.
+In particular, if a formula, example, figure, list, list item or table is
+cross-referenced outside its (sub)clause, the clause containing the item is
+always given in the cross-reference, unless the item is being referenced in the
+same clause.
 
-In the case of notes, the containing clause is extended to containing example, figure or table.
+In the case of notes, the containing clause is extended to containing example,
+figure or table.
 
-NOTE:
+.Example of differently rendered reference depending on locality
 [example]
 ====
-For example, in the Metanorma ISO Rice model sample document
-formula B.1 is defined in Annex B.6, and is referenced in B.6 and B.7.
+In the Metanorma ISO Rice model sample document,
+Formula B.1 is defined in Annex B.6, and is referenced in B.6 and B.7.
 
 In the Rice model document published by ISO, both instances are cited as "`Formula (B.1)`".
 However, Metanorma follows ISO/IEC DIR 2 in citing the former
@@ -70,46 +70,6 @@ are all taken care of by Metanorma; the document author needs only give the item
 in the AsciiDoc source
 (e.g. `\<<``formulaB-1``>>` generates either "`Formula (B.1)`" or "`B.6, Formula (B.1)`",
 depending on where in the document it occurs.)
-
-=== Dropping cross-reference labels and prefixes
-
-If the cross-reference is given with `droploc%` as its text, then the label and prefix
-are dropped: the cross-reference value is given in
-isolation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.4].
-
-This can be done for example for ranges:
-
-[source,asciidoc]
-----
-Clauses <<context,droploc%>> to <<improvement,droploc%>>
-----
-
-to be rendered as e.g.
-
-____
-Clauses 7 to 9
-____
-
-=== Changing cross-reference labels and prefixes
-If instead you want to insert a custom label for a cross-reference, as opposed to the label specific to the content
-and following the rules for that kind of conent, the you would use 
-`label=...%` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.6].
-Note that this is almost always a violation of SDO style, and is not recommended.
-
-For example, you could change "Clause" to "Subclause":
-
-[source,asciidoc]
-----
-<<context,label=Subclause%>>
-----
-
-to be rendered as
-
-____
-Subclause 7.9
-____
-
-instead of what is expected for a subclause by the Metanorma flavour (whether _Clause 7.9_ or just _7.9_)
 
 
 == Bibliographic localities in Metanorma AsciiDoc
