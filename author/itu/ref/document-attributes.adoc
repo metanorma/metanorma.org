@@ -97,7 +97,7 @@ Number of corrigendum, if this is a corrigendum [added in https://github.com/met
 Title of corrigendum, if this is a corrigendum [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
 
 
-`:recommendationnumber:`:: For implementation guides, the
+`:recommendation-number:`:: For implementation guides, the
 recommendation that this document is an implementation guide
 for [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.8].
 +
@@ -132,11 +132,11 @@ protected by patents, which may be required to implement this Recommendation.
 
 `:title-{en, fr, es, ar, ru, zh}:`:: The title to use, in each of the official languages of the ITU.
 
-`:annexid:`:: The ID to use for the annex, if this document is an annex.
+`:annex-id:`:: The ID to use for the annex, if this document is an annex.
 
 // `:annextitle:`:: Shorthand for `:annextitle-en:`, the English title to use for the annex.
 
-`:annextitle-{en, fr, es, ar, ru, zh}:`::
+`:annex-title-{en, fr, es, ar, ru, zh}:`::
 The title to use for the annex, if this document is an annex,
 in each of the official languages of the ITU.
 
@@ -160,54 +160,69 @@ event [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16]
 Switch between old and new PDF formats [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
 Legal values: `legacy` and `current` (default).
 
+
 == Author Information
 
-ITU documents are produced by editorial groups within a bureau (or sector). Groups are hierarchically
-associated with each other, and this is indicated with the three levels used elsewhere in Metanorma:
-`group`, `subgroup`, and `workgroup`. Groups have types (e.g. `tsag`, `study-group`, `working-party`, `focus-group`),
-and the same type of group can attach to different super-groups: for example, both TSAG and Study Groups
-can have Focus Groups.
+ITU documents are produced by editorial groups within a Bureau/Sector
+(BDT: ITU-D, RRB: ITU-R, TSB: ITU-T).
 
-`bureau` (or `sector`), `group`, `subgroup`, and `workgroup` together form
-a project group, and there may be multiple project groups associated with a document;
-each group after the first is indicated by a trailing number, e.g. `bureau_2`, `group_2`.
+ITU groups are hierarchically arranged, and represented in Metanorma through a
+three-level encoding also used elsewhere in Metanorma: `group`, `subgroup` and
+`workgroup` below the Bureau/Sector level.
 
-On top of this structure, documents can respond to Questions, which are allocated to Study Groups,
-and then worked on by Working Parties. Questions are represented separately, outside this hierarchical structure.
+Groups have types (e.g. `tsag`, `study-group`, `working-party`, `focus-group`),
+and the same type of group can attach to different super-groups.
+
+.Example of ITU group hierarchy
+[example]
+====
+Both TSAG and Study Groups can have Focus Groups.
+====
+
+An ITU project group is specified using a 4 level encoding:
+
+* `bureau` (or `sector`)
+* `group`
+* `subgroup`
+* `workgroup`
+
+There may be multiple project groups associated with a document. Each group
+after the first is indicated by a trailing number, e.g. `bureau_2`, `group_2`.
+
+
+On top of this structure, documents can respond to Questions, which are
+allocated to Study Groups, and then worked on by Working Parties. Questions are
+represented separately, outside the group hierarchical structure.
 
 
 `:bureau_{i}:`::
-Mandatory. Bureau that the document belongs to. Choices:
-+
---
-* `T` (Telecommunication Standardization Bureau, ITU-T) (default)
-* `R` (Radiocommunication Bureau, ITU-R)
-* `D` (Development Bureau, ITU-D)
---
+Mandatory. Bureau that the document belongs to. Choices are listed below.
+
+`T`::: Telecommunication Standardization Bureau (TSB), ITU-T. (default)
+`R`::: Radiocommunication Bureau (RRB), ITU-R.
+`D`::: Telecommunication Development Bureau (BDT), ITU-D.
 
 `:sector:`::
 The standardization sector for the document, if one of the defined bureaus does
 not apply [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
 
 `:group_{i}:`::
-Mandatory. Top-level editorial group that the document belongs to.
+Mandatory. Top-level group that the document belongs to.
 
 `:group-type_{i}:`::
-Type of top-level editorial group that the document belongs to. Permitted values:
-+
---
-* `tsag` 
-* `study-group` 
-* `focus-group` 
-* `adhoc-group` 
-* `correspondence-group` 
-* `joint-coordination-activity` 
-* `working-party` 
-* `working-group` 
-* `rapporteur-group` 
-* `intersector-rapporteur-group` 
-* `regional-group`
---
+Type of top-level group that the document belongs to. Permitted values listed below.
+
+`tsag`::: Telecommunication Standardization Advisory Group (TSAG)
+`study-group`::: Study Group (SG)
+`focus-group`::: Focus Group (FG)
+`adhoc-group`::: Ad-hoc Group
+`correspondence-group`::: Correspondence Group
+`joint-coordination-activity`::: Joint Coordination Activity (JCA)
+`working-party`::: Working Party (WP)
+`working-group`::: Working Group (WG)
+`rapporteur-group`::: Rapporteur Group (RG)
+`intersector-rapporteur-group`::: Intersector Rapporteur Group (IRG)
+`regional-group`::: Regional Group. ITU-T Study Groups can have Regional Groups.
 
 `:group-acronym_{i}:`::
 Acronym of top-level editorial group that the document belongs to.
@@ -224,8 +239,15 @@ Editorial subgroup that the document belongs to.
 `:subgroup-type_{i}:`::
 Type of editorial subgroup that the document belongs to. Permitted values
 are as for `group-type`.
++
+.Example of a group with a subgroup
+[example]
+====
+The "TSAG Rapporteur Group" is to be encoded as `:group-type: tsag` and
+`:subgroup-type: rapporteur-group`.
+====
 
-`:subgroupacronym_{i}:`::
+`:subgroup-acronym_{i}:`::
 Acronym of editorial subgroup that the document belongs to.
 
 `:workgroup_{i}:`::
@@ -240,14 +262,31 @@ Acronym of Project workgroup that the document belongs to.
 
 `:question:`::
 The Questions that the document addresses [added in https://github.com/metanorma/metanorma-itu/releases/tag/v2.5.0].
-This attribute is formatted as a comma-delimited list of questions, each optionally prefixed by an identifier and colon;
-e.g. `Q10/17: Identity management and telebiometrics architecture and mechanisms, "Q11/17: Generic technologies (such as Directory, PKI, formal languages, object identifiers) to support secure applications"`
+A document can address multiple questions.
+This attribute is formatted as a comma-delimited list of questions, each optionally prefixed by an identifier and colon.
++
+.Example of a document that answers to two questions
+[example]
+====
+----
+:question: Q10/17: Identity management and telebiometrics architecture and mechanisms, "Q11/17: Generic technologies (such as Directory, PKI, formal languages, object identifiers) to support secure applications"
+----
+====
 
 `:meeting:`::
 Name of meeting that generated this document (for resolutions, technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]
 
 `:meeting-date:`::
-Date of meeting that generated this document (for resolutions, technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5]. If the date is a range, it is given slash-delimited, e.g. `2000-01-01/2000-01-02`
+Date of meeting that generated this document (for resolutions, technical reports, technical papers, implementers guides) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.5].
+If the date is a range, it is given slash-delimited.
++
+.Example of a meeting data range
+[example]
+====
+----
+2000-01-01/2000-01-02
+----
+====
 
 `:meeting-place:`::
 Place of meeting that generated this document (for resolutions) [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.2.11].
@@ -289,7 +328,7 @@ Date from which Recommendation status applies
 Date to which Recommendation status applies
 
 `:approval-process:`::
-Approval Process for Recommendation status. Legal values are:
+Approval Process for Recommendation status. Legal values are listed below.
 
 `tap`::: Traditional Approval Process (TAP), as described in
 https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1, Section 9].
@@ -298,31 +337,32 @@ https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1, Section 9].
 https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8].
 
 `:approval-status:`::
-Approval status code for Recommendation status. Legal values are:
-+
---
-* If `:approval-process:` is set to `tap`: (refer to
-  https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1],
-  Figure 9.1 "`Approval of new and revised Recommendations using TAP -- Sequence of events`")
-*`determined`::: Determined
-*`in-force`::: In-force
+Approval status code for Recommendation status. Legal values are listed below.
 
-* If `:approval-process:` is set to `aap`: (refer to
-  https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8],
-  Figure 1 "`Sequence of Events`")
-*`a`::: Approved
-*`ac`::: Approved with Substantial Changes
-*`aj`::: Additional Review Judgement
-*`ar`::: Additional Review
-*`at`::: Approved with Typographical Corrections
-*`lc`::: Last Call
-*`c`::: Consented
-*`lj`::: Last Call Judgment (includes Last Call Comment resolution)
-*`na`::: Not Approved
-*`ri`::: Re-Initiate Last Call
-*`sg`::: Referred to Study Group Approval
-*`tap`::: Moved to TAP (ITU-T A.8 / §5.2)
---
+When `:approval-process:` is `tap`:::
+(refer to https://www.itu.int/pub/T-RES-T.1-2016[WTSA Resolution 1],
+Figure 9.1 "`Approval of new and revised Recommendations using TAP -- Sequence of events`")
+
+`determined`:::: Determined
+`in-force`:::: In-force
+
+When `:approval-process:` is `aap`:::
+(refer to https://www.itu.int/rec/T-REC-A.8/en[Recommendation A.8],
+Figure 1 "`Sequence of Events`")
+
+`a`:::: Approved
+`ac`:::: Approved with Substantial Changes
+`aj`:::: Additional Review Judgement
+`ar`:::: Additional Review
+`at`:::: Approved with Typographical Corrections
+`lc`:::: Last Call
+`c`:::: Consented
+`lj`:::: Last Call Judgment (includes Last Call Comment resolution)
+`na`:::: Not Approved
+`ri`:::: Re-Initiate Last Call
+`sg`:::: Referred to Study Group Approval
+`tap`:::: Moved to TAP (ITU-T A.8 / §5.2)
+
 
 `:edition:`:: In the case of Resolutions, this attribute is used to indicate whether the current
 document is a revision of an earlier document; if it is, it should have a value other than "1".
