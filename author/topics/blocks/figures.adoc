@@ -42,7 +42,7 @@ A single block image in isolation is treated as a figure.
 [source,asciidoc]
 --
 .Figure title
-image::figure-path.png[]
+image::{PATH}.png[]
 --
 ====
 
@@ -52,7 +52,7 @@ image::figure-path.png[]
 A figure block can contain multiple types and instances of content, such as
 images, paragraphs and admonitions.
 
-A figure block requires explicitly declaring an example block with the
+A figure block is encoded as an example block with the
 `[figure]` role [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.7].
 
 .Explicit figure declaration
@@ -62,17 +62,18 @@ A figure block requires explicitly declaring an example block with the
 [figure]
 .Figure title
 ====
-image::figure-path.png[alt text]
+image::{PATH}.png[alt text]
 
-This is some random explanatory text
+This is explanatory text.
 
-NOTE: And this is a note
+NOTE: And this is a note.
 ====
 --
 =====
 
 NOTE: Previously the explicit declaration on the example block uses the
 `[.figure]` role.
+
 
 
 === Key
