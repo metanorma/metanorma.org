@@ -1,0 +1,301 @@
+---
+layout: post
+title: "Encode OGC ModSpecs using Yaml2Text templates"
+date: 2024-04-04
+categories: documentation
+
+authors:
+  - name: Manuel Fuenmayor
+    email: manuel.fuenmayor98@gmail.com
+    social_links:
+    - https://github.com/manuelfuenmayor
+
+excerpt: >-
+  Take advantage of the yaml2text template capabilities to encode large
+  amounts of Modular Specifications in fewer lines of Asciidoc markup.
+---
+
+== Purpose
+
+Yaml2Text is a Metanorma plugin that allows you to encode large amounts of data
+that share the same structure in a reduced number of lines via pre-defined template.
+The data is to be arranged in YAML format, and the template, written in Liquid.
+
+OGC standards that use ModSpecs tend to have lots of requirements,
+making this plugin convenient to use. So, the main goal of this article is to
+introduce you on the application of Yaml2Text to encode these requirements.
+
+To read this article you have to be familiarized with the encoding basics of Yaml2Text
+and ModSpec instances in Metanorma. For that matter, it is recommended to
+look at these articles first before continuing:
+
+Yaml2Text plugin:: https://www.metanorma.org/author/topics/automation/yaml_to_text/
+OGC requirements:: https://www.metanorma.org/author/topics/blocks/requirements-modspec/
+
+== Encoding requirements with Yaml2Text
+
+In order to ensure an expeditious process in the use of Yaml2Text,
+and to avoid code repetition, we propose to follow the next steps:
+
+. Place and arrange all the requirements data into a YAML file.
+. Write the template in Liquid and save it in a separate `.liquid` file.
+. Create the `yaml2text` block in the Adoc document specifying
+the corresponding YAML file, and including the liquid template using
+the `include::` directive.
+. Compile the document to test the correct rendering of the requirements;
+debug if necessary.
+
+Now, let's look at two examples: a simple one and larger one.
+
+=== Encoding a simple requirement
+
+As we know from
+link:https://www.metanorma.org/author/topics/blocks/requirements-modspec/[OGC requirements model scheme],
+there are two methods to encode requirements in Metanorma:
+encoding by attributes and encoding by definition list.
+For template purposes, encoding by definition list is preferred
+as it is done line by line.
+
+So, in this example we want to encode the following requirement using Yaml2Text:
+
+[[simple-req]]
+|===
+2+^|*Requirement 1*
+
+|Identifier |`/req/relief/classes`
+|Statement | For each UML class defined or referenced in the Relief Package:
+|A | The Implementation Specification SHALL contain an element which represents the
+same concept as that defined for the UML class.
+|B | The Implementation Specification SHALL represent associations with the same
+source, target, direction, roles, and multiplicities as those of the UML class.
+|===
+
+First, we need to define the structure of the data in YAML format in a separate file,
+let's call it `data.yaml`:
+
+.YAML representation of the requirement defined in <<simple-req>>
+[source,yaml]
+----
+identifier: /req/relief/classes
+statement: "For each UML class defined or referenced in the Relief Package:"
+parts:
+- The Implementation Specification SHALL contain an element which represents the
+same concept as that defined for the UML class.
+- The Implementation Specification SHALL represent associations with the same
+source, target, direction, roles, and multiplicities as those of the UML class.
+----
+
+In YAML, we use key-value pairs to represent the data. Also note that we used
+array representation for the "parts" field. This is how is done when we have
+several elements mapped to a single field.
+
+Once we have our data properly structured in YAML format, we proceed to write the
+template in Liquid.  We could write our liquid template directly in the `yaml2text` block,
+but it is good practice to do so in a separate file.in a separate file.
+Let's call it `template.liquid`.
+
+We also need to define a "context" variable that will represent the
+totality of the data saved in the YAML file. Let's call this variable `context`.
+
+Having all set, the template is defined as follows:
+
+.Template for encoding the requirement in <<simple-req>>
+[source,liquid]
+----
+[requirement]
+====
+[%metadata]
+identifier:: {{ context.identifier }}
+statement:: {{ context.statement }}
+
+{% for part in context.parts %}
+part:: {{ part }}
+{% endfor %}
+====
+----
+
+[NOTE]
+====
+In Liquid, arrays are typically handled with _for_ loops:
+
+[source%unnumbered,liquid]
+----
+{% for element in elements %}
+...content...
+{% endfor %}
+----
+====
+
+With the YAML and the template, we proceed to create the `yaml2text` block
+in our Adoc document:
+
+[[simple-req-yaml2text]]
+.Definition of the `yaml2text` block for encoding the requirement in <<simple-req>>
+[source,asciidoc]
+----
+ [yaml2text,data.yaml,context]
+ --
+ include::template.liquid[]
+ --
+----
+
+Here, we have assumed that `data.yaml` and `template.liquid` are in the same
+location as the Adoc document. Remember that the path to these files is
+calculated based on relative location.
+
+At this point, we can compile the document to check if the requirement
+renders correctly. Note that for such small template, we could place the code right
+inside of the `yaml2text` block without the need for the `include` directive.
+But we do this mainly to avoid code repetition in subsequent blocks.
+
+If the liquid template is marked up correctly, the `yaml2text` block
+should result in this Asciidoc markup:
+
+.Output of the `yaml2text` block defined in <<simple-req-yaml2text>>
+[source,asciidoc]
+----
+[requirement]
+====
+[%metadata]
+identifier:: /req/relief/classes
+statement:: For each UML class defined or referenced in the Relief Package:
+part:: The Implementation Specification SHALL contain an element which represents the
+same concept as that defined for the UML class.
+part:: The Implementation Specification SHALL represent associations with the same
+source, target, direction, roles, and multiplicities as those of the UML class.
+====
+----
+
+And that's it. In simple terms, that is the process to encode a requirement using
+Yaml2Text. Now, let's see a larger example.
+
+=== Encoding a Conformance class
+
+Conformance classes frequently contains multiple Conformance tests which makes
+them increase in length.
+
+Let's encode a Conformance class that is already defined by this YAML markup:
+
+[[cc-ex-yaml]]
+.Example of a Conformance class instance arranged in YAML format
+[source,yaml]
+----
+---
+scopes:
+- name: Validation of XML instance for metadata basic information
+  identifier: https://standards.isotc211.org/19115/-1/1/conf/metadata-xml/basic
+  target: https://standards.isotc211.org/19115/-1/1/req/metadata-xml/basic
+  dependencies:
+  - https://standards.isotc211.org/19115/-1/1/conf/metadata-minimal-xml
+  - https://standards.isotc211.org/19115/-1/1/conf/metadata-xml/common
+  - https://standards.isotc211.org/19115/-1/1/conf/metadata-xml/multilingual
+  tests:
+  - name: Validate with XSD
+    identifier: https://standards.isotc211.org/19115/-1/1/conf/metadata-xml/basic/schema-valid
+    targets:
+    - https://standards.isotc211.org/19115/-1/1/req/metadata-xml/basic/valid
+    method: Validate with metadataBase.xsd
+  - name: Verify presence of identification information
+    identifier: https://standards.isotc211.org/19115/-1/1/conf/metadata-xml/basic/identification
+    targets:
+    - https://standards.isotc211.org/19115/-1/1/req/metadata-xml/basic/identification
+    method: |
+      Inspection to determine that the element populating the "identification"
+      property is defined in the substitution group for
+      Abstract_ResourceDescription.
+----
+
+In this arrangement, the `scopes` field is meant to bundle several Conformance classes.
+In this case, only one Conformance class is shown.
+Each Conformance class is composed by a name, an identifier, a target,
+several dependencies (array), and several tests (array).
+The `tests` field is a subset of the current scope. Each test is composed
+by a name, an identifier, a target (array) and a method.
+
+Once the structure of the data is well-understood, we proceed to write the Liquid template.
+As last time, we'll define `context` as the context variable.
+
+[[cc-ex-liquid]]
+.Liquid template to encode the Conformance class defined in <<cc-ex-yaml>>
+[source,liquid]
+----
+{% for scope in context.scopes %}
+
+.{{scope.name}}
+[conformance_class]
+====
+[%metadata]
+identifier:: {{scope.identifier}}
+target:: {{scope.target}}
+
+{% for depend in {{scope.dependencies}} %}
+inherit:: {{depend}}
+{% endfor %}
+
+{% for test in {{scope.tests}} %}
+conformance-test:: {{test.identifier}}
+{% endfor %}
+====
+
+{% for test in {{scope.tests}} %}
+{% if {{test.name}} %}
+.{{test.name}}
+{% endif %}
+[conformance_test]
+====
+[%metadata]
+identifier:: {{test.identifier}}
+
+{% for target in {{test.targets}} %}
+target:: {{target}}
+
+{% endfor %}
+
+{% for depend in {{test.dependencies}} %}
+inherit:: {{depend}}
+{% endfor %}
+
+{% if {{test.method}} %}
+test-method::
++
+--
+{{test.method}}
+--
+{% endif %}
+====
+
+{% endfor %}
+
+{% endfor %}
+----
+
+Multiple _if_ statements were used to verify the presence of the field.
+This is necessary when dealing with multiple requirement instances.
+
+This template, assumed to be saved as `template.liquid` file at the same
+location as the Adoc file, is to be included in a `yaml2text` block inside
+the Adoc document.
+
+[source,asciidoc]
+----
+ [yaml2text,data.yaml,context]
+ --
+ include::template.liquid[]
+ --
+----
+
+And we're finished. From here, we can compile the document to verify its correct rendering,
+and debug if necessary.
+
+This process is equally applicable to any other ModSpec instance, including
+Recommendations and Permissions.
+
+== External resources
+
+More generic templates that encode Requirements and Conformance classes can be found
+in the following link:
+
+OGC GeoPose: https://github.com/metanorma/ogc-GeoPose/tree/main/standard/standard/modspec
+
+You can use it as a guide to design your own templates according to your needs.
+
