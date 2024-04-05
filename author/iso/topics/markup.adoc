@@ -11,14 +11,23 @@ title: Metanorma for ISO markup
 
 Metanorma ISO supports multiple layouts of ISO documents through the
 `:document-scheme:` document attribute [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.1].
-If the `:document-scheme:` is not provided, the scheme to apply is inferred based on the `:copyright-year:` document attribute
-(without allowing for the month in which transition was made from one scheme to another -- which in any case was
-not always a clean transition historically) [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.6].
-If neither of those attributes is present, the current default is applied, `2024`.
+
+If the `:document-scheme:` is not provided, the scheme to apply is inferred
+solely based on the `:copyright-year:` document attribute.
+
+If neither of those attributes is present, the current default is applied.
+
+NOTE: The current default is `2024`.
+
+NOTE: Metanorma does not consider the month in selecting the actual document
+scheme because historically the transitions made from one scheme to another were
+according to a specific cut-off
+date [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.6].
 
 Specific instructions on using these layouts are described below.
 
-=== 2024 (latest)
+
+=== 2024 (latest and default)
 
 The following attributes should be set:
 
@@ -54,6 +63,12 @@ Prior to publication year 1994:
 * `:classification:` to set the UDC code(s).
 
 === 1987
+
+The following attributes should be set:
+
+* `:classification:` to set the UDC code(s).
+
+=== 1979
 
 The following attributes should be set:
 
