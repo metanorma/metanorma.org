@@ -1,0 +1,505 @@
+---
+layout: post
+title: Developing ITU-T Recommendations in Metanorma
+date: 2024-03-31
+categories: documentation
+authors:
+  -
+    name: Arnaud Taddei
+    email: arnaud.taddei.sdo@gmail.com
+    use_picture: assets
+    social_links:
+      - https://www.linkedin.com/in/arnaudtaddei
+      - https://github.com/taddhar
+
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+
+excerpt: >-
+  Metanorma now supports encoding of ruby characters, often used in
+  documents in East Asian languages.
+---
+
+NOTE: Thank you for this guest post by Arnaud Taddei! This post originated
+from an ITU-T SG17 training session
+"_Using tools to support the development of Recommendations_".
+
+
+== Hi! I'm Arnaud Taddei...
+
+I am a Global Security Strategist at the Enterprise Security Group at
+https://www.broadcom.com/[Broadcom] and
+act as an executive advisor to the CISOs and executives of Fortune 150
+organizations. Partly based on my other personal mission, I heavily participate
+in international SDOs. I was diplomatically appointed
+https://www.itu.int/en/ITU-T/[ITU-T]
+https://www.itu.int/en/ITU-T/about/groups/Pages/sg17.aspx[SG17] Vice Chairman
+for the UK, and regularly contribute to https://www.ietf.org[IETF].
+
+I started my career in 1993 at the https://home.cern[CERN] IT Division in Geneva
+which created the World Wide Web. In 2000, I joined
+https://en.wikipedia.org/wiki/Sun_Microsystems[Sun Microsystems] where I became
+one of the 100 elected global Principal Engineers. In 2007 I joined Symantec
+from Chief Architect roles up to Director of Research as direct report to
+https://en.wikipedia.org/wiki/Herbert_Hugh_Thompson[Dr. Hugh Thompson], Symantec
+then CTO and RSA Conference Chairman.
+
+I graduated in 1992 from ENSTb and https://www.inria.fr/[INRIA], France, which
+led me to the https://new.ras.ru/en/[Russian Academy of Sciences], Moscow in
+1992.
+
+
+== My Metanorma experience
+
+In https://www.itu.int/en/ITU-T/about/groups/Pages/sg17.aspx[ITU-T SG17] I have
+proposed and managed a number of ITU-T Recommendations, which are considered
+"standards" in common speak.
+
+The ITU-T standardization production pipeline of its deliverables based on
+Microsoft Word has worked in the past 30 years. However, in certain use cases
+and situations, this approach has showed its limits.
+
+Text editing is no longer sufficient in managing the editorial flow, the
+fragility of it and especially the difficulty in obtaining a clean history have
+become a liability to all contributors.
+
+ITU-T Study Groups as well as other SDOs are using or considering complementary
+methods, and SG17 is doing the same.
+
+
+== Limits of using only Word
+
+By using Word exclusively we have run into certain limits.
+
+Collaboration:
+
+* It is difficult to organize large collaborations to develop the same document.
+
+* Online sharing and collaboration works but may not be that adopted and/or a
+good experience for some members.
+
+Rise of "softwarization":
+
+* The need for more and more API, schemas, code specifications in
+Recommendations is increasing
+
+* The need to synchronize open source with open specifications is increasing
+
+Next generation of engineering:
+
+* The new generation works with new tools...
+* For some of the next generation, using Word is considered antiquated
+* This is considered a carrier development regression vs a new normal
+** Engineering management may be using e.g. GitHub to make employees assessments KPIs
+
+Peer developments:
+
+* Other SDOs now consider or provide complementary tools support
+
+* A large portion of the collaboration work at the IETF is now done via GitHub
+(e.g. https://github.com/tlswg[TLS working group])
+
+* ISO engaged on the idea of https://www.iso.org/smart[SMART standards]
+
+
+== Entering the challenge: X.icd-schemas
+
+https://www.itu.int/itu-t/workprog/wp_item.aspx?isn=17986[ITU-T X.icd-schemas]:
+_Vendor agnostic Security Data Schemas for Integrated Cyber Defense Solutions_ (SG17-TD990)
+is a proposed Recommendation to SG17.
+
+The proposed Recommendation defines vendor agnostic security data schemas that
+products may use to either produce security data or consume security data in the
+context of an Integrated Cyber Defense (ICD) solution.
+
+In effect, what is being standardized is a schema (with a JSON schema) called
+the ICD Schema, originally developed (by yours truly) at Broadcom. The ICD
+Schema has now evolved into the
+https://github.com/ocsf/ocsf-schema[Open Cybersecurity Schema Framework Schema] (OCSF Schema)
+that is a multi-vendor initiative including Amazon, Splunk, Microsoft and other
+security vendors.
+
+In other words, X.icd-schemas is what is called a "model-based standard" (MBS)
+or a "model-driven standard" (MDS) -- a _specification to document a particular
+data model_. In this case, the OCSF Schema is the model to be documented, and
+the specification is the ITU-T Recommendation.
+
+X.icd-schemas was originally written in Word.
+
+However, in the real world the specification is developed:
+
+* With a rich and complex set of JSON scripts
+* Using a GitHub repository at https://github.com/ocsf/ocsf-schema[OCSF Schema]
+* Supported by a Slack community (648 participants!)
+
+The question becomes:
+
+* How to maintain the Word document based on a gigantic amount of JSON scripts?
+* How to collaborate?
+
+
+== X.icd-schemas in Metanorma
+
+The following image shows the structure of the X.icd-schemas document.
+
+.Metanorma input and output
+image::/assets/blog/2024-03-31/01-metanorma-workflow.png[]
+
+
+This document is specified as an ITU-T provisional Recommendation with the name
+`X.icd-schemas`.
+
+NOTE: A published ITU-T Recommendation is assigned a number, a provisional
+Recommendation is given a meaningful short name.
+
+The root document is named `document.adoc`, and it references a number of
+content files under `sections/`.
+
+At the top of this root document, you can see the document metadata as required
+by ITU-T and SG17 encoded into document attributes.
+
+.Contents of `document.adoc`
+[source,adoc]
+----
+= Vendor agnostic Security Data Schemas for Integrated Cyber Defense Solutions <1>
+:docnumber: SG17-TD990 <2>
+:intended-type: R
+:doctype: recommendation <3>
+:published-date: 2023-11-03
+:copyright-year: 2024
+:provisional-name: X.icd-schemas <4>
+:bureau: T
+:status: draft
+:group: 17
+:grouptype: study-group
+:groupyearstart: 2022
+:groupyearend: 2024
+:subgroup: 15
+:subgrouptype: question
+:source: editor
+:fullname: Arnaud Taddei
+:affiliation: Broadcom
+:address: USA
+:language: en
+:keywords: security, data, schemas
+:imagesdir: images
+:mn-document-class: itu
+:mn-output-extensions: xml,html,doc,pdf,rxl
+:data-uri-image:
+
+\include::sections/00-abstract.adoc[]
+\include::sections/01-scope.adoc[]
+\include::sections/02-norm_refs.adoc[]
+\include::sections/03-terms_defs.adoc[]
+... <5>
+----
+<1> Title of the document
+<2> The document number as a SG17 Temporary Document number 990
+<3> A Recommendation
+<4> Provisional Recommendation short name
+<5> Many other files are included
+
+
+In addition, there is also a `metanorma.yml` file that is used to point the
+repository towards my X.icd-schemas root document to generate the output site.
+
+.Contents of `metanorma.yml`
+[source,yaml]
+----
+---
+metanorma:
+  source:
+    files:
+      - sources/document.adoc
+  collection:
+    name: "ITU-T SG17 Q 15: X.icd-schemas"
+    organization: ITU-T
+----
+
+== Compiling the document
+
+Now when I run the `metanorma site generate` command, I get:
+
+[source,sh]
+----
+~/OCSF/X.icd-schemas > metanorma site generate
+[info]: Compiling ~/OCSF/X.icd-schemas/sources/document.adoc ...
+Metanorma XML Style Warning: (XML Line 000020): Hanging paragraph in clause
+...
+java -Xss5m -Xmx2048m -Djava.awt.headless=true -Dapple.awt.UIElement=true ...
+[info]: Building collection file: ~/OCSF/X.icd-schemas/_site/documents.xml ...
+[info]: Generating html site in ~/OCSF/X.icd-schemas/_site
+Site has been generated at ~/OCSF/X.icd-schemas/_site
+----
+
+.Output files generated
+image::/assets/blog/2024-03-31/02-generated.png[]
+
+
+== Advanced automation in Metanorma
+
+=== General
+
+As mentioned, OCSF is full of JSON content. In the Recommendation we need to
+list out the many types of objects from the JSON data.
+
+Metanorma provides a number of mechanisms for automating such data model
+conversion into text.
+
+Specifically, in `document.adoc` we use such JSON content to generate clauses
+and the content within.
+
+.JSON-generated content files in `document.adoc`
+[source,adoc]
+----
+\include::sections/personas.adoc[]
+\include::sections/taxonomies.adoc[]
+\include::sections/attributes-overview.adoc[]
+\include::sections/dictionary.adoc[]
+\include::sections/objects.adoc[]
+\include::sections/events-overview.adoc[]
+\include::sections/events.adoc[]
+\include::sections/categories-overview.adoc[]
+\include::sections/categories.adoc[]
+\include::sections/profiles-overview.adoc[]
+\include::sections/profiles.adoc[] <1>
+\include::sections/extensions-overview.adoc[]
+\include::sections/extensions.adoc[]
+...
+----
+<1> Drilling down here.
+
+
+=== Nested `json2text` technique
+
+Here I will introduce the "nested `json2text`" technique. Let me explain how
+JSON-to-text generation works, by focusing on <1> in the previous section.
+
+"Profile" is a defined set of cybersecurity concerns for a particular role,
+such as a person, a container, a host, etc.
+
+The typical `json2text` command allows one level of enumeration and filtering.
+However, we need to list out multiple profiles, and render them all at once.
+
+The advanced solution is to actually next layers of the `json2text` command,
+as I have done here.
+
+There are a few components in this technique:
+
+* the *entry file* defines where generated content is inserted into the document;
+* the *index file* specifies the loading of multiple data files;
+* the *data file* provides data to be rendered into the template;
+* the *template file* describes how the data is to be rendered.
+
+
+.Nested `json2text` blocks with a Liquid template
+image::/assets/blog/2024-03-31/03-json2text.png[]
+
+The *entry file* here is called `profiles.adoc`, directly included into the root
+`document.adoc`.
+
+At the outer layer, I have prepared the *index file* that includes all *data
+files* I wish to process, as a JSON file called `profiles.json`. For instance,
+`security_control.json` is such a *data file*.
+
+At the inner layer, the JSON content (e.g. from `security_control.json`) is
+passed onto the *template file*, a Liquid template called `_profile.liquid`.
+
+In `_profile.liquid`, the "Profile" JSON object (e.g. JSON content of
+`security_control.json`) is converted into Metanorma syntax, and ultimately
+rendered as a section (`====` indicates it is a 3rd level section).
+
+.Contents of *entry file* `profiles.adoc`
+[source,adoc]
+------
+=== Profiles
+[json2text,sections/profiles.json,data] <1>
+----
+{% for path in data.paths %} <2>
+[json2text, {{ path }}, profile] <3>
+--
+include::./profiles.liquid[] <4>
+{% endfor %}
+--
+----
+------
+<1> This line means: use the `json2text` command to convert listed files in
+`sections/profiles.json` and place it in the object that can be referenced as
+`data`.
+<2> This line means: for each path (understand file) that you find in `data`
+apply the following instructions.
+<3> This line means: for each file (called `path`) convert its JSON into text
+and build the object `profile`.
+<4> This line means that for each object `profile` render the outcome according
+to the liquid template `profiles.liquid`.
+
+
+=== Outer `json2text` block
+
+The outer layer points to files that contain file paths that are meant to be
+interpreted at the inner layer.
+
+.Outer `json2text` block
+[source,adoc]
+------
+[json2text,sections/profiles.json,data] <1>
+----
+...
+----
+------
+<1> Outer block
+
+.Contents of *index file* `profiles.json`
+[source,json]
+----
+{
+  "paths": [
+    "ocsf-schema/profiles/cloud.json",
+    "ocsf-schema/profiles/container.json",
+    "ocsf-schema/profiles/datetime.json",
+    "ocsf-schema/profiles/firewall.json",
+    "ocsf-schema/profiles/host.json",
+    "ocsf-schema/profiles/network_proxy.json",
+    "ocsf-schema/profiles/person.json",
+    "ocsf-schema/profiles/security_control.json"
+  ]
+}
+----
+
+In the *index file* `profiles.json`, each *data file* such as
+`ocsf-schema/profiles/security_control.json` will be passed into the `json2text`
+block to the inner layer.
+
+
+=== Inner block
+
+The inner layer passes the content read from the *data files* specified at the
+outer layer such as `ocsf-schema/profiles/security_control.json` into the inner
+`json2text` block.
+
+.Inner `json2text` block
+[source,adoc]
+----
+[json2text,ocsf-schema/profiles/security_control.json,profile] <1>
+--
+include::. /profiles.liquid[] <2>
+{% endfor %}
+--
+----
+<1> Inner block
+<2> Rendering template
+
+The file path given to the inner block will be loaded and its data passed
+into the *template file*, the Liquid template.
+
+[[sec_control_json]]
+.Contents of *data file* `security_control.json` that is passed to the Liquid template
+[source,json]
+----
+{
+  "description": "The attributes that identify security controls such as malware or policy violations.",
+  "meta": "profile",
+  "caption": "Security Control",
+  "name": "security_control",
+  "annotations": {
+    "group": "primary"
+  },
+  "attributes": {
+    "attacks": {
+      "requirement": "recommended"
+    },
+  // ...
+  }
+}
+----
+
+The *template file* `_profiles.liquid` is used to render the data loaded in the
+inner block, e.g. the content of <<sec_control_json>>.
+
+.Contents of *template file* `_profiles.liquid`
+[source,adoc]
+----
+==== Profile: {{ profile.caption }}
+
+{% if profile.name %}
+Technical name:: `{{ profile.name }}`
+{% endif %}
+
+{% if profile.category %}
+Category:: `{{ profile.category }}`
+{% endif %}
+
+{% if profile.annotations %}
+Annotations::
+{% for annotation in profile.annotations %}
+`{{ annotation[0] }}`: {% for annotation_condition in annotation[1] %}`{{ annotation_condition }}`{% unless forloop.last %}, {% endunless %}{% endfor %}
+
+{% endfor %}
+{% endif %}
+
+Description:: {{ profile.description | strip_html }}
+
+{% include "event_attributes", attrs: profile.attributes, depth: 4 %}
+----
+
+.Graph showing how these files link together
+image::/assets/blog/2024-03-31/04-profiles.png[]
+
+The same mechanism is applied to the different classes of objects in OCSF.
+
+=== Rendered output
+
+Pulling all the strings above finally we have the output we expected!
+
+The content from the `security_control.json` *data file* is now rendered using
+the template into the following output.
+
+.Rendered output of `security_control.json`
+image::/assets/blog/2024-03-31/05-rendered.png[]
+
+The generation process continues chugging across all different classes of data
+until...
+
+Voila! The document is complete -- a complete representation sourced from
+existing model data -- transformed into a fully developed ITU-T Recommendation!
+
+
+== Conclusion
+
+https://github.com/openitu/X.icd-schemas[X.icd-schemas] is the first open
+specification repository (private at this time) at the
+https://github.com/openitu/[OpenITU] GitHub organization account!
+
+NOTE: ITU experts: please contact Simao Campos to access OpenITU repositories
+for reference or if your group would like to adopt this workflow.
+
+What did we learn?
+
+* When standardization requires a lot of automation you need tools
+* Tools are powerful and allow to accomplish a lot
+* For some they are very intimidating and will require significant training
+* For others they will look completely genuine and `natural language`
+
+The toolset does require new skills:
+
+* Metanorma needs some refinements to improve the output
+
+* The https://shopify.github.io/liquid/[Liquid template language] is powerful
+but requires programming skills
+
+* https://github.com[GitHub] is very powerful but requires a lot of practice and administration
+
+
+After embarking on this journey I have the following suggestions for standards
+organizations:
+
+* Many authors now using Metanorma today for authoring standards
+* SDOs could as well contact other SDOs to understand their workflow and feedback
+* This is an excellent workflow to produce deliverables and worth exploring further
+* This toolset would certainly match expectations of a new generation of engineers and improve perception and engagement for SDOs
+* This is a good story to improve industry engagement!
+
+Until then!
