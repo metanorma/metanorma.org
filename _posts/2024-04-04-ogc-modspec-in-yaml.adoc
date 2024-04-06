@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Encode OGC ModSpecs using Yaml2Text templates"
+title: "Encode OGC ModSpec using `yaml2text` templates"
 date: 2024-04-04
 categories: documentation
 
@@ -12,54 +12,63 @@ authors:
     - https://github.com/manuelfuenmayor
 
 excerpt: >-
-  Take advantage of the yaml2text template capabilities to encode large
-  amounts of Modular Specifications in fewer lines of Asciidoc markup.
+  Take advantage of the `yaml2text` template capabilities to encode large
+  amounts of ModSpec instances in fewer lines of markup.
 ---
 
 == Purpose
 
-Yaml2Text is a Metanorma plugin that allows you to encode large amounts of data
-that share the same structure in a reduced number of lines via pre-defined template.
-The data is to be arranged in YAML format, and the template, written in Liquid.
+OGC standards use ModSpec to encode requirements, and sometimes there are a lot
+of them. ISO/TC 211 has also begun to encode requirements in the OGC ModSpec
+fashion.
 
-OGC standards that use ModSpecs tend to have lots of requirements,
-making this plugin convenient to use. So, the main goal of this article is to
-introduce you on the application of Yaml2Text to encode these requirements.
+`yaml2text` is a Metanorma plugin that allows you to encode large amounts of
+data that share the same structure in a reduced number of lines via pre-defined
+template. The data is to be arranged in YAML format, and the template, written
+in Liquid.
 
-To read this article you have to be familiarized with the encoding basics of Yaml2Text
-and ModSpec instances in Metanorma. For that matter, it is recommended to
-look at these articles first before continuing:
+The main goal of this article is to introduce you on the application of
+`yaml2text` to encode ModSpec instances.
 
-Yaml2Text plugin:: https://www.metanorma.org/author/topics/automation/yaml_to_text/
-OGC requirements:: https://www.metanorma.org/author/topics/blocks/requirements-modspec/
+To read this article you have to be familiar with the encoding basics of
+`yaml2text` and ModSpec instances in Metanorma. For that matter, it is
+recommended to first read these before continuing:
 
-== Encoding requirements with Yaml2Text
+* link:/author/topics/blocks/requirements-modspec/[OGC ModSpec]
+* link:/author/topics/automation/yaml_to_text/[`yaml2text` plugin]
 
-In order to ensure an expeditious process in the use of Yaml2Text,
-and to avoid code repetition, we propose to follow the next steps:
+
+== Encoding requirements with `yaml2text`
+
+In order to ensure an expeditious process in the use of `yaml2text`,
+and to avoid code repetition, follow the next steps:
 
 . Place and arrange all the requirements data into a YAML file.
+
 . Write the template in Liquid and save it in a separate `.liquid` file.
-. Create the `yaml2text` block in the Adoc document specifying
+
+. Create the `yaml2text` block in the Metanorma document specifying
 the corresponding YAML file, and including the liquid template using
 the `include::` directive.
+
 . Compile the document to test the correct rendering of the requirements;
 debug if necessary.
 
 Now, let's look at two examples: a simple one and larger one.
 
+
 === Encoding a simple requirement
 
-As we know from
-link:https://www.metanorma.org/author/topics/blocks/requirements-modspec/[OGC requirements model scheme],
-there are two methods to encode requirements in Metanorma:
-encoding by attributes and encoding by definition list.
-For template purposes, encoding by definition list is preferred
-as it is done line by line.
+link:/author/topics/blocks/requirements-modspec/[OGC ModSpec instances] are
+typically encoded as a definition list.
 
-So, in this example we want to encode the following requirement using Yaml2Text:
+NOTE: There are two methods to encode requirements: as a definition list or as
+attributes. We adopt the recommended practice of the definition list here.
+
+In this example, we want to encode the following **Requirement** using `yaml2text`.
 
 [[simple-req]]
+.Sample requirement to be encoded
 |===
 2+^|*Requirement 1*
 
@@ -71,12 +80,14 @@ same concept as that defined for the UML class.
 source, target, direction, roles, and multiplicities as those of the UML class.
 |===
 
-First, we need to define the structure of the data in YAML format in a separate file,
-let's call it `data.yaml`:
+First, we define the *data file*.
+The data file represents the requirement using a fixed structure in YAML.
+Let's call it `data.yaml`.
 
-.YAML representation of the requirement defined in <<simple-req>>
+.YAML file `data.yaml` representing the <<simple-req>>
 [source,yaml]
 ----
+---
 identifier: /req/relief/classes
 statement: "For each UML class defined or referenced in the Relief Package:"
 parts:
@@ -86,21 +97,23 @@ same concept as that defined for the UML class.
 source, target, direction, roles, and multiplicities as those of the UML class.
 ----
 
-In YAML, we use key-value pairs to represent the data. Also note that we used
-array representation for the "parts" field. This is how is done when we have
+In YAML, data is represented using key-value pairs. Also note that we used
+array representation for the `parts` field. This is how is done when we have
 several elements mapped to a single field.
 
-Once we have our data properly structured in YAML format, we proceed to write the
-template in Liquid.  We could write our liquid template directly in the `yaml2text` block,
-but it is good practice to do so in a separate file.in a separate file.
-Let's call it `template.liquid`.
+Once we have our data properly structured in YAML, we proceed to write the
+template in Liquid.
 
-We also need to define a "context" variable that will represent the
+We could write our liquid template directly in the `yaml2text` block,
+but it is good practice to do so in a separate file, the *template file*.
+Let's call this file `template.liquid`.
+
+`yaml2text` requires naming a `context` variable that will represent the
 totality of the data saved in the YAML file. Let's call this variable `context`.
 
 Having all set, the template is defined as follows:
 
-.Template for encoding the requirement in <<simple-req>>
+.Template file `template.liquid` for rendering the <<simple-req>>
 [source,liquid]
 ----
 [requirement]
@@ -122,26 +135,29 @@ In Liquid, arrays are typically handled with _for_ loops:
 [source%unnumbered,liquid]
 ----
 {% for element in elements %}
-...content...
+//... content ...
 {% endfor %}
 ----
 ====
 
-With the YAML and the template, we proceed to create the `yaml2text` block
-in our Adoc document:
+With the *data file* and the *template file*, we proceed to create the
+`yaml2text` block in our Metanorma document:
 
 [[simple-req-yaml2text]]
-.Definition of the `yaml2text` block for encoding the requirement in <<simple-req>>
+.Definition of the `yaml2text` block encoding the <<simple-req>>
 [source,asciidoc]
 ----
-[yaml2text,data.yaml,context]
+[yaml2text,data.yaml,context] <1>
 --
-\include::template.liquid[]
+\include::template.liquid[] <2>
 --
 ----
+<1> The *data file* `data.yaml` is passed into the block.
+<2> The *template file* `template.liquid` receives the `context` variable
+from the block.
 
 Here, we have assumed that `data.yaml` and `template.liquid` are in the same
-location as the Adoc document. Remember that the path to these files is
+location as the Metanorma document. Remember that the path to these files is
 calculated based on relative location.
 
 At this point, we can compile the document to check if the requirement
@@ -149,10 +165,10 @@ renders correctly. Note that for such small template, we could place the code ri
 inside of the `yaml2text` block without the need for the `include` directive.
 But we do this mainly to avoid code repetition in subsequent blocks.
 
-If the liquid template is marked up correctly, the `yaml2text` block
-should result in this Asciidoc markup:
+Once Metanorma processes the Liquid template, the `yaml2text` block
+will result in this content:
 
-.Output of the `yaml2text` block defined in <<simple-req-yaml2text>>
+.Output of the `yaml2text` processed block
 [source,asciidoc]
 ----
 [requirement]
@@ -167,22 +183,30 @@ source, target, direction, roles, and multiplicities as those of the UML class.
 ====
 ----
 
-And that's it. In simple terms, that is the process to encode a requirement using
-Yaml2Text. Now, let's see a larger example.
+That's it! The process to encode a requirement using `yaml2text` is that simple.
 
-=== Encoding a Conformance class
+Now, let's investigate a more complex example.
 
-Conformance classes frequently contains multiple Conformance tests which makes
-them increase in length.
 
-Let's encode a Conformance class that is already defined by this YAML markup:
+=== Encoding a Conformance class with embedded Conformance tests
+
+In ModSpec, **Conformance class**es contains **Conformance test**s.
+
+The challenge in managing them is that the Conformance class links to individual
+Conformance tests, the individual Conformance tests also have to link back to
+the Conformance class. Hence we opt to encode all of them a single YAML file.
+
+Let's encode a Conformance class that is already defined by this YAML markup.
+
+NOTE: This is a real example from the source files of
+the published https://www.iso.org/standard/80874.html[ISO 19115-3:2023].
 
 [[cc-ex-yaml]]
-.Example of a Conformance class instance arranged in YAML format
+.Data file `data.yaml` of a Conformance class instance arranged in YAML format
 [source,yaml]
 ----
 ---
-scopes:
+conformance_classes:
 - name: Validation of XML instance for metadata basic information
   identifier: https://standards.isotc211.org/19115/-1/1/conf/metadata-xml/basic
   target: https://standards.isotc211.org/19115/-1/1/req/metadata-xml/basic
@@ -206,21 +230,34 @@ scopes:
       Abstract_ResourceDescription.
 ----
 
-In this arrangement, the `scopes` field is meant to bundle several Conformance classes.
-In this case, only one Conformance class is shown.
-Each Conformance class is composed by a name, an identifier, a target,
-several dependencies (array), and several tests (array).
-The `tests` field is a subset of the current scope. Each test is composed
-by a name, an identifier, a target (array) and a method.
+In this arrangement, the `conformance_classes` field is meant to bundle several
+Conformance classes. Here only one Conformance class is shown.
 
-Once the structure of the data is well-understood, we proceed to write the Liquid template.
-As last time, we'll define `context` as the context variable.
+Each Conformance class has the following components:
+
+* `name`
+* `identifier`
+* `target`
+* several `dependencies` (array)
+* several `tests` (array)
+
+Under `tests`, each Conformance test is composed of:
+
+* `name`
+* `identifier`
+* `target` (array)
+* `method`
+
+Once the structure of the data is well-understood, we can proceed to write the
+Liquid template.
+
+As above, we define `context` as the context variable.
 
 [[cc-ex-liquid]]
-.Liquid template to encode the Conformance class defined in <<cc-ex-yaml>>
+.Template file `template.liquid` that renders the Conformance class and Conformance tests
 [source,liquid]
 ----
-{% for scope in context.scopes %}
+{% for scope in context.conformance_classes %}
 
 .{{scope.name}}
 [conformance_class]
@@ -270,13 +307,14 @@ test-method::
 {% endfor %}
 ----
 
-Multiple _if_ statements were used to verify the presence of the field.
+Multiple _if_ statements are used to verify the presence of data in fields.
 This is necessary when dealing with multiple requirement instances.
 
 This template, assumed to be saved as `template.liquid` file at the same
-location as the Adoc file, is to be included in a `yaml2text` block inside
-the Adoc document.
+location as the Metanorma file, is to be included in a `yaml2text` block inside
+the Metanorma document.
 
+.`yaml2text` block that encodes Conformance classes and Conformance tests
 [source,asciidoc]
 ----
 [yaml2text,data.yaml,context]
@@ -285,18 +323,26 @@ the Adoc document.
 --
 ----
 
-And we're finished. From here, we can compile the document to verify its correct rendering,
+From here, we can compile the document to verify its correct rendering,
 and debug if necessary.
 
-This process is equally applicable to any other ModSpec instance, including
+This process is equally applicable to any other ModSpec instances, including
 Recommendations and Permissions.
+
 
 == External resources
 
-More generic templates that encode Requirements and Conformance classes can be found
-in the following link:
+Thanks to https://www.ogc.org[OGC],
+the https://www.ogc.org/standard/geopose/[OGC GeoPose] document
+(https://github.com/metanorma/ogc-GeoPose[GitHub]) is an open-source, fully
+fledged example of this approach in encoding Requirements and Conformance
+classes.
 
-OGC GeoPose: https://github.com/metanorma/ogc-GeoPose/tree/main/standard/standard/modspec
+Since it is a real-life example, the templates provided there are more generic
+and comprehensive (aka longer) than what we have explained here. The
+fundamentals, however, are the same as what is explained in this post.
 
-You can use it as a guide to design your own templates according to your needs.
+* https://github.com/metanorma/ogc-GeoPose/tree/main/standard/standard/modspec[OGC GeoPose ModSpec templates]
 
+Feel free to use them directly, or as a guide to design your own templates
+according to your needs!
