@@ -256,20 +256,20 @@ and the content within.
 .JSON-generated content files in `document.adoc`
 [source,adoc]
 ----
-\include::sections/personas.adoc[]
-\include::sections/taxonomies.adoc[]
-\include::sections/attributes-overview.adoc[]
-\include::sections/dictionary.adoc[]
-\include::sections/objects.adoc[]
-\include::sections/events-overview.adoc[]
-\include::sections/events.adoc[]
-\include::sections/categories-overview.adoc[]
-\include::sections/categories.adoc[]
-\include::sections/profiles-overview.adoc[]
-\include::sections/profiles.adoc[] <1>
-\include::sections/extensions-overview.adoc[]
-\include::sections/extensions.adoc[]
-...
+ include::sections/personas.adoc[]
+ include::sections/taxonomies.adoc[]
+ include::sections/attributes-overview.adoc[]
+ include::sections/dictionary.adoc[]
+ include::sections/objects.adoc[]
+ include::sections/events-overview.adoc[]
+ include::sections/events.adoc[]
+ include::sections/categories-overview.adoc[]
+ include::sections/categories.adoc[]
+ include::sections/profiles-overview.adoc[]
+ include::sections/profiles.adoc[] <1>
+ include::sections/extensions-overview.adoc[]
+ include::sections/extensions.adoc[]
+ ...
 ----
 <1> Drilling down here.
 
@@ -386,8 +386,7 @@ outer layer such as `ocsf-schema/profiles/security_control.json` into the inner
 ----
 [json2text,ocsf-schema/profiles/security_control.json,profile] <1>
 --
-include::. /profiles.liquid[] <2>
-{% endfor %}
+include::./profiles.liquid[] <2>
 --
 ----
 <1> Inner block
