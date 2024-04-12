@@ -20,6 +20,9 @@ Metanorma XML):
 * PDF: treated as a single document, composed of the individual Metanorma
   documents.
 
+* DOC: treated as a single document, composed of the individual Metanorma
+  documents. [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5]
+
 == Compiling collections
 
 Collections are compiled using the `metanorma` executable, as follows:
@@ -81,9 +84,10 @@ The collection manifest contains:
 
 * Directives on how the collection should be generated (`directives`):
 
-** `documents-inline` indicates that the files should be
+** `documents-inline` (default) indicates that the files should be
 concatenated into a single XML file for processing; if absent,
 the files are kept separate in processing (`documents-external`).
+Currently, if you are generating PDF or DOC output, you can only specify `documents-inline`.
 
 ** `presentation-xml` indicates that the XML supplied is
 in Presentation XML format, and does not need to be converted to
@@ -92,11 +96,35 @@ https://github.com/metanorma/metanorma/releases/tag/v1.3.5].
 This is automatically included when `sectionsplit` is set in the
 Metanorma file, to break a single document up into multiple HTML files.
 
-** `coverpage` gives the location of the HTML coverpage, as an alternative to the
-`-c` argument above [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.7].
+** `coverpage: ...` gives the location of the HTML coverpage, as an alternative to the
+`-c` argument of `metanorma collection` [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.7].
+Any locally specified coverpage will be treated as a Liquid template, which can
+be populated with metadata extracted from the bibliographic metadata
+about the collection; refer to link:/develop/topics/metadata-and-boilerplate.adoc[Metadata and boilerplate].
+
+** `collection-word-coverpage: ...` gives the location of the DOC coverpage for the entire
+collection [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5]. If left out,
+or given as `null`, no such coverpage is added.
+
+** `collection-word-intropage: ...` gives the location of the DOC introductory section for the entire
+collection [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5]. As with
+HTML and DOC output of standalone documents, this is intended for prefatory material
+appearing before user-specified prefatory content: typically boilerplate content, and a placeholder
+for the table of contents.
+If left out, or given as `null`, no such introductory material is added.
+
+** `document-word-coverpage: ...` gives the location of the DOC coverpage for each individual
+document [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5]. If left out,
+or given as `null`, the default cover page that would appear in a standalone document is used.
+If given as `""`, no such coverpage is added.
+
+** `document-word-intropage: ...` gives the location of the DOC introductory section for each individual
+document [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5]. If left out,
+or given as `null`, the default introductory section that would appear in a standalone document is used.
+If given as `""`, no such introductory section is added.
 
 ** `coverpage-style` gives the style of the PDF and HTML coverpage, if multiple styles are
-offered [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.7].
+offered [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.7]. 
 
 ** `bare-after-first` compiles the first HTML document in the
 collection complete (with coverpage and boilerplate), and all
@@ -105,6 +133,16 @@ boilerplate) [added in
 https://github.com/metanorma/metanorma/releases/tag/v1.3.5].
 This is automatically included when `sectionsplit` is set in the
 Metanorma file, to break a single document up into multiple HTML files.
+
+* `format`, specifying the possible output formats for the collection as a list,
+as an alternative to the `-f` argument of `metanorma collection`.
+Allowed values are:
+
+** `xml`
+** `presentation` (for Presentation XML, added automatically if any of the following formats is specified)
+** `html`
+** `doc`
+** `pdf`
 
 * Metadata about the collection
 (`bibdata`, in https://www.relaton.org[Relaton] format).
@@ -128,10 +166,15 @@ identifiers (`identifier`). The documents are expected to be Metanorma Semantic 
 attachment, and is passed-through (i.e. not processed) [added in
 https://github.com/metanorma/metanorma/releases/tag/v1.2.9].
 
+** If `sectionsplit` is `true`, the HTML output for the specified file
+is arranged as one HTML file per clause, with an index page created for the overall
+document. The index page for the entire document links to the index page for the `sectionsplit` document.
+
 ** If `index` is `false` (`true` by default), the file is not to be included in
 any listing of manifest contents (i.e. in the collection cover page).
 
 ** `manifest` can appear recursively in a manifest.
+
 
 * Content to put at the beginning of the collection container
 (`prefatory-content`)
@@ -166,6 +209,10 @@ bibdata:
       name: International Organization for Standardization
       abbreviation: ISO
     from: "2020"
+format:
+  - xml
+  - presentation
+  - pdf
 manifest:
   level: collection
   title: ISO Collection
@@ -187,6 +234,7 @@ manifest:
       docref:
         fileref: rice-amd.final.xml
         identifier: ISO 17301-1:2016/Amd.1:2017
+        sectionsplit: true
 prefatory-content:
 |
   == Clause
