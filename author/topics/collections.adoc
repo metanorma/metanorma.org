@@ -6,22 +6,28 @@ title: Collections
 Metanorma supports _collections_: groupings of individual Metanorma documents
 into a whole.
 
-Collections are of particular use when the component documents are tightly linked with each other;
-for example, multilingual documents (where each component document has the same content in a different
-language), or documents that extensively cross-reference each other (e.g. definitions of an informational
-model spanning multiple documents.)
+Collections are of particular use when the component documents are tightly
+linked with each other. For example:
 
-A collection can rendered into the following output formats (other than
+* multilingual documents: where each component document has the same content in
+a different language
+
+* documents that extensively cross-reference each other, for instance,
+definitions of an informational model spanning multiple documents.
+
+A collection can rendered into the following output formats (other than in
 Metanorma XML):
 
-* HTML: treated as a single web site, with each Metanorma document a component
-  web site.
+HTML::
+treated as a single web site, with each Metanorma document a component web site.
 
-* PDF: treated as a single document, composed of the individual Metanorma
-  documents.
+PDF::
+treated as a single document, composed of the individual Metanorma documents.
 
-* DOC: treated as a single document, composed of the individual Metanorma
-  documents. [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5]
+Word DOC::
+treated as a single document, composed of the individual Metanorma
+documents. [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5]
+
 
 == Compiling collections
 
@@ -40,15 +46,18 @@ Options:
 
 Where:
 
-* The `FILENAME` argument to `metanorma collection` is the collection manifest.
+`FILENAME`:: The collection manifest.
 This is a YAML file, outlining the structure of the collection, including the
 location and identifier for each of the component files.
 
-* The `COVERPAGE` argument is a Liquid template for the index page to the
-collection in HTML.
+`COVERPAGE`:: A Liquid template file for the index page to the collection in
+HTML.
 
 Both are described further below.
 
+.Example command for generating a Metanorma collection
+[example]
+====
 The command below compiles the collection described in the collection manifest
 `si-brochure-bilingual.yml`:
 
@@ -66,11 +75,14 @@ Specifically, it:
   `bilingual-brochure`; and
 
 * uses the HTML index page template `collection_cover.html`.
+====
 
 The `metanorma collection` executable presupposes that the individual
 metanorma collections are already compiled into XML.
+
 The compilation of the collection resolves any cross-references between files in
-the collection in preprocessing, so that they become simple hyperlinks.
+the collection during preprocessing, so those inter-document links become simple
+hyperlinks.
 
 The output folder contains those preprocessed individual files, and files named
 `collection` in the target formats.
@@ -80,109 +92,153 @@ The output folder contains those preprocessed individual files, and files named
 
 === Collection manifest
 
-The collection manifest contains:
+The collection manifest contains the following keys:
 
-* Directives on how the collection should be generated (`directives`):
+`directives`::
+Directives on how the collection should be generated. Accepted values are listed
+below.
 
-** `documents-inline` (default) indicates that the files should be
-concatenated into a single XML file for processing; if absent,
-the files are kept separate in processing (`documents-external`).
+`documents-inline`::: (default)
+Indicates that the files should be concatenated into a single XML file for
+processing.
++
+If absent, the files are kept separate in processing (`documents-external`).
++
 Currently, if you are generating PDF or DOC output, you can only specify `documents-inline`.
 
-** `presentation-xml` indicates that the XML supplied is
-in Presentation XML format, and does not need to be converted to
-Presentation XML by Metanorma [added in
-https://github.com/metanorma/metanorma/releases/tag/v1.3.5].
+`presentation-xml`:::
+Indicates that the XML supplied is in Metanorma Presentation XML format, and
+does not need to be converted to Presentation XML by
+Metanorma [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.5].
++
 This is automatically included when `sectionsplit` is set in the
 Metanorma file, to break a single document up into multiple HTML files.
 
-** `coverpage: ...` gives the location of the HTML coverpage, as an alternative to the
+`coverpage: ...`:::
+Gives the location of the HTML coverpage, as an alternative to the
 `-c` argument of `metanorma collection` [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.7].
++
 Any locally specified coverpage will be treated as a Liquid template, which can
 be populated with metadata extracted from the bibliographic metadata
-about the collection; refer to link:/develop/topics/metadata-and-boilerplate.adoc[Metadata and boilerplate].
+about the collection; refer to link:/develop/topics/metadata-and-boilerplate[Metadata and boilerplate].
 
-** `collection-word-coverpage: ...` gives the location of the DOC coverpage for the entire
-collection [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5]. If left out,
-or given as `null`, no such coverpage is added.
+`collection-word-coverpage: ...`:::
+Gives the location of the Word DOC coverpage for the entire
+collection [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5].
++
+If left out, or given as `null`, no such coverpage is added.
 
-** `collection-word-intropage: ...` gives the location of the DOC introductory section for the entire
-collection [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5]. As with
-HTML and DOC output of standalone documents, this is intended for prefatory material
-appearing before user-specified prefatory content: typically boilerplate content, and a placeholder
-for the table of contents.
+`collection-word-intropage: ...`:::
+Gives the location of the Word DOC introductory section for the entire
+collection [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5].
++
+As with HTML and Word DOC output of standalone documents, this is intended for
+prefatory material appearing before user-specified prefatory content: typically
+boilerplate content, and a placeholder for the table of contents.
++
 If left out, or given as `null`, no such introductory material is added.
 
-** `document-word-coverpage: ...` gives the location of the DOC coverpage for each individual
-document [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5]. If left out,
-or given as `null`, the default cover page that would appear in a standalone document is used.
-If given as `""`, no such coverpage is added.
+`document-word-coverpage: ...`:::
+Gives the location of the Word DOC coverpage for each individual
+document [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5].
++
+If left out, or given as `null`, the default cover page that would appear in a
+standalone document is used. If given as `""`, no such coverpage is added.
 
-** `document-word-intropage: ...` gives the location of the DOC introductory section for each individual
-document [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5]. If left out,
-or given as `null`, the default introductory section that would appear in a standalone document is used.
-If given as `""`, no such introductory section is added.
+`document-word-intropage: ...`:::
+Gives the location of the DOC introductory section for each individual
+document [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5].
++
+If left out, or given as `null`, the default introductory section that would
+appear in a standalone document is used. If given as `""`, no such introductory
+section is added.
 
-** `coverpage-style` gives the style of the PDF and HTML coverpage, if multiple styles are
-offered [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.7]. 
+`coverpage-style`:::
+Gives the style of the PDF and HTML coverpage, if multiple styles are
+offered [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.7].
 
-** `bare-after-first` compiles the first HTML document in the
-collection complete (with coverpage and boilerplate), and all
-subsequent files with the `bare` option (i.e. without coverpage and
-boilerplate) [added in
-https://github.com/metanorma/metanorma/releases/tag/v1.3.5].
+`bare-after-first`:::
+Compiles the first HTML document in the collection complete (with coverpage and
+boilerplate), and all subsequent files with the `bare` option (i.e. without
+coverpage and boilerplate) [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.5].
++
 This is automatically included when `sectionsplit` is set in the
 Metanorma file, to break a single document up into multiple HTML files.
 
-* `format`, specifying the possible output formats for the collection as a list,
+`format`::
+Specifies the possible output formats for the collection as a list,
 as an alternative to the `-f` argument of `metanorma collection`.
 Allowed values are:
 
-** `xml`
-** `presentation` (for Presentation XML, added automatically if any of the following formats is specified)
-** `html`
-** `doc`
-** `pdf`
+`xml`:::
+Metanorma Semantic XML
 
-* Metadata about the collection
-(`bibdata`, in https://www.relaton.org[Relaton] format).
+`presentation`:::
+Metanorma Presentation XML. This is added automatically if any of the following formats is specified.
 
-** Currently `docid/type` is mandatory, as this is how the processor
-establishes the flavour of the collection.
+`html`:::
+HTML.
+
+`doc`:::
+Word DOC.
+
+`pdf`:::
+PDF.
+
+`bibdata`::
+Metadata about the collection. Entered in the https://www.relaton.org[Relaton] format.
+
+`docid`:::
+
+`type`::::
+(mandatory)
+`docid/type` is used by Metanorma to determine the flavour of the collection.
 Currently a collection can only contain documents of one flavour.
 
-* A manifest listing the documents contained in the collection,
-in nested hierarchy (`manifest`)
+`manifest`::
+A manifest listing the documents contained in the collection,
+in nested hierarchy.
++
+`manifest` can appear recursively in a `manifest`.
 
-** `level` names the current hierarchical level of the manifest
+`level`:::
+Names the current hierarchical level of the manifest.
 
-** `title` gives the title of the current level of the manifest
+`title`:::
+Gives the title of the current level of the manifest.
 
-** `docref` lists the documents to be used at that level of the manifest: it is
+`docref`:::
+Lists the documents to be used at that level of the manifest. It is
 a list of file paths relative to the manifest file (`fileref`) and document
-identifiers (`identifier`). The documents are expected to be Metanorma Semantic XML documents.
+identifiers (`identifier`).
++
+The documents are expected to be Metanorma Semantic XML documents.
 
-** If `attachment` is `true`, the file is not a Metanorma document but an
-attachment, and is passed-through (i.e. not processed) [added in
-https://github.com/metanorma/metanorma/releases/tag/v1.2.9].
+`attachment`::::
+When set to `true`, the file is not a Metanorma document but an attachment, and
+therefore will not be compiled but directly included by
+Metanorma [added in https://github.com/metanorma/metanorma/releases/tag/v1.2.9].
 
-** If `sectionsplit` is `true`, the HTML output for the specified file
-is arranged as one HTML file per clause, with an index page created for the overall
-document. The index page for the entire document links to the index page for the `sectionsplit` document.
+`sectionsplit`::::
+When set to `true`, the HTML output for the specified file is arranged as one
+HTML file per clause, with an index page created for the overall document.
++
+The index page for the entire document links to the index page for the
+`sectionsplit` document.
 
-** If `index` is `false` (`true` by default), the file is not to be included in
+`index`::::
+Defaults to `true`. When set to `false`, the file is not to be included in
 any listing of manifest contents (i.e. in the collection cover page).
 
-** `manifest` can appear recursively in a manifest.
+`prefatory-content`::
+Content to put at the beginning of the collection container.
 
+`final-content`::
+Content to put at the end of the collection container.
 
-* Content to put at the beginning of the collection container
-(`prefatory-content`)
-
-* Content to put at the end of the collection container (`final-content`)
-
-The following is an example collection manifest:
-
+.Example collection manifest
+[example]
+====
 [source,yaml]
 ----
 directives:
@@ -245,26 +301,34 @@ final-content:
   == Exordium
   Hic explicit
 ----
+====
+
 
 === Site manifest
 
-As noted, the collection manifest is expected to reference Semantic XML documents.
-The starting point for generating a collection is Metanorma Asciidoctor
-documents; in order to specify a collection and generate it as straightforwardly
+The collection manifest is expected to reference Metanorma Semantic XML
+documents.
+
+The starting point for generating a collection is Metanorma AsciiDoc
+documents. In order to specify a collection and generate it as straightforwardly
 as possible, the collection manifest should be accompanied by a
 link:/_pages/install/usage#metanorma-site[site manifest], named `metanorma.ym1`,
 specifying both the
-component Asciidoctor files, and the collection manifest, as dependency files.
+component AsciiDoc files, and the collection manifest, as dependency files.
+
 Site compilation will compile both the component files, and the collection
 depending on them. This is done by running `metanorma site generate` in the same
-directory as `metanorma.ym1`.
+directory as `metanorma.yml`.
 
-Since Metanorma site compilation compiles documents to a `_site/documents` directory,
-the collection manifest needs to reference the Semantic XML documents in that
-same `_site/documents` directory.
+Since Metanorma site compilation compiles documents to a `_site/documents`
+directory, the collection manifest needs to reference the Semantic XML documents
+in that same `_site/documents` directory.
 
-The following two files are examples of a site manifest and a collection manifest
-compiled through  `metanorma site generate`.
+.Example site manifest
+[example]
+====
+The following two files are examples of a site manifest and a collection
+manifest compiled through  `metanorma site generate`.
 
 `metanorma.yml`:
 
@@ -280,8 +344,9 @@ metanorma:
 
   collection:
     organization: "British Standards Institute"
-    name: "Retroﬁtting dwellings for improved energy efﬁciency — Speciﬁcation and guidance"
+    name: "Retrofitting dwellings for improved energy efficiency -- Specification and guidance"
 ----
+====
 
 In the site manifest, the files to be compiled are listed under `metanorma.source.files`;
 any YAML file in the list is assumed to be a collection manifest.
@@ -291,6 +356,9 @@ collection document, and an organization treated as the corporate author of the 
 Both will feature in the index file of the documents generated in the site (`_site/index.html`),
 and correspond to `bibdata.title.content` and `bibdata.copyright.owner.name` in the collection manifest.
 
+.Example collection manifest
+[example]
+====
 `collection.yml`:
 
 [source,yaml]
@@ -320,12 +388,14 @@ prefatory-content:
 final-content:
 |
 ----
+====
 
-Note that document.1.adoc and document.2.adoc are compiled to `_site` as part
-of site compilation. The fileref attributes in the collection manifest need to point
-to the Semantic XML where the site compilation deposits them, under `_site/documents`.
-The collection generation also generates the collection in the same location, so there
-is no need to specify a collection destination directory, `--output-folder` under `metanorma collection`.
+NOTE: `document.1.adoc` and `document.2.adoc` are compiled to `_site` as part of
+site compilation. The `fileref` attributes in the collection manifest need to
+point to the Semantic XML where the site compilation deposits them, under
+`_site/documents`. The collection generation also generates the collection in
+the same location, so there is no need to specify a collection destination
+directory, `--output-folder` under `metanorma collection`.
 
 
 === Index page template
@@ -335,23 +405,38 @@ forms a sidebar for the display of the HTML content of each file.
 
 The following fields are defined:
 
-* `doctitle`, `docnumber`, etc.: Information derived from the Relaton YAML
-description in the manifest of the entire collection.
-The field names are as defined for Liquid templates
-in Metanorma: see
+`doctitle`, `docnumber`, etc.::
+Information derived from the Relaton YAML description in the manifest of the
+entire collection.
++
+The field names are as defined for Liquid templates in Metanorma: see
 link:/develop/topics/metadata-and-boilerplate[Metadata and Boilerplate].
 
-* `navigation`: A nested list giving hyperlinks to the constituent documents,
-following the specification in the `manifest` field of the collection manifest.
+`navigation`::
+A nested list giving hyperlinks to the constituent documents, following the
+specification in the `manifest` field of the collection manifest.
 
-* `nav_object`: The same nested list, presented as a recursive object, in order to allow
+`nav_object`::
+The same nested list, presented as a recursive object, in order to allow
 users to select only a subset of the navigation list for presentation [added in https://github.com/metanorma/metanorma/releases/tag/v1.6.4].
++
 It contains the following fields:
-** title: the list title
-** docrefs: a hyperlinked list of the documents at that level of the manifest
-** children: an array of child manifests
-* `prefatory-content`: Prefatory content from the collection manifest [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6].
-* `final-content`: Final content from the collection manifest [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6].
+
+`title`:::
+The list title.
+
+`docrefs`:::
+A hyperlinked list of the documents at that level of the manifest.
+
+`children`:::
+An array of child manifests.
+
+`prefatory-content`::
+Prefatory content from the collection manifest [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6].
+
+`final-content`::
+Final content from the collection manifest [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6].
+
 
 [[collection-cross-references]]
 == Cross-references
@@ -622,7 +707,7 @@ The options are:
 
 * The document attribute `align-cross-elements` indicates the Metanorma XML
   elements that are always to be aligned in multilingual text. It consists of a
-  comma-delimited list of Metanlorma XML tags; e.g. `p,note,term`.
+  comma-delimited list of Metanorma XML tags; e.g. `p,note,term`.
 
 
 == Document embedding
@@ -733,8 +818,8 @@ This is content
 == Colophon
 ----
 
-NOTE: As with Asciidoctor `include::[]`, Asciidoctor is unable to locate assets such as images if the
-embedded document is in a different directory from the containing document: Asciidoctor lacks a mechanism
+NOTE: As with AsciiDoc `include::[]`, AsciiDoc is unable to locate assets such as images if the
+embedded document is in a different directory from the containing document: AsciiDoc lacks a mechanism
 of specifying asset location relative to the current document, as opposed to the initial document.
 For that reason, if you embed documents that reference files, you will need to put both documents in the
 same folder, in a flat hierarchy.
@@ -779,4 +864,3 @@ This is the foreword
 Then `<<id>>` will be rendered as __XYZ 123__, the embedded document identifier;
 and the `<<id>>` cross-reference will hyperlink to the first header within the
 embedded document (the Foreword, in this case).
-
