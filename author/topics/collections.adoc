@@ -100,11 +100,13 @@ below.
 
 `documents-inline`::: (default)
 Indicates that the files should be concatenated into a single XML file for
-processing.
-+
-If absent, the files are kept separate in processing (`documents-external`).
+processing. If neither `documents-inline` nor `documents-external` is supplied,
+`documents-inline` is presupposed.
 +
 Currently, if you are generating PDF or DOC output, you can only specify `documents-inline`.
+
+`documents-external`::: Indicates that the files are kept separate in processing,
+and the overall collection XML file does not contain the XML of the individual documents.
 
 `presentation-xml`:::
 Indicates that the XML supplied is in Metanorma Presentation XML format, and
