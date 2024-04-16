@@ -110,6 +110,20 @@ by the expected 7.1.
 `branch-number` can also be used when an atomic section number is required, as can occur in
 terms and definitions sections inheriting their term identifiers from a termbase.
 
+If numbering is to be skipped for a clause, that can be indicated with an `%unnumbered`
+option on the clause, as with blocks; that atttribute will result in all child clauses also
+being unnumbered [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.8].
+
+[source,asciidoc]
+----
+[%unnumbered]
+== Clause 7
+=== Zeroth Subclause
+=== First subclause
+----
+
+Because of the importance of clause referencing in standards, making a clause unnumbered is not
+recommended.
 
 == Inline headings
 
