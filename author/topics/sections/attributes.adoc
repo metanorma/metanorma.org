@@ -1,0 +1,290 @@
+---
+layout: author-docs
+title: Section attributes
+---
+
+== General
+
+Attributes can be set on sections / clauses to instruct Metanorma on how
+to treat them.
+
+== Language and script
+
+The language and script of a section is indicated via the optional attributes
+`language` and `script`:
+
+.Example of setting `language` to a clause
+====
+[source,asciidoc]
+----
+[language=fr]
+== Section 3
+----
+====
+
+.Example of setting `script` to a clause
+====
+[source,adoc]
+----
+[appendix,script=Zmth]
+== Math Appendix
+----
+====
+
+
+== Obligations
+
+The obligation of a section -- whether it is normative or informative -- is
+indicated via the attribute `obligation`.
+
+* For most sections, this is fixed.
+
+* For annexes and clauses, the default value of the obligation is `normative`.
+Users need to set the obligation to "informative" as a section attribute if
+needed.
+
+.Example of setting `obligation`
+====
+[source,asciidoc]
+--
+[[AnnexA]]
+[appendix,obligation=informative]
+== Determination of defects
+--
+====
+
+== Type
+
+Clauses can have types.
+
+In Metanorma, clause types are usually set automatically based on the titles.
+
+.Example of automatically set clause types
+====
+All clauses with the title "Scope" or `heading=` attribute "scope" are of
+type `scope`.
+====
+
+The type of a clause can be explicitly set by the user through the `type`
+attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.4].
+
+This is useful particularly for any semantic processing of the document
+downstream.
+
+.Example of setting clause `type`
+====
+[source,asciidoc]
+----
+[type=reagents]
+== Reagents
+----
+====
+
+
+== Numbering
+
+As with
+link:/author/topics/document-format/text#numbering-override[block element numbering],
+a clause number may be provided manually to override auto-numbering.
+
+For instance, in order to number out-of-sequence clauses in updated
+documents or amendments [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.3].
+
+A manual clause number is specified with the attribute `number`.
+
+.Example of manually setting clause numbering
+====
+[source,asciidoc]
+----
+== Clause 7
+
+[number=0]
+=== Zeroth Subclause
+----
+====
+
+Elements subsequent to the manually numbered element will be auto-numbered so as
+to follow the previous element.
+
+The auto-numbering mechanism increments the final letter in an alphanumeric
+clause number (e.g. _7a_ followed by _7b_.)
+
+Numerics are used as the clause number unless otherwise specified.
+
+So:
+
+.Example of manually specifying a clause number with a letter and the autonumbering that follows
+======
+[source,asciidoc]
+----
+== Clause 7
+
+[number=0]
+=== Zeroth Subclause
+
+[number=a]
+=== Letter-numbered subclause
+
+==== Letter-numbered nested Subclause
+
+=== Letter-numbered next subclause
+----
+
+is rendered as:
+
+____
+*7. Clause 7.*
+
+*7.0 Zeroth Subclause*
+
+*7.a Letter-numbered subclause*
+
+*7.a.1 Letter-numbered nested subclause*
+
+*7.b Letter-numbered next subclause*
+____
+======
+
+
+.Example of manually specifying a clause number with a series of numbers and the autonumbering that follows
+======
+[source,asciidoc]
+----
+== Clause 7
+
+[number=6.2.1]
+=== Autonumber overridden subclause
+
+=== Autonumber overridden next subclause
+
+==== Autonumber overridden nested subclause
+----
+
+is rendered as:
+
+____
+*7. Clause 7.*
+
+*7.6.2.1 Autonumber overridden subclause*
+
+*7.6.2.2 Autonumber overridden next subclause*
+
+*7.6.2.2.1 Autonumber overridden nested subclause*
+____
+======
+
+If resumption of auto-numbering is not intended for subsequent clauses
+(e.g. _7aa_ should not be followed by _7ab_, or _6.2.1_ should not be followed by _6.2.2_),
+an explicit number also needs to be given to those clauses separately.
+
+.Example of manually specifying clause number progressions not based on character increments (Latin numbering)
+======
+[source,asciidoc]
+----
+== Clause 7
+
+[number=7bis]
+== Interpolated clause
+
+[number=7ter]
+== Next interpolated clause
+----
+
+These are top-level clauses, and render as:
+
+____
+*7. Clause 7.*
+
+*7bis Interpolated clause*
+
+*7ter Next interpolated clause*
+____
+======
+
+
+Without the explicit `[number=7ter]` markup, Metanorma (which does not know
+Latin numbering) would assume the next clause number after _bis_ is _7bit_,
+using the next letter after _s_.
+
+If the clause number value needs to be overridden for the entire hierarchical
+branch, that value is given as
+`branch-number` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.3].
+
+.Example of overriding the clause number for the entire hierarchical branch
+======
+[source,asciidoc]
+----
+== Clause 7
+
+[branch-number=6.2.1]
+=== Branch-numbered subclause
+
+==== Branch-numbered nested subclause
+
+=== First subclause
+----
+
+This renders as:
+
+____
+*7. Clause 7.*
+
+*6.2.1 Branch-numbered subclause*
+
+*6.2.1.1 Branch-numbered nested subclause*
+
+*7.1 First subclause*
+____
+======
+
+Notice that subsequent clauses ignore the presence of `branch-number`;
+so _First subclause_ is numbered as if _Zeroth Subclause_ did not exist.
+
+`branch-number` can also be used when an atomic section number is required, as
+can occur in terms and definitions sections inheriting their term identifiers
+from a termbase.
+
+If numbering is to be skipped for a clause, that can be indicated with an
+`%unnumbered` option on the clause, as with blocks; that attribute will result
+in all child clauses also being
+unnumbered [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.8].
+
+.Example of an unnumbered clause
+======
+[source,asciidoc]
+----
+[%unnumbered]
+== Unnumbered clause 7
+=== Unnumbered subclause
+=== Unnumbered subclause
+----
+======
+
+NOTE: Because of the importance of clause referencing in standards, making a
+clause unnumbered is not recommended.
+
+
+== Inline headings
+
+Inline subclause headings (e.g. for test methods in ISO) are indicated by
+preceding the heading with the `[%inline-header]` option attribute.
+
+.Example of test methods headings encoded as inline headings (from ISO Rice)
+======
+So in the Rice Model
+document,
+
+[source,asciidoc]
+--
+[%inline-header]
+==== Sieve,
+
+with round perforations of diameter 1,4 mm.
+--
+
+renders as
+
+____
+*A.2.1.1. Sieve,* with round perforations of diameter 1,4 mm.
+____
+======

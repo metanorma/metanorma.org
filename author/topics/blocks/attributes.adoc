@@ -1,0 +1,53 @@
+---
+layout: author-docs
+title: Block attributes
+---
+
+== Paragraph alignment
+
+Paragraph alignment is defined as the `align` attribute for paragraphs.
+
+[example]
+.Examples of possible paragraph alignments
+====
+[source,asciidoc]
+--
+[align=left]
+This paragraph is aligned left
+
+[align=center]
+This paragraph is aligned center
+
+[align=right]
+This paragraph is aligned right
+
+[align=justified]
+This paragraph is justified, which is the default
+--
+
+renders:
+
+image::/assets/author/topics/document-format/text/fig-par-align.png[Illustration of possible paragraph alignments]
+====
+
+If the paragraph contains line breaks, and the default alignment in the
+stylesheet is justified (as is often the case in Word output), it is necessary
+to specify `[align=left]` to make the paragraph look as normally expected.
+
+[example]
+.Example of a paragraph containing line breaks that needs to be left-aligned
+====
+[source,asciidoc]
+--
+[align=left]
+Vache Equipment +
+Fictitious +
+World +
+mailto:gehf@vacheequipment.fic[]
+--
+
+renders:
+
+image::/assets/author/topics/document-format/text/fig-left-aligned.png[Illustration of left-alignment for multiple line-breaks]
+====
+
