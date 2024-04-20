@@ -94,19 +94,18 @@ LaTeX math can be entered using the `\latexmath:[...]` command and the
 The `\stem:[]` and `[stem]` blocks can also be used if the document attribute
 `:stem: latexmath` has been specified in the document.
 
-LaTeX math is converted into MathML using the
-https://github.com/plurimath/latexmath[latexmath] gem, which generates
-output compliant with the deterministic output of the
+LaTeX math is converted into MathML using
+https://github.com/plurimath/plurimath[Plurimath].
+
+NOTE: LaTeX math generated is compliant with the deterministic output of the
 https://dlmf.nist.gov/LaTeXML/[NIST LaTeXML] suite.
 
-NOTE: LaTeX math parsing of the
-https://dlmf.nist.gov/LaTeXML/manual/commands/latexmlmath.html[LaTeXML's `latexmlmath` command]
-is deterministically accurate.
-The https://github.com/plurimath/latexmath[latexmath] gem was created
-to generate identical output to the `latexmlmath` command.
+NOTE: Previously Metanorma used the https://github.com/plurimath/latexmath[latexmath] gem,
+which is now superseded by Plurimath.
 
-Unicode characters in the LaTeX source are translated into LaTeX escapes
+NOTE: Previously, Unicode characters in the LaTeX source were translated into LaTeX escapes
 through the https://github.com/metanorma/unicode2latex[unicode2latex] gem.
+This is superseded by Plurimath.
 
 [example]
 .Example of using LaTeX Math in ISO 10303-110 (ISO 10303-110, Clause 4)

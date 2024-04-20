@@ -4,26 +4,32 @@ layout: author-docs
 
 = AsciiMath support
 
-Metanorma uses the https://github.com/asciidoctor/AsciiMath[Ruby AsciiMath parser]
-to process AsciiMath, converting it to MathML for Metanorma processing. For rendering in
-HTML, the MathML generated is processed by https://www.mathjax.org[MathJax]. For rendering
-in Word, the MathML is converted to https://en.wikipedia.org/wiki/Office_Open_XML[Office Open XML (OOXML)].
+Metanorma uses the https://github.com/plurimath/plurimath[Plurimath]
+to process AsciiMath, converting it to MathML for Metanorma processing.
 
-NOTE: AsciiMath only recognises decimal points and not decimal commas. Any attempt to use
-a decimal comma (e.g. _3,4_) will be processed as an operator, and will end up treating the integer and fractional
-parts of the number as two separate numerals, separated by a space as well as a comma. This
-applies to all versions of Asciimath.
+For rendering in HTML, the MathML generated is processed by
+https://www.mathjax.org[MathJax] for browser compatibility.
 
-== Ruby AsciiMath
+For rendering in Word, the MathML is converted to OOML (the math format of 
+https://en.wikipedia.org/wiki/Office_Open_XML[Office Open XML (OOXML)]).
 
-The version of AsciiMath supported by the Ruby AsciiMath parser is slightly different
-to other variants of AsciiMath. The following are differences between Ruby AsciiMath
+NOTE: AsciiMath only recognises decimal points and not decimal commas. Any
+attempt to use a decimal comma (e.g. _3,4_) will be processed as an operator,
+and will end up treating the integer and fractional parts of the number as two
+separate numerals, separated by a space as well as a comma. This applies to all
+versions of Asciimath.
+
+
+== Plurimath AsciiMath
+
+The version of AsciiMath supported by Plurimath parser is slightly different
+to other variants of AsciiMath. The following are differences between Plurimath
 and the version of AsciiMath
 documented on http://asciimath.org[asciimath.org]:
 
-=== Miscellaneous symbols:
+=== Miscellaneous symbols
 
-Ruby AsciiMath adds the following as distinct symbols:
+Plurimath adds the following as distinct symbols:
 
 `dx`:: dx identifier
 
@@ -52,7 +58,7 @@ Ruby AsciiMath adds the following as distinct symbols:
 
 === Relation symbols
 
-Ruby AsciiMath adds the following as distinct symbols:
+Plurimath adds the following as distinct symbols:
 
 `:=`:: := operator
 
@@ -69,7 +75,7 @@ No difference.
 
 
 === Grouping brackets
-Ruby AsciiMath adds the following as distinct brackets:
+Plurimath adds the following as distinct brackets:
 
 `|:`:: | as left bracket
 `:|`:: | as right bracket
@@ -81,19 +87,19 @@ No difference.
 
 === Accents
 
-The following operators are currently missing from Ruby AsciiMath:
+The following operators are currently missing from Plurimath:
 
 * `color(red)(x)`
 * `cancel(x)`
 
-Ruby AsciiMath adds the following as distinct accents
+Plurimath adds the following as distinct accents
 
 `tilde`:: ~
 `overarc`:: &#x23dc;
 
 === Greek letters
 
-The Ruby AsciiMath gem supports several capital letter symbols, which are not named
+Plurimath supports several capital letter symbols, which are not named
 in asciimath.org:
 
 `Alpha`:: Alpha
@@ -128,8 +134,8 @@ No difference.
 
 === Font commands
 
-The following are font commands supported by the Ruby AsciiMath gem, in addition
-to those named in asciimath.org:
+The following are font commands supported by Plurimath, in addition
+to those named in http://www.asciimath.org[Asciimath.org].
 
 `ii`:: italic font
 `bii`:: bold italic font
@@ -139,9 +145,11 @@ to those named in asciimath.org:
 `sfi`:: italic sans serif font
 `sfbi`:: sans serif bold italic font
 
+
 == Conversion to Word OOXML
 
 AsciiMath and MathJax processors are tolerant of loose syntax in mathematical expressions.
+
 Currently the conversion of MathML to OOXML is not as tolerant: if a mathematical operator
 takes a single argument, the OOXML expects to find that argument brackets as a single entity.
 If that does not happen, Word displays a dotted square where it would expect the single
