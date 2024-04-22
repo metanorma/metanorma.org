@@ -56,38 +56,7 @@ setting text alignment, please refer to
 https://docs.asciidoctor.org/asciidoc/latest/tables/align-by-cell/[AsciiDoc table documentation].
 
 
-== Column widths
-
-Table columns can also have their widths set [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3].
-
-Table column widths must be enumerated explicitly per column to generate column widths.
-
-[example]
-.Example of table with equal width columns
-====
-The following syntax will be processed as generating equal width columns.
-
-[source,adoc]
-----
-[cols="1,1,1"]
-----
-====
-
-NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to
-`[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.
-
-For long tables that need to continue onto the next page in the DOC or PDF rendering of a document,
-Metanorma, by default, will automatically repeat the header after every page break.
-
-To suppress this behavior, you can apply the `noheader` value to the `options` attribute
-using its formal (`options=noheader`) or shorthand (`%noheader`) syntax.
-There is a caveat that this option will also deactivate the implicit assignment of the
-header to the first row of the table
-(see link:https://docs.asciidoctor.org/asciidoc/latest/tables/add-header-row/#implicitly-assign-header-to-the-first-row[Implicitly assign header to the first row]).
-Therefore, you will need to apply the header tag (`h|`) to every cell of the first
-row to define it as the header.
-
-== Table widths
+== Table width
 
 The table width can be set with the `width`
 attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21].
@@ -143,6 +112,37 @@ NOTE: The non-PDF `width` attribute values align with HTML CSS and HTML 4 behavi
 ----
 ====
 
+== Column width
+
+Table columns can also have their widths set [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3].
+
+Table column widths must be enumerated explicitly per column to generate column widths.
+
+[example]
+.Example of table with equal width columns
+====
+The following syntax will be processed as generating equal width columns.
+
+[source,adoc]
+----
+[cols="1,1,1"]
+----
+====
+
+NOTE: In typical AsciiDoc, `[cols="3"]` is considered a shorthand to
+`[cols="1,1,1"]`, but this is not supported in Metanorma AsciiDoc.
+
+For long tables that need to continue onto the next page in the DOC or PDF rendering of a document,
+Metanorma, by default, will automatically repeat the header after every page break.
+
+To suppress this behavior, you can apply the `noheader` value to the `options` attribute
+using its formal (`options=noheader`) or shorthand (`%noheader`) syntax.
+There is a caveat that this option will also deactivate the implicit assignment of the
+header to the first row of the table
+(see link:https://docs.asciidoctor.org/asciidoc/latest/tables/add-header-row/#implicitly-assign-header-to-the-first-row[Implicitly assign header to the first row]).
+Therefore, you will need to apply the header tag (`h|`) to every cell of the first
+row to define it as the header.
+
 
 == Notes and footnotes
 
@@ -162,6 +162,37 @@ and notes trailing the table outside the table.
 Table 1 in the Metanorma ISO Rice example document illustrates a large range of
 table formatting options.
 ====
+
+
+[[statement-units]]
+== Statement concerning units
+
+A statement concerning units used can be added to a table, indicating the units
+of measurement used in the table.
+
+NOTE: This currently applies to the ISO, IEC and BSI flavors, and flavors that
+inherit from them.
+
+The units statement is encoded as a NOTE of type `units` (`[NOTE,type=units]`).
+
+The statement is rendered in the top-right corner of the
+table [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.3.6].
+
+.Table with a statement concerning units
+====
+[source,adoc]
+----
+|===
+|Location |Distance
+
+|Over there | 6
+|===
+
+[NOTE,type=units]
+Distance in kilometres
+----
+====
+
 
 
 == Multiple header rows
