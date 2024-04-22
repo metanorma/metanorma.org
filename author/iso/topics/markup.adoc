@@ -207,25 +207,14 @@ spanning multiple-blocks.
 --
 ======
 
-== Notes
-=== Units statements
-ISO standards, and standards that inherit formatting from them (IEC, BSI),
-can have unit statements on their figures and tables, indicating the unit of
-measurement used in the tabulated data. Unit statements are entered as
-`[NOTE,type=units]`, and are rendered in the top-right corner of the figure or
-table [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.3.6].
 
-[source,adoc]
-----
-|===
-|Location |Distance
+== Statement concerning units
 
-|Over there | 6
-|===
+Please refer to instructions at:
 
-[NOTE,type=units]
-Distances in kilometres
-----
+* link:/author/topics/blocks/figures#statement-units[Figures: Statement concerning units]
+* link:/author/topics/blocks/tables#statement-units[Tables: Statement concerning units]
+
 
 == Editorial notes
 
@@ -689,12 +678,15 @@ ATS:: abstract test suite
 ----
 ====
 
+
 == Sections
 
 In the document scheme used by ISO between 1987 and 1989, clauses were organised
-into higher-level numbered sections. In order to realise this formatting, use
-`type=section` [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.5], and
-`heading=` to indicate the special clause types for subclauses of sections:
+into higher-level numbered sections.
+
+In order to realise this formatting, use
+`type=section` [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.5],
+and `heading=` to indicate the special clause types for subclauses of sections:
 
 [source,adoc]
 ----
@@ -710,6 +702,7 @@ into higher-level numbered sections. In order to realise this formatting, use
 [heading=terms and definitions]
 === Terms and definitions
 ----
+
 
 == Annexes and appendices
 
@@ -741,28 +734,45 @@ ISO/IEC DIR 2:
 == Bibliographies
 
 [[note_general_doc_ref_bib]]
-NOTE: This subsection supplements link:/author/topics/document-format/bibliography[References & Bibliography] in general Metanorma documentation.
+NOTE: This subsection supplements link:/author/topics/document-format/bibliography[References and bibliography] in general Metanorma documentation.
 
-All references under Normative References are expected to have such a standard document identifier. For example:
+All references under "Normative references" are expected to have a standard
+document identifier.
 
+.Using standard document identifiers in a bibliography section
+====
 [source,asciidoc]
 --
 * [[[ricepotentialmilling,ISO 6646]]], _Rice -- Determination of the potential milling yield from paddy and from husked rice_
 * [[[ISOGuide73, ISO Guide 73:2009]]], _Risk management -- Vocabulary_
 --
+====
 
 [subs="quotes"]
-ISO 6646 in this example would be cited from elsewhere in the document through cross-references to the `ricepotentialmilling` identifier; e.g. `<< ricepotentialmilling>>` (which will be rendered as `ISO 6646`), `<<``ricepotentialmilling, section 5``>>` (which will be rendered as `ISO 6646, Section 5`), `<<``ricepotentialmilling,section 5: the foregoing discussion``>>` (which will be tagged in the XML representation as Section 5 of ISO 6646, but will be displayed as `the foregoing discussion`.)
+--
+ISO 6646 in the above example would be cited from elsewhere in the document
+through cross-references to the `ricepotentialmilling` identifier.
 
-ISO treats dated and undated references as separate (an undated reference is taken to
-refer to the latest published edition of that reference.) if reference is to be made to
-both an undated and a dated version of an ISO reference, these need to be explicitly listed as
-separate references.
+For example,
+
+* `<<``ricepotentialmilling``>>`: will be rendered as `ISO 6646`
+
+* `<<``ricepotentialmilling,section 5``>>`: will be rendered as `ISO 6646,
+Section 5`
+
+* `<<``ricepotentialmilling,section 5: the foregoing discussion``>>`: will be
+tagged in the XML representation as Section 5 of ISO 6646, but will be displayed
+as `the foregoing discussion`.
+--
+
+Metanorma treats dated and undated references as separate: an undated reference
+is taken to refer to the latest published edition of that reference.
+
+If reference is to be made to both an undated and a dated version of an ISO
+reference, these need to be explicitly listed as separate references.
 
 
-[TIP]
-====
-If an ISO reference is in preparation, ISO/IEC DIR 2 dictates that details of the reference status be given as a footnote. In Asciidoc, this is done by giving the date as a double dash, and following the bibliographic anchor with a footnote macro:
+If an ISO reference is in preparation, ISO/IEC DIR 2 dictates that details of the reference status be given as a footnote. In Metanorma, this is done by giving the date as a double dash, and following the bibliographic anchor with a footnote macro:
 
 [source,asciidoc]
 --
@@ -775,7 +785,7 @@ If an ISO reference includes all parts of the standard, that is indicated by app
 --
 * [[[ISO16634,ISO 16634 (all parts)]]] _Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs -- Determination of the total nitrogen content by combustion according to the Dumas principle and calculation of the crude protein content_
 --
-====
+
 
 In informative references, references to standards documents are still given with the same format of bibliographic anchor, and they are cited by their document identifier -- although they are displayed with an incrementing reference number in brackets, for consistency with any bibliographic entries that are not standards documents. ISO references appear before non-ISO references. So
 
@@ -813,6 +823,8 @@ The bracketed reference numbers are expected to be correct and in order (account
 
 
 == Amendments and technical corrigenda
+
+=== General
 
 Amendments and technical corrigenda [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
 have the following particularities in their markup.

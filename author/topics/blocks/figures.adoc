@@ -2,10 +2,7 @@
 layout: author-docs
 title: Figures
 ---
-
-== Figures
-
-=== General
+== General
 
 Figures are document elements that present non-textual material.
 
@@ -30,7 +27,7 @@ NOTE: This page discusses only the markup specific to figures as blocks,
 using the image command `image::[]`.
 
 
-=== Basic figure
+== Basic figure
 
 A link:/author/topics/blocks/images[block image] in isolation is automatically
 considered as a figure containing an image.
@@ -47,7 +44,7 @@ image::{PATH}.png[]
 ====
 
 
-=== Figure block
+== Figure block
 
 A figure block can contain multiple types and instances of content, such as
 images, paragraphs and admonitions.
@@ -75,8 +72,88 @@ NOTE: Previously the explicit declaration on the example block uses the
 `[.figure]` role.
 
 
+== Captions and titles
 
-=== Key
+=== General
+
+A caption and a title on a figure block are different things.
+
+* The caption is a textual description describing the figure.
+* The title is a name of the figure.
+
+=== Caption
+
+As elsewhere in Metanorma, the caption of an image (of the figure containing the
+image) is set with a line prefixed with dot above the image.
+
+.Figure with caption
+====
+[source,asciidoc]
+--
+.Caption
+image::logo.jpg[]
+--
+====
+
+
+.Figure with caption declared in the image
+====
+[source,asciidoc]
+--
+image::logo.jpg[title=Caption]
+--
+====
+
+NOTE: Similar to Asciidoctor AsciiDoc, the `title` attribute is treated as
+identical to the dot-prefixed caption.
+
+
+=== Title
+
+Metanorma supports a `title` attribute on images for accessibility, which is
+distinct from the figure caption.
+
+This is entered in Metanorma as the `titleattr` attribute.
+
+.Figure with accessible `titleattr` title
+====
+[source,asciidoc]
+--
+[titleattr=Title Attribute]
+image::logo.jpg
+--
+====
+
+Or
+
+.Figure with accessible `titleattr` title declared in image
+====
+[source,asciidoc]
+--
+image::logo.jpg[titleattr=Title Attribute]
+--
+====
+
+
+Both captions and titles could be used together.
+
+.Figure with both caption and title
+====
+[source,asciidoc]
+--
+.Rice husk separation in rice farm at Breton near Dinan
+image::logo.jpg[titleattr=Photo of rice husks being separated]
+--
+====
+
+NOTE: Word exception. The `titleattr` attribute does not get rendered in Word
+output due to Word limitations. Word only supports a single image "`Alt Text`",
+which would be set by the caption.
+Word's description of "`Alt Text`" is:
+"`How would you describe this object and its context to someone who is blind?`".
+
+
+== Key
 
 Figures can be followed by a definition list for the variables
 used in the figure, just like formulae.
@@ -146,8 +223,66 @@ NOTE: These results are based on a study carried out on three different types of
 ====
 
 
+== Notes and footnotes
 
-=== Subfigures
+Notes and footnotes can be encoded as part of a figure. Both types are
+rendered in the figure footer, below the Key.
+
+To encode figure notes and footnotes:
+
+* Notes (`NOTE: ...`) entered immediately a figure is considered to be a figure
+note, and hence included in the figure.
+
+* Footnotes (`footnote:[...]`) part of the textual content of the figure
+or notes are included in the figure.
+
+.Example of a figure with a note and a footnote
+====
+[source,adoc]
+----
+.Amount of gelatinization of husked rice through time footnote:[at 1 Pa]
+image::rice_images/rice_image10-1.png[]
+
+[NOTE]
+Husked rice gelatinized through the Verrol process.
+----
+====
+
+[TIP]
+====
+Figure C.1 in the Metanorma ISO Rice example document illustrates a large range
+of figure formatting options.
+====
+
+
+[[statement-units]]
+== Statement concerning units
+
+A statement concerning units used can be added to a figure, indicating the units
+of measurement used in the figure.
+
+NOTE: This currently applies to the ISO, IEC and BSI flavors, and flavors that
+inherit from them.
+
+The units statement is encoded as a NOTE of type `units` (`[NOTE,type=units]`).
+
+The statement is rendered in the top-right corner of the
+figure [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.3.6].
+
+.Figure with a statement concerning units
+====
+[source,adoc]
+----
+.Amount of gelatinization of husked rice through time
+image::rice_images/rice_image10-1.png[]
+
+[NOTE,type=units]
+Amount in grams; time in seconds.
+----
+====
+
+
+== Subfigures
 
 Subfigures are entered by including multiple images in an example block.
 
@@ -173,90 +308,12 @@ image::rice_images/rice_image3_3.png[]
 =====
 
 
-=== Captions and titles
+== Preformatted content
 
-==== General
-
-A caption and a title on a figure block are different things.
-
-* The caption is a textual description describing the figure.
-* The title is a name of the figure.
-
-==== Caption
-
-As elsewhere in Metanorma, the caption of an image (of the figure containing the
-image) is set with a line prefixed with dot above the image.
-
-.Figure with caption
-====
-[source,asciidoc]
---
-.Caption
-image::logo.jpg[]
---
-====
-
-
-.Figure with caption declared in the image
-====
-[source,asciidoc]
---
-image::logo.jpg[title=Caption]
---
-====
-
-NOTE: Similar to Asciidoctor AsciiDoc, the `title` attribute is treated as
-identical to the dot-prefixed caption.
-
-
-==== Title
-
-Metanorma supports a `title` attribute on images for accessibility, which is
-distinct from the figure caption.
-
-This is entered in Metanorma as the `titleattr` attribute.
-
-.Figure with accessible `titleattr` title
-====
-[source,asciidoc]
---
-[titleattr=Title Attribute]
-image::logo.jpg
---
-====
-
-Or
-
-.Figure with accessible `titleattr` title declared in image
-====
-[source,asciidoc]
---
-image::logo.jpg[titleattr=Title Attribute]
---
-====
-
-
-Both captions and titles could be used together.
-
-[source,asciidoc]
---
-.Rice husk separation in rice farm at Breton near Dinan
-image::logo.jpg[titleattr=Photo of rice husks being separated]
---
-
-NOTE: Word exception. The `titleattr` attribute does not get rendered in Word
-output due to Word limitations. Word only supports a single image "`Alt Text`",
-which would be set by the caption.
-Word's description of "`Alt Text`" is:
-"`How would you describe this object and its context to someone who is blind?`".
-
-
-=== Preformatted blocks
-
-Figures can include preformatted blocks.
+Figures can include preformatted content.
 
 [example]
-.Figure with preformatted block
+.Figure with a preformatted block
 =====
 [source,asciidoc]
 ----
@@ -301,7 +358,7 @@ attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/
 =====
 
 
-=== Class
+== Class
 
 Figures in documents can belong to different classes (e.g. _Plate_, _Chart_,
 _Diagram_), each of which can be auto-numbered and captioned differently.
@@ -320,7 +377,7 @@ image::logo.jpg[]
 ====
 
 
-=== Source
+== Source
 
 A figure block can incorporate an indication of its source.
 
