@@ -144,6 +144,70 @@ Therefore, you will need to apply the header tag (`h|`) to every cell of the fir
 row to define it as the header.
 
 
+== Supplementary components
+
+A table allows the following supplementary components:
+
+* Key
+* Text
+* Notes
+* Footnotes
+
+The order of rendering of these components are in the following order:
+
+* Key > Text > Note > Footnote
+
+NOTE: This order aligns with ISO's editorial practice.
+
+== Key
+
+Key can be followed by a definition list for the variables
+used in the table, just like formulae.
+
+This definition list is marked up with `[%key]`
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3].
+
+The syntax is as follows:
+
+[source,asciidoc]
+--
+|===
+|Location |Distance
+
+|Over there | 6
+|===
+
+[%key] <1>
+{some-id}:: {some-description} <2>
+--
+<1> Specification of table key section
+<2> Key entry: `{some-description}` is text that describes information about the thing
+represented by `{some-id}`
+
+[example]
+.Table containing a key / legend
+====
+[source,asciidoc]
+--
+|===
+|Location       | Distance
+
+|Over here      | s
+|Over there     | m
+|Way over there | l
+|===
+
+[%key]
+stem:[s]:: Short distance
+stem:[m]:: Medium distance
+stem:[l]:: Far away
+--
+====
+
+NOTE: The key definition list can also be preceded by a paragraph consisting of
+`\*Key*`, though that is not recommended.
+
+
 == Notes and footnotes
 
 Metanorma AsciiDoc tables behave differently from typical AsciiDoc
@@ -151,7 +215,7 @@ with notes and footnotes due to the requirements of standardization documents.
 
 Specifically:
 
-* table cell footnotes (`footnote:[...]`) are rendered inside the table;
+* table cell footnotes (``footnote:````[...]``) are rendered inside the table;
 * notes (`NOTE: ...`) following the table are rendered inside the table footer.
 
 NOTE: Typical AsciiDoc renders table cell footnotes inside the cell,
