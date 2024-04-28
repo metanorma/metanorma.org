@@ -225,6 +225,12 @@ When set to `true`, the file is not a Metanorma document but an attachment, and
 therefore will not be compiled but directly included by
 Metanorma [added in https://github.com/metanorma/metanorma/releases/tag/v1.2.9].
 
+`url`::::
+Provides the external URL to link to for references to this document, replacing any
+links to the locally generated file [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.7].
+Is not currently intended to replace locally included files: `fileref` is still
+required for any such files to be processed.
+
 `sectionsplit`::::
 When set to `true`, the HTML output for the specified file is arranged as one
 HTML file per clause, with an index page created for the overall document.
@@ -299,6 +305,7 @@ manifest:
                     attachment: true
     - fileref: dummy.xml
       identifier: ISO 17302
+      url: /example/dummy
     - fileref: rice1-en.final.xml
       identifier: ISO 1701:1974
 prefatory-content:
