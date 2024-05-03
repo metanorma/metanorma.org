@@ -3,6 +3,107 @@ layout: jis-flavor
 title: Metanorma for JIS markup
 ---
 
+== Introduction
+
+The modelling and rendering of standards in JIS by Metanorma is closely patterned after
+the modelling of ISO in link:/author/iso/[`metanorma-iso`], and markup for JIS accordingly
+patterns after ISO closely. In the following we document the topics where JIS markup
+differs from ISO markup.
+
+== Document metadata
+
+Documents in `metanorma-jis` are assumed by default to be in Japanese; accordingly,
+automated text inserted by Metanorma, such as cross-references and predefined text,
+are in Japanese. This can be overridden by setting the document language to English:
+`:language: en` in the document header, instead of the presupposed default
+`:language:ja`.
+
+Titles are required to be provided in both Japanese and English, and can be broken down
+into the main title, and optionally the introduction to the title, and the part title:
+for Japanese, these are `:title-main-ja`, `:title-intro-ja`,`:title-part-ja`. For English,
+use `-en` instead of `-ja`.
+
+Dates can be specified in Gregorian or Japanese calendar (the latter suffixed with `-ja`);
+Metanorma will convert Gregorian dates to Japanese dates if no Japanese date is provided.
+
+The document identifier is currently constructed out of the document number (`:docnumber:`),
+the document part (`:partnumber:`), the amendment number (`:amendment-number:`),
+the document series (`:docseries:`), the document type (`:doctype:`), the year (`:copyright-year`),
+and the publishers (assumed by default to be just JIS).
+
+For the initial copyright statement of the document, documents are expected 
+to provide information about the Investigative Working Group responsible for them 
+(investigative organisation and investigative committee), and if available, the representative
+of the group accountable and their role. Group names can be given in both English and Japanese,
+by suffixing `-en` and `-ja` to the attribute names. Documents are also expected to provide the date
+the publication was announced in the Official Gazette. The relevant fields are
+defined in link:/author/jis/ref/document-attributes/[Document Attributes]. 
+
+The following is an illustration of a document header for a JIS document:
+
+[source,adoc]
+----
+= Rules for the layout and drafting of Japanese Industrial Standards
+:docnumber: 8301
+:docseries: Z
+:edition: 1
+:published-date: 2019-07-22
+:copyright-year: 2019
+:language: ja
+:doctype: japanese-industrial-standard
+:imagesdir: imagesdd
+:mn-document-class: jis
+:mn-output-extensions: xml,html,doc,pdf,rxl
+:local-cache-only:
+:publisher-abbr: JSA
+:publisher-name-ja: 日本規格協会
+:publisher-name-en: Japanese Standards Association
+:investigation-organization-name-ja: 日本産業標準調査会
+:investigation-organization-name-en: Japanese Industrial Standards Committee
+:investigation-organization-logo: images/jisc.png
+:investigation-committee-name: 日本産業標準調査会 標準第一部会
+:investigation-committee-representative-name: 酒井 信介
+:investigation-committee-representative-role: 部会長
+:investigation-committee-address-en: 1-3-1, Kasumigaseki, Chiyoda-ku, \
+Tokyo 100 - 8901, \
+Japan
+:investigation-committee-address-ja: 1-3-1, Kasumigaseki, Chiyoda-ku, \
+Tokyo 100 - 8901, \
+Japan
+:investigation-committee-email: bzl-jisc-iso@meti.go.jp
+:fullname: KUROSAWA Akira
+:role: authorizer
+:role-description: investigative committee
+:affiliation: Committee 123
+:fullname_2: MIFUNE Toshiro
+:role_2: authorizer
+:role-description_2: investigative committee
+:affiliation_2: Committee 123
+:contributor-position_2: lead actor
+:announced-date: 2019-07-22
+:announced-date-ja: 令和元.7.22
+:establishment-date: 1951-10-31
+:establishment-date-ja: 昭和 26.10.31 
+:revision-date: 2019-07-22
+:revision-date-ja: 令和元.7.22
+:ics-code: 01.120
+:price-code: 19
+:title-main-ja: 日本工業規格の構成及び起草規則
+:title-main-en: Rules for the layout and drafting of Japanese Industrial Standards
+----
+
+
+== Predefined text
+
+Like other Metanorma flavours, Metanorma for JIS inserts predefined text where it has
+been defined by the SDO: see link:/develop/topics/metadata-and-boilerplate/[Metadata and Predefined Text]
+for the principles involved. That means that users must not include such text in their
+documents: the text as defined by JIS will be included automatically. That text includes:
+
+* The prefatory remarks for Normative references, which vary according to whether the references
+given are missing, all dated, all undated, or a mix of dated and undated.
+* The copyright and feedback predefined text at the beginning of the standards document.
+
 == Sections
 
 === Commentary
@@ -15,3 +116,5 @@ Commentary clauses are marked up as annexes with a `commentary` option attribute
 == Commentary
 ...
 ----
+
+Commentaries are automatically moved to the end of the document, and given different page numbering.
