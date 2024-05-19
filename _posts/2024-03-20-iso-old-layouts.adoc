@@ -134,3 +134,25 @@ Some additional text.
 
 More information about boilerplate predefined text see 
 at https://www.metanorma.org/develop/topics/metadata-and-boilerplate/#boilerplate
+
+
+== Two-columns layout
+
+Some old ISO standards published in the two-columns layout. You cas switch the default
+one-column layout to two-columns layout by the document attribute (for PDF only):
+
+```
+:presentation-metadata-layout-columns: 2
+```
+
+In the two-columns layout Metanorma displays the figures and tables in the 'full page'
+width (as in one-column layout), but you can switch to 'text width' (or 'column width') mode
+by the option `width=text-width`, for instance:
+
+```
+[cols="<,^,^,^,^",options="header,footer",headerrows=2,width=text-width]
+.Maximum permissible mass fraction of defects
+|===
+```
+
+In this case the maximum width of the table or figure will be same as column width.
