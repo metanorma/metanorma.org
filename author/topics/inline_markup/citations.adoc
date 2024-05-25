@@ -1,0 +1,532 @@
+---
+layout: author-docs
+title: Citations and localities
+---
+
+[[citations_localities]]
+== Citations and localities
+
+=== General
+
+Citations of references in Metanorma are formulated as cross-references.
+
+The anchor cross-referenced is the internal identifier given for the
+bibliographic entry.
+
+[example]
+.Example of specifying a reference anchor (`ref1` is the anchor)
+====
+[source,adoc]
+----
+<<ref1,part=IV,chapter=3,paragraph=12>>
+----
+====
+
+Metanorma AsciiDoc works in a similar way to typical AsciiDoc: any text in a
+cross-reference that follows a comma constitutes custom text for the
+cross-reference.
+
+A cross-reference `\<<ISO7301,the foregoing reference>>` will be rendered as
+"`the foregoing reference`", and hyperlinked to the `ISO7301` reference.
+
+[[localities]]
+=== Localities
+
+==== General
+
+Citations can include details of where in the document the citation is located.
+
+These localities are entered by suffixing the lowercase type of locality, then
+an equals sign, then the locality value or range of values.
+
+Multiple instances of locality and reference can be provided, delimited by comma
+or colon.
+
+The references cannot contain spaces. Any text following the sequence of
+localities will be displayed instead of the localities.
+
+[[locality-types]]
+==== Locality types
+
+The following locality types are recognised in Metanorma:
+
+`section`::
+a general section
+
+`clause`::
+a clause
+
+
+`part`::
+a document part
+
+`paragraph`::
+a paragraph
+
+`chapter`::
+a chapter
+
+`page`::
+a page
+
+`line`::
+a line identified by the line number
+
+`table`::
+a table
+
+`annex`::
+an annex
+
+`figure`::
+a figure
+
+`example`::
+an example
+
+`note`::
+a note
+
+`formula`::
+a mathematical formula
+
+`list`::
+a list
+
+`time`::
+a particular time
+
+`anchor`::
+an anchor
+
+`whole`::
+whole
+
+`title`::
+the title
+
+Except for the locality types of `whole` and `title`, all locality types require
+explicit specification of an identifier to make sense.
+
+.Example locality types that are used on their own
+[example]
+====
+* `whole`
+* `title`
+====
+
+.Example locality types that need to be used with identifiers
+[example]
+====
+* `note 1` (or `note=1`)
+* `page 77-99` (or `page="77-79"`)
+* `annex A` (or `annex=A`)
+* `line 399` (or `line=399`)
+====
+
+Locality types not listed here shall be entered using the mechanism described at
+<<custom-locality>>.
+
+==== Simple locality
+
+A simple locality is specified with a unique location identifier or free text.
+
+[example]
+.Example of referencing locality in Metanorma citations
+====
+[source,asciidoc]
+----
+<<ISO7301,clause=3.1-3.4>>
+
+NOTE: This table is based on <<ISO7301,table=1>>.
+
+Sampling shall be carried out in accordance with <<xxx,section="5-3-1,bis">>
+----
+====
+
+[example]
+.Example that renders a reference as free text
+====
+[source,asciidoc]
+----
+// renders as: "the foregoing reference"
+<<ISO712,the foregoing reference>>
+----
+====
+
+To refer to the "`whole`" item, or the title within a block, the corresponding keyword is used
+(`whole`, `title`), without an argument.
+
+[example]
+.Example of referencing with a "whole" locality
+====
+[source,asciidoc]
+----
+// renders as: "ISO 712, Whole of text"
+<<ISO712,whole>>
+----
+====
+
+
+==== Hierarchical locality
+
+A hierarchical location is specified through consecutive narrower localities.
+
+[example]
+.Example of referencing a hierarchical locality
+====
+[source,asciidoc]
+----
+// renders as "`Part IV, Chapter 3, paragraph 12`"
+<<ref1,part=IV,chapter=3,paragraph=12>>
+----
+====
+
+[example]
+.Example that renders the reference with (multiple) hierarchical localities
+====
+[source,asciidoc]
+----
+// renders as: "ISO 712, Section 5, Page 8-10"
+<<ISO712,section=5, page 8-10>>
+----
+====
+
+[example]
+.Example of referencing locality with additional text
+====
+[source,asciidoc]
+----
+// renders as "ISO 712, 5:8-10"
+// ("5:8-10" treated as replacement text for all the foregoing)
+<<ISO712,section=5, page=8-10: 5:8-10>>
+----
+====
+
+==== Discontinuous locality
+
+Discontinuous localities can be named by repeating the same locality type.
+
+[example]
+.Example of referencing a discontinuous locality
+====
+[source,asciidoc]
+----
+// renders as "`page 4, page 7`"
+<<ref1,page=4,page=7>>
+----
+====
+
+Discontinuous localities can also be specified by delimiting sequences of
+localities with semicolon [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.24] +
+
+[example]
+.Example of referencing discontinuous hierarchical localities
+====
+[source,asciidoc]
+----
+// renders as "`Part IV, Chapter 3; Part VI, Chapter 9`"
+<<ref1,part=IV,chapter=3;part=VI,chapter=9>>
+----
+====
+
+==== Complex locality
+
+Complex relations between discontinuous references can be specified by
+prefixing conjoining verbs to sequences of localities separated
+by semicolon [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
+
+This will result in overt connectives between the references, which will be
+internationalised.
+
+Conjoining verbs include:
+
+* `and!`
+* `or!`
+* `from!`
+* `to!`
+
+[example]
+.Example of referencing a complex locality
+====
+[source,asciidoc]
+----
+// renders as: "`Chapters 3 and 7`"
+<<chapter=3;and!chapter=7>>
+----
+====
+
+[example]
+.Example of referencing a complex locality that contains a hierarchical locality
+====
+[source,asciidoc]
+----
+// renders as: "Part IV, Chapter 3 or Part VI, Chapter 9"
+<<ref1,part=IV,chapter=3;or!part=VI,chapter=9>>
+----
+====
+
+NOTE: This is similar to the behavior in
+link:/author/topics/document-format/xrefs/#combined-xrefs[Combination of cross-references].
+
+As with cross-references, more than two references combined by "`and`" should be
+marked up with semicolons. Internationalisation during rendering will take care
+of separating the references by colon, and inserting any necessary conjunction
+wording ("`and`").
+
+[example]
+.Example of referencing multiple references that are complex localities
+====
+[source,asciidoc]
+----
+<<ref1,clause=3.2;clause=4.7;clause=4.9;clause=9>>
+// or
+<<ref1,clause=3.2;and!clause=4.7;and!clause=4.9;and!clause=9>>
+----
+====
+
+NOTE: If references are joined with semicolons and connectives, but the locality is not supplied
+for a cross-reference, it is filled in by referring to the preceding conjoined
+cross-reference [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.0].
+For example, `<<ref1,clause=3.2;and!4.7;to!4.9;and!9>>` is
+corrected internally to the more explicit `<<ref1,clause=3.2;and!clause=4.7;to!clause=4.9;and!clause=9>>`.
+
+Trailing text after the sequence of `locality=reference` (or
+`locality{space}reference`) is treated as custom text for the cross-reference,
+as would occur normally in a typical cross-reference.
+
+The locality can appear in quotations if it contains special characters (like
+dashes or commas).
+
+[[custom-locality]]
+==== Custom locality
+
+Locality types not listed in <<locality-types>> are entered using the
+"custom locality" functionality.
+
+Metanorma accepts a fixed list of locality types in cross-references (see
+<<locality-types>>), which is not meant to be exhaustive of all possible
+locality types.
+
+[example]
+`annex` is recognized as a generic reference to annexes in documents, but it
+does not recognize appendixes (instead of annexes), or as distinct from annexes
+(as is the case in ISO deliverables).
+
+A custom locality is entered by prefixing the locality type with `locality:`.
+
+A custom locality has the following properties:
+
+* The locality type will be rendered as text preceding the equal sign.
+
+* The locality type shall not contain commas, colons, or space.
+
+* The locality type is meant to be valid for all languages.
++
+NOTE: The custom locality `locality:appendix` would be used for both English
+and French texts.
+
+* Localization of custom locality types is managed through inclusion in the
+internationalization YAML file for that language, which has to be customized
+as part of the Metanorma flavor implementation.
++
+NOTE: The custom locality `locality:appendix` is realized as French _Appendice_
+through configuration in the Metanorma flavor implementation.
+
+
+[example]
+.Example of referencing a custom locality the `locality:` prefix
+====
+This encoding:
+
+[source,asciidoc]
+----
+<<ISO-IEC_DIR_1_ISO_SUP,annex=SL,locality:appendix=2,clause=3.2>>
+----
+
+Renders as:
+
+____
+"ISO/IEC DIR 2, Annex SL, Appendix 2, Clause 3.2"
+____
+====
+
+
+==== Locality plus custom text
+
+Any text after the bibliographic localities is still treated as custom
+cross-reference text.
+
+As with references without localities, the custom cross-reference text is the
+only text that is displayed in the document; but the cross-reference still
+captures the specific locality of the reference, e.g. for cross-reference
+generation.
+
+[example]
+.Example of referencing with bibliographic localities with additional custom text
+====
+[source,asciidoc]
+----
+<<ISO7301,clause=5,table=1,the foregoing reference>>
+----
+
+rendered as:
+
+____
+the foregoing reference
+____
+====
+
+==== Anchor locality
+
+Exceptionally, the `anchor` locality is only used in HTML, to generate
+anchor links to other HTML pages [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.4.1].
+
+It is intended for use with bibliographic anchors linking to URLs (`repo:()`, `path:()`):
+see <<other-databases>> and <<hyperlink-biblio>>.
+
+
+[example]
+.Example of using the `anchor` locality for rendering in HTML output
+====
+The following input:
+
+[source,asciidoc]
+--
+<<ISO7301,clause=2,table=1a,page=7-9,anchor=xyz>>
+
+...
+
+* [[[ISO7301,path:(./iso7301.html,ISO 7301)]]]
+--
+
+will render in HTML as:
+
+[source,html]
+--
+<a href="./iso7301.html#xyz">ISO 7301, Clause 2, Table 1a, page 7-9</a>
+--
+====
+
+==== Case and dropped locality labels
+
+The `capital%`, `lowercase%` and `droploc%` options used for internal
+cross-references can also be used as prefixes to localities, modifying how those
+localities are
+rendered [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.9].
+
+
+[example]
+.Example of using `droploc` in a citation locality
+====
+[source,asciidoc]
+--
+// renders as "ISO 7301, 2"
+<<ISO7301,droploc%clause=2>>
+--
+====
+
+[example]
+.Example of using `lowercase` in a citation locality
+====
+[source,asciidoc]
+--
+// renders as "ISO 7301, clause 2"
+<<ISO7301,lowercase%clause=2>>
+--
+====
+
+==== Styled cross-references
+
+As with link:/author/topics/document-format/xrefs#xref-styles[internal cross-references], cross-referenced
+citations can have a `style` attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.4].
+As of this writing, the only values allowed are the types of docidentifier value that can be substituted
+for the primary identifier of the reference, for standards documents; those values will need to be looked up in
+Relaton (and the Semantic XML of the document). For example, given the citation
+
+[source,xml]
+----
+<bibitem type="standard" id="bib1">
+...
+<docidentifier type="ISO" primary="true">ISO/FDIS 17664-1</docidentifier>
+<docidentifier type="URN">urn:iso:std:iso-fdis:17664:-1:ed-1:fr</docidentifier>
+...
+</bibitem>
+----
+
+A crossreference `<<bib1>>` will be populated by default with the primary or else the first
+`docidentifier` value found, `ISO/FDIS 17664-1`. However, given `<<bib1,style=URN%>>`, the
+first `docidentifier` value of type `URN` will be sought instead, and the cross-reference
+will be populated by default as `URN urn:iso:std:iso-fdis:17664:-1:ed-1:fr`.
+
+
+=== Link-only references
+
+A standards document can be cross-referenced in Metanorma without that document
+appearing in the document references.
+
+Such cross-reference is treated as equivalent to a cross-reference
+to a hidden citation, as documented in <<hidden-citations>>.
+
+Link-only references can be added to Metanorma AsciiDoc using the following
+command:
+
+[source,adoc]
+----
+++std-link:[...]++
+----
+
+Where the `std-link` command contains the same text as a normal cross-reference
+to a standard, including localities and other directives.
+There is no need for an explicit bibliographic entry. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
+
+The following two examples are equivalent:
+
+[example]
+.Link-only reference of ISO 123 using `std-link`
+====
+[source,asciidoc]
+----
+std-link:[ISO 123,droploc%clause=3]
+----
+====
+
+[example]
+.Link-only reference of ISO 123 using a hidden citation
+====
+[source,asciidoc]
+----
+<<ref1,droploc%clause=3>>
+
+[bibliography]
+== Bibliography
+
+* [[[ref1,hidden(ISO 123)]]]
+----
+====
+
+=== Combination of citations
+
+Simple citations can be combined with connectives, in a similar fashion to cross-references
+(link:/author/topics/building/xrefs/#combined-xrefs[Combination of cross-references]),
+and which will be internationalised as
+appropriate [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7].
+
+[example]
+.Example of rendering a range of citations
+====
+The following citation range:
+
+[source,adoc]
+----
+<<from!context;to!improvement>>
+----
+
+is rendered as:
+
+____
+From [3] to [7]
+____
+====
+
+
