@@ -1,6 +1,6 @@
 ---
 layout: author-docs
-title: Collections
+title: Collections configuration
 ---
 
 Metanorma supports _collections_: groupings of individual Metanorma documents
@@ -92,7 +92,10 @@ The output folder contains those preprocessed individual files, and files named
 
 === Collection manifest
 
-The collection manifest contains the following keys:
+The collection manifest contains the following keys. The format has been streamlined
+[added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0], but is
+backwards compatible with earlier instances of the manifest; the legacy equivalent
+keys are given in [brackets].
 
 `directives`::
 Directives on how the collection should be generated. Accepted values are listed
@@ -197,28 +200,42 @@ Metadata about the collection. Entered in the https://www.relaton.org[Relaton] f
 `docid/type` is used by Metanorma to determine the flavour of the collection.
 Currently a collection can only contain documents of one flavour.
 
-`manifest`::
+`entry` [`manifest`]::
 A manifest listing the documents contained in the collection,
 in nested hierarchy.
 +
-`manifest` can appear recursively in a `manifest`.
+`entry` can appear recursively in a `entry`. This allows users to specify
+hierarchic levels of documents in the collection. That hierarchy will be reflected
+in the index page navigation for the collection.
 
-`level`:::
+`type` [`level`]:::
 Names the current hierarchical level of the manifest.
 
 `title`:::
 Gives the title of the current level of the manifest.
 
-`docref`:::
-Lists the documents to be used at that level of the manifest. It is
-a list of file paths relative to the manifest file (`fileref`) and document
-identifiers (`identifier`).
+`file` [`fileref`]::: The file path of a document in the collection relative to the manifest file.
+`file` and `entry` are mutually exclusive: `file` indicates the leaf nodes of the
+manifest entries.
 +
-The documents are expected to be Metanorma Semantic XML documents.
-+
-Manifests can occur within docrefs, recursively: that interleaves
-manifests (as subtrees of documents) among top-level 
-documents [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.7].
+* The documents are expected to be Metanorma Semantic XML documents;
+they can also be Metanorma Presentation XML documents, attachments (see below), 
+YAML files, or Asciidoc documents.
+* If a document is a Asciidoc documents, it is compiled to a Metanorma 
+Semantic XML document in preprocessing [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0].
+* If a document is a YAML file, it is assumed to be a collection manifest itself,
+and its manifest is recursively read into the current manifest at that point of the
+entry [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0]. This allows manifests
+to include other manifests. If the YAML file is in a different directory, the file locations of any files
+it references are updated to be relative to the current manifest.
+* A manifest can have both files and nested manifests as its
+children [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.7].
+
+`identifier`::: The document identifer, used to index the document in processing. It is also
+the identifier used to reference this document from other documents in the same collection,
+using bibliographic references (<<collection-cross-references>>). If the identifier is not supplied, 
+and this is a Metanorma document, the identifier will be extracted 
+from the document [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0].
 
 `attachment`::::
 When set to `true`, the file is not a Metanorma document but an attachment, and
@@ -241,6 +258,63 @@ The index page for the entire document links to the index page for the
 `index`::::
 Defaults to `true`. When set to `false`, the file is not to be included in
 any listing of manifest contents (i.e. in the collection cover page).
++
+[NOTE]
+--
+Boolean attributes of files (`attachment`, `sectionsplit`, `index`) can be inherited from
+`entry` to all their `file` descendents [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0].
+--
+
+
+[NOTE]
+--
+In the old manifest format, information about files as opposed to manifests
+needed to be stored under a separate `docref` container.
+
+Before:
+
+[source,yaml]
+----
+manifest:
+  level: collection
+  docrefs:
+    - fileref: file1.xml
+      identifier: ISO 123
+    - fileref: file2.txt
+      identifier: file2
+      attachment: true
+    - manifest
+      level: annexes
+      title: Annex set
+      docrefs:
+      - fileref: annex1.xml
+        identifier: ISO 123 Annex 1
+        sectionsplit: true
+      - fileref: annex2.xml
+        identifier: ISO 123 Annex 2
+        sectionsplit: true
+----
+
+After:
+
+
+[source,yaml]
+----
+entry:
+  type: collection
+  entry:
+    - file: file1.adoc
+    - file: file2.txt
+      identifier: file2
+      attachment: true
+    - type: annexes
+      title: Annex set
+      sectionsplit: true
+      entry:
+      - file: annex1.adoc
+      - file: annex2.adoc
+----
+--
 
 `prefatory-content`::
 Content to put at the beginning of the collection container.
@@ -281,33 +355,30 @@ format:
   - xml
   - presentation
   - pdf
-manifest:
-  level: collection
+entry:
+  type: collection
   title: ISO Collection
-  docref:
-    - fileref: rice-en.final.xml
+  entry:
+    - file: rice-en.final.xml
       identifier: ISO 17301-1:2016
-    - manifest:
-        - level: amendments
-          title: Amendments
-          docref:
-            - fileref: rice-amd.final.xml
-              identifier: ISO 17301-1:2016/Amd.1:2017
-            - manifest:
-              - level: attachments
-                title: Attachments
-                docref:
-                  - fileref: pics/action_schemaexpg1.svg
-                    identifier: action_schemaexpg1.svg
-                    attachment: true
-                  - fileref: ../../assets/rice_image1.png
-                    identifier: rice_image1.png
-                    attachment: true
-    - fileref: dummy.xml
+    - type: amendments
+      title: Amendments
+      entry:
+        - file: rice-amd.final.xml
+          identifier: ISO 17301-1:2016/Amd.1:2017
+        - entry:
+            - type: attachments
+              title: Attachments
+              attachment: true
+              entry:
+                - file: pics/action_schemaexpg1.svg
+                  identifier: action_schemaexpg1.svg
+                - file: ../../assets/rice_image1.png
+                  identifier: rice_image1.png
+    - file: dummy.xml
       identifier: ISO 17302
       url: /example/dummy
-    - fileref: rice1-en.final.xml
-      identifier: ISO 1701:1974
+    - file: rice1-en.final.adoc
 prefatory-content:
 |
   == Clause
@@ -319,6 +390,46 @@ final-content:
   Hic explicit
 ----
 ====
+
+=== Manifest hooks
+
+If the collection is being processed programmatically, in a Ruby script, it is possible
+to intervene in that processing, to change the content of the manifests it reads in.
+This may be needed, for example, if a collection YAML points to certain files by default,
+but those file locations need to be different for distribution.
+
+[source,ruby]
+----
+my_fileref_proc = Proc.new do |ref_folder, fileref|
+  ...
+end
+
+my_identifier_proc = Proc.new do |identifier|
+  ...
+end
+
+my_pre_parse_model = Proc.new do |collection_model|
+  ...
+end
+
+Metanorma::Collection.tap do |mn|
+  mn.set_identifier_resolver(&my_identifier_proc)
+  mn.set_fileref_resolver(&my_fileref_proc)
+  mn.set_pre_parse_model(&my_pre_parse_model)
+end
+----
+
+The hooks provided [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0]
+are:
+
+* `set_fileref_resolver`: given `ref_folder` (the folder containing the manifest file) and
+`fileref` (the path to a file from within the manifest file), generate a new path to the
+file, redirecting the file reference. The generated path needs to be either absolute, or
+relative to `ref_folder`.
+* `set_identifier_resolver`: given `identifier`, the identifier of a file in the collection,
+generate a new identifier.
+* `pre_parse_model`: given a collection manifest (as parsed by YAML into a Ruby hash),
+return a new collection manifest.
 
 
 === Site manifest
@@ -393,27 +504,23 @@ format:
   - html
   - presentation
   - pdf
-manifest:
-  docref:
-    - fileref: _site/documents/document.1.xml
-      identifier: bsidocs-1
-    - fileref: _site/documents/document.2.xml
-      identifier: bsidocs-2
-prefatory-content:
-|
-
-final-content:
-|
+entry:
+  - file: _site/documents/document.1.xml
+    identifier: bsidocs-1
+  - file: _site/documents/document.2.xml
+    identifier: bsidocs-2
 ----
 ====
 
 NOTE: `document.1.adoc` and `document.2.adoc` are compiled to `_site` as part of
-site compilation. The `fileref` attributes in the collection manifest need to
-point to the Semantic XML where the site compilation deposits them, under
+site compilation (although the new manifest format processing would take care of that
+anyway, if the collection manifest specified the files as `adoc`.)
+If the files to be processed in the collection are to be generated  by the site manifest,
+then the `file` attributes in the collection manifest need to
+point to the Semantic XML where the site compilation deposits them -- i.e. under
 `_site/documents`. The collection generation also generates the collection in
 the same location, so there is no need to specify a collection destination
 directory, `--output-folder` under `metanorma collection`.
-
 
 === Index page template
 
@@ -442,250 +549,20 @@ It contains the following fields:
 `title`:::
 The list title.
 
+`type`:::
+The list type (from `entry.type` in the manifest) [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0].
+
 `docrefs`:::
 A hyperlinked list of the documents at that level of the manifest.
 
 `children`:::
-An array of child manifests.
+An array of child manifests. This list can be recursive.
 
 `prefatory-content`::
 Prefatory content from the collection manifest [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6].
 
 `final-content`::
 Final content from the collection manifest [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6].
-
-
-[[collection-cross-references]]
-== Cross-references
-
-=== Direct cross-references
-
-A source document can link to a target document in the same collection, or a
-specific location within the target document.
-
-Documents are processed one document at a time; so such a link is encoded as a
-bibliographical reference, to an external document, as described in
-link:/author/topics/document-format/bibliography[Bibliography].
-
-This means that an author needs to define a bibliographic entry for each
-hyperlinked document in the same collection; those bibliographic entries will be
-suppressed from display in the collection.
-
-NOTE: If the documents are to be used in isolation, those bibliographic entries
-still need to be displayed: otherwise, the reference cannot be made sense of.
-
-The bibliographic reference for another document in the same collection is
-specified using the following syntax.
-
-[source,asciidoc]
-----
-* [[[myanchor,repo:(current-metanorma-collection/docid)]]]
-----
-
-where `docid` is the document identifier as it appears in the collection
-manifest.
-
-If no such anchor is given in the document, but the document identifier in the
-collection manifest matches a document identifier in the bibliography, then
-collection processing will still recognise that the document is referencing that
-other document [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.12].
-
-For instance, if the manifest includes an instance of `identifier: ISO 44001`,
-and the bibliographic reference of another document includes
-`* [[[myanchor,ISO 44001]]]`, then collection processing will automatically link
-all references to ISO 44001 to the collection instance of the document.
-
-This allows documents to be included in a collection, without requiring their
-references to be edited.
-
-The location to link to in the target document can be specified as a clause
-number, as in a typical citation:
-
-[example]
-.Example of specifying a cross-reference to a clause in the target document
-====
-[source,asciidoc]
-----
-<<myanchor,clause=3.1>>
-----
-====
-
-The processor will then navigate the target document, to try to resolve the
-reference.
-
-NOTE: Currently only one level of nesting of locations is implemented: the
-processor will not resolve references like `clause=3.1,note-3`.
-
-Alternatively, the location can be specified as an anchor, e.g.
-`\<<myanchor,anchor=ident>>`. The hyperlink will then be made directly to the
-element with anchor `ident` in the the target document. That approach is to be
-preferred as simpler.
-
-For instance, we wish to link from the French BIPM Brochure to the English BIPM
-Brochure, and specifically to an example in the English document. We start by
-assigning the target document example an anchor identifier:
-
-[source,asciidoc]
-----
-[[english_example]]
-[NOTE]
-====
-For example: The maximum electric potential difference is
-stem:[ii(U)_("max") = 1000 " "rm(V)] but not
-stem:[ii(U) = 1000 " "rm(ii(V)_(max))].
-The mass fraction of copper in the sample of silicon is
-stem:[w("Cu") = 1.3 xx 10^(-6)] but not
-stem:[1.3 xx 10^(-6) " "rm(w)//rm(w)].
-====
-----
-
-We then define a citation in the source document, using that anchor:
-
-[source,asciidoc]
-----
-Ce n'est que lorsque l'on écrit le nom de l'unité en toutes lettres que l'on
-applique les règles grammaticales ordinaires (voir un exemple en anglais page
-<<english-doc,anchor=english_example>>).
-----
-
-Finally, we define a bibliographic entry in the source document for the
-English-language target document:
-
-[source,asciidoc]
-----
-[bibliography]
-== Bibliography
-
-* [[[english-doc,repo:(current-metanorma-collection/si-brochure-en)]]] (Version anglaise de la brochure BIPM).
-----
-
-The identifier given to the target document needs to match that given in the
-collection manifest:
-
-[source,yaml]
-----
-manifest:
-  level: brochure
-  title: Brochure/Brochure
-  docref:
-    - fileref: si-brochure-fr.xml
-      identifier: si-brochure-fr
-    - fileref: si-brochure-en.xml
-      identifier: si-brochure-en
-----
-
-This form of direct cross-reference is also used to reference
-attachments [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.2]. For example, if you wanted to
-link to a text file from a collection document, the manifest would look as follows:
-
-[source,yaml]
-----
-manifest:
-  level: brochure
-  title: Brochure/Brochure
-  docref:
-    - fileref: si-brochure-fr.xml
-      identifier: si-brochure-fr
-    - fileref: attachment.txt
-      identifier: ABC
-      attachment: true
-----
-
-And the hyperlink to the attachment, and the bibliographic entry for it, would be as follows:
-
-[source,asciidoc]
-----
-Download the attachment from: <<theattachement>>.
-
-....
-
-[bibliography]
-== Bibliography
-
-* [[[theattachment,repo:(current-metanorma-collection/ABC)]]]
-----
-
-
-[[indirect-xrefs]]
-=== Indirect cross-references
-
-In some documents, anchors (targets for cross-references) are inserted in various files in the collection,
-and we do not necessarily know at the time of authoring which files those anchors will end up in.
-A good example of that is computer-generated documentation of schemas: schema documentation is organised
-by entity, and the documentation of one entity can cross-reference attributes in a different entity.
-But at the time of authoring, we may not know which document the target entity will appear in, so we cannot
-supply a bibliographic entity naming that document.
-
-To deal with that circumstance, Metanorma implements a special class of cross-references, which are
-namespaced and which use containers:
-
-[source,asciidoc]
-----
-<<namespace:container>>
-<<namespace:container,text>>
-<<namespace:container:locality>>
-<<namespace:container:locality,text>>
-----
-
-* The namespace is provided to deal with the fact that such anchors
-can have different provenance, and they may have particular rendering requirements. (So if we are documenting
-two different schemas, we may want to differentiate their references, and render them differently.)
-
-* The container relies on the fact that such anchors can be grouped together in a target document,
-under a clause. (For example, a schema instance.) For efficient processing, we treat each of those container clauses
-as a single bibliographic reference, and use the identifier of that clause as the bibliographic anchor.
-We also assign the container clause the namespace as a type, again for efficiency and to enforce consistent rendering.
-This is mandatory.
-
-* The locality is the identifier of the particular component addressed within the container. It is an identifier
-in the target document, and will typically point to a subclause of the container clause.
-
-* The text is the text to be rendered for the cross-reference. If not provided, Metanorma will provide a clause
-reference for the target.
-
-To give a worked example:
-
-We are generating documentation for a set of schemas in the EXPRESS language as a Metanorma collection.
-We wish to point to the identifier `basic_attribute_schema.id_attribute.identified_item` from our source document.
-We do not know (or care) what document that identifier will turn up in: we will have collection processing
-deal with that.
-
-`basic_attribute_schema.id_attribute.identified_item` is an identifier within the `basic` schema,
-// I am changing the name of the schema on purpose
-and we are grouping the definitions of the `basic` schema together, under a single clause in the target document.
-
-The target document will thus contain a container clause with identifier `basic`, containing all those definitions,
-including `basic_attribute_schema.id_attribute.identified_item`. The container clause is made to be
-of type `express` (because its content comes from that language,
-and we want to follow the conventions of that language in any processing).
-
-[source,asciidoc]
-----
-[[basic]]
-[type=express]]
-=== Basic Schema
-
-....
-
-[[basic_attribute_schema.id_attribute.identified_item]]
-===== Identified Item
-----
-
-The cross-reference to that identifier, from either the same document or a different document in the same collection,
-is:
-
-[source,asciidoc]
-----
-<<express:basic:basic_attribute_schema.id_attribute.identified_item,Identified Item>>
-----
-
-We do not need to indicate which document `basic_attribute_schema.id_attribute.identified_item` is in,
-unlike for direct cross-references. Because of the namespacing, we know that we are looking for the identifier
-`basic_attribute_schema.id_attribute.identified_item` inside a clause with id `basic` and type `express`:
-that narrows down our search while generating the collection. The `basic` collection identifier is actually
-optional; but if you don't provide it, you will need to put `[type=express]` on any cross-reference target,
-and collection processing will be more expensive.
-
 
 == Multilingual documents
 
@@ -725,159 +602,3 @@ The options are:
 * The document attribute `align-cross-elements` indicates the Metanorma XML
   elements that are always to be aligned in multilingual text. It consists of a
   comma-delimited list of Metanorma XML tags; e.g. `p,note,term`.
-
-
-== Document embedding
-
-Metanorma documents supports embedding of a document within another Metanorma
-document, using the `embed::`
-command [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.2].
-
-The `embed::` command acts similar to the AsciiDoc `include::` macro, taking
-as its target argument the name of the file to be included.
-
-[example]
-====
-[source,adoc]
-----
-embed::received.adoc[]
-----
-====
-
-The named file is included at the location of the `embed::` command, with the
-following consequences:
-
-* The document header of the included document is ignored.
-
-* If any top-level headings of the included document are identical to headings
-in the including document, the entire clause in the included document is
-skipped.
-
-For example, if
-
-[source,asciidoc]
-----
-= Document 1
-Local Secretariat
-:docnumber: 123A
-
-[[id2]]
-[language=en-UK]
-== Introduction
-
-This is an introduction added to the Received document
-
-embed::received.adoc[]
-
-The embedded document can be
-
-== Colophon
-----
-
-embeds the document
-
-[source,asciidoc]
-----
-= Document 1
-Central Secretariat
-:no-pdf:
-:docnumber: 123
-:issued-date: 2017-06-29
-
-== Foreword
-
-This is the foreword
-
-[[id2]]
-== Introduction
-
-Original introduction
-
-=== Introduction Subclause
-
-Introduction subclause
-
-== Content
-
-This is content
-----
-
-then the resulting document uses the including document header (so the
-`:docnumber:` value will be _123A_ instead of _123_, and the `:issued-date:`
-value will be ignored).
-
-In addition, since both documents have a top-level clause labelled
-`Introduction`, the matching clause in the included document, and all its
-subclauses, are ignored.
-
-The resulting document is:
-
-[source,asciidoc]
-----
-= Document 1
-Local Secretariat
-:docnumber: 123A
-
-[[id2]]
-[language=en-UK]
-== Introduction
-
-This is an introduction added to the Received document
-
-== Foreword
-
-This is the foreword
-
-== Content
-
-This is content
-
-== Colophon
-----
-
-NOTE: As with AsciiDoc `include::[]`, AsciiDoc is unable to locate assets such as images if the
-embedded document is in a different directory from the containing document: AsciiDoc lacks a mechanism
-of specifying asset location relative to the current document, as opposed to the initial document.
-For that reason, if you embed documents that reference files, you will need to put both documents in the
-same folder, in a flat hierarchy.
-
-Documents can be embedded at multiple levels; the current implementation presupposes
-that any document can only embed a single document, and that the embedding documents
-only involve substituted clauses, or prefatory clauses (e.g. the original foreword,
-supplemented by a regional foreword, and/or a national foreword).
-
-It is possible to cite the embedded document from the embedding document, through
-a cross-reference to an anchor on the `embed::` directive: if no display text is supplied,
-the cross-reference is populated with the document identifier of the
-embedded document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.10]:
-
-For example, if
-
-[source,asciidoc]
-----
-= Document 1
-:docidentifier: SHQ XYZ 123A
-
-== Introduction
-
-This is an introduction added to the Received document <<id>>
-
-[[id]]
-embed::received.adoc[]
-----
-
-embeds the document
-
-[source,asciidoc]
-----
-= Document 1
-:docidentifier: XYZ 123
-
-== Foreword
-
-This is the foreword
-----
-
-Then `<<id>>` will be rendered as __XYZ 123__, the embedded document identifier;
-and the `<<id>>` cross-reference will hyperlink to the first header within the
-embedded document (the Foreword, in this case).
