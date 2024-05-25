@@ -1,0 +1,159 @@
+---
+layout: author-docs
+title: Embedded documents
+---
+
+== Document embedding
+
+Metanorma documents supports embedding of a document within another Metanorma
+document, using the `embed::`
+command [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.2].
+
+The `embed::` command acts similar to the AsciiDoc `include::` macro, taking
+as its target argument the name of the file to be included.
+
+[example]
+====
+[source,adoc]
+----
+embed::received.adoc[]
+----
+====
+
+The named file is included at the location of the `embed::` command, with the
+following consequences:
+
+* The document header of the included document is ignored.
+
+* If any top-level headings of the included document are identical to headings
+in the including document, the entire clause in the included document is
+skipped.
+
+For example, if
+
+[source,asciidoc]
+----
+= Document 1
+Local Secretariat
+:docnumber: 123A
+
+[[id2]]
+[language=en-UK]
+== Introduction
+
+This is an introduction added to the Received document
+
+embed::received.adoc[]
+
+The embedded document can be
+
+== Colophon
+----
+
+embeds the document
+
+[source,asciidoc]
+----
+= Document 1
+Central Secretariat
+:no-pdf:
+:docnumber: 123
+:issued-date: 2017-06-29
+
+== Foreword
+
+This is the foreword
+
+[[id2]]
+== Introduction
+
+Original introduction
+
+=== Introduction Subclause
+
+Introduction subclause
+
+== Content
+
+This is content
+----
+
+then the resulting document uses the including document header (so the
+`:docnumber:` value will be _123A_ instead of _123_, and the `:issued-date:`
+value will be ignored).
+
+In addition, since both documents have a top-level clause labelled
+`Introduction`, the matching clause in the included document, and all its
+subclauses, are ignored.
+
+The resulting document is:
+
+[source,asciidoc]
+----
+= Document 1
+Local Secretariat
+:docnumber: 123A
+
+[[id2]]
+[language=en-UK]
+== Introduction
+
+This is an introduction added to the Received document
+
+== Foreword
+
+This is the foreword
+
+== Content
+
+This is content
+
+== Colophon
+----
+
+NOTE: As with AsciiDoc `include::[]`, AsciiDoc is unable to locate assets such as images if the
+embedded document is in a different directory from the containing document: AsciiDoc lacks a mechanism
+of specifying asset location relative to the current document, as opposed to the initial document.
+For that reason, if you embed documents that reference files, you will need to put both documents in the
+same folder, in a flat hierarchy.
+
+Documents can be embedded at multiple levels; the current implementation presupposes
+that any document can only embed a single document, and that the embedding documents
+only involve substituted clauses, or prefatory clauses (e.g. the original foreword,
+supplemented by a regional foreword, and/or a national foreword).
+
+It is possible to cite the embedded document from the embedding document, through
+a cross-reference to an anchor on the `embed::` directive: if no display text is supplied,
+the cross-reference is populated with the document identifier of the
+embedded document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.10]:
+
+For example, if
+
+[source,asciidoc]
+----
+= Document 1
+:docidentifier: SHQ XYZ 123A
+
+== Introduction
+
+This is an introduction added to the Received document <<id>>
+
+[[id]]
+embed::received.adoc[]
+----
+
+embeds the document
+
+[source,asciidoc]
+----
+= Document 1
+:docidentifier: XYZ 123
+
+== Foreword
+
+This is the foreword
+----
+
+Then `<<id>>` will be rendered as __XYZ 123__, the embedded document identifier;
+and the `<<id>>` cross-reference will hyperlink to the first header within the
+embedded document (the Foreword, in this case).
