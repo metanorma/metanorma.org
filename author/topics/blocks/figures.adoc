@@ -415,3 +415,48 @@ image::logo.jpg[]
 ====
 --
 ======
+
+== Image mapping for SVG
+
+Metanorma supports SVG as one of its image formats. SVG have the ability to hyperlink parts of the
+image to other destinations, expressed as `<a href=...`.
+
+An SVG image can name a particular destination for a hyperlink, which the user wants to update
+to a different destination. If an image has been created independently of the current document, for example,
+it may hyperlink to some arbitrary destinations, which the user wants to point instead to anchors
+within the document they are authoring.
+
+In order to support such mapping, Metanorma provides an `svgmap` 
+function [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.3].
+This involves wrapping the SVG image link in a figure block, given the role attribute `[.svgmap]`
+instead of `[figure]`. The image link is followed by an unordered list of link mappings: the new
+desired destination for the SVG hyperlink (expressed as either a cross-reference or a hyperlink),
+then semicolon, then the original SVG link destination.
+
+So in the following example:
+
+[source,asciidoc]
+----
+ [.svgmap]
+====
+image::action_schemaexpg1.svg[]
+
+* <<ref1,Computer>>; mn://action_schema
+* http://www.example.org[]; http://www.example.com
+* <<express:action_schema:action_schema.basic>>; 3
+====
+----
+
+we have SVG file `action_schemaexpg1.svg`, and it contains hyperlinks to three destinations
+`mn://action_schema`, `http://www.example.com`, and `3`. The block instructs Metanorma to rewrite
+those hyperlink destinations in the SVG, expressed as `<a href=...`,
+ to point to the location of the references on the left side: 
+
+* `mn://action_schema` is rewritten to the location in the document of the `ref1` anchor 
+(or bibliographic reference); the optional cross-reference text, `Computer`, is inserted in the SVG
+hyperlink, replacing whatever text is already there, and can be used as a mouseover tip
+* `http://www.example.com` is rewritten to `http://www.example.org`
+* `3` is rewritten as the destination of the implicit cross-reference `<<express:action_schema:action_schema.basic>>`
+
+
+
