@@ -14,13 +14,19 @@ the link:/docs/authoring/validation[validation stage].
 
 == HTML
 
-The HTML output is in HTML 5. It has optional Data-URI encoding of local images; if images in the output are are not Data-URI encoded,
+The HTML output is in HTML 5. It has optional Data-URI encoding of local images; if images in the output are not Data-URI encoded,
 they are moved to a folder called `{filename}_images`, and renamed with GUID names, to prevent collisions. Audio and video files are
-not supported. All HTML output has a sidebar with a Javascript-generated Table of Contents, which is two section levels deep.
+not supported. 
+
+* All HTML output has a sidebar with a Table of Contents, which is two section levels deep.
+* All clause headings have anchors which can be copied for hyperlinking. If the user hovers their mouse over a hyperlinked clause
+heading, the section header glyph (§) appears, as with native Asciidoctor HTML output. If the user clicks on a hyperlinked clause
+heading, the browser location bar will give the hyperlink with anchor for that clause [added in https://github.com/metanorma/isodoc/releases/tag/v2.10.3].
 
 == PDF
 
-Metanorma generates PDF output from XML. The styling comes from an https://www.xml.com/articles/2017/01/01/what-is-xsl-fo/[XSL-FO] stylesheet. Apache FOP interprets the stylesheet and generates the PDF.
+Metanorma generates PDF output from XML. The styling comes from an https://www.xml.com/articles/2017/01/01/what-is-xsl-fo/[XSL-FO] stylesheet. 
+Apache FOP interprets the stylesheet and generates the PDF.
 
 For more information about how Apache FOP supports the XSL-FO standard, see the https://xmlgraphics.apache.org/fop/compliance.html[Apache FOP documentation].
 
