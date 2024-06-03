@@ -331,6 +331,22 @@ requirement class that is being tested.
 
 Differentiated types of ModSpec models allow additional attributes.
 
+`id` :: (optional) The Asciidoc `id` attribute assigns an anchor to the requirement,
+as is the case with all blocks in Asciidoc (e.g. `id=idvalue`). The `id` attribute can also be expressed
+as a block anchor (`[[idvalue]]`), or a hash attribute (`[#idvalue]`). The anchor is used in Metanorma
+to write cross-references to elements (<<predef-xref,Referencing using predefined anchors>>), 
+although we discuss below ways to use the Modspec `identifier` for such cross-references instead 
+(<<identifier-xref,Referencing using instance identifiers>>).
++
+If no anchor is provided, Metanorma will normally supply an anchor using a GUID derived from a hash of the
+block's content. Modspec processing has been updated, so that if an identifier is provided, that is
+used as the requirement anchor instead [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.3.7].
+As with all XML anchors, illegal characters in the anchor (including `/`) are replaced with `_`.
++
+In order to enable easier hyperlinking of requireents, requirement headings are treated like clause headings
+in HTML output [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.5.9]: a section mark glyph (§)
+is displayed when the mouse is hovered over the requirement heading, and when the heading is clicked on,
+the browser location bar displays the hyperlink with anchor to the requirement.
 
 [[generalreqt]]
 ==== Normative statement
@@ -1116,6 +1132,7 @@ cross-reference, like `http://www.example.com/req/crs/crs-uri` instead of
 _Requirement Class 6_.
 ====
 
+[[predef-xref]]
 ==== Referencing using predefined anchors
 
 This can be extended to cross-references. If the anchor of the requirement is
@@ -1136,6 +1153,7 @@ Requirement 10: `http://www.example.com/req/crs/crs-uri`
 ____
 ====
 
+[[identifier-xref]]
 ==== Referencing using instance identifiers
 
 However, not all ModSpec instances are assigned predefined anchors, especially
@@ -1162,7 +1180,7 @@ identifier:: http://www.example.com/req/crs/crs-uri
 ====
 ----
 
---- it is possible to reference a ModSpec instance using its identifier instead of
+-- it is possible to reference a ModSpec instance using its identifier instead of
 the anchor, as follows.
 
 .Cross-reference to a ModSpec instance using its identifier, displaying the instance's name
