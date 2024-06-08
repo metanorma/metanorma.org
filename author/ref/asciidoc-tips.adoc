@@ -162,6 +162,23 @@ multiple-character combinations, try interpolating `+&#x200c;+` between the char
 as em-dashes. Character `U+200c` (the zero width non-joiner) is invisible, and its function
 is to prevent ligatures combining the characters either side of it.
 
+=== Escaping HTTP links within `http` macros
+
+In cases where an HTTP link is nested into an `http` macro, like for example:
+
+[source%unnumbered]
+----
+http://example.com[http://example.com/]
+----
+
+it is necessary to escape the inner `http` string with a backslash in order to not be
+recognized as another `http` macro, like so:
+
+[source%unnumbered]
+----
+http://example.com[\http://example.com/]
+----
+
 == Document attributes
 
 Metanorma AsciiDoc body content is interpolated and processed, such as:
