@@ -3,7 +3,31 @@ layout: author-docs
 title: Embedded documents
 ---
 
-== Document embedding
+== General
+
+Metanorma documents supports embedding of a document within another Metanorma
+document.
+
+
+== Use case
+
+National standards bodies (NSBs) often re-publish international standards as
+national standards through the process of "*adoption*".
+
+When adopting an international standard identically, the international standard
+is typically embedded within a national standard, with the outer document
+providing additional information, such as a national foreword or national
+annexes.
+
+NOTE: The process of adoption is described in
+https://www.iso.org/standard/39976.html[ISO Guide 2].
+
+In the case of adoption by members of CEN/CENELEC, this adoption process could
+be the NSB adopting an European standard (EN), where the EN adopts an
+international standard. Hence embedding can be of multiple-levels.
+
+
+== Usage
 
 Metanorma documents supports embedding of a document within another Metanorma
 document, using the `embed::`
@@ -23,13 +47,25 @@ embed::received.adoc[]
 The named file is included at the location of the `embed::` command, with the
 following consequences:
 
-* The document header of the included document is ignored.
+* Certain metadata of the document header of the embedded document will be
+utilized by the including document. The rest of the embedded document's document
+header will be ignored. The embedded document's document header will have no
+effect to the including document.
 
-* If any top-level headings of the included document are identical to headings
-in the including document, the entire clause in the included document is
+* If any top-level headings of the embedded document are identical to headings
+in the including document, the entire clause in the embedded document is
 skipped.
 
-For example, if
+* Documents can be embedded within other documents, at multiple levels.
+
+The embedding documents can only involve substituted clauses or prefatory
+clauses. For example, a document could have an original foreword, supplemented
+by a regional foreword, and/or a national foreword.
+
+
+.Example of embedding another document
+====
+The following document embeds another document.
 
 [source,asciidoc]
 ----
@@ -45,12 +81,11 @@ This is an introduction added to the Received document
 
 embed::received.adoc[]
 
-The embedded document can be
-
 == Colophon
 ----
 
-embeds the document
+
+The embedded document is:
 
 [source,asciidoc]
 ----
@@ -69,7 +104,7 @@ This is the foreword
 
 Original introduction
 
-=== Introduction Subclause
+== Introduction Subclause
 
 Introduction subclause
 
@@ -77,14 +112,6 @@ Introduction subclause
 
 This is content
 ----
-
-then the resulting document uses the including document header (so the
-`:docnumber:` value will be _123A_ instead of _123_, and the `:issued-date:`
-value will be ignored).
-
-In addition, since both documents have a top-level clause labelled
-`Introduction`, the matching clause in the included document, and all its
-subclauses, are ignored.
 
 The resulting document is:
 
@@ -111,23 +138,32 @@ This is content
 == Colophon
 ----
 
-NOTE: As with AsciiDoc `include::[]`, AsciiDoc is unable to locate assets such as images if the
-embedded document is in a different directory from the containing document: AsciiDoc lacks a mechanism
-of specifying asset location relative to the current document, as opposed to the initial document.
-For that reason, if you embed documents that reference files, you will need to put both documents in the
-same folder, in a flat hierarchy.
+Note the following behavior:
 
-Documents can be embedded at multiple levels; the current implementation presupposes
-that any document can only embed a single document, and that the embedding documents
-only involve substituted clauses, or prefatory clauses (e.g. the original foreword,
-supplemented by a regional foreword, and/or a national foreword).
+*  The resulting document uses the including document header (so the
+`:docnumber:` value will be _123A_ instead of _123_, and the `:issued-date:`
+value will be ignored).
 
-It is possible to cite the embedded document from the embedding document, through
-a cross-reference to an anchor on the `embed::` directive: if no display text is supplied,
-the cross-reference is populated with the document identifier of the
-embedded document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.10]:
+* As both documents have a top-level clause labelled
+`Introduction`, the matching clause in the included document, and all its
+subclauses, are ignored.
 
-For example, if
+====
+
+
+
+== Referencing an embedded document
+
+The embedding document can include a cross-reference to the embedded document by
+referencing an anchor on the `embed::` directive.
+
+If no display text is provided for the cross-reference, the link text will be
+the document identifier of the embedded document. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.10]:
+
+
+.Example of embedding another document
+====
+For example, if the including document is as follows:
 
 [source,asciidoc]
 ----
@@ -142,7 +178,7 @@ This is an introduction added to the Received document <<id>>
 embed::received.adoc[]
 ----
 
-embeds the document
+And the embedded document is:
 
 [source,asciidoc]
 ----
@@ -154,6 +190,25 @@ embeds the document
 This is the foreword
 ----
 
-Then `<<id>>` will be rendered as __XYZ 123__, the embedded document identifier;
-and the `<<id>>` cross-reference will hyperlink to the first header within the
-embedded document (the Foreword, in this case).
+The reference `<<id>>` will be rendered as __XYZ 123__, which is the embedded
+document identifier. The `<<id>>` cross-reference will hyperlink to the first
+header within the embedded document (the Foreword, in this case).
+====
+
+
+== Limitations
+
+=== Embedding documents with assets
+
+If you embed documents that reference files, you will need to put both documents
+in the same folder, in a flat hierarchy.
+
+WARNING: This behavior is due to AsciiDoc's inability to locate assets from
+directories different from the including document. As with AsciiDoc
+`include::[]`, AsciiDoc lacks a mechanism of specifying asset location relative
+to the current document, as opposed to the initial document.
+
+=== Only one `embed:` command allowed in a document
+
+The current implementation only allows a single document to be embedded within
+another document, hence only one `embed:` command is allowed.
