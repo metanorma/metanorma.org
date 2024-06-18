@@ -1,0 +1,388 @@
+---
+layout: ogc-flavor
+title: Migrating OGC documents to Metanorma
+---
+
+In this document we expose some guidelines for converting legacy OGC
+AsciiDoc documents to Metanorma syntax.
+
+== OGC attributes
+
+The only document attributes to use must be those officially supported
+by Metanorma:
+https://www.metanorma.org/author/ref/document-attributes/[_generic-purpose attributes_]
+or https://www.metanorma.org/author/ogc/ref/document-attributes/[_flavor-specific attributes_].
+
+Any other attribute not present in the official documentation should
+be dismissed.
+
+== Tables
+
+Tables in Metanorma must be encoded using the basic Asciidoctor approach:
+a table delimiter be encoded as `|===`, and a column separator `|`.
+
+For example:
+
+[source,asciidoc]
+----
+[cols="1,1"]
+|===
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+
+|Cell in column 1, row 3
+|Cell in column 2, row 3
+|===
+----
+
+No other character for table delimiter or column separator should
+be used.
+
+When it comes to composing complex tables, Metanorma permits a limited
+number of attributes given in https://www.metanorma.org/author/topics/document-format/text/#tables.
+
+NOTE: Even when `width` attribute (for establishing fixed table width)
+is supported, its use is not recommended as it changes the preset
+formatting of the flavor.
+
+== Cross-references
+
+In most cases, we shouldn't use text substitution
+(e.g. `\<<anchor-id,custom text>>`) when we are cross referencing to
+internal elements of the document, like: clauses, tables, images,
+notes, examples, etc.
+
+Using just `\<<anchor-id>>` will lead to the proper identification
+of the cross-referenced element.
+
+=== More information
+
+General use of cross-references:
+https://www.metanorma.org/author/topics/document-format/xrefs/#text-cross-refs +
+Anchor ID syntax:
+https://www.metanorma.org/author/topics/document-format/xrefs/#text-ref-allowed-anchors
+
+== References
+
+References must be encoded as indicated in
+https://www.metanorma.org/author/topics/document-format/bibliography/[official documentation].
+In OGC flavor, the section of _Normative references_ will generate
+a boilerplate paragraph at the beginning of the section that states:
+
+____
+The following documents are referred to in the text in such a way
+that some or all of their content constitutes requirements of this
+document. For dated references, only the edition cited applies. For
+undated references, the latest edition of the referenced document
+(including any amendments) applies
+____
+
+We can override this text using a NOTE with `boilerplate` attribute:
+
+[source,asciidoc]
+----
+[NOTE,type=boilerplate]
+--
+<custom text>
+--
+----
+
+However, it should be remembered that predefined texts are supposed
+to be compliant with the flavor authoring specifications, so the overriding
+is generally not recommended.
+
+In relation to the encoding of bibliographic references,
+some examples are given below to illustrate the options available:
+
+.Typical reference entry (without auto-fetch)
+====
+[source,asciidoc]
+----
+* [[[Simonis2018,Simonis, I.]]], Standardized Big Data Processing in Hybrid Clouds. In: Proceedings of the 4th International Conference on Geographical Information Systems Theory, Applications and Management - Volume 1: GISTAM, pp. 205–210. SciTePress (2018).
+----
+
+NOTE: Reference content will display as written.
+====
+
+.Reference entry with automatic reference fetching (auto-fetch)
+====
+[source,asciidoc]
+----
+* [[[ogc14-083r2,OGC 14-083r2]]], OGC: OGC 14-083r2: Moving Features Encoding Part I: XML Core, 2015
+----
+
+NOTE: To verify the reference lookup syntax for all the supported flavors,
+visit: https://www.metanorma.com/author/topics/building/reference-lookup/#reference-lookup-syntax.
+====
+
+.Reference entry with auto-fetch disabled
+====
+You can disable auto-fetch by wrapping the identifier into nofetch() -- `nofetch(<identifier>)`
+
+[source,asciidoc]
+----
+* [[[ogc14-084r2,(nofetch)OGC 14-084r2]]], OGC: OGC 14-084r2: Moving Features Encoding Extension: Simple Comma Separated Values 
+----
+
+NOTE: To disable auto-fetch in all references at once, set `no-isobib` attribute at the beginning of the document.
+====
+
+.Reference entry with user-supplied label
+====
+No auto-fetch enabled:
+
+[source,asciidoc]
+----
+* [[[ogc11-165r2,(CF-netCDF3)]]], OGC: OGC 11-165r2: CF-netCDF3 Data Model Extension standard, 2012
+----
+
+With auto-fetch enabled:
+
+[source,asciidoc]
+----
+* [[[ogc10-092r3,(NetCDF)OGC 10-092r3]]], OGC: OGC 10-092r3: NetCDF Binary Encoding Extension Standard: netCDF Classic and 64-bit Offset Format, 2011
+----
+====
+
+.Numeric reference entry (with no auto-fetch)
+====
+To use numeric reference system, place any number as identifier. All references will be re-sorted and auto-incremented during compilation:
+
+[source,asciidoc]
+----
+* [[[netcdf,1]]], Lawrence Livermore National Laboratory: NetCDF CF Metadata Conventions – http://cfconventions.org/[http://cfconventions.org/]
+
+* [[[acdd,2]]], ESIP: Attribute Convention for Data Discovery (ACDD) – http://wiki.esipfed.org/index.php/
+----
+====
+
+=== More information
+
+https://www.metanorma.org/author/topics/document-format/bibliography/[References & Bibliography].
+
+== Terms and definitions
+
+The generic structure of a term in Metanorma is:
+
+[source,asciidoc]
+----
+=== example term
+
+term used for exemplary purposes
+
+NOTE: example note.
+
+[example]
+example text
+
+[.source]
+<<rfc2616>>
+----
+
+Note that the term title is lowercase.
+
+The title of a _terms and definitions_ clause changes according to its
+content. If the section is to contain just terms and definitions,
+the title in output must be: _Terms and definitions_. But, if it also
+contains abbreviated terms, the correct title should be:
+_Terms, definitions and abbreviated terms_
+
+In either case, the encoding of the title can just be
+`== Terms and definitions`, and Metanorma will take care of rendering
+the title accordingly.
+
+=== More information
+
+Defining terms: https://www.metanorma.org/author/topics/document-format/section-terms/[Defining Terms: the “Terms and definitions” section] +
+Overriding predefined text:
+https://www.metanorma.org/author/topics/document-format/section-terms/#predefined-text-boilerplate[Predefined text / Boilerplate]
+
+=== Requirements
+
+Requirements are special blocks specific to OGC flavor.
+
+There are two encoding approaches:
+
+. Via definition list
+. Via block attributes (deprecated)
+
+Refer to
+https://www.metanorma.org/author/ogc/topics/requirements/[ModSpec recommendations, requirements, and permissions],
+for detailed documentation.
+
+Following are some sample cases to illustrate the use of the definition
+list encoding.
+
+==== General Requirements
+
+.General requirement sample in legacy AsciiDoc syntax
+[source,asciidoc]
+----
+[width="90%",cols="2,6a"]
+|===
+^|*Requirement {counter:req-id}* |*/req/workflows/collection/response*
+^|A |A successful execution of the operation shall be reported as a response with a HTTP status code '303'.
+^|B |The response shall include a 'Location' header with the URL of a collection description document corresponding to the output(s) of the workflow.
+|===
+----
+
+.General requirement sample in definition list syntax
+[source,asciidoc]
+----
+[requirement]
+====
+[%metadata]
+type:: general
+label:: /req/workflows/collection/response
+part:: A successful execution of the operation shall be reported as a response with a HTTP status code '303'.
+part:: The response shall include a 'Location' header with the URL of a collection description document corresponding to the output(s) of the workflow.
+====
+----
+
+==== Requirement Class
+
+.Requirements Class sample in legacy AsciiDoc syntax
+[source,asciidoc]
+----
+[cols="1,4",width="90%"]
+|===
+2+|*Requirements Class*
+2+|http://www.opengis.net/spec/ogcapi-processes-3/1.0/req/workflows
+|Target type |Web API
+|Dependency |<<OAProc-1,OGC API - Processes - Part 1: Core, Conformance Class 'core'>>
+|Dependency |<<rfc2616,RFC 2616 (HTTP/1.1)>>
+|===
+----
+
+.Requirements Class sample in definition list syntax
+[source,asciidoc]
+----
+[requirements_class]
+====
+[%metadata]
+type:: class
+label:: http://www.opengis.net/spec/ogcapi-processes-3/1.0/req/workflows
+subject:: Web API
+inherit:: <<OAProc-1,OGC API - Processes - Part 1: Core, Conformance Class 'core'>>
+inherit:: <<rfc2616,RFC 2616 (HTTP/1.1)>>
+====
+----
+
+==== Permissions
+
+.Permission sample in legacy AsciiDoc syntax
+[source,asciidoc]
+----
+[cols="2,6",options="header"]
+|===
+| Permission  {counter:per-id} | /per/Core/classes
+2+|For each UML class defined or referenced in CityGML Conceptual Model:
+h| A | An Implementation Specification MAY represent that class as a null class with no attributes, associations, or definition.
+h| B | An Implementation Specification MAY represent an association of the UML class with a null association.
+h| C | An Implementation Specification MAY represent an attribute of the UML class with a null attribute.
+|===
+----
+
+.Permission sample in definition list syntax
+[source,asciidoc]
+----
+[permission]
+====
+[%metadata]
+label:: h/per/Core/classes
+description:: For each UML class defined or referenced in CityGML Conceptual Model:
+part:: An Implementation Specification MAY represent that class as a null class with no attributes, associations, or definition.
+part:: An Implementation Specification MAY represent an association of the UML class with a null association.
+part:: An Implementation Specification MAY represent an attribute of the UML class with a null attribute.
+====
+----
+
+==== Recommendations
+
+.Recommendation sample in legacy AsciiDoc syntax
+[source,asciidoc]
+----
+[cols="2,6",options="header"]
+|===
+| Recommendation  {counter:rec-id} | /rec/ade/uml
+2+|In addition to meeting the requirements for a CityGML ADE, an ADE should:
+h| A | The <<uml_notation_section,UML notations and stereotypes>> used in the CityGML conceptual model SHOULD be applied to corresponding model elements in an ADE.
+h| B | An ADE SHOULD import and use predefined classes from external conceptual UML models such as the CityGML modules or the standardized schemas of the ISO 19100 series of International Standards.
+|===
+----
+
+.Recommendation sample in definition list syntax
+[source,asciidoc]
+----
+[recommendation]
+====
+[%metadata]
+label:: /rec/ade/uml
+description:: In addition to meeting the requirements for a CityGML ADE, an ADE should:
+part:: The <<uml_notation_section,UML notations and stereotypes>> used in the CityGML conceptual model SHOULD be applied to corresponding model elements in an ADE.
+part:: An ADE SHOULD import and use predefined classes from external conceptual UML models such as the CityGML modules or the standardized schemas of the ISO 19100 series of International Standards.
+====
+----
+
+==== Abstract tests
+
+.Abstract test sample in legacy AsciiDoc syntax
+[source,asciidoc]
+----
+[cols="2,6",options="header"]
+|===
+| Abstract Test {counter:ats-id} | /ats/ade/uml
+^|Test Purpose |To validate that Application Domain Extensions (ADE) to the CityGML Conceptual Model are modeled correctly in UML.
+^|Requirement |<<req_ade_uml,/req/ade/uml>>
+^|Test Method |Manual Inspection
+2+|An ADE is defined as conceptual model in UML in accordance with the conceptual modeling framework of the ISO 19100 series of International Standards
+h| A | Validate that the ADE UML model adheres to the General Feature Model as specified in ISO 19109.
+h| B | Validate that the ADE UML model adheres to rules and constraints for application schemas as specified in ISO/TS 19103.
+h| C | Validate that the ADE UML model is organized into one or more UML packages having globally unique namespaces and containing all UML model elements defined by the ADE.
+|===
+----
+
+.Abstract test sample in definition list syntax
+[source,asciidoc]
+----
+[abstract_test]
+====
+[%metadata]
+label:: /ats/ade/uml
+test-purpose:: To validate that Application Domain Extensions (ADE)
+to the CityGML Conceptual Model are modeled correctly in UML.
+requirement:: /req/ade/uml
+test-method:: Manual Inspection
+description:: An ADE is defined as conceptual model in UML in accordance with the conceptual modeling framework of the ISO 19100 series of International Standards
+part:: Validate that the ADE UML model adheres to the General Feature Model as specified in ISO 19109.
+part:: Validate that the ADE UML model adheres to rules and constraints for application schemas as specified in ISO/TS 19103.
+part:: Validate that the ADE UML model is organized into one or more UML packages having globally unique namespaces and containing all UML model elements defined by the ADE.
+====
+----
+
+==== Additional comments about Requirements
+
+* If multiple requirements share the same ID, it means the requirements composing
+is wrong and someone needs to make them unique. In this case, we should add
+an `EDITOR` note to all the incorrect requirements to prevent the author about
+the anomaly, e.g.: `EDITOR: This requirement is assigned a non-unique ID.`.
++
+--
+We allow these note instances during the edition period. The author/editor of
+the document must resolve these before moving forward.
+--
+
+=== Further comments
+
+* Source blocks must indicate the type of coding format according
+to their content (preferably in lowercase). For example, `[source,yaml]`,
+`[source,json]`, `[source,ruby]`, etc.
+
+* Any file from legacy document that is useless to Metanorma syntax
+should be deleted. For example: `.css`, `.json`, `.js`, etc.
+
+* End-of-line white spaces should be avoided. As well as start-of-line
+white spaces but preserving any tabulation ordering.
