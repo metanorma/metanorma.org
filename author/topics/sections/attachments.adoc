@@ -2,29 +2,61 @@
 layout: author-docs
 title: Attachments
 ---
-== Attachments
+== Purpose
 
-There are often occasions where a Metanorma document needs to hyperlink to separate files, that are not
-themselves Metanorma documents, but which need to be distributed with the document as local file references.
-This could include source code, configuration files, executable binaries, or any other file -- so long
-as it is expected to be hyperlinked by Metanorma instead of being processed as a Metanorma file.
+There are often occasions where a Metanorma document needs to hyperlink to
+separate files, that are not themselves Metanorma documents, but which need to
+be distributed together with the document.
 
-In order to signal to Metanorma that there are file attachments, the attachments need to be listed in the
-bibliography of the Metanorma document, with the syntax [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.10]:
+This could include source code, configuration files, executable binaries, or any
+other file -- so long as it is expected to be hyperlinked by Metanorma instead
+of being processed as a Metanorma file.
+
+== Syntax
+
+File attachments are encoded in the bibliography section of a Metanorma document.
+
+The syntax is provided as follows [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.10]:
 
 [source,asciidoc]
 --
 * [[[anchor,attachment:(file path of attachment relative to current fileidentifier)]]]
 --
 
-For example, the entry `* [[[file1,attachment:(schemas/schema.txt)]]]` indicates that schemas/schema.txt
-is an attachment to the current document. It also indicates that any cross-references to `<<file1>>` are
-to be interpreted as hyperlinks to that file, and will be so rendered in output.
+.Example of attaching the `schemas/schema.txt` file
+====
+This indicates that `schemas/schema.txt` is an attachment to the current
+document, and assigns the anchor `file1` to it.
 
-By default, attachments are binary-encoded within the Metanorma XML file, just as with images. If the
-references to attachments are to be kept as file references in the XML file, set the document attribute
+[source,adoc]
+----
+* [[[file1,attachment:(schemas/schema.txt)]]]
+----
+
+Any cross-references to `<<file1>>` are to be interpreted as hyperlinks to that
+file, and will be so rendered in output.
+====
+
+
+By default, attachments are binary-encoded within the Metanorma XML file, just
+as with images. If the references to attachments are to be kept as file
+references in the XML file, set the document attribute
 `data-uri-attachment: false`.
 
-When the Presentation XML output for a Metanorma document is generated (as a precursor to DOC, HTML and PDF output), 
-the documents are output to the folder `{document-filename}_attachments` relative to the output HTML file.
+== Output
 
+=== General
+
+When the Presentation XML output for a Metanorma document is generated (as a
+precursor to DOC, HTML and PDF output), the documents are output to the folder
+`{document-filename}_attachments` relative to the output HTML file.
+
+=== HTML
+
+In HTML, references to the attachments are hyperlinked from the bibliography to
+their disk location.
+
+=== PDF
+
+In PDF, attachments are embedded in the PDF can be saved from the PDF file
+when using a compatible PDF reader.

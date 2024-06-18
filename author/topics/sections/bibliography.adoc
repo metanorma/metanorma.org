@@ -133,7 +133,7 @@ See link:/author/ietf/topics/references/[References (AsciiRFC v3)]
 for further details.
 ====
 
-=== Numbering and ordering
+== Numbering and ordering
 
 All entries in a bibliography section, whether standards or generic,
 are renumbered incrementally in the Metanorma XML. If the number for
@@ -150,7 +150,7 @@ even if there is intervening text in the source document. Only notes
 are left attached to their reference, in order to enable annotated
 bibliographies.
 
-=== Predefined text
+== Predefined text
 
 Any initial text in a Normative Reference section (before the first
 reference) is replaced by predefined text specific to the Metanorma flavour.
@@ -173,8 +173,6 @@ document.
 
 
 == Entering individual references
-
-=== General
 
 Bibliographic entries are entered as unordered lists in Metanorma AsciiDoc
 within a dedicated clause or section.
@@ -219,21 +217,26 @@ If encoded in the ISO 690:2021 format, the resulting citation will be a
 machine-readable one.
 
 
-=== Types of references
+== Best practice
 
-There are multiple ways of entering bibliographic items in Metanorma for
-referencing as shown in <<entering-refs>>.
+There are myriad ways of entering bibliographic references as shown in
+<<entering-refs>>.
 
-The most commonly-used methods are:
+As best practice, we recommend the following order of entering bibliographic
+references, only using a later method if the former method does not:
 
-* <<autofetch>>;
-* <<annotated-spans>>;
-* <<asciibib>>; and
-* <<preformatted-citation>>.
+. <<autofetch>>
+.. <<auto-pubid-lookup>>
+.. <<auto-crossref-lookup>>
+.. <<auto-isbn-lookup>>
+. Manual encoding
+.. <<annotated-spans>>
+.. <<asciibib>>
+.. <<preformatted-citation>>
+
 
 It is strongly recommended that the <<autofetch,automatic fetching>> method be
-used for data consistency and ease of use whenever possible (especially for
-references to standards supported by Relaton).
+used for data consistency, correctness, and the ease of use whenever possible.
 
 If automatic fetching is not available for a particular reference, and if
 machine-readability or accurate rendering is important, either
@@ -489,6 +492,7 @@ The fetched data overrides any content about the item provided in the document,
 since the online bibliography is treated as the source of truth for that
 standards document.
 
+[[auto-pubid-lookup]]
 ==== Standards identifier / Document identifier lookup
 
 The format of the standard identifier required for automatic lookup is documented at
@@ -514,6 +518,7 @@ ISO 20483:2013. _Cereals and cereal products -- Determination of moisture conten
 ____
 ====
 
+[[auto-crossref-lookup]]
 ==== DOI identifier lookup
 
 DOI identifiers are supported as auto-fetch targets [added in
@@ -546,6 +551,7 @@ Massart D., Shulman E., Nicholas N., Ward N., &#x26; Bergeron F. Taming the Meta
 ____
 ====
 
+[[auto-isbn-lookup]]
 ==== ISBN identifier lookup
 
 ISBN identifiers are supported as auto-fetch targets [added in
@@ -658,6 +664,7 @@ This is achieved with the following syntax:
 --
 * [[[anchor,attachment:(file location of attachment relative to current file)]]]
 --
+
 
 [[hyperlink-biblio]]
 === Referencing from Metanorma or Relaton files
