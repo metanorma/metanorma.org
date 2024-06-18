@@ -1143,9 +1143,12 @@ https://tools.ietf.org/html/rfc3986#section-3[RFC 3986, section 3].
 
 ==== General
 
-Similar to when specifying attributes for ModSpec instances, it is preferred to refer
-to other instances using identifiers, rather than the numbered labels allocated
-by default.
+Similar to when specifying attributes for ModSpec instances, it is preferred to
+refer to other instances using identifiers, rather than the numbered labels
+allocated by default.
+
+Metanorma treats both cross-referncing mechanisms as fully equivalent, and will
+render them in the same way, as a numbered label (_Requirement Class 6_).
 
 [example]
 ====
@@ -1154,11 +1157,67 @@ cross-reference, like `http://www.example.com/req/crs/crs-uri` instead of
 _Requirement Class 6_.
 ====
 
+[[identifier-xref]]
+==== Referencing using instance identifiers
+
+Modspec in Metanorma supports
+link:/author/topics/document-format/xrefs/#anchor-aliasing[anchor aliasing]: the
+identifier of the requirement can be used in cross-references as an alias of the
+anchor.
+
+This is the preferred method to cross-reference Modspec instances, through its
+identifier instead of the predefined anchor.
+
+[NOTE]
+--
+This is due to the following reasons:
+
+* not all ModSpec instances are assigned predefined anchors, especially when
+using model-based generation.
+* using predefined anchors precludes automated manipulation of the identifier
+base path.
+--
+
+Metanorma will automatically map the anchor it allocates to requirements to
+identifiers, so users do not need to supply the anchor alias mappings
+manually.
+
+.Cross-reference to a ModSpec instance using its identifier, displaying the instance's name
+[example]
+=====
+For a requirement such as:
+
+[source,adoc]
+----
+[[id1]]
+[requirement]
+====
+identifier:: http://www.example.com/req/crs/crs-uri
+====
+----
+
+The following cross-reference:
+
+[source,adoc]
+----
+xref:http://www.example.com/req/crs/crs-uri[]
+----
+
+Renders (assuming that this is the 10th Requirement):
+
+____
+Requirement 10: `http://www.example.com/req/crs/crs-uri`
+____
+=====
+
+NOTE: As a limitation of syntax, URIs cannot be processed correctly within
+`<<..>>`. The `xref:...[]` command needs to be used instead.
+
+
 [[predef-xref]]
 ==== Referencing using predefined anchors
 
-This can be extended to cross-references. If the anchor of the requirement is
-known, a normal cross-reference can be marked up, as shown below.
+The anchor of the requirement can be used in a normal cross-reference.
 
 .Cross-reference to a ModSpec instance using a predefined anchor
 [example]
@@ -1175,57 +1234,6 @@ Requirement 10: `http://www.example.com/req/crs/crs-uri`
 ____
 ====
 
-[[identifier-xref]]
-==== Referencing using instance identifiers
-
-Not all ModSpec instances are assigned predefined anchors, especially
-when using model-based generation.
-
-It also precludes automated manipulation of the identifier base path.
-
-For that reason, Modspec in Metanorma supports
-link:/author/topics/document-format/xrefs/#anchor-aliasing[anchor aliasing]: the
-identifier of the requirement can be used in cross-references as an alias of the
-anchor.
-
-Metanorma will automatically map the anchor it allocates to requirements to
-identifiers, to that end: users do not need to supply the anchor alias mappings
-manually.
-
-So for a requirement such as:
-
-[source,adoc]
-----
-[[id1]]
-[requirement]
-====
-identifier:: http://www.example.com/req/crs/crs-uri
-====
-----
-
--- it is possible to reference a ModSpec instance using its identifier instead of
-the anchor, as follows.
-
-.Cross-reference to a ModSpec instance using its identifier, displaying the instance's name
-[example]
-====
-[source,adoc]
-----
-xref:http://www.example.com/req/crs/crs-uri[]
-----
-
-Renders (assuming that this is the 10th Requirement):
-
-____
-Requirement 10: `http://www.example.com/req/crs/crs-uri`
-____
-====
-
-Metanorma treats them as fully equivalent, and will render them in the same way,
-as a numbered label (_Requirement Class 6_).
-
-NOTE: As a limitation of syntax, URIs cannot be processed correctly within
-`<<..>>`. The `xref:...[]` command needs to be used instead.
 
 ==== Cross-reference rendering
 
@@ -1234,7 +1242,7 @@ Modspec instance are rendered
 along with the URI identifier of that instance where available; the URI is truncated
 with reference to an identifier base (see <<identifier-base>>).
 
-So a reference to  `<<id1>>` or to `xref:http://www.example.com/req/crs/crs-uri[]` made within
+So a reference to `<<id1>>` or to `xref:http://www.example.com/req/crs/crs-uri[]` made within
 a Modspec instance will render as
 
 ____
