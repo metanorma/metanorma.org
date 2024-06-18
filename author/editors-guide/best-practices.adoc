@@ -1,0 +1,100 @@
+---
+layout: author-docs
+title: Best practices for converting documents to Metanorma
+---
+
+This document describes some best practices to bear in mind
+when converting documents from any format to Metanorma AsciiDoc files.
+
+== Document organization
+
+To provide easier management and troubleshooting, it is advised to pay
+attention to good document organization. That can be achieved by dividing the
+whole document and even sentences into smaller chunks.
+
+Therefore, the encoding of long documents should be separated into several AsciiDoc files.
+Each main section of the document should be created as one separate file, while
+all preface sections can be kept together. All these files should be placed in one
+directory (e.g. /sections) and named in the format
+`<section-number>-<short-name-of-the-section>.adoc`. Main AsciiDoc file should then include
+all these separated sections using the syntax `include::sections/<file-name>.adoc[]`.
+
+Moreover, it is advised to always keep lines at no more than 80-100 characters wide for readability.
+
+== Content in general
+
+* Always remove trailing whitespaces in the converted document.
+* Use small letters when specifying image extensions, e.g. ".jpg", ".png".
+* Use small letters when specifying the type of a source code, e.g. "yaml", "json".
+* Each AsciiDoc file should end with a newline character.
+* Use spell check plugin for detecting possible typos in the source text.
+* Avoid using the `doctitle` attribute when there is only one part of the document. Use
+only the `= ...` syntax to set the title instead.
+
+=== Managing non-ASCII characters
+
+It is a good practice to avoid unnecessary non-ASCII characters. Unwanted characters,
+such as ideographic spaces and en/em dashes, can appear after copying text from a PDF
+source. To find such characters to replace them with their ASCII
+counterparts, the regular expression `[^\x00-\x7F]+` can be used.
+
+Long dashes (—) should be replaced with their AsciiDoc markup equivalent `--`.
+
+Similarly, single quotes and double quotes should be replaced as follows:
+
+* Single quotes:
++
+[%unnumbered]
+----
+‘text’ -> '`text`'
+----
+
+* Double quotes:
++
+[%unnumbered]
+----
+“text” -> "`text`"
+----
+
+Some frequently used non-ASCII characters can be produced using adequate combinations
+of characters. For example:
+
+* Copyright: (`C`) -> (C)
+* Trademark: (`TM`) -> (TM)
+* Registered trademark: (`R`) -> (R)
+
+
+== Tables
+
+* Tables should not include width attributes. The width of a table is
+automatically laid out by Metanorma.
+
+* In table body cells, split the content of the cell if it surpasses 80
+characters.
+
+* In table header cells, try to keep all the cells in one line unless they
+get too long (over 80 characters).
+
+* In table column attributes, always use the `a` column style operator to support
+block elements inside the table, e.g. `[cols="a,2a"]` over `[cols="1,2"]`.
+
+
+== Bibliography and references
+
+* When composing bibliographic references, do not leave any blank space
+between the comma (that lies after the anchor) and the reference identifier.
+I.e.:
++
+--
+Instead of this:
+[%unnumbered]
+----
+* [[[ogc20-010, OGC 20-010]]]
+----
+
+Do this:
+[%unnumbered]
+----
+* [[[ogc20-010,OGC 20-010]]]
+----
+--
