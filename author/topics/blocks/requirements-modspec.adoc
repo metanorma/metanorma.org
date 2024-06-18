@@ -90,7 +90,8 @@ standardization target (an entity).
 ** A "`Conformance test`" is about a single standardization target.
 
 ** A "`Conformance test`" can be "`concrete`" or "`abstract`" depending on the
-type of conformance test suite (see https://portal.ogc.org/files/?artifact_id=34762[OGC 08-131r3], 6.4). A concrete conformance test is typically called as a "`conformance test`",
+type of conformance test suite (see https://portal.ogc.org/files/?artifact_id=34762[OGC 08-131r3], 6.4).
+A concrete conformance test is typically called as a "`conformance test`",
 while an abstract conformance test is called an "`abstract test`".
 
 * A "`Test suite`" is "`a collection of identifiable conformance classes`"
@@ -111,6 +112,19 @@ conformance tests.
 According to the https://www.ogc.org/ogc/policies/directives[OGC Policy Directives],
 OGC standards that contain requirements must have those requirements conform to
 https://portal.ogc.org/files/?artifact_id=34762[OGC 08-131r3].
+
+
+=== Rendering
+
+Modspec instnace headings are treated like clause headings in HTML
+output [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.5.9]
+in order to enable easier hyperlinking of Modspec instances.
+
+* a section mark glyph (§) is displayed when the mouse is hovered over the
+Modspec instance heading;
+
+* when the heading is clicked on, the browser location bar displays the
+hyperlink with anchor to the Modspec instance.
 
 
 === Encoding syntax
@@ -288,7 +302,8 @@ This is an OGC ModSpec requirement within an ISO document.
 
 ==== Instance attributes
 
-Attributes accepted by a ModSpec instance are as follows:
+Attributes accepted by a ModSpec instance are as follows.
+Differentiated types of ModSpec models allow additional attributes.
 
 `identifier`:: (mandatory) Identifier of the requirement, such as a URI or a
 URN. Plain text.
@@ -329,24 +344,31 @@ requirement class that is being tested.
 // * `model` (optional when using Metanorma OGC). Type of model. The value of `ogc`
 // means using OGC ModSpec models.
 
-Differentiated types of ModSpec models allow additional attributes.
+`id`::
++
+--
+(optional) Predefined anchor of the requirement.
 
-`id` :: (optional) The Asciidoc `id` attribute assigns an anchor to the requirement,
-as is the case with all blocks in Asciidoc (e.g. `id=idvalue`). The `id` attribute can also be expressed
-as a block anchor (`[[idvalue]]`), or a hash attribute (`[#idvalue]`). The anchor is used in Metanorma
-to write cross-references to elements (<<predef-xref,Referencing using predefined anchors>>), 
-although we discuss below ways to use the Modspec `identifier` for such cross-references instead 
-(<<identifier-xref,Referencing using instance identifiers>>).
-+
-If no anchor is provided, Metanorma will normally supply an anchor using a GUID derived from a hash of the
-block's content. Modspec processing has been updated, so that if an identifier is provided, that is
-used as the requirement anchor instead [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.3.7].
-As with all XML anchors, illegal characters in the anchor (including `/`) are replaced with `_`.
-+
-In order to enable easier hyperlinking of requireents, requirement headings are treated like clause headings
-in HTML output [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.5.9]: a section mark glyph (§)
-is displayed when the mouse is hovered over the requirement heading, and when the heading is clicked on,
-the browser location bar displays the hyperlink with anchor to the requirement.
+By default:
+
+* If `identifier` is provided, it is set identically to the
+`identifier` [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.3.7].
+* Otherwise, it is set to a generated GUID that is derived from a hash of its
+content.
+
+The predefined anchor is used in Metanorma for <<predef-xref,element referencing>>
+though the Modspec `identifier` is the recommended method for <<identifier-xref,referencing of requirements>>.
+
+This attribute can also be expressed as:
+
+* block anchor: `\[[idvalue]]`
+* hash attribute: `[#idvalue]`
+--
+
+Accepted values::: Same as XML IDs. Unaccepted characters (including `/`) are
+replaced with `_`.
+
+
 
 [[generalreqt]]
 ==== Normative statement
@@ -1156,8 +1178,9 @@ ____
 [[identifier-xref]]
 ==== Referencing using instance identifiers
 
-However, not all ModSpec instances are assigned predefined anchors, especially
+Not all ModSpec instances are assigned predefined anchors, especially
 when using model-based generation.
+
 It also precludes automated manipulation of the identifier base path.
 
 For that reason, Modspec in Metanorma supports
@@ -1255,10 +1278,10 @@ Renders as:
 This will also highlight the URI text as subject to truncation, with reference
 to identifier bases.
 
-In some flavours (ISO as of this writing), the automatically generated cross-references 
+In some flavours (ISO as of this writing), the automatically generated cross-references
 within requirements (listings of provisions, tests, child and parent requirements) is different
 from the default rendering of cross-references in documents. In order to use the same
-cross-reference style as occurs inside of requirements, you can specify 
+cross-reference style as occurs inside of requirements, you can specify
 `style=modspec%` [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.3.1].
 
 For example, in ISO, in the main body of text
