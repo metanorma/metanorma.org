@@ -224,12 +224,16 @@ Such predefined text typically serve the following purposes:
 NOTE: For ISO documents, a reference to the ISO Online Browsing Platform and to the
 IEC Electropedia is provided in the predefined text.
 
-The predefined text is by default placed in the first clause that either contains
-terms, or is titled as a terms collection. If a clause contains a terms collection,
-but is not titled as one, the predefined text moves down to the terms collection;
-that is to deal with terms collections contained in miscellanous clauses which
-contain both terms and extraneous content [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
+The predefined text, by default, is placed in the first clause that either
+contains terms, or is titled as a terms collection.
 
+If a clause contains a terms collection, but is not titled as one, the
+predefined text moves down to the terms collection; that is to deal with terms
+collections contained in miscellaneous clauses which contain both terms and
+extraneous
+content [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
+
+.Location of predefined text in a Terms and definitions clause
 [source,asciidoc]
 ----
 == Terms and definitions
@@ -239,6 +243,7 @@ contain both terms and extraneous content [added in https://github.com/metanorma
 === Term 1
 ----
 
+.Location of predefined text in a subdivided Terms and definitions clause
 [source,asciidoc]
 ----
 == Terms and definitions
@@ -254,6 +259,7 @@ contain both terms and extraneous content [added in https://github.com/metanorma
 ==== Term 2
 ----
 
+.Location of predefined text in a Terms and definitions clause placed in inner clauses
 [source,asciidoc]
 ----
 == General
@@ -269,9 +275,11 @@ contain both terms and extraneous content [added in https://github.com/metanorma
 === Methodology
 ----
 
-In the case of ISO and related flavours, the predefined text is placed as above, but not
-in a clause that contains both terms collections and symbols or abbreviations.
 
+In ISO-based flavours, the predefined text is placed as above, but not in a
+clause that contains both terms collections and symbols or abbreviations.
+
+.Location of predefined text in ISO-based flavors when there is a symbols/abbreviated terms clause
 [source,asciidoc]
 ----
 [heading=terms, definitions and symbols]
@@ -285,6 +293,7 @@ in a clause that contains both terms collections and symbols or abbreviations.
 
 === Symbols
 ----
+
 
 ===== Appending to predefined text
 
@@ -414,15 +423,18 @@ predefined text open block.
 --
 ====
 
+
 ===== Moving predefined text
 
-If you want to use the default predefined text for the flavour,
-but you want it to appear somewhere other than where Metanorma
-calculates it should be, provide a predefined text open block,
-with the style attribute `[.boilerplate]`, and which contains only the text `(default)`.
-This text will be overwritten with the correct predefined text,
-and that text will not appear elsewhere [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
+To move the default predefined text elsewhere from where Metanorma calculates it
+should be, set the content of the boilerplate block as `(default)`
 
+The `(default)` text will be overwritten with the correct predefined text, and
+that text will not appear
+elsewhere [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
+
+.Example of moving default predefined text
+=====
 [source,asciidoc]
 ----
 == General
@@ -444,6 +456,8 @@ and that text will not appear elsewhere [added in https://github.com/metanorma/m
 
 === Methodology
 ----
+=====
+
 
 ==== Subclauses
 
@@ -1166,7 +1180,7 @@ source.
 Metanorma allows the encoding of this more complex structure through embedding
 each distinct definition within an open block, with a `[.definition]` role
 attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.6].
-Different definitions can be differentiated with different `type` 
+Different definitions can be differentiated with different `type`
 attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.5.3]
 
 [example]
@@ -1409,7 +1423,7 @@ stem:[int_(t_2)^(t_1) bb(d) t]
 --
 ====
 
-You may wish to go against IEC practice, and cite IEC 60050 as an entire document, 
+You may wish to go against IEC practice, and cite IEC 60050 as an entire document,
 instead of converting references to individual parts of IEC 60050.
 In that case, you need to use `IEC 60050 (all parts)` instead of `IEV` in your
 bibliography. So a reference to
@@ -1634,7 +1648,7 @@ In this syntax, only the `term` argument is mandatory.
 * `term`: the concept designation being cited (mandatory).
 +
 If a domain is used to disambiguate between two terms with the same designation, then
-the domain must be prefixed to the term 
+the domain must be prefixed to the term
 in angle brackets [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.9];
 e.g. {{<rice> whole rice}}. The domain may be dropped if the designation is unambiguous within the document.
 +
