@@ -97,17 +97,7 @@ is generally not recommended.
 In relation to the encoding of bibliographic references,
 some examples are given below to illustrate the options available:
 
-.Typical reference entry (without auto-fetch)
-====
-[source,asciidoc]
-----
-* [[[Simonis2018,Simonis, I.]]], Standardized Big Data Processing in Hybrid Clouds. In: Proceedings of the 4th International Conference on Geographical Information Systems Theory, Applications and Management - Volume 1: GISTAM, pp. 205–210. SciTePress (2018).
-----
-
-NOTE: Reference content will display as written.
-====
-
-.Reference entry with automatic reference fetching (auto-fetch)
+.Typical reference entry with automatic reference fetching (auto-fetch)
 ====
 [source,asciidoc]
 ----
@@ -115,7 +105,7 @@ NOTE: Reference content will display as written.
 ----
 
 NOTE: To verify the reference lookup syntax for all the supported flavors,
-visit: https://www.metanorma.com/author/topics/building/reference-lookup/#reference-lookup-syntax.
+visit: https://www.metanorma.org/author/basics/reference-lookups/[Reference lookups].
 ====
 
 .Reference entry with auto-fetch disabled
@@ -128,6 +118,16 @@ You can disable auto-fetch by wrapping the identifier into nofetch() -- `nofetch
 ----
 
 NOTE: To disable auto-fetch in all references at once, set `no-isobib` attribute at the beginning of the document.
+====
+
+.Reference entry without auto-fetch (plain text)
+====
+[source,asciidoc]
+----
+* [[[Simonis2018,Simonis, I.]]], Standardized Big Data Processing in Hybrid Clouds. In: Proceedings of the 4th International Conference on Geographical Information Systems Theory, Applications and Management - Volume 1: GISTAM, pp. 205–210. SciTePress (2018).
+----
+
+NOTE: Reference content will display as written.
 ====
 
 .Reference entry with user-supplied label
@@ -147,7 +147,7 @@ With auto-fetch enabled:
 ----
 ====
 
-.Numeric reference entry (with no auto-fetch)
+.Reference entry with numeric label (no auto-fetch)
 ====
 To use numeric reference system, place any number as identifier. All references will be re-sorted and auto-incremented during compilation:
 
@@ -161,7 +161,7 @@ To use numeric reference system, place any number as identifier. All references 
 
 === More information
 
-https://www.metanorma.org/author/topics/sections/bibliography/[References & Bibliography].
+https://www.metanorma.org/author/topics/sections/bibliography/#entering-refs[Entering bibliographic references].
 
 == Terms and definitions
 
