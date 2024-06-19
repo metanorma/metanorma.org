@@ -152,15 +152,20 @@ bibliographies.
 
 == Predefined text
 
-Any initial text in a Normative Reference section (before the first
+Any initial predefined text in a Normative Reference section (before the first
 reference) is replaced by predefined text specific to the Metanorma flavour.
+This text may vary according to the contents of the bibliography:
+an empty bibliography will usually have different initial text from a
+bibliography with references, and for some flavours, text will be different
+depending on whether the references are dated or not.
 
-In order to override this, initial text can be provided by the user
+In order to override the default predefined text, the user can provide their own initial text
 as a open block with "`boilerplate`" [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.0]
 (formerly: a note of type "`boilerplate`" [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.2])
 
 [source,asciidoc]
 ----
+[bibliography]
 == Normative references
 
 [.boilerplate]
@@ -170,6 +175,58 @@ way that some or all of its content constitutes requirements of this
 document.
 --
 ----
+
+If the predefined text is to be inserted elsewhere in the bibliography structure, but
+the default text is still to be provided, make the content of the boilerplate note
+be `(default)` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
+The `(default)` text will be overwritten with the correct predefined text.
+
+[source,asciidoc]
+----
+[bibliography]
+== Normative references
+
+[bibliography]
+=== Normative references
+
+[.boilerplate]
+--
+(default)
+--
+----
+
+If the Normative References are nested in a subclause, the predefined text
+is placed in the first clause that contains references and no other clause types.
+This is to allow the predefined text to be associated with nested bibliographies,
+but not clauses containing both references and other text [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
+
+[source,asciidoc]
+----
+[bibliography]
+== Normative references
+
+// boilerplate goes here
+
+[bibliography]
+=== Simple references
+
+[bibliography]
+=== Complex references
+----
+
+[source,asciidoc]
+----
+== General
+
+=== Scope
+
+[bibliography]
+=== Normative references
+
+// boilerplate goes here
+
+----
+
 
 
 == Entering individual references

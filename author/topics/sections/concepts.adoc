@@ -210,7 +210,7 @@ image::/assets/author/topics/document-format/section-terms/fig-terms-boilerplate
 
 ==== Predefined text / Boilerplate
 
-===== Appending to predefined text
+===== Location of predefined text
 
 The "`terms and definitions`" clause is often prefixed with _predefined text_
 automatically before any terms are listed.
@@ -221,11 +221,74 @@ Such predefined text typically serve the following purposes:
 * provide the location where definitions may be consulted,
   depending on the flavour.
 
-[example]
-For ISO documents, a reference to the ISO Online Browsing Platform and to the
+NOTE: For ISO documents, a reference to the ISO Online Browsing Platform and to the
 IEC Electropedia is provided in the predefined text.
 
-Any paragraphs or lists in the input before the first term
+The predefined text is by default placed in the first clause that either contains
+terms, or is titled as a terms collection. If a clause contains a terms collection,
+but is not titled as one, the predefined text moves down to the terms collection;
+that is to deal with terms collections contained in miscellanous clauses which
+contain both terms and extraneous content [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
+
+[source,asciidoc]
+----
+== Terms and definitions
+
+// boilerplate goes here
+
+=== Term 1
+----
+
+[source,asciidoc]
+----
+== Terms and definitions
+
+// boilerplate goes here
+
+=== Normal terms
+
+==== Term 1
+
+=== Other terms
+
+==== Term 2
+----
+
+[source,asciidoc]
+----
+== General
+
+=== Scope
+
+=== Terms and definitions
+
+// boilerplate goes here
+
+==== Term 1
+
+=== Methodology
+----
+
+In the case of ISO and related flavours, the predefined text is placed as above, but not
+in a clause that contains both terms collections and symbols or abbreviations.
+
+[source,asciidoc]
+----
+[heading=terms, definitions and symbols]
+== ISO Terms, definitions and symbols
+
+=== Terms and definitions
+
+// boilerplate goes here
+
+==== Term 1
+
+=== Symbols
+----
+
+===== Appending to predefined text
+
+Any paragraphs or lists found where the predefined text should go
 are appended to the flavour's defined predefined text, in the
 intermediate XML format [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].
 
@@ -286,7 +349,8 @@ content, an initial open block with the style attribute
 `[.boilerplate]` can be used to do
 so [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.0].
 
-(Formerly, a clause with that style attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].)
+(Formerly, a clause with that style
+attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.7.0].)
 
 Input:
 
@@ -333,7 +397,7 @@ ____
 
 If you want to prevent the default predefined text from
 appearing, you can do so by providing an empty
-predefined text subclause.
+predefined text open block.
 
 [example]
 .Emptying predefined text
@@ -343,11 +407,43 @@ predefined text subclause.
 == Terms and definitions
 
 [.boilerplate]
-=== {blank}
+--
+--
 
 === Term 1
 --
 ====
+
+===== Moving predefined text
+
+If you want to use the default predefined text for the flavour,
+but you want it to appear somewhere other than where Metanorma
+calculates it should be, provide a predefined text open block,
+with the style attribute `[.boilerplate]`, and which contains only the text `(default)`.
+This text will be overwritten with the correct predefined text,
+and that text will not appear elsewhere [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
+
+[source,asciidoc]
+----
+== General
+
+=== Scope
+
+=== Terms and definitions
+
+// boilerplate should go here
+
+==== Term 1
+
+[.boilerplate]
+--
+(default)
+--
+
+// boilerplate goes here
+
+=== Methodology
+----
 
 ==== Subclauses
 
