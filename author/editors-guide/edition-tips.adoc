@@ -1,6 +1,6 @@
 ---
 layout: author-docs
-title: Metanorma edition tips
+title: Editor tips
 ---
 
 The following tips complement the information exposed in this section: link:https://www.metanorma.com/author/ref/asciidoc-tips/[Metanorma AsciiDoc tips]
@@ -27,14 +27,17 @@ If you are on Windows, and have a bunch of filenames ending in .PNG, there is a 
 
 Math expressions can be written in AsciiMath or LaTeX math format, which is enabled by `:stem:` document attribute. Default option can be changed from AsciiMath to LaTeX math by using `:stem: latexmath`.
 
-It is recommended to use AsciiMath whenever it is possible, especially since the most of the math expressions can be represented this way. However, some special characters require the help of LaTeX math. Examples of such characters are `\backepsilon` (∍) and `\mathbb{E}` (𝔼). 
+It is recommended to use AsciiMath whenever it is possible, especially since the most of the math expressions can be represented this way. However, some special characters require the help of LaTeX math. Examples of such characters are `\backepsilon` (∍) and `\mathbb{E}` (𝔼).
 
 In case you are not sure whether the written expression is correct and whether it would render well in either AsciiMath or LaTeX math, you can use https://www.mathjax.org/#demo[MathJax Demo] tool to check the output.
 
 == Math arrays
 
-Do not use the `eqnarray` environment for arrays since it is not supported by `latexmlmath`.
+Do not use the `eqnarray` environment for arrays since it is not supported by https://github.com/plurimath/plurimath[Plurimath].
 
+// TODO: re-write the text below to use Plurimath CLI sofware instead, when it's ready:
+// https://github.com/plurimath/plurimath/issues/204
+////
 If you want to know if an equation will pass, try this:
 
 `math.lxml`
@@ -51,6 +54,7 @@ Run:
 ----
 cat math.lxml | latexmlmath -
 ----
+////
 
 == Tables
 
