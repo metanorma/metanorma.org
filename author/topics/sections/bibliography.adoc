@@ -150,55 +150,31 @@ even if there is intervening text in the source document. Only notes
 are left attached to their reference, in order to enable annotated
 bibliographies.
 
+
 == Predefined text
 
-Any initial predefined text in a Normative Reference section (before the first
-reference) is replaced by predefined text specific to the Metanorma flavour.
-This text may vary according to the contents of the bibliography:
-an empty bibliography will usually have different initial text from a
-bibliography with references, and for some flavours, text will be different
-depending on whether the references are dated or not.
+=== General
 
-In order to override the default predefined text, the user can provide their own initial text
-as a open block with "`boilerplate`" [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.0]
-(formerly: a note of type "`boilerplate`" [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.2])
+In the "Normative references" clause, any content before the list of references
+is ignored, and replaced by predefined text specific to the Metanorma flavour.
 
-[source,asciidoc]
-----
-[bibliography]
-== Normative references
+The predefined text may vary according to the contents of the bibliography:
 
-[.boilerplate]
---
-The following contract document is referred to in the text in such a
-way that some or all of its content constitutes requirements of this
-document.
---
-----
+* an empty bibliography will usually have different initial text from a
+bibliography with references;
 
-If the predefined text is to be inserted elsewhere in the bibliography structure, but
-the default text is still to be provided, make the content of the boilerplate note
-be `(default)` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
-The `(default)` text will be overwritten with the correct predefined text.
+* for some flavours, text will be different depending on whether the references are dated or not.
 
-[source,asciidoc]
-----
-[bibliography]
-== Normative references
 
-[bibliography]
-=== Normative references
+=== When located in a subclause
 
-[.boilerplate]
---
-(default)
---
-----
+If the list of normative references are nested in a subclause, the predefined
+text is placed in the first clause that contains references, and no other clause
+types.
 
-If the Normative References are nested in a subclause, the predefined text
-is placed in the first clause that contains references and no other clause types.
-This is to allow the predefined text to be associated with nested bibliographies,
-but not clauses containing both references and other text [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
+This is to allow the predefined text to be associated with nested
+bibliographies, but not clauses containing both references and other
+text [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
 
 [source,asciidoc]
 ----
@@ -224,8 +200,61 @@ but not clauses containing both references and other text [added in https://gith
 === Normative references
 
 // boilerplate goes here
-
 ----
+
+
+
+=== Overriding predefined text
+
+To override default predefined text, the user can provide their own initial text
+with an open block marked as `boilerplate` containing the
+text [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.0].
+
+NOTE: Prior to v2.3.0, the method of overriding default predefined text is by
+using a NOTE of type "`boilerplate`"
+[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.2].
+
+.Example of overriding predefined text of a Normative references clause
+====
+[source,asciidoc]
+----
+[bibliography]
+== Normative references
+
+[.boilerplate]
+--
+The following contract document is referred to in the text in such a
+way that some or all of its content constitutes requirements of this
+document.
+--
+----
+====
+
+=== Moving predefined text
+
+To move the default predefined text elsewhere in the bibliography
+structure, set the content of the boilerplate block as
+`(default)` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
+
+The `(default)` text will be overwritten with the correct predefined text.
+
+.Example of moving default predefined text
+====
+[source,asciidoc]
+----
+[bibliography]
+== Normative references
+
+[bibliography]
+=== Normative references
+
+[.boilerplate]
+--
+(default)
+--
+----
+====
+
 
 
 
