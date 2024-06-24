@@ -123,3 +123,55 @@ date[2012-02-02, %A %d %B] # Thursday 2 February
 date[2012-02-02T21:04:05, %F%_%l%_%p]
 ----
 
+== Numbers
+
+link:/author/topics/document-format/blocks/math[Mathematical expressions] can be used to indicate that
+a number is to be treated as such inline:
+
+[source,adoc]
+----
+There are stem:[30000.54] people in attendance.
+----
+
+Any number so marked up is automatically formatted consistent with how numbers are formatted
+in the Metanorma flavour. That includes the flavour's specifications, where defined,
+for grouping digits, for decimal points, and for precision. Where these are not specified,
+the defaults for the document language are used, as specified in the https://github.com/twitter/twitter-cldr-rb[twitter-cldr-rb] gem.
+
+NOTE: The number in the `stem:[]` expression must be specified according to the en-US locale;
+`30000.54` is recognised as a decimal number, `30 000,54` is not. However, if the document is in French,
+`stem:[30000.54]` will in fact be rendered consistent with French practice, as _30 000,54_.
+
+The `number` command is also used to format numbers 
+in Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
+The `number` command in addition allows users to specify more explicitly how a number should be
+formatted.
+
+The command takes the format `number:30000.54[decimal=',',group=' ']`
+
+* The numerical value to be encoded is given between `number:` and the `[`.
+* If no formatting options are to be specified, the `[]` is left empty; e.g.
+`number:30000.54[]`
+* Formatting instructions are comma-delimited pairs of an option and a value,
+where the value can be given in single or double quotes. The following options
+are recognised, as implemented in the https://www.plurimath.org/[Plurimath] gem
+(based on the twitter-cldr-rb gem):
+** `locale` gives the language whose conventions need to be followed for the number;
+the locale is assumed to be specified in twitter-cldr-rb, and is given as a two-letter
+ISO-639 code, e.g. `en`, `fr`.
+** `precision` gives the number of fractional digits to render: `number:32232.232[precision=6]` is _32232.232000_.
+** `digitcount` gives the total number of digits to render: `number:32232.232[digitcount=6]` is _32232.2_.
+** `group` gives the delimiter to use between groups of digits: `number:32232.232[group=' ']` is _32 232.232_.
+** `group_digits` gives the number of digits in each group of digits (default 3 in most locales):
+`number:32232.232[group=' ',group_digits=2]` is _3 22 32.232_.
+** `fraction_group` gives the delimiter to use between groups of fractional digits: `number:32232.232131[fraction_group=' ']` is _32232.232 131_.
+** `fraction_group_digits` gives the number of digits in each group of fractional digits:
+`number:32232.232131[fraction_group=' ',fraction_group_digits=2]` is _32232.23 21 31_.
+** `notation` is the type of notation to use for rendering; legal values as `basic`, `e`, `scientific`, and `engineering`.
+`number:32232.232[notation=engineering]` is _32.232232 × 10^4^_.
+** `exponent_sign` is whether to use a plus sign to indicate positive exponents, in exponent-based notation
+(E, scientific, engineering); its legal value is `plus`. `number:32232.232[notation=engineering,exponent_sign=plus]` is _32.232232 × 10^+4^_.
+** `times` is the sign to use for multiplication where required by the notation
+(scientific, engineering); `number:32232.232[notation=engineering,times=·]` is _32.232232 · 10^4^_.
+** `e` is the sign to use for exponents in E notation (default value `E`);
+`number:32232.232[notation=e,e=e]` is _3.2232232e5_.
