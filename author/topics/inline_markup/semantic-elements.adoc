@@ -175,3 +175,46 @@ ISO-639 code, e.g. `en`, `fr`.
 (scientific, engineering); `number:32232.232[notation=engineering,times=·]` is _32.232232 · 10^4^_.
 ** `e` is the sign to use for exponents in E notation (default value `E`);
 `number:32232.232[notation=e,e=e]` is _3.2232232e5_.
+
+In order to reduce the number of options named for the `number:[]` macro, profiles can be defined
+through document attributes.
+
+* The default options to be applied for any `number:[]` are specified in the document attribute
+`number-presentation:`
+* A named profile, which overrides any default, is specified as `:number-presentation-profile-NAME:`,
+and invoked in the `number:[]` macro with the argument `profile=NAME`
+* Any options specified in the `number:[]` macro override any profiles
+* Any value `nil` set on an option cancels out that option
+
+So in the following document:
+
+[source,adoc]
+----
+:number-presentation: notation=e,exponent_sign=plus,precision=4
+:number-presentation-profile-3: notation=scientific,exponent_sign=nil,decimal=","
+:number-presentation-profile-x: notation=engineering,precision=4,times=','
+
+number:341[]
+number:342[profile=3]
+number:343[profile=x]
+number:344[profile=x,precision=5]
+number:345[profile=x,,digit_count=10,precision=nil]
+number:346[precision=6,digit_count=10,exponent_sign=nil]
+----
+
+* The initial _341_ is set to the options of `:number-presentation:`,
+`notation=e,exponent_sign=plus,precision=4`.
+* All other numbers override  `:number-presentation:` in some way.
+* _342_ has `profile=3`, so it uses `:number-presentation-profile-3:`. That replaces
+`notation=e` with `notation=scientific`; it removes `exponent_sign=plus`
+(by setting `exponent_sign=nil`); it adds `decimal=","`; and it
+retains `precision=4`.
+* _343_ has `profile=x`, so it uses `:number-presentation-profile-x`, which similarly overrides
+`:number-presentation:`, resulting in `notation=engineering,precision=4,times=',',exponent_sign=plus`.
+* _344_ also uses `:number-presentation-profile-x`, but overrides its `precision` value
+to be `5`.
+* _345_ uses `:number-presentation-profile-x`, removes the `precision` value, and adds
+`digit_count=10`, resulting in `notation=engineering,times=',',exponent_sign=plus,digit_count=10`.
+* _346_ overides `:number-presentation:`, without appealing to a named profile:
+it overrides `precision` as `precision=6`, it sets `digit_count=10`, and it
+removes `exponent_sign`, resulting in `notation=e,precision=6,digit_count=10`.
