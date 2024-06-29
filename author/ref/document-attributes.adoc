@@ -89,11 +89,40 @@ Read more about
 link:/author/topics/document-format/text/#mathematical-expressions[mathematical expressions].
 
 `:number-presentation:`::
-Sets the default formatting options for the `number:[]` macro.
-`:number-presentation-profile-{NAME}:`::
-Sets the formatting options profile `{NAME} for the `number:[]` macro.
+Sets the formatting options for the `number:[]` command in the document.
++
+.Using the `:number-presentation:` attribute
+[example]
+====
+[source,adoc]
+----
+:number-presentation: notation=e,exponent_sign=plus,precision=4
 
-Read more about
+number:341[]
+----
+====
++
+Please refer to the dedicated section at
+link:/author/topics/inline_markup/semantic-elements#numbers[numbers].
+
+
+`:number-presentation-profile-{NAME}:`::
+Sets the formatting options for the `number:[]` command in the document
+as profile `{NAME}`.
++
+.Using the `:number-presentation-profile-{NAME}:` attribute
+[example]
+====
+[source,adoc]
+----
+:number-presentation-profile-3: notation=scientific,exponent_sign=nil,decimal=","
+...
+
+number:342[profile=3]
+----
+====
++
+Please refer to the dedicated section at
 link:/author/topics/inline_markup/semantic-elements#numbers[numbers].
 
 

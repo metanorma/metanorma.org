@@ -126,68 +126,177 @@ date[2012-02-02T21:04:05, %F%_%l%_%p]
 [[numbers]]
 == Numbers
 
-link:/author/topics/document-format/blocks/math[Mathematical expressions] can be used to indicate that
-a number is to be treated as such inline:
+=== General
+
+Numbers are formatted consistent according to the current flavor, when encoded
+explicitly as such, or as encoded in
+link:/author/topics/document-format/blocks/math[mathematical expressions],
+
+Numbers are formatted according to the flavour's specifications, where defined:
+
+* grouping digits;
+* decimal points; and
+* precision.
+
+Where these are not specified, the defaults for the document language are used,
+as specified by https://github.com/twitter/twitter-cldr-rb[twitter-cldr-rb].
+
+
+=== Encoding numbers as numbers
+
+Numbers are encoded using the `number` command. It allows users to specify
+in detail how a number should be
+formatted. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12]
+
+The usage of the number command is as follows:
 
 [source,adoc]
 ----
-There are stem:[30000.54] people in attendance.
+number:{NUMBER}[{OPTIONS}] <1>
+----
+<1> Where `NUMBER` is the number, and OPTIONS is a comma-delimited list
+of options for the command.
+
+
+`NUMBER`:: The numerical value is entered between `number:` and the `[...]`.
+
+`OPTIONS`::
+Formatting instructions are comma-delimited pairs of an option and a value,
+where the value can be given in single or double quotes.
+
+*** If no formatting options are specified, the `[]` is left empty.
+
+*** The following options
+are recognised (as implemented in https://www.plurimath.org/[Plurimath]).
+
+`locale`::: Language code whose conventions need to be followed for the number.
+The locale is assumed to be specified in the Unicode CLDR. It is entered as a two-letter ISO 639-2 code
++
+[example]
+====
+`en`, `fr`.
+====
+
+`precision`::: Number of fractional digits to render.
++
+[example]
+====
+`number:32232.232[precision=6]` is _32232.232000_.
+====
+
+`digit_count`::: Total number of digits to render.
++
+[example]
+====
+`number:32232.232[digit_count=6]` is _32232.2_.
+====
+
+`group`::: Delimiter to use between groups of digits.
++
+[example]
+====
+`number:32232.232[group=' ']` (Unicode thin space) is _32 232.232_.
+====
+
+`group_digits`::: Number of digits in each group of digits. (default is 3 in most locales).
++
+[example]
+====
+`number:32232.232[group=' ',group_digits=2]` is _3 22 32.232_.
+====
+
+`fraction_group`::: Delimiter to use between groups of fractional digits.
++
+[example]
+====
+`number:32232.232131[fraction_group=' ']` is _32232.232 131_.
+====
+
+`fraction_group_digits`::: Number of digits in each group of fractional digits.
++
+[example]
+====
+`number:32232.232131[fraction_group=' ',fraction_group_digits=2]` is _32232.23 21 31_.
+====
+
+`notation`::: Type of notation to use for rendering. Legal values are:
+`basic`:::: Basic notation.
+`e`:::: Exponent notation.
+`scientific`:::: Scientific notation.
+`engineering`:::: Engineering notation.
++
+[example]
+====
+`number:32232.232[notation=engineering]` is _32.232232 × 10^4^_.
+====
+
+`exponent_sign`::: Whether to use a plus sign to indicate positive exponents, in exponent-based notation
+(`e`, `scientific`, `engineering`).
+Legal values are:
+
+`plus`:::: The `+` symbol is used.
++
+[example]
+====
+`number:32232.232[notation=engineering,exponent_sign=plus]` is _32.232232 × 10^+4^_.
+====
+
+
+`times`::: Symbol to use for multiplication where required by the notation
+(`scientific`, `engineering`).
++
+[example]
+====
+`number:32232.232[notation=engineering,times=·]` is _32.232232 · 10^4^_.
+====
+
+`e`::: Symbol to use for exponents in E notation (default value `E`).
++
+[example]
+====
+`number:32232.232[notation=e,e=e]` is _3.2232232e5_.
+====
+
+=== Profiles
+
+Profiles of mathematical notation preferences can be defined through document
+attributes to reduce repetition of setting the same options.
+
+* The document attribute `number-presentation:` sets the default options to be
+applied for any `number:[]` in the document.
+
+* A named profile specified as `:number-presentation-profile-NAME:` overrides
+the default when invoked in `number:[]` with the argument `profile=NAME`.
+
+* Any options specified in the `number:[]` macro override any profiles.
+
+* Any value `nil` set on an option cancels out that option.
+
+
+=== Examples
+
+====
+[source,adoc]
+----
+number:30000.54[]
 ----
 
-Any number so marked up is automatically formatted consistent with how numbers are formatted
-in the Metanorma flavour. That includes the flavour's specifications, where defined,
-for grouping digits, for decimal points, and for precision. Where these are not specified,
-the defaults for the document language are used, as specified in the https://github.com/twitter/twitter-cldr-rb[twitter-cldr-rb] gem.
+Is formatted as "30,000.54".
+====
 
-NOTE: The number in the `\stem:[]` expression must be specified according to the en-US locale;
-`30000.54` is recognised as a decimal number, `30 000,54` is not. However, if the document is in French,
-`stem:[30000.54]` will in fact be rendered consistent with French practice, as _30 000,54_.
 
-The `number` command is also used to format numbers 
-in Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
-The `number` command in addition allows users to specify more explicitly how a number should be
-formatted.
+====
+[source,adoc]
+----
+number:30000.54[decimal=',',group=' ']
+----
 
-The command takes the format `number:30000.54[decimal=',',group=' ']`
+Is formatted as "30 000,54"
+====
 
-* The numerical value to be encoded is given between `number:` and the `[`.
-* If no formatting options are to be specified, the `[]` is left empty; e.g.
-`number:30000.54[]`
-* Formatting instructions are comma-delimited pairs of an option and a value,
-where the value can be given in single or double quotes. The following options
-are recognised, as implemented in the https://www.plurimath.org/[Plurimath] gem
-(based on the twitter-cldr-rb gem):
-** `locale` gives the language whose conventions need to be followed for the number;
-the locale is assumed to be specified in twitter-cldr-rb, and is given as a two-letter
-ISO-639 code, e.g. `en`, `fr`.
-** `precision` gives the number of fractional digits to render: `number:32232.232[precision=6]` is _32232.232000_.
-** `digit_count` gives the total number of digits to render: `number:32232.232[digit_count=6]` is _32232.2_.
-** `group` gives the delimiter to use between groups of digits: `number:32232.232[group=' ']` is _32 232.232_.
-** `group_digits` gives the number of digits in each group of digits (default 3 in most locales):
-`number:32232.232[group=' ',group_digits=2]` is _3 22 32.232_.
-** `fraction_group` gives the delimiter to use between groups of fractional digits: `number:32232.232131[fraction_group=' ']` is _32232.232 131_.
-** `fraction_group_digits` gives the number of digits in each group of fractional digits:
-`number:32232.232131[fraction_group=' ',fraction_group_digits=2]` is _32232.23 21 31_.
-** `notation` is the type of notation to use for rendering; legal values as `basic`, `e`, `scientific`, and `engineering`.
-`number:32232.232[notation=engineering]` is _32.232232 × 10^4^_.
-** `exponent_sign` is whether to use a plus sign to indicate positive exponents, in exponent-based notation
-(E, scientific, engineering); its legal value is `plus`. `number:32232.232[notation=engineering,exponent_sign=plus]` is _32.232232 × 10^+4^_.
-** `times` is the sign to use for multiplication where required by the notation
-(scientific, engineering); `number:32232.232[notation=engineering,times=·]` is _32.232232 · 10^4^_.
-** `e` is the sign to use for exponents in E notation (default value `E`);
-`number:32232.232[notation=e,e=e]` is _3.2232232e5_.
 
-In order to reduce the number of options named for the `number:[]` macro, profiles can be defined
-through document attributes.
-
-* The default options to be applied for any `number:[]` are specified in the document attribute
-`number-presentation:`
-* A named profile, which overrides any default, is specified as `:number-presentation-profile-NAME:`,
-and invoked in the `number:[]` macro with the argument `profile=NAME`
-* Any options specified in the `number:[]` macro override any profiles
-* Any value `nil` set on an option cancels out that option
-
-So in the following document:
+In the following document, all other numbers override  `:number-presentation:`
+in some way.
 
 [source,adoc]
 ----
@@ -195,27 +304,60 @@ So in the following document:
 :number-presentation-profile-3: notation=scientific,exponent_sign=nil,decimal=","
 :number-presentation-profile-x: notation=engineering,precision=4,times=','
 
-number:341[]
-number:342[profile=3]
-number:343[profile=x]
-number:344[profile=x,precision=5]
-number:345[profile=x,,digit_count=10,precision=nil]
-number:346[precision=6,digit_count=10,exponent_sign=nil]
+number:341[] <1>
+number:342[profile=3] <2>
+number:343[profile=x] <3>
+number:344[profile=x,precision=5] <4>
+number:345[profile=x,,digit_count=10,precision=nil] <5>
+number:346[precision=6,digit_count=10,exponent_sign=nil] <6>
 ----
 
-* The initial _341_ is set to the options of `:number-presentation:`,
+<1> The initial _341_ is set to the options of `:number-presentation:`,
 `notation=e,exponent_sign=plus,precision=4`.
-* All other numbers override  `:number-presentation:` in some way.
-* _342_ has `profile=3`, so it uses `:number-presentation-profile-3:`. That replaces
-`notation=e` with `notation=scientific`; it removes `exponent_sign=plus`
-(by setting `exponent_sign=nil`); it adds `decimal=","`; and it
-retains `precision=4`.
-* _343_ has `profile=x`, so it uses `:number-presentation-profile-x`, which similarly overrides
-`:number-presentation:`, resulting in `notation=engineering,precision=4,times=',',exponent_sign=plus`.
-* _344_ also uses `:number-presentation-profile-x`, but overrides its `precision` value
-to be `5`.
-* _345_ uses `:number-presentation-profile-x`, removes the `precision` value, and adds
-`digit_count=10`, resulting in `notation=engineering,times=',',exponent_sign=plus,digit_count=10`.
-* _346_ overides `:number-presentation:`, without appealing to a named profile:
-it overrides `precision` as `precision=6`, it sets `digit_count=10`, and it
-removes `exponent_sign`, resulting in `notation=e,precision=6,digit_count=10`.
+
+<2> _342_ has `profile=3`, so it uses `:number-presentation-profile-3:`. That
+replaces `notation=e` with `notation=scientific`; it removes
+`exponent_sign=plus` (by setting `exponent_sign=nil`); it adds `decimal=","`;
+and it retains `precision=4`.
+
+<3> _343_ has `profile=x`, so it uses `:number-presentation-profile-x`, which
+similarly overrides `:number-presentation:`, resulting in
+`notation=engineering,precision=4,times=',',exponent_sign=plus`.
+
+<4> _344_ also uses `:number-presentation-profile-x`, but overrides its
+`precision` value to be `5`.
+
+<5> _345_ uses `:number-presentation-profile-x`, removes the `precision` value,
+and adds `digit_count=10`, resulting in
+`notation=engineering,times=',',exponent_sign=plus,digit_count=10`.
+
+<6> _346_ overides `:number-presentation:`, without appealing to a named
+profile: it overrides `precision` as `precision=6`, it sets `digit_count=10`,
+and it removes `exponent_sign`, resulting in
+`notation=e,precision=6,digit_count=10`.
+
+
+
+=== Encoding numbers as formulas
+
+Numbers can be encoded in the `stem` blocks, and are formatted identically
+as those using the `number` command.
+
+The `number` command however provides granular configuration options, and
+is the recommended method for encoding numbers for consistency reasons.
+
+.Encoding plain numbers inside a math block
+[example]
+====
+[source,adoc]
+----
+There are stem:[30000.54] people in attendance.
+----
+====
+
+
+NOTE: The number in the `\stem:[]` expression must be specified according to the
+en-US locale; `30000.54` is recognised as a decimal number, `30 000,54` is not.
+However, if the document is in French, `stem:[30000.54]` will in fact be
+rendered consistent with French practice, as _30 000,54_.
+
