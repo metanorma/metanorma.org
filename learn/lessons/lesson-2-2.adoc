@@ -4,8 +4,8 @@ title: Sections
 ---
 :page-liquid:
 
-Sections define hierarchy levels in your document and are equivalent to chapters. The document title is the highest section and is created by prepending a `=` sign in front of the heading. If you want to go one level deeper in the hierarchy, add another `=`. 
-Here’s an example: 
+Sections define hierarchy levels in your document and are equivalent to chapters. The document title is the highest section and is created by prepending a `=` sign in front of the heading. If you want to go one level deeper in the hierarchy, add another `=`.
+Here’s an example:
 
 [source, AsciiDoc]
 ----
@@ -38,18 +38,18 @@ A typical Metanorma document can contain the following sections:
 * Normative references
 * Terms and definitions
 * Definitions
-* Clauses 
+* Clauses
 * Symbols and abbreviated terms
 * Bibliography
 * Annex
 
 To successfully validate a document, the compiler needs to know what sections are in the document. Metanorma relies on these predefined section titles to check them against the document model. However, not all sections need an identifier, for example, your ordinary content sections fall under the category of _clause section_, and are not further standardized.
 
-NOTE: Each organization is based on the standard document model but they can omit sections or make them mandatory, if they choose to. For example, only NIST uses the acknowledgments section, whereas other SDOs do not require it. Flavours may overrule these pre-defined section titles with titles of their own, or may choose not to recognise at least some of them as special sections. Check the https://www.metanorma.org/flavors/[flavor documentation] for more details on how your SDO uses Metanorma. 
+NOTE: Each organization is based on the standard document model but they can omit sections or make them mandatory, if they choose to. For example, only NIST uses the acknowledgments section, whereas other SDOs do not require it. Flavours may overrule these pre-defined section titles with titles of their own, or may choose not to recognise at least some of them as special sections. Check the link:/flavors/[flavor documentation] for more details on how your SDO uses Metanorma.
 
 == Deviating section titles
 
-If you want to use a different title or create a document in a language other than English, you need to add metadata in square brackets to ensure that sections are recognized. Plain AsciiDoc already provides some https://docs.asciidoctor.org/asciidoc/latest/sections/section-ref/#section-styles[section metadata] that Metanorma uses for document validation: 
+If you want to use a different title or create a document in a language other than English, you need to add metadata in square brackets to ensure that sections are recognized. Plain AsciiDoc already provides some https://docs.asciidoctor.org/asciidoc/latest/sections/section-ref/#section-styles[section metadata] that Metanorma uses for document validation:
 
 * `[abstract]`
 * `[acknowledgments]`
@@ -95,7 +95,7 @@ There are also some Metanorma-specific section identifiers, that follow the synt
 <1> This section is an introduction but the compiler can not recognize it because it deviates from plain `== Introduction`. The `preface` attribute ensures that the document structure is still valid.
 <2> The `Normative references` section contains references to related standards. The compiler needs the `[bibliography]` tag, so that it renders the reference correctly.
 <3> Use the `heading` tag to assign section types specific to Metanorma.
-<4> Here, the appendix is called “Annex”, and needs the `appendix` tag to define what kind of section it is. You can specify if a section is normative or informative by adding the `obligation` identifier after the section identifier. 
+<4> Here, the appendix is called “Annex”, and needs the `appendix` tag to define what kind of section it is. You can specify if a section is normative or informative by adding the `obligation` identifier after the section identifier.
 
 
 === Practice time
