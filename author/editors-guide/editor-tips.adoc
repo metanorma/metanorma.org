@@ -1,0 +1,280 @@
+---
+layout: author-docs
+title: Editor tips
+---
+
+The following tips complement the information in:
+link:/author/ref/asciidoc-tips/[Metanorma AsciiDoc tips].
+
+== Use lowercase image filenames
+
+Some platforms have file systems that have case-sensitive filenames.
+
+Linux uses case-sensitive file systems, i.e. `image.PNG` and `image.png` are
+different file names.
+
+.Impact of mixed-case filenames across platforms
+[example]
+====
+If you have a file named `image.PNG` and use `image::image.png[]`
+to include the image, it will work on macOS and Windows, but will fail on Linux.
+
+On Linux, Metanorma will fail to find the specified `image.png`.
+====
+
+The best practice is to keep all filenames in lowercase to ensure that the
+document is portable across platforms.
+
+
+If you are on Windows, and have multiple filenames ending in `.PNG`, there is a
+straightforward way to change them all at once:
+
+. Go to the folder where the images are located.
+
+. Place the cursor in the bar address, write `cmd` and press ENTER. The command
+line will open on that folder location.
+
+. In the command line, execute the command `ren *.PNG *.png`, and all `*.PNG`
+files will be renamed as `*.png`.
+
+
+== Using different math expression languages
+
+Math expressions can be written in the AsciiMath, LaTeX math, UnicodeMath
+formats. The default math language in Metanorma is AsciiMath,
+accepted by `stem:[...]` command and in the `[stem]` block.
+
+There are two ways to use alternative math languages.
+
+. Use math language specific commands:
+
+** AsciiMath:: `asciimath:[...]`, `[stem,lang=asciimath]`
+** LaTeX math:: `latexmath:[...]`, `[stem,lang=latexmath]`
+** UnicodeMath:: `unicodemath:[...]`, `[stem,lang=unicodemath]`
+
+. Change the default math language for the whole document through the `:stem:`
+document attribute.
+
+* AsciiMath:: `:stem: asciimath`.
+* LaTeX math:: `:stem: latexmath`.
+* UnicodeMath:: `:stem: unicodemath`.
+
+
+While the AsciiMath default and can handle most cases, as not all symbols and
+expressions are available in AsciiMath.
+
+.Unavailable symbols in AsciiMath
+[example]
+====
+The `\backepsilon` (∍) and `\mathbb{E}` (𝔼) symbols are not available in
+AsciiMath, amongst others.
+====
+
+== Verify math formulas before encoding in Metanorma
+
+Metanorma relies on https://www.plurimath.org[Plurimath] to render the correct
+math presentation of all math representation languages.
+
+If you are not familiar with the expression of math in the math representation
+language, or are unsure how it wil be rendered, do take time to check
+the formula on the https://www.plurimath.org[Plurimath] website, which provides
+you with a converter to verify the output of the formula.
+
+Especially pay attention to the "math tree", which indicates how the formula
+is understood by a computer, such that the intended semantics are correctly
+encoded.
+
+
+== Do not use math arrays
+
+The LaTeX `eqnarray` environment for equation arrays is not supported by
+https://github.com/plurimath/plurimath[Plurimath]. Users are encouraged to use
+multiple formula blocks instead in order for every equation to be individually
+numbered.
+
+
+// TODO: re-write the text below to use Plurimath CLI software instead, when it's ready:
+// https://github.com/plurimath/plurimath/issues/204
+////
+If you want to know if an equation will pass, try this:
+
+`math.lxml`
+[source,latex]
+----
+V = \frac{1}{2} \: {\bf u}^t \:
+            \int_{surface} \: {B'}^t \: D' \: B' \: ds
+               \; {\bf u}
+----
+
+Run:
+
+[source,sh]
+----
+cat math.lxml | latexmlmath -
+----
+////
+
+== Keep table formatting at the top level
+
+AsciiDoc provides flexibility in formatting individual table cells by prefixing
+them with corresponding markup elements.
+
+When a table column shares the same formatting requirements,
+the formatting options can be specified at column specification. These include:
+
+* cell alignment
+* cell width
+
+The example below demonstrates the usage of the _specifier_, which left-aligns
+the first column and prefixes all its cells with a to interpret the content as
+AsciiDoc. The second column is horizontally centered, and the third column is
+right-aligned. Additionally, a header option is added to the table.
+
+.Using table column specifiers for alignment
+====
+[source,asciidoc]
+----
+[cols="<a,^,>",options="header"]
+|===
+| Column 1 | Column 2 | Column 3
+
+| left aligned | centered | right aligned
+|===
+----
+====
+
+NOTE: The table header is always separated from table content by a blank line,
+in order to allow long tables spanning pages to properly render table headers
+repeated on every new page.
+
+== Unnumbered elements
+
+The attribute `%unnumbered` is used to prevent Metanorma from assigning unique
+numbers to elements.
+
+Elements that can be unnumbered include:
+
+* equation blocks
+* figures
+* tables
+* notes
+* examples
+* and code blocks.
+
+NOTE: Clauses and subclauses cannot be unnumbered.
+
+.Unnumbered image
+====
+[source,adoc]
+----
+[%unnumbered]
+.Caption image
+image::filename.png[]
+----
+====
+
+.Unnumbered table
+====
+[source,adoc]
+----
+.Caption table
+[%unnumbered]
+|===
+| This | is
+| a | table
+|===
+----
+====
+
+.Unnumbered formula
+====
+[source,adoc]
+----
+[stem%unnumbered]
+++++
+y = x^2
+++++
+----
+====
+
+
+== Removing title from sections and subsections
+
+To remove section and subsection titles, use the sequence `\{blank}` as its
+title.
+
+.Untitled section headings
+====
+[source,adoc]
+----
+//Blank section
+== {blank}
+Text
+
+//Blank subsection
+=== {blank}
+Text
+----
+====
+
+
+
+== Escaping control characters
+
+AsciiDoc uses certain control characters to denote formatting and structure.
+
+To render these control characters literally, the backslash (`\`) character can
+be used to "escape" them.
+
+However, there are cases where the standard backslash escaping approach does not
+work as expected, due to the inherent ambiguity of the AsciiDoc syntax.
+
+For instance, if you want to display a double hyphen `--` instead of an em-dash
+`—`, the backslash method (`\--`) will not achieve the desired result.
+
+In such situations, you can use the _Zero Width Non Joiner_ entity `\&#x200c;`
+to obtain the correct output. The formatted double hyphen would appear as
+`-\&#x200c;-`.
+
+Generally, authors should first attempt to escape characters using the
+backslash, and if that proves ineffective, resort to using the `\&#x200c;`
+entity instead.
+
+== Proper usage of normative references
+
+The _Normative references_ clause in Metanorma documents is a specific section
+reserved for citing external sources that are considered authoritative for the
+content.
+
+It is important to note that the use of numeric references (e.g.,
+`[[[netcdf,1]]]`) is not permitted within this section.
+
+If a reference cannot be automatically fetched using a standard identifier as
+the reference tag, authors should use alternative textual descriptions to
+identify the source.
+
+.Using alternative textual descriptions in the bibliography
+[example]
+====
+[source,adoc]
+----
+[bibliography]
+== Normative references
+
+* [[[netcdf,LLNL NetCDF CF Metadata Conventions]]],
+span:title[NetCDF CF Metadata Conventions].
+span:organization[Lawrence Livermore National Laboratory].
+span:uri:citation[http://cfconventions.org/]
+----
+====
+
+Numeric references are only permitted within the _Bibliography_ clause, which
+can include both generic and standard references.
+
+Failure to adhere to this convention may result in compilation errors or
+incorrect document generation, depending on the specific AsciiDoc flavor being
+used (e.g., OGC). Authors are encouraged to consult the Metanorma documentation
+for more information on composing references and bibliographies in AsciiDoc.
+
+For more information about composing references and bibliography,
+see: link:/author/topics/sections/bibliography/[Bibliography]
