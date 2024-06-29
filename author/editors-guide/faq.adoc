@@ -1,0 +1,88 @@
+---
+layout: author-docs
+title: Frequently asked questions (FAQ)
+---
+
+== How can I nest additional content to a list item?
+
+Sometimes list items contain more content than a simple paragraph.
+
+A list item can be attached with an open block to contain additional content.
+
+An open block is a block of text delimited with lines consisting of two hyphen
+symbols `--` at the beginning and end.
+
+.Example of an open block
+====
+[source,adoc]
+----
+--
+This is an open block
+--
+----
+====
+
+The concatenation character `+` is used to join the open block to the list,
+the `+` is to be placed immediately after the list item, and immediate before
+the open block, with no gap in between.
+
+.Example of an open block joined to a list item
+====
+[source,adoc]
+.List item with block concatenation
+----
+. This line is a list item.
++
+--
+And this line is concatenated to the list item by using an open block.
+--
+----
+
+.Result: List item with block concatenation
+image::images/faq-1.png[]
+====
+
+You can basically put any markup into the concatenated open block: paragraphs,
+notes, examples, tables, lists, etc.
+
+
+== How can I include rich-text elements in a table?
+
+Rich-text elements are allowed in a table cell.
+
+The table cell that contains rich-text content has to denoted as "rich-text"
+through using the `a` column option in `cols`, or prefixed with an `a` immediate
+before the cell delimiter.
+
+[source,asciidoc]
+----
+|===
+
+// Including an unnumbered figure
+a|
+[%unnumbered]
+image::image01.png[]
+
+// Including an item list
+a|
+Some text
+
+* item 1
+* item 2
+
+|===
+----
+
+NOTE: When including an item list in a table cell, as with normal cases, a blank
+line needs to precede the first asterisk (`*`) or dot (`.`) used as an indicator
+for the first item on a list.
+
+
+== Why do I get extremely wide tables in DOC output sometimes?
+
+This could happen when there are table cells containing a string of long text
+that has no whitespace in between, causing the table wider beyond borders.
+
+* If the long text is a URL, specify the `:break-up-urls-in-tables:` document
+attribute in the document header to allow Metanorma to cut up URLs when needed.
+
