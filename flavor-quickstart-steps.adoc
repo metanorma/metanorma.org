@@ -14,25 +14,25 @@ link:/software/{{ include.flavor.implemented_by }}[{{ include.flavor.implemented
 
 == Quick start
 
-{% if include.flavor.sample %}
-- Play with a link:./sample/[sample Metanorma {{ include.flavor.title }} project]
+{% if include.flavor.docs_entry_points %}
+* Check out the
+  {%- for p in include.flavor.docs_entry_points %}
+  link:{{ p.path }}[{{ p.title }}]{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor %}
+  for authoring {{ include.flavor.title_org | default: include.flavor.title }}
+  documents
 {% endif %}
 
-- Build Metanorma for {{ include.flavor.title }} documents with a command like this:
+{% if include.flavor.sample %}
+* Look at the link:./sample/[sample Metanorma {{ include.flavor.title }} project]
+{% endif %}
+
+* Build Metanorma for {{ include.flavor.title }} documents with a command like this:
 +
 [source,console]
 --
 metanorma {{ include.flavor.build.cli_flags }} {my-document-filename.adoc}
 --
-
-{% if include.flavor.docs_entry_points %}
-- Check out the
-  {%- for p in include.flavor.docs_entry_points %}
-  link:{{ p.path }}[{{ p.title }}]{%- unless forloop.last -%},{%- endunless -%}
-  {%- endfor %}
-  for authoring {{ include.flavor.title_org | default: include.flavor.title }} documents
-  using {{ include.flavor.markup_name }} markup
-{% endif %}
 
 [IMPORTANT]
 ====
