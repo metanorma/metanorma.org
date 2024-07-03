@@ -2,7 +2,7 @@
 layout: author-docs
 title: Troubleshooting
 ---
-tag::tutorial[]
+// tag::tutorial[]
 
 There can be many reasons why you can't compile a Metanorma AsciiDoc document
 into the final output, but you can easily fix them when you are familiar with
@@ -45,7 +45,7 @@ If Metanorma did not generate any visual output, you need to work with the error
 * *If the document did compile and generated visual output:* +
 Have a look at the compiled output: Are there missing sections? Is the formatting different than what you expected? Sometimes you can catch errors by looking at the rendered document. After that, have a look at the errors on the terminal to pinpoint where things went wrong.
 
-end::tutorial[]
+// end::tutorial[]
 The following sections discuss common errors and how to fix them.
 
 == The document won't build - Compilation errors
@@ -84,7 +84,7 @@ Bundler fetches and installs the missing gems.
 
 To *update* outdated gems run `bundle-update` in your project directory.
 
-tag::no-compile-markup[]
+// tag::no-compile-markup[]
 === Markup errors
 Metanorma can't compile a document, when required information is missing or there are markup errors.
 
@@ -135,11 +135,11 @@ If two or more cross-references have the same anchor, the document won't build a
 ----
 
 To solve this problem, rename the anchor. Check your document against any references for the anchor that you changed and update them.
-end::no-compile-markup[]
+// end::no-compile-markup[]
 
 == The document builds, but looks odd
 
-tag::rendering-errors[]
+// tag::rendering-errors[]
 
 === Rendering errors
 The main cause for rendering errors are markup errors which can lead to unexpected rendering results.
@@ -190,7 +190,7 @@ image::path/file.jpg[]
 ----
 * The path and the file extension are correct. If you used the https://docs.asciidoctor.org/asciidoc/latest/macros/images-directory/[`:imagesdir:` attribute] to set the image path, check if the path is correct.
 
-end::rendering-errors[]
+// end::rendering-errors[]
 
 ==== Index term is showing up multiple times
 
