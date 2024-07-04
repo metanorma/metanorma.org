@@ -329,25 +329,34 @@ NOTE: This feature is not supported in typical AsciiDoc.
 .Example of a more complex table
 [source,adoc]
 ----
-[headerrows=2,alt=Table of maximum mass fraction of defects in husked rice,summary=Table enumerating the permissible mass fraction of defects in husked and various classes of milled rice,width=70%]
+[headerrows=2,cols="<,^,^,^,^",options="header,footer",alt=Table of maximum mass fraction of defects in husked rice,summary=Table enumerating the permissible mass fraction of defects in husked and various classes of milled rice]
 |===
-.2+|Defect 4+^| Maximum permissible mass fraction of defects in husked rice +
-stem:[w_max]
-| in husked rice | in milled rice (non-glutinous) | in husked parboiled rice | in milled parboiled rice
+.2+^.^|Defect 4+^| Maximum permissible mass fraction of defects +
+stem:[w_max] +
+%
+^| Husked rice ^| Milled rice (non-glutinous) ^| Husked parboiled rice ^| Milled parboiled rice
 
-| Extraneous matter: organic footnote:[Organic extraneous matter includes foreign seeds, husks, bran, parts of straw, etc.] | 1,0 | 0,5 | 1,0 | 0,5
+| HDK | 2,0 footnote:defectsmass[The maximum permissible mass fraction of defects shall be determined with respect to the mass fraction obtained after milling.] | 2,0 | 2,0 footnote:defectsmass[] | 2,0
+| Chalky kernels | 5,0 footnote:defectsmass[] | 5,0 | N/A | N/A
 
+5+a| Live insects shall not be present. Dead insects shall be included in extraneous matter.
 |===
+
+[%key]
+N/A:: Not applicable.
+
+NOTE: Some commercial contracts require information in addition to that provided
+in this table.
 ----
 
 which renders:
 
-.Illustration of a table in Metanorma (DOC output). Configuration: 70% of width, two header rows, one normal row, one footnote.
-image::/assets/author/topics/document-format/text/fig-table.png[Illustration of a table in Metanorma (DOC output). Configuration: 70% of width, two header rows, one normal row, one footnote]
+.Illustration of a table in Metanorma (DOC output). Configuration: two header rows, two normal rows, and a footer with one text element, one key element, one note and one footnote.
+image::/assets/author/topics/document-format/text/fig-table.png[Illustration of a table in Metanorma (DOC output). Configuration: two header rows, two normal rows, and a footer with one text element, one key element, one note and one footnote.]
 
 === Example table 2
 
-https://raw.githubusercontent.com/metanorma/mn-samples-iso/main/sources/international-standard/body/body-en.adoc[Table 1 in the Metanorma ISO Rice example document] illustrates
+https://raw.githubusercontent.com/metanorma/mn-samples-iso/main/sources/international-standard/rice-2023/sections-en/04-specifications.adoc[Table 1] in the https://raw.githubusercontent.com/metanorma/mn-samples-iso/main/sources/international-standard/rice-2023/body/body-en.adoc[Metanorma ISO Rice example document] illustrates
 a large range of table formatting options. Search for `#table1`.
 
 
