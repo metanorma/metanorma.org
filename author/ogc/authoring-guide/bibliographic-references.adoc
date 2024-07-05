@@ -131,32 +131,33 @@ ____
 ====
 
 
-//OGC specific
 == Auto-fetching OGC references
 
-Relaton fetches bibliographic entries for OGC documents, when the syntax matches the following:
+Relaton fetches bibliographic entries for OGC documents, when the syntax matches
+the following:
 
-//Line 62 stems from link:/author/topics/building/reference-lookup/. To me, the parenthesis are a bit confusing. In which context do we use it?
-`OGC(identifier)` (e.g. `OGC(14-083r2)`, `OGC 14-083r2`), or any identifier prefixed with `OGC`.
+* `OGC {identifier}` (e.g. `OGC 14-083r2`)
+* `OGC(identifier)` (e.g. `OGC(14-083r2)`)
 
-* If Relaton *can* resolve the reference, the bibliographic information from the database will be rendered.
-+
+If Relaton *can* resolve the reference, the bibliographic information from the database will be rendered.
+
 .Example of a OGC standard reference
 ====
 [source,asciidoc]
 ----
-* [[[OGC12-080r2,OGC 12-080r2]]], OGC OWS Context Conceptual Model.
+* [[[OGC12-080r2,OGC 12-080r2]]]
 ----
 
 will render:
 ____
-Roger Brackin, Pedro Gonçalves : OGC 12-080r2, OGC OWS Context Conceptual Model. Open Geospatial Consortium (2014). https://portal.ogc.org/files/?artifact_id=55182
+Roger Brackin, Pedro Gonçalves: OGC 12-080r2, OGC OWS Context Conceptual Model. Open Geospatial Consortium (2014).
+Available at: https://portal.ogc.org/files/?artifact_id=55182
 ____
 ====
 
-* If Relaton *can not* resolve the reference, the provided description will be rendered.
-+
-.Another example
+If Relaton *cannot* resolve the reference, the provided description will be rendered.
+
+.Example of a non-auto-fetched reference
 ====
 [source,asciidoc]
 ----
