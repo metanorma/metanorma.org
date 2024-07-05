@@ -531,7 +531,7 @@ processing rules apply:
 * Top-level clauses ending in `-statement` are converted into the equivalent `boilerplate` tags; so
 `== copyright-statement` corresponds to Metanorma XML `<copyright-statement>`.
 * The Asciidoctor is a Liquid template, just as for XML, so `{{ ... }}` is reserved for Liquid, and cannot
-be used for Metanorma Asciidoc concepts. The Asciidoc is processed by Liquid before it is passed on for processing.
+be used for Metanorma AsciiDoc concepts. The AsciiDoc is processed by Liquid before it is passed on for processing.
 * Clauses in predefined text often do not have clause titles; as usual for Asciidoc, introduce such titles with
 `=== {blank}`.
 * Clauses in Asciidoctor with no title and no user-assigned anchor are automatically assigned an anchor
@@ -543,7 +543,7 @@ for any clauses with identical titles in your predefined text and your main docu
 is supplied, they will end up with the same title. To prevent that, the simplest thing to do is to provide
 user-defined anchors for all titled clauses in the predefined text.
 * The values that populate Liquid templates in Metanorma are in Metanorma XML, if they contain any formatting;
-Metanorma automatically treats Asciidoc Liquid variables as Metanorma XML passthrough values. For example,
+Metanorma automatically treats AsciiDoc Liquid variables as Metanorma XML passthrough values. For example,
 the `pub-address` document variable may be specified as document attribute as:
 +
 [source,adoc]
@@ -554,8 +554,8 @@ London
 +
 --
 But its value in Liquid will be `1 John St<br/>London`, since Liquid interpolation is developed for Metanorma XML.
-Metanorma will treat any instance of `{{ pub_address}}` in Asciidoc predefined text as `pass:[{{pub_address}]`
-(i.e. when converting the Asciidoc predefined text to Metanorma XML, the contents of `{{pub_address}}` will be left alone.)
+Metanorma will treat any instance of `{{ pub_address}}` in AsciiDoc predefined text as `pass:[{{pub_address}]`
+(i.e. when converting the AsciiDoc predefined text to Metanorma XML, the contents of `{{pub_address}}` will be left alone.)
 --
 
 The following is the Asciidoctor equivalent of the `boilerplate` Metanorma XML just given. This is for

@@ -219,18 +219,23 @@ Gives the title of the current level of the manifest.
 `file` and `entry` are mutually exclusive: `file` indicates the leaf nodes of the
 manifest entries.
 +
+--
 * The documents are expected to be Metanorma Semantic XML documents;
 they can also be Metanorma Presentation XML documents, attachments (see below),
-YAML files, or Asciidoc documents.
-* If a document is a Asciidoc documents, it is compiled to a Metanorma
+YAML files, or AsciiDoc documents.
+
+* If a document is a AsciiDoc documents, it is compiled to a Metanorma
 Semantic XML document in preprocessing [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0].
+
 * If a document is a YAML file, it is assumed to be a collection manifest itself,
 and its manifest is recursively read into the current manifest at that point of the
 entry [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0]. This allows manifests
 to include other manifests. If the YAML file is in a different directory, the file locations of any files
 it references are updated to be relative to the current manifest.
+
 * A manifest can have both files and nested manifests as its
 children [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.7].
+--
 
 `identifier`::: The document identifier, used to index the document in processing. It is also
 the identifier used to reference this document from other documents in the same collection,
@@ -563,6 +568,7 @@ Prefatory content from the collection manifest [added in https://github.com/meta
 
 `final-content`::
 Final content from the collection manifest [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6].
+
 
 == Multilingual documents
 
