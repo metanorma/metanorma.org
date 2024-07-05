@@ -1,9 +1,9 @@
 ---
 layout: author-docs
 ---
-== Metadata and document attributes
+= Metadata and document attributes
 
-=== General
+== General
 
 // tag::tutorial[]
 
@@ -51,9 +51,8 @@ subsequent definition of the same attribute below the original definition.
 
 // end::metadata-intro[]
 
-
-This is an example for an ISO deliverable:
-
+.Example metadata for an ISO deliverable
+====
 [source,adoc]
 ----
 = Rice model <1>
@@ -74,6 +73,7 @@ This is an example for an ISO deliverable:
 <5> The committee responsible for the document.
 <6> `:draft:` renders comments as well. The attribute does not take any values: it is either present or not.
 <7> `mn-output-extensions` specifies the generated output formats. It can take several comma-delimited values.
+====
 
 // end::tutorial[]
 
@@ -101,7 +101,7 @@ When using one of the officially supported Metanorma flavors,
 please consult your flavor's author documentation.
 
 
-=== Re-using attributes in text
+== Re-using attributes in text
 
 The body of the document can reference the values of document attributes.
 Here's an example of referencing committee-related metadata entries:
@@ -123,7 +123,7 @@ If the corresponding document attributes are not populated in the header, then
 the references themselves will not be populated.
 
 
-=== Dealing with Unicode characters
+== Dealing with Unicode characters
 
 Document attribute values that contain Unicode characters must be entered
 directly as Unicode.
@@ -132,8 +132,9 @@ Any non-ASCII characters in document attribute values, or dashes for compound
 titles, will need to be entered as Unicode.
 
 If you need to have non-ASCII characters in document title, or dashes for
-compound titles, you will need to enter them directly as Unicode. Document
-attribute values, unlike document text, cannot deal with
+compound titles, you will need to enter them directly as Unicode.
+
+Document attribute values, unlike document text, cannot deal with
 https://www.w3schools.com/html/html_entities.asp[HTML entities].
 
 As an example, this would work:

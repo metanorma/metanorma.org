@@ -1,0 +1,415 @@
+---
+layout: author-docs
+title: Revision history
+---
+= Revision history
+
+== General
+
+Revision history (also "document history") is a critical aspect of
+standardization documents, providing a transparent record of the evolution and
+amendments made over time.
+
+Metanorma allows for semantic encoding of revision history that is embedded in
+the resulting Metanorma Semantic XML output.
+
+The revision history serves several essential functions:
+
+. **Traceability**: It allows stakeholders to track changes and understand how a
+document has evolved.
+
+. **Accountability**: Provides a clear record of who made specific changes and
+when they were made.
+
+. **Regulatory compliance**: Ensures that the document complies with relevant
+standards and updates.
+
+. **Knowledge management**: Facilitates the transfer of knowledge by maintaining
+a historical record of document modifications.
+
+. **Quality assurance**: Helps in reviewing and maintaining the quality and
+accuracy of documents over time.
+
+
+== Encoding semantics
+
+Metanorma differs from common publishing processes as it compiles a standard
+into semantic information models, which means that the meaning of information is
+preserved, instead of the presentation of information.
+
+Metanorma provides a uniform way of encoding revision history across
+all flavors.
+
+The benefits of encoding revision history this way are:
+
+Machine-readability::
+The revision history is encoded as structured information that can be easily
+processed by software, enabling automated analysis and integration.
+
+Consistency::
+A uniform format for preserving history across different standards and
+organizations minimizes inconsistencies for the author.
+
+Efficiency::
+Streamlines the process of updating and managing revision history.
+
+Interoperability::
+Facilitates the sharing and reuse of revision history data across different
+systems and platforms.
+
+
+== How it works
+
+Metanorma stores such history in the Metanorma Semantic XML that can be
+presented in any manner required by the SDO.
+
+This information is then rendered in the document, possibly in the preface or in
+an annex, commonly as a list or a table, depending on the Metanorma flavor.
+
+This structured approach ensures that document history is both human-readable
+and machine-readable, enhancing the overall utility and accessibility of the
+documents.
+
+
+== Simple history
+
+Simple revision history, such as bibliographic dates can be encoded using
+document attributes.
+
+These include dates like the publication date or the obsoleted date. For further
+details, refer to
+link:/author/ref/document-attributes/#timestamps[`:*-date:`] attributes.
+
+Certain flavours of Metanorma allow the identifier of a prior version of the
+document to be given under `:updated-by:`.
+
+
+[[detailed-history]]
+== Detailed history
+
+=== General
+
+Some SDOs require detailed revision history to be specified.
+
+Metanorma allows for the encoding of "changes", in which a "series of changes"
+result in a revision history.
+
+The following types of changes can be encoded:
+
+Bibliographic changes::
+Bibliographic changes are encoded using the https://www.relaton.org/specs[Relaton model].
+
+Content changes::
+Content changes are encoded using
+link:/author/topics/document-format/section[machine-readable content changes].
+
+
+=== Syntax
+
+In Metanorma, revision changes are encoded using the "revision history YAML"
+format.
+
+The relevant revision history YAML is encoded inside a special clause called the
+link:/author/topics/document-format/section#misc-container[`metanorma-extension` clause], which in turn houses the YAML as a source block
+under its `document history` subclause.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.0].
+
+The syntax is represented as follows:
+
+[source,adoc]
+--
+[.preface]
+= metanorma-extension
+
+== document history
+
+[source,yaml]
+----
+# Revision history YAML content
+----
+--
+
+=== Revision history YAML
+
+Revision history YAML adopts certain elements from
+https://www.relaton.org/specs/relaton-yaml/[Relaton YAML].
+
+The YAML structure is as follows:
+
+[source,yaml]
+----
+---
+- date: # Relaton YAML object
+  # ...
+- date: # Relaton YAML object
+  # ...
+----
+
+The different versions of the document are specified as an array of
+bibliographic record objects. Each version is described in Relaton YAML.
+
+Each bibliographic record object represents a version of the document that has a
+relation to the current document:
+
+* By default, the version described is related to the current document through
+the `updatedBy` relation.
++
+Different types of relation can be specified through the attribute `relation.type`,
+with valid values from https://www.relaton.org/model/relations/[Relaton document relations].
++
+Valid values are:
+
+`updatedBy`::: (default) The described version is updated by the current
+document.
+
+`draftOf`::: The described document is an unpublished draft of the current
+document.
+
+`merges`::: The described document was merged into the current document.
+
+`splits`::: The described document was split into a number of documents,
+including the current document.
+
+Contributors of the new version are encoded under the Relaton YAML `contributor`
+key.
+
+`contributor`::
+Individuals or organizations responsible for the change. Each specified as
+an https://www.relaton.org/model/creator/[Relaton YAML creator] object.
++
+.Change enacted by an organization
+[example]
+====
+[source,yaml]
+----
+- date: ...
+  # ...
+  contributor:
+  - organization:
+      name: S-102PT
+----
+====
++
+.Change enacted by an individual
+[example]
+====
+[source,yaml]
+----
+- date: ...
+  # ...
+  contributor:
+  - person:
+      name:
+        abbreviation: JMS
+        completename: J. Michael Straczynski
+----
+====
+
+Content changes made in the given version of the document are presented as an
+array of change objects under the Relaton YAML object.
+
+=== Change objects
+
+Document flavours may impose their own requirements on which fields are
+mandatory inside the change object.
+
+The change object is represented by the content of the `amend` key under each
+bibliographic record object.
+
+The `amend` object accepts the following keys:
+
+`description`::
+Description of the change in Metanorma AsciiDoc format. This content can span
+multiple blocks of text, and contain AsciiDoc formatting such as lists and
+tables.
++
+NOTE: For the ease of encoding blocks of AsciiDoc content, use the YAML literal
+style: `description: |`.
++
+.Change description in one line
+[example]
+====
+[source,yaml]
+----
+amend:
+- description: Approved edition of S-102
+----
+====
++
+.Change description in multiple lines of AsciiDoc
+[example]
+====
+[source,yaml]
+----
+amend:
+- description: |
+    Updated clause 4.0 and 12.0.
+
+    Populated clause 9.0.
+----
+====
+
+`classification`::
+A list of tag/value pairs used to classify the change, which can be used for
+filtering in the rendering of the document history. The values of the tag/value
+pairs are unrestricted.
++
+.Classification values are free-form
+[example]
+====
+Classifications possible include change severities (Minor, Major), change scope
+(the SDO it relates to), change type (editorial, content).
+
+[source,yaml]
+----
+amend:
+- # ...
+  classification:
+  - tag: severity
+    value: major
+  - tag: type
+    value: editorial
+----
+====
+
+`location`::
+Locations where the changes occur, specified as a list of Metanorma document
+notations, using the
+link:/author/topics/inline_markup/citations#locality-types[Metanorma locality notation],
+as with bibliographic cross-references.
++
+Valid values are listed at the
+link:/author/topics/inline_markup/citations#locality-types[Metanorma locality notation] page.
++
+.The changes affected the whole document, using the `whole` locality.
+[example]
+====
+[source,yaml]
+----
+amend:
+- # ...
+  location:
+  - whole
+----
+====
++
+.The changes affected clauses 4, 9.1 and 12.2.
+[example]
+====
+[source,yaml]
+----
+amend:
+- # ...
+  location:
+  - clause=4
+  - clause=9.1
+  - clause=12.2
+----
+====
++
+.The changes affected Annex B.
+[example]
+====
+[source,yaml]
+----
+amend:
+- # ...
+  location:
+  - annex=B
+----
+====
+
+`change`::
+The type of change (`add`, `modify`, `delete`, `replace`). Defaults to `modify`.
++
+.The changes modified Clause 3, as the `modify` value is default.
+[example]
+====
+[source,yaml]
+----
+amend:
+- # ...
+  location:
+  - clause=3
+----
+====
++
+.The changes deleted Clause 12.
+[example]
+====
+[source,yaml]
+----
+amend:
+- # ...
+  change: delete
+  location:
+  - clause=12
+----
+====
++
+.The changes added Annex N.
+[example]
+====
+[source,yaml]
+----
+amend:
+- # ...
+  change: add
+  location:
+  - annex=N
+----
+====
+
+=== Complete example
+
+.Illustration of document history markup.
+[example]
+====
+[source,adoc]
+--
+[.preface]
+= metanorma-extension
+
+== document history
+
+[source,yaml]
+----
+- date:
+  - type: published
+    value:  2012-04
+  edition: 1.0.0
+  contributor:
+  - person:
+      name:
+        abbreviation: JMS
+        completename: J. Michael Straczynski
+  amend:
+    - description: Approved edition of S-102
+- date:
+  - type: updated
+    value:  2017-03
+  edition: 2.0.0
+  contributor:
+  - organization:
+      name: S-102PT
+  amend:
+    - description: |
+        Updated clause 4.0 and 12.0.
+
+        Populated clause 9.0.
+      location:
+        - clause=4.0
+        - clause=12.0
+        - clause=9.0
+      classification:
+        - tag: severity
+          value: major
+        - tag: type
+          value: editorial
+    - description: Deleted contents of Annex B in preparation for updated S-100 Part 10C guidance.
+      location:
+        - annex=B
+----
+--
+====
+

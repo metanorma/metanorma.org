@@ -256,32 +256,44 @@ This document was prepared by the OGC Architecture Domain Working Group.
 ____
 ====
 
-== Document history
 
-Semantic markup of document history can be added to the document,
-using Metanorma extension
-and Relaton YAML [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.5.0].
-Document history is realised as a final "Revision history" annex.
+== Revision history
+
+Revision history is encoded using
+link:/author/topics/metadata/history#detailed-history[detailed change history]
+ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.5.0].
+
+Revision history is rendered as the "Revision history" annex always located as
+the last annex.
 
 The official structure for document history is as follows:
 
-Date:: represented as `date`, with type `published`, `updated` (modifications to document),
-or `issued` (circulated drafts).
+Date:: represented as `date`, with type `published`, `updated` (modifications to
+document), or `issued` (circulated drafts).
+
 Release:: represented as `edition`, or `version/draft`.
-Author:: represented as one or more `contributor` objects, following Relaton YAML.
-The role of the contributor can be specified optionally, as `role/type`, to differentiate
-editors from the default role of `author`.
-Paragraph modified:: represented as `amend/location`, with locality specified as in bibliographic
-cross-references; note that `whole` is used in Relaton to specify the entire document (and will be rendered
-as "all" in the generated document).
-Description:: represented as `amend/description`, can contain inline and block Asciidoc markup.
+
+Author:: represented as one or more `contributor` objects, following Relaton
+YAML. The role of the contributor can be specified optionally, as `role/type`,
+to differentiate editors from the default role of `author`.
+
+Paragraph modified:: represented as `amend/location`, with locality specified as
+in bibliographic cross-references; note that `whole` is used in Relaton to
+specify the entire document (and will be rendered as "all" in the generated
+document).
+
+Description:: represented as `amend/description`, can contain inline and block
+AsciiDoc markup.
 
 The following is an illustration of semantic document history markup for OGC.
 
+.OGC document revision history
+[example]
+====
 [source,adoc]
 --
 [.preface]
-== Misc-container
+== metanorma-extension
 
 === document history
 
@@ -377,4 +389,5 @@ The following is an illustration of semantic document history markup for OGC.
       * Miscellaneous updates
 ----
 --
+====
 

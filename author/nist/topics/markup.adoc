@@ -188,30 +188,23 @@ It is rendered after all other preface sections:
 This is an executive summary
 ----
 
-=== Errata
+=== Errata / Revision history
 
-Errata are marked up as an AsciIDoc table with role attribute `[.errata]`.
-Errata tables must have a header row containing the headings _Date, Type, Change, Pages_:
+Revision history can be encoded using
+link:/author/topics/metadata/history#detailed-history[detailed change history]
+ [added in https://github.com/metanorma/metanorma-nist/releases/tag/v2.4.0].
 
-[source,adoc]
-----
-[.errata]
-|===
-|Date |Type |Change |Page
+The change type is represented as `amend` classification `type`.
 
-|2019-01-01 |Minor |Repaginated |1-12
-|===
-----
+An example is as follows:
 
-As an alternative to this markup, semantic markup of document history can be added to the document,
-using Metanorma extension
-and Relaton YAML [added in https://github.com/metanorma/metanorma-nist/releases/tag/v2.4.0].
-The change type is represented as `amend` classification `type`. The foregoing example would be marked up as follows:
-
+.Errata of a NIST document encoding using detailed change history
+[example]
+====
 [source,adoc]
 -----
 [.preface]
-== Misc container
+== metanorma-extension
 
 === document history
 
@@ -228,6 +221,32 @@ The change type is represented as `amend` classification `type`. The foregoing e
     location:
       - page=1-12
 -----
+====
+
+
+Alternatively, Metanorma for NIST supports the "Errata" encoding, which is
+an AsciiDoc table with role attribute `[.errata]`.
+
+Errata tables must have a header row containing the headings:
+_Date_, _Type_, _Change_, _Pages_.
+
+The previous example would be encoded as:
+
+.Encoding changes using the `errata` table
+[example]
+====
+[source,adoc]
+----
+[.errata]
+|===
+|Date |Type |Change |Page
+
+|2019-01-01 |Minor |Repaginated |1-12
+|===
+----
+====
+
+
 
 == Clauses
 
