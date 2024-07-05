@@ -1,0 +1,369 @@
+---
+layout: author-docs
+title: Contributor metadata
+---
+= Contributor metadata
+
+== Organizations
+
+=== Basic information
+
+Organizations contributing to a document are specified with document attributes.
+
+For each organization, it is necessary to name the organization and its role.
+
+Roles available for organizations are:
+
+`publisher`:: Publisher of the document.
+`sponsor`:: Sponsor of the document.
+`copyright-holder`:: Copyright owner of the document.
+
+Multiple instances of organizations are specified by suffixing a number to the
+document attribute, as `_2`, `_3`, etc.
+
+.Example of setting multiple organizations per contribution role
+====
+[source,adoc]
+----
+:publisher: International Electrotechnical Commission
+:publisher_2: Internet Engineering Task Force
+:sponsor: International Organization for Standardization
+:sponsor_2: U.S. Department of Commerce
+:copyright_holder: International Electrotechnical Commission
+----
+====
+
+=== Additional metadata
+
+The following metadata can be provided for contributing organizations:
+
+For `sponsor`:
+
+`sponsor_logo`:: Logo of the sponsor.
+`sponsor-address`:: Address of the sponsor.
+`sponsor-phone`:: Phone number of the sponsor.
+`sponsor-fax`:: Fax number of the sponsor.
+`sponsor-email`:: Email of the sponsor.
+`sponsor-uri`:: Website URL of the sponsor.
+
+For `publisher`:
+
+`publisher_logo`:: Logo of the publisher.
+`pub-address`:: Address of the publisher.
+`pub-phone`:: Phone number of the publisher.
+`pub-fax`:: Fax number of the publisher.
+`pub-email`:: Email of the publisher.
+`pub-uri`:: Website URL of the publisher.
+
+.Comprehensive example of setting organizational contributors with additional metadata
+====
+[source,adoc]
+----
+:publisher: International Electrotechnical Commission
+:publisher_2: Internet Engineering Task Force
+:publisher_logo: iec.gif
+:publisher_logo_2: ietf.gif
+:pub-address_2: 5177 Brandin Ct, Fremont, California, 94538, United States
+:sponsor: International Organization for Standardization
+:sponsor_2: U.S. Department of Commerce
+:sponsor_logo: iso.gif
+:sponsor_logo_2: us_commmerce.gif
+:sponsor-email: central@iso.org
+:sponsor-email_2: TheSec@doc.gov
+:copyright_holder: International Electrotechnical Commission
+----
+====
+
+=== Subdivisions
+
+Contributing subdivisions of an organization can be set using the document
+attributes:
+
+`subdivision`:: The name of the subdivision.
+`subdivision-abbr`:: The abbreviation of the subdivision.
+
+NOTE: The subdivision can only be set for the first organization with role
+`publisher`.
+
+.Example of setting subdivision of the publisher
+====
+[source,adoc]
+----
+:publisher: Institute of Electrical and Electronics Engineers
+:subdivision: IEEE SA Standards Board
+:subdivision-abbr: IEEE SASB
+----
+====
+
+
+== Groups
+
+Contributor groups of organizations are specified using document attributes.
+
+These attributes are specific to Metanorma flavours, and are treated as
+SDO-specific metadata.
+
+.Example of SDO-specific group contributor for ISO and IEC
+====
+* `technical-committee` specifies the Technical Committee(s)
+* `technical-committee-number` specifies the TC number
+* `subcommittee` specifies the Subcommittee(s)
+* `subcommittee-number` specifies the SC number
+* `workgroup` specifies the Working Group(s)
+* `workgroup-number` specifies the WG number
+* `workgroup-type` specifies the type of the WG, such as `WG`, `AG`, `CAG`, etc.
+====
+
+By default, the corporate author of the document is assumed to be the same as
+the publishing organization.
+
+Default values for both the corporate author and the publisher are set in each
+Metanorma flavour.
+
+
+== Individuals
+
+=== General
+
+Individual contributors to a document are specified using document attributes.
+
+Individual contributors have significantly more complex metadata compared to
+organizations.
+
+Multiple contributors are specified by reusing the document attribute, and again
+suffixing a number to it, as `_2`, `_3`, etc.
+
+=== Name and role
+
+Individuals' names are encoded as follows:
+
+`fullname`:: Full name of the individual contributor.
+`surname`:: Surname of the individual contributor.
+`givenname`:: Given names of the individual contributor.
+`initials`:: Initials of given names of the individual contributor.
+
+Depending on the Metanorma flavor:
+
+* `fullname` may be mandatory or optional.
+* The combination of name components may replace `fullname`: `surname`, `givenname` and `initials`.
+* In some flavors, all 4 attributes all need to be filled in.
+
+.Individual contributors with different ways of specifying names
+[example]
+====
+[source,adoc]
+----
+:fullname: Fred Flintstone
+:surname_2: Rubble
+:givenname_2: Barney
+:initials_2: B. X.
+----
+====
+
+
+Individuals' roles:
+
+`role`:: The role of the individual contributor. Please refer to the
+https://www.relaton.org/specs/model/creator/[Relaton specification] for allowed
+values:
+
+`author`::: Author of the document.
+`editor`::: Editor of the document.
+`adapter`::: Person who adapted the document to its current form.
+`translator`::: Translator of the document.
+`performer`::: Performer of the item.
+`realizer`::: Person who realized this item.
+`publisher`::: Publisher of the document.
+`distributor`::: Distributor of the document.
+`owner`::: Owner of the document.
+`authorizer`::: Organization that authorized this document.
+`enabler`::: Person who enabled this document.
+`subject`::: Person who was a subject of this document.
+
+The default for individuals is `editor`.
+
+Roles can also be described more fully through `role-description`.
+
+.Specifying roles with individual contributors
+[example]
+====
+[source,adoc]
+----
+:fullname: Fred Flintstone
+:role: author
+:surname_2: Rubble
+:givenname_2: Barney
+:initials_2: B. X.
+:role_2: editor
+:role-description_2: consulting editor
+----
+====
+
+
+=== Affiliations
+
+Individuals have affiliations with organizations:
+
+`affiliation`:: Organization that the individual is affiliated with.
+`affiliation_abbrev`:: Abbreviation of the organization abbreviation.
+`affiliation_subdiv`:: Abbreviation of the subdivision that this individual is affiliated with.
+`affiliation_logo`:: The image logo of the affiliated organization.
+
+=== Credentials
+
+Individuals have relevant credentials.
+
+`contributor-credentials`:: Credentials of the individual.
+`contributor-position`:: Institutional position of the individual within their affiliation.
+
+=== Addresses
+
+Individuals have addresses.
+
+`address`:: The address of the individual. It is broken down into multiple parts:
+
+`street`::: Street number and street name of the address.
+`city`::: City name of the address.
+`region`::: Region name of the address.
+`country`::: Country name of the address.
+`postcode`::: Postcode of the address.
+
+
+=== Others
+
+Other contact details can be set for individual contributors.
+
+`contributor-uri`:: URL associated with the contributor.
+`email`:: Email of the contributor.
+`phone`:: Phone number of the contributor.
+`fax`:: Fax number of the contributor.
+
+
+=== Example
+
+The following is an illustration.
+
+[source,adoc]
+----
+:fullname: Fred Flintstone
+:role: author
+:contributor-credentials: PhD, F.R.Pharm.S.
+:contributor-position: Vice President, Medical Devices Quality & Compliance -- Strategic programmes
+:affiliation: Slate Rock and Gravel Company
+:affiliation_abbrev: SRG
+:affiliation_subdiv: Hermeneutics Unit; Exegetical Subunit
+:address: 6 Rubble Way, + \
+Bedrock
+:contributor-uri: http://slate.example.com
+:phone: 123
+:fax: 456
+:surname_2: Rubble
+:givenname_2: Barney
+:initials_2: B. X.
+:role_2: editor
+:role-description_2: consulting editor
+:contributor-credentials_2: PhD, F.R.Pharm.S.
+:contributor-position_2: Former Chair ISO TC 210
+:affiliation_2: Rockhead and Quarry Cave Construction Company
+:affiliation_abbrev_2: RQCCC
+:affiliation_subdiv_2: Hermeneutics Unit; Exegetical Subunit
+:address_2: 6A Rubble Way, + \
+Bedrock
+:email_2: barney@rockhead.example.com
+:phone_2: 789
+:fax_2: 012
+----
+
+
+== Advanced specification
+
+The method of using document attributes does not actually capture the full
+complexity of contributor metadata.
+
+For example, individuals can hold multiple affiliations.
+
+More complex contributor metadata is presented using YAML embedded in
+the link:/author/topics/document-format/section#misc-container[`metanorma-extension` clause]
+of the document, under the subclause
+`contributor metadata` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.0].
+
+The YAML is in the
+https://www.relaton.org/specs/relaton-yaml/[Relaton YAML format]: it is an array
+of `contributor` objects, without the expected `contributor` heading. Compared
+to Metanorma document attributes, the structure of Relaton YAML is pedantic.
+
+* The YAML is given as an array of objects, one for each contributor.
+
+* It uses the keys of document attributes as keys, but in addition,
+organizational details are specified under an `affiliations` key, again as an
+array of objects.
+
+* Organizational details includes the name and subdivision of the organization,
+the position held within the organization, but not credentials. Unlike the case
+for document attributes, contact details can be associated with either the
+individual, or the affiliation.
+
+The foregoing example is presented in Relaton YAML as follows, with the second
+contributor's contact details specific to them and not their company.
+
+.Using Relaton YAML to encode advanced contribution metadata
+====
+[source,adoc]
+--
+[.preface]
+= metanorma-extension
+
+== contributor metadata
+
+[source,yaml]
+----
+- role: author
+  person:
+    name:
+      completename: Fred Flintstone
+    credential:
+    - PhD, F.R.Pharm.S.
+    affiliation:
+    - name:
+        content: Vice President, Medical Devices Quality & Compliance -- Strategic programmes
+      organization:
+        name: Slate Rock and Gravel Company
+        abbreviation: SRG
+        subdivision: Hermeneutics Unit; Exegetical Subunit
+        contact:
+          - formatted_address: 6 Rubble Way, Bedrock
+          - uri: http://slate.example.com
+          - phone: 123
+          - phone:
+              type: fax
+              value: 456
+- role:
+    type: editor
+    description: consulting editor
+  person:
+    name:
+      surname: Rubble
+      given:
+        forename: Barney
+        formatted_initials: B. X.
+    credential:
+    - PhD, F.R.Pharm.S.
+    affiliation:
+    - name:
+        content: Former Chair ISO TC 210
+      organization:
+        name: Rockhead and Quarry Cave Construction Company
+        abbreviation: RQCCC
+        subdivision: Hermeneutics Unit; Exegetical Subunit
+    contact:
+      - address:
+          street: 6A Rubble Way
+          city: Bedrock
+      - email: barney@rockhead.example.com
+      - phone: 789
+      - phone:
+          type: fax
+          value: 012
+----
+--
+====

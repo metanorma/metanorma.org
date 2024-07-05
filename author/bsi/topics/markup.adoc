@@ -167,13 +167,14 @@ CEN has adopted...
 The ISO standard...
 ----
 
-=== Document history
+== Revision history
 
-Semantic markup of document history can be added to the document,
-using Metanorma extension
-and Relaton YAML [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.0].
-Document history is realised as one or two subclauses of the copyright information, given in the
-initial boilerplate text of the document.
+Revision history is encoded using
+link:/author/topics/metadata/history#detailed-history[detailed change history]
+ [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.0].
+
+Revision history is rendered as one or two subclauses of the copyright
+information, given in the initial boilerplate text of the document.
 
 There are three forms of document history renderings:
 
@@ -181,8 +182,10 @@ There are three forms of document history renderings:
 the document history of the document is given in the old style, with full publication history
 (enumerating all editions), and with four columns for amendments (date issued, date effective,
 amendment designation, description).
+
 * If `:document-scheme:` is not specified, the document history is given in the new style:
 no publication history, and two columns for amendments (date issued, description).
+
 * The document scheme is ignored in Flex and PAS, which use full document history, but two columns for amendments.
 (The publication history is titled "Release history" in Flex.)
 
@@ -194,10 +197,13 @@ the dates for the latter should be given with `type: updated`, whereas the forme
 
 The following is an illustration of semantic document history markup for BSI:
 
+.BSI document revision history
+[example]
+====
 [source,adoc]
 --
 [.preface]
-== Misc-container
+== metanorma-extension
 
 === document history
 
@@ -442,6 +448,7 @@ Ninth (present) edition
 | September 2022 | Amendment 2, tagged: SEE FOREWORD
 |===
 ____
+====
 
 
 === Change markup
