@@ -63,9 +63,9 @@ that Metanorma can link:/author/basics/reference-lookups[automatically fetch bib
 NOTE: If Metanorma recognizes a document identifier, it will overwrite any title
 you provide with the authoritative title of the reference.
 
-. After the triple brackets, the citation text is entered manually. IHO uses
-the _Chicago Manual of Style_ citation format as documented in the
-https://iho.int/uploads/user/pubs/standards/s-97/S-97%20Ed%201.1.0_EN_Guidance%20for%20PS%20Developers_Final.pdf[IHO Guidelines for Creating S-100 Product Specifications].
+. After the triple brackets, the citation text is entered manually. IHO does not
+specify a citation style, but its documents generally uses
+the https://apastyle.apa.org[_APA Style_ citation format].
 
 .Syntax for a bibliographic entry
 [source,adoc]
@@ -79,13 +79,13 @@ The following two statements will create identical outputs.
 
 [source,adoc]
 ----
-* [[[IEEE_528-2019,IEEE 528-2019]]]
+* [[[IHO-S-102-220,IHO S-102 2.2.0]]]
 ----
 
 [source,adoc]
 ----
-* [[[IEEE_528-2019,IEEE 528-2019]]], IEEE. _IEEE Standard for Inertial Sensor Terminology_ (2019).
-Available at: https://standards.ieee.org/ieee/528/7292/
+* [[[IHO-S-102-220,IHO S-102 2.2.0]]], IHO. S-102: Bathymetric Surface Product Specification (2.2.0).
+Available at: https://registry.iho.int/productspec/view.do?idx=199&product_ID=S-102
 ----
 ====
 
@@ -94,9 +94,9 @@ Available at: https://standards.ieee.org/ieee/528/7292/
 There are two ways to cite a bibliography entry entered in the bibliography
 sections.
 
-. Cite the whole document, by cross-referencing the anchor name like this: `\<<IEEE_528-2019>>`.
+. Cite the whole document, by cross-referencing the anchor name like this: `\<<IHO-S-102-220>>`.
 
-. Cite a particular locality of the document, by cross-referencing the anchor name but additionally specify a link:/author/topics/document-format/xrefs/#localities[locality] as the second argument, like this: `\<<IEEE_528-2019,part=IV,chapter=3,paragraph=12>>`.
+. Cite a particular locality of the document, by cross-referencing the anchor name but additionally specify a link:/author/topics/document-format/xrefs/#localities[locality] as the second argument, like this: `\<<IHO-S-102-220,part=IV,chapter=3,paragraph=12>>`.
 
 
 == Bibliography example
@@ -126,34 +126,34 @@ ____
 ====
 
 
-//IHO specific
-== Auto-fetching IEEE references
+== Auto-fetching IHO references
 
-Relaton fetches bibliographic entries for IHO documents, when the syntax matches the following:
+Metanorma fetches bibliographic entries for IHO documents, when the syntax
+matches the following:
 
-//Line 62 stems from link:/author/topics/building/reference-lookup/. To me, the parenthesis are a bit confusing. In which context do we use it?
-`IEEE(identifier)` (e.g. `IEEE(528-2019)`), or any identifier prefixed with `IHO`.
+* `IHO {identifier}` (e.g. `IHO S-102 2.2.0`)
+* `IHO(identifier)` (e.g. `IHO(S-102 2.2.0)`)
 
-* If Relaton *can* resolve the reference, the bibliographic information from the
+If Metanorma *can* resolve the reference, the bibliographic information from the
 database will be rendered.
-+
-.Example of a IEEE standard reference
+
+.Example of a IHO standard reference
 ====
 [source,asciidoc]
 ----
-* [[[IEEE_528-2019,IEEE 528-2019]]], _Standard for Specifying ..._
+* [[[IHO-S-102-220,IHO S-102 2.2.0]]]
 ----
 
 will render:
 ____
-IEEE 528-2019, _IEEE Standard for Inertial Sensor Terminology_ (2019).
-Available at: https://standards.ieee.org/ieee/528/7292/
+IHO. S-102: Bathymetric Surface Product Specification (2.2.0).
+Available at: https://registry.iho.int/productspec/view.do?idx=199&product_ID=S-102
 ____
 ====
 
-* If Relaton *can not* resolve the reference, the provided description will be rendered.
-+
-.Another example
+If Metanorma *cannot* resolve the reference, the provided description will be rendered.
+
+.Example of a non-auto-fetched reference
 ====
 [source,asciidoc]
 ----
