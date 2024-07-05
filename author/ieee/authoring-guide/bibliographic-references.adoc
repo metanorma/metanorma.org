@@ -126,22 +126,22 @@ ____
 ====
 
 
-//OGC specific
 == Auto-fetching IEEE references
 
-Relaton fetches bibliographic entries for IEEE documents, when the syntax matches the following:
+Relaton fetches bibliographic entries for IEEE documents, when the syntax
+matches the following:
 
-//Line 62 stems from link:/author/topics/building/reference-lookup/. To me, the parenthesis are a bit confusing. In which context do we use it?
-`IEEE(identifier)` (e.g. `IEEE(528-2019)`), or any identifier prefixed with `IEEE`.
+* `IEEE {identifier}` (e.g. `IEEE 528-2019`)
+* `IEEE(identifier)` (e.g. `IEEE(528-2019)`)
 
-* If Relaton *can* resolve the reference, the bibliographic information from the
+If Relaton *can* resolve the reference, the bibliographic information from the
 database will be rendered.
-+
+
 .Example of a IEEE standard reference
 ====
 [source,asciidoc]
 ----
-* [[[IEEE_528-2019,IEEE 528-2019]]], _Standard for Specifying ..._
+* [[[IEEE_528-2019,IEEE 528-2019]]]
 ----
 
 will render:
@@ -151,9 +151,10 @@ Available at: https://standards.ieee.org/ieee/528/7292/
 ____
 ====
 
-* If Relaton *can not* resolve the reference, the provided description will be rendered.
-+
-.Another example
+If Relaton *cannot* resolve the reference, the provided description will be
+rendered.
+
+.Example of a non-auto-fetched reference
 ====
 [source,asciidoc]
 ----
