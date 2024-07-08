@@ -191,6 +191,14 @@ The locale is assumed to be specified in the Unicode CLDR. It is entered as a tw
 `number:32232.232[digit_count=6]` is _32232.2_.
 ====
 
+`significant`::: Number of significant digits to render.
++
+[example]
+====
+`number:0.000032232232[digit_count=6]` is _0.00003_.
+`number:0.000032232232[significant=6]` is _0.0000322322_.
+====
+
 `group`::: Delimiter to use between groups of digits.
 +
 [example]
@@ -308,7 +316,7 @@ number:341[] <1>
 number:342[profile=3] <2>
 number:343[profile=x] <3>
 number:344[profile=x,precision=5] <4>
-number:345[profile=x,,digit_count=10,precision=nil] <5>
+number:345[profile=x,digit_count=10,precision=nil] <5>
 number:346[precision=6,digit_count=10,exponent_sign=nil] <6>
 ----
 
