@@ -354,12 +354,35 @@ a large range of table formatting options. Search for `#table1`.
 
 == Table sources
 
-A table can incorporate an indication of its source,
-which in Metanorma is expected to be a bibliographical reference, just as with
-term sources [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2].
-Any such sources need to appear after the table, and before any notes which will also be
-included in the table. As with term sources, multiple sources can be given for a table.
+A table can incorporate an indication of its source.
 
+The source is expected to be a bibliographical
+reference [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2].
+
+Multiple sources can be given with separate `[.source]` blocks.
+
+Any such sources need to appear *after the table*, and *before any notes* which
+will also be included in the table.
+
+.Table with a single source and a note
+======
+[source,asciidoc]
+--
+|===
+| Head | Head
+
+| Row  | Row
+|===
+
+[.source]
+<<iso1212>>
+
+NOTE: Note 1
+--
+======
+
+.Table with multiple sources and notes
+======
 [source,asciidoc]
 --
 |===
@@ -378,3 +401,12 @@ NOTE: Note 1
 
 NOTE: Note 2
 --
+
+The first source will indicate it is "reformatted" as the text after the comma
+is treated as the modification, while the second source will indicate it is
+"modified" since there is a trailing comma but no description of modification.
+======
+
+
+NOTE: The mechanism for indicating source is identical for terminology sources
+and figure sources.

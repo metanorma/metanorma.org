@@ -397,12 +397,27 @@ image::logo.jpg[]
 
 A figure block can incorporate an indication of its source.
 
-To set this, the source is expected to be a bibliographical reference, just as
-with term
-sources [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2].
-As with term sources, multiple sources can be given
+The source is expected to be a bibliographical
+reference [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.2].
 
-.Figure with source
+Multiple sources can be given with separate `[.source]` blocks.
+
+.Figure with a single source
+======
+[source,asciidoc]
+--
+[figure]
+.Rice husk separation
+====
+image::logo.jpg[]
+
+[.source]
+<<iso1212>>
+====
+--
+======
+
+.Figure with multiple sources
 ======
 [source,asciidoc]
 --
@@ -418,8 +433,14 @@ image::logo.jpg[]
 <<iso1213>>,
 ====
 --
+
+The first source will indicate it is "reformatted" as the text after the comma
+is treated as the modification, while the second source will indicate it is
+"modified" since there is a trailing comma but no description of modification.
 ======
 
+NOTE: The mechanism for indicating source is identical for terminology sources
+and table sources.
 
 == SVG: re-mapping hyperlinks
 
