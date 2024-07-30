@@ -274,6 +274,31 @@ To solve issues with automatic lookup, we can set the `nofetch()` attribute:
 * [[[bt2267-10,nofetch(ITU-R BT.2267-10)]]], Report ITU-R BT.2267-10 (2019), _Integrated broadcast-broadband systems._
 ----
 
+==== Footnotes are repeated in tables
+
+In Asciidoc, tables cells are processed as completely separate documents. That means that table cells are not aware of
+one another's contents. As a result, if a footnote is repeated among different cells through
+named footnotes, the Asciidoc parser will not recognise them:
+
+[source]
+----
+|===
+|A footnote:a[ABC] | B footnote:a[]
+|===
+----
+
+Renders as:
+
+____
+[cols="1,1"]
+|===
+| A^1^ | B^2^ 
+2+a| ^1^ ABC +
+^2^
+|===
+____
+
+
 === Errors that are bugs
 
 Metanorma is under continuous development, so it is possible to face an error that you can not fix because it is a bug. If you need help with a persisting error or if you found a bug, please create a new issue on Github in your organization's repository (`metanorma-ORGNAME`), for example `metanorma-iso`.
