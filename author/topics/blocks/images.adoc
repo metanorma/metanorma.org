@@ -103,14 +103,22 @@ image::data:image/png;base64,ivBO...[alt text]
 NOTE: Data URIs are only supported by Metanorma AsciiDoc, not other AsciiDoc
 processors.
 
-By default, images are stored in Metanorma XML as Data URI, rather than as links to external image files,
-so that Metanorma XML and HTML can be distributed as single files, without bundling image files separately.
-This behaviour can be disabled by setting `:data-uri-image: false` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0].
+By default, images are stored in Metanorma Semantic and Presentation XML as Data
+URI, rather than as links to external image files, so that Metanorma XML and
+HTML can be distributed as single files, without bundling image files
+separately.
 
-In order to prevent the Metanorma processor from running out of memory, a maximum permitted size for
-Data URI-encoded images is enforced: this defaults to `13981013` bytes (corresponding to the Base64 encoding of a
-10 MB image). The size can be changed by setting `:data-uri-maxsize:`. If this is set to `0`,
-no maximum size is enforced. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.1].
+This behaviour can be disabled by setting
+`:data-uri-image: false` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0].
+
+In order to prevent the Metanorma processor from running out of memory, a
+maximum permitted size for Data URI-encoded images is enforced.
+
+* By default, the maximum size is `13981013` bytes. This corresponds to the
+Base64 encoding of a 10 MB image.
+* The size can be changed by setting `:data-uri-maxsize:`.
+* If `:data-uri-maxsize:` is set to `0`, no maximum size is
+enforced. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.1].
 
 
 === Image directory root path
