@@ -11,16 +11,56 @@ The following table illustrates how transitions between stages of NIST documents
 using `:status:`, `:substage:`, `:iteration:`, and `:confirmed-date`.
 
 |===
-| ISO stage | NIST | 93 Repeat current phase | 98 Abandon | 99 Proceed
+| ISO stage | NIST stage | 93 Repeat current phase | 98 Abandon | 99 Proceed
 
-| 00 Preliminary | `:status: draft-internal` | | (stop work) | `:status: draft-wip`, `:status: draft-public`, or `:status: final` (amend)
-| 10 Proposal | `:status: draft-wip` | | `:status: draft-wip`, `:substage: retired` | `:status: draft-wip`, `:substage: withdrawn` or `status: draft-prelim`
-| 20 Preparatory | `status: draft-prelim` | | `status: draft-prelim`, `substage: retired` | `status: draft-prelim`, `substage: withdrawn` or `status: draft-public`
-| 40 Enquiry | `status: draft-public` | `status: draft-public`, `:iteration: 2`, `:iteration: 3` ... `:iteration: final` | `:status: draft-public`, `:substage: retired` | `:status: draft-public`, `:substage: withdrawn`  or `draft-approval`
-| 50 Approval | `status: draft-approval` | | `:status: draft-approval`, `:substage: retired` | `:status: final`
-| 60 Publication | `:status: final`
-| 90 Review | `:status: final-review` | `:status: final`, `:confirmed-date: XXXX-XX-XX` | `:status: final`, `:substage: withdrawn` | `:status: draft-internal` (revise or amend)
-| 95 Withdrawal | `:status: final`, `:substage: withdrawn` | | |
+h| 00 Preliminary
+| `:status: draft-internal`
+|
+| (stop work)
+| `:status: draft-wip`, `:status: draft-public`, or `:status: final` (amend)
+
+h| 10 Proposal
+| `:status: draft-wip`
+|
+| `:status: draft-wip`, `:substage: retired`
+| `:status: draft-wip`, `:substage: withdrawn` or `:status: draft-prelim`
+
+h| 20 Preparatory
+| `:status: draft-prelim`
+|
+| `:status: draft-prelim`, `substage: retired`
+| `:status: draft-prelim`, `substage: withdrawn` or `:status: draft-public`
+
+h| 40 Enquiry
+| `:status: draft-public`
+| `:status: draft-public`, `:iteration: 2`, `:iteration: 3` ... `:iteration: final`
+| `:status: draft-public`, `:substage: retired`
+| `:status: draft-public`, `:substage: withdrawn`  or `draft-approval`
+
+h| 50 Approval
+| `:status: draft-approval`
+|
+| `:status: draft-approval`, `:substage: retired`
+| `:status: final`
+
+h| 60 Publication
+| `:status: final`
+|
+|
+|
+
+h| 90 Review
+| `:status: final-review`
+| `:status: final`, `:confirmed-date: XXXX-XX-XX`
+| `:status: final`, `:substage: withdrawn`
+| `:status: draft-internal` (revise or amend)
+
+h| 95 Withdrawal
+| `:status: final`, `:substage: withdrawn`
+|
+|
+|
+
 |===
 
 In the following, parentheses indicate optional attributes.
