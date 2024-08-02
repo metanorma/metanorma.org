@@ -15,3 +15,59 @@ Commentary clauses are marked up as annexes with a `commentary` option attribute
 == Commentary
 ...
 ----
+
+=== Participant clauses
+
+The membership of the investigative committee for the standard appears before the table
+of contents in JIS documents, in tabular form. This information is entered in a YAML table
+within a clause of type `participants`, with the following structure:
+
+[source,asciidoc]
+-----
+[type=participants]
+== {blank}
+
+[source,yaml]
+----
+- name:
+    surname: Surname 1
+    givenname: Given Name 1
+  affiliation: Affiliation 1
+  role: Role 1 [optional]
+- name:
+    surname: Surname 2
+    givenname: Given Name 2
+  affiliation: Affiliation 2
+  role: Role 2 [optional]
+----
+-----
+
+e.g.
+
+[source,asciidoc]
+-----
+[type=participants]
+== {blank}
+
+[source,yaml]
+----
+- name: 
+    surname: 酒井
+    givenname: 信介
+  affiliation:  横浜国立大学
+  role: 部会長
+- name:
+    surname: 伊藤
+    givenname: 弘 
+  affiliation: 国立研究開発法人建築研究所
+  role: 委員
+- name:
+    surname: 宇治
+    givenname: 公隆
+  affiliation: 国立研究開発法人建築研究所
+----
+-----
+
+The title of the participant clause includes the name of the investigative committee,
+and is generated automatically.
+
