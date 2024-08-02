@@ -143,7 +143,7 @@ Document subtype. Choices:
 `corrigendum`:: Document is an corrigendum
 `erratum`:: Document is an erratum
 `icap`:: Document is an ICAP (IEEE Conformity Assessment Program) document (applies only to `whitepaper`)
-`industry-connections-report`:: Document is an Industry Connnections Report document (applies only to `whitepaper`)
+`industry-connections-report`:: Document is an Industry Connections Report document (applies only to `whitepaper`)
 --
 
 `trial-use`:: Document published for a limited period of time.
@@ -346,6 +346,7 @@ committee that the working group belongs to.
 `balloting-group`:: The Standards Association balloting group responsible for the document.
 Do not supply the final "Standards Association balloting group" text in the group name;
 that is supplied by Metanorma.
+
 `balloting-group-type`:: The type of the Standards Association balloting group responsible for the document,
 _individual_ or _entity_ (default: _individual_).
 
@@ -365,25 +366,41 @@ link:/author/ieee/topics/markup#participants[Participants clause].
 
 White papers require personal authors to be specified, as follows:
 
-* `:surname:`, `:surname_2:`, `:surname_3:`: Surname of personal authors
-* `:givenname:`, `:givenname_2:`, `:givenname_3:`: Given name of personal authors
-* `:contributor-position:`, `:contributor-position_2:`, `:contributor-position_3:`: Job title of personal authors
+`:surname:`, `:surname_2:`, `:surname_{i}:`::
+Surname of personal authors
+
+`:givenname:`, `:givenname_2:`, `:givenname_{i}:`::
+Given name of personal authors
+
+`:contributor-position:`, `:contributor-position_2:`, `:contributor-position_{i}:`::
+Job title of personal authors
+
+
 
 === Sponsors
 
-The sponsoring bodies, if any, are indicated through the `:sponsor:` and `:sponsor-subdivision:`
-attributes. As with other author values, multiple instances of sponsoring organisations and their
-subdivisions are indicated as `:sponsor_2:` and `:sponsor-subdivision_2:`, `:sponsor_3:` and `:sponsor-subdivision_3:`, etc.
+The sponsoring bodies, if any, are indicated through the `:sponsor:` and
+`:sponsor-subdivision:` attributes.
 
-The values of `:sponsor-subdivision_{i}:` in turn
-can be multiple (semicolon-delimited: processed via CSV, recognising quote marks),
-and they can also be hierarchical, with multiple levels of subdivision (comma-delimited,
-from larger to smaller) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3];
-the different hierarchical levels can optionally be prefixed with type and a colon.
-On the front line, if it is a sponsor, "IEEE" is prefixed to the first subdivision, rather than being rendered on a separate line.
+As with other author values, multiple instances of sponsoring organisations and
+their subdivisions are indicated as `:sponsor_2:` and `:sponsor-subdivision_2:`,
+`:sponsor_3:` and `:sponsor-subdivision_3:`, etc.
+
+The values of `:sponsor-subdivision_{i}:` can be:
+
+* multiple (semicolon-delimited: processed via CSV, recognising quote marks)
+* hierarchical, with multiple levels of subdivision (comma-delimited, from larger to
+  smaller) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3];
+
+The different hierarchical levels can optionally be prefixed with type and a colon.
+
+On the front cover, if it is a sponsor, "IEEE" is prefixed to the first
+subdivision, rather than being rendered on a separate line.
 
 The following is an example of how two divisions of the IEEE are indicated as sponsoring the document:
 
+.IEEE subdivsion sponsors to a document
+====
 [source,adoc]
 ----
 :sponsor: IEEE
@@ -402,14 +419,16 @@ and the +
 of the +
 *IEEE Communications Society*
 ____
+====
 
-NOTE: the quotation marks are needed to process the CSV correctly.
+NOTE: The quotation marks are needed to process the CSV correctly.
+
 
 == Visual appearance
 
 `:hierarchical-object-numbering:`::
 If set, do not number tables and figures consecutively throughout the body of the
-document, but restart numbering with each clause (hierarchically). +
+document, but restart numbering with each clause (hierarchically).
 +
 Use in complex documents, with multiple tables or figures, that need to be tracked against
 clauses for ease of lookup (so _Figure 6-3, Figure 6-4_, instead of _Figure 21, Figure 22_.)
