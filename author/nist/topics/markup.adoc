@@ -7,9 +7,17 @@ title: Metanorma for NIST markup
 
 === Document status
 
-The following table illustrates how transitions between stages of NIST documents are indicated
-using `:status:`, `:substage:`, `:iteration:`, and `:confirmed-date`.
+==== Stage progression
 
+The following table illustrates how transitions between stages of NIST documents
+are indicated using a combination of:
+
+* `:status:`
+* `:substage:`
+* `:iteration:`
+* `:confirmed-date`
+
+[cols="a,a,a,a,a",options="header"]
 |===
 | ISO stage | NIST stage | 93 Repeat current phase | 98 Abandon | 99 Proceed
 
@@ -65,21 +73,123 @@ h| 95 Withdrawal
 
 In the following, parentheses indicate optional attributes.
 
-* For retired drafts, the following attributes must be provided: `:circulated-date:`,
-`:abandoned-date:`, (`:bib-additional-note:`)
-* For withdrawn drafts, the following attributes must be provided: `:circulated-date:`, `:obsoleted-date:`,
-`:superseding-status:`, (`:superseding-iteration:`), (`:superseding-title:`),
-(`:superseding-subtitle:`), `:superseding-circulated-date:`, (`:superseding-doi:`),
-(`:superseding-url:`), (`:bib-additional-note:`)
-* For withdrawn published documents, the following attributes must be provided: `:issued-date:`, `:obsoleted-date:` (when
-the current document is no longer in effect), `:superseded-date:` (when the transition period started, during which both
-documents were in effect, if applicable; if not, this has the same value as `:obsoleted-date:`), `:revdate:` (for
-when the withdrawal notice was added to the document), (`:bib-additional-note:`)
-("Related Information" in the withdrawn document coverpage), `:obsoleted-by:` (giving the superseding document identifier),
-`:nist-division:`, (`:bib-withdrawal-note:`), (`:bib-withdrawal-announcement-link:`). If the details
-of the superseding document are not available to be retrieved from the CSRC website), the following attributes must
-be provided: `:superseding-title:`, (`:superseding-subtitle:`), `:superseding-issued-date:`, `:superseding-status:`,
-`:superseding-doi:`, `:superseding-url:`.
+==== For retired drafts
+
+The following attributes must be provided in order to handle retired drafts:
+
+`:circulated-date:`::
+The date when the draft was circulated.
+
+`:abandoned-date:`::
+The date when the draft was abandoned.
+
+
+The following attributes are optional:
+
+`:bib-additional-note:`::
+Additional notes related to the draft. (Optional)
+
+
+==== For withdrawn drafts
+
+The following attributes must be provided in order to handle withdrawn drafts:
+
+`:circulated-date:`::
+The date when the draft was circulated.
+
+`:obsoleted-date:`::
+The date when the draft was obsoleted.
+
+`:superseding-status:`::
+The status of the superseding document.
+
+
+The following attributes are optional:
+
+`:superseding-iteration:`::
+The iteration number of the superseding document. (Optional)
+
+`:superseding-title:`::
+The title of the superseding document. (Optional)
+
+`:superseding-subtitle:`::
+The subtitle of the superseding document. (Optional)
+
+`:superseding-circulated-date:`::
+The date when the superseding document was circulated. (Optional)
+
+`:superseding-doi:`::
+The DOI of the superseding document. (Optional)
+
+`:superseding-url:`::
+The URL of the superseding document. (Optional)
+
+`:bib-additional-note:`::
+Additional notes related to the withdrawn draft. (Optional)
+
+
+==== For withdrawn published documents
+
+The following attributes must be provided in order to handle withdrawn published
+documents:
+
+`:issued-date:`::
+The date when the document was issued.
+
+`:obsoleted-date:`::
+The date when the document became obsolete.
+
+`:superseded-date:`::
+The date when the transition period started, during which both the current and
+superseding documents were in effect, if applicable. If not applicable, this has
+the same value as `:obsoleted-date:`.
+
+`:revdate:`::
+The date when the withdrawal notice was added to the document.
+
+`:obsoleted-by:`::
+The identifier of the superseding document.
+
+`:nist-division:`::
+The division within NIST responsible for the document.
+
+
+The following attributes are optional:
+
+`:bib-additional-note:`::
+Additional notes related to the withdrawn document. The "Related Information"
+section in the withdrawn document cover page. (Optional)
+
+`:bib-withdrawal-note:`::
+The withdrawal note to be included in the document bibliography. (Optional)
+
+`:bib-withdrawal-announcement-link:`::
+The link to the withdrawal announcement. (Optional)
+
+
+If details of the superseding document are not available to be retrieved
+from Relaton NIST data through auto-fetching from the metadata referenced by
+`:obsoleted-by:`, the following attributes must be provided:
+
+`:superseding-title:`::
+The title of the superseding document.
+
+`:superseding-subtitle:`::
+The subtitle of the superseding document. (Optional)
+
+`:superseding-issued-date:`::
+The date when the superseding document was issued.
+
+`:superseding-status:`::
+The status of the superseding document.
+
+`:superseding-doi:`::
+The DOI of the superseding document.
+
+`:superseding-url:`::
+The URL of the superseding document.
+
+
 
 === Document identifier
 
@@ -115,16 +225,20 @@ XML under the `boilerplate` tag, as subclauses:
 
 `boilerplate/legal-statement/clause[@id = 'authority1']`:: The initial section of the authority section ("This publication has been developed
 by NIST..."). (Not applicable to CSWP.)
-`boilerplate/legal-statement/clause[@id = 'authority2']`:: The identifier, revision date, and URL of the document. (Not applicanble to CSWP.)
+
+`boilerplate/legal-statement/clause[@id = 'authority2']`:: The identifier, revision date, and URL of the document. (Not applicable to CSWPs.)
+
 `boilerplate/legal-statement/clasue[@id = 'authority3']`:: The boxed disclaimer statement ("Any mention of commercial products or reference to commercial organizations...")
+
 `boilerplate/feedback-statement/clause[@id = 'authority4']`:: The public comment period, for drafts
+
 `boilerplate/feedback-statement/clause[@id = 'authority5']`:: The contact details for comments
 
-The authority statement has been marked up in Metanorma XML rather than AsciIDoc because of its complexity.
+The authority statement has been marked up in Metanorma XML rather than AsciiDoc because of its complexity.
 If you wish to supply a different authority statement, you will need to provide a piece of Metanorma XML corresponding
 to the existing default statement (available from
 https://github.com/metanorma/metanorma-nist/blob/main/lib/metanorma/nist/nist_intro.xml[`lib/metanorma/nist/nist_intro.xml`],
-https://github.com/metanorma/metanorma-nist/blob/main/lib/metanorma/nist/nist_intro_cswp.xml[`lib/asciidoctor/nist/nist_intro_cswp.xml`]),
+https://github.com/metanorma/metanorma-nist/blob/main/lib/metanorma/nist/nist_intro_cswp.xml[`lib/metanorma/nist/nist_intro_cswp.xml`]),
 and containing
 text corresponding to the sections given above. You can give the location of your own authority statement file
 relative to the current document through the document attribute `:boilerplate-authority:`.
@@ -167,9 +281,13 @@ The following sections are automatically moved to the document preface.
 * Abstract
 * Keywords (drawn from document attribute, see above)
 
-In addition, any clause that has the `preface` style attribute is also moved to the document preface,
-regardless of where it appears in the source AsciIDoc document. These clauses
-appear in the document preface in the order they are given in the source document.
+In addition, any clause that has the `preface` style attribute is also moved to
+the document preface, regardless of where it appears in the source document.
+
+These clauses appear in the document preface in the order they are given in the
+source document.
+
+
 Examples of preface clauses include:
 
 * Supplemental Content
@@ -185,24 +303,30 @@ Examples of preface clauses include:
 [source,adoc]
 --
 [preface]
-=== Acknowledgemnts
+=== Acknowledgments
 This section will be moved to the document preface, after the abstract and keywords.
 --
 
+NOTE: Any clause titled "Note to Reviewers" will be removed from rendering
+unless the document is in draft (has a `:draft:` attribute).
 
-Note that any clause titled "Note to Reviewers" will be removed from rendering unless
-the document is in draft (has a `:draft:` attribute).
 
 === Abstract
 
-As with all Metanorma gems, Abstracts are recognised as any clause with the style attribute
-`[abstract]`. They are rendered in the document preface, under the Metanorma XML tag `abstract`.
+Abstracts are recognised as any clause with the style attribute
+`[abstract]`.
+
+They are rendered in the document preface, under the Metanorma XML tag
+`abstract`.
+
 
 === Foreword
 
-As with all Metanorma gems, the foreword is considered to be any text before the first
-section title. The foreword is used to capture the introductory statement on the publication
-series that precedes the abstract, and its title is entered as a caption:
+The Foreword is considered to be any text before the first section title.
+
+The foreword is used to capture the introductory statement on the publication
+series that precedes the abstract, and its title is entered as a caption as
+shown below.
 
 [source,adoc]
 ----
@@ -211,13 +335,15 @@ series that precedes the abstract, and its title is entered as a caption:
 :title-sub: Subtitle of Report
 
 .Reports on Computer Systems Technology
-The Information Technology Laboratory (ITL) at the National Institute
-of Standards and Technology (NIST) promotes the U.S. economy and public welfare...
+The Information Technology Laboratory (ITL) at the National Institute of
+Standards and Technology (NIST) promotes the U.S. economy and public welfare [...]
 ----
 
 === Executive Summary
 
-This is any section that appears with the role attribute `[.executive-summary]`.
+The Executive Summary section is encoded using the role attribute
+`[.executive-summary]`.
+
 It is rendered after all other preface sections:
 
 [source,adoc]
@@ -235,8 +361,6 @@ link:/author/topics/metadata/history#detailed-history[detailed change history]
  [added in https://github.com/metanorma/metanorma-nist/releases/tag/v2.4.0].
 
 The change type is represented as `amend` classification `type`.
-
-An example is as follows:
 
 .Errata of a NIST document encoding using detailed change history
 [example]
@@ -265,7 +389,7 @@ An example is as follows:
 
 
 Alternatively, Metanorma for NIST supports the "Errata" encoding, which is
-an AsciiDoc table with role attribute `[.errata]`.
+a table with role attribute `[.errata]`.
 
 Errata tables must have a header row containing the headings:
 _Date_, _Type_, _Change_, _Pages_.
@@ -292,9 +416,12 @@ The previous example would be encoded as:
 
 === Terms and definitions
 
-Glossaries in NIST documents correspond to Terms & Definitions sections elsewhere in
-Metanorma. They are appendices in NIST, and any appendix in NIST Metanorma with the
-title "Glossary" or "Terminology" is treated as a Terms & Definitions section.
+Glossaries in NIST documents correspond to "Terms and definitions" sections
+elsewhere in Metanorma.
+
+They are appendices in NIST, and any appendix in NIST Metanorma with the title
+"Glossary" or "Terminology" is treated as a "Terms and definitions" section.
+
 
 === Glossaries
 
@@ -363,27 +490,36 @@ Pseudocode will respect initial indentation in paragraph lines, with line breaks
 They will be rendered as figures, but are not included in the count of figures of the document.
 (If they must be included, embed them within another figure.)
 
+
 === Recommendations, requirements, and permissions
 
-Recommendations, requirements, and permissions shall be marked up as examples,
-with style attribute "recommendation", "requirement", "permission":
+Recommendations, requirements, and permissions are encoded as examples,
+with the style attributes `recommendation`, `requirement`, `permission`.
 
+.Example of encoding a recommendation in NIST
+[example]
+======
 [source,adoc]
 ----
 [[recommend63]]
 [recommendation]
 ====
-Because having on-card role and permission information would raise difficult challenges concerning update and revocation, PACS permissions should generally be stored in a PACS facilities-based component, such as a panel or controller database.
+Because having on-card role and permission information would raise difficult
+challenges concerning update and revocation, PACS permissions should generally
+be stored in a PACS facilities-based component, such as a panel or controller
+database.
 ====
 ----
+======
 
 Recommendations, requirements, and permissions are treated like other assets in
-text, and automatically numbered and labelled: do not include a "Recommendation" etc.
-label with them.
+text, and automatically numbered and labelled: do not include a "Recommendation"
+etc. label with them.
+
 
 === Variables within sourcecode
 
-Variables within sourcecode are rendered as non-monospace italicised text. To indicate
+Variables within sourcecode are rendered as non-monospace italicized text. To indicate
 such variables, `{{{ ... }}}` shall be used as markup within the sourcecode block,
 which will be converted to the tag `nistvariable` in Metanorma XML:
 
@@ -400,7 +536,8 @@ In the NIST flavour, this is done through `{{{{ ... }}}}`
 
 === Lists
 
-If an ordered list is intended to describe "steps" within a process, it should start with Arabic numbers and should be encoded with the class `steps`:
+If an ordered list is intended to describe "steps" within a process, it should
+start with Arabic numbers and should be encoded with the class `steps`:
 
 Encoding an ordered list as steps:
 
@@ -415,9 +552,11 @@ Encoding an ordered list as steps:
 
 === Tables
 
-For accessibility, NIST authors are expected to insert titles into tables in Word documents as summaries.
-The equivalent in Metanorma is to include alt text in any hyperlinks in AsciIDoc, using the `alt` attribute
-of tables, as illustrated in the following:
+For accessibility, NIST authors are expected to insert titles into tables in
+Word documents as summaries.
+
+The equivalent in Metanorma is to include alt text in any hyperlinks, using the
+`alt` attribute of tables, as illustrated in the following:
 
 [source,adoc]
 --
@@ -425,19 +564,25 @@ of tables, as illustrated in the following:
 .Table caption
 [alt="Table summary, for use in accessible media"]
 |===
-| Head | Head
+| Head
+| Head
 
-| Body | Body
-| Body | Body
+| Body
+| Body
+| Body
+| Body
 |===
 --
 
 == Inline markup
+
 === Hyperlinks
 
-For accessibility, NIST authors are expected to insert tool tips into the hyperlinks they generate in Word documents.
-The equivalent in Metanorma is to include alt text in any hyperlinks in AsciIDoc, using the `title` attribute
-of hyperlinks, as illustrated in the following:
+For accessibility, NIST authors are expected to insert tool tips into the
+hyperlinks they generate in Word documents.
+
+The equivalent in Metanorma is to include alt text in any hyperlinks, using the
+`title` attribute of hyperlinks, as illustrated in the following:
 
 [source,adoc]
 --
@@ -445,23 +590,28 @@ http://www.example.com[See the example.com link,title=tooltip text]
 --
 
 
-////
-=== Sponsor
+== Sponsor
 
-The title page templates cater for at most one sponsoring organization and its logo. If more than one
-sponsor is involved, manual intervention will be required on the title page.
+The title page templates cater for at most one sponsoring organization and its
+logo.
 
-The sponsor logo (`:sponsor-logo:`) is an image file, and it appears on the left hand side of the Word
-title page, oppose the NIST logo. The sponsor name (`:sponsor:`) appears underneath the logo. The attribute
-can be just the name, or it can be a multi-line attribute, containing AsciIDoc markup. In that case,
-it should be entered using AsciIDoc conventions for multi-line document attributes, with `\ +` used for
-line breaks:
+If more than one sponsor is involved, manual intervention will be required on
+the title page.
 
+The sponsor logo (`:sponsor-logo:`) is an image file, and it appears on the left
+hand side of the Word title page, oppose the NIST logo.
+
+The sponsor name (`:sponsor:`) appears underneath the logo. The attribute
+can be just the name, or it can be multi-line AsciiDoc markup encoded in one
+line. In that case, it should be entered using AsciiDoc conventions for
+multi-line document attributes, with `\ +` used for line breaks.
+
+.Sponsorship information with multi-line sponsor name
+[example]
+====
 [source,adoc]
 ----
 :sponsor-logo:fema.gif
 :sponsor: *Department of Homeland Security* \ + Janet Napolitano, _Secretary_ \ + *Federal Emergency Management Association* \ + Craig Fugate, _Administrator_ \ + *United States Fire Administration* \+ Kelvin J. Cochran, _Assistant Administrator_
 ----
-////
-
-
+====
