@@ -347,6 +347,21 @@ This is the executive summary...
 ----
 ====
 
+It can also be indicated with the style attribute 
+`[executive_summary]` [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.6.0].
+
+[example]
+.Setting the Executive summary
+====
+[source,adoc]
+----
+[executive_summary]
+== Executive summary, differently named
+
+This is the executive summary...
+----
+====
+
 This clause is mandatory for Engineering Reports,
 and only allowed for that document type [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.3].
 
@@ -480,6 +495,36 @@ submitters:
 |===
 ----
 ====
+
+=== Engineering reports
+
+The following style attributes can be used instead of `[.preface]`, to indicate
+prefatory material specific to engineering reports [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.6.0].
+
+* [overview]
+* [future_outlook]
+* [value_proposition]
+* [contributors]
+
+These are all treated as equivalent to `[.preface,type=...], independent of the actual title provided:
+
+[source,adoc]
+----
+[overview]
+== Overview
+
+This is an overview
+
+[value_proposition]
+== Proposed value
+
+This is in fact a value proposition
+
+== Initial clause
+
+This is where the main section of the document begins
+
+----
 
 
 [[ogc-additional-prelim]]
