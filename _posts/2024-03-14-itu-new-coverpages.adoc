@@ -17,9 +17,11 @@ authors:
       - https://github.com/Intelligent2013/
 
 excerpt: >-
-  Metanorma XML to PDF supports a new ITU cover page layout for 
-  Technical and Service publications (Flagship).
+  Metanorma supports a new ITU cover page layout for
+  Technical and Service publications (Flagship) in PDF.
 ---
+
+== Introduction
 
 Metanorma-ITU now produces the PDF with a new cover page layout for:
 
@@ -27,45 +29,48 @@ Metanorma-ITU now produces the PDF with a new cover page layout for:
 
 * Service publications (Flagship)
 
-By default, the Metanorma generates the PDF in the new layout now. You can 
-switch to the previous (old) layout by setting the document attribute
-`:document-scheme: legacy`.
 
-The new ITU cover page contains a few new elements. New document attributes 
+== New layout document attributes
+
+By default, the Metanorma generates the PDF in the new layout now. You can
+switch to the previous (old) layout by setting the document attribute
+`:document-scheme: legacy`. The default value is `current`.
+
+The new ITU cover page contains a few new elements. New document attributes
 added into the Metanorma to support them:
 
-`:collection-title:`:: the collection of documents that this document 
+`:collection-title:`:: the collection of documents that this document
 appears in. Appears on the top left of the cover page.
 
-`:sector:`:: the standardization sector for the document, if one of 
-the defined bureaus does not apply ('Telecommunication Standardization Bureau', 
+`:sector:`:: the standardization sector for the document, if one of
+the defined bureaus don't apply ('Telecommunication Standardization Bureau',
 'Radiocommunication Bureau' or 'Telecommunication Development Bureau'
 which automatically determined by the document attribute `:bureau:`).
 
 Flagship publications require a few additional document attributes:
 
-`:coverpage-image:`:: comma-delimited list of image locations, for images to be 
-included on the PDF cover page of ITU "Service Publications" (and title page 
-for logos). All image locations are relative to the source document. 
-Cover page should contain also event, partner and copublisher logos (if exists), 
-except the ITU logo at right bottom corner. We recommend to use the one-paged 
-PDF for cover page image. If there isn't enough space on the cover to include 
-all the logos, then specify the second image location to render it on inner 
+`:coverpage-image:`:: comma-delimited list of image locations, for images to be
+included on the PDF cover page of ITU "Service Publications" (and title page
+for logos). All image locations are relative to the source document.
+Cover page should contain also event, partner and copublisher logos (if exists),
+except the ITU logo at right bottom corner. We recommend to use the one-paged
+PDF for cover page image. If there isn't enough space on the cover to include
+all the logos, then specify the second image location to render it on inner
 cover page in the result PDF.
 
-`:presentation-metadata-color-cover-title:`:: title colour on PDF cover, as 'black' 
+`:presentation-metadata-color-cover-title:`:: title colour on PDF cover, as 'black'
 (default) or 'white', depending on the contrast with the background.
 
-`:presentation-metadata-cover-header-hide:`:: hide page header titles (ITUPublications, 
-International Telecommunication Union, Sector or Bureau name). The values are 'true' or 
-'false' (default). Some Flagship publications doesn't require the cover header.
+`:presentation-metadata-cover-header-hide:`:: hide page header titles (ITUPublications,
+International Telecommunication Union, Sector or Bureau name). The values are 'true' or
+'false' (default). Some Flagship publications don't require the cover header.
 
-`:presentation-metadata-color-cover-itu-logo:`:: ITU logo color - '#1DA0DB' (default) or 
+`:presentation-metadata-color-cover-itu-logo:`:: ITU logo color - '#1DA0DB' (default) or
 'white'. Allows to choose the color to contrast with background.
 
-`:slogan-title:`:: the slogan that this document is branded with, in connection with 
-an event. Some Flagship publications allows the slogan title. Regarding the ITU 
-official style guide, these fonst should be used for slogan title:
+`:slogan-title:`:: the slogan that this document is branded with, in connection with
+an event. Some Flagship publications allow the slogan title. Regarding the ITU
+official style guide, these fonts should be used for slogan title:
 
 * "Adelle italic" for latin and cyrillic scripts
 
@@ -73,24 +78,26 @@ official style guide, these fonst should be used for slogan title:
 
 * "STKaiti" for Chinese
 
-Fontist currently does not support (can't be installed) any of these fonts, 
+Fontist currently can't install (does not support) any of these fonts,
 but they are provided on Windows, Office and Mac:
 
-* "Adelle Devanagari" is available on the macOS (can be substituted instead of "Adelle italic")
+* "Adelle Devanagari" is available on the macOS (can be substituted instead of "Adelle italic"),
 
-* "Traditional Arabic" is provided on Windows and Office.
+* "Traditional Arabic" is provided on Windows and Office,
 
 * "STKaiti" is only provided by Office.
 
-Fontist may find these fonts on the user machine and pass them into the PDF 
-production tool (mn2pdf) via the font manifest file.
+Fontist may find these fonts on the user machine and pass them into the PDF
+production tool (mn2pdf).
 
 As existence of the slogan title currently is rare case, then the font
-should be specified manually in the document attributes (vs. specified in metanorma-itu gem 
-for mainly using fonts), so the user responsible for pre-installation of these fonts.
+should be specified manually in the document attributes (vs. specified internally in
+metanorma-itu gem for mainly using fonts), so the user responsible for pre-installation
+of these fonts.
 
-For example, `:fonts: Traditional Arabic` (see `:fonts:` description in 
+For example, `:fonts: Traditional Arabic` (see `:fonts:` description in
 https://www.metanorma.org/author/ref/document-attributes/#visual-appearance)
+
 
 == Examples of rendered new ITU cover pages
 
