@@ -164,6 +164,41 @@ inherit:[<<ref1>>]
 ----
 ====
 
+`class`:: Used to add a new category of provisions, which is labelled and numbered separately to
+requirements, recommendations and permissions [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.4.1].
++
+[example]
+====
+[source,adoc]
+----
+[requirement]
+--
+[%metadata]
+class:: Provision
+--
+
+[requirement]
+--
+--
+
+[requirement]
+--
+[%metadata]
+class:: Provision
+--
+----
+
+Rendered as:
+
+____
+*Requirement 1*
+
+*Provision 1*
+
+*Requirement 2*
+____
+====
+
 Any attributes that are not included in the list of requirement attributes above
 are treated as
 "classification tags". [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.0]

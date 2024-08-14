@@ -344,6 +344,41 @@ requirement class that is being tested.
 // * `model` (optional when using Metanorma OGC). Type of model. The value of `ogc`
 // means using OGC ModSpec models.
 
+`class`:: Used to add a new category of provisions, which is labelled and numbered separately to
+requirements, recommendations and permissions [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.4.1].
++
+[example]
+====
+[source,adoc]
+----
+[requirement]
+--
+[%metadata]
+class:: Provision
+--
+
+[requirement]
+--
+--
+
+[requirement]
+--
+[%metadata]
+class:: Provision
+--
+----
+
+Rendered as:
+
+____
+*Requirement 1*
+
+*Provision 1*
+
+*Requirement 2*
+____
+====
+
 `id`::
 +
 --
