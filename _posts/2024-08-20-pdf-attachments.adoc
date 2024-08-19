@@ -1,0 +1,108 @@
+---
+layout: post
+title: "Metanorma now supports PDF attachments"
+date: 2021-12-04
+categories: documentation
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+  -
+    name: Alexander Dyuzhev
+    email: dyuzhev@gmail.com
+    social_links:
+      - https://www.linkedin.com/in/alexander-dyuzhev/
+      - https://github.com/Intelligent2013/
+
+excerpt: >-
+  Metanorma-generated PDFs now support attachments.
+---
+== Introduction
+
+NOTE: PDF attachments feature is available *from* Metanorma v1.10.0.
+
+Increasingly, organizations are issuing PDFs that contain attachments in order
+to incorporate machine-readable content.
+
+Metanorma allows specifying the attachments for PDF documents, and generates the
+hyperlinks to the attachments.
+
+== PDF attachments
+
+Metanorma supports per-document attachments so that users that only deal
+with one document file can easily incorporate and link to the
+incorporated attachments as native document elements.
+
+Sometimes Metanorma document needs to link to non-Metanorma documents (files), 
+but which need to be distributed together with the document, for instance:
+
+* program code, 
+
+* XML, JSON, YAML files,
+
+* PDF files,
+
+* executable binaries
+
+Metanorma already supports the PDF attachments for math formulas in BIPM SI Brochure,
+see our post link:../2021-08-26-pdf-accessibility-for-math-formulas[Making math accessible in Metanorma PDFs],
+but now we extend this feature for used-defined attachments for all flavors.
+
+The attachment can be added into the Metanorma document in two steps:
+
+. encode file attachments in the bibliography section of a Metanorma document
++
+```
+* [[[anchor,attachment:(file path of attachment relative to current file identifier)]]]
+```
+
+. use the cross-reference to `<<anchor>>` in the document
+
+
+.Example of attaching the `sources/program.c` program code file
+====
+
+```
+== Scope
+
+The sample C program: <<file1>>
+
+[bibliography]
+== Bibliography
+
+* [[[file1,attachment:(sources/program.c)]]]
+
+```
+
+Any cross-references to `<<file1>>` will be point to the attachment.
+====
+
+.The resulted PDF with hyperlink to the attachment
+image::/assets/blog/2024-08-20_1.png[]
+
+.PDF attachments can be saved from the PDF file in the compatible PDF reader (Adobe Reader example)
+image::/assets/blog/2024-08-20_2.png[]
+
+
+== PDF attachments support in the PDF readers
+
+Not every PDF reader supports PDF attachments!
+
+.PDF attachment support in PDF readers on different platforms
+[cols="a,a,a",options="header"]
+|===
+| Support | Platform | Application
+
+| ✓ | Windows | Adobe Reader
+| ✓ | macOS | Adobe Reader
+| ✗ | macOS | Preview
+| ✗ | macOS | Skim
+
+|===
+
+
+== References
+
+* https://www.metanorma.org/author/topics/sections/attachments/[Attachments]
