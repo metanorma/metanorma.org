@@ -1,0 +1,124 @@
+---
+layout: post
+title: "Render GML dictionary and Enterprise Architect diagram"
+date: 2024-08-21
+categories: documentation
+
+authors:
+  - name: Kwan Koon Wa
+    email: kw.kwan@ribose.com
+    use_picture: assets
+    social_links:
+    - https://github.com/kwkwan
+
+excerpt: >-
+  Render GML Dictionary by `lutaml_gml_dictionary` and  Enterprise Architect
+  diagram by `lutaml_ea_diagram`.
+---
+
+== Introduction
+
+Two new plugins has been introduced into Metanorma.  They are
+`lutaml_gml_dictionary` for rendering Geography Markup Language (GML) Dictionary and
+`lutaml_ea_diagram` for rendering Enterprise Architect (EA) diagrams.
+
+== Rendering GML Dictionary by `lutaml_gml_dictionary`
+
+`lutaml_gml_dictionary` allows to render a GML Dictionary by using Liquid Drop.
+
+GmlDictionaryDrop has the following attributes:
+
+* name
+* file_name
+* dictionary_entry
+
+Each `dictionary_entry` has the following attributes:
+
+* name
+* description
+
+.Example of using `lutaml_gml_dictionary`
+[source,adoc]
+-----
+lutaml_gml_dictionary::/path/to/dictionary.xml[template="/path/to/template.liquid",context=dict]
+-----
+
+The command accepts the options listed below:
+
+* `"/path/to/dictionary.xml` specifies the path of xml file of the
+GML Dictionary.
+
+* `template="/path/to/template.liquid"` specifies the liquid template.
+  For example, you can create a liquid template and link it by `template`.
+
+* `context=dict` define the context in the template.
+
+.Example of the liquid template file:
+[source,adoc]
+-----
+[cols="3a,22a"]
+|===
+| Name | {{ dict.file_name }}
+
+h| Code h| Description
+{% for entry in dict.dictionary_entry %}
+| {{ entry.name }} | {{ entry.description }}
+{% endfor %}
+|===
+
+[.source]
+<<source_link>>
+-----
+
+In spite of specifying the path of the template, you can also define an inline
+template within a block by
+`[lutaml_gml_dictionary,"/path/to/dictionary.xml",context=dict]`.
+
+.Example of using `lutaml_gml_dictionary` with an inline liquid template:
+[source,adoc]
+-----
+[lutaml_gml_dictionary,"/path/to/dictionary.xml",context=dict]
+--
+{% capture link %}https://www.test.com/{{ dict.file_name }}{% endcapture %}
+
+[cols="3a,22a"]
+|===
+| File Name | {{ dict.file_name }}
+h| URL | {{ link }}
+h| Help | Description
+{% for entry in dict.dictionary_entry %}
+| {{ entry.name }} | {{ entry.description }}
+{% endfor %}
+|===
+
+[.source]
+<<source_link>>
+--
+-----
+
+== Rendering a Enterprise Architect diagram from XMI by `lutaml_ea_diagram`
+
+`lutaml_ea_diagram` allows to quickly render a EA diagram as an image file by
+specifying the name of diagram.
+
+.Example of using `lutaml_ea_diagram`
+[source,adoc]
+-----
+lutaml_ea_diagram::[name="name_of_diagram",base_path="/path/to/xmi-images",format="png"]
+-----
+
+`lutaml_ea_diagram` will search the diagram with name `name_of_diagram` and then
+render it as:
+
+.Example of the rendered diagram
+[source,adoc]
+-----
+[[figure-{{ diagram.xmi_id }}]]
+.{{ diagram.name }}
+image::{{ image_base_path }}/{{ diagram.xmi_id }}.{{ format | default: 'png' }}[]
+-----
+
+== Conclusion
+
+Questions or suggestions, please feel free to file an issue at
+the https://github.com/metanorma/metanorma-plugin-lutaml[metanorma-plugin-lutaml repo] at GitHub!
