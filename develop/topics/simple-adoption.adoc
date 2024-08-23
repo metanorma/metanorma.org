@@ -56,6 +56,10 @@ xml_root_tag: 'generic-standard'
 logo_path: lib/isodoc/generic/html/logo.jpg
 logo_paths: []
 validate_rng_file: lib/metanorma/generic/generic.rng
+formats:
+  - html
+  - doc
+  - pdf
 htmlcoverpage: lib/isodoc/generic/html/html_generic_titlepage.html
 htmlintropage: lib/isodoc/generic/html/html_generic_intro.html
 htmlstylesheet: lib/isodoc/generic/html/htmlstyle.css
@@ -231,6 +235,8 @@ doctypes:
 ====
 
 `default_doctype`:: default doctype [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8]. If not supplied, the first element of doctypes is used; if that is not supplied either, "standard" is used.
+
+`formats`:: output formats supported [added in https://github.com/metanorma/metanorma-generic/releases/tag/v2.7.1], specified as an array. If not supplied, the default is `["html", "doc"]`. Every format specified needs to be supported with stylesheets and font settings appropriate for the format, as specified below.
 
 `html_bodyfont`:: The default font to use in HTML output for body text [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.4].
 
