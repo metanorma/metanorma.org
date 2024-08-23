@@ -5,22 +5,19 @@ title: Metanorma for JIS markup
 
 == Sections
 
-=== Commentary
-
-Commentary clauses are marked up as annexes with a `commentary` option attribute:
-
-[source,asciidoc]
-----
-[appendix%commentary]
-== Commentary
-...
-----
-
 === Participant clauses
 
-The membership of the investigative committee for the standard appears before the table
-of contents in JIS documents, in tabular form. This information is entered in a YAML table
-within a clause of type `participants`, with the following structure:
+The membership of the investigative committee for the standard appears before
+the table of contents in JIS documents, in tabular form.
+
+The title of the participant clause includes the name of the investigative
+committee, and is generated automatically.
+
+NOTE: The name of the investigative committee is set as a
+link:/author/jis/ref/document-attributes/[document attribute].
+
+This information is entered in a YAML table within a clause of type
+`participants`, with the following structure:
 
 [source,asciidoc]
 -----
@@ -42,8 +39,9 @@ within a clause of type `participants`, with the following structure:
 ----
 -----
 
-e.g.
-
+.Entering the JIS participant clause for JIS Z 8301:2019
+[example]
+====
 [source,asciidoc]
 -----
 [type=participants]
@@ -51,14 +49,14 @@ e.g.
 
 [source,yaml]
 ----
-- name: 
+- name:
     surname: 酒井
     givenname: 信介
   affiliation:  横浜国立大学
   role: 部会長
 - name:
     surname: 伊藤
-    givenname: 弘 
+    givenname: 弘
   affiliation: 国立研究開発法人建築研究所
   role: 委員
 - name:
@@ -67,7 +65,18 @@ e.g.
   affiliation: 国立研究開発法人建築研究所
 ----
 -----
+====
 
-The title of the participant clause includes the name of the investigative committee,
-and is generated automatically.
+
+
+=== Commentary as appendix
+
+Commentary clauses are marked up as annexes with a `commentary` option attribute:
+
+[source,asciidoc]
+----
+[appendix%commentary]
+== Commentary
+...
+----
 
