@@ -298,11 +298,11 @@ The https://www.ogc.org/projects/groups/docteam[OGC DocTeam] has specified that
 all these elements are *MANDATORY* in OGC documents (in this order):
 
 * Abstract
-* Executive Summary (Engineering Reports only)
+* Executive summary (Engineering Reports only)
 * Keywords
 * Preface
-* Security Considerations [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.5]
-* Submitting Organizations
+* Security considerations [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.5]
+* Submitting organizations
 * Submitters
 
 The Foreword and Introduction are not recognised as part of the document preface
@@ -333,11 +333,14 @@ of groundwater data, as well as a GML/XML encoding with examples.
 
 === Executive summary
 
+The "`Executive summary`" section is mandatory for OGC Engineering Reports.
+It is only allowed for that document type [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.3].
+
 The Executive Summary section is entered as a clause with the title
 "`Executive summary`".
 
 [example]
-.Setting the Executive summary
+.Setting the Executive summary through the predefined title
 ====
 [source,adoc]
 ----
@@ -347,11 +350,11 @@ This is the executive summary...
 ----
 ====
 
-It can also be indicated with the style attribute 
+Alternatively, it can be explicitly declared if the title is different
 `[executive_summary]` [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.6.0].
 
 [example]
-.Setting the Executive summary
+.Setting the Executive summary through explicit declaration
 ====
 [source,adoc]
 ----
@@ -361,9 +364,6 @@ It can also be indicated with the style attribute
 This is the executive summary...
 ----
 ====
-
-This clause is mandatory for Engineering Reports,
-and only allowed for that document type [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.5.3].
 
 
 [[ogc-preface]]
@@ -451,12 +451,14 @@ Prefatory text is generated automatically.
 ----
 ====
 
-=== Submitters
+=== Submitters (and Contributors)
 
 "`Submitters`" are entered using a table, contained in a section with the title "`Submitters`".
 
-NOTE: In OGC Engineering Reports, "Submitters" is rendered as "Contributors".
+In OGC Engineering Reports, "Submitters" is rendered as "Contributors".
 A title of "Contributors" is treated as equivalent to "Submitters" [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.3.14].
+The "Contributors" section in an Engineering report can declared using the
+clause attribute `[contributors]`.
 
 NOTE: Any table included in a Submitters section is automatically
 unnumbered [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.4.1]
@@ -472,6 +474,7 @@ unnumbered [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.
 |Name |Affiliation |OGC member
 
 |Steve Liang | University of Calgary, Canada / SensorUp Inc. | Yes
+
 |===
 ----
 ====
@@ -492,53 +495,61 @@ submitters:
 
 |Boyan Brodaric |GSC
 |Alexander Kmoch |U Salzburg
+
 |===
 ----
 ====
 
-=== Engineering reports
 
-The following style attributes can be used instead of `[.preface]`, to indicate
-prefatory material specific to engineering reports [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.6.0].
+=== Engineering report elements
 
-* [overview]
-* [future_outlook]
-* [value_proposition]
-* [contributors]
+Preliminary sections specific to Engineering Reports are entered by using the
+following clause
+attributes [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v2.6.0].
 
-These are all treated as equivalent to `[.preface,type=...], independent of the actual title provided:
+* "Overview": `[overview]`
+* "Future outlook": `[future_outlook]`
+* "Value proposition": `[value_proposition]`
 
+NOTE: These clause declarations are equivalent to `[.preface,type=...]`,
+independent of the actual title provided.
+
+[example]
+.Setting Engineering Report preliminary elements
+====
 [source,adoc]
 ----
 [overview]
 == Overview
 
-This is an overview
+This is an Engineering Report overview.
 
 [value_proposition]
 == Proposed value
 
-This is in fact a value proposition
+This is an Engineering Report value proposition.
 
 == Initial clause
 
-This is where the main section of the document begins
-
+This is where the main section of the Engineering Report document begins.
 ----
+====
 
 
 [[ogc-additional-prelim]]
 === Additional preliminary elements
 
 The OGC DocTeam has specified that additional preliminary elements are *allowed*
-but not *encouraged*. This is useful for document backwards-compatibility and
-cross-published standards at other SDOs.
+in OGC documents but not *encouraged*.
+
+This is useful for document backwards-compatibility and cross-published
+standards at other SDOs.
 
 Additional preliminary elements should be encoded under the `[.preface]`
 element, and they will be rendered *after* the five mandatory preliminary
 elements.
 
-Functionality implemented in https://github.com/metanorma/metanorma-ogc/issues/83.
+NOTE: Functionality implemented in https://github.com/metanorma/metanorma-ogc/issues/83.
 
 [example]
 .Setting additional preface sections
@@ -553,7 +564,6 @@ Functionality implemented in https://github.com/metanorma/metanorma-ogc/issues/8
 == Intended audience
 
 ...
-
 ----
 ====
 
