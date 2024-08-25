@@ -1,0 +1,557 @@
+---
+layout: post
+title: "Encoding and rendering special characters in Metanorma"
+date: 2024-08-12
+categories: documentation
+authors:
+  -
+    name: Alexander Dyuzhev
+    email: dyuzhev@gmail.com
+    social_links:
+      - https://www.linkedin.com/in/alexander-dyuzhev/
+      - https://github.com/Intelligent2013/
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+
+excerpt: >-
+  Metanorma allows extending the default font sets for demanding cases of glyph
+  rendering, ensuring that even the most complex documents are rendered
+  accurately and in compliance with international standards.
+---
+
+== Introduction
+
+Metanorma adopts the motto of "write once, read anywhere" (pun intended) by
+supporting rendering of a unified body of information into multiple output
+formats, including HTML, PDF, Word and machine-readable formats.
+
+It is therefore critically important for Metanorma to ensure characters and
+symbols are displayed identically across different platforms.
+
+This article explores the challenges associated with rendering special
+characters across the two major formats used by Metanorma users: HTML and PDF,
+and describes how Metanorma allows you to address these challenges to ensure
+accurate and consistent rendering of symbols and characters across platforms.
+
+
+== Challenges of cross-platform and cross-technology character rendering
+
+Here are some oft-encountered emojis that render properly on screen or in
+the browser.
+
+* ☑ (`U+2611` CHECK BOX)
+* ✅ (`U+2705` WHITE HEAVY CHECK MARK)
+* ✓ (`U+2713` CHECK MARK)
+* ❌ (`U+274C` CROSS MARK)
+
+Surprisingly, they are often missing in PDF output!
+
+The reason for this is that these symbols are part of the Unicode block
+"Dingbats" (https://www.compart.com/en/unicode/block/U+2700[Compart "Dingbat"]) which is
+frequently not supplied in most fonts.
+
+The PDF format, due to portability reasons, requires embedding of glyph shapes
+within the document through fonts. When those glyphs are not accessible by the
+PDF processor, those glyphs will not be embedded and will end up as
+un-renderable in the PDF reader.
+
+This issue becomes significant when the published documents need to adhere
+to international standards and be consistent across all platforms.
+
+NOTE: The glyph names are in the format `U+XXXX` where `XXXX` is the Unicode
+code point for the character. The Unicode code point is a unique identifier for
+each character in the Unicode standard.
+
+
+== Digital rendering of characters
+
+=== Varied approaches of HTML and PDF
+
+A basic understanding of the underlying technologies that govern character
+encoding and rendering is needed to fully appreciate the challenges.
+
+HTML and PDF, both ubiquitous formats today have very different assumptions and
+technical underpinnings. Their different approaches extend to treatment of
+character rendering.
+
+Here, we first describe the basic concepts in character encoding and rendering,
+then contrast the approaches of HTML and PDF.
+
+
+=== Character encoding and character set
+
+A character set is a collection of glyphs (including characters and symbols),
+each assigned a unique numeric value, known as a "code point".
+
+Character encoding is the process of mapping characters to their corresponding
+"code points" in a character set, and treating those code points as the digital
+representation of those characters.
+
+When the character encodings are written to files, the reader will interpret
+these code points and display them as characters.
+
+There are multiple character encoding standards available today, including
+ASCII, Latin-1, and Unicode.
+
+
+=== Fonts
+
+Fonts are the digital representation of a collection of glyphs. A font file
+contains a set of glyphs, each mapped to a specific code point in a character
+set.
+
+In a font, a glyph is the visual representation of a character or symbol encoded
+in a font format, typically in a vector graphic representation or as a bitmap
+image.
+
+A font can include glyphs for a specific character set, such as the Latin
+alphabet, or a broader range of characters and symbols from multiple scripts.
+
+Importantly, a font may only implement a character set partially. There is no
+guarantee that a particular font will support all characters in a character set
+unless it is explicitly stated.
+
+Digital display of characters and symbols rely on the availability of the
+necessary glyphs in the fonts used for rendering. If a font does not include a
+specified glyph, the glyph cannot be rendered.
+
+There are multiple font formats available today:
+
+* TrueType and OpenType are widely used font formats for desktop and print
+publishing.
+
+* Web Open Font Format (WOFF) and WOFF2 are web font formats optimized for web
+delivery.
+
+
+=== Unicode and its planes
+
+Unicode (https://www.iso.org/standard/76897.html[ISO/IEC 10646]) is the now
+ubiquitous character encoding standard that assigns a unique code point to most
+characters, symbol, and script used worldwide.
+
+NOTE: The Unicode code set is managed by the
+https://unicode.org[Unicode Consortium] as the ISO/IEC 10646 Registration
+Authority.
+
+The purpose of Unicode is to be the single universal character set that takes a
+language-independent approach in order to accommodate the full range of
+characters needed for global communication.
+
+In order to do so in a manageable manner, Unicode characters are organized into
+planes, with each plane containing a specific range of characters.
+
+For example, the Basic Multilingual Plane (BMP) is the most commonly used plane
+and includes characters from a wide range of scripts and languages.
+
+Specialized symbols and characters are often found in higher planes,
+such as the Supplementary Multilingual Plane (SMP) and the Supplementary
+Ideographic Plane (SIP), including the emoji and dingbat symbols.
+
+As described earlier, a font that implements Unicode does not need to implement
+the full character set. Therefore these specialized symbol planes are not always
+fully supported by standard fonts, leading to rendering issues when displaying
+documents that contain these symbols.
+
+The Dingbats block, for example, is located in the SMP and contains a variety
+of symbols and shapes that are commonly used in documents. These symbols are
+frequently missing in standard fonts, leading to rendering issues when
+displayed in PDF documents.
+
+
+These commonly used fonts do not implement the Unicode Dingbats block:
+
+* Times New Roman
+* Arial
+* Helvetica
+* Source Sans Pro
+* Noto Sans
+
+
+=== Fonts typically support a subset of Unicode
+
+One of the main reasons why not every font supports all Unicode symbols is the
+sheer size and complexity of the Unicode standard.
+
+Unicode currently defines over 140,000 characters, encompassing a vast array of
+symbols, letters, and scripts from around the world. Creating a font that
+supports every single Unicode character is a significant challenge in terms of
+both design and file size.
+
+Fonts are typically designed with a specific purpose or audience in mind, and
+they prioritize certain ranges of Unicode characters over others.
+
+As a result, fonts typically do not include the full range of Unicode characters,
+particularly those in specialized blocks like "Dingbats", "Miscellaneous Symbols
+and Pictographs", or "Emojis."
+
+This is why documents that rely on these symbols may encounter rendering issues
+when the selected font does not include the necessary glyphs.
+
+
+== Character encoding and rendering in HTML
+
+HTML is the language used for web pages, originally standardized by
+https://www.w3.org/html[W3C] and now maintained by the
+https://html.spec.whatwg.org/[WHATWG].
+
+In HTML, character encoding is simple because the role of glyph rendering is
+outsourced to the renderer, which is the web browser. HTML supports encoding the
+full range of Unicode characters in an HTML document.
+
+HTML glyph rendering is performed purely by the browser. There are two ways
+for the browser to find the correct font to render:
+
+* The browser relies on existing system fonts installed on the user's device
+to render the glyphs.
+
+* The browser accepts font file instructions through CSS, allowing the webpage
+to load remote fonts to use for rendering.
+
+If a particular glyph is not available in the primary font specified by the webpage,
+the browser dynamically falls back to another font that includes the necessary
+glyph.
+
+This fallback mechanism is seamless and generally goes unnoticed by the user,
+allowing for a wide range of symbols and characters to be displayed correctly,
+even if the primary font does not include them.
+
+Fallback often works because tolerance of HTML rendering to missing glyphs is
+higher than PDF, as website users are typically more forgiving of symbols
+rendered in different fonts than readers of formal documents.
+
+
+== Character encoding and rendering in PDF
+
+PDF is the typical format for the publication and usage of electronic documents.
+Originally developed by Adobe, the PDF standard is now maintained
+by the https://pdfa.org[PDF Association] as
+https://www.iso.org/standard/63534.html[ISO 32000].
+
+One key feature of PDF is its ability to have a document fully self-contained.
+That is, all necessary components used by the document are embedded within the
+document itself, ensuring a consistent look and feel of the document regardless
+of the setup of the viewing device or software.
+
+Therefore in PDF, character encoding and rendering are handled differently from
+HTML.
+
+The character encoding in PDF is similar to HTML, in that Unicode characters are
+used to represent glyphs in the document.
+
+The rendering of glyphs is done by the PDF viewer, not the browser, but the PDF
+viewer relies on the fonts embedded in the PDF to render the glyphs.
+
+When a PDF document is produced, fonts and glyphs used to produce it are
+embedded into the file.
+
+While an HTML browser can dynamically fall back to another font that includes the
+necessary glyph, if it is not available in the primary font specified by the
+webpage.
+
+This can lead to issues when rendering symbols that are not included in the
+embedded fonts, and the resulting missing characters will be rendered in the PDF
+as placeholder characters like `#`.
+
+In any case, even a possible fallback won't work well with PDF users, as they
+are typically less forgiving of missing or substituted glyphs than users of
+HTML, as PDF is often used for formal documents where consistency and accuracy
+are paramount.
+
+
+== Challenges to integrate specialized fonts in PDF documents
+
+Integrating specialized fonts in PDF documents comes with its own set of
+challenges.
+
+
+=== Font availability during PDF rendering
+
+One of the primary issues is ensuring that the selected fonts are embedded
+correctly in the PDF. In order to embed a font in a PDF, the font file must be
+available at the compilation of the PDF document.
+
+Metanorma uses the https://www.fontist.org[Fontist] software to manage local and
+remote font loading, ensuring that all necessary fonts are accessible by
+Metanorma's PDF engine during the document compilation process, in order to
+facilitate the embedding of fonts in the final PDF document.
+
+=== Font availability across platforms
+
+The availability of specialized fonts can vary depending on the platform and the
+fonts installed on the user's device due to licensing and issues.
+
+Some platforms may provide additional proprietary fonts that are not available
+on other platforms. This is a concern that designers should be aware of when
+selecting fonts for organizational publications using Metanorma for the
+cross-platform portability of the compilation process.
+
+Windows and macOS both provide a set of system fonts that are commonly used, and
+they also provide extended font sets that contain attractive and specialized
+fonts. However, these fonts may not be available on other platforms, leading to
+inconsistencies in the rendering of specialized symbols and characters across
+different devices.
+
+[example]
+====
+The "Avenir Next" font is a popular font on macOS, but is not available on
+Windows or Linux.
+
+If a Metanorma document uses the "Avenir Next" font, it will compile PDF on
+macOS but not on other platforms unless that font is manually made available in
+the system.
+====
+
+[example]
+====
+The Japanese "Mincho" font is available on Windows, but not on macOS or Linux.
+
+If a Metanorma document uses the "Mincho" font, it will compile PDF on Windows
+but not on other platforms unless that font is manually made available in the
+system.
+====
+
+To ensure that the PDF output is consistent across all platforms, it is
+important to select fonts that are widely available and supported on all
+platforms through Fontist (search the https://www.fontist.org/[Fontist] site for
+supported fonts), or to embed the necessary fonts in the document to ensure that
+they are accessible during the rendering process.
+
+== Metanorma features
+
+=== General
+
+Metanorma adopts the WYSIWYM (What You See Is What You Mean) document approach,
+which entails that the user solely specifies the structure and content of the
+document without any formatting or font selection.
+
+The usage of fonts in Metanorma is normally determined by the flavor of the
+document, a set of rules and configurations that define the appearance and
+behavior of the document.
+
+To support the most complex font rendering needs of users, Metanorma also
+provides mechanisms for users to specify:
+
+* additional fonts to be used in the document through the document attribute
+`:fonts:`;
+
+* specifying characters to render in specific fonts.
+
+
+=== Cross-format and cross-platform font rendering
+
+Metanorma supports cross-format and cross-platform character representation
+using a single input definition.
+
+Metanorma is designed to support robust rendering of specialized symbols and
+characters across all its supported formats and platforms that Metanorma runs
+on, with the following features:
+
+* Font and glyph identification. Characters and symbols are accurately
+identified not only with Unicode code points, but also by the specific font that
+should be used to render them. A user can encode a particular glyph by
+specifying a specific code point within a font, and Metanorma ensures that the
+rendering of that selected glyph would be consistent and accurate across all
+platforms.
+
+* Character encoding. Metanorma ensures that all characters and symbols are
+accurately encoded in the document using Unicode code points.
+
+* Font embedding. Metanorma ensures that all necessary fonts are embedded in the
+PDF document to facilitate accurate rendering of glyphs. Any missing glyphs
+in the fonts selected by the user are warned during the compilation process.
+
+* Fallback fonts in PDF. Metanorma's PDF generation process automatically
+detects and provides a warning for any missing glyphs in the selected fonts, and
+provides a fallback mechanism using generic fonts with good Unicode coverage,
+such as Noto Sans.
+
+
+=== Flavor-defined fonts
+
+Every Metanorma flavor defines a set of fonts dictated by the visual rules of
+the organization of that flavor.
+
+For example, the ISO flavor in Metanorma uses the following fonts:
+
+* Cambria
+* Times New Roman
+* Cambria Math
+* Noto Serif
+
+On the other hand, the OGC (Open Geospatial Consortium) flavor uses:
+
+* Lato
+* STIX Two Math
+* Noto Sans
+
+These fonts are the only fonts used for that particular flavor, ensuring
+consistent rendering of characters and symbols in the produced outputs.
+
+
+=== Specifying fonts beyond flavor-defined fonts
+
+Some documents require characters and symbols that are not supported by the
+default font set defined by the flavor.
+
+Metanorma allows users to extend the font set used for PDF rendering by
+specifying additional fonts through the document attribute `:fonts:`.
+
+For example, the free
+https://fonts.google.com/noto/specimen/Noto+Emoji[Noto Emoji] font can be added
+to the font set to support wide range of emojis and symbols:
+
+[source,asciidoc]
+----
+:fonts: Noto Emoji
+----
+
+Similarly, the free `FreeSerif` font (available via Fontist) can be used to
+provide additional coverage for a broader range of Unicode symbols:
+
+[source,asciidoc]
+----
+:fonts: FreeSerif
+----
+
+For Windows users, the `Segoe UI Emoji` font can also be used to ensure
+comprehensive emoji support:
+
+[source,asciidoc]
+----
+:fonts: Segoe UI Emoji
+----
+
+By specifying the `:fonts:` attribute:
+
+* The PDF compilation process will embed the specified fonts in the PDF
+document, ensuring that all necessary glyphs are available in the PDF output.
+This means that the PDF output will be consistent and accurate across all
+platforms, regardless of the fonts installed on the user's device.
+
+* The HTML output will also be subject to the same font requirement, which means
+that while the browser uses system fonts available on the user's
+device to render any missing glyphs, when the same HTML output is opened by
+different devices, the glyph rendering result may vary depending on the fonts
+installed on that particular device.
+
+As a future improvement, Metanorma could also implement HTML web font features
+for HTML output, allowing users to specify web fonts to be used for rendering
+HTML output so as to ensure consistent rendering of glyphs across different
+devices. This would apply when the specified font has a web font version,
+such as when it is an open-source font available on Google Fonts. This would
+work for browsers that are online but not offline.
+
+
+=== Encoding particular code points character set
+
+Metanorma is used not only by users of PDF, but is actually the publication
+engine generating the PDF standard ISO 32000-2 published by the PDF Association.
+
+In ISO 32000-2, there are multiple symbols and characters that are not part of
+the standard Unicode set, but are part of the PDF standard, and required
+rendering these symbols using specialized fonts.
+
+In other cases, needed specialized symbols can be located in the Unicode
+"Private Use Area" (PUA) and are bound to a specific font.
+
+This is done in Metanorma in two steps.
+
+First, the user assigns a new custom charset to a specific font. The
+`:presentation-metadata-custom-charset-font:` attribute takes pairs of
+`"charset":"font"` values, where the charset is the name of the custom charset
+and the font is the name of the font to be used for rendering that charset.
+If more than one charset is to be specified, these pairs are delimited by commas.
+
+.Assigning a custom charset to a font
+[example]
+====
+[source,asciidoc]
+----
+:presentation-metadata-custom-charset-font: dingbats:"D050000L" <1>
+----
+<1> Assigning the "dingbats" charset to the "D050000L" font.
+====
+
+.Assigning multiple custom charsets
+[example]
+====
+[source,asciidoc]
+----
+:presentation-metadata-custom-charset-font: dingbats:"D050000L",sans:"FreeSans" <1>
+----
+<1> Assigning the "dingbats" charset to the "D050000L" font and the "sans" charset to the "FreeSans" font.
+====
+
+
+Then, in the body content, specify the character code point in the charset
+using the `[custom-charset]#...#` inline block.
+
+Syntax:
+
+[source,asciidoc]
+----
+ [custom-charset: {charset-name}]#{code-point}#
+----
+
+.Rendering a particular code point in a named charset
+[example]
+====
+[source,asciidoc]
+----
+ [custom-charset: dingbats]#&#xF0B4;# <1>
+----
+<1> Rendering the code point `U+F0B4` in the defined "dingbats" charset.
+====
+
+
+.Rendering multiple code points in multiple named charsets
+[example]
+====
+[source,asciidoc]
+----
+:presentation-metadata-custom-charset-font: dingbats:"D050000L",sans:"FreeSans"
+
+// ...
+
+ [custom-charset: sans]#&#xA9;#
+ [custom-charset: dingbats]#&#xF0B4;#
+----
+====
+
+This feature allows users to encode and render specialized symbols and
+characters that are not part of the standard Unicode set, ensuring that even the
+most complex documents are rendered accurately for specification purposes.
+
+
+== Conclusion
+
+Accurate rendering of special characters and symbols in document formats is crucial
+for maintaining the integrity and consistency of information across platforms.
+
+The challenges associated with rendering these characters stem from the inherent
+differences between document formats such as HTML and PDF in how they handle
+fonts and characters, as well as the limitations of font support for the full
+range of Unicode symbols.
+
+Metanorma provides a robust solution to these challenges by allowing users to
+extend the font set used for PDF rendering, ensuring that all necessary symbols
+and characters are correctly rendered in the final document.
+
+By ensuring the accurate encoding and rendering of glyphs, Metanorma enables the
+production of high-quality, standards-compliant PDF and HTML output that meet
+the most rigorous requirements of international standards organizations.
+
+// == Bibliography
+
+// * https://www.metanorma.org/author/ref/document-attributes/#visual-appearance
+// * https://www.compart.com/en/unicode/block/U+2600
+// * https://www.compart.com/en/unicode/block/U+2700
+// * https://www.compart.com/en/unicode/block/U+2b55
+// * https://unicode.org/standard/standard.html
+// * https://www.iso.org/standard/63534.html
+// * https://www.iso.org/standard/76897.html
+// * https://www.iso.org/iso-8601-date-and-time-format.html
