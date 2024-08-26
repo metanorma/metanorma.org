@@ -518,8 +518,98 @@ and it removes `exponent_sign`, resulting in
 
 === Encoding numbers as formulas
 
-Numbers can be encoded in the `stem` blocks, and are formatted identically
-as those using the `number` command.
+Numbers can be formatted within `stem` blocks. By default, numbers in `stem` blocks
+are not formatted at all: number formatting is reserved for the  `number` macro.
+So if a formula contains the string _1221_, that will usually not be formatted
+into _1,221_, but left alone.
+
+In order to make a block formula format its numbers, use the argument
+`number-format` on `[stem]`: it has the same format as the foregoing number formatting
+expressions:
+
+[source,adoc]
+----
+[stem]
+++++
+1 + x
+++++
+
+[stem,number-format="precision=2"]
+++++  
+1 + x
+++++
+----
+
+renders as:
+
+____
+
+1 + x
+
+1.00 + x
+____
+
+Default numeric processing is applied to a formula by specifying `number-format=default`:
+
+[source,adoc]
+----
+[stem,number-format="default"]
+++++  
+1221 + x
+++++
+----
+
+in an English-language document applies default English locale formatting on the formula's number,
+to render as:
+
+____
+
+1,221 + x
+____
+
+Number formatting profiles can also be used on formulas:
+
+[source,adoc]
+----
+:number-presentation-profile-foo: notation=scientific,exponent_sign=nil,decimal=","
+
+[stem,number-format="profile=foo"]
+++++  
+1221 + x
+++++
+----
+
+It is possible to specify that by default, all formulas have their numbers formatted,
+through the `number-presentation-formula` document attribute. The document attribute
+can take the value `number-presentation`, in which case it has the same value as
+the `:number-presentation:` document attribute; or `default`, in which case default
+number formatting is applied (`notation='basic'`).
+
+If `number-presentation-formula` is set, a formula can ignore number formatting
+by setting `number-format: nil`.
+
+[source,adoc]
+----
+:number-presentation-formula: notation=scientific"
+
+[stem]
+++++  
+1221 + x
+++++
+
+[stem,number-format=nil]
+++++  
+1221 + x
+++++
+----
+
+renders as:
+
+____
+1.221e3 + x
+
+1221 + x
+____
 
 The `number` command however provides granular configuration options, and
 is the recommended method for encoding numbers for consistency reasons.
@@ -533,8 +623,12 @@ There are stem:[30000.54] people in attendance.
 ----
 ====
 
+NOTE: Inline stem macros (`stem:[]`) do not support attributes, so specifying
+number formatting on inline stem macros is no currently supported, other than
+through the universal application of `:number-presentation-formula:`.
 
-NOTE: The number in the `\stem:[]` expression must be specified according to the
+
+NOTE: The number in the `\stem:[]` or `\number:[]` expression must be specified according to the
 en-US locale; `30000.54` is recognised as a decimal number, `30 000,54` is not.
 However, if the document is in French, `stem:[30000.54]` will in fact be
 rendered consistent with French practice, as _30 000,54_.
