@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "New command to render GML Dictionary objects"
+title: "Rendering GML Dictionary objects"
 date: 2024-08-21
 categories: documentation
 
@@ -114,6 +114,7 @@ The command accepts the options listed below:
 `{path-to-dictionary}`:: specifies the path of XML file of the
 GML Dictionary.
 +
+.Rendering the GML Dictionary from `Building_class.xml`
 [example]
 ====
 [source,adoc]
@@ -124,6 +125,7 @@ lutaml_gml_dictionary::/path/to/Building_class.xml[...]
 
 `{path-to-template}`:: specifies the liquid template.
 +
+.Rendering the GML Dictionary using an external Liquid template
 [example]
 ====
 [source,adoc]
@@ -135,6 +137,7 @@ lutaml_gml_dictionary::/path/to/Building_class.xml[template="/path/to/template.l
 `context={dict}`:: define the context in the template. The context is used to access
 the `Liquid::Drop` object inside Liquid template.
 +
+.Rendering the GML Dictionary with the context object set to `dict`
 [example]
 ====
 [source,adoc]
@@ -224,7 +227,7 @@ h| Code h| Description
 |===
 -----
 
-Will render the GML Dictionary as such a table:
+Renders the GML Dictionary into the following table:
 
 [cols="3a,22a"]
 |===
