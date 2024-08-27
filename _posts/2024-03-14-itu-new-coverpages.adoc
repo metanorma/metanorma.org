@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "PDF generation updated for a new ITU cover page layout for Technical and Service publications (Flagship)"
+title: "ITU: new layouts for Technical and Service publications (Flagship)"
 date: 2024-03-14
 categories: documentation
 authors:
@@ -17,92 +17,274 @@ authors:
       - https://github.com/Intelligent2013/
 
 excerpt: >-
-  Metanorma supports a new ITU cover page layout for
-  Technical and Service publications (Flagship) in PDF.
+  Metanorma for ITU now supports the new ITU cover page layout for
+  Technical and Flagship publications in PDF.
 ---
 
 == Introduction
 
-Metanorma-ITU now produces the PDF with a new cover page layout for:
+ITU originally developed a unified branding style for its publications in 2021,
+and this style was finally applied towards all technical publications in late
+2023.
 
-* Technical publications
+In response to this need, Metanorma for ITU now supports the new ITU publication
+layout for Technical and Service publications in PDF.
 
-* Service publications (Flagship)
+NOTE: Special thanks to Anibal Cabrera at ITU for advising on the intricacies of
+the new ITU layout.
+
+
+== ITU publication types
+
+The new branding style applies to all ITU bureaus, including its R-, D- and T-
+bureaus.
+
+It distinguishes the following types of publications:
+
+* Standard publications. Such as those published by ITU itself, ITU-D Thematic priorities, ITU-D regional reports and Country profiles.
+
+* Flagship publications. Such as RR (Radio Regulations), WRC (ITU-R), WTDC (ITU-D), WTCA (ITU-T) and other reports.
+
+* Technical publications. Such as ITU-{R,T} Recommendations, Technical Reports, Resolutions, Reports, Handbooks.
+
+* Periodicals. Such as the ITU News, ITU Journal.
+
+The full list of the categorization of publications is reproduced below.
+
+.List of publication types (from ITU Guidelines, 4.0 "ITU Publications -- Visual guidelines for ITU publication covers", 2021)
+[cols="a,2a,2a,2a,2a", options="header"]
+|===
+| Document Type | ITU-D | ITU-T | ITU-R | SG
+
+| Standard
+| All, except the ones mentioned below
+| All, except the ones mentioned below
+| All, except the ones mentioned below
+| All, except the ones mentioned below
+
+| Flagship
+|
+• Measuring digital development
+• Yearbook of Statistics
+• WTDC Final report
+|
+• WTSA proceedings
+• Collection of ITU-T Recommendations and selected handbooks
+|
+• Service publications
+• Regulatory publications
+• Conference pulications
+• Collection of ITU-R Recommendations, reports and selected handbooks
+|
+• Resolutions of the Council
+• Final Acts of the Plenipotentiary Conference
+• Collection of the basic texts
+
+| Technical
+|
+|
+• Recommendations
+• Technical Papers
+• Technical Reports
+|
+• ITU-R Resolutions
+• ITU-R Recommendations
+• ITU-R Handbooks
+• ITU-R Reports
+|
+
+| Periodicals
+|
+| • ITU News
+|
+| • ITU Journal
+|===
+
+
+== Supported ITU publications in Metanorma
+
+Metanorma supports the publication of a vast number of ITU document types,
+and all document types now support the new ITU cover page layout.
+
+In line with ITU policy, Metanorma supports the internalization of the cover
+page into all 6 official languages of the ITU, namely, Arabic, Chinese, English,
+French, Russian, and Spanish.
+
+For details on how to create ITU documents in Metanorma, refer to the
+link:/author/itu/[Authoring for ITU] page.
+
+.List of supported ITU documents in Metanorma
+[cols="a,a,a,a",options="header"]
+|===
+| Document type | ITU-D | ITU-T | ITU-R
+
+| Technical
+|
+* Recommendations
+|
+* Recommendations
+* Technical Papers
+* Technical Reports
+* Supplements
+* Handbooks
+* Focus Group publications
+* Resolutions
+* Implementers Guide
+|
+* Recommendations
+* Reports
+* Handbooks
+* Resolutions
+
+| Flagship
+|
+|
+|
+* Service publication
+
+|===
+
+NOTE: The "Recommendation" type includes the related types such as
+amendment, supplement, etc.
+
+NOTE: See link:/author/itu/ref/document-attributes/[ITU document attributes] for
+full details.
 
 
 == New layout document attributes
 
-By default, the Metanorma generates the PDF in the new layout now. You can
-switch to the previous (old) layout by setting the document attribute
-`:document-scheme: legacy`. The default value is `current`.
+Metanorma supports the "document scheme" concept for a number of organizations,
+allowing documents to appear in different layout schemes. This is now
+implemented for ITU differentiating the pre-2021 and the 2021 layouts.
 
-The new ITU cover page contains a few new elements. New document attributes
-added into the Metanorma to support them:
+The document attribute `:document-scheme:` allows to specify the layout of
+an ITU document:
 
-`:collection-title:`:: the collection of documents that this document
-appears in. Appears on the top left of the cover page.
+* `current` (new default) identifies the 2021 ITU layout.
+* `legacy` identifies the pre-2021 ITU layout.
 
-`:sector:`:: the standardization sector for the document, if one of
-the defined bureaus don't apply ('Telecommunication Standardization Bureau',
-'Radiocommunication Bureau' or 'Telecommunication Development Bureau'
-which automatically determined by the document attribute `:bureau:`).
-
-Flagship publications require a few additional document attributes:
-
-`:coverpage-image:`:: comma-delimited list of image locations, for images to be
-included on the PDF cover page of ITU "Service Publications" (and title page
-for logos). All image locations are relative to the source document.
-Cover page should contain also event, partner and copublisher logos (if exists),
-except the ITU logo at right bottom corner. We recommend to use the one-paged
-PDF for cover page image. If there isn't enough space on the cover to include
-all the logos, then specify the second image location to render it on inner
-cover page in the result PDF.
-
-`:presentation-metadata-color-cover-title:`:: title colour on PDF cover, as 'black'
-(default) or 'white', depending on the contrast with the background.
-
-`:presentation-metadata-cover-header-hide:`:: hide page header titles (ITUPublications,
-International Telecommunication Union, Sector or Bureau name). The values are 'true' or
-'false' (default). Some Flagship publications don't require the cover header.
-
-`:presentation-metadata-color-cover-itu-logo:`:: ITU logo color - '#1DA0DB' (default) or
-'white'. Allows to choose the color to contrast with background.
-
-`:slogan-title:`:: the slogan that this document is branded with, in connection with
-an event. Some Flagship publications allow the slogan title. Regarding the ITU
-official style guide, these fonts should be used for slogan title:
-
-* "Adelle italic" for latin and cyrillic scripts
-
-* "Traditional arabic" for Arabic
-
-* "STKaiti" for Chinese
-
-Fontist currently can't install (does not support) any of these fonts,
-but they are provided on Windows, Office and Mac:
-
-* "Adelle Devanagari" is available on the macOS (can be substituted instead of "Adelle italic"),
-
-* "Traditional Arabic" is provided on Windows and Office,
-
-* "STKaiti" is only provided by Office.
-
-Fontist may find these fonts on the user machine and pass them into the PDF
-production tool (mn2pdf).
-
-As existence of the slogan title currently is rare case, then the font
-should be specified manually in the document attributes (vs. specified internally in
-metanorma-itu gem for mainly using fonts), so the user responsible for pre-installation
-of these fonts.
-
-For example, `:fonts: Traditional Arabic` (see `:fonts:` description in
-https://www.metanorma.org/author/ref/document-attributes/#visual-appearance)
+The new ITU cover page contains some new elements not previously in the legacy
+layout. The corresponding document attributes that affect those elements are now
+present in Metanorma.
 
 
-== Examples of rendered new ITU cover pages
+The following document attributes are now supported for all documents:
 
-.ITU-T Recommendation
-image::/assets/blog/2024-03-14_1.png
+`:collection-title:`:: The collection of documents that this document
+appears in. Accepts a text value. Appears on the top left of the cover page.
 
-.Service publication
-image::/assets/blog/2024-03-14_2.png
+`:sector:`:: Standardization sector that publishes the document, if the document
+is published outside of the defined bureaus. Only use this attribute if it does
+not belong to the ITU-{D/R/T} sectors, otherwise use `:bureau:` instead.
+
+Flagship publications require a few additional document attributes.
+
+NOTE: The only flagship publication currently supported in Metanorma is the
+Service Publication.
+
+`:coverpage-image:`:: Cover page image for PDF output. Accepts comma-delimited
+list of image locations (and title page for logos). The first image will be
+applied on the cover page. The second image will apply to the inner cover.
++
+Recommend using a one-paged PDF for the cover page image.
++
+Image files referenced shall be in supported image formats including PNG, JPEG,
+GIF, SVG, or in PDF.
+The image locations are relative to the source root document.
++
+The cover page image should contain also event, partner and co-publisher logos
+(if applicable). There is no need to include the ITU logo at the right bottom
+corner as it is inserted by Metanorma. If there is insufficient space on the
+cover to include all the logos, then specify the second image location to render
+them on the inner cover page.
+
+`:presentation-metadata-color-cover-title:`:: Title color on PDF cover. Valid values
+are `black` (default) or `white`. Select depend on the contrast with the background.
+
+`:presentation-metadata-cover-header-hide:`:: Whether to hide page header titles.
+The header titles are the "ITUPublications", "International Telecommunication Union", with the Sector or Bureau name on the cover page. Valid values: `false` (default) or `true`.
+Some Flagship publications opt to omit the cover page header.
+
+`:presentation-metadata-color-cover-itu-logo:`:: Color of the ITU logo. Typically `#1DA0DB` (default) or 'white' depending on the contrast with background.
+
+`:slogan-title:`:: Slogan that this document is branded with, in connection with
+an event. Some Flagship publications allow the slogan title.
++
+[NOTE]
+--
+When using the slogan title, be aware that the ITU official style guide
+specifies proprietary fonts for the slogan title that are not freely available
+cross-platforms.
+
+* "Adelle Italic" for Latin and Cyrillic scripts;
+
+* "Traditional Arabic" for Arabic;
+
+* "STKaiti" for Chinese.
+
+These are fonts that Fontist cannot directly install, and the user is responsible
+for pre-installing them on their machine.
+--
+
+== Working with proprietary fonts for the Flagship slogan title
+
+Flagship publications are allowed a "slogan title" that utilizes proprietary
+fonts.
+
+Fontist is unable to install (does not support) those fonts since they are
+only available on proprietary platforms.
+
+Specifically:
+
+* "Adelle Italic" is a proprietary font on all platforms. On macOS, the
+macOS-licensed font "Adelle Devanagari" can serve as an identical and free
+substitution of "Adelle Italic". "Adelle Devanagari" has to be installed via
+the macOS Font Book as an add-on.
+
+* "Traditional Arabic" is a Microsoft-licensed font that comes by default on
+Windows and Office;
+
+* "STKaiti" is a Microsoft-licensed font only provided by Office.
+
+This means in order to comply with the ITU branding guidelines, the user
+must pre-install these fonts on their machine manually. Once these fonts are
+available in the system, Fontist will find these fonts pass them into the
+Metanorma PDF production tool (`mn2pdf`).
+
+Since the slogan title is rarely used, these fonts are not specified internally
+in the font manifest of Metanorma for ITU, and require manual specification
+via the
+link:/author/ref/document-attributes/#visual-appearance[`:fonts:` document attribute].
+
+.Using proprietary fonts for the Flagship slogan title
+[example]
+====
+[source,adoc]
+----
+= World Radiocommunication Conference 2019 (WRC-19)
+:slogan-title: Provisional Final Acts
+:fonts: Adelle Devanagari, Traditional Arabic, STKaiti
+
+// body content
+----
+====
+
+== Examples of rendered cover pages
+
+Here are the examples of the new ITU cover pages for Technical and Flagship
+publications.
+
+.Technical publication via Metanorma (ITU-T Recommendation)
+image::/assets/blog/2024-03-14_1.png[]
+
+.Flagship publication via Metanorma (Service publication)
+image::/assets/blog/2024-03-14_2.png[]
+
+== Conclusion
+
+Metanorma for ITU now supports the new ITU cover page layout for Technical and
+Flagship publications in PDF.
+
+Please report at the
+https://github.com/metanorma/metanorma-itu/issues[metanorma-itu] issues page if
+you have any questions or need assistance with your ITU documents!
