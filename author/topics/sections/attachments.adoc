@@ -20,8 +20,10 @@ The syntax is provided as follows [added in https://github.com/metanorma/metanor
 
 [source,asciidoc]
 --
-* [[[anchor,attachment:(file path of attachment relative to current fileidentifier)]]]
+* [[[anchor,attachment:(file path of attachment relative to current fileidentifier)]]], attachment description
 --
+
+NOTE: attachment description is needed for accessibility and conformance with PDF/A and PDF/UA.
 
 .Example of attaching the `schemas/schema.txt` file
 ====
@@ -30,7 +32,7 @@ document, and assigns the anchor `file1` to it.
 
 [source,adoc]
 ----
-* [[[file1,attachment:(schemas/schema.txt)]]]
+* [[[file1,attachment:(schemas/schema.txt)]]], Schema text
 ----
 
 Any cross-references to `<<file1>>` are to be interpreted as hyperlinks to that
