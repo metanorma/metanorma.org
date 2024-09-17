@@ -32,6 +32,17 @@ are also output to console. To date, these are applicable to all flavours of Met
 Severity 3 errors, by contrast, are information-only warnings. You must address severity 0 errors, to get documents to
 compile at all, and you should also address severity 1 errors.
 
+The error file can get quite large, and it is possible to filter certain classes of log message from the error log.
+In order not to log messages from a given severity level up, use the document attribute `:log-filter-severity:`;
+in order to log messages from one or more categories, use the document attribute `:log-filter-category:`, with the
+categories to exclude comma-delimited [added in  https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.7].
+
+[source,asciidoc]
+----
+:log-filter-severity: 3
+:log-filter-category: Crossreferences,Document Attributes,Metanorma XML Syntax
+----
+
 Error classes include the following:
 
 
