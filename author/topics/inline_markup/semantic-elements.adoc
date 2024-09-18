@@ -161,7 +161,13 @@ number:{NUMBER}[{OPTIONS}]
 Where:
 
 `NUMBER`:: (mandatory) The numerical value to represent. Entered between
-`number:` and the `[...]`.
+`number:` and the `[...]`. Legal values are the legal parameters for Ruby's `BigDecimal` library:
+normal numbers (with no spaces, and with decimal point), or e-notation numbers: `30000.54`,
+`3.000054e4`, `300.054e1`, `0.03000054e6`, but not `30 000.54`, `30000,54`, `3.000054 x 10^4`.
+The number must be specified according to the
+en-US locale; `30000.54` is recognised as a decimal number, `30 000,54` is not.
+If the document is in French, `stem:[30000.54]` will in fact be
+rendered consistent with French practice, as _30 000,54_.
 
 `OPTIONS`::
 +
@@ -661,7 +667,3 @@ NOTE: Inline stem macros (`stem:[]`) do not support attributes, so specifying
 number formatting on inline stem macros is no currently supported, other than
 through the universal application of `:number-presentation-formula:`.
 
-NOTE: The number in the `\stem:[]` or `number:[]` expression must be specified according to the
-en-US locale; `30000.54` is recognised as a decimal number, `30 000,54` is not.
-However, if the document is in French, `stem:[30000.54]` will in fact be
-rendered consistent with French practice, as _30 000,54_.
