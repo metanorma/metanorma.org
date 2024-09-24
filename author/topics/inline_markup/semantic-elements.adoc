@@ -322,10 +322,9 @@ _+32.232232 × 10^4^_.
 
 The option is automatically populated if a `+` appears in front of the number entered:
 
-
 ====
 `number:+32232.232[]` is formatted as _+32232.232_.
-
+====
 
 `times`::: Symbol to use for multiplication where required by the notation
 (used in the modes: `scientific` and `engineering`).
@@ -682,7 +681,27 @@ There are stem:[30000.54] people in attendance.
 ----
 ====
 
-NOTE: Inline stem macros (`stem:[]`) do not support attributes, so specifying
-number formatting on inline stem macros is no currently supported, other than
-through the universal application of `:number-presentation-formula:`.
+Inline stem macros ( `\stem:[ ]` ) do not support attributes, so specifying
+number formatting on inline stem macros is currently supported 
 
+* either
+through the universal application of `:number-presentation-formula:`,
+* or by providing the number formatting as an attribute string delimited by `%`
+(as with the extensions to Asciidoc cross-references in 
+Metanorma) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.7].
+If `%` needs to appear as a number formatting attribute value, encode it as the
+XML entity `\&#x25;`.
+
+====
+[source,adoc]
+----
+stem:[number-format="notation=e,exponent_sign=&#x25;,precision=4"% 10 xx 30]
+----
+
+This renders as:
+
+____
+
+1.000e%1 &#xd7; 3.000e%1
+____
+====
