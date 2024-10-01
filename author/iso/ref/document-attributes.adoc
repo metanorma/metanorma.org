@@ -56,10 +56,11 @@ https://www.iso.org/deliverables-all.html[ISO deliverables: The different types 
 `technical-corrigendum`::: Technical Corrigendum (Cor) [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
 `amendment`::: Amendment (Amd) [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
 `committee-document`::: Committee Document (for internal documents) [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.7.2]
+`addendum`::: Addendum (Add) [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.8.8]
 
 `:updates-document-type:`::
-(only when `doctype` is set to `amendment` or `technical-corrigendum`)
-The document type that this amendment or technical corrigendum is
+(only when `doctype` is set to `amendment`, `technical-corrigendum`, or `addendum`)
+The document type that this amendment, technical corrigendum or addendum is
 updating [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25].
 
 `:docsubtype:`:: A subclass of doctype for which special processing rules apply.
@@ -204,7 +205,7 @@ The ISO document identifier is assembled out of these metadata elements:
 publisher:: publisher of the document
 document stage:: stage of development of document, according to the Harmonized Stage Codes
 document number:: numeric identifier of document
-update number:: serial number of update (for amendments and technical corrigenda)
+update number:: serial number of update (for amendments, addenda, and technical corrigenda)
 document type:: type of ISO deliverable
 copyright year:: year of publication of document
 language:: language of document
@@ -364,15 +365,15 @@ The patterns are as follows:
 * `ISO/IEC TR 33333-2:2030(E)`
 ====
 
-*Amendments*, *Technical Corrigendum*::
+*Amendment*, *Technical Corrigendum*, *Addendum*::
 `{source document ID}/{document type and stage} {update number} (: {copyright year}) ({ISO 639 language code})?` +
 +
 [example]
-.Examples of ISO Amendment and Technical Corrigendum document identifiers
+.Examples of ISO Amendment, Technical Corrigendum, and Addendum document identifiers
 ====
-* `ISO 33333-2:2030/DIS Cor 2:2031`
+* `ISO 33333-2:2030/DIS Amd 2:2031`
 * `ISO 33333-2:2030/Cor 2:2032`
-* `ISO/IEC 33333-2:2030/Cor 2:2032`
+* `ISO/IEC 33333-2:2030/Add 2:2032`
 ====
 
 
@@ -438,8 +439,14 @@ of the document (mandatory).
 `:title-amendment-{en,fr}:`:: (only when `doctype` is set to `amendment` or `technical-corrigendum`)
 The English or French title of the amendment [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
 
+`:title-addendum-{en,fr}:`:: (only when `doctype` is set to `addendum`)
+The English or French title of the addendum [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.8.8]
+
 `:amendment-number:`:: (only when `doctype` is set to `amendment`)
 The number of the amendment [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
+
+`:addendum-number:`:: (only when `doctype` is set to `addendum`)
+The number of the addendum [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.8.8]
 
 `:corrigendum-number:`:: (only when `doctype` is set to `technical-corrigendum`)
 The number of the technical corrigendum [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]

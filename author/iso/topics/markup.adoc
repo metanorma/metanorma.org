@@ -822,16 +822,17 @@ The entries in the Bibliography are reordered (and, for numerical references, re
 The bracketed reference numbers are expected to be correct and in order (accounting for the fact that references to standards will end up numbered): they are not overridden in rendering.
 
 
-== Amendments and technical corrigenda
+== Amendments, addenda, and technical corrigenda
 
 === General
 
 Amendments and technical corrigenda [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
+and addenda [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.8.8]
 have the following particularities in their markup.
 
 === Dates
 
-Amendments and technical corrigenda bear two dates in their identifiers: the date of the source document,
+Amendments, technical corrigenda and addenda bear two dates in their identifiers: the date of the source document,
 and the date of the update. The latter date is given as the `:copyright-year:` attribute (and may be given
 in more detail as the `:updated-date:` attribute. The former date is given as the `:created-date:` attribute;
 if it is missing, the `:copyright-year:` is used instead.
@@ -845,7 +846,8 @@ If this is a corrigendum to an addendum, the source identifier must be that of t
 
 === Clauses
 
-There are no special clauses: clauses describe the location at which changes are applied. So
+In amendments and technical corrigenda (but not addenda),
+there are no special clauses: clauses describe the location at which changes are applied. So
 `== Terms and definitions` does not introduce a Terms section: it describes the changes to be applied
 to the Terms section of the existing document. For the same reason, there are no annexes or
 distinct bibliographies.
@@ -864,7 +866,8 @@ link:/author/topics/inline_markup/changes/[Machine-readable changes].
 
 === Form
 
-The document takes the form of clauses describing what is to be amended; the amendments themselves are quoted.
+The document in amendments and technical corrigenda takes the form of clauses describing what is to be amended; 
+the amendments themselves are quoted.
 
 Because the quoted material are snippets with little context, auto-numbering will not yield sensible results,
 and neither will cross-referencing autonumbered blocks or clauses. For that reason, amendments and technical corrigenda
@@ -889,11 +892,11 @@ preceding digits, counting from the decimal sign. This also applies to digits
 following the decimal sign.
 
 [example]
-.Rendering numbers using `stem` encoding in an ISO or IEC document
-The encoding of `stem&#x200c;:[60007.12345]` in an ISO or IEC document in any language
+.Rendering numbers using `number` encoding in an ISO or IEC document
+The encoding of `number&#x200c;:60007.12345[]` in an ISO or IEC document in any language
 is displayed as _60 007,123 45_.
 
 [example]
-.Rendering numbers using `stem` encoding in an ISO or IEC document without treatment on the hanging digit
-The encoding of `stem&#x200c;:[2345.6789]` in an ISO or IEC document in any language
+.Rendering numbers using `number` encoding in an ISO or IEC document without treatment on the hanging digit
+The encoding of `number&#x200c;:2345.6789[]` in an ISO or IEC document in any language
 is displayed as _2 345,678 9_.
