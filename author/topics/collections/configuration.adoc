@@ -171,6 +171,11 @@ coverpage and boilerplate) [added in https://github.com/metanorma/metanorma/rele
 This is automatically included when `sectionsplit` is set in the
 Metanorma file, to break a single document up into multiple HTML files.
 
+`recompile-xml`:::
+If a file is specified as being `*.adoc`, force it to be recompiled to XML, whether or not
+a corresponding XML file is already there. Used to refresh XML files; normally Asciidoc is
+not recompiled to XML to save time [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.6].
+
 `format`::
 Specifies the possible output formats for the collection as a list,
 as an alternative to the `-f` argument of `metanorma collection`.
@@ -226,6 +231,11 @@ YAML files, or AsciiDoc documents.
 
 * If a document is a AsciiDoc documents, it is compiled to a Metanorma
 Semantic XML document in preprocessing [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0].
+The document is *not* recompiled to a Metanorma Semantic XML document if a corresponding XML 
+document has already been generated in the same directory [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.6];
+this is because compiling documents is so time consuming. The document *is* recompiled to  a Metanorma Semantic XML document,
+even if a corresponding XML document has already been generated, provided the directive `recompile-xml`
+is present.
 
 * If a document is a YAML file, it is assumed to be a collection manifest itself,
 and its manifest is recursively read into the current manifest at that point of the
