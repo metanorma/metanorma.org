@@ -1,0 +1,117 @@
+---
+layout: post
+title: "Metanorma error logs"
+date: 2024-09-30
+categories: documentation
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  Metanorma error logs are captured to file, and can be used to find problems with standards documents.
+---
+
+Users of Metanorma will be familiar with the flurry of complaints that the overhelpfully pedantic
+Metanorma floods the console window with, whenever it compiles a document. Observant users of Metanorma
+may even have noticed that there are fewer types of error flooding the console window than there used to be:
+Metanorma grammar errors are no longer being shown on screen.
+
+Metanorma is indeed on the pedantic side when it comes to error reporting, and it is obsessive about
+identifying discrepancies with SDOs' house style, that SDOs themselves are not always as concerned about.
+The error log can be useful for document authors, and in order to make it useful, Metanorma has been saving
+a copy of the error log to disk. Including those Metanorma grammar errors. We describe here how to navigate
+the error log for a document. You will also find this functionality documented on
+link:/author/topics/output/validation/[Validation].
+
+Metanorma logs errors as belonging to four levels of severity, from 0 to 3. Severity 0 errors are fatal errors, 
+which crash Metanorma: Metanorma determines that it is not possible to compile a document untl that error is removed.
+Severity 3 errors are minor, information-only warnings. You must address Severity 0 errors, 
+to get documents to compile at all, and you should also address Severity 1 errors. 
+
+TIP: Issues that cause
+Severity 0 errors are outlined in the documentation; e.g. duplicate anchors, non-existent images, or
+malformed index markup.
+
+Metanorma also classifies errors into categories, and displays errors of the same category together;
+that lets you go through the same class of error as a group. Metanorma defines the following classes of error,
+which are documented in the link above:
+
+* Style: these are potential violations of the house style of the SDO, and should be at least looked at.
+* Metanorma XML Syntax: these issues can usually be ignored, as the XML syntax check is quite strict,
+and they are demoted to Severity 2
+* Relaton: Issues with the reference requested from the Relaton bibliographic database (e.g. the requested
+document identifier does not exist)
+* Issues with Metanorma Asciidoc markup:
+** Anchors
+** AsciiDoc Input
+** Bibliography: syntax
+** Crossreferences
+** Document Attributes
+** Images
+** Include
+** Maths
+** Requirements
+** Table
+** Terms
+
+If you want to exclude errors from the error log from a given severity up, use the document attribute
+`:log-filter-severity:`. So `:log-filter-severity: 2` instructs Metanorma to leave out from the log errors
+of Severity 2 or 3.
+
+If you want to exclude errors from the error log for certain error classes, use the document attribute
+`:log-filter-category:`, with a comma-delimited list of classes. So 
+`:log-filter-category: Crossreferences,Document Attributes,Metanorma XML Syntax` instructs Metanorma
+to omit from the log errors of the classes Crossreferences, Document Attributes, and Metanorma XML Syntax.
+
+
+The error log for a document `{document-name}.adoc` is generated with the filename `{document-name}.err.html`,
+and you can open it in any browser. When you do, the first information you will find is a list of
+error classes, with the count of errors in each class, by severity:
+
+____
+*Style*: Severity 2: **9** errors
+
+*Metanorma XML Syntax*: Severity 2: **7** errors
+____
+
+Each error class is hyperlinked to the listing of errors for that class, so that you can quickly navigate to that 
+part of the error log.
+
+The listing of errors under each class is styled by Severity:
+
+* Severity 0 is boldface against a pink background
+* Severity 1 is boldface 
+* Severity 2 is in normal type
+* Severity 3 is italicised and grey
+
+Each error is presented in a table, with enough information for users to make sense of the error reported:
+
+____
+|===
+| Line | ID | Message | Context | Severity
+
+| 000064 | *_a172c0b4-4751-941d-b6c5-344768eb7b1b* | Formula +_a172c0b4-4751-941d-b6c5-344768eb7b1b+ has not been cross-referenced within document a| 
+....
+<formula id="_a172c0b4-4751-941d-b6c5-344768eb7b1b">
+  <asciimath>dot Theta ne ddot Theta</asciimath>
+</formula>
+....
+| 2
+|===
+____
+
+Line:: The line number of the source Asciidoctor where the issue has occurred. This information is only rarely 
+recoverable from error reporting.
+
+ID:: The identifier of the location in the Asciidoctor where the issue has occurred. Depending on when the issue
+is identified, this could be the clause number, the GUID or anchor of the paragraph or block, or the line number
+of the Metanorma XML file. If the error is aligned with an anchor, a hyperlink is given to the corresponding
+anchor in the generated HTML file, so that users can see where the error has happened in the generated output.
+
+Message:: The error message describing the error.
+
+Context:: Where applicable, two lines of Metanorma XML surrounding the error location; this helps narrow down
+the location of the error, if the Line or ID are not enough to do so.
