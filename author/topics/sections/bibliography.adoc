@@ -919,6 +919,17 @@ URI.
 `uri.XXX`::
 URI, of type _XXX_.
 
+`classification`::
+Classification of bibliographic resource [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.8]
+
+`classification.XXX`::
+Classification of bibliographic resource as being of type _XXX_ (e.g. `span:classification.color[red]`, 
+which is interpreted as "the bibliographic resource is classified as having color: 
+red") [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.8]
+
+`abstract`::
+Abstract of bibliographic resource, can contain inline markup [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.8]
+
 `pages`::
 page or page range (e.g. _9_, _9-11_)
 
@@ -935,6 +946,10 @@ The type is suppressed from rendering.
 +
 [example]
 _standard_, _book_, _inbook_
+
+If spans are used, an inline image included in the reference is interpreted as the depiction
+of the resource [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.8];
+e.g. `span:title[Standard 123] image:thumbnail.jpg[]`.
 
 NOTE: The surname must always precede the initials or given name for a given author in spans,
 to prevent ambiguity and confusion in parsing the reference.
