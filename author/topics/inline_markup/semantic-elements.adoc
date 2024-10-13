@@ -108,8 +108,8 @@ span:green[this text is highlighted as green]
 
 The `date` command is used to introduce dates and date-times as semantic
 elements  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.5].
-The value of the `date:[]` macro is an ISO-8601 formatted date or date-time.
-The second argument given in the macro, if present, is a
+The value of the `date:[]` command is an ISO-8601 formatted date or date-time.
+The second argument given in the command, if present, is a
 https://ruby-doc.org/stdlib-3.0.0/libdoc/date/rdoc/DateTime.html#method-i-strftime[`strftime` formatting description
 of the date]. (Space can be specified as `%_`.)
 Month and day names and abbreviations, if requested in the formatting string, are internationalised
@@ -161,13 +161,26 @@ number:{NUMBER}[{OPTIONS}]
 Where:
 
 `NUMBER`:: (mandatory) The numerical value to represent. Entered between
-`number:` and the `[...]`. Legal values are the legal parameters for Ruby's `BigDecimal` library:
-normal numbers (with no spaces, and with decimal point), or e-notation numbers: `30000.54`,
-`3.000054e4`, `300.054e1`, `0.03000054e6`, but not `30 000.54`, `30000,54`, `3.000054 x 10^4`.
-The number must be specified according to the
-en-US locale; `30000.54` is recognised as a decimal number, `30 000,54` is not.
+`number:` and the `[...]`.
++
+--
+Accepted values are the number formats for Ruby's `BigDecimal` library:
+
+* normal numbers (with no spaces, and with decimal point)
+* e-notation numbers: `30000.54`, `3.000054e4`, `300.054e1`, `0.03000054e6`.
++
+NOTE: Numbers like `30 000.54`, `30000,54`, `3.000054 x 10^4` are not accepted
+formats.
+
+The number must be specified according to the `en-US` locale.
+
+.Encoding the number value according to the en-US locale
+[example]
+`30000.54` is recognised as a decimal number, `30 000,54` is not.
+
 If the document is in French, `stem:[30000.54]` will in fact be
 rendered consistent with French practice, as _30 000,54_.
+--
 
 `OPTIONS`::
 +
@@ -307,11 +320,13 @@ Legal values are:
 _32.232232 × 10^+4^_.
 ====
 
-`number_sign`::: Whether to use a plus sign to indicate 
+`number_sign`::: Whether to use a plus sign to indicate
 positive numbers [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.7].
 Legal values are:
 
 `plus`:::: The `+` symbol is used.
+This option is automatically populated if a `+` appears in front of the number
+entered.
 +
 .Using the plus sign to indicate positive numbers
 [example]
@@ -319,9 +334,9 @@ Legal values are:
 `number:32232.232[notation=engineering,number_sign=plus]` is formatted as
 _+32.232232 × 10^4^_.
 ====
-
-The option is automatically populated if a `+` appears in front of the number entered:
-
++
+.Prefixing a "plus" sign in the value to use the plus sign option by default
+[example]
 ====
 `number:+32232.232[]` is formatted as _+32232.232_.
 ====
@@ -488,7 +503,7 @@ cancels out the `precision` value. The result is
 
 The following precedence rules apply:
 
-* Any options specified in the `number:[]` macro override any profiles.
+* Any options specified in the `number:[]` command override any profiles.
 * Any options specified in a named profile override the default profile.
 * Any value `nil` set on an option cancels out that option.
 
@@ -542,14 +557,18 @@ and it removes `exponent_sign`, resulting in
 
 === Encoding numbers as formulas
 
+==== General
+
 Numbers can be formatted within `stem` blocks.
 
 By default, numbers in `stem` blocks are not formatted at all: number formatting
-is reserved for the  `number` macro.
+is reserved for the  `number` command.
 
 [example]
-If a formula contains the string _1221_, it will usually not be formatted into
-_1,221_, but left alone.
+If a formula contains the string _1221_, it will not be formatted into _1,221_,
+but left alone.
+
+==== Using `number-format`
 
 In order to make a block formula format its numbers, use the argument
 `number-format` on `[stem]`: it has the same format as the foregoing number formatting
@@ -681,24 +700,33 @@ There are stem:[30000.54] people in attendance.
 ----
 ====
 
-Inline stem macros ( `\stem:[ ]` ) do not support attributes, so specifying
-number formatting on inline stem macros is currently supported 
 
-* either
-through the universal application of `:number-presentation-formula:`,
-* or by providing the number formatting as an attribute string delimited by `%`
-(as with the extensions to Asciidoc cross-references in 
-Metanorma) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.7].
-If `%` needs to appear as a number formatting attribute value, encode it as the
-XML entity `\&#x25;`.
+==== Using attributes on inline `stem` commands
 
+Specifying number formatting on inline `stem` ( `\stem:[ ]` ) is supported
+through the following means (inline `stem` commands do not support attributes):
+
+* through using the document-level attribute `:number-presentation-formula:`; or
+
+* by providing the number formatting as an attribute string delimited by `%`
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.7].
++
+NOTE: The Metanorma `stem` command differs from the implementation of other
+AsciiDoc processors. This form of inline `stem` is unique to Metanorma.
+
+If `%` needs to appear as a number formatting attribute value, encode it
+as the XML entity `\&#x25;`.
+
+.Using number formatting on inline `stem` commands
 ====
+This encoding:
+
 [source,adoc]
 ----
 stem:[number-format="notation=e,exponent_sign=&#x25;,precision=4"% 10 xx 30]
 ----
 
-This renders as:
+renders as:
 
 ____
 
