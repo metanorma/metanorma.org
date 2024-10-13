@@ -19,7 +19,7 @@ Because we use GitHub/GitLab for development integration with those CI platforms
 An example of the workflow for GitHub Actions may look like this:
 
 [source,yml]
----
+----
 name: generate
 
 on:
@@ -66,7 +66,7 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
----
+----
 
 In the workflow above doesn't fit your needs you can create your own workflow based on a list of actions that metanorma provides:
 
@@ -83,7 +83,7 @@ For complete workflow examples just check https://github.com/actions-mn/build-an
 An example of the workflow for GitHub Actions may look like this:
 
 [source,yml]
----
+----
 image:
   name: metanorma/metanorma
   entrypoint: [ "" ]
@@ -121,15 +121,15 @@ pages:
   only:
     - master
     - main
----
+----
 
 If it is suitable for you you can reuse it with the following code (to minimize code duplication):
 
 [source,yml]
----
+----
 include:
 - remote: 'https://raw.githubusercontent.com/metanorma/ci/main/cimas-config/gitlab-ci/samples/docker.shared.yml'
----
+----
 
 === Other CI providers
 
@@ -138,11 +138,12 @@ Generally, the integration consists of 2 phases:
 * link:/install[installing metanorma toolchain]
 * calling metanorma-cli by shell commands
 
-Most CI providers nowadays allow to run CI from a Docker execution environment:
+Most CI providers allow running CI from a Docker execution environment:
 
-- https://docs.travis-ci.com/user/docker/[Travis CI]
-- https://circleci.com/docs/using-docker/[CircleCI]
-- https://www.jenkins.io/doc/book/pipeline/docker/[Jenkins]
-- https://devcenter.bitrise.io/en/infrastructure/using-your-own-docker-image.html[Bitrise]
+* https://docs.travis-ci.com/user/docker/[Travis CI]
+* https://circleci.com/docs/using-docker/[CircleCI]
+* https://www.jenkins.io/doc/book/pipeline/docker/[Jenkins]
+* https://devcenter.bitrise.io/en/infrastructure/using-your-own-docker-image.html[Bitrise]
 
-Metanorma provides a wide set of docker images https://hub.docker.com/r/metanorma you can select what is suitable for you
+Metanorma provides a wide set of Docker images on https://hub.docker.com/r/metanorma[Docker Hub].
+
