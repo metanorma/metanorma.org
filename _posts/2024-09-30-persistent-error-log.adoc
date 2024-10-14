@@ -1,0 +1,220 @@
+---
+layout: post
+title: "Persistent error logs for more effective document engineering"
+date: 2024-09-30
+categories: documentation
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  Metanorma now provides persistent error logs for detailed debugging
+  post-compilation. This post explains how to navigate and utilize these logs
+  effectively.
+---
+
+== Introduction
+
+Metanorma users often encounter numerous error messages in the console log
+during document compilation. These messages are sometimes overwhelming, but are
+important for maintaining document quality.
+
+Recently, Metanorma has improved its error logging by saving these logs to disk,
+including grammar errors, allowing them to persist for detailed debugging
+post-compilation.
+
+This post explains how to navigate and utilize these error logs effectively.
+
+Further details on how to use error logs can be found in the
+link:/author/topics/output/validation/[Validation] documentation.
+
+== Error severity levels
+
+Metanorma categorizes errors into four severity levels:
+
+Severity 0:: Fatal errors that prevent document compilation.
+
+Severity 1:: Critical errors that should be addressed.
+
+Severity 2:: Warnings that can often be ignored.
+
+Severity 3:: Informational messages.
+
+TIP: Severity 0 errors, such as duplicate anchors or malformed index markup,
+must be resolved for successful document compilation.
+
+== Error categories
+
+Errors are grouped into categories to streamline the troubleshooting process.
+
+The main categories include the following.
+
+`Style`::
+Potential violations of the standard-defining organization's (SDO) house style.
+
+`Metanorma XML Syntax`::
+Strict XML syntax checks, usually Severity 2.
+
+`Relaton`::
+Issues with references from the Relaton bibliographic database.
+
+`Metanorma Markup`::
+Various issues such as:
+
+`Anchors`:::
+Issues related to the use of anchors within the document, such as duplicate or missing anchors.
+
+`AsciiDoc` Input:::
+Errors originating from the AsciiDoc source input, including syntax errors and invalid constructs.
+
+`Bibliography` Syntax:::
+Problems with the bibliography section, such as incorrect citation formats or missing references.
+
+`Crossreferences`:::
+Errors in cross-referencing within the document, including broken links or incorrect reference targets.
+
+`Document Attributes`:::
+Issues with document attributes, such as missing or incorrectly defined attributes.
+
+`Images`:::
+Problems related to image inclusion, such as missing image files or incorrect image paths.
+
+`Include`:::
+Errors with included files, such as missing files or incorrect paths.
+
+`Maths`:::
+Issues with mathematical expressions, including syntax errors in math markup.
+
+`Requirements`:::
+Problems related to requirements sections, such as missing or incorrectly formatted requirements.
+
+`Table`:::
+Errors in table formatting, including incorrect table syntax or missing table elements.
+
+`Terms`:::
+Issues with the terms section, such as missing definitions or incorrect term formatting.
+
+
+== Filtering errors
+
+=== General
+
+Metanorma provides two mechanisms to filter errors in the logs, making it easier
+to focus on the most critical issues.
+
+=== Filtering by severity
+
+The first mechanism is filtering by severity. By setting the
+`:log-filter-severity:` attribute, users can exclude errors below a certain
+severity level. This allows users to concentrate on more severe issues that
+require immediate attention.
+
+.Filtering by severity
+[example]
+====
+The following configuration as a document attribute will omit Severity 2 and 3
+errors from the log.
+
+[source,asciidoc]
+----
+:log-filter-severity: 2
+----
+====
+
+=== Filtering by category
+
+The second mechanism is filtering by error category. This is done using the
+`:log-filter-category:` attribute, where users can specify a comma-separated
+list of categories to exclude from the log.
+
+Excluding errors from specified categories helps users to streamline the
+troubleshooting process by focusing on relevant error types.
+
+.Filtering by category
+[example]
+====
+The following configuration as a document attribute will omit errors from the
+"Crossreferences", "Document Attributes", and "Metanorma XML Syntax" categories.
+
+[source,asciidoc]
+----
+:log-filter-category: Crossreferences,Document Attributes,Metanorma XML Syntax
+----
+====
+
+
+== Error log format
+
+The error log for a document `{document-name}.adoc` is saved as
+`{document-name}.err.html` and can be viewed in any browser.
+
+The log starts with a summary of error classes and their counts by severity.
+
+.`{document-name}.err.html` HTML presentation of errors
+[example]
+____
+*Style*: Severity 2: **9** errors
+
+*Metanorma XML Syntax*: Severity 2: **7** errors
+____
+
+Each error class links to detailed listings, allowing quick navigation.
+
+Errors are styled by severity for easy identification:
+
+Severity 0:: Boldface on a pink background
+Severity 1:: Boldface
+Severity 2:: Normal type
+Severity 3:: Italicized and grey
+
+
+== Error details
+
+Each error is presented in a table with the following columns:
+
+
+Line::
+The line number in the source AsciiDoc where the issue occurred.
+
+ID::
+The identifier of the location, which could be a clause number, GUID, anchor, or line number in the Metanorma XML file. Hyperlinks are provided for anchors.
+
+Message::
+A description of the error.
+
+Context::
+Two lines of surrounding Metanorma XML to help locate the error.
+
+The output looks like this.
+
+.Sample of error log details in `{document-name}.err.html`
+____
+|===
+| Line | ID | Message | Context | Severity
+
+| 000064 | *_a172c0b4-4751-941d-b6c5-344768eb7b1b* | Formula +_a172c0b4-4751-941d-b6c5-344768eb7b1b+ has not been cross-referenced within document a|
+....
+
+<formula id="_a172c0b4-4751-941d-b6c5-344768eb7b1b">
+  <asciimath>dot Theta ne ddot Theta</asciimath>
+</formula>
+....
+
+| 2
+|===
+____
+
+
+== Conclusion
+
+The Metanorma error logs now provide detailed and comprehensive information
+about each issue, including the severity level, error category, and specific
+line numbers in the source document. This allows users to pinpoint the exact
+location of errors and understand their context.
+
+By leveraging these logs, users can efficiently identify and resolve issues,
+ensuring high-quality content that adhering to the required standards and
+guidelines.
