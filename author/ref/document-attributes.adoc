@@ -35,6 +35,19 @@ Filter from error log all warnings belonging to one of the named categories; com
 See link:/author/topics/output/validation[Validation] for valid values.
  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.7]
 
+`:mn-document-class:`:: Indicates the Metanorma flavor the document should be compiled with.
+Legal values include `iso`, `iec`, `nist`, `ogc`, and so forth. 
+Also named `mn-flavor` [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.7].
+
+`:mn-output-extensions:`:: Specifies the generated output formats. It takes comma-delimited values.
+Legal values include `xml` (semantic XML), `presentation` (presentation XML), `html`, `doc`, `pdf`,
+`rxl` (Relaton XML, bibliographic entry). In some flavours of Metanorma, additional output formats are
+defined, such as `sts`: NISO STS XML.
+
+`:mn-relaton-output-file:`:: Export the Relaton XML bibliographic description of the document
+to the file given as the attribute value.
+
+
 
 == Reference lookup
 
@@ -857,6 +870,12 @@ to it in a comment. This AsciiMath can be used as an accessibility
 alternative to the MathML expression. The generation of this AsciiMath
 can be suppressed [added in
 https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.5].
+
+`:mn-keep-asciimath:`::
+By default, any AsciiMath in the Metanorma document is converted to MathML.
+If this attribute is set to `true`, the AsciiMath is left unconverted.
+MathML is the standard representation of mathematical expressions in Metanorma,
+so using this attribute is not recommended.
 
 `:sectionsplit:`::
 (HTML output only) Treat the HTML output as a Metanorma collection,
