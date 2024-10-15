@@ -120,7 +120,7 @@ Metanorma [added in https://github.com/metanorma/metanorma/releases/tag/v1.3.5].
 This is automatically included when `sectionsplit` is set in the
 Metanorma file, to break a single document up into multiple HTML files.
 
-`coverpage: ...`:::
+`coverpage: {file-path}`:::
 Gives the location of the HTML coverpage, as an alternative to the
 `-c` argument of `metanorma collection` [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.7].
 +
@@ -128,13 +128,13 @@ Any locally specified coverpage will be treated as a Liquid template, which can
 be populated with metadata extracted from the bibliographic metadata
 about the collection; refer to link:/develop/topics/metadata-and-boilerplate[Metadata and boilerplate].
 
-`collection-word-coverpage: ...`:::
+`collection-word-coverpage: {file-path}`:::
 Gives the location of the Word DOC coverpage for the entire
 collection [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5].
 +
 If left out, or given as `null`, no such coverpage is added.
 
-`collection-word-intropage: ...`:::
+`collection-word-intropage: {file-path}`:::
 Gives the location of the Word DOC introductory section for the entire
 collection [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5].
 +
@@ -144,14 +144,14 @@ boilerplate content, and a placeholder for the table of contents.
 +
 If left out, or given as `null`, no such introductory material is added.
 
-`document-word-coverpage: ...`:::
+`document-word-coverpage: {file-path}`:::
 Gives the location of the Word DOC coverpage for each individual
 document [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5].
 +
 If left out, or given as `null`, the default cover page that would appear in a
 standalone document is used. If given as `""`, no such coverpage is added.
 
-`document-word-intropage: ...`:::
+`document-word-intropage: {file-path}`:::
 Gives the location of the DOC introductory section for each individual
 document [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.5].
 +
@@ -180,6 +180,8 @@ cached for time savings [added in https://github.com/metanorma/metanorma/release
 `flavor`:::
 The flavor of Metanorma to use in processing the collection metadata and (by default)
 the documents it contains [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.6].
+The corresponding value of `flavor` is described in the Metanorma document
+attribute `:mn-document-class:`.
 
 `format`::
 Specifies the possible output formats for the collection as a list,
