@@ -4,13 +4,13 @@ title: Attachments
 ---
 == Purpose
 
-There are often occasions where a Metanorma document needs to hyperlink to
-separate files, that are not themselves Metanorma documents, but which need to
-be distributed together with the document.
+A Metanorma document can hyperlink to separate files that are distributed
+together with the document, even when they are not themselves Metanorma
+documents. These are called attachments.
 
-This could include source code, configuration files, executable binaries, or any
-other file -- so long as it is expected to be hyperlinked by Metanorma instead
-of being processed as a Metanorma file.
+Attachments could include source code, configuration files, executable binaries,
+or any other file -- so long as it is expected to be hyperlinked by Metanorma
+instead of being processed as a Metanorma file.
 
 == Syntax
 
@@ -19,17 +19,23 @@ File attachments are encoded in the bibliography section of a Metanorma document
 The syntax is provided as follows [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.10]:
 
 [source,asciidoc]
---
-* [[[anchor,attachment:(file path of attachment relative to current fileidentifier)]]], attachment description
---
+----
+* [[[anchor,attachment:(file-path)]]], {attachment-desc}
+----
 
-NOTE: Attachment description is needed for accessibility and conformance with PDF/A and PDF/UA.
+Where:
 
-NOTE: The PDF attachments attributes _Volatile_ and _AFRelationship_ are realised through the syntax
-`span:classification.pdf-{Key}[{Value}]`, e.g. `span:classification.pdf-volatile[true]`,
-`span:classification.pdf-AFRelationship[EncryptedPayload]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.8].
+`file-path`:: the file location of the attachment relative to the current
+document root file.
+
+`attachment-desc`:: the description of the attachment.
++
+NOTE: Attachment description is needed for accessibility and required for
+conformance with PDF/A and PDF/UA.
+
 
 .Example of attaching the `schemas/schema.txt` file
+[example]
 ====
 This indicates that `schemas/schema.txt` is an attachment to the current
 document, and assigns the anchor `file1` to it.
@@ -43,11 +49,57 @@ Any cross-references to `<<file1>>` are to be interpreted as hyperlinks to that
 file, and will be so rendered in output.
 ====
 
+By default, attachments are base64-encoded within the output Metanorma XML file,
+just as with images.
 
-By default, attachments are binary-encoded within the Metanorma XML file, just
-as with images. If the references to attachments are to be kept as file
-references in the XML file, set the document attribute
-`data-uri-attachment: false`.
+If the references to attachments are to be kept as file references in the XML
+file, set the document attribute `data-uri-attachment: false`.
+
+== PDF attachments
+
+PDF attachments can be embedded in the PDF output of a Metanorma document.
+
+PDF supports the following attributes for attachments:
+
+* _Volatile_: indicates that the attachment is volatile and should not be cached.
+
+* _AFRelationship_: indicates the relationship of the attachment to the document.
+
+NOTE: PDF attachment attributes are not supported in HTML output.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.8].
+
+These attributes are realized in Metanorma through the bibliographic span
+syntax:
+
+[source,asciidoc]
+----
+... span:classification.pdf-{Key}[{Value}] ...
+----
+
+For _Volatile_, the syntax is `span:classification.pdf-volatile[true]`.
+
+For _AFRelationship_, the syntax is `span:classification.pdf-AFRelationship[EncryptedPayload]`.
+
+
+.Example of encoding a PDF attachment with attributes
+[example]
+====
+[source,adoc]
+----
+* [[[file1,attachment:(attachments/pdf-sample.pdf)]]],
+  span:surname[Wyatt], span:givenname[Peter],
+  span:date.issued[2021].
+  span:date[2021].
+  span:title[_Demystifying PDF through a machine-readable definition_].
+  In span:series[LangSec Workshop at IEEE Security & Privacy, May 27th and 28th, 2021].
+  span:publisher[IEEE].
+  span:uri.citation[https://langsec.org/spw21/papers.html#pdfReadable].
+  span:type[inproceedings]
+  span:classification.pdf-volatile[true]
+  span:classification.pdf-AFRelationship[EncryptedPayload]
+----
+====
+
 
 == Output
 
