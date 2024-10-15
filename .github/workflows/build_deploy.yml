@@ -4,99 +4,78 @@ on:
   push:
     branches:
     - main
-    - staging
+    # - staging
   pull_request:
   repository_dispatch:
   workflow_dispatch:
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
-  set_environment:
-    outputs:
-      my_env: ${{ steps.setenv.outputs.my_env }}
-      my_url: ${{ steps.setenv.outputs.my_url }}
-    runs-on: ubuntu-latest
-    steps:
-    - id: setenv
-      run: |
-        if [ "$GITHUB_REF" = "refs/heads/main" ]
-        then
-          echo "::set-output name=my_env::production"
-          echo "::set-output name=my_url::https://www.metanorma.org"
-        elif [ "$GITHUB_REF" = "refs/heads/staging" ]
-        then
-          echo "::set-output name=my_env::staging"
-          echo "::set-output name=my_url::https://staging-www.metanorma.org"
-        fi
+  # set_environment:
+  #   outputs:
+  #     my_env: ${{ steps.setenv.outputs.my_env }}
+  #     my_url: ${{ steps.setenv.outputs.my_url }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - id: setenv
+  #     run: |
+  #       if [ "$GITHUB_REF" = "refs/heads/main" ]
+  #       then
+  #         echo "::set-output name=my_env::production"
+  #         echo "::set-output name=my_url::https://www.tebako.org"
+  #       elif [ "$GITHUB_REF" = "refs/heads/staging" ]
+  #       then
+  #         echo "::set-output name=my_env::staging"
+  #         echo "::set-output name=my_url::https://staging-www.tebako.org"
+  #       fi
 
   build:
-    name: Build site
     runs-on: ubuntu-latest
-    needs: set_environment
-    environment:
-      name: ${{ needs.set_environment.outputs.my_env }}
-      url: ${{ needs.set_environment.outputs.my_url }}
+    # needs: [set_environment]
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - uses: unfor19/install-aws-cli-action@v1
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+          cache-version: 0 # Increment this number if you need to re-download cached gems
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v3
 
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '14'
+      - name: Build with Jekyll
+        # Outputs to the './_site' directory by default
+        run: JEKYLL_LOG_LEVEL=debug bundle exec jekyll build --verbose --trace --baseurl "${{ steps.pages.outputs.base_path }}"
+        env:
+          JEKYLL_ENV: production
 
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.1'
-        bundler-cache: true
+      - name: Upload artifact
+        # Automatically uploads an artifact from the './_site' directory by default
+        uses: actions/upload-pages-artifact@v2
 
-    - name: Build site
-      env:
-        JEKYLL_ENV: production
-      run: |
-        make _site
-        zip -r site.zip _site
-
-    - name: Upload site
-      uses: actions/upload-artifact@v3
-      with:
-        name: site.zip
-        path: site.zip
-        retention-days: 1
-
+  # Deployment job
   deploy:
-    name: Deploy to ${{ needs.set_environment.outputs.my_env }}
-    needs:
-      - set_environment
-      - build
-    runs-on: ubuntu-latest
-    if: ${{ needs.set_environment.outputs.my_env != '' }}
     environment:
-      name: ${{ needs.set_environment.outputs.my_env }}
-      url: ${{ needs.set_environment.outputs.my_url }}
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    needs: build
     steps:
-
-    - name: Download site
-      uses: actions/download-artifact@v4.1.7
-      with:
-        name: site.zip
-        path: .
-
-    - name: Unzip
-      run: unzip site.zip
-
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
-
-    - name: Deploy to AWS
-      env:
-        CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-        S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
-      run: |
-        aws s3 sync _site s3://$S3_BUCKET_NAME --region=$AWS_REGION --delete --no-progress --exclude "*" --include "*.html" --content-type "text/html; charset=utf-8"
-        aws s3 sync _site s3://$S3_BUCKET_NAME --region=$AWS_REGION --delete --no-progress --exclude "*" --include "*.json" --content-type "text/json; charset=utf-8"
-        aws s3 sync _site s3://$S3_BUCKET_NAME --region=$AWS_REGION --delete --no-progress --exclude "*.html,*.json" --include "*"
-        aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
