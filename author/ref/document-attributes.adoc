@@ -14,6 +14,22 @@ required document attributes.
 
 == Build and validation
 
+`:mn-document-class:`::
+The flavor of Metanorma used to compile the document; e.g. `iso`, `nist`, `ogc`. Needs to be a supported version
+of the document. Synonyms: `document-class`, `mn-flavor`, `flavor`.
+
+`:mn-output-extensions:`::
+The output formats to generate for the document, comma-delimited; e.g. `xml,presentation,html,doc,pdf`.
+The formats supported vary for each flavor, but all flavors support `xml` (Semantic XML), `presentation`
+(Presentation XML), and one of `html` or `pdf`. Synonym: `:output-extensions:`.
+
+`:mn-relaton-output-file:`::
+Output the bibliographic record describing the document as a Relaton XML file (with the suffix `.rxl`).
+Synonym: `:relaton-output-file:`.
+
+`:mn-keep-asciimath:`::
+Do not translate Asciimath in the document to MathML. Synonym: `:keep-asciimath:`.
+
 `:nodoc:`::
 Instructs Metanorma to not generate Word and HTML output, means only XML output will be generated.
 
