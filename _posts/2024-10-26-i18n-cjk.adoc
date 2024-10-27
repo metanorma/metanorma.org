@@ -1,0 +1,212 @@
+---
+layout: post
+title: "Support for Japanese internationalisation"
+date: 2024-10-26
+categories: documentation
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This post describes how Metanorma internationalises content, specifically
+  for Japanese, in light of Metanorma supporting JIS and Plateau as new flavours.
+---
+
+== Introduction
+
+Metanorma supports a number of flavours of standardisation documents, many of
+which use languages other than English. As a result, internationalisation of content
+is a core concern of Metanorma -- particularly with automatically generated content,
+such as captions, crossreferences, and autonumbering.
+
+Scripts other than Latin pose their own challenges in internationalisation, including
+RTL (right-to-left) scripts like Arabic and Hebrew, and CJK (Chinese, Japanese, Korean),
+ideographic scripts. Our
+recent move to support documents in Japanese has led to a good deal of effort in CJK scripts
+specifically.  We have already written here on the work we have done with 
+link:/blog/2023-12-19/ruby-in-metanorma/[Ruby annotation].  We summarise here some of our recent work. 
+
+== JIS and Plateau
+
+Metanorma has done some work in support of Guóbiāo (Chinese national) standards in the past,
+and it supports Chinese as one of the six working languages of the ITU, alongside Arabic,
+English, Spanish, French, and Russian. However, the most extensive work we have done on
+internationalisation has been with Japanese, promoted by our expansion of Metanorma to two
+flavours primarily using Japanese:
+
+* link:/author/jis/[`metanorma-jis`] supports Japanese Industrial Standards (JIS), published
+by the Japanese Standards Association (JSA). The JSA as a national standards body coordinates
+with ISO and IEC, and its format is closely aligned to ISO. Its documents are published in both
+Japanese and English.
+
+* link:https://github.com/metanorma/metanorma-plateau[`metanorma-plateau`] supports the 
+https://www.mlit.go.jp/plateau/[Plateau] project of the Japanese Ministry of Land, Infrastructure, Transport and Tourism.
+The flavour is implemented to derive from `metanorma-jis`, but overrides its formatting in several
+instances.
+
+== Vertical printing
+
+The default for Japanese standardisation documents follows the Western convention of writing text
+left-to-right, top-down; this is particularly preferred as standardisation documents typically
+include mathematical formulas, and Western-language text. However, the 
+https://en.wikipedia.org/wiki/Horizontal_and_vertical_writing_in_East_Asian_scripts:[traditional Japanese practice of writing Japanese top-to-bottom, right-to-left]
+remains common, particularly in legal text. Metanorma is currently working on implementing vertical
+writing in CJK in the PDF format of JIS docuemnts, as a rendering option.
+
+== Japanese calender
+
+Japan uses the Western Gregorian calendar alongside the traditional https://en.wikipedia.org/wiki/Japanese_calendar:[Japanese calendar],
+which uses regnal years for the year rather than Anno Domini dating. In official contexts, the Japanese calendar
+is used: that includes indication of when documents were created and published.
+
+Metanorma uses ISO 8601, which is founded on the Gregorian calendar, to enter its dates as metadata; so the date 
+a document was published will be indicated as something like `created-date: 2020-10-11`. When the date
+is displayed in the document frontispiece, it is rendered in the Japanese calendar, as 令和二年10月11日
+[Year 2 of the Reiwa era -- the reign of emperor Naruhito; month 10 day 11].
+
+== Japanese numbering
+
+As with vertical printing, Japanese standardisation documents typically use Arabic numerals
+for automated numbering (clause numbers, ordered list numbers) and in metadata (edition numbers,
+dates of publication). However more conservatively formatted documents such as legal documents, 
+that tend to use vertical writing, also tend to use Japanese numbering (properly speaking, Chinese
+numbering) in those contexts. Metanorma has recently added functionality in JIS and Plateau
+to use Japanese numbering instead of Arabic numbering in those contexts. So by default, a Japanese
+document equivalent to
+
+____
+Published: 2020-10-11
+
+*1. Introduction.
+
+*1.1. Scope.*
+
+The following topics are in scope of this document:
+
+1. Japanese numbers.
+2. Arabic numbers.
+3. Conversion between Japanese and Arabic numbers.
+____
+
+would be:
+
+____
+
+公開日: 令和二年10月11日
+
+*1 はじめに。*
+
+*1.1 範囲。*
+
+このドキュメントの範囲は以下のトピックです:
+
+1. 日本語の数字。
+2. アラビア数字。
+3. 日本語とアラビア数字の変換。
+____
+
+If Japanese numbering is set:
+
+[source,asciidoc]
+----
+:presentation-metadata-autonumbering-style: japanese
+----
+
+the document will instead look like:
+
+____
+
+公開日: 令和二年十月十一日
+
+*一 はじめに。*
+
+*一・一 範囲。*
+
+このドキュメントの範囲は以下のトピックです:
+
+一. 日本語の数字。
+二. アラビア数字。
+三. 日本語とアラビア数字の変換。
+____
+
+NOTE: the dot between numbers in clause numbers is a middle dot in Japanese numbering.
+
+== Full-width punctuation
+
+Punctiation in CJK scripts is different from that of Roman script, even where CJK has adopted
+Western punctuation. In order to fit in with the ideographic characters of Chinese, Japanese and
+Korean, the punctuation of CJK needs to be of the same width as an ideographic character
+("full-width punctuation"). Automatically populated text in Metanorma will be automatically
+populated by default with Roman punctuation; any such punctuation needs to be adjusted to
+be full-width. The context where this is most apparent is in bibliographic references, which
+are populated by template out of a bibliographic database; but this also applies to cross-references
+and captions.
+
+For instance, a list item cross-reference will by default end in a closing parenthesis: _1)_.
+If Japanese numbering is being used, that needs to be rendered not as _一)_, but as _一）_,
+with a full-width parenthesis.
+
+Often in technical documents, Roman text and Arabic numberals are interspersed with CJK text.
+In such cases, full-width punctuation should not be applied when it adjoins Roman text, but 
+only with CJK text. So in the example above, if Arabic numbering is used for lists, _1)_ should
+be left alone, and not converted to _1）_.
+
+== CJK carriage return
+
+In Roman text, the carriage return at the end of a line in Asciidoc is interpreted as space; so
+a text entered as
+
+[source,asciidoc]
+----
+Now is the time for all good men
+to come to the aid of the party.
+----
+
+is reflowed in Metanorma XML (and thus Metanorma outputs) as
+
+[source,xml]
+----
+<p>Now is the time for all good men to come to the aid of the party.</p>
+----
+
+Space is used much more sparingly in CJK; as a result, a carriage return in CJK Asciidoc text
+is *not* interpreted as space; so
+
+[source,asciidoc]
+----
+今こそ、すべての善良な人々が
+政党を支援する時です。
+----
+
+is reflowed in Metanorma XML as
+
+[source,xml]
+----
+<p>今こそ、すべての善良な人々が政党を支援する時です。</p>
+----
+
+with no Roman or CJK space introduced between 人々が and 政党を.
+
+However, as with punctuation, any lines ending with Roman text have the space respected:
+
+[source,asciidoc]
+----
+実施は中村秀子氏と John
+Smith 氏の間で交渉されました。
+----
+
+reflows to
+
+[source,xml]
+----
+<p>実施は中村秀子氏と John Smith 氏の間で交渉されました</p>
+----
+
+== Extended space
+
+In CJK scripts, titles consisting of only a few characters are rendered in extended spacing;
+so _Foreword_ as a title is not rendered as 序文, but as 序　文. This behaviour has been implemented
+in Metanorma for all section titles consisting of four characters or less.
