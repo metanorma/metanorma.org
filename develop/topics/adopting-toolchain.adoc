@@ -41,8 +41,8 @@ To customise behaviour further than Simple Adoption, you need to create a custom
 
 The toolchains currently available proceed in two steps:
 
-. map an input markup language (currently AsciiDoc only) into Metanorma Standoc XML; and
-. map Metanorma Standoc XML into various output formats (currently Word doc, HTML, PDF via HTML).
+. map an input markup language (currently AsciiDoc only) into Metanorma Standoc Semantic XML; and
+. map Metanorma Standoc XML into various output formats (currently Word doc, HTML, PDF, all via Metanorma Standoc Presentation XML).
 
 Running the `metanorma` CLI tool involves a third step, of exposing the capabilities available in the first two in a consistent format.
 
@@ -50,13 +50,15 @@ These two steps are represented as three separate modules, which are included in
 
 Your adaptation of the toolchain will need to instantiate these three modules. The connection between the two first steps is taken care of in the toolchain, and metanorma explicitly invokes the two steps, feeding the XML output of the first step as input into the second. The metanorma-sample gem outputs both Word and HTML; you can choose to output only Word, or only HTML, and you can choose to generate PDF as well.
 
-The modules involve classes which rely on inheritance from other classes; the current gems use `Metanorma::{Standoc, ISO, Generic}::Converter`, `Isodoc::{Metadata, HtmlConvert, WordConvert}`, and `Metanorma::Processor` as their base classes. This allows the standards-specific classes to be quite succinct, as most of their behaviour is inherited from other classes; but it also means that you need to be familiar with the underlying gems, in order to do most customization.
+The modules involve classes which rely on inheritance from other classes; the current gems use `Metanorma::{Standoc, ISO, Generic}::Converter`, `Isodoc::{PresentationXML, Metadata, HtmlConvert, WordConvert}`, and `Metanorma::Processor` as their base classes. This allows the standards-specific classes to be quite succinct, as most of their behaviour is inherited from other classes; but it also means that you need to be familiar with the underlying gems, in order to do most customization.
 
 In the case of `Metanorma::X` classes, the changes you will need to make involve the intermediate XML representation of your document, which is built up through Nokogiri Builder; e.g. adding different enums, or adding new elements. The adaptations in `Metanorma::Generic::Converter` are limited (and are almost all to do with reading in properties from a config file), and most projects can take them across as is.
 
 The customizations needed for `Metanorma::Generic::Processor` are minor, and involve invoking methods specific to the gem for document generation.
 
-The customizations needed for `Isodoc::Generic` are more extensive. Three base classes are involved:
+The customizations needed for `Isodoc::Generic` are more extensive. Five base classes are involved:
+
+* `Isodoc::PresentationXMLConvert` converts Metanorma Standoc Semantic XML to Metanorma Standoc Presentation XML.
 
 * `Isodoc::Metadata` processes the metadata about the document stored
 in `//bibdata`. This information typically ends up in the document
@@ -65,14 +67,20 @@ is extracted into a `Hash`, which is passed to document output (title
 page, Word header) via the
 https://shopify.github.io/liquid/[Liquid template language].
 See link:/develop/topics/metadata-and-boilerplate/[Metadata and Predefined text] for more information.
+The Metadata class is only used for HTML and DOC; PDF parses the Presentation XML
+in one go.
 
-* `Isodoc::HtmlConvert` converts Metanorma Standoc XML to HTML.
+* `Isodoc::HtmlConvert` converts Metanorma Standoc Presentation XML to HTML.
 
-* `Isodoc::PDFConvert` converts Metanorma Standoc XML to HTML.
+* `Isodoc::PDFConvert` converts Metanorma Standoc Presentation XML to PDF.
 
-* `Isodoc::WordConvert` converts Metanorma Standoc XML to Word HTML; the https://github.com/metanorma/html2doc[html2doc] gem then converts this to a .doc document.
+* `Isodoc::WordConvert` converts Metanorma Standoc Presentation XML to Word HTML; the https://github.com/metanorma/html2doc[html2doc] gem then converts this to a .doc document.
 
 The `Isodoc::HtmlConvert` and `Isodoc::WordConvert` are expected to be near-identical, since any rendering differences between the two are addressed in the HTML CSS stylesheet. The `Isodoc::HtmlConvert` and `Isodoc::WordConvert` overlap substantially, as both use variants of HTML. However there is no reason not to make substantially different rendering choices in the HTML and Word branches of the code.
+
+In addition to these, `Relaton::Render` is used to provide a rendering of the Relaton XML bibliographic references for the document
+in the Presentation XML, based on a stylesheet provided for the flavour. The `Relaton::Render` methods may themselves be
+customised for the current flavour. The configuration of `Relaton::Render` is described in https://relaton.org/specs/relaton-render[relaton.org].
 
 === Metanorma::Standoc customization examples
 
