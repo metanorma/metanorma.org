@@ -1,0 +1,107 @@
+---
+layout: post
+title: "Document text line numbers are available in Metanorma documents"
+date: 2024-11-08
+categories: documentation
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+  -
+    name: Alexander Dyuzhev
+    email: dyuzhev@gmail.com
+    social_links:
+      - https://www.linkedin.com/in/alexander-dyuzhev/
+      - https://github.com/Intelligent2013/
+
+excerpt: >-
+  Metanorma allows to include the line numbers in the generated ISO and IEEE PDFs, and
+	also allows to line numbering for the source code snippets.
+---
+
+== Introduction
+
+The line numbers are very helpful when you need to refer the specific line in the document, for example,
+when you are working on the document and need to point to the concrete line in the discussion with your
+colleagues, commenting the document, share your opinion about portions of the text, etc.
+
+The line numbers in the source code snippet is indispensable feature that allows to refer the code line in the
+document text.
+
+
+== Document text line numbering
+
+Line numbers for the document text feature currently is available for ISO documents in PDF format and for IEEE draft 
+documents in PDF and DOC formats.
+For IEEE Draft documents this feature is applying automatically, i.e. when the document attributes contain
+the attribute:
+```
+:docstage: draft
+```
+
+
+For the line numbers rendering in the ISO PDF documents, add this document attribute
+```
+:presentation-metadata-linenumbers: true
+```
+
+Each line in the PDF (include table text, clause titles) are numbered, except footnotes, page header and footers.
+The line numbers placed at the left page side, with 10mm indent from the left page margin, and have this style:
+
+* font size is '11pt'
+* font family is 'Times New Roman'
+* font weight and style is 'normal'
+* color is black
+
+
+Here's how it looks in the PDF:
+
+.ISO PDF document line numbering example
+image::/assets/blog/2024-11-08_1.png[]
+
+
+=== Source code line numbering
+
+
+Source code line numbering feature is available for all flavors and all output formats (PDF, DOC and HTML).
+
+You can enable the line numbering for the individual code snippet by the option `%linenums`:
+```
+[source%linenums,cpp]
+----
+#include <stdio.h>
+int main() {
+   printf("Hello, World!");
+   return 0;
+}
+----
+```
+
+
+Or you can enable the line numbering for all code snippets in the document by the document attribute 
+```
+source-linenums-option: true
+```
+
+
+Here's how the source code line numbering looks in the PDF:
+
+.ISO PDF document source code line numbering example
+image::/assets/blog/2024-11-08_2.png[]
+
+
+== Conclusion
+
+Questions or suggestions, please feel free to file an issue at
+the https://github.com/metanorma/metanorma[metanorma]
+repository at GitHub!
+
+
+== References
+
+* https://www.metanorma.org/author/ref/document-attributes/#visual-appearance[Document attributes for visual appearance]
+
+* https://www.metanorma.org/author/topics/blocks/source/#line-numbering[Source code line numbering]
+
