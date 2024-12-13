@@ -218,15 +218,25 @@ As an alternative to `docnumber` and other attributes (such as `doctype` and `do
 which form the full identifier by combining multiple attributes, this attribute contains a
 full specification of the document identifier and overrides the composition of the document
 identifier [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.9].
-This value is used for document identifiers that do not follow normal SDO conventions,
-including for documents that are adoptions from other SDOs.
+So if `:docidentifier:` is supplied, `:docnumber:` and the other attributes are ignored when
+composing the identifier for the document: `:docidentifier:` is used for document identifiers 
+that do not follow normal SDO conventions, and for which the identifier cannot be constructd
+out of `:docnumber:` in the normal way.
++
+NOTE: Because `:docidentifier:` is preformatted and opaque to Metanorma, Metanorma cannot
+make inferences about the internal structure of the identifier; for example, it cannot generate
+undated or language-specific variants of the identifier, or mark up the part number separately
+from the document number, as is required by ISO. `:docidentifier:`
+should be avoided unless absolutely necessary for that reason; Metanorma maintains the
+`pubid-*` set of software libraries to generate document identifiers for different Metanorma
+flavours, and those libraries should be updated to deal with the novel use case.
 
 `:docidentifier-additional:`::
 This attribute provides additional primary identifiers for the document, to be used alongside
 the native identifier generated from `docnumber` or `docidentifier` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.2].
 It is intended for copublished standards with multiple primary identifiers.
 The list of identifiers is comma-delimited, and is specified as TYPE:VALUE; e.g.
-`:docidentifier-additional: IDF:IDF 21, RFC:RFC 97`
+`:docidentifier-additional: IDF:IDF 21, RFC:RFC 97`.
 
 `:edition:`::
 The document edition.
