@@ -80,3 +80,31 @@ Commentary clauses are marked up as annexes with a `commentary` option attribute
 ...
 ----
 
+
+=== Visual appearance for the PDF vertical layout document
+
+By default, almost all text in the vertical layout PDF renders by characters one under one with rotation for 
+the reading without the page rotation.
+
+The `span` commands are used to introduce addition markup into the Metanorma text for change this behaviour:
+
+* `span:horizontal` - output text in one line (horizontally)
+
+[source,asciidoc]
+----
+span:horizontal[JSA]
+----
+
+* `span:norotate` - don't rotate the characters, output one under one, but rotated 90 degress clockwise
+
+[source,asciidoc]
+----
+span:norotate[*JIS Z 8301:2011*]
+----
+
+* `span:halffontsize` - output the text with half font size
+
+[source,asciidoc]
+----
+span:halffontsize[出願公開後の特許出願又は実用新案権]
+----
