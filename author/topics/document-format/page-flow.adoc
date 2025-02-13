@@ -8,6 +8,32 @@ title: Page flow
 
 === General
 
+Page breaks are used to separate content into distinct pages in a document, and
+are only applicable to paged output formats, such as PDF and Word.
+
+Syntax:
+
+[source,asciidoc]
+----
+<<<
+----
+
+[example]
+.Example of a page break
+====
+[source,asciidoc]
+----
+This is a paragraph.
+
+<<<
+
+This is a paragraph on a new page.    
+----
+====
+
+
+=== Orientation
+
 Page breaks can be given a page orientation, which applies from that
 point forward until the next page break with a page
 orientation [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.17].
@@ -62,6 +88,7 @@ The page orientation is reset at the start of the main document body to `portrai
 --
 ====
 
+
 === Avoiding page breaks
 
 The "`keep with next`" feature is useful if you want to indicate that
@@ -84,18 +111,18 @@ the paragraph to render all its content on the same page.
 The syntax is as follows:
 
 [source,asciidoc]
---
+----
 [keep-with-next=true]
 {Paragraph or block}
---
+----
 
 and
 
 [source,asciidoc]
---
+----
 [keep-lines-together=true]
 {Paragraph}
---
+----
 
 The following syntax indicates that these two paragraphs will always be
 presented on the same page, even if the textual layout allows them to be
@@ -105,13 +132,13 @@ split into two pages.
 .Example of using keep-with-next to avoid page breaks
 ====
 [source,asciidoc]
---
+----
 [keep-with-next=true]
 This is a paragraph.
 
 This is a paragraph that will be on the same page as the
 immediately previous one.
---
+----
 ====
 
 
@@ -142,17 +169,15 @@ Some Metanorma flavours apply column formatting to document texts.
 NOTE: As of this writing, this applies to BSI in PDF.
 
 For such texts, it can be useful to specify a column break to be observed in
-rendering, rather than let the end of the column by determined automatically.
+rendering, rather than let the end of the column be determined automatically.
 
-To that end, Metanorma supports a "column break"
+Metanorma supports a "column break"
 directive [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.2].
 
 This directive needs to appear on a separate paragraph on its own
 (note the empty space before and after):
 
 [source,asciidoc]
---
-
+----
 columnbreak::[]
-
---
+----
