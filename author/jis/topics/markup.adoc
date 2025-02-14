@@ -10,11 +10,16 @@ title: Metanorma for JIS markup
 The membership of the investigative committee for the standard appears before
 the table of contents in JIS documents, in tabular form.
 
-The title of the participant clause includes the name of the investigative
-committee, and is generated automatically.
+By default, the title of the participant clause includes the name of the investigative
+committee, and is generated automatically; for that to happen, the title of the clause
+must be left blank, as `{blank}`..
 
 NOTE: The name of the investigative committee is set as a
 link:/author/jis/ref/document-attributes/[document attribute].
+
+The title of the participant clause is overridden by providing an explicit title for it.
+This is necessary if there are more than one participant clauses 
+in the document [added in https://github.com/metanorma/metanorma-jis/releases/tag/v0.4.4].
 
 This information is entered in a YAML table within a clause of type
 `participants`, with the following structure:
@@ -67,6 +72,39 @@ This information is entered in a YAML table within a clause of type
 -----
 ====
 
+In order to provide the title of the clause explicitly, `{blank}` is replaced with the desired title:
+
+====
+[source,asciidoc]
+-----
+[type=participants]
+== JSA-S1020 Working Group
+-----
+====
+
+Participation clauses can have a key explaining abbreviations used for roles; this is encoded, as elsewhere
+in Metanorma, as a definition list with a `key` option attribute,
+following after the sourcecode snippet: [added in https://github.com/metanorma/metanorma-jis/releases/tag/v0.4.4].
+
+====
+[source,asciidoc]
+-----
+[type=participants]
+== {blank}
+
+[source,yaml]
+----
+- name:
+    surname: Surname 1
+    givenname: Given Name 1
+  affiliation: Affiliation 1
+  role: GM
+----
+
+[%key]
+GM:: General Manager
+-----
+====
 
 
 === Commentary as appendix

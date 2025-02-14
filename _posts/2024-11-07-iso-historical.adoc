@@ -1,0 +1,135 @@
+---
+layout: post
+title: "Support for historical ISO versions"
+date: 2024-11-07
+categories: documentation
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This post describes how Metanorma supports legacy versions of ISO standards.
+---
+
+== Introduction
+
+Metanorma is mostly used to prepare new standards for publication, but it is also starting
+to be used to format and generate older versions of standards as well, particularly as
+those standards are integrated with data. In particular we have been working on the 
+https://www.iso.org/standard/7472.html:[ISO-2533] standard (the 
+https://en.wikipedia.org/wiki/International_Standard_Atmosphere[International Standard Atmosphere],
+a data-intensive standard  published in 1975, with addenda in 1985 and 1997, and with a
+new version currently in preparation. This work has required us to regenerate the standards
+as they were originally published, using the same data, and with the look-and-feel ISO documents
+had at the time, rather than how those documents would be presented now.
+
+This work has motivated us to support older versions of how ISO standards were specified and formatted,
+so that such regenerated standards do not look anachronistic. There have been several different iterations
+of document layout for ISO standards over the years:
+
+`2024`::: (default) The latest document layout as of 2024 (default)
+`2013`::: Document layout used from 2013 to early 2024.
+`2012`::: Document layout used from mid-2012 to 2013. It is equivalent to the `1989` layout with a logo change.
+`1989`::: Document layout used from 1989 to mid-2012.
+`1987`::: Document layout used from 1987 to 1989.
+`1972`::: Document layout used from 1972 to 1987.
+`1951`::: Document layout used from 1951 to 1971. The first available published ISO layout.
+
+Metanorma is configured to select the appropriate layout to render a given document in. This is done in
+two ways:
+
+* By default, if the `:copyright_year:` document attribute is specified for a document, that year
+is compared to the ranges given above, and the corresponding document layout is applied for the document.
+(Dates are assumed to apply from January 1 of each year, except for the `2012` format, which applies from
+`2012-07-01`.)
+* If the user specifies one of the given years as the `:document-scheme:` document attribute, that
+year's layout is applied to the document, overriding any layout chosen through the `:copyright_year:`.
+
+At this time, the document layout is only applied to PDF output: HTML and Word output use the latest
+output, no matter what the document scheme.
+
+.The "Rice document" PDF cover page, as it appears in the 2013 document scheme (inferred from its copyright year 2016)
+image::/assets/blog/2024-11-07a.png[]
+
+.The "Rice document" PDF cover page, as it appears in the 2024 document scheme
+image::/assets/blog/2024-11-07b.png[]
+
+.The "Rice document" PDF cover page, as it appears in the 1951 document scheme
+image::/assets/blog/2024-11-07c.png[]
+
+The differences between schemes are mostly a matter of visual presentation, but before 2013, ISO documents
+allowed Scope, Normative References and Terms and Definitions to be subclauses of an initial General
+clause, rather than requiring them to be separate clauses at the start of the document body.
+
+Document attributes are mostly the same across the document schemas, with the following exceptions:
+
+* In `2024`, the attribute `:semantic-metadata-feedback-link:`, which specifies a URL for readers to provide
+feedback for a specific document, is used to generate a QR code on the cover page of the document PDF.
+* From 1994, ISO has used the 
+https://en.wikipedia.org/wiki/International_Classification_for_Standards[International Categorization for Standards] 
+number to classify documents, and the ICS number appears on document cover pages; 
+it is specified as comma-delimited values of the `:library-ics:` document attribute  (e.g. `:library-ics: 43.040.20,35.220.20-10`.
+Prior to 1994, ISO instead used the 
+https://en.wikipedia.org/wiki/Universal_Decimal_Classification[Universal Decimal Classification (UDC)],
+and this is supported through the generic `:classification:` document attribute; values are comma-delimited,
+and each UDC value must be prefixed with `UDC:` (e.g. `:classification: UDC:663.971/.976:620.1:551.511.12, UDC:535.643.2`).
+
+In addition, our support for legacy format of ISO means we now support not only Amendments and Technical Corrigenda
+of documents (`:doctype: amendment`, `:doctype: technical-corrigendum`), but also Addenda (`:doctype: addendum`),
+which were published by ISO under the 2000s. Addenda are marked up in the same way as Amendments and Technical Corrigenda:
+they are updates of documents (whose identifier is given under `:updates:`), and they have distinct titles, 
+indicated through `:title-addendum-{en,fr}:`. For example, the following is how ISO 2533:1975/ADD 1:1985 (Addendum 1 of ISO 2533)
+is marked up:
+
+[source,asciidoc]
+----
+= Standard atmosphere
+:docnumber: 2533
+:edition: 1
+:copyright-year: 1975
+:revdate: 1985-02-15
+:language: en
+:title-main-en: Standard atmosphere
+:title-intro-fr: Atmosphère type
+:updates: ISO 2533:1975
+:has-draft: ISO 2533:1975/DAD 1
+:updates-document-type: international-standard
+:addendum-number: 1
+:doctype: addendum
+:docstage: 60
+:docsubstage: 60
+----
+
+Note the use of `has-draft:`, which gives the identifier of the pre-publication version of the addendum
+(`ISO 2533:1975/DAD 1`: Draft Addendum 1)
+
+And this is how ISO 2533:1975/ADD 2:1997 is marked up:
+
+[source,asciidoc]
+----
+= Standard atmosphere
+:docnumber: 2533
+:edition: 1
+:copyright-year: 1985
+:revdate: 1997-11-01
+:language: en
+:title-main-en: Standard atmosphere
+:title-main-fr: Atmosphère type
+:title-main-ru: Стандартная атмосфера
+:title-addendum-en: Extension to -- 5000 m and standard atmosphere as a function of altitude in feet
+:title-addendum-fr: Extension à -- 5000 m, et atmosphère type en fonction de l'altitude, en feet
+:title-addendum-ru: Расширени до -- 5000 м и стандартная атмосфера в функции от высоты в футах
+:updates: ISO 2533:1975
+:updates-document-type: international-standard
+:addendum-number: 2
+:doctype: addendum
+:docstage: 60
+:docsubstage: 60
+----
+
+Addendum 2 does not give a pre-publication version identifier, but it does provide a title of the addendum
+specifically.
+
