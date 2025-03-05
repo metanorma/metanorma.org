@@ -45,28 +45,23 @@ created by prepending a `=` sign in front of the heading.
 ====
 
 
-== Section titles
+== Section types
 
-=== Pre-defined section titles
+=== Automatic type recognition
 
-Sections in a document are composed and placed in their appropriate places
-inside the Metanorma document model.
+Metanorma automatically detects these standard section types when their titles match
+common patterns in any supported language:
 
-Metanorma utilizes the following pre-defined section titles to identify specific
-kinds of sections in the document:
-
-* `Abstract`
-* `Foreword` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
-* `Introduction`
-* `Acknowledgements` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.19]
-* `Scope`
-* `Normative references`
-* `Terms and definitions`
-* `Symbols and abbreviated terms`
-* `Symbols` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.0]
-* `Abbreviated terms` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.0]
-* `Bibliography`
-* `Misc-Container` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7]
+* Abstract
+* Foreword
+* Introduction
+* Acknowledgements
+* Scope
+* Normative references
+* Terms and definitions
+* Symbols and abbreviated terms (or individual Symbols/Abbreviated terms sections)
+* Bibliography
+* Misc-Container (special container section)
 
 // To successfully validate a document, the compiler needs to know what sections
 // are in the document. Metanorma relies on these predefined section titles to
@@ -100,37 +95,81 @@ link:/flavors/[flavor documentation] for more details on how
 your SDO uses Metanorma.
 
 
-=== Deviating section titles
+=== Manual type specification
 
-Entering titles that deviate from the pre-defined titles, or in languages other than English requires
-explicit declaration of those section types.
+If the section title does not match standardized title patterns, the section
+type must be explicitly declared using attributes.
 
-The section type is declared between square brackets `[ ... ]` immediately
-above the section title.
+NOTE: Clause titles can differ from standardized titles for custom phrasing or
+language differences.
 
-For these types of sections, enter them without
+[source,adoc]
+----
+[type_attribute]
+== Your Custom Title
+----
 
-* Abstract: `[abstract]`
-* Foreword: `[heading=foreword]`
-* Preface sections: `[preface]`
-* Introduction: `[heading=introduction]`
-* Acknowledgements: `[acknowledgments]`
-* Scope: `[heading=scope]`
-* Bibliography, Normative references: `[bibliography]`
-* Terms and definitions: `[heading=terms and definitions]`
-* Symbols and abbreviated terms: `[heading=symbols and abbreviated terms]`
-* Index: `[index]`
-* Annexes: `[appendix]`
+Supported section type declarations include the following.
+
+[cols="1,1,1", options="header"]
+|===
+|Section type |Standardized title |Declaration
+
+|Abstract
+|"Abstract"
+|`[abstract]`
+
+|Foreword
+|"Foreword"
+|`[heading=foreword]`
+
+|Preface
+| No standardized title
+|`[preface]`
+
+|Introduction
+|"Introduction"
+|`[heading=introduction]`
+
+|Acknowledgments
+|"Acknowledgements"
+|`[acknowledgments]`
+
+|Scope
+|"Scope"
+|`[heading=scope]`
+
+|Bibliography
+|"Bibliography" or "Normative references"
+|`[bibliography]`
+
+|Terms and definitions
+|"Terms and definitions"
+|`[heading=terms and definitions]`
+
+|Symbols and abbreviated terms
+| "Symbols", "Abbreviated terms", "Symbols and abbreviated terms"
+|`[heading=symbols and abbreviated terms]`
+
+|Index
+|"Index"
+|`[index]`
+
+|Appendix
+| No standardized title
+|`[appendix]`
+
+|===
 
 [NOTE]
 --
-Documents can contain only one Abstract, one Acknowledgements section, and one Index.
-In most flavours and documents types, documents can only contain one Terms and Definitions section.
+Documents can contain only one "Abstract," one "Acknowledgements" section, and one "Index".
+In most flavours and document types, documents can only contain one "Terms and Definitions" section.
 If a second matching clause is found, it is treated as a normal clause.
 
-However, this can be overridden by specifying the section type in a `heading` attribute:
-this is interpreted as the user explicitly wanting that section type to 
-apply  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.10.0].
+This behavior can be overridden by specifying the section type in a `heading`
+attribute: this is interpreted as the user explicitly wanting that section type
+to apply [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.10.0].
 --
 
 The following example indicates usage of the section titles.
@@ -428,4 +467,3 @@ and the rendering would be something like
 *1.1.1.1.1.2  Clause 6B*
 
 *1.1.1.1.2  Clause 5B*
-
