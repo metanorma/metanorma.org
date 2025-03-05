@@ -115,7 +115,6 @@ Another outrageous statement.footnote:disclaimer[]
 ====
 
 
-
 == Special footnotes
 
 === Table footnotes
@@ -132,6 +131,53 @@ Footnotes immediately placed after a figure are considered a "figure footnote",
 which renders the footnote at the bottom of the figure.
 
 Figure footnotes are numbered separately from normal footnotes.
+
+==== Suppressed references in figure footnotes
+
+In some cases, the footnote reference number appears inside the image in a figure,
+next to the part of the image that it is intended to explain. If that is the case,
+the footnote reference number should not appear separately as text. In order to address
+this case, footnotes can be specified to hide their reference number, by prefixing
+the footnote text with `hiddenref%` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.3].
+The reference number will still appear in the footnote body.
+
+For instance, if an image already contains footnote reference _a)_:
+
+....
+───────────────▄▄───▐█ a)
+───▄▄▄───▄██▄──█▀───█─▄
+─▄██▀█▌─██▄▄──▐█▀▄─▐█▀
+▐█▀▀▌───▄▀▌─▌─█─▌──▌─▌
+▌▀▄─▐──▀▄─▐▄─▐▄▐▄─▐▄─▐▄
+....
+
+we can footnote the image without repeating the _a)_ with the following markup:
+
+[source,adoc]
+----
+[figure]
+====
+image::evolution.png{blank}footnote:[hiddenref%A depiction of evolution]
+====
+----
+
+This will be rendered as:
+
+____
+....
+───────────────▄▄───▐█ a)
+───▄▄▄───▄██▄──█▀───█─▄
+─▄██▀█▌─██▄▄──▐█▀▄─▐█▀
+▐█▀▀▌───▄▀▌─▌─█─▌──▌─▌
+▌▀▄─▐──▀▄─▐▄─▐▄▐▄─▐▄─▐▄
+....
+
+a) A depiction of evolution
+____
+
+Without the `hiddenref%`, the _a)_ would be displayed twice, once inside the figure,
+and once added by Metanorma.
+
 
 === Document title footnotes
 
