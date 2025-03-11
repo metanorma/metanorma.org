@@ -339,9 +339,9 @@ metanorma:
   template:
     stylesheet: "custom.css"
     output_filename: |
-      {% if document.doctype == 'standard' %}
-        std-{{ document.docnumber }}
-      {% else %}
-        doc-{{ document.docidentifier | downcase }}
-      {% endif %}
+      {% if document.doctype == 'standard' -%}
+        std-{{ document.docnumber -}}
+      {%- else -%}
+        doc-{{ document.docidentifier | downcase -}}
+      {%- endif %}
 ----
