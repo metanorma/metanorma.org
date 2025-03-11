@@ -1,0 +1,241 @@
+---
+layout: docs-base
+html-class: docs-page
+title: Metanorma Site Generation
+---
+
+= Metanorma Site Generation (`metanorma site`)
+
+== Introduction
+
+The `site` subcommand enables you to compile and publish multiple Metanorma
+documents as a cohesive document site.
+This functionality is particularly useful for:
+
+* Multiple documents belonging to the same series
+* Single documents published to multiple venues
+* Multiple parts of a document collection
+
+== Commands
+
+=== `metanorma site generate`
+
+[source,sh]
+----
+metanorma site generate [OPTIONS...] [SOURCE_PATH]
+----
+
+If no source path is provided, the current directory is used.
+
+=== Options
+
+* `-c, --config CONFIG` - Configuration file path for Metanorma settings
+
+* `-o, --output-dir DIR` - Directory for generated site output
+** Default: _site in current directory
+
+* `--output-filename-template TEMPLATE_STRING` - Define output filenames using Liquid templating
+** Uses Relaton model for variable access
+
+* `--agree-to-terms` - Accept third-party licensing terms
+** `--no-agree-to-terms` - Reject licensing terms
+** `--skip-agree-to-terms` - Skip license agreement prompt
+
+* `--install-fonts` - Install required fonts (default)
+** `--no-install-fonts` - Do not install fonts
+** `--skip-install-fonts` - Skip font installation prompt
+
+* `--continue-without-fonts` - Proceed when fonts are missing
+** `--no-continue-without-fonts` - Stop when fonts are missing
+** `--skip-continue-without-fonts` - Skip missing fonts prompt
+
+* `-s, --stylesheet FILE` - Custom stylesheet for HTML output
+
+* `-t, --template-dir DIR` - Custom Liquid templates for site design
+
+* `-S, --strict` - Abort compilation on errors
+** `--no-strict` - Continue on errors
+** `--skip-strict` - Skip strict mode prompt
+
+== Configuration
+
+The site generation can be customized using a YAML configuration file:
+
+[source,yaml]
+----
+metanorma:
+  source:
+    files:           # Array of files to process
+      - doc1.adoc
+      - "series/*.adoc"
+  collection:
+    name: "Site Title"           # Site title
+    organization: "Publisher"    # Site owner
+  template:
+    path: "templates"            # Custom template directory
+    stylesheet: "custom.css"     # Custom stylesheet
+    output_filename: ""          # Filename template
+----
+
+== Output Filename Templates
+
+=== General
+
+Templates are written in link:https://shopify.github.io/liquid/[Liquid^],
+a simple templating language.
+Liquid template variables for a document can be used to customize the output
+filenames across all output formats.
+
+For the list of available variables,
+see the <<_available_variables>> section.
+
+=== Default Behavior
+
+When an empty string is passed as the template (or when no template is
+specified),
+the system generates a normalized version of the document identifier.
+
+[example]
+====
+For a document with identifier "ISO/IEC FDIS 12345-3",
+the default output would be:
+
+[source]
+----
+iso-iec-fdis-12345-3
+----
+====
+
+=== Available Variables
+
+Templates can access document metadata through the `document` object:
+
+* `docidentifier` - Full document identifier
+* `language` - Document language code
+* `edition` - Edition number
+* `doctype` - Document type
+* `docnumber` - Document number
+* `partnumber` - Part number (if applicable)
+
+=== Basic Template Example
+
+[source,yaml]
+----
+metanorma:
+  template:
+    output_filename: "{{ document.docidentifier | downcase | replace: '/' , '-' }}"
+----
+
+=== Conditional Template Example
+
+[source,yaml]
+----
+metanorma:
+  template:
+    output_filename: |
+      {%- if document.doctype == 'international-standard' -%}
+        iso-
+      {%- else -%}
+        std-
+      {%- endif -%}
+      {{- document.docnumber -}}
+      {%- if document.partnumber %}-{{ document.partnumber }}{% endif %}
+----
+
+This demonstrates:
+
+* link:https://shopify.github.io/liquid/tags/control-flow/[Conditional logic^]
+  based on document type
+* Optional part number inclusion
+* Multi-line template formatting
+  * link:https://shopify.github.io/liquid/basics/whitespace/[White-space trimming^]
+    with `{%-`, `-%}`, and `{{-`, `-}}`
+
+=== Template Filters
+
+Common Liquid filters available:
+
+* link:https://shopify.github.io/liquid/filters/downcase/[`downcase`^] - Convert to lowercase
+* link:https://shopify.github.io/liquid/filters/replace/[`replace`^] - String replacement
+* link:https://shopify.github.io/liquid/filters/strip/[`strip`^] - Remove leading/trailing whitespace
+
+=== Error Handling
+
+* Invalid syntax raises `Liquid::SyntaxError`
+* Missing variables are replaced with empty strings
+* Example with missing variable:
++
+[source,yaml]
+----
+# Template: "{{ nonexistent }}_{{ document.language }}"
+# Result: "_en"
+----
+
+== Site Structure
+
+=== Generation Process
+
+. Scans source directory for Metanorma documents
+. Compiles each document with specified options
+. Creates site directory structure
+. Generates collection index (documents.xml)
+. Creates HTML index page
+. Copies assets and compiled documents
+
+=== Output Directory Structure
+
+----
+_site/              # Default output directory
+├── index.html      # Main site index
+├── documents.xml   # Collection index
+└── documents/      # Compiled documents
+    ├── doc1.html
+    ├── doc2.html
+    └── assets/     # Shared assets
+----
+
+== Best Practices
+
+* Organize documents in logical directory structures
+* Use consistent naming conventions in templates
+* Test templates with sample documents
+* Include error handling for optional metadata
+
+== Examples
+
+=== Basic Site Generation
+
+[source,sh]
+----
+metanorma site generate ./sources -o output
+----
+
+=== Custom Naming with Metadata
+
+[source,yaml]
+----
+# metanorma.yml
+metanorma:
+  template:
+    output_filename: "{{document.docidentifier}}-{{document.version}}"
+----
+
+=== Complex Configuration
+
+[source,yaml]
+----
+metanorma:
+  source:
+    files:
+      - "doc*/main.adoc"
+  collection:
+    name: "Technical Documentation"
+  template:
+    stylesheet: "custom.css"
+    output_filename: |
+      {% if document.doctype == 'standard' %}
+        std-{{ document.docnumber }}
+      {% else %}
+        doc-{{ document.docidentifier | downcase }}
+      {% endif %}
+----
