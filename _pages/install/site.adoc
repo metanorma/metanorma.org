@@ -146,12 +146,17 @@ The document template (`_document.liquid`) has access to:
   <body>
     <h1>{{ title }}</h1>
     <div class="documents">
-      {% include 'document' for documents %}
+      {% render 'document' for documents as document %}
     </div>
     <footer>Generated: {{ date }}</footer>
   </body>
 </html>
 ----
+
+NOTE: The example uses the `render` tag instead of `include` as it's the
+recommended way to include templates in Liquid.
+The `for` parameter allows iteration through the documents collection while
+maintaining proper variable scoping.
 
 [source,liquid]
 ----
