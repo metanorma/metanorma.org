@@ -77,12 +77,108 @@ metanorma:
     output_filename: ""          # Filename template
 ----
 
+== Templates and Styling
+
+=== General
+
+Templates are written in link:https://shopify.github.io/liquid/[Liquid^],
+a simple templating language.
+
+Read on for more information on how to customize the site's HTML output
+using Liquid templates.
+
+=== Template Directory Structure
+
+The `-t, --template-dir` option allows customization of the site's HTML output
+using Liquid templates.
+The template directory must contain:
+
+==== Required Files
+
+* `_index.liquid` - Main template for the site's index page
+* `_document.liquid` - Template for individual document entries
+** Its name actually depend on how it is referenced in the index template.
+** See official documentation on
+link:https://shopify.github.io/liquid/tags/template/#include[include^]
+(which is being deprecated)
+and
+link:https://shopify.github.io/liquid/tags/template/#render[render^]
+for more information.
+* CSS stylesheets (referenced in templates)
+
+==== Template Variables
+
+The index template (`_index.liquid`) has access to:
+
+* `title` - Collection title from configuration
+* `author` - Collection author/organization
+* `date` - Generation date
+* `css` - Stylesheet content
+* `metanorma_v` - Metanorma version (if available)
+* `documents` - Array of document entries
+
+The document template (`_document.liquid`) has access to:
+
+* `document.docid.id` - Document identifier
+* `document.title` - Document title
+* `document.html` - HTML file path
+* `document.pdf` - PDF file path
+* `document.doc` - Word document path
+* `document.xml` - XML file path
+* `document.rxl` - Relaton XML file path
+* `document.uri` - Document URI
+* `document.doctype.type` - Document type
+* `document.edition.content` - Edition information
+* `document.docstatus.stage` - Document status
+* `document.revdate` - Revision date
+
+==== Example Templates
+
+[source,liquid]
+----
+<!-- _index.liquid -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <style>{{ css }}</style>
+  </head>
+  <body>
+    <h1>{{ title }}</h1>
+    <div class="documents">
+      {% include 'document' for documents %}
+    </div>
+    <footer>Generated: {{ date }}</footer>
+  </body>
+</html>
+----
+
+[source,liquid]
+----
+<!-- _document.liquid -->
+<div class="document">
+  <h2><a href="{{ document.html }}">{{ document.docid.id }}</a></h2>
+  <p class="title">{{ document.title }}</p>
+  <p class="status">Status: {{ document.docstatus.stage }}</p>
+  {% if document.pdf %}
+    <a href="{{ document.pdf }}">PDF</a>
+  {% endif %}
+</div>
+----
+
+The default templates can be found in the
+link:https://github.com/relaton/relaton-cli[Relaton CLI repository^]
+under the
+link:https://github.com/relaton/relaton-cli/tree/main/templates[`templates`^]
+directory.
+
 == Output Filename Templates
 
 === General
 
 Templates are written in link:https://shopify.github.io/liquid/[Liquid^],
 a simple templating language.
+
 Liquid template variables for a document can be used to customize the output
 filenames across all output formats.
 
