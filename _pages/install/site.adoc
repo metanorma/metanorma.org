@@ -4,6 +4,8 @@ html-class: docs-page
 title: Metanorma Site Generation
 ---
 
+:example-template-url: https://github.com/relaton/relaton-cli/tree/1c5170dcefa5692e016f08d80cd29fddd1cc47d4/templates
+
 = Metanorma Site Generation (`metanorma site`)
 
 == Introduction
@@ -116,9 +118,8 @@ using Liquid templates.
 
 The `-t, --template-dir` option allows customization of the site's HTML output
 using Liquid templates.
-The template directory must contain:
 
-==== Required files
+The template directory must contain:
 
 `_index.liquid`:: Main template for the site's index page
 
@@ -133,12 +134,20 @@ and
 link:https://shopify.github.io/liquid/tags/template/#render[render^]
 for more information.
 
-CSS stylesheet:: of which the content can be referenced in templates using the
+CSS stylesheet:: Specify the path to the stylesheet,
+of which the content can be referenced in templates using the
 <<css-variable,`css` variable>>.
 +
-This is specified in the site manifest under the
+The path can be specified in the site manifest under the
 <<manifest-stylesheet,`metanorma.template.stylesheet` key>>,
 or via the CLI using the <<cli-stylesheet,`-s, --stylesheet` option>>.
+
+For a more detailed example of what a template directory might look like,
+see the
+link:{example-template-url}[default templates^]
+in the
+link:https://github.com/relaton/relaton-cli[Relaton CLI repository^].
+
 
 ==== Template variables
 
@@ -209,11 +218,9 @@ maintaining proper variable scoping.
 </div>
 ----
 
-The default templates can be found in the
-link:https://github.com/relaton/relaton-cli[Relaton CLI repository^]
-under the
-link:https://github.com/relaton/relaton-cli/tree/main/templates[`templates`^]
-directory.
+For a more detailed example of what a template might look like,
+see the
+link:{example-template-url}[default Liquid templates^].
 
 == Output filename templates
 
