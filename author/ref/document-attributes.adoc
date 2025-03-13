@@ -14,6 +14,22 @@ required document attributes.
 
 == Build and validation
 
+`:mn-document-class:`::
+The flavor of Metanorma used to compile the document; e.g. `iso`, `nist`, `ogc`. Needs to be a supported version
+of the document. Synonyms: `document-class`, `mn-flavor`, `flavor`.
+
+`:mn-output-extensions:`::
+The output formats to generate for the document, comma-delimited; e.g. `xml,presentation,html,doc,pdf`.
+The formats supported vary for each flavor, but all flavors support `xml` (Semantic XML), `presentation`
+(Presentation XML), and one of `html` or `pdf`. Synonym: `:output-extensions:`.
+
+`:mn-relaton-output-file:`::
+Output the bibliographic record describing the document as a Relaton XML file (with the suffix `.rxl`).
+Synonym: `:relaton-output-file:`.
+
+`:mn-keep-asciimath:`::
+Do not translate Asciimath in the document to MathML. Synonym: `:keep-asciimath:`.
+
 `:nodoc:`::
 Instructs Metanorma to not generate Word and HTML output, means only XML output will be generated.
 
@@ -147,7 +163,7 @@ See also the link:/author/topics/languages[Languages] topic.
 `:i18nyaml:`::
 Name of YAML language template file.
 Use if you wish to output an standard in a language that's not supported out of the box.
-For more on how to customise localization, see link:/develop/topics/localization[Localization].
+For more on how to customize localization, see link:/develop/topics/localization[Localization].
 
 `:language:`::
 Two-letter code (ISO 639-1) of the language the document is written in. Defaults to `en`.
@@ -174,7 +190,7 @@ Template for how to present localized numbers. The localization template string 
 `:localize-number: +++#,##0.### ###+++`
 +
 TIP: See link:/author/topics/languages#number-localization[Number localization]
-for how numbers are localised in
+for how numbers are localized in
 Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.4].
 
 == Document info
@@ -908,6 +924,12 @@ link:/author/topics/blocks/requirements-modspec/#identifier-base[ModSpec identif
 A comma-delimited list of Metanorma block names, which should have numbering
 suppressed throughout the document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.6].
 Typically will be used for sourcecode fragemnts: `:block-unnumbered: sourcecode`.
+
+`:coverpage-image:`:: Comma-delimited list of image locations, for images to be included on the (PDF) cover page. All image locations are relative to the source document. Currently only supported for BSI, ITU, JIS, Plateau.
+`:innercoverpage-image:`:: Same, for images to be included on the (PDF) inside cover page. Currently only supported for BSI.
+`:tocside-image:`:: Same, for images to be included on the (PDF) Table of Contents side page. Currently only supported for BSI.
+`:backpage-image:`:: Same, for images to be included on the (PDF) back page. Currently only supported for BSI, JIS.
+
 
 == PDF protection and permissions
 

@@ -205,7 +205,7 @@ And the block:
 
 This section is about {item}.
 
-{endfor}
+{% endfor %}
 ----
 ------
 
@@ -216,7 +216,7 @@ Where:
 * `{{forloop.index0}}` gives the zero-based position of item `item` in the parent array `arr`.
 
 Will render as:
-[source,text]
+[source,asciidoc]
 ----
 === 0 lorem
 
@@ -262,6 +262,8 @@ And the block:
 === {{data.name}}
 
 {{data.desc}}
+
+Key-value pairs: {{data.size}}
 ----
 ------
 
@@ -274,6 +276,8 @@ Will render as:
 === Lorem ipsum
 
 dolor sit amet
+
+Key-value pairs: 2
 ----
 
 ====
@@ -333,7 +337,7 @@ Where:
 * `{{item[1]}}` gives the value in the current iteration
 
 Will render as:
-[source,text]
+[source,asciidoc]
 ----
 === name
 
@@ -383,13 +387,16 @@ And the block:
 
 Where:
 
-* file path is `object.json`
-* current key within the enumerator is called `key`
-* `{{item[1]}}` gives the value of key in the current iteration the parent array `my_item`.
-* `{{item.values[1]}}` gives the value located at the second key within `item`
+* file path is `object.json`,
+* `item` is the user-given name of the global context,
+* `elem` is a sub-context of `item` used to iterate over each key-value pair,
+* `{{elem[0]}}` gives the key in the current iteration,
+* `{{elem[1]}}` gives the value of the key in the current iteration,
+* `{{item.values[1]}}` gives the value located at the second key within `item`.
 
 Will render as:
-[source,text]
+
+[source,asciidoc]
 ----
 .dolor sit amet
 
@@ -430,7 +437,7 @@ And the block:
 ------
 [json2text,strings.json,items]
 ----
-{% for elem in items limit:2 offset:2 %}
+{% for item in items limit:2 offset:2 %}
 {{item}}
 {% endfor %}
 ----
@@ -439,24 +446,22 @@ And the block:
 Where:
 
 * file path is `strings.json`
-* `limit` - how many items we shoudl take from the array
+* `limit` - how many items we should take from the array
 * `offset` - zero-based offset of item from which start the loop
 * `{{item}}` gives the value of item in the array
 
 Will render as:
-[source,text]
+[source,asciidoc]
 ----
-dolor sit
+dolor
+sit
 ----
 
 ====
 
-
 == Advanced examples
 
 With the syntax of enumerating arrays and objects we can now try more powerful examples.
-
-
 
 === Array of objects
 
@@ -501,9 +506,11 @@ And the block:
 ----
 ------
 
-Notice we are now defining multiple contexts:
+Notice we are now defining multiple contexts: `ar`, `item` and `num`.
 
-* using different context names: `ar`, `item`, and `num`
+* `ar` is the global context defined in the heading of the block,
+* `item` is a sub-context of `ar` defined in the first `for` loop, and
+* `num` is a sub-context of `item.nums` defined in the second (nested) `for` loop.
 
 Will render as:
 [source,asciidoc]

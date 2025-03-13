@@ -23,7 +23,7 @@ Defaults to `Latn`. e.g., specify `Hant` for Traditional Chinese.
 ISO 3166-1 two-letter country code [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.4].
 +
 NOTE: As of this writing, the impact of locale in localisation is minor: narrow
-non-breaking space in front of colon for templated localised text (e.g.
+non-breaking space in front of colon for templated localized text (e.g.
 cross-references) in Swiss French, vs full non-breaking space for other locales
 of French.
 
@@ -34,7 +34,7 @@ English, Chinese (Simplified) or French.
 
 === Content specification
 
-Localised string variants can be specified using the
+localized string variants can be specified using the
 `lang:[]` inline command [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.6.3]:
 
 The `lang:[]` inline command is specified in content as:
@@ -120,8 +120,20 @@ Metanorma, to flavour-specific requirements.
 
 === Specifying numbers to localize
 
-Localization of numbers is only applied if numbers are encoded as `stem`
-expressions.
+Localization of numbers is only applied if numbers are encoded as `number` or
+`stem` expressions.
+
+For details, please refer to:
+
+* link:/author/topics/inline_markup/semantic-elements#encoding-numbers[Encoding numbers]
+
+* link:/author/topics/blocks/math[Math expressions]
+
+NOTE: Numbers entered as plain text are not localized.
+
+NOTE: Semantic encoding of `number:[...]` is preferred over `stem:[...]` for
+plain numbers. The `number` command was introduced in
+v2.8.12 [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
 
 [example]
 .Example of representing numbers without localization
@@ -137,8 +149,13 @@ https://cldr.unicode.org[Unicode CLDR data repository]
 
 Typical English localization formats the number `60007.1234` as _60,007.1234_.
 This is achieved in Metanorma by tagging the document as being in English
-(`:language: en`), and encoding the number as a stem expression
-(`stem&#x200c;:[60007.1234]`).
+(`:language: en`), and encoding the number as a `number` expression
+(`number&#x200c;:[60007.1234]`).
+
+[example]
+.Example of localizing numbers using `number` encoding
+The encoding of `number&#x200c;:[60007.1234]` in a document with language
+specified to English is displayed as _60,007.1234_.
 
 [example]
 .Example of localizing numbers using `stem` encoding
@@ -198,7 +215,8 @@ The differences between a normal whitespace
 and non-breaking spaces can be seen at
 https://en.wikipedia.org/wiki/Non-breaking_space[Non-breaking space on Wikipedia].
 
-To illustrate, the encoding `stem&#x200c;:[6007.1234]` will be rendered as:
+To illustrate, the encoding `number&#x200c;:[6007.1234]` or
+`stem&#x200c;:[6007.1234]` will be rendered as:
 
 * _60 007.123 4_ if specified with `:localize-number: \# #\#0.#\## \###`
 * _60 007,123 4_ if specified with `:localize-number: \# #\#0,#\## \###`

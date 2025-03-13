@@ -34,7 +34,6 @@ https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.25[metanorma-st
 https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3[version 1.5.3].
 See link:/blog/2020-05-07-using-yaml-as-data-source[the original blog post] for more examples.
 
-
 == Syntax
 
 [[defining_syntax]]
@@ -76,7 +75,6 @@ Where:
 * The location of `{variable}`(`{{variable}}`) in text will be replaced with the value of `variable`.
 * Evaluation order will be first from the defined context, then of the Metanorma AsciiDoc document.
 
-
 === Accessing object values
 
 Object values are accessed via the `.` (dot) separator.
@@ -113,7 +111,6 @@ I'm heading to the bar for beef.
 ----
 
 ====
-
 
 === Accessing arrays
 
@@ -185,7 +182,6 @@ Within an array enumerator, the following https://shopify.dev/docs/themes/liquid
 
 * `{{array_name[i]}}` provides the value at index `i` (zero-based: starts with `0`) in the array `array_name`; `-1` can be used to refer to the last item, `-2` the second last item, and so on.
 
-
 [example]
 .Example of iterating through a for loop
 ====
@@ -210,7 +206,7 @@ And the block:
 
 This section is about {item}.
 
-{endfor}
+{% endfor %}
 ----
 ------
 
@@ -221,7 +217,7 @@ Where:
 * `{{forloop.index0}}` gives the zero-based position of item `item` in the parent array `arr`.
 
 Will render as:
-[source,text]
+[source,asciidoc]
 ----
 === 0 lorem
 
@@ -238,9 +234,7 @@ This section is about dolor.
 
 ====
 
-
 === Accessing objects
-
 
 ==== Size
 
@@ -268,6 +262,8 @@ And the block:
 === {{data.name}}
 
 {{data.desc}}
+
+Key-value pairs: {{data.size}}
 ----
 ------
 
@@ -280,6 +276,8 @@ Will render as:
 === Lorem ipsum
 
 dolor sit amet
+
+Key-value pairs: 2
 ----
 
 ====
@@ -301,7 +299,6 @@ Where:
 * `{{item[0]}}` contains the key of the current enumrated object
 * `{{item[1]}}` contains the value
 * `{% endfor %}` indicates where the object enumeration block ends
-
 
 [example]
 .Example of iterating through an object
@@ -338,7 +335,7 @@ Where:
 * `{{item[1]}}` gives the value in the current iteration
 
 Will render as:
-[source,text]
+[source,asciidoc]
 ----
 === name
 
@@ -351,10 +348,7 @@ dolor sit amet
 
 ====
 
-
-
 Moreover, the `keys` and `values` attributes can also be used in object enumerators.
-
 
 [example]
 .Example of using `keys` and `values` in object enumeration
@@ -393,7 +387,8 @@ Where:
 * `{{item.values[1]}}` gives the value located at the second key within `item`
 
 Will render as:
-[source,text]
+
+[source,asciidoc]
 ----
 .dolor sit amet
 
@@ -433,7 +428,7 @@ And the block:
 ------
 [yaml2text,strings.yaml,items]
 ----
-{% for elem in items limit:2 offset:2 %}
+{% for item in items limit:2 offset:2 %}
 {{item}}
 {% endfor %}
 ----
@@ -442,27 +437,24 @@ And the block:
 Where:
 
 * file path is `strings.yaml`
-* `limit` - how many items we shoudl take from the array
+* `limit` - how many items we should take from the array
 * `offset` - zero-based offset of item from which start the loop
 * `{{item}}` gives the value of item in the array
 
 Will render as:
-[source,text]
+[source,asciidoc]
 ----
-dolor sit
+dolor
+sit
 ----
 
 ====
-
 
 == Advanced examples
 
 With the syntax of enumerating arrays and objects we can now try more powerful examples.
 
-
-
 === Array of objects
-
 
 [example]
 .Advanced example of accessing an array of objects
@@ -501,11 +493,13 @@ And the block:
 ----
 ------
 
-Notice we are now defining multiple contexts:
+Notice we are now defining multiple contexts: `ar`, `item` and `num`.
 
-* using different context names: `ar`, `item`, and `num`
+* `ar` is the global context defined in the heading of the block,
+* `item` is a sub-context of `ar` defined in the first `for` loop, and
+* `num` is a sub-context of `item.nums` defined in the second (nested) `for` loop.
 
-Will render as:
+This will render as:
 [source,asciidoc]
 ----
 Lorem:: ipsum
@@ -522,7 +516,6 @@ amet:: lorem
 ----
 
 ====
-
 
 === An array with interpolated file names (for AsciiDoc consumption)
 
@@ -564,7 +557,6 @@ Last item is {{yaml.items.last}}.
 ------
 --------
 
-
 Will render as:
 [source,asciidoc]
 ------
@@ -596,11 +588,10 @@ Last item is dolor.
 
 ====
 
-
 == Legacy version < 1.5.3
 
 Legacy `yaml2text` functionality is available between
-https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3[metanorma-standoc version 1.3.25] and
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.25[metanorma-standoc version 1.3.25] and
 https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3[metanorma-standoc version 1.5.3].
 
 In the legacy version, two types of expressions were supported:
