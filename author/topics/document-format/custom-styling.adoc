@@ -1,0 +1,72 @@
+---
+layout: author-docs
+title: Custom styling
+---
+= Custom styling
+
+By design, Metanorma has limited support for customising styling: document styling is set by the Standards-Defining Organisation,
+and one of the primary purposes of Metanorma is to enforce the styling set by the organisation.
+
+== Overriding default CSS styling
+
+Styling in DOC and HTML is set by CSS stylesheets (with DOC styling following Microsoft's version of CSS 4). The approach
+taken to styling DOC and HTML output is described in:
+
+* link:/develop/topics/styling-output-html/[Styling HTML output]
+* link:/develop/topics/styling-output-msword/[Styling Microsoft Word output]A
+
+The classes that they presuppose are described in
+
+* link:/develop/ref/html/[HTML and MS Word HTML Output]
+
+If you are using an existing flavour of Metanorma, you can edit the CSS stylesheet in the gem, which is located in
+`/lib/isodoc/*/html/`, and replace the built-in version of the stylesheet with your own, through the document attributes
+`:htmlstylesheet:`, `:wordstylesheet:`, `:standardstylesheet:`: 
+see link:/author/ref/document-attributes/#visual-appearance[Document attributes: Visual appearance].
+
+[[user-css]]
+== Additional CSS stylesheet
+
+A user can specify CSS for inclusion in Metanorma output by embedding that CSS in a source block
+within a `user-css` subclause of  the `Metanorma-Extension` clause [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.8].
+This CSS will be applied to all of PDF, DOC, and HTML; note that DOC only supports CSS 4.
+The `Metanorma-Extension` clause can appear anywhere in the document body.
+
+In the following example, CSS classes are interpreted as applying to the `span:[]` macro applied to inline text:
+see link:/author/topics/inline_markup/text_formatting/#css[CSS declarations].
+
+
+[source,asciidoc]
+-----
+== Metanorma-Extension
+
+=== user-css
+
+[source]
+----
+.green { background-color: green} 
+----
+
+....
+
+span:green[this text is highlighted as green]
+-----
+
+However CSS within the document can also override styling in default CSS stylesheets; the following CSS clause for example
+sets the background colour of examples, notes, and admonitions in a document to white:
+
+[source,asciidoc]
+-----
+== Metanorma-Extension
+
+=== user-css
+
+[source]
+----
+.Note, .note { background-color: white}
+
+.Admonition { background-color: white}
+
+.example { background-color: white}
+----
+-----
