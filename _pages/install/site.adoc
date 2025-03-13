@@ -18,7 +18,7 @@ This functionality is particularly useful for:
 
 == Commands
 
-=== `metanorma site generate`
+=== Site generation
 
 [source,sh]
 ----
@@ -27,77 +27,104 @@ metanorma site generate [OPTIONS...] [SOURCE_PATH]
 
 If no source path is provided, the current directory is used.
 
-=== Options
+==== CLI options
 
-* `-c, --config CONFIG` - Configuration file path for Metanorma settings
+`-c, --config CONFIG`:: File path for Metanorma site manifest YAML configuration
+(Default: `metanorma.yml` in source directory)
 
-* `-o, --output-dir DIR` - Directory for generated site output
-** Default: _site in current directory
+`-o, --output-dir DIR`:: Directory for generated site output
+(Default: `_site` in current directory)
 
-* `--output-filename-template TEMPLATE_STRING` - Define output filenames using Liquid templating
-** Uses Relaton model for variable access
+`-s, --stylesheet FILE`:: Specify custom stylesheet for HTML output
 
-* `--agree-to-terms` - Accept third-party licensing terms
-** `--no-agree-to-terms` - Reject licensing terms
-** `--skip-agree-to-terms` - Skip license agreement prompt
+`-t, --template-dir DIR`:: Specify custom Liquid templates for site design
 
-* `--install-fonts` - Install required fonts (default)
-** `--no-install-fonts` - Do not install fonts
-** `--skip-install-fonts` - Skip font installation prompt
+`--output-filename-template TEMPLATE_STRING`::
+Define output filenames using Liquid templating
+(Uses
+link:https://github.com/metanorma/metanorma/blob/d06ef49c90862bc08b2fc19f882094b6e6234249/lib/metanorma/compile/relaton_drop.rb[Relaton model]
+for variable access)
 
-* `--continue-without-fonts` - Proceed when fonts are missing
-** `--no-continue-without-fonts` - Stop when fonts are missing
-** `--skip-continue-without-fonts` - Skip missing fonts prompt
+`--agree-to-terms`:: Accept third-party licensing terms
 
-* `-s, --stylesheet FILE` - Custom stylesheet for HTML output
+`--no-agree-to-terms`::: Reject licensing terms
 
-* `-t, --template-dir DIR` - Custom Liquid templates for site design
+`--skip-agree-to-terms`::: Skip license agreement prompt
 
-* `-S, --strict` - Abort compilation on errors
-** `--no-strict` - Continue on errors
-** `--skip-strict` - Skip strict mode prompt
+`--install-fonts`:: Install required fonts (Default)
 
-== Configuration
+`--no-install-fonts`::: Do not install fonts
 
-The site generation can be customized using a YAML configuration file:
+`--skip-install-fonts`::: Skip font installation prompt
+
+`--continue-without-fonts`:: Proceed when fonts are missing
+
+`--no-continue-without-fonts`::: Abort when fonts are missing
+
+`--skip-continue-without-fonts`::: Skip missing fonts prompt
+
+`-S, --strict`:: Abort compilation on errors
+
+`--no-strict`::: Continue on errors
+
+`--skip-strict`::: Skip strict mode prompt
+
+
+=== Configuration using site manifest
+
+The site generation process can be configured using a site manifest.
+The site manifest file is a configuration file that is in YAML format:
 
 [source,yaml]
 ----
 metanorma:
   source:
-    files:           # Array of files to process
+    files: <1>
       - doc1.adoc
       - "series/*.adoc"
   collection:
-    name: "Site Title"           # Site title
-    organization: "Publisher"    # Site owner
+    name: "Site Title"  <2>
+    organization: "Publisher"  <3>
   template:
-    path: "templates"            # Custom template directory
-    stylesheet: "custom.css"     # Custom stylesheet
-    output_filename: ""          # Filename template
+    path: "templates"  <4>
+    stylesheet: "custom.css" <5>
+    output_filename: ""  <6>
 ----
+<1> Array of files to process
+<2> Site title
+<3> Site owner
+<4> Custom template directory (see <<_templates_and_styling>>)
+<5> Custom stylesheet
+<6> Filename template (see <<_output_filename_templates>>)
 
-== Templates and Styling
+
+By default, the file `metanorma.yml` located in the source directory would be
+used.
+
+== Templates and styling
 
 === General
 
-Templates are written in link:https://shopify.github.io/liquid/[Liquid^],
-a simple templating language.
+Templates are written in the
+link:https://shopify.github.io/liquid/[Liquid^]
+templating language.
 
 Read on for more information on how to customize the site's HTML output
 using Liquid templates.
 
-=== Template Directory Structure
+=== Template directory structure
 
 The `-t, --template-dir` option allows customization of the site's HTML output
 using Liquid templates.
 The template directory must contain:
 
-==== Required Files
+==== Required files
 
-* `_index.liquid` - Main template for the site's index page
-* `_document.liquid` - Template for individual document entries
-** The name of this file actually depends on how it is referenced in the index
+`_index.liquid`:: Main template for the site's index page
+
+`__document_.liquid`:: Template for individual document entries
++
+NOTE:  The name of this file actually depends on how it is referenced in the index
 template.
 See official documentation on
 link:https://shopify.github.io/liquid/tags/template/#include[include^]
@@ -105,9 +132,10 @@ link:https://shopify.github.io/liquid/tags/template/#include[include^]
 and
 link:https://shopify.github.io/liquid/tags/template/#render[render^]
 for more information.
-* CSS stylesheets (referenced in templates)
 
-==== Template Variables
+CSS stylesheets:: referenced in templates
+
+==== Template variables
 
 The index template (`_index.liquid`) has access to:
 
@@ -118,23 +146,25 @@ The index template (`_index.liquid`) has access to:
 * `metanorma_v` - Metanorma version (if available)
 * `documents` - Array of document entries
 
-The document template (`_document.liquid`) has access to:
+The document template
+(_e.g._, `_document.liquid`, via the `document` template variable)
+has access to:
 
-* `document.docid.id` - Document identifier
-* `document.title` - Document title
-* `document.html` - HTML file path
-* `document.pdf` - PDF file path
-* `document.doc` - Word document path
-* `document.xml` - XML file path
-* `document.rxl` - Relaton XML file path
-* `document.uri` - Document URI
-* `document.doctype.type` - Document type
-* `document.edition.content` - Edition information
-* `document.docstatus.stage` - Document status
-* `document.revdate` - Revision date
+* `docid.id` - Document identifier
+* `title` - Document title
+* `html` - HTML file path
+* `pdf` - PDF file path
+* `doc` - Word document path
+* `xml` - XML file path
+* `rxl` - Relaton XML file path
+* `uri` - Document URI
+* `doctype.type` - Document type
+* `edition.content` - Edition information
+* `docstatus.stage` - Document status
+* `revdate` - Revision date
 
-==== Example Templates
-
+.Example `_index.liquid` template
+[example]
 [source,liquid]
 ----
 <!-- _index.liquid -->
@@ -159,6 +189,8 @@ recommended way to include templates in Liquid.
 The `for` parameter allows iteration through the documents collection while
 maintaining proper variable scoping.
 
+.Example `__document_.liquid` template
+[example]
 [source,liquid]
 ----
 <!-- _document.liquid -->
@@ -178,12 +210,13 @@ under the
 link:https://github.com/relaton/relaton-cli/tree/main/templates[`templates`^]
 directory.
 
-== Output Filename Templates
+== Output filename templates
 
 === General
 
-Templates are written in link:https://shopify.github.io/liquid/[Liquid^],
-a simple templating language.
+Templates are written in the
+link:https://shopify.github.io/liquid/[Liquid^]
+templating language.
 
 Liquid template variables for a document can be used to customize the output
 filenames across all output formats.
@@ -191,7 +224,7 @@ filenames across all output formats.
 For the list of available variables,
 see the <<_available_variables>> section.
 
-=== Default Behavior
+=== Default behavior
 
 When an empty string is passed as the template (or when no template is
 specified),
@@ -206,9 +239,23 @@ the default output would be:
 ----
 iso-iec-fdis-12345-3
 ----
+
+The generated document files would be named accordingly:
+
+----
+_site/
+├── index.html
+├── documents.xml
+└── documents/
+    ├── iso-iec-fdis-12345-3.html
+    ├── iso-iec-fdis-12345-3.doc
+    ├── iso-iec-fdis-12345-3.pdf
+    ├── iso-iec-fdis-12345-3.rxl
+    └── iso-iec-fdis-12345-3.xml
+----
 ====
 
-=== Available Variables
+=== Available variables
 
 Templates can access document metadata through the `document` object:
 
@@ -219,8 +266,8 @@ Templates can access document metadata through the `document` object:
 * `docnumber` - Document number
 * `partnumber` - Part number (if applicable)
 
-=== Basic Template Example
-
+.Example using liquid filters
+[example]
 [source,yaml]
 ----
 metanorma:
@@ -228,8 +275,8 @@ metanorma:
     output_filename: "{{ document.docidentifier | downcase | replace: '/' , '-' }}"
 ----
 
-=== Conditional Template Example
-
+.Example using conditionals
+[example]
 [source,yaml]
 ----
 metanorma:
@@ -250,32 +297,38 @@ This demonstrates:
   based on document type
 * Optional part number inclusion
 * Multi-line template formatting
-  * link:https://shopify.github.io/liquid/basics/whitespace/[White-space trimming^]
-    with `{%-`, `-%}`, and `{{-`, `-}}`
+** link:https://shopify.github.io/liquid/basics/whitespace/[Whitespace trimming^]
+   with `{%-`, `-%}`, and `{{-`, `-}}`
 
-=== Template Filters
+=== Template filters
 
 Common Liquid filters available:
 
-* link:https://shopify.github.io/liquid/filters/downcase/[`downcase`^] - Convert to lowercase
-* link:https://shopify.github.io/liquid/filters/replace/[`replace`^] - String replacement
-* link:https://shopify.github.io/liquid/filters/strip/[`strip`^] - Remove leading/trailing whitespace
+link:https://shopify.github.io/liquid/filters/downcase/[`downcase`^]:: Convert to lowercase
 
-=== Error Handling
+link:https://shopify.github.io/liquid/filters/replace/[`replace`^]:: String replacement
+
+link:https://shopify.github.io/liquid/filters/strip/[`strip`^]:: Remove leading/trailing whitespace
+
+For the full list of available Liquid filters,
+see link:https://shopify.github.io/liquid/filters/[Liquid Filters^].
+
+=== Error handling
 
 * Invalid syntax raises `Liquid::SyntaxError`
 * Missing variables are replaced with empty strings
-* Example with missing variable:
-+
+
+.Example with missing variable:
+[example]
 [source,yaml]
 ----
 # Template: "{{ nonexistent }}_{{ document.language }}"
 # Result: "_en"
 ----
 
-== Site Structure
+== Site structure
 
-=== Generation Process
+=== Generation process
 
 . Scans source directory for Metanorma documents
 . Compiles each document with specified options
@@ -284,13 +337,13 @@ Common Liquid filters available:
 . Creates HTML index page
 . Copies assets and compiled documents
 
-=== Output Directory Structure
+=== Output directory structure
 
 ----
-_site/              # Default output directory
-├── index.html      # Main site index
-├── documents.xml   # Collection index
-└── documents/      # Compiled documents
+_site/              <1>
+├── index.html      <2>
+├── documents.xml   <3>
+└── documents/      <4>
     ├── doc1.html
     ├── doc1.pdf
     ├── doc1.rxl
@@ -300,24 +353,139 @@ _site/              # Default output directory
     ├── doc2.rxl
     └── doc2.xml
 ----
+<1> Default output directory
+<2> Main site index
+<3> Collection index
+<4> Compiled documents
 
-== Best Practices
+== Best practices
 
-* Organize documents in logical directory structures
-* Use consistent naming conventions in templates
-* Test templates with sample documents
-* Include error handling for optional metadata
+Organize documents in logical directory structures::
+
+Place each document in a separate directory to avoid conflicts.
++
+[example]
+[source,yaml]
+----
+sources/
+├── doc1/
+│   └── main.adoc
+├── doc2/
+│   └── main.adoc
+└── doc3/
+    ├── main.adoc
+    └── annex.adoc
+----
+
+Use consistent naming conventions in templates::
+
+Use the same name for the document template file as the references in the
+template files.
+
+[example]
+[source,liquid]
+----
+<!-- _index.liquid --> <1>
+...
+{% render 'document' for documents as document %} <2>
+...
+
+<!-- _document.liquid -->     <2> <3>
+...
+<h1>{{ document.title }}</h1> <3>
+...
+----
+<1> The name of the index template file is always going to be `_index.liquid`.
+As of writing, this is not configurable.
+<2> The name of the document template file should match the reference in the
+index template.
+<3> The name of the document template file should match the reference in the
+document template itself.
+
+// Test templates with sample documents::
+
+Include error handling for optional metadata fields::
+
+`default` filter:::
+Use Liquid's
+link:https://shopify.github.io/liquid/filters/default/[`default` filter^]
+to handle missing metadata fields.
++
+[example]
+[source,liquid]
+----
+<h1>{{ document.title | default: "Untitled" }}</h1>
+----
++
+conditional logic:::
+Use conditional logic to handle optional metadata fields.
++
+[example]
+[source,liquid]
+----
+{% if document.partnumber %}
+  <p>Part {{ document.partnumber }}</p>
+{% endif %}
+----
+
+Use whitespace trimming for whitespace-sensitive templates::
+
+This is particularly important when working with output filename templates,
+which can be sensitive to whitespace.
+Use Liquid's
+link:https://shopify.github.io/liquid/basics/whitespace/[whitespace control^]
+to manage whitespace in templates.
++
+.TIPS: When in doubt, always use whitespace control to ensure consistent filename template rendering.
+[example]
+[source,yaml]
+----
+metanorma:
+  template:
+    output_filename: |
+      {%- if document.doctype == 'standard' -%}
+        std-{{- document.docnumber -}}
+      {%- else -%}
+        doc-{{- document.docidentifier | downcase -}}
+      {%- endif -%}
+----
+
+
 
 == Examples
 
-=== Basic Site Generation
+=== Minimal configuration
+
+Uses the default configuration file (`metanorma.yml`) in the current directory,
+and outputs to the default directory (`_site`).
+
+[source,sh]
+----
+metanorma site generate
+----
+
+=== Basic site generation
+
+Uses the default configuration file (`metanorma.yml`) in the `./sources` directory,
+and outputs to the specified directory (`./output`).
 
 [source,sh]
 ----
 metanorma site generate ./sources -o output
 ----
 
-=== Custom Naming with Metadata
+=== Custom naming with metadata
+
+Using the CLI:
+
+[source,console]
+----
+> metanorma site generate \
+  --output-filename-template \
+  "{{ document.docidentifier }}-{{ document.version }}"
+----
+
+Alternatively, using the site manifest:
 
 [source,yaml]
 ----
@@ -327,7 +495,10 @@ metanorma:
     output_filename: "{{document.docidentifier}}-{{document.version}}"
 ----
 
-=== Complex Configuration
+=== Complex configuration
+
+Longer template expressions are best defined in the site manifest,
+which allows for a more readable multiline format:
 
 [source,yaml]
 ----
@@ -335,10 +506,13 @@ metanorma:
   source:
     files:
       - "doc*/main.adoc"
+      - "collection*/metanorma.yml"
   collection:
     name: "Technical Documentation"
+    organization: "Acme Corp."
   template:
-    stylesheet: "custom.css"
+    stylesheet: "assets/stylesheets/site_index.css"
+    template_dir: "templates"
     output_filename: |
       {% if document.doctype == 'standard' -%}
         std-{{ document.docnumber -}}
@@ -346,3 +520,18 @@ metanorma:
         doc-{{ document.docidentifier | downcase -}}
       {%- endif %}
 ----
+
+=== CI/CD pipeline
+
+For scripting and automation,
+use the `--agree-to-terms` option to bypass the license agreement prompt:
+
+[source,console]
+----
+> metanorma site generate --agree-to-terms
+----
+
+See
+link:/install/cicd[Continuous Integration and Continuous Deployment^]
+for more detailed examples on how to integrate Metanorma site generation into
+your CI/CD pipeline.
