@@ -35,6 +35,7 @@ If no source path is provided, the current directory is used.
 `-o, --output-dir DIR`:: Directory for generated site output
 (Default: `_site` in current directory)
 
+[[cli-stylesheet]]
 `-s, --stylesheet FILE`:: Specify custom stylesheet for HTML output
 
 `-t, --template-dir DIR`:: Specify custom Liquid templates for site design
@@ -90,13 +91,12 @@ metanorma:
     stylesheet: "custom.css" <5>
     output_filename: ""  <6>
 ----
-<1> Array of files to process
-<2> Site title
-<3> Site owner
-<4> Custom template directory (see <<_templates_and_styling>>)
-<5> Custom stylesheet
-<6> Filename template (see <<_output_filename_templates>>)
-
+<1> `metanorma.source.files`: Array of files to process
+<2> `metanorma.collection.name`: Site title
+<3> `metanorma.collection.organization`: Site owner
+<4> `metanorma.template.path`:  Custom template directory (see <<_templates_and_styling>>)
+<5> [[manifest-stylesheet]] `metanorma.template.stylesheet`:  Custom stylesheet
+<6> `metanorma.template.output_filename`:  Filename template (see <<_output_filename_templates>>)
 
 By default, the file `metanorma.yml` located in the source directory would be
 used.
@@ -133,7 +133,12 @@ and
 link:https://shopify.github.io/liquid/tags/template/#render[render^]
 for more information.
 
-CSS stylesheets:: referenced in templates
+CSS stylesheet:: of which the content can be referenced in templates using the
+<<css-variable,`css` variable>>.
++
+This is specified in the site manifest under the
+<<manifest-stylesheet,`metanorma.template.stylesheet` key>>,
+or via the CLI using the <<cli-stylesheet,`-s, --stylesheet` option>>.
 
 ==== Template variables
 
@@ -142,7 +147,7 @@ The index template (`_index.liquid`) has access to:
 * `title` - Collection title from configuration
 * `author` - Collection author/organization
 * `date` - Generation date
-* `css` - Stylesheet content
+* `css` - Stylesheet content [[css-variable]]
 * `metanorma_v` - Metanorma version (if available)
 * `documents` - Array of document entries
 
