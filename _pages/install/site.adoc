@@ -107,17 +107,18 @@ used.
 
 === General
 
-Templates are written in the
+Customization of the site's HTML output is done using
 link:https://shopify.github.io/liquid/[Liquid^]
-templating language.
+templates.
 
-Read on for more information on how to customize the site's HTML output
-using Liquid templates.
+Metanorma uses the template files found in the specified template directory
+to generate the site's index page and individual document entries.
 
 === Template directory structure
 
-The `-t, --template-dir` option allows customization of the site's HTML output
-using Liquid templates.
+The path to the template directory can be specified via the CLI using the
+`-t, --template-dir` option,
+or in the site manifest under the `metanorma.template.path` key.
 
 The template directory must contain:
 
@@ -166,16 +167,19 @@ has access to:
 
 * `docid.id` - Document identifier
 * `title` - Document title
-* `html` - HTML file path
-* `pdf` - PDF file path
-* `doc` - Word document path
-* `xml` - XML file path
-* `rxl` - Relaton XML file path
+* `html` - HTML URL path
+* `pdf` - PDF URL path
+* `doc` - Word document URL path
+* `xml` - XML URL path
+* `rxl` - Relaton XML URL path
 * `uri` - Document URI
 * `doctype.type` - Document type
 * `edition.content` - Edition information
-* `docstatus.stage` - Document status
+* `docstatus.stage.value` - Document stage
+* `docstatus.stage.abbreviation` - Abbreviaton for the document status
+* `docstatus.substage.value` - Document substage
 * `revdate` - Revision date
+* `items` - Array of document items (if applicable, _e.g._, when the document is itself a collection)
 
 .Example `_index.liquid` template
 [example]
@@ -226,14 +230,14 @@ link:{example-template-url}[default Liquid templates^].
 
 === General
 
-Templates are written in the
+Using
 link:https://shopify.github.io/liquid/[Liquid^]
-templating language.
+templating,
+Metanorma allows for custom output filenames
+across all output formats.
 
-Liquid template variables for a document can be used to customize the output
-filenames across all output formats.
-
-For the list of available variables,
+For the list of all variables available for filename templates
+(which is separate from those available in the HTML templates),
 see the <<_available_variables>> section.
 
 === Default behavior
