@@ -294,20 +294,20 @@ NOTE: This feature is not supported in typical AsciiDoc.
 Styling of table rows and cells is supported to a limited extent: CSS styles can be applied
 to a table row using the macro `tr-style:[...]`, and to a table cell using the macro
 `td-style:[...]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.4].
-The only CSS attribute guaranteed to be supported in Metanorma for table rows and cells is
-`background-color`.
+The only CSS attributes guaranteed to be supported in Metanorma for table rows and cells are
+`background-color` and `color`.
 
 [source,asciidoc]
 ----
 |===
 |A |B |C tr-style:[background-color: red]
 
-h|1 td-style:[background-color: green] td-style:[background-color: blue] |2 tr-style:[background-color: green] |3 
+h|1 td-style:[background-color: green] td-style:[color: blue] |2 tr-style:[background-color: green] |3 
 |===
 ----
 
 This example applies `background-color: red` to the first row, `background-color: green` to the second row,
-and `background-color: green;background-color: blue` (as a combination of styles) to the first (header) cell
+and `background-color: green;color: blue` (as a combination of styles) to the first (header) cell
 of the second row.
 
 
