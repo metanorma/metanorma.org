@@ -51,10 +51,12 @@ Where:
 This is a YAML file, outlining the structure of the collection, including the
 location and identifier for each of the component files.
 
+`FOLDER`:: The folder that the collection files are to be generated in.
+
 `COVERPAGE`:: A Liquid template file for the index page to the collection in
 HTML.
 
-Both are described further below.
+These are described further below.
 
 .Example command for generating a Metanorma collection
 [example]
@@ -85,10 +87,6 @@ The compilation of the collection resolves any cross-references between files in
 the collection during preprocessing, so those inter-document links become simple
 hyperlinks.
 
-The output folder contains those preprocessed individual files, and files named
-`collection` in the target formats.
-
-
 == Specifying collections
 
 === Collection manifest
@@ -97,6 +95,12 @@ The collection manifest contains the following keys. The format has been streaml
 [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0], but is
 backwards compatible with earlier instances of the manifest; the legacy equivalent
 keys are given in [brackets].
+
+`output-folder`::
+The folder where output is generated to; same value as option `--output-folder` above.
+The output folder contains those preprocessed individual files, and files named
+`collection` in the target formats. If the output folder given is a relative path,
+the path is relative to the location of the YAML collection manifest [added in https://github.com/metanorma/metanorma/releases/tag/v2.1.5].
 
 `directives`::
 Directives on how the collection should be generated. Accepted values are listed
