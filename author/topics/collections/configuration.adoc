@@ -230,6 +230,14 @@ Gives the title of the current level of the manifest.
 `file` [`fileref`]::: The file path of a document in the collection relative to the manifest file.
 `file` and `entry` are mutually exclusive: `file` indicates the leaf nodes of the
 manifest entries.
+
+`format`::: By default, the `format` values specified at the collection level (or `html`, by default)
+are also used at any level of the manifest; so if the formats for the collection are specified as `pdf, html`,
+then all documents in the collection are also compiled as PDF and HTML. This can be overridden at any level of the manifest,
+using the same form of values as with the `format` attribute [added in https://github.com/metanorma/metanorma/releases/tag/v2.1.6].
+Any values specified at a given level in the manifest are inherited by all entries within that level; so specifying
+`pdf, html` at a subcollection will apply to all documents in the subcollection, unless those documents too have a `format`
+attribute.
 +
 --
 * The documents are expected to be Metanorma Semantic XML documents (`*.xml`),
