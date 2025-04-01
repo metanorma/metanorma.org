@@ -120,6 +120,16 @@ The path to the template directory can be specified via the CLI using the
 `-t, --template-dir` option,
 or in the site manifest under the `metanorma.template.path` key.
 
+If the path is an absolute path, it is used as is.
+If it is a relative path, and if a site manifest file is present,
+the path is relative to the directory containing the manifest file.
+If no manifest file is present,
+the path is relative to the current working directory.
+If a template directory is not specified,
+the default template directory is used,
+which is located in the
+link:{example-template-url}[Relaton CLI repository^]
+
 The template directory must contain:
 
 `_index.liquid`:: Main template for the site's index page
