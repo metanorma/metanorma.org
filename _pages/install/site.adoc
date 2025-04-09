@@ -24,23 +24,28 @@ This functionality is particularly useful for:
 
 [source,sh]
 ----
-metanorma site generate [OPTIONS...] [SOURCE_PATH]
+metanorma site generate [OPTIONS...] [SITE_MANIFEST_FILE]
 ----
 
-If no source path is provided, the current directory is used.
+If no SITE_MANIFEST_FILE is provided,
+the file `metanorma.yml` in the current directory is used.
 
 ==== CLI options
 
 `-c, --config CONFIG`:: File path for Metanorma site manifest YAML configuration
-(Default: `metanorma.yml` in source directory)
+(Default: `metanorma.yml` in the current directory)
+(Deprecated: use the SITE_MANIFEST_FILE argument instead)
 
-`-o, --output-dir DIR`:: Directory for generated site output
+`-o, --output-dir DIR`:: Directory for generated site output,
+relative to the current working directory
 (Default: `_site` in current directory)
 
 [[cli-stylesheet]]
-`-s, --stylesheet FILE`:: Specify custom stylesheet for HTML output
+`-s, --stylesheet FILE`:: Specify custom stylesheet for HTML output,
+relative to the current working directory
 
-`-t, --template-dir DIR`:: Specify custom Liquid templates for site design
+`-t, --template-dir DIR`:: Specify custom Liquid templates for site design,
+relative to the current working directory
 
 `--output-filename-template TEMPLATE_STRING`::
 Define output filenames using Liquid templating
@@ -121,10 +126,19 @@ The path to the template directory can be specified via the CLI using the
 or in the site manifest under the `metanorma.template.path` key.
 
 If the path is an absolute path, it is used as is.
-If it is a relative path, and if a site manifest file is present,
-the path is relative to the directory containing the manifest file.
-If no manifest file is present,
-the path is relative to the current working directory.
+
+If it is a relative path, its full path is calculated based on where it is
+defined.
+
+- If it is defined in the site manifest file,
+then the path is relative to the directory containing the manifest file.
+
+- If it is defined via the CLI,
+then the path is relative to the current working directory,
+_i.e._, the directory from which the command was run.
+
+- If no manifest file is present,
+the path is also relative to the current working directory.
 If a template directory is not specified,
 the default template directory is used,
 which is located in the
