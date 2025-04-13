@@ -118,6 +118,7 @@ Where:
 +
 Possible values are:
 
+`metanorma`::: Metanorma Semantic XML
 `html`::: HTML
 `doc`::: Word DOC
 `pdf`::: PDF
@@ -128,6 +129,7 @@ Possible values are:
 `html_alt`::: HTML with alternative styling, for ISO only
 `isosts`::: ISO STS XML
 `all`::: all possible formats [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.3].
+`straightquotes`::: Text with smart quotes ignored [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.5].
 
 [example]
 .Example of specifying passthrough for selected target formats
@@ -140,3 +142,6 @@ pass-format:rfc[<u format="num-lit">ᏚᎢᎵᎬᎢᎬᏒ</u>]
 
 NOTE: Text that is marked up as `pass-format` is not subject to substitutions such as smart quotes.
 It can be used to keep straight quotes in a document that otherwise uses smart quotes.
+
+The value `pass-format:straightquotes["..."] is used specifically to prevent dumb quotes from being substituted with
+smart quotes, but otherwise is treated as Metanorma XML.
