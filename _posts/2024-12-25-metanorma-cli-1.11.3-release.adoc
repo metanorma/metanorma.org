@@ -1,0 +1,128 @@
+---
+layout: post
+title: "Metanorma CLI 1.11.3: Enhanced Bibliography Encoding and Mathematical Expression Processing"
+date: 2024-12-25
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release features updated bibliography encoding, improved mathematical expression processing, refined indexing capabilities, and several format-specific enhancements for diverse document types.
+---
+
+== Metanorma CLI 1.11.3: Enhanced bibliography encoding and mathematical expression processing
+
+// image::/assets/blog/2024/metanorma-cli-1.11.3-nature.png[A whimsical forest with trees displaying mathematical formulas on their leaves while others showcase perfectly organized and connected index entries]
+
+We are pleased to announce the release of Metanorma CLI version 1.11.3, continuing our commitment to enhancing document quality and processing capabilities. This December release brings significant improvements to bibliography encoding, mathematical expression processing, index management, and format-specific rendering.
+
+=== General improvements
+
+==== Updated bibliography encoding
+
+The system has been updated to incorporate Relaton 1.20's changes in bibliographic representation:
+
+* Revised encoding of bibliography to align with the latest Relaton specifications
+* Updated processing of span:[] annotation of bibliography to handle the changed representation of extents
+* Removed series information from the rendering of citations of standards
+* Improved treatment of numeric references in normative references and bibliography
+* Preserved formatting of document identifiers in citation listings and autoformatted text
+
+These changes ensure that bibliographic information is represented consistently and accurately across different document types and output formats, improving both visual presentation and machine-readable metadata.
+
+==== Streamlined identifier handling in citations
+
+Several improvements to identifier handling in citations have been implemented:
+
+* Document identifiers are no longer inserted at the start of bibliographic citations when identifier rendering has been suppressed using `suppress_identifier`
+* This gives authors more control over how citations appear in reference lists
+* It enables more flexible formatting of special citation types
+* It supports organization-specific citation styles that may not follow standard conventions
+
+==== Mathematical expression processing
+
+AsciiMath handling in mathematical expressions has been enhanced:
+
+* The system now prioritizes using existing AsciiMath in mathematical expressions when available
+* Conversion of MathML to AsciiMath has been debugged for cases where AsciiMath is not already supplied
+* This ensures more accurate representation of mathematical notation
+* It improves consistency between different representations of the same mathematical content
+
+=== Index improvements
+
+==== Enhanced index processing
+
+Several refinements to index handling have been implemented:
+
+* Index terms are now removed from repeated footnotes so they appear only in the first instance
+* Warnings are now issued for non-existing anchors in index ranges
+* Processing of index ranges has been debugged for greater accuracy
+* These improvements ensure more precise and usable indexes in the final document
+
+The enhancements to index processing are particularly valuable for complex technical documents that rely heavily on indexed terms for navigation and reference.
+
+=== Collection handling
+
+==== URL selection for citations
+
+For collections containing documents in multiple languages, the system now intelligently selects the appropriate URL for citations:
+
+* The URL that matches the document language is selected when multiple URLs are available
+* This improves the user experience when navigating between documents in different languages
+* It ensures users are directed to resources in their preferred language
+* It maintains consistent language context throughout the document experience
+
+==== Citation content processing
+
+Bibliographic references that have been preemptively converted to URLs in collections postprocessing now have their citation content properly processed. This ensures:
+
+* Consistent presentation of citation information regardless of link conversion
+* Proper formatting of all citation elements
+* Accurate rendering of bibliographic data within hyperlinked references
+* Seamless integration of citations within the document narrative
+
+=== Format-specific improvements
+
+==== IETF document enhancements
+
+For Internet Engineering Task Force (IETF) documents, several targeted improvements have been made:
+
+* Rendering of list anchors in RFC XML has been corrected from li/@id to li/@anchor
+* Cross-references for single-child annexes and unnumbered clauses have been debugged
+* These changes ensure proper navigation and reference within RFC documents
+* They improve compliance with RFC formatting requirements
+
+==== BIPM document improvements
+
+For Bureau International des Poids et Mesures (BIPM) documents, the bibliographic rendering of articles has been updated to include the journal article title, providing more complete and informative references.
+
+==== Plateau document enhancements
+
+For Plateau documents, Arabic numbers are now used instead of Japanese numbers for regnal years, aligning with preferred formatting conventions for these specialized documents.
+
+=== Technical alert
+
+Users should note that Docker deployment encountered an issue with mathematical formula parsing in this release:
+
+```
+Error: Failed to parse the following formula with type `omml`.
+[plurimath] Please first manually validate the formula.
+[plurimath] If this is a bug, please report the formula at our issue tracker at:
+[plurimath] https://github.com/plurimath/plurimath/issues
+```
+
+The Metanorma team is actively working to resolve this issue in subsequent releases. In the meantime, Chocolatey, Snap, and Brew distributions are available for those who need to use this version.
+
+=== Conclusion
+
+Metanorma CLI 1.11.3 delivers significant improvements in bibliography encoding, mathematical expression processing, index management, and format-specific rendering. These enhancements make Metanorma an even more powerful and precise platform for standards development across diverse technical domains and organizational contexts.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.11.3
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6

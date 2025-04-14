@@ -1,0 +1,124 @@
+---
+layout: post
+title: "Metanorma CLI 1.10.9: Advanced Number Formatting and Enhanced Error Logging"
+date: 2024-09-30
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release introduces sophisticated number formatting options, improved error logging with filtering capabilities, new plugin integrations, refined collection handling, and IHO-specific enhancements for greater document precision and flexibility.
+---
+
+== Metanorma CLI 1.10.9: Advanced number formatting and enhanced error logging
+
+// image::/assets/blog/2024/metanorma-cli-1.10.9-nature.png[A whimsical forest with trees displaying numbers in various formats on their leaves, while other trees carefully filter colored error messages through their branches]
+
+We are pleased to announce the release of Metanorma CLI version 1.10.9, continuing our biweekly update schedule for the Metanorma standards authoring platform. This version brings significant enhancements to number formatting capabilities, implements more sophisticated error logging and filtering, adds new plugin integrations, and includes targeted improvements for specific document formats, particularly IHO standards.
+
+=== Number formatting advancements
+
+==== Enhanced mathematical number formatting options
+
+Building on our previous improvements to mathematical formatting, this release introduces significant enhancements with additional number formatting options:
+
+* The new `large_notation` option supports specialized handling of very large numbers
+* The `number_sign` option provides control over the display of positive/negative indicators
+* Space handling after inline MathML expressions has been improved for cleaner text flow
+* Font size adjustments for superscripts and subscripts in HTML improve readability
+
+These enhancements provide unprecedented control over numerical presentation in technical documents, ensuring that complex mathematical content appears precisely as intended across different output formats.
+
+==== Contextual space handling
+
+We've made important improvements to the handling of whitespace in complex text structures:
+
+* Spaces are now preserved when they appear before elements in blocks in multiline text
+* This refinement is particularly important when the final line of a block does not end in a carriage return
+* The system more intelligently distinguishes between significant and incidental whitespace
+* Layout integrity is maintained even in complex mixed-content scenarios
+
+These space-handling refinements ensure more predictable and precise formatting in complex documents that mix text, mathematical expressions, and other specialized content.
+
+=== Error logging enhancements
+
+==== Filtered error logging
+
+A major improvement in this release is the ability to filter the error log by severity or category. This feature:
+
+* Allows authors to focus on specific types of issues during document development
+* Makes troubleshooting more efficient by reducing noise from less relevant messages
+* Supports different review phases that may focus on different aspects of document quality
+* Enables more targeted quality assurance processes
+
+For authors and editors working with complex documents, this filtering capability significantly enhances productivity by making it easier to identify and address specific categories of issues without being overwhelmed by the full set of messages.
+
+=== New plugin integrations
+
+==== Extended plugin ecosystem
+
+This release adds support for two significant new plugins:
+
+* LutamlKlassTableBlockMacro, which provides enhanced table structures for technical classification systems
+* LutamlEaXmiPreprocessor, which improves integration with Enterprise Architect XMI files
+
+These additions extend Metanorma's capabilities for specialized technical content, particularly for standards that incorporate formal classification systems or UML models from Enterprise Architect. The plugins make it easier to maintain complex technical content alongside descriptive text, ensuring that both remain synchronized through the document lifecycle.
+
+=== Collections improvements
+
+==== Enhanced collections schema
+
+The document collections schema has been thoroughly updated to provide:
+
+* More precise definitions of collection relationships and structures
+* Better validation of collection manifests
+* Clearer semantics for collection elements
+* More consistent processing of collection components
+
+==== Section handling in collections
+
+Several improvements to section handling in collections have been implemented:
+
+* Title sanitization in sectionsplit mode ensures consistent and clean section headings
+* Document attachments are now reliably moved to the destination folder when parsing collections
+* This ensures that all supplementary materials remain properly linked and accessible
+
+These enhancements make document collections more robust and reliable, particularly for complex multi-document collections that use sectionsplit mode to present each section as a separate HTML page.
+
+=== Format-specific improvements
+
+==== IHO document enhancements
+
+For International Hydrographic Organization (IHO) standards, we've made several significant improvements:
+
+* Updated the copyright statement to reflect current IHO requirements
+* Implemented hierarchical numbering of assets within clauses for better organization
+* Aligned clause reference rendering with IHO S-102 specifications
+* Removed period after clause numbers for cleaner presentation
+
+These targeted enhancements ensure that IHO documents produced with Metanorma comply with the organization's specific formatting requirements and conventions, making Metanorma an even more effective platform for IHO standards development.
+
+==== Nested tables in assets
+
+We've enhanced the handling of nested tables within other assets, such as examples:
+
+* Nested tables can now be properly labeled
+* This maintains proper identification and referencing of tables regardless of their context
+* It improves navigability and cross-referencing in complex documents
+* It ensures that all tabular content is properly identified in compliance with standards requirements
+
+This improvement is particularly valuable for technical standards that contain complex nested structures with tables embedded within examples, notes, or other block elements.
+
+=== Conclusion
+
+Metanorma CLI 1.10.9 delivers significant advancements in number formatting, error logging, and collection handling, along with new plugin integrations and targeted improvements for specific document formats. These enhancements make Metanorma an even more powerful and precise platform for standards development across diverse technical domains and organizational contexts.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.10.9
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6

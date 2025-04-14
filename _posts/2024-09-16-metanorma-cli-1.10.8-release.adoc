@@ -1,0 +1,109 @@
+---
+layout: post
+title: "Metanorma CLI 1.10.8: Enhanced XML Documentation and Cross-Reference Validation"
+date: 2024-09-16
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release introduces comprehensive documentation of Semantic and Presentation XML grammar, establishes better defaults for mathematical formulas, improves bibliographic metadata handling, and enhances document validation capabilities.
+---
+
+== Metanorma CLI 1.10.8: Enhanced XML documentation and cross-reference validation
+
+// image::/assets/blog/2024/metanorma-cli-1.10.8-nature.png[A whimsical forest with trees showing XML structure diagrams on their trunks, while other trees are connected by visible cross-reference links between them]
+
+We are pleased to announce the release of Metanorma CLI version 1.10.8, continuing our biweekly update schedule for the Metanorma standards authoring platform. This release focuses on improved documentation of the underlying XML grammar, enhanced formula handling, expanded internationalization support, and better document validation capabilities.
+
+=== XML grammar documentation
+
+==== Comprehensive documentation of Semantic and Presentation XML
+
+A significant advancement in this release is the comprehensive documentation of Metanorma's Semantic and Presentation XML grammar. This enhancement:
+
+* Provides detailed references for the structure and syntax of Metanorma's XML formats
+* Enables developers to better understand and work with Metanorma's internal representations
+* Facilitates the creation of custom processing tools and extensions
+* Supports more effective troubleshooting of complex document issues
+
+This documentation is particularly valuable for organizations developing specialized processing workflows or integrating Metanorma into larger document management systems. By making the XML grammar more accessible and well-documented, this improvement supports more sophisticated customization and extension of the Metanorma platform.
+
+=== Formula handling improvements
+
+==== Refined mathematical formula defaults
+
+We've updated the default behavior for mathematical formula processing:
+
+* Numbers in formulas are no longer automatically formatted by default
+* This change provides more control over the precise appearance of mathematical expressions
+* It preserves the author's intended presentation of numerical values
+* It avoids potential distortion of numerical precision in specialized contexts
+
+For standards with precise mathematical requirements, this change ensures that numerical values in formulas maintain their exact intended representation, while still allowing optional formatting when desired.
+
+=== Bibliographic enhancements
+
+==== Improved metadata handling
+
+Several improvements to bibliographic metadata handling have been implemented:
+
+* Debugged rendering of amendments and their bibliographic information
+* Enhanced processing of person and organization identifiers within bibliographic metadata
+* More accurate representation of author and publisher information
+* Better handling of complex organizational structures
+
+These refinements ensure that bibliographic metadata is presented accurately and consistently, particularly for documents with complex authorship or publication histories.
+
+=== Internationalization advances
+
+==== Localized bibliographic metadata
+
+This release extends internationalization capabilities to include locale support in bibliographic metadata. This enhancement:
+
+* Allows bibliographic information to be presented in the reader's preferred language
+* Supports proper localization of dates, organization names, and other metadata elements
+* Ensures consistent language use throughout documents, including in citations and references
+* Improves accessibility for international audiences
+
+By bringing bibliographic metadata into the internationalization framework, this feature makes Metanorma documents more accessible and useful for multilingual audiences and international standards organizations.
+
+=== Document validation improvements
+
+==== Cross-reference validation for ISO documents
+
+For ISO standards, we've implemented a validation process that ensures figures, tables, formulae, and annexes are cross-referenced at least once in documents. This enhancement:
+
+* Identifies unreferenced document elements that might be overlooked by readers
+* Helps maintain ISO's strict quality requirements for internal document consistency
+* Prompts authors to either reference or remove unused elements
+* Improves the overall navigability and cohesion of the document
+
+This validation feature helps authors ensure that their documents comply with ISO's requirements for internal cross-referencing, reducing the likelihood of review issues or publication delays due to unreferenced content.
+
+=== Format-specific improvements
+
+==== OGC document enhancements
+
+For Open Geospatial Consortium documents, we've made figures and sourcecode collapsible in HTML output. This feature:
+
+* Allows readers to expand and collapse complex figures and code examples as needed
+* Reduces visual clutter in documents with extensive technical illustrations or code samples
+* Improves the readability of documents with numerous or large technical elements
+* Provides a more interactive and user-friendly reading experience
+
+By making these elements collapsible, this enhancement significantly improves the usability of OGC standards that contain detailed technical content, allowing readers to focus on the narrative flow while still having immediate access to supporting technical details.
+
+=== Conclusion
+
+Metanorma CLI 1.10.8 delivers important improvements in XML documentation, formula handling, and document validation. These enhancements, along with the expanded internationalization capabilities and format-specific refinements, make Metanorma an even more powerful and sophisticated platform for standards development across diverse technical domains and organizational contexts.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.10.8
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6

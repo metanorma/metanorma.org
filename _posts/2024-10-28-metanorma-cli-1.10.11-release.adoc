@@ -1,0 +1,131 @@
+---
+layout: post
+title: "Metanorma CLI 1.10.11: Enhanced Flexibility in Document Attributes and Comprehensive East Asian Language Support"
+date: 2024-10-28
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release introduces flexible document attribute prefixing, enhanced CJK punctuation handling, powerful Japanese numbering options, improved bibliography rendering, and numerous collection processing refinements.
+---
+
+== Metanorma CLI 1.10.11: Enhanced flexibility in document attributes and comprehensive East Asian language support
+
+// image::/assets/blog/2024/metanorma-cli-1.10.11-nature.png[A whimsical forest with trees showing traditional Japanese numbering sequences on their leaves, while other trees display CJK punctuation characters that transform contextually]
+
+We are pleased to announce the release of Metanorma CLI version 1.10.11, continuing our biweekly update schedule for the Metanorma standards authoring platform. This version introduces significant flexibility in document attributes, comprehensive enhancements for East Asian language support, improved bibliography rendering, and refined document collections processing.
+
+=== Document attribute flexibility
+
+==== Optional attribute prefixing
+
+A key enhancement in this release is the introduction of more flexible attribute naming:
+
+* The `mn-flavor` attribute is now supported as an alternative to `mn-document-class`
+* The `mn-` prefix on document attributes is now entirely optional
+* This simplifies the authoring experience by reducing typing overhead
+* It provides backward compatibility with existing documents while enabling more concise new documents
+
+This flexibility makes Metanorma documents easier to write and maintain, particularly for new users who can now use more intuitive attribute names without the mandatory prefix.
+
+==== Enhanced anchor handling in boilerplate
+
+We've improved how anchors are handled in document boilerplate:
+
+* Inferred anchors are no longer inserted in document boilerplate
+* This prevents potential anchor collisions with the main document content
+* It ensures more predictable cross-reference behavior
+* It improves the reliability of navigation within complex documents
+
+Additionally, users can now append custom content to built-in document boilerplate for any Metanorma flavor. This capability:
+
+* Enables consistent extension of standard boilerplate text
+* Simplifies customization for organizational requirements
+* Maintains compatibility with Metanorma's document processing
+* Provides more flexibility in document structure while preserving standard elements
+
+==== Cover image processing enhancements
+
+Cover image processing has been moved from specific flavors to be available throughout Metanorma, which:
+
+* Ensures consistent cover image handling across all document types
+* Simplifies the implementation of new document flavors
+* Provides a more unified experience for authors
+* Enhances cross-flavor consistency in document presentation
+
+=== East Asian language support
+
+==== Context-sensitive CJK punctuation localization
+
+A major enhancement for East Asian language support is the extension of punctuation localization:
+
+* Punctuation localization is now available for Japanese and Korean in addition to Chinese
+* The system makes CJK punctuation context-sensitive, not converting to fullwidth if adjacent to Roman text
+* This provides more natural mixed-script text flow
+* It ensures typographically correct documents in multilingual contexts
+
+These improvements result in more professionally typeset documents that respect the typographic conventions of each language, even in complex mixed-language contexts.
+
+==== Japanese numbering options
+
+Several powerful new Japanese numbering capabilities have been introduced:
+
+* Japanese numbering can now be used as an option for autonumbering
+* The separator between levels in autonumbering (normally a period) is now configurable
+* Japanese numbering has been extended to dates and editions
+* A number-only field for document edition is now available in document metadata alongside the textual label
+
+These enhancements make Metanorma particularly well-suited for Japanese standards development, allowing documents to follow traditional Japanese numbering conventions while maintaining full functionality and integration with the Metanorma ecosystem.
+
+=== Bibliography improvements
+
+==== Enhanced bibliography rendering
+
+We've significantly improved bibliography processing performance:
+
+* Liquid templates used in bibliographic rendering are now cached
+* This results in substantially faster processing of documents with extensive bibliographies
+* It reduces overall compilation time for reference-heavy documents
+* It enables more efficient handling of large collections of related documents
+
+Additionally, warnings for missing Relaton prefixes on references to attachments and repository links have been suppressed, resulting in cleaner error logs and reducing noise during document compilation.
+
+=== Collections processing enhancements
+
+==== Improved sectionsplit handling
+
+For document collections using sectionsplit mode (where each section is rendered as a separate HTML page), we've implemented several improvements:
+
+* The system now provides an index.html for collections consisting of a single sectionsplit document
+* Format specifications from collection manifests are propagated to collection rendering if the latter doesn't specify a format
+* This ensures more consistent and predictable output
+* It simplifies the configuration of complex document collections
+
+=== Format-specific improvements
+
+==== JIS document enhancements
+
+For Japanese Industrial Standards (JIS), we've implemented several refinements:
+
+* Looser criteria for identifying a standard in the bibliography as belonging to JSA
+* This ensures more appropriate rendering of Japanese standards references
+* Options for Japanese numbering in autonumbering for consistent document structure
+* Extension of Japanese numbering to dates and editions
+* A number-only field for document edition in metadata alongside the textual label
+
+These enhancements make Metanorma an even more effective platform for JIS standards development, with comprehensive support for Japanese typographic and numbering conventions.
+
+=== Conclusion
+
+Metanorma CLI 1.10.11 delivers significant improvements in document attribute flexibility, East Asian language support, bibliography rendering, and collections processing. These enhancements make Metanorma more accessible to new users, more powerful for multilingual content, and more efficient for complex document collections.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.10.11
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6

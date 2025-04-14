@@ -1,0 +1,180 @@
+---
+layout: post
+title: "Metanorma CLI 1.10.3: Internationalization Advancements and Image Processing Improvements"
+date: 2024-07-22
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release brings significant enhancements to internationalization capabilities, particularly for Japanese and East Asian languages, improved mathematical notation, and more intelligent handling of image sizes and bibliographic data.
+---
+
+== Metanorma CLI 1.10.3: Internationalization advancements and image processing improvements
+
+// image::/assets/blog/2024/metanorma-cli-1.10.3-nature.png[A whimsical forest where trees display multilingual signage in different scripts, with birds carrying mathematical formulas between them]
+
+We are pleased to announce the release of Metanorma CLI version 1.10.3, continuing our biweekly release schedule for the Metanorma standards authoring platform. This version brings substantial improvements to our internationalization capabilities, refined mathematical notation handling, and significant enhancements to image processing and bibliographic rendering.
+
+=== General improvements
+
+==== Enhanced mathematical notation
+
+Building on previous releases, this version further refines the handling of mathematical expressions with:
+
+* Improved number formatting with precise control over significant digits
+* More accurate rendering of exponents in scientific notation
+* Consistent presentation of complex mathematical formulas across different output formats
+* Better alignment with scientific and engineering notation conventions
+
+These enhancements are particularly valuable for technical standards that rely heavily on mathematical expressions, ensuring that critical numerical values are presented clearly and consistently throughout documents.
+
+==== Optimized image handling
+
+This release introduces an important optimization for embedded images by setting a maximum permitted size for images encoded as Data URIs. This enhancement:
+
+* Prevents processing issues with extremely large embedded images
+* Improves document loading performance in browsers
+* Reduces memory usage during document compilation
+* Maintains high-quality visuals while managing file size effectively
+
+For standards with numerous diagrams, charts, and technical illustrations, this change results in more efficient document processing and better end-user experience when viewing the published standards.
+
+==== Improved cross-reference detection
+
+We've enhanced the recognition of cross-references in document abstracts, ensuring that:
+
+* References within abstract sections link correctly to their targets
+* Navigation from abstracts to detailed sections works seamlessly
+* The integrity of the document's navigation structure is maintained throughout
+* Abstract previews accurately reflect the connectivity of the full document
+
+This improvement is particularly valuable for readers who use abstracts to assess document relevance before diving into detailed content, providing them with functional navigation paths from the very beginning of the document.
+
+==== More robust error logging
+
+The system now captures Relaton error messages for fetching bibliographic data directly into the document error log. This enhancement:
+
+* Provides more comprehensive troubleshooting information
+* Enables authors to quickly identify and fix issues with bibliographic references
+* Streamlines the debugging process for complex documents with numerous citations
+* Improves the overall quality of bibliographic data in final documents
+
+By bringing bibliographic error reporting into the main document log, this feature makes it much easier for authors to ensure accurate and complete citation information.
+
+==== Advanced passthrough processing
+
+We've implemented improved processing of passthrough lines in document preprocessing, which:
+
+* Ensures that special formatting in code blocks and literal text is preserved
+* Prevents unintended text substitutions in technical content
+* Maintains the integrity of syntax examples and command samples
+* Supports more complex use cases for verbatim technical content
+
+This enhancement is particularly valuable for IT and software standards that contain extensive code examples, protocol specifications, or configuration snippets.
+
+=== Internationalization enhancements
+
+A major focus of this release is expanded support for multilingual content, with particular emphasis on East Asian languages.
+
+==== Japanese language support
+
+We've made significant improvements to Japanese language support:
+
+* Eliminated the default use of italics or quotation marks to delimit titles in Japanese text
+* Added proper Japanese localization for "available from" text in ISO and inheriting flavors
+* Improved handling of line breaks within Japanese text to maintain proper flow and readability
+* Enhanced smart quote handling when quoted Latin text appears adjacent to Japanese characters
+
+These refinements ensure that Japanese-language standards follow appropriate typographic conventions rather than inappropriately applying Western text formatting rules.
+
+==== Comprehensive East Asian text processing
+
+Beyond Japanese-specific enhancements, we've implemented improved text handling for Chinese, Japanese, and Korean (CJK) content:
+
+* Proper handling of line breaks within CJK paragraph text to prevent inappropriate space insertion
+* Smart quote management when Latin text appears adjacent to CJK characters without intervening spaces
+* More natural text flow in mixed-script documents that combine East Asian and Latin characters
+
+These improvements ensure that East Asian language content is processed with the same level of typographic refinement as Western language text, resulting in more professional and readable documents.
+
+==== Experimental bilingual text support
+
+This release introduces experimental support for rendering bilingual text as multiple columns. This feature:
+
+* Provides side-by-side presentation of content in different languages
+* Facilitates direct comparison between original and translated text
+* Supports more efficient use of page space in multilingual documents
+* Enhances the readability of documents intended for multilingual audiences
+
+While this feature is still experimental, it represents an important step toward comprehensive support for multilingual standards development.
+
+==== Document stage internationalization
+
+We've implemented internationalization of document stage terminology, enabling:
+
+* Localized presentation of document stage information (e.g., "Draft," "Final," "Under Review")
+* Consistent terminology in user interfaces and document metadata
+* Proper rendering of document status in the reader's preferred language
+* More accessible document lifecycle information for international audiences
+
+This enhancement supports our commitment to making standards information equally accessible regardless of the reader's preferred language.
+
+=== Bibliography improvements
+
+==== Enhanced bibliographic rendering
+
+Several improvements to bibliographic rendering have been implemented:
+
+* Added URI display to the rendering of "misc" document type references
+* Suppressed "NO ID" placeholders for references missing document identifiers
+* Removed ordinal identifiers in Normative References sections
+* Fixed presentation of bibliographic entries with nested items
+
+These enhancements create cleaner, more professional-looking reference sections with less visual clutter and more consistent formatting.
+
+=== Format-specific improvements
+
+==== IEEE standards
+
+For IEEE standards, we've updated the boilerplate text for 2024, ensuring that documents comply with the latest IEEE stylistic requirements and legal language.
+
+==== OGC documents
+
+Open Geospatial Consortium documents benefit from several targeted improvements:
+
+* Use of open-source fonts to ensure consistent rendering across platforms
+* Improved placement and numbering of References within Overview clauses
+* Enhanced display of table keys for better readability of complex data tables
+
+==== IHO documents
+
+International Hydrographic Organization standards now feature improved rendering of subfigure and nested requirement cross-references, ensuring clear and accurate navigation within complex technical documents.
+
+==== JIS standards
+
+For Japanese Industrial Standards, we've made several targeted enhancements:
+
+* Improved rendering of subfigure and nested requirement cross-references in Japanese
+* Table of Contents placement after the abstract following JIS conventions
+* Added support for paragraph and list sources
+* Consistent indentation of all paragraphs in Japanese text
+* Unnumbered document history annexes conforming to JIS practices
+
+==== Plateau documents
+
+Support for Plateau documents continues to evolve with additions of sources on paragraphs and lists, enhancing the traceability and citation capabilities of these specialized documents.
+
+=== Conclusion
+
+Metanorma CLI 1.10.3 represents a significant step forward in our internationalization capabilities, mathematical notation handling, and image processing optimizations. These enhancements make Metanorma an even more powerful and versatile platform for standards development across different languages, technical domains, and organizational contexts.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.10.3
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6

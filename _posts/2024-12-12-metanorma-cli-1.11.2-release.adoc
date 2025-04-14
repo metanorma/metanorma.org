@@ -1,0 +1,142 @@
+---
+layout: post
+title: "Metanorma CLI 1.11.2: Comprehensive Presentation XML Refinements and Advanced Language Support"
+date: 2024-12-12
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release brings major enhancements to Presentation XML with semantic annotations for autonumbering, captions, and cross-references, along with improved handling of multilingual content and refined support for IETF, IHO, and BIPM documents.
+---
+
+== Metanorma CLI 1.11.2: Comprehensive Presentation XML refinements and advanced language support
+
+// image::/assets/blog/2024/metanorma-cli-1.11.2-nature.png[A whimsical forest with trees displaying elegant semantic labels on their branches and leaves, with some trees showcasing perfect cross-referencing between them]
+
+We are pleased to announce the release of Metanorma CLI version 1.11.2, continuing the significant architectural enhancements to Presentation XML that began with version 1.11.0. This release introduces comprehensive semantic annotation of document elements, further refinements to internationalization capabilities, and targeted improvements for specific document formats.
+
+=== Presentation XML refactoring
+
+==== Comprehensive semantic annotation
+
+The major focus of this release is the implementation of semantic annotation throughout Presentation XML:
+
+* All instances of autonumbering, including in captions and cross-references, are now semantically annotated
+* All components of captions and cross-references have been semantically tagged
+* Cross-reference labels are now inserted for all blocks and clauses, including container instances
+* This enables consistent styling and behavior across different output formats
+* It supports more sophisticated rendering and processing of document elements
+
+These enhancements represent a significant step in our ongoing architectural improvements to Presentation XML, ensuring more consistent, accurate, and semantically rich document rendering across all output formats.
+
+==== Floating title preservation
+
+Semantic XML for floating-title elements is now preserved alongside their Presentation XML rendering as paragraphs. This enhancement:
+
+* Maintains the structural significance of these elements in documents
+* Improves navigation and cross-referencing capabilities
+* Supports more sophisticated document processing and analysis
+* Enables better conversion between different output formats
+
+==== Technical dependency management
+
+To ensure stable processing, this release locks Nokogiri to version 1.16.8 to address a memory corruption bug in Nokogiri 1.17.0. Additionally, the XSLT preprocessing run on Presentation XML has been completely removed, streamlining the rendering pipeline and improving performance.
+
+=== Cross-reference enhancements
+
+==== Improved anchor and label handling
+
+Several important improvements to anchor and label handling have been implemented:
+
+* Preemptive insertion of anchors for all ordered list items, ensuring they always have labels
+* Nonbreaking spaces in all document identifiers in cross-references for consistent presentation
+* Capitalization of cross-reference contents now respects XML markup
+* Enumeration commas are semantically marked up for precise typographic control
+
+==== Whitespace control
+
+Several refinements to whitespace handling ensure more precise document formatting:
+
+* Redundant blank spaces in termnote label templates have been removed
+* Space handling around localized punctuation has been improved
+* XML indentation during internal manipulation has been eliminated to prevent unintended whitespace
+
+=== Internationalization enhancements
+
+==== Punctuation localization improvements
+
+Several refinements to punctuation localization for East Asian languages have been implemented:
+
+* Spaces around commas inserted as part of punctuation localization are now properly stripped
+* Detection of CJK characters when performing punctuation localization has been fixed
+* Kanji is now used instead of katakana for "and" in Japanese
+
+==== French language support
+
+French internationalization has been improved with proper handling of note delimiters (Note : ...), ensuring compliance with French typographic conventions.
+
+=== Format-specific improvements
+
+==== IETF document enhancements
+
+For Internet Engineering Task Force (IETF) documents, several targeted improvements have been made:
+
+* Fixed rendering of anchors on dt, dd elements in RFC XML
+* Debugged insertion of <u> for unicode characters to properly handle XML escapes
+* Corrected single-clause annex cross-reference generation
+* Updated journal article rendering in bibliographies
+
+==== IHO document improvements
+
+For International Hydrographic Organization (IHO) standards, we've:
+
+* Removed "I" in Annex numbering sequence
+* Removed "Annex" but preserved "Appendix" before cross-references to assets within appendixes
+* Fixed single-clause annex cross-reference generation
+
+==== BIPM document enhancements
+
+For Bureau International des Poids et Mesures (BIPM) documents, we've improved:
+
+* Journal article rendering in the bibliography
+* Home standard rendering in the bibliography to include ISO, IEC, and BIPM standards
+* French internationalization of the note delimiter
+
+=== Collections cross-reference enhancements
+
+==== Improved safeguarding of document references
+
+Cross-reference lookup between documents in collections has been enhanced:
+
+* The system now safeguards lookups of documents by eref/@citeas against variations between non-breaking spaces and regular spaces in document identifiers
+* This ensures more reliable cross-referencing in complex document collections
+* It reduces errors in navigation between related documents
+* It improves the overall robustness of document collections
+
+=== Validation improvements
+
+==== Flavour stack verification
+
+The system now validates that no Metanorma gems are missing from the prescribed flavour stack, ensuring:
+
+* Consistent behavior across different environments
+* Early detection of incomplete installations
+* Clear error messages when required components are missing
+* More reliable document processing
+
+Additionally, metanorma-un has been removed from the flavour stack as it is being deprecated.
+
+=== Conclusion
+
+Metanorma CLI 1.11.2 delivers comprehensive semantic annotation throughout Presentation XML, enhanced cross-reference handling, improved internationalization support, and numerous format-specific refinements. These enhancements continue the architectural improvements introduced in version 1.11.0, further advancing our goal of providing consistent, precise, and semantically rich document rendering across all output formats.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.11.2
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6

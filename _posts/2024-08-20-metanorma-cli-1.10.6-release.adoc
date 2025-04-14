@@ -1,0 +1,178 @@
+---
+layout: post
+title: "Metanorma CLI 1.10.6: Enhanced Document Structure and Improved Requirements Management"
+date: 2024-08-20
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release introduces flexible document structures with unnumbered annexes and collapsible snippets, enhanced requirements management with customizable classification, and significant improvements to configuration options and bibliographic formatting.
+---
+
+== Metanorma CLI 1.10.6: Enhanced document structure and improved requirements management
+
+// image::/assets/blog/2024/metanorma-cli-1.10.6-nature.png[A whimsical forest where trees fold and unfold their branches like collapsible sections, while some trees lack numbered markers but still stand tall among their peers]
+
+We are pleased to announce the release of Metanorma CLI version 1.10.6, continuing our regular update schedule for the Metanorma standards authoring platform. This version introduces significant enhancements to document structure flexibility, requirements management, and configuration options, along with numerous format-specific improvements to support diverse standards development needs.
+
+=== General improvements
+
+==== More flexible document structures
+
+This release brings important enhancements to document structure flexibility:
+
+* Support for unnumbered annexes, allowing informative material to be included without disrupting the primary document numbering scheme
+* Collapsible snippets in HTML output, enabling more compact presentation of lengthy code examples or technical details
+* Improved error reporting for duplicate terms, helping authors identify and resolve terminology inconsistencies early in the drafting process
+
+These features provide standards authors with more control over how content is organized and presented, supporting both traditional linear document formats and more interactive, web-native approaches to standards publication.
+
+==== Enhanced hyperlink handling
+
+We've implemented several important fixes to hyperlink processing:
+
+* Debugged the processing of hyperlinks whose text is itself a hyperlink, ensuring proper nesting and rendering
+* Fixed issues with hyperlink escaping when links appear within substitution insertions or quotations
+* Improved smart quotes processing surrounding XML links
+* Corrected the handling of XML escapes like &amp; in passthrough blocks
+
+These refinements ensure that complex hyperlinks render correctly in all output formats, maintaining the integrity of both the link structure and the surrounding text formatting.
+
+==== New plugin support
+
+This release extends Metanorma's capabilities by registering plugins for:
+
+* LutamlGmlDictionary, supporting GML-based geographic data dictionaries
+* LutamlEaDiagram, providing integration with Enterprise Architect modeling tools
+
+These additions enhance Metanorma's ability to incorporate specialized technical content and diagrams from external modeling tools, making it more versatile for complex technical standards development.
+
+==== Default support for Plateau format
+
+Metanorma now loads the Plateau flavor by default, streamlining the development of Plateau documents without requiring additional configuration steps. This change reflects the growing importance of the Plateau format and makes it more accessible to users working in related technical domains.
+
+=== Requirements management enhancements
+
+==== Customizable requirements classification
+
+A major enhancement in this release is the ability to allocate requirements to different classes, allowing them to be:
+
+* Labeled with custom terminology appropriate to their function (beyond the standard "Requirement," "Recommendation," and "Permission" labels)
+* Numbered in separate sequences according to their classification
+* Formatted distinctively to enhance visual differentiation
+* Managed and tracked separately for compliance verification purposes
+
+This feature is particularly valuable for complex technical standards that need to distinguish between different types of normative statements, such as security requirements, performance requirements, or conformance criteria.
+
+==== Japanese requirements internationalization
+
+Building on our ongoing internationalization efforts, we've added full Japanese language support for requirements, ensuring that:
+
+* Requirement labels and terminology are correctly translated and formatted
+* Japanese language conventions are properly applied to requirement structures
+* Requirement cross-references function correctly in Japanese documents
+
+This enhancement supports more effective standards development for Japanese-speaking communities and international organizations that publish standards in multiple languages including Japanese.
+
+=== Configuration and attachment improvements
+
+==== Enhanced configuration options
+
+Several improvements to configuration handling have been implemented:
+
+* YAML filepath resolution in configuration files is now relative to the configuration file location, making project structures more portable
+* The Fontist fonts manifest can now be configured directly in the configuration file, providing more control over font management
+* PDF stylesheet configuration can be specified in the configuration file, allowing consistent styling across documents
+
+These enhancements make it easier to maintain consistent configuration across complex document projects and to share configurations between team members.
+
+==== Attachment processing optimization
+
+To improve performance and reliability when working with document attachments, we've introduced line breaks into the XML encoding of attachments. This seemingly minor change has significant benefits:
+
+* Reduces memory usage during processing of large attachments
+* Improves readability of the underlying XML for debugging purposes
+* Enhances compatibility with XML processing tools that have line length limitations
+
+Additionally, the system now supports arbitrary folder names for attachments in cross-referencing, providing more flexibility in how supplementary materials are organized and referenced.
+
+=== Bibliography improvements
+
+==== Duplicate detection and removal
+
+The system now automatically removes duplicate bibliographic items that may be inserted by bibliographic modules independently of each other. This enhancement:
+
+* Prevents redundant entries in reference lists
+* Maintains consistent numbering of references
+* Improves the professional appearance of bibliography sections
+* Reduces confusion for readers navigating reference materials
+
+==== Optimized bibliography sorting
+
+Bibliography sorting has been optimized for better performance, which is particularly noticeable in documents with extensive reference lists. This improvement speeds up compilation times and ensures consistent ordering of references across different output formats.
+
+=== Format-specific improvements
+
+==== Generic, CSA, CC, IHO, Ribose, and BIPM documents
+
+For these formats, we've made several configuration enhancements:
+
+* Customizable YAML filepaths can now be resolved relative to the configuration file location
+* Fontist fonts manifest can be configured in the configuration file
+* PDF stylesheet can now be specified directly in the configuration file
+
+These changes provide more consistent and portable configuration options across different Metanorma flavors.
+
+==== ISO documents
+
+For ISO standards, we've added:
+
+* Internationalization of date formatting used in legacy ISO cover pages
+* Debugging of Tables of Contents generation in Word for tables and figures
+* Optimized sorting of bibliography entries
+
+==== IEEE documents
+
+For IEEE standards, we've implemented:
+
+* Moving OGC rendering colors to Presentation XML for shared formatting between formats
+* Bibliography placed before annexes in Engineering Reports
+* Support for style attributes in clauses for Engineering Reports to indicate specific clause types
+
+==== OGC documents
+
+Open Geospatial Consortium documents benefit from:
+
+* Moving rendering colors to Presentation XML for consistent formatting across output formats
+* Placing bibliography before annexes in Engineering Reports
+* Support for style attributes in clauses to indicate specific types
+
+==== JIS standards
+
+For Japanese Industrial Standards, we've:
+
+* Debugged failures in populating cover pages of Word output
+* Implemented JIS-specific sorting order for references
+* Aligned list and clause numbering with ISO conventions
+
+==== Plateau documents
+
+Plateau documents now have:
+
+* Reference sorting according to the specific order required by the format
+* List and clause numbering aligned with ISO conventions for consistency
+
+=== Conclusion
+
+Metanorma CLI 1.10.6 delivers significant enhancements in document structure flexibility, requirements management, and configuration options. These improvements, along with the numerous format-specific refinements, make Metanorma an even more powerful and versatile platform for standards development across diverse technical domains and organizational contexts.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.10.6
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6

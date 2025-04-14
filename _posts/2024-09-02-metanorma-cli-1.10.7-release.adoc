@@ -1,0 +1,150 @@
+---
+layout: post
+title: "Metanorma CLI 1.10.7: Refined Formula Formatting and Internationalization Improvements"
+date: 2024-09-02
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release enhances mathematical formula presentation, expands internationalization capabilities for Japanese content, and refines document attachment handling and bibliographic formatting across multiple document types.
+---
+
+== Metanorma CLI 1.10.7: Refined formula formatting and internationalization improvements
+
+// image::/assets/blog/2024/metanorma-cli-1.10.7-nature.png[A whimsical forest with trees displaying elegant mathematical formulas on their leaves, while other trees showcase text in both Latin and Japanese scripts]
+
+We are pleased to announce the release of Metanorma CLI version 1.10.7, continuing our biweekly release schedule for the Metanorma standards authoring platform. This version further refines mathematical formula presentation, expands internationalization capabilities particularly for Japanese content, and makes significant improvements to document attachments and bibliographic formatting.
+
+=== Mathematical enhancements
+
+==== Improved formula number formatting
+
+A key improvement in this release is the enhanced formatting of numbers within mathematical formulas. This enhancement:
+
+* Applies consistent numerical formatting rules to numbers appearing within formulas
+* Ensures proper alignment with scientific and engineering notation conventions
+* Maintains visual consistency between numbers in formulas and those in regular text
+* Improves the readability and professional appearance of mathematical content
+
+For technical standards that rely heavily on mathematical expressions—particularly in fields like engineering, physics, and information technology—this improvement ensures that numerical data is presented clearly and consistently, reducing the potential for misinterpretation of critical values.
+
+=== Internationalization advances
+
+==== Extended Japanese language support
+
+We've continued to expand our Japanese internationalization capabilities:
+
+* Added more Japanese localization terms for document elements and metadata
+* Implemented more natural and idiomatic translations for technical terminology
+* Improved the handling of Japanese typographical conventions
+* Enhanced support for mixed Japanese and Latin text in complex documents
+
+These enhancements make Metanorma an even more effective platform for developing Japanese-language standards, providing a more natural and professional reading experience for Japanese users.
+
+==== Improved boilerplate text handling
+
+A significant architectural improvement is the change in how boilerplate text for terms and normative references is handled in internationalization configuration files:
+
+* Boilerplate text is now marked up as Asciidoc rather than XML
+* This approach provides more consistent formatting across different output formats
+* It enables more sophisticated formatting options for boilerplate content
+* It simplifies the creation and maintenance of localized boilerplate text
+
+This change makes it easier to create and maintain internationalized versions of standard document components while ensuring consistent presentation across different output formats.
+
+=== Document attachment improvements
+
+==== Enhanced attachment URL handling
+
+We've refined how attachments are linked within documents:
+
+* The system now prioritizes attachment URLs over citation URLs in attachment linking
+* This ensures that references to attached files consistently point to the correct local resources
+* It prevents confusion when both attachment and citation links exist for the same referenced item
+* It improves the reliability of document navigation when working with attached resources
+
+==== Support for unembedded attachments
+
+This release adds support for processing unembedded attachments, which:
+
+* Provides more flexibility in how supplementary files are managed
+* Reduces the overall size of XML documents by keeping large attachments as separate files
+* Improves processing performance for documents with numerous or large attachments
+* Allows more efficient updating of attachments without reprocessing the entire document
+
+These enhancements make document attachments more versatile and efficient, particularly for complex technical standards that include substantial supplementary materials.
+
+=== Configuration improvements
+
+==== Output format override capability
+
+A valuable new configuration option allows overriding output formats directly in the document configuration:
+
+* Authors can now specify which output formats should be generated regardless of command-line settings
+* This enables project-specific default output formats to be embedded in configuration files
+* It simplifies batch processing of multiple documents with different output requirements
+* It provides more consistent output generation across different development environments
+
+This feature is particularly valuable for standards organizations that maintain document collections with varying output format requirements.
+
+==== Enhanced customize file path resolution
+
+We've improved the system's ability to resolve the path of the `:customize:` configuration file:
+
+* Paths are now correctly resolved relative to the document location
+* This ensures more consistent behavior when documents are processed in different environments
+* It simplifies project structures by allowing relative path references
+* It improves portability of document projects between different systems
+
+These configuration enhancements make it easier to maintain consistent document settings across complex projects and distributed development teams.
+
+=== Bibliography improvements
+
+==== Refined reference formatting
+
+Several improvements to bibliographic rendering have been implemented:
+
+* Final periods are now stripped from references, providing cleaner and more consistent formatting
+* Italics and small caps formatting is removed from references templates, allowing more consistent styling to be applied
+* JIS documents now use JIS-specific reference rendering instead of ISO conventions
+* Website references are now properly internationalized
+
+These refinements create more professionally formatted bibliography sections that adhere to the appropriate stylistic conventions for each document type.
+
+=== Format-specific improvements
+
+==== Generic, CSA, CC, IHO, Ribose, and BIPM documents
+
+For these formats, several targeted enhancements have been implemented:
+
+* Output formats can now be overridden in configuration files
+* The path of the `:customize:` configuration file is now correctly resolved
+* Website references in bibliographies are now properly internationalized
+* Final periods are stripped from bibliographic references
+* Italics and small caps formatting is removed from reference templates
+
+These improvements provide more consistent and configurable document processing across various Metanorma flavors.
+
+==== JIS standards
+
+For Japanese Industrial Standards, we've improved bibliographic handling:
+
+* JIS-specific reference rendering conventions are now used instead of ISO conventions
+* This ensures that bibliographic entries comply with JIS stylistic requirements
+* It provides more consistent formatting across different parts of JIS documents
+* It enhances compliance with official JIS publication standards
+
+=== Conclusion
+
+Metanorma CLI 1.10.7 delivers important refinements to mathematical formula presentation, expanded internationalization capabilities, and improved handling of document attachments and bibliographic references. These enhancements make Metanorma an even more powerful and versatile platform for standards development across different languages, technical domains, and organizational contexts.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.10.7
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6

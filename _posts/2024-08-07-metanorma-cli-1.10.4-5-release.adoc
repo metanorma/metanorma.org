@@ -1,0 +1,131 @@
+---
+layout: post
+title: "Metanorma CLI 1.10.4 & 1.10.5: Line Break Handling and Document Attachment Improvements"
+date: 2024-08-07
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This combined release includes critical fixes to line-break handling in CJK text and significant improvements to document attachment processing, making document collections more robust and flexible.
+---
+
+== Metanorma CLI 1.10.4 & 1.10.5: Line break handling and document attachment improvements
+
+// image::/assets/blog/2024/metanorma-cli-1.10.4-5-nature.png[A whimsical forest where trees with Asian character leaves carefully arrange their spacing, with smaller trees carrying document portfolios between them]
+
+We are pleased to announce the release of Metanorma CLI versions 1.10.4 and 1.10.5. This combined release addresses several important issues, with version 1.10.5 serving as a hotfix for the line-break handling introduced in 1.10.4. The release brings substantial improvements to document attachment processing and international text handling, particularly for East Asian languages.
+
+=== Line-break handling for East Asian languages
+
+==== Critical fix for Chinese/Japanese/Korean text processing
+
+A central focus of this release is addressing line-break handling in Chinese, Japanese, and Korean (CJK) text. In version 1.10.3, we introduced improvements to how carriage returns are processed in CJK text, where they need to be treated differently than in Latin scripts. However, the implementation revealed issues with sourcecode embedded within examples.
+
+The 1.10.4 release included an initial fix that was further refined in the 1.10.5 hotfix release, ensuring that:
+
+* Line breaks are properly handled in all contexts, including within code examples
+* CJK text flows naturally without inappropriate spaces that can disrupt reading
+* Mixed content with both CJK and Latin characters is processed correctly
+* The integrity of code examples and technical content is preserved
+
+This improvement is particularly important for technical standards that include both prose explanations in East Asian languages and code examples or computational expressions, ensuring that both textual content and embedded code samples render correctly.
+
+==== Enhanced CJK line break detection
+
+We've also improved the detection and handling of line breaks in more complex cases, specifically:
+
+* When CJK text is followed by non-text or blank text in the next line
+* In multiline text blocks where the final line does not end with a carriage return
+* When line breaks occur within mixed-script paragraphs combining CJK and Latin characters
+
+These refinements ensure consistent text flow in complex documents that mix languages, scripts, and technical content, providing a more professional reading experience for multilingual documents.
+
+=== Document attachment enhancements
+
+==== Major improvements to attachment handling
+
+This release includes several significant enhancements to document attachment processing:
+
+* Fixed processing of attachments when the document being compiled is outside the working directory, allowing more flexible project organization
+* Exempted attachments from text substitution, preventing distortion of their Base64 encoding, which could previously render some attachments unusable
+* Eliminated the 10 MB size limit on document attachments, enabling the inclusion of larger supplementary files
+
+These improvements make document attachments a more robust and flexible feature, allowing standards authors to include more diverse and comprehensive supplementary materials with their documents, such as reference implementations, test suites, or detailed datasets.
+
+=== Internationalization advances
+
+==== Multilingual publisher metadata
+
+We've updated the processing of multilingual metadata about document publishers, enabling:
+
+* Consistent presentation of publisher information in the reader's preferred language
+* Proper handling of multilingual publisher names and contact details
+* More accurate representation of international organizations in document metadata
+* Better alignment with ISO standards for multilingual metadata
+
+This enhancement is particularly valuable for documents published by international organizations that operate in multiple language environments and need to present consistent organizational information across different language versions.
+
+==== Japanese Modspec requirements model
+
+The Modspec requirements model has been fully internationalized for Japanese, ensuring that:
+
+* Requirement labels and terminology appear correctly in Japanese documents
+* The semantic structure of requirements is preserved in translation
+* Navigation and cross-referencing of requirements works properly in Japanese
+* Compliance tracking and verification processes function correctly across languages
+
+This enhancement makes the Modspec requirements framework fully functional for Japanese standards development, supporting more effective requirements management in multilingual environments.
+
+=== Format-specific improvements
+
+==== IEEE standards
+
+For IEEE standards, we've implemented Author-Date referencing for non-standard documents in Normative References. This change:
+
+* Brings citation formats into alignment with IEEE style guidelines
+* Differentiates between standards and other reference materials
+* Improves the readability and usability of reference sections
+* Enhances compliance with IEEE documentation requirements
+
+==== JIS standards
+
+Several improvements for Japanese Industrial Standards (JIS) have been implemented:
+
+* Updated the treatment of JIS standards in bibliographic rendering to match ISO standards, with simplified publisher details
+* Corrected metadata handling for the Ministry of Land, Infrastructure, Transport and Tourism (MLIT) as publisher
+
+==== Plateau documents
+
+For Plateau documents, this release includes substantial enhancements:
+
+* Corrected handling of MLIT as publisher in document metadata
+* Implemented reference sorting in the ordering required by MLIT
+* Moved revision history to the front of the document in accordance with MLIT conventions
+* Updated the document identifier type from JIS to PLATEAU for proper classification
+* Added support for commentaries, rendering them at the end of the document
+* Removed Word as an available output format, focusing on more suitable formats for Plateau documents
+* Improved handling of figures embedded inside other assets to prevent duplicate labeling
+* Adopted Modspec as the default requirements model for better requirements tracking
+
+These targeted improvements make Metanorma a more effective platform for developing Plateau documents that fully comply with MLIT guidelines and conventions.
+
+=== Technical alert: BIPM document processing
+
+Users should be aware that there is currently an issue with accessing the TeXGyreChorus font, which affects the processing of BIPM (International Bureau of Weights and Measures) documents. The Metanorma team is working to resolve this issue in a future release.
+
+=== Conclusion
+
+The combined Metanorma CLI 1.10.4 and 1.10.5 release delivers critical improvements to line-break handling in East Asian languages and substantial enhancements to document attachment processing. These changes, along with the format-specific refinements, make Metanorma an even more robust and versatile platform for international standards development.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+*Release links:*
+https://github.com/metanorma/metanorma-cli/releases/tag/v1.10.4
+https://github.com/metanorma/metanorma-cli/releases/tag/v1.10.5
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6

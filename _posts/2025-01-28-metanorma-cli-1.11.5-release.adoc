@@ -1,0 +1,74 @@
+---
+layout: post
+title: "Metanorma CLI 1.11.5: Presentation XML Term Preservation and Bibliography Improvements"
+date: 2025-01-28
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release enhances Presentation XML with preserved term semantics, improves bibliography handling, fixes configuration path resolution, and includes targeted improvements for ITU documents.
+---
+
+== Metanorma CLI 1.11.5: Presentation XML term preservation and bibliography improvements
+
+image::/assets/blog/2025/metanorma-cli-1.11.5-nature.png[A whimsical forest where trees carefully preserve and showcase their semantic characteristics while organizing their resources in perfect relation to each other]
+
+We are pleased to announce the release of Metanorma CLI version 1.11.5, continuing our enhancements to Presentation XML and addressing several important configuration and bibliographic issues.
+
+=== Presentation XML enhancements
+
+==== Term semantics preservation
+
+Building on the ongoing architectural improvements to Presentation XML, this release introduces an important enhancement:
+
+* Refactored Presentation XML to preserve the Semantic XML of terms
+* This ensures that terminology definitions maintain their rich semantic structure
+* It improves cross-referencing and navigation capabilities for terminology
+* It supports more sophisticated document analysis and processing
+
+This improvement is particularly valuable for standards with extensive terminology sections, as it ensures that terms maintain their semantic relationships and can be more effectively processed by both the Metanorma system and external tools.
+
+=== Configuration improvements
+
+==== Enhanced path resolution
+
+An important fix for configuration handling has been implemented:
+
+* Fixed the relative path resolution of the `:i18nyaml:` document attribute
+* This ensures proper loading of internationalization configuration files
+* It improves portability of document projects between different environments
+* It provides more consistent behavior with other configuration file references
+
+This enhancement makes it easier to maintain internationalization configuration alongside document sources, supporting more portable and maintainable document projects.
+
+=== Bibliography improvements
+
+==== Enhanced bibliographic handling
+
+A focused improvement to bibliography handling has been implemented:
+
+* Bibliographic items embedded within other bibliographic items are now properly excluded from numbering
+* This prevents confusing duplicate or nested numbering in reference lists
+* It ensures cleaner and more professional bibliography presentation
+* It improves compliance with bibliographic formatting standards
+
+Additionally, a fix has been implemented to prevent empty dates from being added to bibliographic tags, ensuring more accurate and consistent bibliographic metadata.
+
+=== ITU document enhancements
+
+For International Telecommunication Union documents, we've made a targeted enhancement to ensure that table margins in HTML are correctly handled when visibility is toggled, improving the user experience when navigating ITU documents with complex tables.
+
+=== Conclusion
+
+Metanorma CLI 1.11.5 continues our commitment to enhancing Presentation XML with preserved semantic information, while also addressing important configuration and bibliographic issues. These improvements support more effective standards development with better terminology handling, more reliable configuration, and cleaner bibliographic presentation.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.11.5
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6

@@ -1,0 +1,112 @@
+---
+layout: post
+title: "Metanorma CLI 1.9.6: Enhanced Document Collections, Mathematical Processing, and Format-Specific Improvements"
+date: 2024-04-12
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release brings significant enhancements to document collections in Word, improved mathematical formula processing, more efficient cross-referencing, and several flavor-specific improvements for ISO, IETF, and document collections.
+---
+
+== Metanorma CLI 1.9.6: Enhanced Document Collections, Mathematical Processing, and Format-Specific Improvements
+
+// image::/assets/blog/2024/metanorma-cli-1.9.6-nature.png[A whimsical forest where trees are organizing their leaves like documents]
+
+We are pleased to announce the release of Metanorma CLI version 1.9.6, part of our biweekly update schedule for the Metanorma software stack. This release brings significant improvements to document collections processing, mathematical content handling, and several format-specific enhancements. These updates are designed to make your standards development experience more efficient and the output documents more accurate.
+
+=== General improvements
+
+==== Enhanced XML handling for greater stability
+
+This release addresses issues related to Nokogiri's more stringent XML processing requirements. Nokogiri, a fundamental component in our XML processing pipeline, recently became more particular about reading XML into other XML documents, especially affecting SVG files. We've implemented safeguards to handle these stricter validations, preventing unexpected failures during document conversion.
+
+For users, this means greater stability when working with documents containing embedded SVG graphics, particularly in technical illustrations for standards that rely heavily on visual elements.
+
+==== More accurate mathematical formula rendering
+
+Mathematical content is crucial in many technical standards. This release significantly improves the debugging of UnitsML formulas and mathematical formula rendering in Word outputs. We've addressed several edge cases where formulas were not displaying correctly, particularly with complex nested structures and specialized notation.
+
+The improvements extend to processing numbers as mathematical expressions, with a much more efficient implementation that forces uniform number formatting for numbers entered as stem:[...]) expressions. This consistent approach ensures that mathematical notation appears coherent throughout your documents, regardless of how individual contributors may have formatted the original numbers.
+
+==== Cross-reference optimization
+
+The generation of cross-references within documents has been made significantly more efficient. This optimization is particularly noticeable in large documents with numerous internal references, reducing processing time and resource utilization.
+
+For users working on comprehensive standards with extensive cross-referencing between sections, tables, and figures, this means faster compilation times and a more responsive authoring experience.
+
+==== URL handling in Literal blocks
+
+We've debugged the preprocessing of URL links in Literal blocks to prevent character substitutions from distorting the URLs. This fix ensures that code examples and literal text containing URLs maintain their exact formatting, which is essential for technical documentation where accuracy is paramount.
+
+==== More efficient clause referencing
+
+The implementation of more efficient generation of cross-references within documents has been improved, particularly dealing with section-split documents. This enhancement makes navigating between referenced sections more intuitive and reliable.
+
+=== Document collections enhancements
+
+This release brings substantial improvements to document collections, which are becoming increasingly important for standards organizations working with multiple related specifications.
+
+==== Improved Word output for document collections
+
+We've made significant progress on supporting the generation of document collections in Word format. This allows multiple documents to be included in a single Word document, maintaining proper formatting, styles, and cross-references between the constituent documents.
+
+==== Debugging collection functionality
+
+Several bugs related to document collections have been addressed:
+
+* Hyperlinking between documents in a collection now functions correctly, allowing seamless navigation within the compiled collection.
+* HTML index page generation for document collections has been fixed, particularly for collections consisting of a single document where the index was previously displaying incorrectly.
+* The detection of document identifiers in a collection has been improved, using individual document metadata for more accurate identification.
+
+These improvements make document collections a more robust and usable feature, especially for organizations that need to publish related standards as a coherent set.
+
+=== ISO-specific improvements
+
+For users working with ISO standards, we've made several targeted improvements:
+
+==== Enhanced annex referencing
+
+We've corrected the format for cross-referencing annex subclauses to match preferred ISO style conventions (Annex A, A.1.2 instead of Clause A.1). This ensures that all cross-references in ISO documents follow the organization's official style guide.
+
+==== Historical document support
+
+Metanorma now automatically infers the historical (pre-2014) PDF formatting to be applied to documents based on the copyright year attribute. This intelligent handling of document formatting according to publication era ensures that historical documents maintain period-appropriate styling.
+
+==== ISO House style localization
+
+We've applied the ISO House style for localization of numbers, identified by putting them in stem:[...]) format. This consistent approach to number formatting aligns with ISO's style guidelines and improves the readability of numerical content.
+
+==== Style violation handling
+
+Notifications of style violations for numbers are now managed more effectively. Instead of issuing warnings for every single number in a document that might not conform to style guidelines, the system provides more consolidated feedback, reducing alert fatigue for authors.
+
+==== Language script validation
+
+The system no longer validates the language script used in documents. This change particularly benefits documents using Chinese, which no longer trigger unnecessary warnings about character encoding or script selection.
+
+=== IETF improvements
+
+For those working with Internet Engineering Task Force (IETF) documents, we've made the subtle but important change to use em-dash instead of en-dash after term modified. This aligns better with IETF's typographical conventions and improves the readability of terminology definitions.
+
+=== JIS support
+
+This release adds support for Plateau documents used in Japanese Industrial Standards (JIS), expanding Metanorma's capabilities for standards development in Japan.
+
+=== Conclusion
+
+Metanorma CLI 1.9.6 delivers substantial improvements across several areas, with particular emphasis on document collections, mathematical content processing, and format-specific enhancements. These updates reflect our ongoing commitment to making Metanorma the most comprehensive and reliable solution for standards development.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+The successful release of Metanorma on Docker will be announced separately.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.9.6
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6
+

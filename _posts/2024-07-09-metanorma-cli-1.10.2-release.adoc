@@ -1,0 +1,112 @@
+---
+layout: post
+title: "Metanorma CLI 1.10.2: HTML Navigation Enhancements and ISO Document Refinements"
+date: 2024-07-09
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release brings significant improvements to HTML navigation, introduces new number formatting capabilities, and includes several format-specific enhancements for ISO, IEEE, and IHO document types.
+---
+
+== Metanorma CLI 1.10.2: HTML navigation enhancements and ISO document refinements
+
+// image::/assets/blog/2024/metanorma-cli-1.10.2-nature.png[A whimsical forest with trees shaped like navigation elements and sidebar menus, with numbered leaves arranged in perfect order]
+
+We are pleased to announce the release of Metanorma CLI version 1.10.2, the latest update in our biweekly release schedule. This version introduces significant improvements to HTML navigation, enhances number formatting capabilities, and includes several format-specific refinements to ensure compliance with organizational style guidelines.
+
+=== General improvements
+
+==== Enhanced HTML table of contents sidebar
+
+A major enhancement in this release is the refinement of the HTML table of contents sidebar. This improvement:
+
+* Makes document navigation more intuitive and user-friendly
+* Ensures proper highlighting of the current section
+* Improves the responsiveness and visual consistency of the navigation interface
+* Enhances accessibility for users with different browsing environments
+
+For users working with large, complex standards documents, this improvement significantly enhances the reading experience by providing clearer orientation within the document structure and more reliable navigation between sections.
+
+==== Advanced number formatting controls
+
+This release introduces powerful new number formatting capabilities, including the `number:[]` macro for fine-grained control over numerical presentations. These enhancements enable:
+
+* Consistent application of formatting rules to numbers throughout a document
+* More precise control over decimal places, significant figures, and notation styles
+* Support for specialized number representation requirements in different standards domains
+* Greater compliance with field-specific conventions for numerical data presentation
+
+By providing more sophisticated number formatting tools, Metanorma now better serves fields with strict requirements for numerical precision and presentation, such as engineering, scientific, and financial standards.
+
+==== Improved content division processing
+
+We've enhanced the processing of lists, captions, and notes as unified divisions of content in HTML and DOC outputs. This improvement:
+
+* Creates more semantically meaningful document structures
+* Improves the visual consistency of related content elements
+* Enhances accessibility by grouping related content appropriately
+* Provides more predictable and appealing formatting of complex content structures
+
+These refinements result in cleaner, more professional-looking documents that better preserve the logical relationships between content elements.
+
+==== Bug fixes and optimizations
+
+Several important bug fixes have been implemented in this release:
+
+* Corrected the naming of folders containing document attachments for output rendering
+* Modified the fontist option in compilation from no_install_fonts to install_fonts for more intuitive configuration
+* Implemented a safeguard to abort processing if empty tables are detected in markup, preventing potential errors in output generation
+
+These fixes enhance the overall stability and reliability of the Metanorma toolchain, particularly for complex documents with numerous assets and attachments.
+
+=== Format-specific improvements
+
+==== ISO document enhancements
+
+For users working with ISO standards, we've made several targeted improvements:
+
+* Rationalized the placement of predefined introductory text for Normative References and Terms and Definitions sections, ensuring compliance with ISO style guidelines
+* Added support for historical (pre-2014) document formats, allowing normative references as subclauses of the main clause with correct placement of predefined introductory text
+* Implemented automatic aborts when empty tables are detected, preventing the generation of non-compliant documents
+
+These enhancements ensure that ISO documents produced with Metanorma maintain strict conformance with organizational style requirements while providing flexibility for historical document formats.
+
+==== IEEE document refinements
+
+For IEEE standards, we've implemented consistent insertion of the "Abstract:" heading in Word outputs. This seemingly small change:
+
+* Ensures compliance with IEEE formatting requirements
+* Creates a more professional and consistent appearance across IEEE documents
+* Improves document navigability by clearly marking the abstract section
+* Supports automated processing and extraction of abstract content
+
+This enhancement helps authors of IEEE standards produce more compliant and professional-looking documents with less manual intervention.
+
+==== IHO document improvements
+
+For International Hydrographic Organization (IHO) standards, we've added support for processing bibliographies entered as subclauses. This enhancement:
+
+* Provides more flexibility in organizing bibliographic content
+* Supports IHO-specific document organization patterns
+* Maintains proper formatting and numbering of bibliographic entries
+* Ensures compliance with IHO style guidelines
+
+By supporting more sophisticated bibliography structures, this improvement makes Metanorma a more versatile tool for IHO standards development.
+
+=== Conclusion
+
+Metanorma CLI 1.10.2 delivers substantial improvements to HTML navigation, number formatting, and format-specific document processing. These enhancements reflect our ongoing commitment to making Metanorma a comprehensive and reliable solution for standards development across diverse technical domains and organizational contexts.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+The successful release of Metanorma on various distribution platforms has been announced separately by the Metanorma team.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.10.2
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6
