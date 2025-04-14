@@ -1,0 +1,91 @@
+---
+layout: post
+title: "Metanorma CLI 1.10.1: Mathematical Enhancements and Collection Processing Improvements"
+date: 2024-06-18
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release enhances mathematical number formatting, refines document attachments, and improves the robustness of collection processing with particular focus on section-split documents and file linking.
+---
+
+== Metanorma CLI 1.10.1: Mathematical enhancements and collection processing improvements
+
+// image::/assets/blog/2024/metanorma-cli-1.10.1-nature.png[A whimsical forest scene with numbered trees arranging themselves in perfect mathematical precision while smaller trees organize into collections]
+
+We are pleased to announce the release of Metanorma CLI version 1.10.1, continuing our biweekly update schedule for the Metanorma standards authoring platform. This release focuses on enhancing mathematical content formatting, refining document attachment capabilities introduced in the previous version, and significantly improving collection processing for multi-document publications.
+
+=== General improvements
+
+==== Enhanced mathematical number formatting with Plurimath
+
+The standout improvement in this release is the integration of the Plurimath number formatter, which now provides robust support for scientific notation in mathematical expressions. This enhancement delivers:
+
+* Consistent formatting of numbers across complex mathematical expressions
+* Proper handling of scientific notation with correct exponent display
+* More precise control over numerical representation in technical documents
+* Better visual alignment with conventional mathematical typography standards
+
+For standards that rely heavily on mathematical content—particularly in fields like physics, engineering, and information technology—this improvement ensures that numerical data is presented clearly and consistently, reducing the potential for misinterpretation of critical values.
+
+==== Refined document attachment functionality
+
+Building on the document attachment capabilities introduced in version 1.10.0, this release includes additional refinements that make attachments more robust and usable:
+
+* Enhanced hyperlink generation to attachments for improved navigation
+* More consistent handling of attachment references across different output formats
+* Better integration of attachments with the document's information architecture
+
+These improvements make it even easier for standards authors to include supplementary files such as code samples, schemas, or reference implementations alongside their documents, creating more comprehensive and useful standards packages.
+
+=== Collections processing enhancements
+
+A significant portion of this release focuses on improving the robustness and flexibility of document collections, which allow multiple related standards to be compiled and presented as a coherent set.
+
+==== Optimized section-split processing
+
+We've made substantial improvements to the handling of section-split documents within collections:
+
+* Eliminated the use of temporary files for section-splitting in collections, making the process more efficient and less prone to file system limitations
+* Ensured that Semantic XML is properly recompiled to update file links for section-splitting, maintaining the integrity of cross-references between document sections
+* Debugged SVG mapping to collection document destinations, ensuring that graphical content is correctly linked and displayed within the collection context
+
+These optimizations make collections with section-split documents (where each clause is rendered as a separate HTML page) more reliable and easier to navigate, particularly for large, complex standards that benefit from being divided into more manageable sections.
+
+==== Enhanced clause hierarchies
+
+For more precise document organization, we've introduced distinct clause labels for level 4-6 clauses. This enhancement:
+
+* Provides clearer visual and semantic differentiation between clause levels
+* Improves the navigability of deeply nested document structures
+* Facilitates more precise cross-referencing within complex hierarchical documents
+* Supports more sophisticated document organization patterns
+
+For standards with complex, deeply nested content structures, this improvement makes document navigation and comprehension significantly easier for readers.
+
+=== Plateau-specific improvements
+
+For users working with Plateau documents, this release includes several targeted enhancements:
+
+* Updated handling of clause hierarchies to match Plateau-specific requirements
+* Improved formatting and presentation of Plateau-specific content elements
+* Enhanced compatibility with Plateau document processing workflows
+
+These improvements ensure that Metanorma remains a versatile solution for specialized document formats like Plateau, which have unique structural and presentational requirements.
+
+=== Conclusion
+
+Metanorma CLI 1.10.1 delivers significant improvements in mathematical content formatting, document attachments, and collection processing. By enhancing these core capabilities, this release makes Metanorma an even more powerful and flexible platform for standards development across various technical domains.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+The successful release of Metanorma on Docker has been announced separately by the Metanorma team.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.10.1
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6

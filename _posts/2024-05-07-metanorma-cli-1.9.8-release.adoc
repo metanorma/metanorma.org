@@ -1,0 +1,119 @@
+---
+layout: post
+title: "Metanorma CLI 1.9.8: Improved Document Interlinking and Enhanced ISO Features"
+date: 2024-05-07
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release enhances document interlinking capabilities with hover-over highlighting for clause headings, attachment support, and several targeted improvements for ISO, NIST, OGC, and ITU document formats.
+---
+
+== Metanorma CLI 1.9.8: Improved document interlinking and enhanced ISO features
+
+// image::/assets/blog/2024/metanorma-cli-1.9.8-nature.png[A whimsical forest with interconnected trees highlighting linked pathways between them]
+
+We are pleased to announce the release of Metanorma CLI version 1.9.8, continuing our commitment to regular enhancements of the Metanorma software stack. This release focuses on improving document interlinking capabilities and introducing specialized features for various standard formats, with particular attention to ISO, NIST, OGC, and ITU document types.
+
+=== General improvements
+
+==== Enhanced document navigation with hover-over highlighting
+
+This release introduces hover-over highlighting and hyperlinks for clause headings in HTML output. This feature significantly improves document navigation by making it immediately clear which sections are clickable and providing visual feedback when users hover over headings. The highlighting helps readers:
+
+* Quickly identify navigation options in large documents
+* Find specific sections more efficiently
+* Create more precise links when sharing document references
+* Understand the document structure through visual cues
+
+This seemingly small interface enhancement has a substantial impact on the user experience, especially for complex standards documents with deep hierarchical structures.
+
+==== Document attachments support
+
+Metanorma now allows attachments to be specified for documents, with hyperlinks to these attachments automatically generated in the output. This powerful feature enables:
+
+* Inclusion of supplementary files like datasets, code samples, or templates
+* Packaging of related resources with the main document
+* Creation of more comprehensive documentation sets
+* Support for multimedia content that enhances the standard's explanatory materials
+
+This functionality addresses a growing need for standards to include machine-readable components alongside human-readable documentation, supporting implementation and testing activities.
+
+==== CLI error reporting improvements
+
+We've enhanced the error reporting in the CLI by adding an error flag that's raised on exit when illegal options are provided. This makes it easier to identify and correct configuration issues, particularly in automated environments where clear error signaling is essential for workflow management.
+
+=== Collection processing enhancements
+
+==== Namespace handling in collection XML
+
+This release temporarily removes namespace handling from Collection XML until our external object mapper (Shale) is enhanced to better handle namespaces. While this is an interim solution, it prevents potential issues with collection processing while we work on a more comprehensive namespace management approach.
+
+=== Requirements handling improvements
+
+==== Automatic anchor generation for requirements
+
+Metanorma now generates anchors automatically for requirements under Modspec when no anchor is explicitly specified. The anchors are based on the requirement identifier, ensuring that every requirement can be referenced even if authors don't manually add anchors. This improvement:
+
+* Ensures all requirements are referenceable
+* Maintains consistent linking conventions
+* Reduces the burden on authors to manually manage anchors
+* Supports more comprehensive traceability
+
+=== Collection manifest enhancements
+
+Building on our previous improvements to document collections, this release brings several refinements to collection manifest handling:
+
+==== Streamlined manifest structure
+
+The collection manifest structure has been simplified and streamlined, making it easier to define and maintain document collections. This structural improvement reduces complexity and potential errors in collection configuration.
+
+==== External file processing
+
+Collection manifests can now process files outside the current working directory, allowing for more flexible document organization and easier integration of content from various sources.
+
+==== Nested manifest support
+
+Support for nested collection manifest files has been added, enabling hierarchical organization of complex document sets. This feature is particularly valuable for large standards with multiple subsections or related document families.
+
+==== External script hooks
+
+External script hooks can now be specified for collection manifest processing, allowing customization of file identifiers, locations, and manifest preprocessing. This extensibility enables organizations to implement specialized processing requirements while maintaining compatibility with the core Metanorma tools.
+
+==== External object mapping
+
+The external object mapper (Shale) can now be used to process collection manifests as a class, providing more structured and type-safe handling of collection definitions.
+
+=== ISO-specific improvements
+
+For users working with ISO standards, we've removed the display of "Warning for WDs and CDs" notices for DIS and FDIS documents. This change ensures that warning messages are only shown for document types where they are relevant, reducing noise and potential confusion in document outputs.
+
+=== ITU improvements
+
+This release adds support for justification annexes in ITU contributions, enhancing compliance with ITU document formatting requirements. This specialized feature ensures that justification material appears in the correct location and format within ITU standards.
+
+=== OGC improvements
+
+For Open Geospatial Consortium standards, we've added the ability to generate hover-over links for requirement headings as well as clause headings. This enhancement allows for easier lookup of hyperlinks, improving navigation within OGC documents that often contain numerous technical requirements.
+
+=== Plateau support
+
+Continuing our support for specialized document types, this release maintains compatibility with the Plateau document format, ensuring that Metanorma remains a comprehensive solution for diverse standards development needs.
+
+=== Conclusion
+
+Metanorma CLI 1.9.8 delivers important improvements in document interlinking, attachment handling, and format-specific features. These enhancements reflect our ongoing commitment to making Metanorma the most comprehensive and flexible solution for standards development across multiple organizations and formats.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+The successful release of Metanorma on Docker will be announced separately.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.9.8
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6
+

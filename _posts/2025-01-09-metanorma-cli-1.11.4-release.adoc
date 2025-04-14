@@ -1,0 +1,69 @@
+---
+layout: post
+title: "Metanorma CLI 1.11.4: Enhanced Requirements Management and ISO Document Support"
+date: 2025-01-09
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release focuses on requirements management improvements, ISO document enhancements, Japanese internationalization, and important ITU and JIS format-specific refinements.
+---
+
+== Metanorma CLI 1.11.4: Enhanced requirements management and ISO document support
+
+image::/assets/blog/2025/metanorma-cli-1.11.4-nature.png[A whimsical forest with trees organizing their requirements in careful classifications, with some trees displaying ISO and JIS standards patterns in their foliage]
+
+We are pleased to announce the release of Metanorma CLI version 1.11.4, our first update of 2025. This release brings significant improvements to requirements management, enhanced ISO document support, and several format-specific refinements to ensure compliance with organizational standards.
+
+=== Requirements management enhancements
+
+==== Improved cross-reference resolution
+
+A key improvement in this release is the refined handling of requirements cross-references:
+
+* Cross-references that are not to Modspec requirements within Modspec are now deferred for resolution
+* This preserves correct labeling of table cross-references in ISO documents
+* It ensures more accurate navigation within complex documents
+* It maintains the integrity of reference chains in documents with mixed content types
+
+This enhancement is particularly valuable for standards that combine requirements specifications with technical content like tables, figures, and examples, ensuring that all cross-references are formatted appropriately according to their target type.
+
+=== ISO document enhancements
+
+==== Parallel publication support
+
+For ISO standards, we've added important new capabilities:
+
+* The document attribute `:iso-cen-parallel:` has been introduced to support parallel publication with CEN
+* Voting dates internationalization has been implemented
+* Internationalization support for draft comments has been added
+
+These enhancements support the complex publication processes for standards that are jointly published by ISO and CEN, ensuring proper metadata, formatting, and language handling across different regional contexts.
+
+=== JIS document improvements
+
+==== Enhanced participant handling
+
+For Japanese Industrial Standards (JIS), we've improved the handling of participant information:
+
+* Multiple participant clauses with explicit titles are now supported
+* A key to participant tables has been added for better readability
+* These improvements enhance the presentation of committee and contributor information
+* They support more flexible document organization according to JIS requirements
+
+These refinements make Metanorma more effective for JIS standards development, particularly for documents with complex organizational structures and multiple contributing groups.
+
+=== Conclusion
+
+Metanorma CLI 1.11.4 delivers targeted improvements to requirements management, ISO document support, and format-specific features. These enhancements support more effective standards development across different organizational contexts, with particular emphasis on ISO, JIS, and requirements-driven documents.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.11.4
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6

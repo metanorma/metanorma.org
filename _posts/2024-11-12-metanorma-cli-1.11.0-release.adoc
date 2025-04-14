@@ -1,0 +1,159 @@
+---
+layout: post
+title: "Metanorma CLI 1.11.0: Major Presentation XML Enhancements and Document Structure Improvements"
+date: 2024-11-12
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This milestone release features significant architectural changes to Presentation XML, greater flexibility in document structure, improved annotation of document identifiers, and numerous format-specific enhancements.
+---
+
+== Metanorma CLI 1.11.0: Major Presentation XML enhancements and document structure improvements
+
+// image::/assets/blog/2024/metanorma-cli-1.11.0-nature.png[A majestic forest where trees transform from simple structures to elegant presentations, with some trees arranged in harmonious patterns with multiple branches of equal importance]
+
+We are pleased to announce the release of Metanorma CLI version 1.11.0, a significant milestone in our standards authoring platform's evolution. This major version increment brings substantial architectural improvements to Presentation XML, greater flexibility in document structure, and format-specific enhancements for various standards types.
+
+=== Presentation XML architecture
+
+==== Fundamental architectural improvements
+
+This release marks the beginning of a major initiative to enhance Presentation XML, the foundation of Metanorma's rendering capabilities. Key improvements include:
+
+* Moving rendering decisions into Presentation XML rather than having each output format (PDF, DOC, HTML) implement them independently
+* Providing richer semantic annotation of document elements to enable more consistent and accurate rendering
+* Ensuring that styling and presentation decisions are centralized for better consistency
+* Eliminating the need for XSLT preprocessing for format-specific modifications
+
+These architectural enhancements result in more reliable and consistent rendering across different output formats, ensuring that documents maintain their intended appearance regardless of the final delivery format.
+
+==== Enhanced caption and structural element processing
+
+Specific improvements to Presentation XML processing include:
+
+* Enhanced semantic annotation of captions, their components, and delimiters
+* Better handling of figure and table footnotes with clearer semantic structure
+* Improved document identifier markup for more precise styling
+* More consistent preservation of semantic information alongside presentation details
+
+For users, these changes ensure that complex document elements like captions, tables, and figures appear consistently across different output formats, with proper spacing, alignment, and styling.
+
+==== Semantic preservation in floating titles
+
+Metanorma now preserves Semantic XML for floating-title elements alongside their Presentation XML rendering as paragraphs. This enhancement:
+
+* Maintains the structural significance of these elements in the document
+* Improves navigation and cross-referencing capabilities
+* Supports more sophisticated document processing and analysis
+* Enables better conversion between different output formats
+
+This improvement is particularly valuable for complex technical documents where section titles and hierarchical organization play important roles in conveying information structure.
+
+=== Document structure flexibility
+
+==== Support for multiple terms and definitions sections
+
+A significant enhancement in this release is the ability to include multiple terms and definitions clauses in all Metanorma documents. This capability:
+
+* Enables more natural organization of terminology in complex documents
+* Allows domain-specific terminology to be grouped logically
+* Supports more sophisticated document structures for specialized technical content
+* Provides greater flexibility in how terminology is presented and organized
+
+This feature is particularly valuable for multidisciplinary standards that span different technical domains, each with its own specialized vocabulary.
+
+==== Improved anchor handling
+
+Several enhancements to anchor and cross-reference handling have been implemented:
+
+* Preemptive insertion of anchors for all ordered list items, ensuring they always have labels
+* Nonbreaking spaces in all document identifiers in cross-references for consistent presentation
+* More intelligent capitalization of cross-reference contents based on XML markup
+* Improved handling of enumeration commas with semantic markup
+
+These refinements make cross-references more reliable, visually consistent, and semantically accurate, enhancing both the appearance and functionality of complex documents.
+
+=== Technical improvements
+
+==== Improved whitespace and formatting control
+
+Several important technical improvements have been made to enhance document formatting precision:
+
+* Redundant blanks in termnote label templates have been removed
+* Order preservation for multiple preface elements with the same name in Presentation XML
+* XML indentation during internal processing has been eliminated to avoid unintended whitespace
+* Enumeration commas are now marked up semantically
+* Spaces around commas in punctuation localization are now handled more precisely
+
+These seemingly small enhancements collectively result in more predictable and accurate document formatting, particularly in complex multilingual contexts.
+
+==== Dependency management
+
+This release locks Nokogiri to version 1.16.8 to address a memory corruption bug in Nokogiri 1.17.0. This ensures more stable processing for large documents and complex XML structures.
+
+=== Internationalization enhancements
+
+==== CJK text rendering improvements
+
+Several improvements for East Asian language support have been implemented:
+
+* Tabs in Japanese and Korean (in addition to Chinese) are now rendered as U+3000 ideographic spaces
+* Internationalization of references to unnumbered preface clauses (e.g., "Introduction") has been added
+* Fixed detection of CJK characters when performing punctuation localization
+* Used Kanji instead of katakana for "and" in Japanese
+
+These enhancements further improve the quality and authenticity of documents in East Asian languages, ensuring that they follow appropriate typographical conventions.
+
+=== Collection processing improvements
+
+==== Improved model handling
+
+Collection configuration processing has been enhanced:
+
+* Lutaml-Model is now used instead of Shale for processing collection configuration
+* Collection bibdata is now exposed to the Liquid template for collection cover pages
+* Debug fixes for unclosed temp files in sectionsplit processing
+
+These improvements make collection processing more robust and provide greater flexibility in how collections are structured and presented.
+
+=== Format-specific improvements
+
+==== Version reporting improvements
+
+The metanorma version command now reports versions for an extended set of gems, providing more comprehensive information about the installed components and their versions.
+
+==== ISO document enhancements
+
+For ISO standards, we've added:
+
+* Price-code metadata for bibliographic information
+* More consistent semantic annotations of document identifiers
+* Support for rendering concept references that point to missing terms
+
+==== IHO document improvements
+
+For International Hydrographic Organization standards, we've:
+
+* Updated copyright boilerplate text
+* Enhanced styling of IHO terms
+* Updated the list of supported fonts
+
+==== IEC document enhancements
+
+For International Electrotechnical Commission documents, we've removed domains from appearing in term definitions in IEV documents, providing cleaner and more focused terminology presentations.
+
+=== Conclusion
+
+Metanorma CLI 1.11.0 represents a significant milestone in our platform's evolution, with major architectural improvements to Presentation XML, enhanced document structure flexibility, and numerous refinements to formatting, internationalization, and format-specific features. These changes make Metanorma an even more powerful and precise platform for standards development across diverse technical domains and organizational contexts.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.11.0
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6

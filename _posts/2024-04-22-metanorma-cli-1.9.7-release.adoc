@@ -1,0 +1,127 @@
+---
+layout: post
+title: "Metanorma CLI 1.9.7: Enhanced Document Structure Flexibility and Collection Improvements"
+date: 2024-04-22
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release introduces improvements to document structure flexibility with support for unnumbered clauses, enhanced Word output customization, better error handling, and specialized collection features to streamline the standards authoring experience.
+---
+
+== Metanorma CLI 1.9.7: Enhanced document structure flexibility and collection improvements
+
+// image::/assets/blog/2024/metanorma-cli-1.9.7-nature.png[A whimsical forest scene with unnumbered trees standing among numbered ones, representing the new unnumbered clauses feature]
+
+We are pleased to announce the release of Metanorma CLI version 1.9.7, continuing our commitment to regular updates for the Metanorma software stack. This version focuses on enhancing document structure flexibility and improving the handling of document collections, along with several quality-of-life improvements that make the standards authoring experience more intuitive and adaptable.
+
+=== General improvements
+
+==== Unnumbered clauses support
+
+One of the most significant enhancements in this release is the ability to include unnumbered clauses in the main section of documents. This feature addresses a long-standing request from users who need to include content that logically belongs in the main document flow but doesn't fit into the standard numbering hierarchy.
+
+Unnumbered clauses are particularly valuable for:
+
+* Introductory material that needs to appear after the main introduction but before the first numbered clause
+* Explanatory sections that provide context but aren't formal parts of the standard's requirements
+* Transitional content between major document sections
+* Special note sections that don't warrant a full clause number
+
+This enhancement gives authors greater flexibility in document organization while maintaining proper document structure and navigability. The unnumbered clauses are still recognized as structural elements in the document model, ensuring they appear correctly in the table of contents and can be referenced from other parts of the document.
+
+==== Improved Table of Contents handling in Word output
+
+We've refined the Table of Contents implementation in Word outputs by excluding automatically inserted Table of Contents headings when no Table of Contents is explicitly supplied. This seemingly small change has significant implications for document clarity - previously, documents without a user-defined TOC would still display a TOC heading, potentially confusing readers with a section title that had no corresponding content.
+
+This improvement ensures that the document structure in Word output precisely reflects the author's intentions, with no superfluous elements. For standards bodies that have specific formatting requirements for their documents, this level of control is essential.
+
+==== Empty coverpage support
+
+Metanorma now allows empty coverpages to be specified in Word output. This enhancement provides greater flexibility for organizations that:
+
+* Need placeholder coverpages for draft versions
+* Want to customize coverpage content in post-processing
+* Have specific layout requirements that are applied after document generation
+* Need to include coverpages with minimal content (such as just a title or logo)
+
+This feature supports both completely empty coverpages and minimally populated ones, giving standards developers complete control over this critical document element.
+
+==== More user-friendly error handling
+
+We've improved error messages for corrupt files, making troubleshooting significantly easier. When processing fails due to file corruption, Metanorma now provides:
+
+* More specific information about the type of corruption detected
+* Clearer indications of where in the file the corruption occurs
+* More actionable suggestions for resolution
+
+These enhanced error messages reduce debugging time and frustration, especially when working with large or complex documents where issues might be difficult to locate manually.
+
+=== Document collections enhancements
+
+==== Collection-specific cover pages
+
+This release introduces support for collection-specific cover pages, allowing different cover page designs for the same document depending on whether it appears standalone or as part of a collection. This feature is particularly valuable for:
+
+* Standards that exist both independently and as part of larger compilations
+* Organizations that use different branding for individual standards versus collections
+* Documents that need contextual information when presented as part of a set
+
+The collection-specific cover pages can include collection metadata, cross-references to other documents in the collection, and visual elements that establish the document's place within the broader collection.
+
+==== Interleaved document groupings
+
+We've enhanced collection manifests to support interleaving individual documents with groupings of documents. Instead of requiring subtrees of documents to all be at the same depth, collections can now have a more flexible structure where individual documents and document groups can be mixed at the same level.
+
+This improvement allows for more intuitive organization of complex document collections, such as:
+
+* Standard series with both standalone documents and sub-collections
+* Collections where some documents logically stand alone while others form natural groups
+* Dynamic collections assembled from documents with varying hierarchical relationships
+
+==== External URL support in collection manifests
+
+Collection manifests can now include external URLs for file references, enabling redirected links to documents. This feature allows collections to:
+
+* Reference documents hosted on different systems
+* Incorporate web resources as part of the collection
+* Create more flexible navigation structures that span multiple content repositories
+* Maintain links to resources that may move over time
+
+==== Anchor handling in collections
+
+We've fixed the insertion of anchors for indirect anchors in collections, improving the functionality for both unitary documents and section-split documents. This ensures that cross-references work correctly throughout the collection, even when referencing content across document boundaries.
+
+=== ISO-specific improvements
+
+For users working with ISO standards, we've added support for including definition list titles in the post-processing of table keys. This ensures that "Key" titles are rendered correctly, enhancing the readability and standard-compliance of tables in ISO documents.
+
+=== NIST support
+
+This release integrates the pubid-nist gem for uniform rendering of NIST identifiers in document metadata. This enhancement ensures consistent formatting of NIST references, aligning with official National Institute of Standards and Technology guidelines.
+
+=== OGC improvements
+
+For Open Geospatial Consortium standards, we've added support for labeling sourcecode and pseudocode as Listings in output. This provides clearer identification of code blocks in OGC documents, improving readability for technical audiences.
+
+=== Plateau documents support
+
+Building on our previous addition of basic JIS support, this release creates a separate gem for MLIT-Plateau documents, expanding Metanorma's capabilities for specialized document types used in Japanese industrial and governmental contexts.
+
+=== Conclusion
+
+Metanorma CLI 1.9.7 delivers important flexibility and usability improvements that make standards development more efficient and adaptable. The support for unnumbered clauses, enhanced collection features, and various output refinements reflect our ongoing commitment to meeting the diverse needs of standards authors and organizations.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+The successful release of Metanorma on Docker will be announced separately.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.9.7
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6
+

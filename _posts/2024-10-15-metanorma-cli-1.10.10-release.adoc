@@ -1,0 +1,153 @@
+---
+layout: post
+title: "Metanorma CLI 1.10.10: Optimized Document Processing and Enhanced Framework Consistency"
+date: 2024-10-15
+categories: news release
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  This release focuses on optimization of document validation and collection processing, restoration of UnitsML markup, improved module naming consistency, and format-specific enhancements for ISO, NIST, and other standards types.
+---
+
+== Metanorma CLI 1.10.10: Optimized document processing and enhanced framework consistency
+
+// image::/assets/blog/2024/metanorma-cli-1.10.10-nature.png[A whimsical forest where organized trees work efficiently in groups, with some trees bearing scientific units on their leaves and others showcasing unified naming patterns]
+
+We are pleased to announce the release of Metanorma CLI version 1.10.10, continuing our biweekly update schedule for the Metanorma standards authoring platform. This version introduces significant optimizations to document validation and collection processing, restores UnitsML support, implements consistent module naming, and includes targeted improvements for ISO, NIST, and other document formats.
+
+=== General improvements
+
+==== Optimized document validation
+
+A key improvement in this release is the optimization of document include validation:
+
+* The document inclusion verification process has been substantially streamlined
+* This results in faster compilation times, particularly for documents with numerous includes
+* It reduces memory usage during validation of complex documents
+* It enables more efficient handling of deeply nested document structures
+
+For organizations working with large, modular standards documents that incorporate numerous included files, this optimization significantly improves the authoring and revision workflow by reducing wait times during compilation.
+
+==== Restored UnitsML markup support
+
+We've restored full support for UnitsML markup in this release, which:
+
+* Provides standardized representation of units of measurement
+* Ensures consistent handling of scientific units across different document contexts
+* Enables more precise and semantically rich representation of measurements
+* Supports automatic conversion between different unit systems when needed
+
+This enhancement is particularly valuable for scientific and engineering standards that require precise representation of physical quantities and their units. The UnitsML markup ensures that units are not just visually consistent but also semantically identified, enabling more sophisticated processing and validation.
+
+==== Enhanced bibliographic metadata support
+
+This release adds improved handling for bibliographic metadata:
+
+* Support for abstracts, classification, and images in spans-formatted data in bibliographic entries
+* This enables richer, more structured bibliographic information
+* It provides better visual and semantic representation of complex bibliographic resources
+* It enhances the usability of reference sections for readers
+
+These improvements make bibliographic sections more informative and accessible, providing readers with more comprehensive information about referenced resources.
+
+==== Embedded document header flexibility
+
+A significant enhancement in this release is the ability to process embedded document headers as different flavors from the current flavor. This capability:
+
+* Enables mixed-flavor document collections with consistent processing
+* Allows selective application of different formatting rules to different sections
+* Supports more flexible document organization strategies
+* Facilitates the integration of content from different standards bodies into a single coherent document
+
+This feature is particularly valuable for organizations that need to combine content conforming to different standards frameworks within a unified publication.
+
+==== Consistent module naming
+
+We've introduced consistent naming of modules with titlecase throughout the codebase:
+
+* Modules are now consistently named using titlecase (e.g., Metanorma::Ieee instead of Metanorma::IEEE)
+* This standardization improves code maintainability and readability
+* It reduces confusion and potential errors in module references
+* It aligns with modern Ruby coding conventions
+
+While primarily a technical improvement, this consistency enhances the maintainability of the Metanorma codebase and reduces the likelihood of integration issues when extending the platform.
+
+=== Collection processing enhancements
+
+Several important optimizations to collections processing have been implemented:
+
+==== Link processing optimization
+
+We've significantly optimized the processing of links between documents in a collection:
+
+* More efficient algorithms for resolving cross-document references
+* Reduced memory usage during link resolution in large collections
+* Faster processing of collections with extensive cross-referencing
+* More reliable handling of complex link networks
+
+==== Recompilation control
+
+This release introduces the `recompile-xml` directive, which:
+
+* Makes recompilation of XML documents in the collection optional
+* Allows selective recompilation of only those documents that have changed
+* Reduces processing time for large collections when only minor changes are made
+* Provides more control over the collection compilation process
+
+==== Sectionsplit optimization
+
+A major performance enhancement is the optimization of sectionsplit processing:
+
+* The system now removes the Semantic XML of clauses other than the current clause from Presentation XML
+* This significantly reduces memory usage during processing
+* It improves processing speed for large documents with many sections
+* It enables more efficient handling of very large technical standards
+
+==== Collection flavor specification
+
+We've added the `flavor` directive with validation:
+
+* This allows explicit declaration of which Metanorma flavor to compile the collection manifest with
+* It ensures consistent application of formatting rules throughout the collection
+* It reduces ambiguity in multi-format collections
+* It simplifies collection configuration and maintenance
+
+These collection-related improvements collectively make Metanorma more efficient and reliable for managing complex document collections, particularly for large standards organizations that publish families of related specifications.
+
+=== Format-specific improvements
+
+==== ISO document enhancements
+
+For ISO standards, we've added:
+
+* Support for the ISO Addendum document type
+* The "has-draft" relation to indicate the latest prepublication draft of the current published document
+* Migration of document boilerplate from XML and code to external Asciidoc, aligned with other Metanorma formats
+
+These enhancements support ISO's specific document lifecycle and publication processes, ensuring that Metanorma remains fully compliant with ISO's requirements for standards development.
+
+==== NIST document improvements
+
+For National Institute of Standards and Technology documents, we've integrated the pubid-nist gem for:
+
+* Uniform rendering of NIST identifiers in document metadata
+* Consistent formatting of NIST-specific document identifiers
+* Improved compliance with NIST's publication standards
+* Better integration with NIST's document management systems
+
+This enhancement makes Metanorma more effective for NIST standards development, ensuring that documents conform precisely to NIST's identification and formatting requirements.
+
+=== Conclusion
+
+Metanorma CLI 1.10.10 delivers significant optimizations to document validation and collection processing, restores important UnitsML functionality, implements more consistent module naming, and includes targeted enhancements for specific document formats. These improvements make Metanorma more efficient, flexible, and reliable for standards development across diverse technical domains and organizational contexts.
+
+For more detailed information about the changes in this release, please refer to the individual gem release pages. As always, PDF rendering updates are not tracked separately but are incorporated into the overall improvements.
+
+*Release link:* https://github.com/metanorma/metanorma-cli/releases/tag/v1.10.10
+
+*Announcement link:* https://github.com/orgs/metanorma/discussions/6
