@@ -1,0 +1,262 @@
+---
+layout: post
+title: "Introducing Windows Docker containers for Metanorma"
+date: 2025-03-21
+categories: documentation
+
+authors:
+  -
+    name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+      - https://github.com/ronaldtse
+
+excerpt: >-
+  Metanorma announces the availability of native Windows Docker containers,
+  enabling true Windows-based workflows in Docker and GitHub Actions for standards developers.
+---
+
+== Introduction
+
+We are excited to announce the release of native Windows Docker containers for Metanorma!
+
+This new offering extends our cross-platform capabilities by providing true
+Windows-native container environments for standards development. These
+containers join our existing Linux-based offerings (Debian, Ubuntu, and Alpine)
+to create a comprehensive container ecosystem that supports workflows on all
+major platforms.
+
+== Why Windows containers?
+
+While Metanorma has always been usable on Windows systems through Linux
+containers, native Windows containers offer several unique advantages:
+
+* True Windows environment: Run Metanorma in a genuine Windows Server
+environment with native filesystem behavior
+
+* GitHub Actions integration: Use Metanorma in Windows-based GitHub Actions
+workflows without compatibility layers
+
+* Enterprise compatibility: Align with Windows-centric enterprise environments
+that require native Windows containers
+
+* Performance optimization: Experience potential performance improvements when
+running on Windows hosts with matching kernel versions
+
+== Technical details
+
+=== General
+
+The Windows containers are built on Microsoft's official Windows Server Core
+container images, optimized for standards development workflows with Metanorma.
+
+=== Container images and tags
+
+The Windows containers are available in multiple variants based on Windows
+Server versions:
+
+`metanorma/metanorma:windows-latest`:: Built on the Windows Server 2022
+container base of `mcr.microsoft.com/windows/servercore:ltsc2022`
+
+`metanorma/metanorma:windows-2019-latest`:: Built on the container of
+`mcr.microsoft.com/dotnet/framework/runtime:4.8`: Windows Server 2019 with .NET
+Framework 4.8 which is required for Chocolatey
+
+`metanorma/metanorma:windows-2025-latest`:: Built on the Windows Server 2025
+container base of `mcr.microsoft.com/windows/servercore:ltsc2025`
+
+=== What's inside
+
+The Windows containers include:
+
+* Full Metanorma CLI and all standard Metanorma flavors
+* Ruby runtime environment
+* Git, MSYS2, and MinGW tools
+* Inkscape for image processing
+* PlantUML for diagram generation
+* Fonts and other required dependencies
+
+=== Version compatibility
+
+Please note that Windows containers require kernel version compatibility between
+the host and container. This means that the container's Windows version should
+match the host's Windows version for optimal performance and compatibility.
+
+For optimal performance and compatibility:
+
+. Windows Server 2022 host should use the 2022-based container
+. Windows Server 2019 host should use the 2019-based container
+. Windows Server 2025 host should use the 2025-based container
+
+If that is not possible, you can always use the following alternatives:
+
+* use Hyper-V isolation to run containers regardless of the
+host's Windows version, though with a slight performance penalty,
+
+* use WSL2 (Windows Subsystem for Linux) to run the Metanorma Linux containers
+on Windows.
+
+== Usage examples
+
+=== Basic document compilation
+
+To compile a Metanorma document using a Windows container from the Command
+Prompt:
+
+[source,sh]
+----
+docker run -v "%cd%:c:/metanorma" metanorma/metanorma:windows-latest metanorma compile document.adoc
+----
+
+From PowerShell:
+
+[source,sh]
+----
+docker run -v "${PWD}:c:/metanorma" metanorma/metanorma:windows-latest metanorma compile document.adoc
+----
+
+=== Using Hyper-V isolation
+
+If you need to run a container version that doesn't match your host Windows
+version:
+
+[source,sh]
+----
+docker run --isolation=hyperv -v "%cd%:c:/metanorma" metanorma/metanorma:windows-latest metanorma compile document.adoc
+----
+
+=== Specifying output formats
+
+As with our Linux containers, you can specify multiple output formats:
+
+[source,sh]
+----
+docker run -v "%cd%:c:/metanorma" metanorma/metanorma:windows-latest metanorma compile -x html,pdf,doc document.adoc
+----
+
+== GitHub Actions integration
+
+=== General
+
+One of the most powerful features of these Windows containers is their ability
+to integrate with GitHub Actions on Windows runners.
+
+=== Workflow example
+
+Here's a simple example of how to use the Metanorma Windows container in a
+GitHub Actions workflow:
+
+[source,yaml]
+----
+name: Build Documents
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build with Metanorma
+        run: |
+          docker run -v ${PWD}:c:/metanorma metanorma/metanorma:windows-latest metanorma compile document.adoc
+----
+
+This enables organizations with Windows-centric infrastructure to integrate
+Metanorma smoothly into their CI/CD pipelines.
+
+== Testing and quality assurance
+
+The Windows containers undergo rigorous testing to ensure they meet Metanorma's
+high standards for reliability and performance. Our testing process includes:
+
+* Automated builds across all supported Windows Server versions
+* Functional testing of all Metanorma features
+* Integration testing with GitHub Actions workflows
+* Cross-platform compatibility verification
+
+[example]
+====
+A typical testing workflow validates that documents can be successfully compiled
+with the same output across Linux and Windows containers:
+
+[source,sh]
+----
+# Compile with Linux container
+docker run -v "$PWD":/metanorma metanorma/metanorma metanorma compile document.adoc
+
+# Compile with Windows container
+docker run -v "%cd%:c:/metanorma" metanorma/metanorma:windows-latest metanorma compile document.adoc
+
+# Compare outputs
+diff _output/document.html _output_windows/document.html
+----
+====
+
+== Benefits for standards developers
+
+=== Streamlined Windows workflows
+
+For standards developers working in Windows environments, these containers offer:
+
+* Native Windows command shell integration
+* Seamless file system access with proper path handling
+* No need to context switch between Windows and Linux environments
+* Better performance when running on Windows hosts
+
+=== Enterprise integration
+
+Organizations with Windows-centric IT policies can now:
+
+. Use Metanorma within corporate CI/CD pipelines based on Windows
+. Maintain compliance with IT policies that may restrict Linux usage
+. Provide standardized development environments across Windows-based teams
+. Integrate with other Windows tools and services
+
+=== Simplified deployment
+
+The Windows containers simplify deployment by:
+
+* Eliminating the need for WSL or Linux VMs on Windows hosts
+* Reducing setup time with pre-packaged dependencies
+* Providing consistent environments across development and production
+* Supporting Windows-native CI/CD systems
+
+== Getting started
+
+To get started with Metanorma Windows containers:
+
+. Install Docker Desktop for Windows with Windows container support enabled
+. Pull the appropriate container for your Windows version:
++
+[source,sh]
+----
+docker pull metanorma/metanorma:windows-latest
+----
++
+. Run a test compilation:
++
+[source,sh]
+----
+docker run -v "%cd%:c:/metanorma" metanorma/metanorma:windows-latest metanorma --version
+----
++
+. Start creating and compiling your standards documents!
+
+== Conclusion
+
+The addition of Windows Docker containers to the Metanorma ecosystem represents
+a significant step forward in our mission to provide flexible, platform-agnostic
+tools for standards development. Whether you're working in a Windows-centric
+enterprise environment, need to integrate with Windows-based CI/CD workflows, or
+simply prefer working in Windows, these containers provide a native, optimized
+solution.
+
+We invite you to try the new Windows containers and share your feedback with us.
+Your input is invaluable as we continue to improve and expand Metanorma's
+capabilities.
+
+For more details on using Windows containers, including advanced configuration
+options and troubleshooting tips, please refer to the updated documentation in
+the https://github.com/metanorma/metanorma-docker[Metanorma Docker repository].
