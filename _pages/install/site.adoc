@@ -506,7 +506,7 @@ and outputs to the default directory (`_site`).
 metanorma site generate
 ----
 
-=== Basic site generation
+=== Basic site generation (given directory)
 
 Uses the default configuration file (`metanorma.yml`) in the `./sources` directory,
 and outputs to the specified directory (`./output`).
@@ -514,6 +514,17 @@ and outputs to the specified directory (`./output`).
 [source,sh]
 ----
 metanorma site generate ./sources -o output
+----
+
+=== Basic site generation (given site manifest file)
+
+Uses the specified configuration file
+(`./sources/project-a/my-manifest.yml`),
+and outputs to the specified directory (`./output`).
+
+[source,sh]
+----
+metanorma site generate ./sources/project-a/my-manifest.yml -o output
 ----
 
 === Custom naming with metadata
