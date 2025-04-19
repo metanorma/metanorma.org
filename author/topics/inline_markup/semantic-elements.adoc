@@ -238,6 +238,14 @@ https://cldr.unicode.org[Unicode CLDR].
 `number:32232.232[decimal='.']` is formatted as _32232.232_.
 ====
 
+`significant`::: Number of significant digits to render. Accepts an integer value.
++
+.Specifying a precision of 6 digits
+[example]
+====
+`number:32232.232[significant=6]` is formatted as _32232.2_.
+====
+
 `precision`::: Number of fractional digits to render. Accepts an integer value.
 +
 .Specifying a precision of 6 digits
@@ -248,10 +256,10 @@ https://cldr.unicode.org[Unicode CLDR].
 
 `digit_count`::: Total number of digits to render. Accepts an integer value.
 +
-.Specifying a total of 6 digits in rendering the number
+.Specifying a total of 8 digits in rendering the number
 [example]
 ====
-`number:32232.232[digit_count=6]` is formatted as _32232.2_.
+`number:32232.2[digit_count=8]` is formatted as _32232.200_.
 ====
 
 `group`::: Delimiter to use between groups of digits. Accepts a character. (default is not to group digits.)
@@ -361,7 +369,26 @@ _32.232232 · 10^4^_.
 `number:32232.232[notation=e,e=e]` is formatted as _3.2232232e5_.
 ====
 
+`large_notation`::: Allow a choice of two different notations for numbers,
+one as the default (`notation`), and this for very large or very small numbers.
+Takes the same values as `notation`.
 
+`large_notation_min`::: The threshold for very small numbers, below which
+the `large_notation` option must be applied. If not provided, it defaults to 1e-6.
+
+`large_notation_max`::: The threshold for very large numbers, above which
+the `large_notation` option must be applied. If not provided, it defaults to 1e6.
++
+.Using `large_notation` to flip between two notations for numbers
+[example]
+====
+`number:32232.232[notation-basic,large_notation=e]` is formatted as _32232.232_.
+`number:322322.32[notation-basic,large_notation=e]` is formatted as _3.2232232E6_.
+`number:322322.32[notation-basic,large_notation=e,large_notation_max=1e7]` is formatted as _322322.32_.
+`number:0.000032232232[notation-basic,large_notation=e]` is formatted as _0.000032232232_.
+`number:0.0000032232232[notation-basic,large_notation=e]` is formatted as _3.2232232E-6_.
+`number:0.0000032232232[notation-basic,large_notation=e,large_notation_min=1e-7]` is formatted as _0.0000032232232_.
+====
 
 === Profiles
 
