@@ -257,6 +257,37 @@ Distance in kilometres
 ----
 ====
 
+[[statement-requirements]] 
+== Statement concerning requirements
+
+A statement concerning requirements used can be added to a table.
+
+NOTE: This currently applies to the ISO, IEC and BSI flavors, and flavors that
+inherit from them.
+
+The requirements statement is encoded as a NOTE of type `requirement` (`[NOTE,type=requirement]`).
+
+The statement is rendered with the other table notes 
+in the table footer [added in https://github.com/metanorma/metanorma-iso/releases/tag/v3.0.5].
+Unlike other table notes, it is not numbered or labelled as a note.
+
+.Table with a statement concerning units
+====
+[source,adoc]
+----
+|===
+|Location |Distance 
+
+|Over there | 6 
+|===
+
+[NOTE,type=requirement]
+The distance shall be verified indepenently
+
+[NOTE]
+"Over there" is to be understood as not over here
+----
+====
 
 
 == Multiple header rows
