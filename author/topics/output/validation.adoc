@@ -177,33 +177,39 @@ Issue with includes
 
 Severity 0 (fatal):::
 +
-* Specified include file does not exist.
+* The specified file indicated in the `include` command does not exist.
 +
 [NOTE]
 --
-This issue also arises if the include is block-commented: AsciiDoc does
-not take block comments into account when it processes ``include``s. Metanorma is
-more strict in enforcing the existence of included files than a typical AsciiDoc
-processor.
+It is important to note that "block comments" (comments delimited by `////`)
+**do not comment out** the `include` command.
+If an `include` command is given in a block comment, the `include` command will
+still be processed and the contents included in the commented out text. This
+means that if the included file does not exist, the "missing include file" error
+will be raised, as Metanorma is more strict in enforcing the existence of
+included files than a typical AsciiDoc processor.
 
-To prevent bad includes from aborting execution, either put a `:novalid:`
-document attribute in the document, to prevent checking for fatal errors, or
-else comment out the include with a line comment instead of a block comment:
+To prevent bad includes from aborting execution, either:
 
+* skip checking for fatal errors entirely by putting a `:novalid:` document attribute in the document; or
+* comment out the `include` command with a "line comment" (a line starting with `//`)
+instead of a "block comment", as follows:
++
 [source,asciidoc]
 ----
-//include:missing-file[]
+ // include:missing-file[]
 ----
-
++
 instead of
-
++
 [source,asciidoc]
 ----
-////
-include:missing-file[]
-////
+ ////
+ include:missing-file[]
+ ////
 ----
 --
+
 * Specified boilerplate file does not exist (`:boilerplate-authority:`) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.7].
 
 
