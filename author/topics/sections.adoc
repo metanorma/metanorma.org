@@ -166,17 +166,28 @@ Supported section type declarations include the following.
 
 |===
 
-[NOTE]
---
-Documents can contain only one "Abstract," one "Acknowledgements" section, 
-one "Executive summary" and one "Index".
-In most flavours and document types, documents can only contain one "Terms and Definitions" section.
-If a second matching clause is found, it is treated as a normal clause.
+
+There are some restrictions on the number of sections of certain types that can
+be included in a document.
+
+For all documents:
+
+* only one "Abstract" section is allowed
+* only one "Acknowledgements" section is allowed
+* only one "Executive summary" section is allowed
+* only one "Index" section is allowed
+
+In most flavours and document types:
+
+* only one "Terms and definitions" section is allowed
+
+For sections that are limited to one instance, if a second matching clause is found,
+it is treated as a normal clause.
 
 This behavior can be overridden by specifying the section type in a `heading`
 attribute: this is interpreted as the user explicitly wanting that section type
 to apply [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.10.0].
---
+
 
 The following example indicates usage of the section titles.
 
