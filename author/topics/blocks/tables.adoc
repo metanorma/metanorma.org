@@ -257,7 +257,7 @@ Distance in kilometres
 ----
 ====
 
-[[statement-requirements]] 
+[[statement-requirements]]
 == Statement concerning requirements
 
 A statement concerning requirements used can be added to a table.
@@ -267,7 +267,7 @@ inherit from them.
 
 The requirements statement is encoded as a NOTE of type `requirement` (`[NOTE,type=requirement]`).
 
-The statement is rendered with the other table notes 
+The statement is rendered with the other table notes
 in the table footer [added in https://github.com/metanorma/metanorma-iso/releases/tag/v3.0.5].
 Unlike other table notes, it is not numbered or labelled as a note.
 
@@ -276,9 +276,9 @@ Unlike other table notes, it is not numbered or labelled as a note.
 [source,adoc]
 ----
 |===
-|Location |Distance 
+|Location |Distance
 
-|Over there | 6 
+|Over there | 6
 |===
 
 [NOTE,type=requirement]
@@ -320,27 +320,143 @@ h| Test A h| Test B h| Test C
 
 NOTE: This feature is not supported in typical AsciiDoc.
 
+
 == Table styling
 
-Styling of table rows and cells is supported to a limited extent: CSS styles can be applied
-to a table row using the macro `tr-style:[...]`, and to a table cell using the macro
-`td-style:[...]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.4].
-The only CSS attributes guaranteed to be supported in Metanorma for table rows and cells are
-`background-color`, `color`, and [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.7]
-`border` and the associated `border-*` attributes, such as `border-width` and `border-top-style`.
+=== General
 
+Metanorma supports customized styling of tables to create visually distinctive
+tables for highlighting important information in standards documents.
+
+Styling is achieved through a limited subset of CSS properties applied
+to rows and cells.
+
+
+=== Styling commands
+
+Metanorma provides two primary commands for applying CSS styles to table elements:
+
+`tr-style:[...]`:: Applies CSS styles to an entire table row [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.4]
+
+`td-style:[...]`:: Applies CSS styles to a specific table cell [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.4]
+
+
+=== Supported CSS properties
+
+The CSS properties supported in Metanorma for table rows and cells are as follows.
+Properties that are not listed here are not supported.
+
+`background-color`::
+Sets the background color of a cell or row.
+
+`color`::
+Sets the text color of a cell or row.
+
+`border`::
+Sets all border properties in one declaration [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.7]
+
+`border-*` attributes::
+Including `border-width`, `border-style`, `border-color`, and directional variants such as `border-top-style` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.7]
++
+NOTE: The `border-*` properties follow standard CSS conventions, allowing you to
+target specific sides of a cell or row.
+
+[example]
+.Property value examples
+====
+CSS properties accept standard CSS values:
+
+* `background-color`: `red`, `#ff0000`, `rgb(255,0,0)`
+* `color`: `blue`, `#0000ff`, `rgb(0,0,255)`
+* `border`: `1px solid black`
+* `border-width`: `1px`, `2px`, `thin`
+* `border-style`: `solid`, `dashed`, `dotted`
+* `border-color`: `black`, `#000000`
+====
+
+
+=== Application methods
+
+Styles can be applied in three ways:
+
+* *Row-level styling*: Apply to an entire row using `tr-style:[...]` at the end
+of the last cell in that row
+
+* *Cell-level styling*: Apply to a specific cell using `td-style:[...]`
+immediately after the cell's content, before the next cell
+
+* *Combined styling*: Apply multiple styles to the same element by using
+multiple style macros in sequence
+
+
+.Simple example with row-level styling
+[example]
+====
 [source,asciidoc]
 ----
 |===
 |A |B |C tr-style:[background-color: red]
 
-h|1 td-style:[background-color: green] td-style:[color: blue] |2 tr-style:[background-color: green] |3 
+h|1 td-style:[background-color: green] td-style:[color: blue]
+|2 tr-style:[background-color: green]
+|3
+
 |===
 ----
 
-This example applies `background-color: red` to the first row, `background-color: green` to the second row,
-and `background-color: green;color: blue` (as a combination of styles) to the first (header) cell
-of the second row.
+Here:
+
+* `background-color: red` is applied to the first row
+* `background-color: green` is applied to the second row
+* `background-color: green` and `color: blue` (as a combination of styles) are
+applied to the first (header) cell of the second row
+====
+
+
+[example]
+.Table with color-coded cells indicating results
+====
+[source,asciidoc]
+----
+|===
+|Test ID |Test Method |Result |Conformity tr-style:[background-color: #eeeeee]
+
+|TC-001 |Method A |Pass td-style:[color: green] |Conforms
+|TC-002 |Method B |Fail td-style:[color: red] |Does not conform
+|TC-003 |Method A |Not tested td-style:[color: gray] |Incomplete
+|===
+----
+
+Here:
+
+* `background-color: #eeeeee` is applied to the header row
+* `color: green` is applied to the first cell of the second row
+* `color: red` is applied to the second cell of the third row
+* `color: gray` is applied to the first cell of the third row
+====
+
+[example]
+.Table with border styling
+====
+[source,asciidoc]
+----
+|===
+|Standard |Edition |Publication Date tr-style:[border-bottom: 2px solid black]
+
+|ISO 8601 td-style:[border-right: 1px solid gray] |Third edition |2019-02
+|ISO 19005-1 td-style:[border-right: 1px solid gray] |First edition |2005-10
+|ISO/IEC 10646 td-style:[border-right: 1px solid gray] |Sixth edition |2020-05
+|===
+----
+
+Here:
+
+* `border-bottom: 2px solid black` is applied to the header row
+* `border-right: 1px solid gray` is applied to the first cell of the second row
+* `border-right: 1px solid gray` is applied to the second cell of the second row
+* `border-right: 1px solid gray` is applied to the first cell of the third row
+====
+
 
 
 == Accessibility metadata
