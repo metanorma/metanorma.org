@@ -21,7 +21,9 @@ excerpt: >-
 Previously, we can load YAML file by `yaml2text` or JSON file by `json2text` in
 Metanorma documents.  We can now mix JSON and YAML files by a single macro `data2text`.
 
-=== Usage Example
+== Usage Examples
+
+=== Multiple contexts
 
 Multiple contexts can be mixed with json files and yaml files by using
 `data2text`.
@@ -74,6 +76,71 @@ I'm heading to the bar for beef.
 
 This is hello world.
 The color is red and the shape is square.
+----
+
+=== Content contains json or yaml filepaths
+
+When the content of the loaded files contains filepaths of json files or
+yaml files, you can load extra data by these filepaths by `load_file` liquid
+filter.
+
+Given:
+
+strings1.json
+[source,json]
+----
+{
+  "foo": "bar",
+  "paths": ["a.yaml", "b.yaml"]
+}
+----
+
+Where:
+
+* `paths` is an array of filepaths relative to the Metanorma document
+
+a.yaml
+[source,yaml]
+----
+---
+shape: circle
+color: red
+----
+
+b.yaml
+[source,yaml]
+----
+---
+shape: square
+color: blue
+corners: 4
+----
+
+And the block:
+[source,asciidoc]
+------
+[data2text,my_context=strings1.json]
+----
+I'm heading to the {{my_context.foo}}.
+
+{% for path in my_context.paths %}
+{% assign data = path | load_file %}
+This is {{ data.shape }} with color {{ data.color }}.
+{% endfor %}
+----
+------
+
+Where:
+
+* `load_file` is a liquid filter that loads the file content
+
+Will render as:
+[source,asciidoc]
+----
+I'm heading to the bar.
+
+This is circle with color red.
+This is square with color blue.
 ----
 
 == Conclusion
