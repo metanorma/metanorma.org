@@ -1,0 +1,150 @@
+---
+layout: post
+title: "New macro `data2text` for mixing JSON and YAML data in Metanorma"
+date: 2025-04-22
+categories: documentation
+
+authors:
+  -
+    name: Kwan Koon Wa
+    email: kw.kwan@ribose.com
+    social_links:
+      - https://github.com/kwkwan
+
+excerpt: >-
+  Metanorma announces the release of a new macro `data2text` for mixing JSON
+  and YAML data in Metanorma documents.
+---
+
+== Introduction
+
+Previously, we can load YAML file by `yaml2text` or JSON file by `json2text` in
+Metanorma documents.  We can now mix JSON and YAML files by a single macro `data2text`.
+
+== Usage Examples
+
+=== Multiple contexts
+
+Multiple contexts can be mixed with json files and yaml files by using
+`data2text`.
+
+Given:
+
+`strings1.json` contains JSON data:
+[source,json]
+----
+{
+  "foo": "bar",
+  "dead": "beef"
+}
+----
+
+`strings2.yaml` contain YAML data:
+[source,yaml]
+----
+---
+hello: world
+color: red
+shape: square
+----
+
+And the block:
+
+[source,asciidoc]
+------
+[data2text,my_json=strings1.json,my_yaml=strings2.yaml]
+----
+I'm heading to the {{my_json.foo}} for {{my_json.dead}}.
+
+This is hello {{my_yaml.hello}}.
+The color is {{my_yaml.color}} and the shape is {{my_yaml.shape}}.
+
+----
+------
+
+The file path is `strings1.json`, and context name is `my_json`.
+`{{my_json.foo}}` evaluates to the value of the key `foo` in `my_json`.
+
+The file path is `strings2.yaml`, and context name is `my_yaml`.
+`{{my_yaml.hello}}` evaluates to the value of the key `hello` in `my_yaml`.
+
+The document will render as:
+
+[source,asciidoc]
+----
+I'm heading to the bar for beef.
+
+This is hello world.
+The color is red and the shape is square.
+----
+
+=== Content contains json or yaml filepaths
+
+When the content of the loaded files contains filepaths of json files or
+yaml files, you can load extra data by these filepaths by `load_file` liquid
+filter.
+
+Given:
+
+strings1.json
+[source,json]
+----
+{
+  "foo": "bar",
+  "paths": ["a.yaml", "b.yaml"]
+}
+----
+
+Where:
+
+* `paths` is an array of filepaths relative to the Metanorma document
+
+a.yaml
+[source,yaml]
+----
+---
+shape: circle
+color: red
+----
+
+b.yaml
+[source,yaml]
+----
+---
+shape: square
+color: blue
+corners: 4
+----
+
+And the block:
+[source,asciidoc]
+------
+[data2text,my_context=strings1.json]
+----
+I'm heading to the {{my_context.foo}}.
+
+{% for path in my_context.paths %}
+{% assign data = path | load_file %}
+This is {{ data.shape }} with color {{ data.color }}.
+{% endfor %}
+----
+------
+
+Where:
+
+* `load_file` is a liquid filter that loads the file content
+
+Will render as:
+[source,asciidoc]
+----
+I'm heading to the bar.
+
+This is circle with color red.
+This is square with color blue.
+----
+
+== Conclusion
+
+The new `data2text` macro allows for a more flexible and powerful way to
+handle data in Metanorma documents. By enabling the mixing of JSON and YAML
+data, users can now create more complex and dynamic documents with ease.
