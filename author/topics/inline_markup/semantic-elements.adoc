@@ -670,13 +670,18 @@ Number formatting profiles can also be used on formulas.
 ----
 ====
 
-It is possible to specify that by default, all formulas have their numbers
-formatted, through the `number-presentation-formula` document attribute.
+It is possible to specify that how all formulas' numbers should be formated by default, 
+through the `number-presentation-formula` document attribute.
 
-The document attribute can take the value `number-presentation`, in which case
-it has the same value as the `:number-presentation:` document attribute; or
-`default`, in which case default number formatting is applied
-(`notation='basic'`).
+The document attribute takes the same form of value as `number-presentation`. It
+also takes the following special values:
+
+* `number-presentation`: this gives number formats in formulas the same value as the 
+`:number-presentation:` document attribute, meaning that numbers both within and outside 
+formulas are formatted the same way. This is also the default behaviour if `number-presentation-formula`
+is not provided [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.8].
+* `nil`: apply no formatting to the numbers in formulas [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.8].
+* `default`: default number formatting is applied to numbers in formulas (`notation='basic'`).
 
 Syntax:
 
@@ -685,9 +690,95 @@ Syntax:
 :number-presentation-formula: {OPTIONS}
 ----
 
+So:
 
-If `number-presentation-formula` is set, a formula can ignore number formatting
-by setting `number-format: nil`.
+[source,adoc]
+----
+:number-presentation: notation=scientific
+
+number:1000[]
+
+[stem]
+++++
+1000+y
+++++
+----
+
+renders as
+
+___
+1e3
+
+1e3 + y
+___
+
+identically to:
+
+[source,adoc]
+----
+:number-presentation: notation=scientific
+:number-presentation-formula: number-presentation
+
+number:1000[]
+
+[stem]
+++++
+1000+y
+++++
+----
+
+So `number:[]` and numbers in formulas are subject to identical formatting.
+
+
+[source,adoc]
+----
+:number-presentation: notation=scientific
+:number-presentation-formula: nil
+
+number:1000[]
+
+[stem]
+++++
+1000+y
+++++
+----
+
+renders with no number formatting in the formula, as:
+
+____
+1e3
+
+1000 + y
+____
+
+and 
+
+[source,adoc]
+----
+:number-presentation: notation=scientific
+:number-presentation-formula: nil
+
+number:1000[]
+
+[stem]
+++++
+1000+y
+++++
+----
+
+renders with basic number formatting in the formula, as:
+
+____
+1e3
+
+1,000 + y
+____
+
+
+
+
+If `number-presentation-formula` is set, a formula can ignore all number formatting
+by setting `number-format: nil` on the formula itself.
 
 .Using the `number-presentation-formula` document attribute
 [example]
