@@ -420,6 +420,52 @@ of the term [added in https://github.com/metanorma/metanorma-standoc/releases/ta
 [[id2]]Term 2::: Another Definition
 --
 
+== Inline element anchors
+
+The Asciidoc syntax allows an anchor to be specified on a block, or as a standalone inline element
+with no textual content (a bookmark). Metanorma also allows an anchor to be associated with a span of text 
+within a block, using the macro `anchor:{anchor}[text]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.9]:
+
+[source,adoc]
+----
+[[block-anchor]]
+|===
+| [[bookmark]] This is a cell that is not pointed to by the bookmark anchor.
+| anchor:ABC[*this is some text referenced by ABC*]
+|===
+
+<<block-anchor,This cross-reference points to the entire table>>
+
+<<bookmark,This cross-reference points to the bookmark preceding the text "This is a cell...", but not to the text itself>>
+
+<<ABC,This cross-reference points to the boldface text span "This is some text referenced by ABC">>
+----
+
+== Source anchor tracers
+
+Metanorma XML preserves the links between different representations of the same source data wherever possible, to establish traceability.
+This is particulary important when connecting a serialisation of external data, stored in `metanorma-extension`, to a Metanorma XML
+representation of that data.
+
+In order to establish such connections, particulary in the Lutaml processing of external data into Metanorma XML, Metanorma provides
+the macro `source-id:{anchor}[text]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.9]. This wraps `text`
+(as a serialisation of external data) in a `span` element with the `@source` attribute `anchor`, which corresponds to an `@anchor`
+identifier inserted in the serialisation of that source data. So for example if we want to trace the Lutaml serialisation of the `widget` attribute 
+in an external model, with value `ABC`, we would serialise the external model under metanorma-extension with an anchor we create,
+say as `<widget anchor="11214">ABC</widget>`. We would then map the Metanorma representation of that attribute back to the serialisation 
+with the expression `source-id:11214[ABC]`, which is realised in Metanorma XML as `<span source="11214">ABC</span>`; `11214` is used as the
+cross-reference binding the two together.
+
+If `source-id:{anchor}[]` is used with empty text, the `@source` attribute is assigned instead to the XML element containing the macro.
+So:
+
+[source,adoc]
+----
+NOTE: This is a note source-id:11214[]
+----
+
+assigns `@source = "11214"` to the note containing the macro.
+
 == Hyperlinks
 
 Hyperlinks to URIs can have alt text, which is used in accessibility
