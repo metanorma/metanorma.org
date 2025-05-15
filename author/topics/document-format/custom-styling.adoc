@@ -28,9 +28,10 @@ see link:/author/ref/document-attributes/#visual-appearance[Document attributes:
 == Additional CSS stylesheet
 
 A user can specify CSS for inclusion in Metanorma output by embedding that CSS in a source block
-within a `user-css` subclause of  the `Metanorma-Extension` clause [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.8].
+within a `user-css` subclause of the 
+link:topics/sections/extension-container[`Metanorma-Extension` clause] [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.8].
 This CSS will be applied to all of PDF, DOC, and HTML; note that DOC only supports CSS 4.
-The `Metanorma-Extension` clause can appear anywhere in the document body.
+The `Metanorma-Extension` clause should appear in the preface, before other clauses.
 
 In the following example, CSS classes are interpreted as applying to the `span:[]` macro applied to inline text:
 see link:/author/topics/inline_markup/text_formatting/#css[CSS declarations].
@@ -38,6 +39,7 @@ see link:/author/topics/inline_markup/text_formatting/#css[CSS declarations].
 
 [source,asciidoc]
 -----
+[.preface]
 == Metanorma-Extension
 
 === user-css
@@ -57,6 +59,7 @@ sets the background colour of examples, notes, and admonitions in a document to 
 
 [source,asciidoc]
 -----
+[.preface]
 == Metanorma-Extension
 
 === user-css
