@@ -64,8 +64,13 @@ Alice <-- Bob: another authentication Response
 --
 
 Metanorma when encountered with a `[plantuml]` block will automatically invoke
-PlantUML to transform your text input into a PNG image. The images are stored in
-a `plantuml` directory relative to the current path.
+PlantUML to transform your text input into a PNG image. You can change the output format
+for PlantUML to be SVG, using the document attribute 
+`:plantuml-image-format: svg` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.9]
+The images are stored in a `_plantuml_images` directory relative to the 
+current path [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.9]. 
+(In previous releases, they were stored in either a `plantuml` directory, or in the directory specified 
+by the `:imagesdir:` document attribute).
 
 === Related links
 
