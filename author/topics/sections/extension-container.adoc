@@ -31,3 +31,48 @@ The following features utilize the `metanorma-extension` section:
 * https://www.unitsml.org/[UnitsML] definitions of units referenced in the
 document, or identifiers used as aliases of anchors in the document.
 * link:/author/topics/document-format/custom-styling#user-css[custom CSS declaration]
+
+It is possible to specify that an external file needs to have its content copied into
+`metanorma-extension`, as data that needs to be included for downstream processing.
+This is done using the `source_include:path[]` macro, where `path` is the location of the
+external file [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.9].
+The file contents will be copied into a clause within `metanorma-extension` with the file location
+as its title, and the contents of the file will be nested in a `source` element:
+
+[source,asciidoc]
+----
+[[clause1]]
+== Clause
+source_include:spec/fixtures/nested_file_1.yaml[]
+
+A
+----
+
+generates:
+
+[source,xml]
+----
+
+...
+
+<metanorma-extension>
+  <clause obligation="normative">
+    <title>spec/fixtures/nested_file_1.yaml</title>
+    <source>---
+name: nested file-main
+description: nested description-main
+one: nested one-main
+two: nested two-main </source>
+  </clause>
+</metanorma-extension>
+
+...
+
+<clause id="..." anchor="clause1" inline-header="false" obligation="normative">
+  <title>Clause</title>
+  <p id="...">A</p>
+</clause>
+
+...
+
+----
