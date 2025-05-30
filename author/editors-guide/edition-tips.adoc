@@ -34,8 +34,8 @@ straightforward way to change them all at once:
 . Place the cursor in the bar address, write `cmd` and press ENTER. The command
 line will open on that folder location.
 
-. In the command line, execute the command `ren *.PNG *.png`, and all `*.PNG`
-files will be renamed as `*.png`.
+. In the command line, execute the command `ren ++*++.PNG ++*++.png`,
+and all `++*++.PNG` files will be renamed as `*.png`.
 
 
 == Using different math expression languages
@@ -278,3 +278,36 @@ for more information on composing references and bibliographies in AsciiDoc.
 
 For more information about composing references and bibliography,
 see: link:/author/topics/sections/bibliography/[Bibliography]
+
+== Autogenerate Section IDs are no longer supported -- Always assign custom IDs
+
+In original AsciiDoc, section IDs can be automatically generated based on the
+title of the section. Meaning that, for a section titled "Section title",
+the ID would be `section_title`. Allowing you to reference the section as
+`<<section_title>>` without having to assign a custom ID.
+
+This feature, commonly known as
+https://docs.asciidoctor.org/asciidoc/latest/sections/auto-ids/[sectids],
+is no longer supported in Metanorma. Therefore, you must always assign a
+custom ID to any section referenced elsewhere in the document.
+
+.Invalid section ID
+====
+[source,adoc]
+--
+== Section title
+This section has no custom ID, and cannot be referenced using sectids, i.e.
+`<<section_title>>` or `<<section_title,Section title>>`.
+--
+====
+
+.Valid section ID
+====
+[source,adoc]
+--
+[[section_custom_id]]
+== Section title
+This section has a custom ID, and can be referenced as
+`<<section_custom_id>>` or `<<section_custom_id,Section title>>`.
+--
+====
