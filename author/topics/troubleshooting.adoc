@@ -37,6 +37,17 @@ want to exclude it from being rendered, you can easily comment out the section.
  ...
 ----
 
+If your document consists of multiple included subdocuments, or contains
+Liquid templates which are resolved through Lutaml, the document(s) you have
+provided will be different to the document Metanorma parses, which will get
+in the way of debugging. (For example, Asciidoctor will report markup errors
+against the line number of the concatenated document it sees, with all includes
+resolved, not the line number of the individual included documents.) 
+To help in debugging, we generate the output of all Asciidoc
+preprocessing, including resolving Liquid and includes, as the file
+`{filename}.asciidoc.log.txt`, generated in the same directory as the base
+source document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.10].
+
 === Where to start troubleshooting?
 
 * *If the document did not compile:*
