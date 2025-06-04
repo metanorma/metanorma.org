@@ -81,7 +81,7 @@ The color is red and the shape is square.
 === Content contains json or yaml filepaths
 
 When the content of the loaded files contains filepaths of json files or
-yaml files, you can load extra data by these filepaths by `load_file` liquid
+yaml files, you can load extra data by these filepaths by `loadfile:` liquid
 filter.
 
 Given:
@@ -124,7 +124,7 @@ And the block:
 I'm heading to the {{my_context.foo}}.
 
 {% for path in my_context.paths %}
-{% assign data = path | load_file %}
+{% assign data = path | loadfile: "." %}
 This is {{ data.shape }} with color {{ data.color }}.
 {% endfor %}
 ----
@@ -132,7 +132,9 @@ This is {{ data.shape }} with color {{ data.color }}.
 
 Where:
 
-* `load_file` is a liquid filter that loads the file content
+* `loadfile:` is a liquid filter that loads the file content based on `path`
+  with argument `.`. The argument is the path of the parent folder, which is the
+  current directory of the Metanorma document.
 
 Will render as:
 [source,asciidoc]
@@ -142,6 +144,47 @@ I'm heading to the bar.
 This is circle with color red.
 This is square with color blue.
 ----
+
+
+=== Nested with other macros
+
+You can also nest the `data2text` macro within other Metanorma macros for more
+complex use cases.
+
+Given:
+
+`strings.yaml` contains YAML data:
+[source,yaml]
+----
+---
+foo: bar
+dead: beef
+----
+
+And the block:
+
+[source,asciidoc]
+------
+[data2text,context=strings.yaml]
+----
+[lutaml_express,schemas,repo,config_yaml=schemas.yaml,include_path=../../]
+-----
+\include::./path/to/_schemas.liquid[]
+-----
+----
+------
+
+The `raw` tag is used to prevent the `context` from being processed by
+`lutaml_express`, allowing it to be processed by `data2text` in the liquid
+template file.
+
+[source,liquid]
+----
+{% raw %}
+{{ context.foo }}
+{% endraw %}
+----
+
 
 == Conclusion
 
