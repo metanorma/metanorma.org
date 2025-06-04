@@ -396,13 +396,23 @@ and can be multilingual:
 
 * Introductory title (optional)
 * Main title (mandatory)
-* Part title (optional)
+* Complemnentary title or Part title (optional)
+
+NOTE: A complementary title and a part title do not coexist.
+
+NOTE: As per the latest ISO/IEC DIR 2 of 2024, a new notion of the
+"complementary title" has been introduced, which is used to represent a third
+element of titles for documents that are not parts themselves. The examples
+below have hence been updated accordingly to such new feature supported by
+Metanorma.
 
 NOTE: In the case where an ISO deliverable title has multiple elements, care
-should be taken when assigning them to title components. For instance, a not
-necessarily mean that the document has a part title.
+should be taken when assigning them to title components. For instance, a title
+with 3 elements does not necessarily mean that the document has a part title. It
+may be the case where the introductory title has two elements, or the
+complementary title has two elements, or other cases.
 
-.Example of title with multiple elements but no part title
+.Example of title with a complementary title
 [example]
 ====
 ISO/IEC 27001:2022 has the title:
@@ -412,11 +422,27 @@ is encoded as:
 
 [source,adoc]
 ----
-:title-intro-en: Information security, cybersecurity and privacy protection -- Information security management systems
-:title-main-en: Information security management systems -- Requirements
+:title-intro-en: Information security, cybersecurity and privacy protection
+:title-main-en: Information security management systems
+:title-complementary-en: Requirements
 ----
 
-Notice that there is no part title, as it is not a part standard (e.g. "Part 1").
+Notice that there is a complementary title not a part title, as it is not a part
+standard (e.g. "Part 1").
+====
+
+.Another example of title with a complementary title
+[example]
+====
+ISO/TS 32004:2024 "Document management -- Portable Document Format -- Integrity
+protection in encrypted documents in PDF 2.0" is encoded as:
+
+[source,adoc]
+----
+:title-intro-en: Document management
+:title-main-en: Portable Document Format
+:title-complementary-en: Integrity protection in encrypted documents in PDF 2.0
+----
 ====
 
 .Example of title with a part title
@@ -435,7 +461,8 @@ and is encoded as:
 :title-part-en: Description methods: The EXPRESS language reference manual
 ----
 
-Since this is a part standard ("Part 11"), the last title element is assigned as the part title.
+Since this is a part standard ("Part 11"), the last title element is assigned as
+the part title, not a complementary title.
 ====
 
 Attributes:

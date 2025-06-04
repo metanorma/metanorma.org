@@ -4,38 +4,67 @@ title: Custom styling
 ---
 = Custom styling
 
-By design, Metanorma has limited support for customising styling: document styling is set by the Standards-Defining Organisation,
-and one of the primary purposes of Metanorma is to enforce the styling set by the organisation.
+Metanorma supports the customization of styling for document flavors in multiple
+ways.
 
 == Overriding default CSS styling
 
-Styling in DOC and HTML is set by CSS stylesheets (with DOC styling following Microsoft's version of CSS 4). The approach
+Styling in DOC and HTML is set by CSS stylesheets. The approach
 taken to styling DOC and HTML output is described in:
 
 * link:/develop/topics/styling-output-html/[Styling HTML output]
-* link:/develop/topics/styling-output-msword/[Styling Microsoft Word output]A
+* link:/develop/topics/styling-output-msword/[Styling Microsoft Word output] (Word DOC only supports Microsoft's version of CSS 4)
 
 The classes that they presuppose are described in
 
 * link:/develop/ref/html/[HTML and MS Word HTML Output]
 
-If you are using an existing flavour of Metanorma, you can edit the CSS stylesheet in the gem, which is located in
-`/lib/isodoc/*/html/`, and replace the built-in version of the stylesheet with your own, through the document attributes
-`:htmlstylesheet:`, `:wordstylesheet:`, `:standardstylesheet:`: 
-see link:/author/ref/document-attributes/#visual-appearance[Document attributes: Visual appearance].
+Depending on the role of the user, there are different ways to override the default CSS styling.
+
+* A developer of a Metanorma flavor can directly edit the CSS stylesheet in the
+gem, which is located in `/lib/isodoc/*/html/`.
+
+* A user can override the default CSS stylesheet by specifying a custom CSS
+stylesheet. This is done by cloning the default CSS stylesheet (from the gem),
+editing it, and then specifying the path to the edited stylesheet in the
+document attributes.
+
+** For HTML output, specify the path to the custom CSS stylesheet
+in the document attributes `:htmlstylesheet:`.
+
+** For Word DOC output, specify the path to the custom CSS stylesheet
+in the document attributes `:wordstylesheet:`.
+
+** For PDF output, you can specify the path to the custom CSS stylesheet
+in the document attributes `:standardstylesheet:`.
+
+Please refer to
+link:/author/ref/document-attributes/#visual-appearance[Document attributes: Visual appearance] for details.
+
 
 [[user-css]]
-== Additional CSS stylesheet
+== Additional CSS styling
 
-A user can specify CSS for inclusion in Metanorma output by embedding that CSS in a source block
-within a `user-css` subclause of the 
-link:topics/sections/extension-container[`Metanorma-Extension` clause] [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.8].
-This CSS will be applied to all of PDF, DOC, and HTML; note that DOC only supports CSS 4.
-The `Metanorma-Extension` clause should appear in the preface, before other clauses.
+A user can specify CSS for inclusion in Metanorma output by embedding that CSS
+in a source block within a `user-css` subclause of the
+link:topics/sections/extension-container[Metanorma-Extension clause] [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.8].
 
-In the following example, CSS classes are interpreted as applying to the `span:[]` macro applied to inline text:
-see link:/author/topics/inline_markup/text_formatting/#css[CSS declarations].
+The CSS styling specified will be applied to the following output formats:
 
+* PDF
+* Word DOC (only supports CSS 4)
+* HTML
+
+The "Metanorma-Extension" clause should appear in the preface, before other clauses.
+
+
+NOTE: See link:/author/topics/inline_markup/text_formatting/#css[CSS declarations].
+
+.Applying CSS to inline text
+[example]
+====
+This example demonstrates applying CSS rulesto the `span:[]` command applied to
+inline text.
 
 [source,asciidoc]
 -----
@@ -46,16 +75,22 @@ see link:/author/topics/inline_markup/text_formatting/#css[CSS declarations].
 
 [source]
 ----
-.green { background-color: green} 
+.green { background-color: green}
 ----
 
 ....
 
 span:green[this text is highlighted as green]
 -----
+====
 
-However CSS within the document can also override styling in default CSS stylesheets; the following CSS clause for example
-sets the background colour of examples, notes, and admonitions in a document to white:
+CSS styling within the document can also override styling in default CSS stylesheets.
+
+.Applying CSS to block elements
+[example]
+====
+This example demonstrates how to override the default CSS styling for
+examples, notes, and admonitions in a document.
 
 [source,asciidoc]
 -----
@@ -73,3 +108,5 @@ sets the background colour of examples, notes, and admonitions in a document to 
 .example { background-color: white}
 ----
 -----
+====
+

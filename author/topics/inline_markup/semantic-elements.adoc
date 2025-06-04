@@ -670,18 +670,20 @@ Number formatting profiles can also be used on formulas.
 ----
 ====
 
-It is possible to specify that how all formulas' numbers should be formated by default, 
-through the `number-presentation-formula` document attribute.
+To specify the number presentation within all formulas (by default), the
+`number-presentation-formula` document attribute is used.
 
 The document attribute takes the same form of value as `number-presentation`. It
 also takes the following special values:
 
-* `number-presentation`: this gives number formats in formulas the same value as the 
-`:number-presentation:` document attribute, meaning that numbers both within and outside 
+`number-presentation`:: this gives number formats in formulas the same value as the
+`:number-presentation:` document attribute, meaning that numbers both within and outside
 formulas are formatted the same way. This is also the default behaviour if `number-presentation-formula`
 is not provided [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.8].
-* `nil`: apply no formatting to the numbers in formulas [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.8].
-* `default`: default number formatting is applied to numbers in formulas (`notation='basic'`).
+
+`nil`:: apply no formatting to the numbers in formulas [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.8].
+
+`default`:: default number formatting is applied to numbers in formulas (`notation='basic'`).
 
 Syntax:
 
@@ -690,7 +692,12 @@ Syntax:
 :number-presentation-formula: {OPTIONS}
 ----
 
-So:
+`number:[]` and numbers in formulas are subject to identical formatting.
+
+.Number formatting in formulas
+[example]
+====
+The following syntax:
 
 [source,adoc]
 ----
@@ -704,7 +711,7 @@ number:1000[]
 ++++
 ----
 
-renders as
+Renders as:
 
 ___
 1e3
@@ -726,10 +733,11 @@ number:1000[]
 1000+y
 ++++
 ----
+====
 
-So `number:[]` and numbers in formulas are subject to identical formatting.
-
-
+.Resetting number formatting in formulas
+[example]
+====
 [source,adoc]
 ----
 :number-presentation: notation=scientific
@@ -751,7 +759,7 @@ ____
 1000 + y
 ____
 
-and 
+and
 
 [source,adoc]
 ----
@@ -773,8 +781,7 @@ ____
 
 1,000 + y
 ____
-
-
+====
 
 
 If `number-presentation-formula` is set, a formula can ignore all number formatting
