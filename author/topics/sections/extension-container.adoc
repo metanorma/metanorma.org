@@ -32,29 +32,51 @@ The following features utilize the `metanorma-extension` section:
 document, or identifiers used as aliases of anchors in the document.
 * link:/author/topics/document-format/custom-styling#user-css[custom CSS declaration]
 
-It is possible to specify that an external file needs to have its content copied into
-`metanorma-extension`, as data that needs to be included for downstream processing.
-This is done using the `source_include:path[]` macro, where `path` is the location of the
-external file [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.9].
-The file contents will be copied into a clause within `metanorma-extension` with the file location
-as its title, and the contents of the file will be nested in a `source` element:
 
+=== Embedding external files
+
+External files can be included in the `metanorma-extension` section, which is
+useful for including data that is not part of the document, but which is still
+needed for downstream processing or attaching content to the document.
+
+The `source_include:path[]` command specifies the inclusion of contents of an external file
+in the `metanorma-extension`
+section [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.9].
+
+The file contents will be copied into a clause within `metanorma-extension` with
+the file location as its title, and the contents of the file will be nested in a
+`source` element.
+
+Syntax:
+
+[source,asciidoc]
+----
+source_include:path[]
+----
+
+Where,
+
+`path`:: is the location of the external file, which can be a relative path to
+the file it is defined.
+
+
+.Including a file in the `metanorma-extension` section
+[example]
+====
 [source,asciidoc]
 ----
 [[clause1]]
 == Clause
 source_include:spec/fixtures/nested_file_1.yaml[]
 
-A
+Some content in the clause.
 ----
 
 generates:
 
 [source,xml]
 ----
-
-...
-
+<!-- ... -->
 <metanorma-extension>
   <clause obligation="normative">
     <title>spec/fixtures/nested_file_1.yaml</title>
@@ -66,13 +88,13 @@ two: nested two-main </source>
   </clause>
 </metanorma-extension>
 
-...
+<!-- ... -->
 
 <clause id="..." anchor="clause1" inline-header="false" obligation="normative">
   <title>Clause</title>
-  <p id="...">A</p>
+  <p id="...">Some content in the clause.</p>
 </clause>
 
-...
-
+<!-- ... -->
 ----
+====

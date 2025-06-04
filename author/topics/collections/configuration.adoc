@@ -176,12 +176,20 @@ This is automatically included when `sectionsplit` is set in the
 Metanorma file, to break a single document up into multiple HTML files.
 
 `recompile-xml`:::
-If a file is specified as being `*.adoc`, always recompile it into XML, whether
-or not a corresponding XML file is already there. This document attribute is
-only used to refresh XML files: by default, the last AsciiDoc-generated XML is
-cached for time savings [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.6].
-The attribute is set by default to `true`, and needs to be explicitly set to `false`
-in order to prevent recompilation [added in https://github.com/metanorma/metanorma/releases/tag/v2.1.10].
+If a file is specified as being `*.adoc`, Metanorma always recompiles it into XML, whether
+or not a corresponding XML file is already there.
++
+This document attribute is only used to refresh XML files: by default, the last
+XML generated from Metanorma AsciiDoc is cached for time
+savings [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.6].
++
+The attribute is set by default to `true`, and needs to be explicitly set to
+`false` in order to prevent
+recompilation [added in https://github.com/metanorma/metanorma/releases/tag/v2.1.10].
++
+WARNING: The recompilation of XML does not take into account into any change
+detection of source files, so if the source file has changed and an XML present,
+the XML will still not be recompiled.
 
 `flavor`:::
 The flavor of Metanorma to use in processing the collection metadata and (by default)
@@ -608,7 +616,7 @@ Prefatory content from the collection manifest [added in https://github.com/meta
 Final content from the collection manifest [added in https://github.com/metanorma/metanorma/releases/tag/v1.5.6].
 
 `bibdata`::
-A hash representation of the `bibdata` element representing the bibliographic metadata 
+A hash representation of the `bibdata` element representing the bibliographic metadata
 of the manifest [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.8].
 
 
