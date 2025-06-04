@@ -14,6 +14,8 @@ directory where your original document is stored, so you can debug them later.
 
 == How to troubleshoot a document
 
+=== Modular document setup
+
 The best way to troubleshoot a document is to break up the content in several
 parts to narrow down the location of the error.
 
@@ -37,16 +39,29 @@ want to exclude it from being rendered, you can easily comment out the section.
  ...
 ----
 
-If your document consists of multiple included subdocuments, or contains
-Liquid templates which are resolved through Lutaml, the document(s) you have
-provided will be different to the document Metanorma parses, which will get
-in the way of debugging. (For example, Asciidoctor will report markup errors
-against the line number of the concatenated document it sees, with all includes
-resolved, not the line number of the individual included documents.) 
-To help in debugging, we generate the output of all Asciidoc
-preprocessing, including resolving Liquid and includes, as the file
-`{filename}.asciidoc.log.txt`, generated in the same directory as the base
-source document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.10].
+=== Using the concatenated document for debugging
+
+When you compile a Metanorma AsciiDoc document, Metanorma processes the
+document and all its included subdocuments, and concatenates them into a single
+document, which is then processed by the Metanorma AsciiDoc processor.
+
+The preprocessing step is useful for debugging, as it allows you to see the
+concatenated document that Metanorma AsciiDoc sees, which is the document that
+is actually processed by the Metanorma AsciiDoc processor aligning with line numbers
+pronounced in the terminal output.
+
+If a document consists of multiple included subdocuments, or contains Liquid
+templates which are resolved through the LutaML plugin, the line numbers
+expressed by Metanorma AsciiDoc processing will not correspond to the line
+numbers in the original source document, but rather to the line numbers in the
+concatenated document that Metanorma AsciiDoc sees.
+
+To assist debugging, Metanorma generates a concatenated document after
+preprocessing, including resolving all Liquid contexts and include directives,
+into a debug file `{filename}.asciidoc.log.txt`, generated in the same directory
+as the base source document
+
+This feature was [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.10].
 
 === Where to start troubleshooting?
 
