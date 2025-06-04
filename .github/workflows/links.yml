@@ -22,13 +22,18 @@ jobs:
         JEKYLL_ENV: production
       run: bundle exec jekyll build
 
-    - name: Link Checker
-      uses: lycheeverse/lychee-action@v1.2.0
+    - name: Restore lychee cache
+      uses: actions/cache@v4
       with:
-        args: --verbose --no-progress --exclude-file .lycheeignore -- _site/**/*.html
+        path: .lycheecache
+        key: cache-lychee-${{ github.sha }}
+        restore-keys: cache-lychee-
+
+    - name: Run lychee
+      uses: lycheeverse/lychee-action@v2
+      with:
+        args: --verbose --no-progress --base '_site' --cache --max-cache-age 1d --root-dir / '_site/**/*.html'
         fail: true
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       # - name: Create Issue From File
       #   uses: peter-evans/create-issue-from-file@v2
