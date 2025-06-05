@@ -1,0 +1,340 @@
+---
+layout: post
+title: "New `data2text` command supports working with structured data in Metanorma documents"
+date: 2025-04-22
+categories: documentation
+
+authors:
+  -
+    name: Kwan Koon Wa
+    email: kw.kwan@ribose.com
+    social_links:
+      - https://github.com/kwkwan
+
+excerpt: >-
+  The new command `data2text` provides additional powers over the prior
+  `yaml2text` and `json2text` commands, supporting mixed data formats and
+  multiplexed context handling.
+---
+
+== Introduction
+
+The "datastruct" commands `yaml2text` and `json2text` had several known
+limitations:
+
+* They could only provide one file in a context at a time.
+* They did not allow mixing JSON and YAML files.
+* They had limited support for nested structures.
+* They required separate commands for each file type.
+* They did not support loading multiple files at once.
+
+The new command `data2text` supersedes both `yaml2text` and `json2text` commands
+and addresses all of these limitations, enabling new ways to work with
+structured data in Metanorma documents.
+
+== Single context
+
+=== Background
+
+The `yaml2text` and `json2text` commands were designed to load data from YAML
+and JSON files, respectively. However, they had several limitations, including
+the inability to mix data from different file types and the requirement to
+specify a single file at a time.
+
+It worked like this:
+
+[source,asciidoc]
+------
+[yaml2text,strings.yaml,my_context]
+----
+I'm heading to the {{my_context.foo}} for {{my_context.dead}}.
+----
+------
+
+Where:
+
+* `context` is the name of the context that will be used to access the data.
+* `strings.yaml` is the file path of the YAML file containing the data.
+
+
+=== New `data2text` command
+
+As with the previous commands, the `data2text` command can be used to load a
+single JSON or YAML file and extract data from it, with the additional feature
+that it does not care about the file type as long as it is supported, allowing
+you to mix JSON and YAML files in the same context.
+
+In syntax, the difference is that the `data2text` command allows you to specify
+a context name paired with the file path, instead of placing the context name
+as the second argument.
+
+The new command works like this (compare to the previous example):
+
+[source,asciidoc]
+------
+[data2text,my_context=strings1.json]
+----
+I'm heading to the {{my_context.foo}} for {{my_context.dead}}.
+----
+------
+
+Where:
+
+* `data2text` is the command to load data from a file.
+* `my_context` is the name of the context that will be used to access the data.
+* `strings1.json` is the file path of the JSON file containing the data, relative to the document root.
+
+
+== Multiple contexts and mixed formats
+
+=== Background
+
+The `yaml2text` and `json2text` commands could only handle one file at a time,
+which made it difficult to work with multiple data sources in a single document.
+
+The way to load multiple files was through preprocessing to generate a
+single file that contained all the data, which was cumbersome and
+unnecessary.
+`
+
+=== New `data2text` command
+
+`data2text` allows you to load multiple JSON or YAML files into different
+contexts, enabling you to mix and match data from different sources.
+
+This is a significant improvement over the previous commands, which could only
+handle one file at a time.
+
+Given:
+
+`strings1.json` contains JSON data:
+[source,json]
+----
+{
+  "foo": "bar",
+  "dead": "beef"
+}
+----
+
+`strings2.yaml` contain YAML data:
+[source,yaml]
+----
+---
+hello: world
+color: red
+shape: square
+----
+
+And the block:
+
+[source,asciidoc]
+------
+[data2text,my_json=strings1.json,my_yaml=strings2.yaml]
+----
+I'm heading to the {{my_json.foo}} for {{my_json.dead}}.
+
+This is hello {{my_yaml.hello}}.
+The color is {{my_yaml.color}} and the shape is {{my_yaml.shape}}.
+----
+------
+
+The file path is `strings1.json`, and context name is `my_json`.
+`{{my_json.foo}}` evaluates to the value of the key `foo` in `my_json`.
+
+The file path is `strings2.yaml`, and context name is `my_yaml`.
+`{{my_yaml.hello}}` evaluates to the value of the key `hello` in `my_yaml`.
+
+The document will render as:
+
+[source,asciidoc]
+----
+I'm heading to the bar for beef.
+
+This is hello world.
+The color is red and the shape is square.
+----
+
+
+== Loading contexts dynamically from filepaths in source files
+
+=== Background
+
+Previously, the `yaml2text` and `json2text` commands could only load data from a
+single file, and the file had to be specified directly in the command.
+
+There was a way around, but it was complex and convoluted. The method was to use
+nested commands through the `{% raw %} ... {% endraw %}` tag, which allowed the
+outer block to execute first to unroll the inner block with file paths, and then
+evaluate the inner block.
+
+This is how it worked:
+
+[source,asciidoc]
+------
+[yaml2text,paths.json,paths]
+-----
+{% for path in paths %}
+{% raw %}
+[yaml2text,{{path}}.json,data]
+----
+This is {{ data.shape }} with color {{ data.color }}.
+----
+{% endraw %}
+
+{% endfor %}
+-----
+------
+
+The first pass loads the `paths.json` file, which contains an array of file
+paths. The second pass iterates over the paths and loads each JSON file
+specified in the array, allowing you to access the data in each file.
+
+=== New `data2text` command
+
+With the new `data2text` command, you can achieve the same result without
+nesting commands, making the code cleaner and easier to understand.
+
+The `data2text` command now provides a new Liquid filter to load
+additional files dynamically based on file paths specified in the loaded data,
+called `loadfile:`.
+
+When the content of the loaded files contains file paths of JSON or YAML files,
+you can load extra data by these file paths by `loadfile:` liquid filter.
+
+Given:
+
+`strings1.json`
+[source,json]
+----
+{
+  "foo": "bar",
+  "paths": ["a.yaml", "b.yaml"]
+}
+----
+
+Where:
+
+* `paths` is an array of filepaths relative to the Metanorma document
+
+`a.yaml`
+[source,yaml]
+----
+---
+shape: circle
+color: red
+----
+
+`b.yaml`
+[source,yaml]
+----
+---
+shape: square
+color: blue
+corners: 4
+----
+
+And the block:
+
+[source,asciidoc]
+------
+[data2text,my_context=strings1.json]
+----
+I'm heading to the {{my_context.foo}}.
+
+{% for path in my_context.paths %}
+{% assign data = path | loadfile: "." %}
+This is {{ data.shape }} with color {{ data.color }}.
+{% endfor %}
+----
+------
+
+Where:
+
+* `loadfile:` is a liquid filter that loads the file content based on `path`
+  with argument `.`. The argument is the path of the parent folder, which is the
+  current directory of the Metanorma document root.
+
+Will render as:
+
+[source,asciidoc]
+----
+I'm heading to the bar.
+
+This is circle with color red.
+This is square with color blue.
+----
+
+
+== Nesting with other commands
+
+=== Background
+
+The `yaml2text` and `json2text` commands could only be used in a limited way
+within Metanorma documents, and they did not allow for nesting within other
+commands or blocks.
+
+=== New `data2text` command
+
+You can nest the `data2text` command within other Metanorma commands for more
+complex use cases.
+
+There are multiple use cases where you might want to use the `data2text` command
+within other Metanorma commands, such as:
+
+* dynamically generating content based on structured data;
+* including data from a structured data file into a Liquid template;
+* incorporating structured data handily for DRY (Don't Repeat Yourself) purposes.
+
+Similar to the nesting structure of the previous `yaml2text` and `json2text`
+commands, the `data2text` command relies on the `{% raw %} ... {% endraw %}` tag
+to ensure the contexts are properly separated.
+
+Generally it requires the `data2text` command to be used in the outer block,
+and the inner block to be processed by the target command, then within the
+inner block you use the `raw` tag to access the `data2text` context data.
+
+Given:
+
+`strings.yaml` contains YAML data:
+[source,yaml]
+----
+---
+foo: bar
+dead: beef
+----
+
+And the block:
+
+[source,asciidoc]
+------
+[data2text,context=strings.yaml]
+----
+[lutaml_express,schemas,repo,config_yaml=schemas.yaml,include_path=../../]
+-----
+\include::./path/to/_schemas.liquid[]
+-----
+----
+------
+
+The `raw` tag is used to prevent the `context` from being processed by
+`lutaml_express`, allowing it to be processed by `data2text` in the liquid
+template file.
+
+[source,liquid]
+----
+{% raw %}
+{{ context.foo }}
+{% endraw %}
+----
+
+== Conclusion
+
+The new `data2text` command is an invaluable tool in the model-driven
+documentation approach and allows for a more flexible and powerful way to handle
+data in Metanorma documents.
+
+By allowing multiple contexts and mixing of JSON and YAML data, users can now
+create more complex and dynamic documents with ease.
+
+Try it out and see how it can enhance your Metanorma documents!
+

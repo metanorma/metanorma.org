@@ -12,23 +12,21 @@ please also see flavor-specific guidance for any additional supported or
 required document attributes.
 ====
 
-== Build and validation
+== Build and configuration
 
-`:mn-document-class:`::
+`:document-class:`, `:flavor:`, (legacy: `:mn-document-class:`, `:mn-flavor:`)::
 The flavor of Metanorma used to compile the document; e.g. `iso`, `nist`, `ogc`. Needs to be a supported version
-of the document. Synonyms: `document-class`, `mn-flavor`, `flavor`.
+of the document.
 
-`:mn-output-extensions:`::
+`:output-extensions:` (legacy: `:mn-output-extensions:`)::
 The output formats to generate for the document, comma-delimited; e.g. `xml,presentation,html,doc,pdf`.
 The formats supported vary for each flavor, but all flavors support `xml` (Semantic XML), `presentation`
-(Presentation XML), and one of `html` or `pdf`. Synonym: `:output-extensions:`.
+(Presentation XML), and one of `html` or `pdf`.
 
-`:mn-relaton-output-file:`::
-Output the bibliographic record describing the document as a Relaton XML file (with the suffix `.rxl`).
-Synonym: `:relaton-output-file:`.
-
-`:mn-keep-asciimath:`::
-Do not translate Asciimath in the document to MathML. Synonym: `:keep-asciimath:`.
+`:imagesdir:`::
+(Optional) Directory in which images are located: all local image file locations
+are prefixed with this directory.
+Accepts a directory path.
 
 `:nodoc:`::
 Instructs Metanorma to not generate Word and HTML output, means only XML output will be generated.
@@ -40,16 +38,10 @@ Suppress document validation.
 Terms (and symbols) are indexed automatically in postprocessing.
 See link:/author/topics/inline_markup/index_terms#auto-index-terms[automatic terms indexing]. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.3]
 
-`:log-filter-severity:`::
-Filter from error log all warnings at the given severity level or above it.
-See link:/author/topics/output/validation[Validation] for valid values.
- [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.7]
+`:relaton-output-file:` (legacy: `:mn-relaton-output-file:`)::
+Output the bibliographic record describing the document as a Relaton XML file (with the suffix `.rxl`).
 
 
-`:log-filter-category:`::
-Filter from error log all warnings belonging to one of the named categories; comma-delimited.
-See link:/author/topics/output/validation[Validation] for valid values.
- [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.7]
 
 
 == Reference lookup
@@ -60,9 +52,11 @@ For bibliographic lookup, see link:/author/basics/reference-lookups[automatic re
 If set, do not use the `relaton` or `iev` gem functionality to look up
 ISO and IEV references online, nor the cache of `relaton` and `iev` searches.
 
-== Caches
 
-For bibliographic caches, see link:/author/basics/reference-lookups/#lookup-result-caching[lookup result caching].
+== Caching
+
+For bibliographic caches, see
+link:/author/basics/reference-lookups/#lookup-result-caching[lookup result caching].
 
 `:no-isobib-cache:`::
 If set, use the `relaton` and `iev` gem functionality to look up
@@ -105,19 +99,31 @@ The different bibliographic sources are differentiated through the value of the 
 ----
 ====
 
-== Math
+== Math and scientific formatting
+
+`:keep-asciimath:` (legacy: `:mn-keep-asciimath:`)::
+Do not translate Asciimath in the document to MathML.
+
+`:suppress-asciimath-dup:`::
+By default, MathML in the Metanorma XML has equivalent AsciiMath added
+to it in a comment. This AsciiMath can be used as an accessibility
+alternative to the MathML expression. The generation of this AsciiMath
+can be suppressed [added in
+https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.5].
 
 [[stem]] `:stem:`::
-This attribute is required if you have any AsciiMath, MathML, or LaTeX
-included in the document; otherwise they will not be detected. If you want
-the STEM expressions in your document to be interpreted as LaTeX by default,
-use `:stem: latexmath`.
+(Defaults to `asciimath`) The default language for `stem:[...]` and `[stem]`
+blocks expressions in the document. (AsciiMath, MathML, or LaTeX). For example,
+if you want the `stem` expressions in your document to be interpreted as LaTeX
+by default, use `:stem: latexmath`.
 
 Read more about
 link:/author/topics/blocks/math/[mathematical expressions].
 
 `:number-presentation:`::
-Sets the formatting options for the `number:[]` command in the document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12]. Please refer to the dedicated section at
+Sets the formatting options for the `number:[]` command in the
+document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
+Please refer to the dedicated section at
 link:/author/topics/inline_markup/semantic-elements#numbers[numbers] for usage.
 +
 .Using the `:number-presentation:` attribute
@@ -193,7 +199,8 @@ TIP: See link:/author/topics/languages#number-localization[Number localization]
 for how numbers are localized in
 Metanorma [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.4].
 
-== Document info
+
+== Document information
 
 `:publisher_{i}:`:: The standards agency publishing the standard. The first publisher is given as
 `:publisher:`; more publishers are added with the suffix `_2`, `_3`, etc., e.g. `:publisher_2:`,
@@ -287,20 +294,19 @@ This value is optional.
 The title of the document. If not supplied, the built-in AsciiDoc title
 (first line of document header) is used instead.
 
-`:title-XX:`::
-The title of the document in the language `XX` (where `XX` is a ISO 639-1 code;
+`:title-{langcode}:`::
+The title of the document in the language `langcode` (where `langcode` is a ISO 639-1 code;
 for example, `:title-en:`, `:title-fr`:).
 
 `:doctype:`::
-The document type; e.g. "standard", "guide", "report".
+The document type; e.g. `standard`, `guide`, `report`.
 
 `:docsubtype:`::
 The document subtype; by default, used to provide an ad hoc, user defined document class,
 unless provided for explicitly in the flavour,
 as in OGC [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.1]
 
-`:status:`:: The status of the document; e.g. "draft", "published".
-Synonym: `:docstage:`.
+`:status:`, `:docstage:`:: The status of the document; e.g. `draft`, `published`.
 
 `:docsubstage:`:: The substage code for the document status, where applicable.
 
@@ -445,7 +451,7 @@ The date on which the voting process ends for this document [added in https://gi
 The date on which the document was announced as forthcoming [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.3].
 
 
-== Author info
+== Author information
 
 `:technical-committee:`::
 The name of the relevant technical committee.
@@ -621,7 +627,9 @@ and they can also be hierarchical, with multiple levels of subdivision (comma-de
 from larger to smaller) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3];
 the different hierarchical levels can optionally be prefixed with type and a colon.
 
-== Visual appearance
+== Style customization
+
+=== Fonts
 
 `:fonts:`::
 +
@@ -636,10 +644,9 @@ https://github.com/fontist/formulas[Fontist Formulas] repository.
 
 NOTE: This is currently only used in PDF generation.
 
+.Example of setting a custom font to Euphemia
 [example]
 ====
-EXAMPLE.
-
 The https://www.tiro.com/syllabics/resources/index.html[Euphemia] font is
 an openly licensed font for end-users only commonly used to render
 https://en.wikipedia.org/wiki/Canadian_Aboriginal_syllabics[Canadian Syllabics].
@@ -686,33 +693,28 @@ the particular Metanorma flavour.
 Font for monospace; will be inserted into CSS, overriding the default set for
 the particular Metanorma flavour.
 
-`:htmlstylesheet:`::
+
+=== HTML
+
+`:html-stylesheet:` (legacy: `htmlstylesheet`)::
 SCSS stylesheet to use for HTML output. Defaults to built-in stylesheet
 for the particular Metanorma flavour.  Overriding is not recommended.
 
-`:htmlstylesheet-override:`::
+`:html-stylesheet-override:` (legacy: `htmlstylesheet-override`)::
 CSS stylesheet to use for HTML output, inserted after the built-in stylesheet
 for the particular Metanorma flavour, and can be used to override
 it. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.7]
 
-`:pdfstylesheet:`::
-XSLT stylesheet to use for PDF output [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.10]. 
-Defaults to built-in stylesheet for the particular Metanorma flavour.  Overriding is not recommended.
-
-`:pdfstylesheet-override:`::
-XSLT stylesheet to use for PDF output, inserted after the built-in stylesheet
-for the particular Metanorma flavour, and can be used to override
-it. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/3.0.10]
-
-`:htmlcoverpage:`::
+`:html-cover-page:` (legacy: `htmlcoverpage`)::
 HTML template for cover page.
 Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
-`:htmlintropage:`::
+`:html-intro-page:` (legacy: `htmlintropage`)::
 HTML template for introductory section.
 Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
+
 
 `:scripts:`::
 JavaScript scripts for HTML output.
@@ -724,22 +726,38 @@ JavaScript scripts for HTML output. Inserted after any built-in
 scripts for the particular Metanorma flavour, and can be used to
 override them. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.4]
 
-`:scripts-pdf:`::
+`:scripts-pdf:` (DEPRECATED)::
 JavaScript scripts for HTML to PDF output.
 Defaults to built-in scripts for the particular Metanorma flavour.
 Overriding is not recommended.
 
-`:wordstylesheet:`::
+
+=== PDF
+
+`:pdf-stylesheet:` (legacy: `pdfstylesheet`)::
+XSLT stylesheet to use for PDF output [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.10].
+Defaults to built-in stylesheet for the particular Metanorma flavour.
+Overriding is not recommended.
+
+`:pdf-stylesheet-override:` (legacy: `pdfstylesheet-override`)::
+XSLT stylesheet to use for PDF output, inserted after the built-in stylesheet
+for the particular Metanorma flavour, and can be used to override
+it. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/3.0.10]
+
+
+=== Word
+
+`:word-stylesheet:` (legacy: `wordstylesheet`)::
 Primary SCSS stylesheet to use for Word output.
 Defaults to built-in stylesheet for the particular Metanorma flavour.
 Overriding is not recommended.
 
-`:standardstylesheet:`::
+`:standard-stylesheet:` (legacy: `standardstylesheet`)::
 Secondary SCSS stylesheet use for Word output.
 Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
-`:wordstylesheet-override:`::
+`:word-stylesheet-override:` (legacy: `wordstylesheet-override`)::
 CSS stylesheet to use for Word output, inserted after the built-in stylesheet
 for the particular Metanorma flavour, and can be used to override
 it [added in https://github.com/metanorma/isodoc/releases/tag/v1.8.7].
@@ -749,12 +767,12 @@ Header and footer file for Word output.
 Defaults to built-in template the particular Metanorma flavour.
 Overriding is not recommended.
 
-`:wordcoverpage:`::
+`:word-cover-page:` (legacy: `wordcoverpage`)::
 Word template for cover page.
 Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
 
-`:wordintropage:`::
+`:word-intro-page:` (legacy: `wordintropage`)::
 Word template for introductory section.
 Defaults to built-in template for the particular Metanorma flavour.
 Overriding is not recommended.
@@ -769,6 +787,27 @@ Word CSS selector for ordered lists in supplied stylesheets.
 Defaults to value for built-in stylesheet.
 Overriding is not recommended.
 
+
+=== Cover page
+
+`:coverpage-image:`:: Comma-delimited list of image locations, for images to be
+included on the (PDF) cover page. All image locations are relative to the source
+document. Currently only supported for BSI, ITU, JIS, IHO, Plateau.
+
+`:innercoverpage-image:`:: Same, for images to be included on the (PDF) inside
+cover page. Currently only supported for BSI.
+
+`:tocside-image:`:: Same, for images to be included on the (PDF) Table of
+Contents side page. Currently only supported for BSI.
+
+`:backpage-image:`:: Same, for images to be included on the (PDF) back page.
+Currently only supported for BSI, JIS.
+
+
+== Image handling
+
+=== Data URI
+
 `:data-uri-image:`::
 Encode all images in Metanorma XML and HTML output as inline data-URIs.
 Defaults to `true`. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.0].
@@ -782,9 +821,15 @@ If set to `0`, no maximum is enforced. [added in https://github.com/metanorma/me
 Encode all attachments in Metanorma XML as inline data-URIs.
 Defaults to `true`. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.10].
 
+
+=== PlantUML
+
 `:plantuml-image-format:`::
 Format to generate PlantUML diagrams as. Legal values are `png`, `svg`.
 Defaults to `png`. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.9].
+
+
+== Cross-references
 
 `:xrefstyle:`::
 Override the default rendering of cross-references to
@@ -833,6 +878,24 @@ Renders the cross-reference as:
 "my-anchor"
 ====
 
+`:modspec-identifier-base:`::
+(optional)
+Base identifier pattern for ModSpec instances throughout the document. The
+attribute value provides a prefix that will be removed from all ModSpec instance
+identifiers used to cross-reference ModSpec instances. The specification of the
+pattern only affects the rendering of cross-references, not the underlying XML
+representation of the ModSpec instances. See more details at
+link:/author/topics/blocks/requirements-modspec/#identifier-base[ModSpec identifier base] [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7].
+
+`:block-unnumbered:`::
+(optional)
+A comma-delimited list of Metanorma block names, which should have numbering
+suppressed throughout the document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.6].
+Typically will be used for sourcecode fragments: `:block-unnumbered: sourcecode`.
+
+
+
+== Smart quotes
 
 `:smartquotes:`::
 Apply "`smart quotes`" and other auto-formatting to the XML output (and hence
@@ -847,6 +910,9 @@ the downstream outputs). Available values below:
 `"&#x060; &#x060;"`, `'&#x060; &#x060;'`. The rules for smart formatting follow
 the https://github.com/pbhogan/sterile[sterile] gem, and are given in
 https://github.com/pbhogan/sterile/blob/main/lib/sterile/data/smart_format_rules.rb[smart_format_rules.rb].
+
+
+== Table of contents
 
 `:toclevels:`::
 Number of table of contents levels to render. Accepts an integer value. (default: `2`).
@@ -884,10 +950,8 @@ permissions [added in https://github.com/metanorma/metanorma-standoc/releases/ta
 No attribute value needed.
 Only numbered and/or captioned requirements, recommendations, and permissions are included.
 
-`:imagesdir:`::
-(Optional) Directory in which images are located: all local image file locations
-are prefixed with this directory.
-Accepts a directory path.
+
+== Tables
 
 `:break-up-urls-in-tables:`::
 If present, long strings in table cells are broken up on rendering, to help
@@ -899,17 +963,9 @@ and every 20 characters if there is no puncutation in the word,
 in order to deal with very narrow columns. (Because the break is zero-width,
 it will not be visible unless it coincides with the end of a column.)
 
-`:suppress-asciimath-dup:`::
-By default, MathML in the Metanorma XML has equivalent AsciiMath added
-to it in a comment. This AsciiMath can be used as an accessibility
-alternative to the MathML expression. The generation of this AsciiMath
-can be suppressed [added in
-https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.5].
 
-`:sectionsplit:`::
-(HTML output only) Treat the HTML output as a Metanorma collection,
-with one web page per clause and annex [added in
-https://github.com/metanorma/metanorma-standoc/releases/tag/v1.9.0].
+
+== Sourcecode
 
 `:sourcecode-markup-start:`::
 Initial delimiter for markup inserted in sourcecode [added in
@@ -939,30 +995,21 @@ This is typically used for HTML output, e.g. clauses as standalone documents, or
 All media paths in the XML path are relative to the given directory; used when
 the Metanorma XML file to be processed is not necessarily in the same directory
 as the source Metanorma AsciiDoc file, and the media file paths are given as
-relative and not absolute file locations (and are not encoded as data URIs, via
-`:data-uri-image:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.7].
+relative and not absolute file locations (and are not encoded as data URIs via
+`:data-uri-image:`) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.10.7].
 
-`:modspec-identifier-base:`::
-(optional)
-Base identifier pattern for ModSpec instances throughout the document. The
-attribute value provides a prefix that will be removed from all ModSpec instance
-identifiers used to cross-reference ModSpec instances. The specification of the
-pattern only affects the rendering of cross-references, not the underlying XML
-representation of the ModSpec instances. See more details at
-link:/author/topics/blocks/requirements-modspec/#identifier-base[ModSpec identifier base] [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.7].
 
-`:block-unnumbered:`::
-(optional)
-A comma-delimited list of Metanorma block names, which should have numbering
-suppressed throughout the document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.6].
-Typically will be used for sourcecode fragemnts: `:block-unnumbered: sourcecode`.
+== Logging
 
-`:coverpage-image:`:: Comma-delimited list of image locations, for images to be included on the (PDF) cover page. All image locations are relative to the source document. Currently only supported for BSI, ITU, IHO, JIS, Plateau.
+`:log-filter-severity:`::
+Filter from error log all warnings at the given severity level or above it.
+See link:/author/topics/output/validation[Validation] for valid values.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.7]
 
-`:innercoverpage-image:`:: Same, for images to be included on the (PDF) inside cover page. Currently only supported for BSI.
-`:tocside-image:`:: Same, for images to be included on the (PDF) Table of Contents side page. Currently only supported for BSI.
-`:backpage-image:`:: Same, for images to be included on the (PDF) back page. Currently only supported for BSI, JIS.
-
+`:log-filter-category:`::
+Filter from error log all warnings belonging to one of the named categories; comma-delimited.
+See link:/author/topics/output/validation[Validation] for valid values.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.7]
 
 == PDF protection and permissions
 
