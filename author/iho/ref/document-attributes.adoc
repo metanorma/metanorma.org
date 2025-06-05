@@ -141,6 +141,17 @@ the document draft. The end of the period may change, and may be left open-ended
 
 `:obsoleted-date:`:: The date a document becomes no longer effective. YYYY-MM-DD.
 
+`:document-scheme`:: The document scheme that this document aligns to.
+The two available schemes only differ in layout presentation.
++
+Accepted values:
++
+`2019`::: (default) The current layout from IHO B-12 Edition 2.0.3 "Guidance on
+Crowdsourced Bathymetry" will be applied.
+
+`legacy`::: (all unsupported values fall back to `legacy`)
+The layout from IHO C-17 Edition 2.0.0 "Spatial Data Infrastructures -- The Marine
+Dimension" will be applied.
 
 
 == Document contributors
@@ -194,12 +205,14 @@ associated committee. A second, third etc. committee is named as
 == Visual appearance
 
 `:coverpage-image:`::
-Comma-delimited list of image locations, for images to be included on the (PDF) cover page. All image locations are relative to the source document.
+Comma-delimited list of image locations, for images to be included on the (PDF)
+cover page. All image locations are relative to the source document.
++
 By default in IHO, the coverpage is a PDF, and covers just the yellow are in the coverpage:
 +
 image::/assets/iho/coverpage.yellow.png[]
 +
-If the supplied image PDF is to replace the cover page of the document in its entirety, and already includes title information, 
-specify `:document-scheme:` with a value other than `2019`  [added in https://github.com/metanorma/metanorma-iho/releases/tag/v1.1.4].
-
-
+If the supplied image PDF is to replace the cover page of the document in its
+entirety, and already includes title information, specify `:document-scheme:`
+with a value other than
+`2019` [added in https://github.com/metanorma/metanorma-iho/releases/tag/v1.1.4].
