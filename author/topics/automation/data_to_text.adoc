@@ -2,24 +2,133 @@
 layout: author-docs
 ---
 
-= Json2Text plugin: Content from JSON data
+= Data2Text plugin: Content from YAML/JSON data
 
-NOTE: This command is deprecated. Please use the link:/topics/automation/data_to_text[`data2text`] command instead,
-which offers enhanced functionality.
+The `data2text` command is a powerful macro for embedding structured data (YAML and JSON) directly into Metanorma documents using Liquid templating.
 
 == Purpose
 
-When managing large amounts of data with identical data structures,
-such as registry data or requirements,
-Metanorma supports a templating mechanism for generating structured text
-using data structures as input.
+Use the `data2text` command to:
 
-The `json2text` block lets you generate document elements directly
-from a separate JSON file into the document. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.3]
+* Load and use YAML/JSON structured data;
+* Combine data from multiple files into separate contexts;
+* Dynamically access YAML/JSON files listed within a data structure;
+* Nest structured data contexts into other macros.
 
-== Expressions
+[NOTE]
+====
+This macro _supersedes_ `yaml2text` and `json2text` macros, solving their limitations
+and introducing support for multiple files, mixed formats, and dynamic loading.
 
-`json2text` supports all https://shopify.github.io/liquid/basics/introduction/[Liquid syntax expressions], including:
+For an in-depth comparison between `yaml2text`/`json2text` and `data2text` commands,
+see:
+link:/blog/2025-04-22-data2text/[New `data2text` command supports working with structured data in Metanorma documents]
+====
+
+== The `data2text` block
+
+A `data2text` block is created with the following syntax:
+
+[source]
+-----
+[data2text,context1=path/to/file1.yaml,context2=path/to/file2.json,...,contextN=path/to/fileN]
+----
+Template content written in Liquid!
+----
+-----
+
+Each parameter to `data2text` follows the pattern:
+
+`context_name=file_path`
+
+Where:
+
+* `context_name` is the Liquid variable name for accessing the file's data.
+* `file_path` is the relative path to the JSON or YAML file. +
+(For example, if `[data2text,data=data.yaml]` is invoked in an `.adoc` file
+located at `/foo/bar/doc.adoc`, the data file is expected to be found at `for/bar/data.yaml`.)
+
+You can specify multiple `context=file_path` pairs, separated by commas.
+
+=== Example 1: Basic usage
+
+Given a file `strings.json`:
+
+[source,json]
+----
+{
+  "foo": "bar",
+  "dead": "beef"
+}
+----
+
+Usage:
+
+[source,asciidoc]
+--
+[data2text,my_context=strings.json]
+----
+I'm heading to the {{ my_context.foo }} for {{ my_context.dead }}.
+----
+--
+
+Rendered output:
+
+[source,asciidoc]
+----
+I'm heading to the bar for beef.
+----
+
+=== Example 2: Multiple Files and Mixed Formats
+
+Given:
+
+* `strings1.json`
++
+[source,json]
+----
+{
+  "foo": "bar",
+  "dead": "beef"
+}
+----
+
+* `strings2.yaml`
++
+[source,yaml]
+----
+---
+hello: world
+color: red
+shape: square
+----
+
+Usage:
+
+[source,asciidoc]
+--
+[data2text,my_json=strings1.json,my_yaml=strings2.yaml]
+----
+I'm heading to the {{ my_json.foo }} for {{ my_json.dead }}.
+
+This is hello {{ my_yaml.hello }}.
+The color is {{ my_yaml.color }} and the shape is {{ my_yaml.shape }}.
+----
+--
+
+Rendered output:
+
+[source,asciidoc]
+----
+I'm heading to the bar for beef.
+
+This is hello world.
+The color is red and the shape is square.
+----
+
+== Liquid background
+
+`data2text` supports all https://shopify.github.io/liquid/basics/introduction/[Liquid syntax expressions], including:
 
 * variables, variable assignment
 * flow control (if/case)
@@ -28,49 +137,23 @@ from a separate JSON file into the document. [added in https://github.com/metano
 
 See https://shopify.github.io/liquid/basics/introduction/[here] for the full description of Liquid tags and expressions.
 
-
-
-== Syntax
-
-[[defining_syntax]]
-=== Defining the block
-
-A `json2text` block is created with the following syntax.
-
-Block opening and closing is demarcated by an open block syntax (`--`)
-or the `[source]` block syntax (`----` or more `-`).
-
-[source,adoc]
---
-[json2text,{JSON file path},{self-defined context name}]
-----
-this is content within the json2text block!
-----
---
-
-Where:
-
-* content within the block is called the "`template`";
-
-* `{JSON file path}` is the location of the JSON file that contains data to be loaded. Location of the JSON file is computed relative to the source directory that `[json2text]` is used (e.g., if `[json2text,data.json,data]` is invoked in an `.adoc` file located at `/foo/bar/doc.adoc`, the data file is expected to be found at `/foo/bar/data.json`);
-
-* `{self-defined context name}` is the name where the JSON data read from the JSON file can be accessed with.
+NOTE: In the subsequent sub-sections all provided examples are based on JSON data structure,
+but they are equally applicable to YAML data structures.
 
 === Interpolation
 
-`json2text` accepts string interpolation of the following forms:
+`data2text` accepts string interpolation of the following form:
 
 . `{variable}`: as in AsciiDoc syntax;
 . `{{ variable }}`, `{% if/else/for/case %}`: basic Liquid tags and expressions are supported.
 
-The value within the curly braces will be interpolated by `json2text`.
+The value within the curly braces will be interpolated by `data2text`.
 
 Where:
 
-* In `{variable}`(`{{variable}}`), `variable` is the name of the variable or AsciiDoc attribute.
-* The location of `{variable}`(`{{variable}}`) in text will be replaced with the value of `variable`.
+* In `{variable}` (`{{variable}}`), `variable` is the name of the variable or AsciiDoc attribute.
+* The location of `{variable}` (`{{variable}}`) in text will be replaced with the value of `variable`.
 * Evaluation order will be first from the defined context, then of the Metanorma AsciiDoc document.
-
 
 === Accessing object values
 
@@ -93,7 +176,7 @@ Given:
 And the block:
 [source,asciidoc]
 ------
-[json2text,strings.json,data]
+[data2text,data=strings.json]
 ----
 I'm heading to the {{data.foo}} for {{data.dead}}.
 ----
@@ -110,12 +193,11 @@ I'm heading to the bar for beef.
 
 ====
 
-
 === Accessing arrays
 
 ==== Length
 
-The length of an array can be obtained by `{{arrayname.size}}`.
+The length of an array can be obtained by `{{array_name.size}}`.
 
 [example]
 .Example of accessing arrays
@@ -135,7 +217,7 @@ Given:
 And the block:
 [source,asciidoc]
 ------
-[json2text,strings.json,data]
+[data2text,data=strings.json]
 ----
 The length of the JSON array is {{data.size}}.
 ----
@@ -149,7 +231,6 @@ Will render as:
 ----
 The length of the JSON array is 3.
 ----
-
 ====
 
 ==== Enumeration and context
@@ -182,7 +263,6 @@ Within an array enumerator, the following https://shopify.dev/docs/themes/liquid
 
 * `{{array_name[i]}}` provides the value at index `i` (zero-based: starts with `0`) in the array `array_name`; `-1` can be used to refer to the last item, `-2` the second last item, and so on.
 
-
 [example]
 .Example of iterating through a for loop
 ====
@@ -201,7 +281,7 @@ Given:
 And the block:
 [source,asciidoc]
 ------
-[json2text,strings.json,arr]
+[data2text,strings.json,arr]
 ----
 {% for item in arr %}
 === {{forloop.index0}} {item}
@@ -233,18 +313,14 @@ This section is about ipsum.
 
 This section is about dolor.
 ----
-
 ====
 
-
-
 === Accessing objects
-
 
 ==== Size
 
 Similar to arrays, the number of key-value pairs within an object can be
-obtained by `{{objectname.size}}`.
+obtained by `{{object_name.size}}`.
 
 [example]
 .Example of accessing an object
@@ -260,7 +336,7 @@ object.json
 And the block:
 [source,asciidoc]
 ------
-[json2text,object.json,data]
+[data2text,data=object.json]
 ----
 === {{data.name}}
 
@@ -282,7 +358,6 @@ dolor sit amet
 
 Key-value pairs: 2
 ----
-
 ====
 
 ==== Enumeration and context
@@ -303,7 +378,6 @@ Where:
 * `{{item[1]}}` contains the value
 * `{% endfor %}` indicates where the object enumeration block ends
 
-
 [example]
 .Example of iterating through an object
 ====
@@ -321,7 +395,7 @@ object.json
 And the block:
 [source,asciidoc]
 ------
-[json2text,object.json,my_item]
+[data2text,object.json,my_item]
 ----
 {% for item in my_item %}
 === {{item[0]}}
@@ -353,10 +427,7 @@ dolor sit amet
 
 ====
 
-
-
 Moreover, the `keys` and `values` attributes can also be used in object enumerators.
-
 
 [example]
 .Example of using `keys` and `values` in object enumeration
@@ -375,7 +446,7 @@ object.json
 And the block:
 [source,asciidoc]
 ------
-[json2text,object.json,item]
+[data2text,object.json,item]
 ----
 .{{item.values[1]}}
 [%noheader,cols="h,1"]
@@ -412,7 +483,8 @@ Will render as:
 
 ====
 
-There are several optional arguments to the `for` tag that can influence which items you receive in your loop and what order they appear in:
+There are several optional arguments to the `for` tag that can influence which
+items you receive in your loop and what order they appear in:
 
 * `limit:<INTEGER>` lets you restrict how many items you get.
 * `offset:<INTEGER>` lets you start the collection with the nth item.
@@ -438,7 +510,7 @@ Given:
 And the block:
 [source,asciidoc]
 ------
-[json2text,strings.json,items]
+[data2text,strings.json,items]
 ----
 {% for item in items limit:2 offset:2 %}
 {{item}}
@@ -466,8 +538,10 @@ sit
 
 With the syntax of enumerating arrays and objects we can now try more powerful examples.
 
-=== Array of objects
+NOTE: In the subsequent sub-sections, all provided examples are based on JSON data
+structure but they are equally applicable to YAML data structure.
 
+=== Array of objects
 
 [example]
 .Advanced example of accessing an array of objects
@@ -495,7 +569,7 @@ array_of_objects.json
 And the block:
 [source,asciidoc]
 ------
-[json2text,array_of_objects.json,ar]
+[data2text,ar=array_of_objects.json]
 ----
 {% for item in ar %}
 
@@ -533,10 +607,9 @@ amet:: lorem
 
 ====
 
-
 === An array with interpolated file names (for AsciiDoc consumption)
 
-`json2text` blocks can be used for pre-processing document elements for AsciiDoc consumption.
+`data2text` blocks can be used for pre-processing document elements for AsciiDoc consumption.
 
 [example]
 .Advanced example of using interpolated file names
@@ -555,7 +628,7 @@ Given:
 And the block:
 [source,asciidoc]
 --------
-[json2text,strings.json,json]
+[data2text,json=strings.json]
 ------
 First item is {{json.items.first}}.
 Last item is {{json.items.last}}.
@@ -571,7 +644,6 @@ Last item is {{json.items.last}}.
 {% endfor %}
 ------
 --------
-
 
 Will render as:
 [source,asciidoc]
@@ -603,4 +675,133 @@ Last item is dolor.
 ------
 
 ====
+
+== Loading contexts dynamically from filepaths in source files
+
+With `data2text`, you can dynamically load data from filepaths specified
+in an external source. This is made possible with the `loadfile` filter,
+which lets you read the contents of a file (based on the given path)
+and assign that data to a local variable for use in your template.
+
+This is better seen with an example.
+
+Given:
+
+`strings1.json`
+[source,json]
+----
+{
+  "foo": "bar",
+  "paths": ["a.yaml", "b.yaml"]
+}
+----
+
+Where:
+
+* `foo` is a regular variable containing a string value, and
+* `paths` is an array of filepaths relative to the Metanorma document:
++
+--
+`a.yaml`
+[source,yaml]
+----
+---
+shape: circle
+color: red
+----
+
+`b.yaml`
+[source,yaml]
+----
+---
+shape: square
+color: blue
+corners: 4
+----
+--
+
+And the block:
+
+[source,asciidoc]
+------
+[data2text,my_context=strings1.json]
+----
+I'm heading to the {{my_context.foo}}.
+
+{% for path in my_context.paths %}
+{% assign data = path | loadfile: "." %}
+This is {{ data.shape }} with color {{ data.color }}.
+{% endfor %}
+----
+------
+
+Where:
+
+* `loadfile:` is a liquid filter that loads the file content based on `path`
+with argument `.`. The argument is the path of the parent folder, which is the
+current directory of the Metanorma document root.
+
+Will render as:
+
+[source,asciidoc]
+----
+I'm heading to the bar.
+
+This is circle with color red.
+This is square with color blue.
+----
+
+== Nesting `data2text` with other commands
+
+You can nest `data2text` within other Metanorma commands for more
+complex use cases.
+
+There are multiple use cases where you might want to use the `data2text` command
+within other Metanorma commands, such as:
+
+* dynamically generating content based on structured data;
+* including data from a structured data file into a Liquid template;
+* incorporating structured data handily for DRY (Don't Repeat Yourself) purposes.
+
+Similar to the nesting structure of the previous `yaml2text` and `json2text`
+commands, the `data2text` command relies on the `{% raw %} ... {% endraw %}` tag
+to ensure the contexts are properly separated.
+
+Generally it requires the `data2text` command to be used in the outer block,
+and the inner block to be processed by the target command, then within the
+inner block you use the `raw` tag to access the `data2text` context data.
+
+Given:
+
+`strings.yaml` contains YAML data:
+[source,yaml]
+----
+---
+foo: bar
+dead: beef
+----
+
+And the block:
+
+[source,asciidoc]
+------
+[data2text,context=strings.yaml]
+----
+[lutaml_express,schemas,repo,config_yaml=schemas.yaml,include_path=../../]
+-----
+\include::./path/to/_schemas.liquid[]
+-----
+----
+------
+
+The `raw` tag is used to prevent the `context` from being processed by
+`lutaml_express`, allowing it to be processed by `data2text` in the liquid
+template file.
+
+[source,liquid]
+----
+{% raw %}
+{{ context.foo }}
+{% endraw %}
+----
 
