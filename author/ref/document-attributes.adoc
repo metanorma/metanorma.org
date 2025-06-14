@@ -358,6 +358,17 @@ Stored in the document under `//metanorma-extension/semantic-metadata/{name}`, w
 Comma-delimited list of values, relating to `name` as presentation metadata about the document.
 Stored in the document under `//metanorma-extension/presentation-metadata/{name}`, with repeating tags for each value.
 
+The following instances of generic metadata are applicable to all flavors of Metanorma; other instances are
+specific to flavors, and are documented there:
+
+`:semantic-metadata-headless:`:: This document is to be compiled without adding initial document boilerplate to it. This is used
+for compiling Asciidoc boilerplate documents themselves.
+`:presentation-metadata-doctype-alias:`:: Specify how the document type is to be rendered. This overrides the language-specific
+internationalisation of the supplied document type, and is used in Metanorma tastes, to override the base flavor 
+document type rendering.  [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.0]
+`:presentation-metadata-custom-charset-font:`:: Specify custom character set for Private Use character 
+codepoints [added in https://github.com/metanorma/isodoc/releases/tag/v2.7.0]
+
 [[document-relations]]
 == Document relations
 
