@@ -273,6 +273,14 @@ The list of identifiers is comma-delimited, and is specified as TYPE:VALUE; e.g.
 `:edition:`::
 The document edition.
 
+`:version:`::
+The document version [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.0].
+The distinction between `:edition:` and `:version:` is specific to the SDO, but the overall trend is that 
+`:edition:` corresponds to major versions, and are what corrigenda and amendments apply to, while `:version:`
+corresponds to minor versions and patches, including pre-publication versions (drafts). However,
+only `:version:` is used if the SDO uses semantic versioning throughout. Before `:version:` was added
+to Metanorma, `:draft:` fulfilled that function instead.
+
 `:revdate:`::
 The date the document was last updated.
 
@@ -323,12 +331,9 @@ There can only be one value per type in a token; if there are multiple classific
 repeat the type in a new token; e.g.  `:classification: Dewey:563.5.081, Dewey:537.71`.
 
 [[draft]] `:draft:`::
-The document draft.
-Used in addition to document stage.
-The value must provide the exact draft iteration in _X.Y_ format
-(major version number and minor version number separated by a dot).
 If present, link:/author/topics/blocks/annotations[reviewer notes]
-will be rendered (otherwise those are suppressed).
+will be rendered (otherwise those are suppressed). Is also ued as a legacy
+equivalent of `:version:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.0].
 
 `:document-scheme:`::
 Document content arrangement that Metanorma will enforce for this document.
