@@ -273,6 +273,14 @@ The list of identifiers is comma-delimited, and is specified as TYPE:VALUE; e.g.
 `:edition:`::
 The document edition.
 
+`:version:`::
+The document version [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.0].
+The distinction between `:edition:` and `:version:` is specific to the SDO, but the overall trend is that 
+`:edition:` corresponds to major versions, and are what corrigenda and amendments apply to, while `:version:`
+corresponds to minor versions and patches, including pre-publication versions (drafts). However,
+only `:version:` is used if the SDO uses semantic versioning throughout. Before `:version:` was added
+to Metanorma, `:draft:` fulfilled that function instead.
+
 `:revdate:`::
 The date the document was last updated.
 
@@ -323,12 +331,9 @@ There can only be one value per type in a token; if there are multiple classific
 repeat the type in a new token; e.g.  `:classification: Dewey:563.5.081, Dewey:537.71`.
 
 [[draft]] `:draft:`::
-The document draft.
-Used in addition to document stage.
-The value must provide the exact draft iteration in _X.Y_ format
-(major version number and minor version number separated by a dot).
 If present, link:/author/topics/blocks/annotations[reviewer notes]
-will be rendered (otherwise those are suppressed).
+will be rendered (otherwise those are suppressed). Is also ued as a legacy
+equivalent of `:version:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.0].
 
 `:document-scheme:`::
 Document content arrangement that Metanorma will enforce for this document.
@@ -357,6 +362,17 @@ Stored in the document under `//metanorma-extension/semantic-metadata/{name}`, w
 `:presentation-metadata-{name}:`::
 Comma-delimited list of values, relating to `name` as presentation metadata about the document.
 Stored in the document under `//metanorma-extension/presentation-metadata/{name}`, with repeating tags for each value.
+
+The following instances of generic metadata are applicable to all flavors of Metanorma; other instances are
+specific to flavors, and are documented there:
+
+`:semantic-metadata-headless:`:: This document is to be compiled without adding initial document boilerplate to it. This is used
+for compiling Asciidoc boilerplate documents themselves.
+`:presentation-metadata-doctype-alias:`:: Specify how the document type is to be rendered. This overrides the language-specific
+internationalisation of the supplied document type, and is used in Metanorma tastes, to override the base flavor 
+document type rendering.  [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.0]
+`:presentation-metadata-custom-charset-font:`:: Specify custom character set for Private Use character 
+codepoints [added in https://github.com/metanorma/isodoc/releases/tag/v2.7.0]
 
 [[document-relations]]
 == Document relations
@@ -733,6 +749,10 @@ Overriding is not recommended.
 
 
 === PDF
+
+`:presentation-metadata-papersize:`::
+PDF document page size. Can be used to override the page size in built-in stylesheet for the particular Metanorma flavour.
+Valid values are: `Letter`, `letter`, `A4` or `a4`.
 
 `:pdf-stylesheet:` (legacy: `pdfstylesheet`)::
 XSLT stylesheet to use for PDF output [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.10].
