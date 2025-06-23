@@ -28,6 +28,35 @@ Quoted titles are encoded as follows:
 *Definition of the metre* (CR, 85)
 ----
 
+=== Naming of annexes and appendices
+
+The naming of second level and third level ancillary clauses in BIPM has varied:
+
+* Historically, a second level clause could be called Annex or Appendix, depending on whether
+it was an autonomous document.
+* In version 8 of the SI Brochure, 2019, the following structure was adopted:
+  * Level 2: en: Appendix, fr: Annnexe
+  * Level 3: en: Annex, fr: Annexe
+* In version 9 of the SI Brochure, 2021, the following structure is adopted:
+  * Level 2: en: Annex, fr: Annnexe
+  * Level 3: en: Appendix, fr: Appendice
+
+In order to prevent confusion, the `i18n.yaml` files use the tags `level2_ancillary` and
+`level3_ancillary`, rather than `annex` and `appendix`, to specify the labels 
+for ancillary clauses [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v2.6.11].
+The behaviour described above can be obtained as follows:
+
+* By default, the 2021 behaviour applies.
+* If `:document-scheme: 2019` is provided, the 2019 behaviour applies.
+* To get custom values for `level2_ancillary` or `level3_ancillary`, specify a file in
+`i18nyaml: {file.yaml}`, with that file containing the desired value for those tags, e.g.
+overriding "Appendix" with "Annex" through:
++
+[source,yaml]
+----
+level2_ancillary: Annex
+----
+
 
 == Lists
 
