@@ -39,11 +39,11 @@ A document attribute looks like this:
 [source,adoc]
 ----
 :title: My document
-:draft:
+:novalid:
 ----
 
-Document attributes are used as simple flags like on/off switches, which do
-not take a value, while others accept one or more values.
+Document attributes can be used as simple flags like on/off switches, which do
+not take a value, but typically accept one or more values.
 
 NOTE: The order of document attributes generally does not matter to Metanorma,
 except that a document attribute with the same key can be overwritten by a
@@ -62,8 +62,7 @@ subsequent definition of the same attribute below the original definition.
 :language: en
 :mn-document-class: iso <4>
 :technical-committee: Food products <5>
-:draft: <6>
-:mn-output-extensions: xml,html,doc,html_alt <7>
+:mn-output-extensions: xml,html,doc,html_alt <6>
 ----
 
 <1> Document title
@@ -71,8 +70,7 @@ subsequent definition of the same attribute below the original definition.
 <3> `:doctype:` defines the type of document, for example `international-standard`, `technical-report`, `guide`, etc. The allowed values for this attribute are specific to each flavor.
 <4> `:mn-document-class:` indicates the Metanorma flavor the document should be checked against.
 <5> The committee responsible for the document.
-<6> `:draft:` The attribute does not take any values: it is either present or not.
-<7> `mn-output-extensions` specifies the generated output formats. It can take several comma-delimited values.
+<6> `mn-output-extensions` specifies the generated output formats. It can take several comma-delimited values.
 ====
 
 // end::tutorial[]

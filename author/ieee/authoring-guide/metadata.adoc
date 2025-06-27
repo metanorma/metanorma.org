@@ -20,7 +20,7 @@ value, like:
 
 [source,adoc]
 ----
-:draft:
+:novalid:
 ----
 
 Some of the metadata will be visible in your document, such as `:title:`, while
@@ -72,13 +72,13 @@ These are the basic document attributes for IEEE SA.
 = Recommended Practice for Preparing an IEEE Standards Draft <1>
 :docnumber: 987.6 <2>
 :docstage: draft <3>
-:draft: 3 <4>
+:version: 3 <4>
 ----
 <1> IEEE SA document title.
 <2> IEEE SA document number. If draft, omit the "P" prefix as it will be
 automatically added.
 <3> IEEE SA document stage.
-<4> If `:docstage:` is draft, enter the draft number in `:draft:`.
+<4> If `:docstage:` is draft, enter the draft number in `:version:`.
 ====
 
 These are operational concerns that are useful for the author.
@@ -164,9 +164,9 @@ The document stage is set via the `:docstage:` attribute.
 Typically, a document goes through these processes:
 
 . Started off as a draft. where `:docstage: draft` is set, and draft number set
-to 1 `:draft: 1`. The `:copyright-year:` should always be set to the current year.
+to 1 `:version: 1`. The `:copyright-year:` should always be set to the current year.
 
-. Draft number increases, e.g. `:draft: 2`, as the working group progresses.
+. Draft number increases, e.g. `:version: 2`, as the working group progresses.
 
 . The draft gets balloted by the working group when ready.
 
@@ -177,7 +177,7 @@ to the SA standardization board for approval.
 using `:issued-date:`.
 
 . Once the document is ready to be published, set `:docstage: published` and
-remove the `:draft:` attribute.
+remove the `:version:` attribute.
 
 NOTE: IEEE SA documents can also be marked `inactive` by `:docstage: inactive`.
 
@@ -186,7 +186,7 @@ NOTE: IEEE SA documents can also be marked `inactive` by `:docstage: inactive`.
 ====
 ----
 :docstage: draft <1>
-:draft: 3 <2>
+:version: 3 <2>
 :copyright-year: 2021 <3>
 :issued-date: 2021-01-01 <4>
 ----

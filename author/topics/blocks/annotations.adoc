@@ -48,6 +48,15 @@ start and end.
 * To-dos (also "TODOs"): notes intended for the project's authors or editors as
 a reminder for a pending action in content.
 
+Reviewer notes and To-dos are treated as `annotation` elements in Metanorma XML;
+editor notes are treated as `admonition` elements. Metanorma renders annotation elements
+annotations in output only if the document is unpublished, using SDO-specific criteria
+to determine document status (the document stage). 
+This can be overridden by setting `:presentation-metadata-render-document-annotations:`
+to `true` or `false` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.1].
+
+NOTE: In previous versions of Metanorma, the draft status of the document was
+determined through the `:draft:` attribute, but that is no longer observed.
 
 [[editors-note]]
 == Editor's notes
@@ -87,13 +96,6 @@ prefix or the `[TODO]` block.
 Similar to the editor's notes, they are rendered as document elements (as
 admonitions) and are presented in the content flow. Again, no locality needs
 to be supplied to use to-dos.
-
-To-dos are only rendered if the
-link:/author/ref/document-attributes/#draft[`:draft:`] document attribute has
-been specified for the document(s).
-
-NOTE: Similar to reviewer notes, to-do annotations are only rendered if the
-standard specifies the document attribute `:draft:`.
 
 [example]
 .Example of a TODO (from ISO 19135)
@@ -144,12 +146,6 @@ There are two types of reviewer notes:
 
 * standalone comment
 * ranged comment
-
-The link:/author/ref/document-attributes/#draft[`:draft:`] document attribute
-must to specified in the document in order to render any reviewer notes.
-
-NOTE: The requirement to specify the `:draft:` attribute is similar to that
-of to-dos.
 
 The basic syntax of a reviewer note is as follows:
 
@@ -373,9 +369,9 @@ annotation types.
 | Annotation type | When rendered | Supports range?
 
 | <<editors-note>> | Always                           | No
-| <<todos>>        | Only when `:draft:` is specified | No
-| <<standalone>>   | Only when `:draft:` is specified | No
-| <<ranged>>       | Only when `:draft:` is specified | Yes
+| <<todos>>        | Only when `:presentation-metadata-render-document-annotations: true:` is specified | No
+| <<standalone>>   | Only when `:presentation-metadata-render-document-annotations: true:` is specified | No
+| <<ranged>>       | Only when `:presentation-metadata-render-document-annotations: true:` is specified | Yes
 
 |===
 
