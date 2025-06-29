@@ -222,6 +222,14 @@ extracted from `organization/email`
 extracted from `organization/uri`
 {blank}[added in https://github.com/metanorma/isodoc/releases/tag/v1.2.6].
 
+`copublisher_logos`:: The logos of copublishers of the document, to be added to the coverpage
+{blank}[added in https://github.com/metanorma/isodoc/releases/tag/v3.1.11].
+
+`copublisher_logo_attrs`:: Attibutes of logos of copublishers of the document, to be added to the coverpage:
+an array of hashes, with a key for each output format mapping to a hash of height and width, for example
+`[ nil, { doc: { height: 30, width: 60 }, html: { height: 45, width: 90 } } ]`
+{blank}[added in https://github.com/metanorma/isodoc/releases/tag/v3.2.0].
+
 `unpublished`:: Boolean value of whether the document is considered to be an unpublished
 draft or published, based on the status of the document.
 
@@ -589,6 +597,28 @@ be requested from the address below.
 === {blank}
 Check with your supplier for local information.
 ----
+
+This is an illustration of what an appended copyright statement looks like in ISO:
+
+.`.boilerplate.adoc`
+[source,adoc]
+----
+== copyright-statement-append
+
+This International Standard is a joint standard with the UN Food and Agriculture Organization. 
+Permission has been granted to ISO by the UN FAO to make a derived work based on any material 
+developed or copyright UN FAO.
+
+The UN FAO may be contacted
+
+[align=left]
+Food and Agriculture Organization of the United Nations +
+Viale delle Terme di Caracalla, 00153 Roma RM, Italy +
+Tel: +39 06 57051
+----
+
+image::/assets/site/added-boilerplate.png[]
+
 
 == Cover page notes
 
