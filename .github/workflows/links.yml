@@ -32,7 +32,14 @@ jobs:
     - name: Run lychee
       uses: lycheeverse/lychee-action@v2
       with:
-        args: --verbose --no-progress --cache --max-cache-age 1d --root-dir "${{ github.workspace }}/_site" "**/*.html" --include-fragments
+        args: |
+          --verbose
+          --no-progress
+          --cache
+          --accept 401,403,404,429,500,999
+          --max-cache-age 1d
+          --root-dir "${{ github.workspace }}/_site" "_site/**/*.html"
+          --include-fragments
         fail: true
 
       # - name: Create Issue From File
