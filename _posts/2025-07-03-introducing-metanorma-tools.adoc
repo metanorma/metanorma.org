@@ -1,0 +1,342 @@
+---
+layout: post
+title: "One-step ISO figure submission with Metanorma Tools"
+date: 2025-07-03
+categories: [tools,workflow,iso]
+
+authors:
+- name: Ronald Tse
+  email: ronald.tse@ribose.com
+  social_links:
+  - https://github.com/ronaldtse
+
+excerpt: >-
+  Manually renamed 60 figures for ISO stage submission? Here's the solution.
+---
+
+== ISO standards development with Metanorma Tools: Figure submission process
+
+=== The story
+
+I spent a stressful weekend renaming figures for the submission of ISO/FDIS
+19135 for ballot. 60 of them. An exaggeration nonetheless, renaming image files
+once isn't hard but doing it multiple times felt like a monumental task tracking
+filenames of this set of images.
+
+As project leaders for the ISO 19135 project at ISO/TC 211, Reese Plews
+(https://github.com/ReesePlews[GitHub link]) of
+https://www.plewsconsulting.com[Plews Consulting] and I had to submit the FDIS
+package to SIS for ISO/CS processing.
+
+This step included ensuring that the ISO DIS Word file is properly generated and
+that the figures were correctly named and ordered according to the
+https://www.iso.org/drafting-standards.html[ISO DRG directives].
+
+While Reese kindly provided the order of figures, and I renamed the files for
+submission, once a figure moved around, it was all over again. Not good.
+
+[NOTE]
+====
+Some would ask: why not just name the image files according to their appearance
+order in the document? If you did that from the start then this is a non-issue.
+
+My answer is: I prefer naming image files according to their context and
+meaning. I also do not want to rename the files multiple times when they are
+moved around in the document.
+====
+
+=== The challenge
+
+If you've ever worked on ISO standards development, you know the drill. The
+process is methodical, thorough, and absolutely essential for creating
+world-class standards.
+
+Yet the process is fraught with repetitive, manual tasks that consume hours of
+valuable time that could be better spent on standards development. Or a sip
+of coffee. Or a swim in the hot summer sun or a stroll in the park.
+
+And definitely not renaming files. Renaming 60 figures to comply with ISO DRG's
+filename rules, in face of a ballot deadline, was definitely not one of the most
+favorite ways to spend time.
+
+=== The solution
+
+Good news is that we've had enough of that... here's the **Metanorma Tools**
+toolkit that helps you streamline development.
+
+
+== Introducing Metanorma Tools
+
+Metanorma, thanks to the warm embrace of the community, is now an indispensable
+standards development suite for anyone involved in the creation of standards.
+
+With users ranging from ISO/TCs to national standards bodies to industry
+consortia, Metanorma has become the go-to solution for streamlining the
+standards development process.
+
+As standards authors ourselves, we understand that the key in standards
+development is *not just about authoring standards*, but how to spend time more
+wisely.
+
+The time sink is in the processes, repetitive manual tasks, administrative
+interfacing and communicating. The devil is in *workflow management*.
+
+To better assist our users in streamlining their workflows around authoring
+documents in Metanorma, we have decided to start a new initiative: Metanorma
+Tools.
+
+Metanorma Tools is precisely a tool designed to support the standards
+development workflows, focusing on individual SDO processes, as a command-line
+interface. We start off with supporting ISO document workflows.
+
+The goal is to minimize the tedious, error-prone tasks that bog down standards
+development, letting you focus on what really matters: creating excellent
+standards.
+
+The tool provides two main capabilities that address critical pain points in
+the ISO workflow:
+
+. **Automated figure extraction** with ISO DRG-compliant naming
+. **Streamlined comment management** with GitHub integration
+
+Today we will explore figure extraction, and streamlined comment management will
+follow in a future post.
+
+
+== Bridging gaps in your ISO workflow
+
+The ISO standards development process follows a well-defined progression through
+these multiple stages (optional ones in parentheses).
+
+The stage progression of the most common document types are shown below:
+
+.ISO document stage progressions by document type
+[cols="1,3",options="header"]
+|===
+| Document Type | Stage Progression
+
+| International Standards
+| PWI → NP → AWI → WD (→ WDS) → CD (→ CDS) → DIS (→ FDIS) → IS
+
+| Technical Specifications
+| PWI → NP → AWI → WD (→ WDS) → CD (→ CDS) → DTR → TR
+
+| Technical Reports
+| PWI → NP → AWI → WD (→ WDS) → CD (→ CDS) → DTR → TR
+
+| Publicly Available Specifications
+| PWI → NP → AWI → WD (→ WDS) → CD (→ CDS) → DPAS → PAS
+
+| Amendments
+| PWI → NP → AWI → WD (→ WDS) → CD (→ CDS) → DAM (→ FDAM) → Amd
+
+| Corrigendum
+| PWI → NP → AWI → WD (→ WDS) → CD (→ CDS) → DCOR (→ FDCOR) → Cor
+|===
+
+NOTE: Optional stages are shown in parentheses.
+
+Every stage transition (every "→") requires specific deliverables that
+involve significant manual work.
+
+Metanorma Tools aims to plug in the proverbial gap at these junctures,
+automating the preparation of submission packages and enabling modern
+collaborative workflows for comment resolution.
+
+
+
+
+== Figure extraction... magic
+
+=== General
+
+Actually there's no magic. This can all be deterministicly derived from the
+output Metanorma XML file.
+
+When a project reaches ballot or review stages, the project leader ("you"...)
+need to provide a figure package that complies with ISO DRG guidelines.
+
+The ISO DRG guidelines specify a particular file name pattern for the document,
+which means each figure must be renamed to a document-specific string with the
+Figure number in the document.
+
+Here's the sample set given by the DRG guidelines:
+
+.File naming examples from ISO DRG Section 3.2
+[cols="1,2,3",options="header"]
+|===
+| Where used | Filename | Description
+
+| Normal figure
+| `12345-1_ed1fig1.dwg`
+| File for figure 1
+
+| Normal figure
+| `12345-1_ed1fig2.dwg`
+| File for figure 2
+
+| Normal figure, subfigure
+| `12345-1_ed1fig1a.dwg`
+| File for figure 1, subfigure a
+
+| Normal figure, subfigure
+| `12345-1_ed1fig1b.dwg`
+| File for figure 1, subfigure b
+
+| Normal figure, key file
+| `12345-1_ed1fig1_key1.dwg`
+| File for figure 1, first key file
+
+| Normal figure, key file
+| `12345-1_ed1fig1_key2.dwg`
+| File for figure 1, second key file
+
+| Table
+| `12345-1_ed1figTab1.dwg`
+| File for the single figure in Table 1
+
+| Table
+| `12345-1_ed1figTab1a.dwg`
+| File for the first figure in Table 1
+
+| Table
+| `12345-1_ed1figTab1b.dwg`
+| File for the second figure in Table 1
+
+| Annex
+| `12345-1_ed1figA1.dwg`
+| File for the first figure in appendix A
+
+| Annex
+| `12345-1_ed1figA2.dwg`
+| File for the second figure in appendix A
+
+| Annex
+| `12345-1_ed1figA1a.dwg`
+| File for first figure in appendix A, subfigure a
+
+| Annex
+| `12345-1_ed1figA1b.dwg`
+| File for first figure in appendix A, subfigure b
+
+| Language
+| `12345-1_ed1fig1_f.dwg`
+| File for figure 1, French translation
+
+| Amendment
+| `12345-1_ed1amd1fig1.dwg`
+| File for figure 1 of amendment 1
+
+| Inline
+| `12345-1_ed1figText1.dwg`
+| File for graphical element inline with text
+
+| Special Layout
+| `SL12345-1_ed1figTab1.dwg`
+| File for table 1 which does not have a figure
+|===
+
+
+The pattern looks simple but it is not entirely straightforward.
+
+There are several factors to consider, such as:
+
+* figure numbers (1, 2, 3 or A.1, B.2, C.3...)
+* subfigure numbers ("a)", "b)", etc.)
+* key files (if you use images in a figure/table key)
+
+
+=== The manual way (before)
+
+Assume that your image files are named according to what they mean, instead of
+the order of appearance in the document.
+
+. Know the figure number (1, 2, 3,... A.1, B.2, C.3...)
+. Create a map between the image filenames and the figure number.
+. Rename each file following the ISO DRG pattern
+. Create a ZIP package of these images
+. Hope you didn't make any typos...
+
+
+=== The Metanorma Tools way (now)
+
+[source,bash]
+----
+$ metanorma-tools extract-images <document.presentation.xml> --zip
+----
+
+Where,
+
+`document.presentation.xml`:: is the Metanorma Presentation XML file generated
+by Metanorma.
+
+
+That's it. A single command extracts all figures, applies ISO DRG-compliant
+naming automatically, and creates a submission-ready ZIP package.
+
+[source]
+----
+$ metanorma-tools extract-images 19135_fdis_ed2.presentation.xml --zip
+
+# Output directory structure:
+├── 19135_fdis_ed2.zip
+└── 19135_fdis_ed2/            # after extracting
+    ├── 19135_fdis_ed2fig1.svg
+    ├── 19135_fdis_ed2fig2.png
+    ├── 19135_fdis_ed2fig3.jpg
+    ├── ...
+    ├── 19135_fdis_ed2figA1.svg
+    └── 19135_fdis_ed2figE1.svg
+----
+
+The tool automatically:
+
+* Extracts document metadata (number, stage, edition) from the document
+* Generates compliant filenames
+* Preserves original image formats
+* Creates organized directory structures
+* Packages everything for submission
+
+
+== Getting started
+
+And this is how to get started with Metanorma Tools!
+
+
+=== Installation
+
+[source,bash]
+----
+$ gem install metanorma-tools
+----
+
+=== Quick start: figure extraction
+
+[source,bash]
+----
+# Extract figures with ISO DRG naming
+$ metanorma-tools extract-images your-document.presentation.xml [OUTPUT_DIRECTORY]
+
+# Create submission package
+$ metanorma-tools extract-images your-document.presentation.xml --zip
+----
+
+
+== What's next?
+
+Metanorma Tools represents our commitment to making standards development more
+efficient and collaborative.
+
+The tool is open source, and available right now.
+
+Try it out on your next ISO project and let us know how it works for you!
+
+And stay tuned for our upcoming article regarding comment management with
+Metanorma Tools...
+
+== Resources
+
+* https://github.com/metanorma/metanorma-tools[Metanorma Tools on GitHub]
+* https://rubygems.org/gems/metanorma-tools[Install from RubyGems]
+* https://github.com/metanorma/commenter[Commenter gem documentation]
+* https://www.iso.org/drafting-standards.html[ISO DRG Directives]
