@@ -384,6 +384,13 @@ Metanorma provides two primary commands for applying CSS styles to table element
 
 `td-style:[...]`:: Applies CSS styles to a specific table cell [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.4]
 
+Metanorma also supports the attribute `css-style` which applies to tables 
+themselves  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.1]
+
+Flavours of Metanorma often apply border or shading to tables by default, as prescribed by the SDO. In order to overrule
+these defaults, and reset a table not to have any styling, give it the attribute 
+`[%plain]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.2]
+
 
 === Supported CSS properties
 
@@ -440,12 +447,15 @@ multiple style macros in sequence
 ====
 [source,asciidoc]
 ----
+[css-style="background-color: yellow"]
 |===
 |A |B |C tr-style:[background-color: red]
 
 h|1 td-style:[background-color: green] td-style:[color: blue]
 |2 tr-style:[background-color: green]
 |3
+
+|4 |5 td-style:[background-color: green] | 6
 
 |===
 ----
@@ -456,6 +466,9 @@ Here:
 * `background-color: green` is applied to the second row
 * `background-color: green` and `color: blue` (as a combination of styles) are
 applied to the first (header) cell of the second row
+* `background-color: yellow`, inherited from the table style, is applied to the third row
+* `background-color: green`, overriding the table style (as do all the foregoing background-color
+instances), is applied to the second cell of the third row
 ====
 
 
