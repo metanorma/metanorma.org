@@ -300,8 +300,25 @@ reference list text:: a user-defined, pre-formatted description about the
 bibliographic item. This text is either formatted according to ISO 690:2021, or
 publication conventions like MLA, APA or the Chicago Manual of Style.
 If encoded in the ISO 690:2021 format, the resulting citation will be a
-machine-readable one.
+machine-readable one. If the bibliographic entry is auto-fetched, the
+reference list text can be left out, as it will instead be generated based on the
+fetched entry.
 
+A bibliographic reference can optionally be followed by one or more notes. This allows an
+annotated bibliography to be generated. Notes are sorted together with their preceding bibliographic entry.
+
+[source,asciidoc]
+----
+* [[[ref1,ISO 639:1988]]], _Code for individual languages and language groups_
+
+NOTE: This standard was subsequently split up from 1998 into parts.
+
+NOTE: This was the first edition to use two-letter codes.
+
+* [[[ref2,ISO 639-2:1998]]], _Code for individual languages and language groups, Part 2: Alpha-3 code_
+
+NOTE: This is the first instance of three-letter codes in ISO-639.
+----
 
 == Best practice
 
@@ -1007,7 +1024,7 @@ initials. So in `span:fullname[A. D. Navarro Cortez]`, _A. D._ are parsed as ini
   In span:in_surname.editor[Gates], span:in_initials.editor[W. H] &
   span:in_organization[UNICEF],
   span:in_title[Collected Essays].
-  _span:series[Bibliographers Anonymous]._
+  span:series[Bibliographers Anonymous].
   span:docid.ISO[ISO 1234].
   span:pubplace[Geneva]:
   span:publisher[International Standardization Organization].
