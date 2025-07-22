@@ -541,6 +541,15 @@ Typical values are:
 `:technical-committee:`:: The name of the relevant ISO technical committee or equivalent
 (mandatory)
 
+`:technical-committee-agency:`:: The agency that the technical committee lies under,
+if it is other than the home agency 
+(ISO for metanorma-iso, IEC for metanorma-iec) [added in https://github.com/metanorma/metanorma-iso/releases/tag/v3.1.2]
+Can be given as an abbreviation if it is IEC or ISO.
+
+`:technical-committee-agency-abbr:`:: The abbreviation of the agency that the technical committee 
+lies under [added in https://github.com/metanorma/metanorma-iso/releases/tag/v3.1.2].
+Should be given if the agency is other than IEC or ISO.
+
 `:subcommittee-number:`:: The number of the relevant ISO subcommittee.
 
 `:subcommittee-type:`:: The type of the relevant ISO subcommittee.
@@ -576,7 +585,8 @@ Typical values are:
 In the case of multiple responsible groups (technical committees, subcommittees,
 working groups), the `:technical-committee:`, `:subcommittee:` and `:workgroup:`
 attributes can be used to encode multiple groups by suffixing `_n` to the
-attribute where `n` is a sequential number after 1.
+attribute where `n` is a sequential number after 1. Each suffix corresponds to
+one nesting grouping of technical committee, subcommittee, and working group.
 +
 [example]
 .Setting a responsible technical committee, subcommittee and working group (1)
@@ -615,16 +625,20 @@ For ISO/TC 184/SC 4/WG 12:
 ====
 [source,adoc]
 ----
-:technical-committee-number: 184
-:technical-committee: Automation systems and integration
-:subcommittee-type: SC
-:subcommittee-number: 4
-:subcommittee: Industrial data
+:technical-committee: Widgets etc.
+:technical-committee_agency: Institute of Electrical and Electronic Engineers
+:technical-committee_agency_abbr: IEEE
 :technical-committee-number_2: 184
 :technical-committee_2: Automation systems and integration
 :subcommittee-type_2: SC
-:subcommittee-number_2: 5
-:subcommittee_2: Interoperability, integration, and architectures for enterprise systems and automation applications
+:subcommittee-number_2: 4
+:subcommittee_2: Industrial data
+:technical-committee-number_3: 184
+:technical-committee_3: Automation systems and integration
+:technical-committee_agency_3: IEC
+:subcommittee-type_3: SC
+:subcommittee-number_3: 5
+:subcommittee_3: Interoperability, integration, and architectures for enterprise systems and automation applications
 ----
 ====
 
