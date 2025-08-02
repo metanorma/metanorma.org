@@ -4,6 +4,26 @@ title: Passthrough to output formats
 ---
 = Passthrough to output formats
 
+== Skip Metanorma processing of markup
+
+Metanorma uses Asciidoc markup with some additions, such as `{{...}}` for concepts.
+Metanorma will render markup as it finds it. If you wish to ignore Metanorma processing
+of markup, you will need to use pass-through markup: `&#x2b;&#x2b;&#x2b;&#x2b;` for blocks, `&#x2b;&#x2b;` for inline
+markup. For example, if you want `{{A}}` to display in a document, you will need to
+enter it as `&#x2b;+{{A}}&#x2b;+`. 
+
+If you have more complex markup, `&#x2b;&#x2b;` may not be adequate; the Unicode Zero-Width joiner, `&amp;#x200d;`,
+may be necessary to force Metanorma not to process the markup. (Asciidoctor's underlying
+processor uses backslash to escape some characters, but it is not consistent.) For example,
+if you want `++{{A}}++` to display in a document, `&#x5c;&#x2b;+{{A}}&#x2b;+` ends up displaying
+_&#x2b;{A}&#x2b;_. You can obtain a display of `&#x2b;+{{A}}&#x2b;+` by writing `&#x2b;&amp;#x200d;+{{A}}&#x2b;+` instead:
+`&amp;#x200d;` does not display, but is a character which prevents Metanorma from recognising
+`&#x2b;&#x2b;` as markup.
+
+Note that backquotes for monospace formatting always prevent recognition of markup:
+`&#x0060;++{{A}}++&#x0060;` is not processed as markup. Using XML escapes for characters, e.g.
+`&amp;#x2b;` for `+`, will also prevent it.
+
 == Passthrough blocks
 
 Passthrough text, such as XML tags, intended to be rendered in a target format
