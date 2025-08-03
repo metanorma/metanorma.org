@@ -379,6 +379,11 @@ For example, `presentation-metadata-publisher-pdf-height_2` specifies the height
 publisher. The publishers are read in the same sequence for logo attributes as they are for publisher names and abbreviations,
 and the numbering includes the primary publisher of the document as the first publisher (for which a logo typically does not need
 to be specified.)
+`:presentation-metadata-ul-label-list:`:: Specify the characters to be used as bullets for unordered lists, as a comma-delimited
+list of strings, each string corresponding to a deeper level of list [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.2].
+The bullet list rotates once the list is exceeded. So `:presentation-metadata-ul-label-list: *,&#x2013;,"x,x"` will use `*` at level 1,
+`&#x2013;` at level 2, `x,x` at level 3, then go back to  `*` at level 4. Note that currently custom unordered list bullets
+are only processed for PDF output.
 
 [[document-relations]]
 == Document relations
