@@ -74,7 +74,7 @@ boilerplate: lib/metanorma/generic/boilerplate.xml
 docid_template: "{{ organization_name_short }} {{ docnumeric }}"
 published_stages: ["published", "withdrawn"]
 committees: []
-committees: [Committee]
+committees: [committee]
 relations: []
 default_stage: "published"
 metadata_extensions: []
@@ -207,7 +207,9 @@ files, as with `i18nyaml`. For the format of boilerplate files, see link:/develo
 `published_stages`:: list of stages considered published
 
 `committee_types`:: list of possible hierarchical level of committees [added in https://github.com/metanorma/metanorma-generic/releases/tag/v3.1.3].
-Assumes a single hierarchy.
+Assumes a single hierarchy. Note that the values here need to match the corresponding document attributes; e.g. a value of `workgroup` will
+correspond to the document attributes `:workgroup:`, `:workgroup-number:`, `:workgroup-type:`, 
+`:workgroup_2:`, `:workgroup-number_2:`, `:workgroup-type_2:`, etc.
 
 `committees`:: list of legal committee values [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.4]. Assumes one level of committee.
 
