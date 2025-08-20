@@ -861,9 +861,12 @@ text, by providing it explicitly within the cross-reference, e.g.
 `<<xref1,Clause 3.1>>`.
 
 References to the bibliography are automatically populated by designator and bibliographic number (e.g. _ISO 639-2, [B1]_),
-if the reference is to a standard or technical report, or otherwise by title and bibliographic number. If you wish to
-override that, e.g. by using authors instead of title, you should populate the cross-reference text, e.g.
-`<<ref1,Boswell and Johnson [B2]>>`.
+if the reference is to a standard or technical report, or otherwise by author and bibliographic number. The IEEE stylesheet
+allows the choice of either author or title; a switch to title and bibliographic number can be indicated by setting the
+style of the reference to `style=title%` [added in https://github.com/metanorma/metanorma-ieee/releases/tag/v1.5.4];
+so for a book citation, 
+`<<eref1,style=title%>>` would give _Demystifying Deep Learning: An Introduction to the Mathematics of Neural Networks [B1]_,
+whereas `<<eref1,style=author%>>` or `<<eref1>>` would give _Douglas [B1]_.
 
 === Footnotes
 
