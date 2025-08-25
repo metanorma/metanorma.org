@@ -427,6 +427,22 @@ ____
 
 NOTE: The quotation marks are needed to process the CSV correctly.
 
+=== Corporate authors
+
+In Industry Affiliate Network documents, an affiliate needs to be nominated, along with its logo.
+These are indicated through the `:corporate-author:` attribute, which overrides the default of IEEE
+to indicate which organisations have been involved 
+in authoring the document [added in https://github.com/metanorma/metanorma-ieee/releases/tag/v1.5.3].
+The affiliate should be given as the second `:corporate-author:` instance, after IEEE. 
+The `:corporate-author_logo:` attribute should match the `:corporate-author:` attribute:
+
+[source,adoc]
+----
+:corporate-author: IEEE
+:corporate-author_2: Spatial Web Foundation
+:corporate-author_logo_2: swf.png
+----
+
 
 == Visual appearance
 
@@ -436,6 +452,10 @@ document, but restart numbering with each clause (hierarchically).
 +
 Use in complex documents, with multiple tables or figures, that need to be tracked against
 clauses for ease of lookup (so _Figure 6-3, Figure 6-4_, instead of _Figure 21, Figure 22_.)
+
+`:presentation-metadata-coverpage-statement:`:: In Industry Affiliate Network documents,
+used to give the coverpage statement of the affiliate organisation's 
+contribution [added in https://github.com/metanorma/metanorma-ieee/releases/tag/v1.5.3].
 
 == Document processing
 
