@@ -112,7 +112,8 @@ draft, the edition number indicates the intended edition number.
 `approved`::: (default) This document has been approved by the IEEE SASB.
 +
 NOTE: Approved does not necessarily mean published, it is a necessary stage
-prior to publication.
+prior to publication. However approved documents are rendered as published documents,
+with no draft indications.
 
 `superseded`::: This document has been superseded.
 
@@ -201,12 +202,58 @@ NOTE: A trial-use document is effective for not more than three years
 
 `:doctitle:`:: Document title.
 +
-NOTE: Do not include the words "Draft {Guide/Standard/Recommended Practice} for",
+NOTE: Do not include the words "{Draft/IEEE} (Trial-Use) {Guide/Standard/Recommended Practice} for",
 these words are supplied automatically by Metanorma.
 +
 NOTE: The `:doctitle:` value can also be set using the first line of the
 Metanorma AsciiDoc markup, prefaced by `= ` instead of setting the document
 attribute.
++
+.Example of default document titling
+====
+[source,adoc]
+----
+:doctitle: Spatial Web Protocol, Architecture and Governance
+:docstage: approved
+:doctype: recommended-practice
+----
+
+Document title: _Spatial Web Protocol, Architecture and Governance_
+Full document title: _IEEE Recommended Practice for Spatial Web Protocol, Architecture and Governance_
+Abbreviated document title: _IEEE Rec. Prac. for Spatial Web Protocol, Architecture and Governance_
+
+====
+
+`:title-full:`:: Full document title
+By default, the words "(Draft/IEEE) (Trial-Use) {Guide/Standard/Recommended Practice} for" are prefixed
+to the supplied title automatically by Metanorma, depending on document metadata, in the form of the title
+used to render the document.
+In order to override this, users can supply the complete title of the document with this document
+attribute [added in https://github.com/metanorma/metanorma-ieee/releases/tag/v1.5.4].
+
+`:title-abbrev:`:: Abbreviated document title
+The full title of the document is abbreviated by Metanorma, for use in Word output headers,
+by constructing the full title depending on document metadata, but using a standard abbreviation
+for the document type.  In order to override this, users can supply the abbreviated title of the document with this document
+attribute [added in https://github.com/metanorma/metanorma-ieee/releases/tag/v1.5.4].
++
+.Example of user-supplied document titling
+====
+[source,adoc]
+----
+:doctitle: Spatial Web Protocol, Architecture and Governance
+:docstage: approved
+:doctype: recommended-practice
+:title-full: IEEE Recommended Practice for Spatial Web Protocol
+:title-abbrev: IEEE Rec. Prac. for SWF
+----
+
+Document title: _Spatial Web Protocol, Architecture and Governance_
+Full document title: _IEEE Recommended Practice for Spatial Web Protocol_
+Abbreviated document title: _IEEE Rec. Prac. for SWF_
+
+====
+
 
 `:document-scheme`:: The document scheme that this document aligns to.
 Metanorma will enforce alignment as appropriate, including by supplying
