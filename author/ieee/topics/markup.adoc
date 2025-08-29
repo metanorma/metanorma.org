@@ -868,6 +868,14 @@ so for a book citation,
 `<<eref1,style=title%>>` would give _Demystifying Deep Learning: An Introduction to the Mathematics of Neural Networks [B1]_,
 whereas `<<eref1,style=author%>>` or `<<eref1>>` would give _Douglas [B1]_.
 
+References to the bibliography that have text supplied (e.g. `<<eref,Studies on perpendicularity>>`) are
+by default assumed to be using a variant form of the title or of author names, and also have the bibliographic number
+appended after them: _Studies on perpendicularity [B1]_. In order to suppress this behaviour, and treat
+the supplied text as running text rather than a citation, prefix it with 
+`style=no-biblio-tag%` [added in https://github.com/metanorma/metanorma-ieee/releases/tag/v1.5.4]; e.g.
+`<<eref,style=no-biblio-tag%the aforementioned study>>` will render as _the aforementioned study_,
+although in HTML it will still hyperlink to the relevant point in the bibliography.
+
 === Footnotes
 
 If a footnote is repeated, Metanorma automatically detects that and converts it
