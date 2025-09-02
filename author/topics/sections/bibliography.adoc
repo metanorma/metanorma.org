@@ -514,27 +514,33 @@ the named reference tag (in parentheses) to the document identifier:
 ----
 ====
 
-Rich-text formatting is supported within the named reference tag, including
-footnotes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.3].
-
-This is useful for cases where a cited reference is out-of-date but unsuitable
-to be updated.
+Rich-text formatting is supported within the named reference tag [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.3].
 
 [example]
 .Example of rich-text formatting in named reference tag
 ====
 [source,adoc]
 ----
+* [[[ISO9000,(ISO/IEC Guide **99**:2007)ISO/IEC Guide 99:2007]]]
 * [[[ISO9000,(ISO 9000:2005 footnote:[Superseded by ISO 9000:2015.])ISO 9000:2005]]]
 ----
 ====
 
+WARNING: It is strongly advised not to use rich-text formatting within named
+reference tags, as it can lead to unexpected results and problems with
+copy-pasting. 
+
+The preferred way of modifying a fetched reference to add a footnote indicating its status
+(added to the reference tag in most flavours) is to give a footnote after the citation.
+This is useful for cases where a cited reference is out-of-date but unsuitable
+to be updated [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.6].
+
 [example]
 .Example of added footnote to a named reference tag (ISO/IEC 17025:2017)
 ====
-[source,adoc]
+[source,adoc] 
 ----
-* [[[ISO_IEC_Guide_99_2007,(ISO/IEC Guide 99:2007 footnote:[Also known as JCGM 200])ISO/IEC Guide 99:2007]]]
+* [[[ISO_IEC_Guide_99_2007,ISO/IEC Guide 99:2007]] footnote:[Also known as JCGM 200]
 
 * [[[ISO_IEC_17000_2004,ISO/IEC 17000:2004]]]
 ----
@@ -542,10 +548,6 @@ to be updated.
 .Footnote in ISO/IEC 17025:2017 on ISO/IEC Guide 99:2007
 image::/assets/author/topics/document-format/bibliography/ref-with-footnote.png[Footnote in ISO/IEC 17025:2017 on ISO/IEC Guide 99:2007]
 ====
-
-WARNING: It is strongly advised not to use rich-text formatting within named
-reference tags, as it can lead to unexpected results and problems with
-copy-pasting.
 
 ==== Numeric reference tag with automatic reference fetching
 
