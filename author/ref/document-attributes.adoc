@@ -275,7 +275,7 @@ The document edition.
 
 `:version:`::
 The document version [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.0].
-The distinction between `:edition:` and `:version:` is specific to the SDO, but the overall trend is that 
+The distinction between `:edition:` and `:version:` is specific to the SDO, but the overall trend is that
 `:edition:` corresponds to major versions, and are what corrigenda and amendments apply to, while `:version:`
 corresponds to minor versions and patches, including pre-publication versions (drafts). However,
 only `:version:` is used if the SDO uses semantic versioning throughout. Before `:version:` was added
@@ -363,27 +363,49 @@ Stored in the document under `//metanorma-extension/semantic-metadata/{name}`, w
 Comma-delimited list of values, relating to `name` as presentation metadata about the document.
 Stored in the document under `//metanorma-extension/presentation-metadata/{name}`, with repeating tags for each value.
 
-The following instances of generic metadata are applicable to all flavors of Metanorma; other instances are
-specific to flavors, and are documented there:
+The following instances of generic metadata are applicable to all flavors of
+Metanorma; other instances are specific to flavors, and are documented there:
 
-`:semantic-metadata-headless:`:: This document is to be compiled without adding initial document boilerplate to it. This is used
-for compiling Asciidoc boilerplate documents themselves.
-`:presentation-metadata-doctype-alias:`:: Specify how the document type is to be rendered. This overrides the language-specific
-internationalisation of the supplied document type, and is used in Metanorma tastes, to override the base flavor 
-document type rendering.  [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.0]
-`:presentation-metadata-custom-charset-font:`:: Specify custom character set for Private Use character 
-codepoints [added in https://github.com/metanorma/isodoc/releases/tag/v2.7.0]
-`:presentation-metadata-publisher-{doc|html|pdf}-{width|height}{_{i}):`:: Specify height and width of the publisher logo,
-for each of the standard output formats of Metanorma [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.0].
-For example, `presentation-metadata-publisher-pdf-height_2` specifies the height of the coverpage logo in PDF of the second specified
-publisher. The publishers are read in the same sequence for logo attributes as they are for publisher names and abbreviations,
-and the numbering includes the primary publisher of the document as the first publisher (for which a logo typically does not need
-to be specified.)
-`:presentation-metadata-ul-label-list:`:: Specify the characters to be used as bullets for unordered lists, as a comma-delimited
-list of strings, each string corresponding to a deeper level of list [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.2].
-The bullet list rotates once the list is exceeded. So `:presentation-metadata-ul-label-list: *,&#x2013;,"x,x"` will use `*` at level 1,
-`&#x2013;` at level 2, `x,x` at level 3, then go back to  `*` at level 4. Note that currently custom unordered list bullets
-are only processed for PDF output.
+`:semantic-metadata-headless:`:: This document is to be compiled without adding
+initial document boilerplate to it. This is used for compiling Metanorma AsciiDoc
+boilerplate documents themselves.
+
+`:presentation-metadata-doctype-alias:`:: Specify how the document type is to be
+rendered. This overrides the language-specific internationalization of the
+supplied document type, and is used in Metanorma tastes, to override the base
+flavor document type rendering. [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.0]
+
+`:presentation-metadata-custom-charset-font:`:: Specify a custom character set for
+https://en.wikipedia.org/wiki/Private_Use_Areas[Unicode "Private Use Area" (PUA)]
+character codepoints [added in https://github.com/metanorma/isodoc/releases/tag/v2.7.0]
+
+`:presentation-metadata-publisher-{doc|html|pdf}-{width|height}[_{i}]:`::
+Specify height and width of the publisher logo, for each of the standard output
+formats of Metanorma [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.0].
++
+The publishers are read in the same sequence for logo attributes as they are for
+publisher names and abbreviations, and the numbering includes the primary
+publisher of the document as the first publisher (for which a logo typically
+does not need to be specified.)
++
+[example]
+====
+For example, `presentation-metadata-publisher-pdf-height_2` specifies the height
+of the coverpage logo in PDF of the second specified publisher.
+====
+
+`:presentation-metadata-ul-label-list:`:: Specify the characters to be used as
+bullets for unordered lists, as a comma-delimited list of strings, each string
+corresponding to a deeper level of list [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.2].
+The bullet list rotates once the list is exceeded.
++
+[example]
+====
+`:presentation-metadata-ul-label-list: *,&#x2013;,"x,x"` will use `*` at level 1;
+`&#x2013;` at level 2, `x,x` at level 3, then go back to  `*` at level 4.
+====
++
+NOTE: Custom unordered list bullets are only processed for PDF output.
 
 [[document-relations]]
 == Document relations
