@@ -332,15 +332,57 @@ Styling is achieved through a limited subset of CSS properties applied
 to rows and cells.
 
 
-=== Styling commands
+=== Whole table
+
+Styling is applied to the full table through table attributes:
+
+`css-style`:: The attribute `css-style` applies CSS styles to an entire table [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.1]
++
+[example]
+====
+[source,asciidoc]
+----
+== Fossil analysis test
+
+[#table1]
+[cols="<,^,^,^,^",options="header,footer",headerrows=2,css-style="border: none; color: purple; background-color: #eeeeee"]
+.Maximum permissible mass fraction of defects in dinosaur fossil specimens
+|===
+.2+^|Defect 4+^| Maximum permissible mass fraction of defects in fossil specimens +
+stem:[w_max] +
+%
+| in raw excavated fossils td-style:[color: green] td-style:[background-color: blue] | in prepared fossil specimens | in consolidated fossils | in reconstructed specimens tr-style:[background-color: red]
+
+| Sediment contamination: organic footnote:[Organic contamination includes plant matter, modern bone fragments, wood particles, etc.] | 5,0 | 2,0 | 3,0 | 1,0
+// not rendered list here
+| Sediment contamination: inorganic footnote:[Inorganic contamination includes sand, clay, mineral deposits, etc.] | 3,0 | 1,5 | 2,0 | 1,0
+| Modern bone contamination td-style:[background-color: blue]| 1,0 td-style:[border: 1px dashed #FF0000; color: yellow]| 0,5 | 0,8 tr-style:[background-color: green] | 0,3
+| Unprepared fossil material | Not applicable | 2,0 | 1,5 | 1,0
+| Prepared fossil material | 2,0 | Not applicable | 1,5 | 1,0
+| Consolidated fossil material | 1,5 | 1,0 | Not applicable | 0,8
+| Reconstructed fossil material | 1,0 | 0,8 | 0,5 | Not applicable
+| Fragment loss | 0,2 | 0,1 | 0,1 | 0,1
+| Surface weathering | 8,0 footnote:fossilmass[The maximum permissible mass fraction of defects shall be determined with respect to the total specimen mass after preparation.] | 5,0 | 6,0 footnote:fossilmass[] | 3,0
+| Chemical damage | 6,0 | 4,0 | 5,0 | 3,0
+| Mechanical damage | 10,0 | 6,0 | 8,0 | 4,0
+| Incomplete preservation | 15,0 footnote:fossilmass[] | 12,0 | Not applicable | Not applicable
+| Mineral replacement | 20,0 | 18,0 | 15,0 footnote:fossilmass[] | 12,0
+| Partial pyritization | Not applicable | Not applicable | 8,0 footnote:fossilmass[] | 6,0
+| Tool marks | Not applicable | Not applicable | 2,0 | 1,0
+| Matrix residue | 3,0 footnote:fossilmass[] | 2,0 | 1,5 footnote:fossilmass[] | 1,0
+
+5+a| Live organisms shall not be present. Dead organisms shall be included in organic contamination.
+|===
+----
+====
+
+=== Row and cell styling
 
 Metanorma provides two primary commands for applying CSS styles to table elements:
 
 `tr-style:[...]`:: Applies CSS styles to an entire table row [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.4]
 
 `td-style:[...]`:: Applies CSS styles to a specific table cell [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.4]
-
-The attribute `css-style` applies CSS styles to an entire table [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.1]
 
 
 === Supported CSS properties
