@@ -43,7 +43,12 @@ Document status. Synonym: `:docstage:`. Choices below.
 `in-force-prepublished`::: This document is In-force but the text is not final.
 `superseded`::: This document has been superseded.
 `withdrawn`::: This document has been withdrawn.
-`draft`::: This document is draft.
+
+`draft`::: **Do not use this value!**
++
+NOTE: If the document is a draft, use the general `:draft:` document
+attribute instead of `:status:` to indicate so (see
+link:/author/ref/document-attributes/[Document attributes reference]).
 
 In general, the document stages are:
 
@@ -149,7 +154,8 @@ appears only at the start of the document body, not in the
 front cover [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
 
 `:collection-title:`::
-The collection of documents that this document appears in [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16];
+The collection of documents that this document appears in [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
+Accepts a text value.
 Appears on the top left of the cover page for some collections.
 +
 [example]
@@ -206,8 +212,15 @@ Mandatory. Bureau that the document belongs to. Choices are listed below.
 `D`::: Telecommunication Development Bureau (BDT), ITU-D.
 
 `:sector:`::
-The standardization sector for the document, if one of the defined bureaus does
-not apply [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
+Standardization sector that publishes the document, if the document
+is published outside of the defined bureaus. Only use this attribute if it does
+not belong to the ITU-{D/R/T} sectors, otherwise use `:bureau:` instead.
+[added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
+
+Flagship publications require a few additional document attributes.
+
+NOTE: The only flagship publication currently supported in Metanorma is the
+Service Publication.
 
 `:group_{i}:`::
 Mandatory. Top-level group that the document belongs to.
@@ -415,21 +428,47 @@ locations are relative to the source
 document. [added in https://github.com/metanorma/metanorma-itu/releases/tag/v1.0.16].
 
 `:presentation-metadata-color-cover-title:`::
-Title color on the PDF cover page. Valid values are `black` (default) or `white`.
-Specify the color depends on the contrast with the background image (`:coverpage-image:`).
+Title color on the PDF cover page. Specify the color depends on the contrast
+with the background image (`:coverpage-image:`). Valid values are:
 
-`:presentation-metadata-cover-header-hide:`::
-Whether to hide page header titles on the PDF.
-Valid values are `false` (default) or `true`.
+`black`::: Black title color (default).
+`white`::: White title color.
+
+`:presentation-metadata-cover-header-hide:`:: Whether to hide page header titles.
+The header titles are the "ITUPublications", "International Telecommunication
+Union", with the Sector or Bureau name on the cover page.
 +
 NOTE: Some Flagship publications opt to omit the cover page header.
+Some Flagship publications opt to omit the cover page header.
 +
-[example]
-====
-The header titles are the "ITUPublications", "International Telecommunication Union",
-with the Sector or Bureau name on the cover page.
-====
+Valid values are:
+
+`false`::: (default) Show the page header titles on the PDF.
+`true`::: Hide the page header titles on the PDF.
 
 `:presentation-metadata-color-cover-itu-logo:`::
-Color of the ITU logo on the PDF. Typically `#1DA0DB` (default) or 'white'
-depending on the contrast with background.
+Color of the ITU logo on the PDF cover page. Specify color depending on the
+contrast with background. Valid values are:
+
+`#1DA0DB`::: (default) Default ITU blue logo color.
+`white`::: White logo color.
+`{custom-color-in-hex}`::: Any custom color, specified as a hex color code.
+
+`:slogan-title:`:: Slogan that this document is branded with, in connection with
+an event. Some Flagship publications allow the slogan title.
++
+[NOTE]
+--
+When using the slogan title, be aware that the ITU official style guide
+specifies proprietary fonts for the slogan title that are not freely available
+cross-platforms.
+
+* "Adelle Italic" for Latin and Cyrillic scripts;
+
+* "Traditional Arabic" for Arabic;
+
+* "STKaiti" for Chinese.
+
+These are fonts that Fontist cannot directly install, and the user is
+responsible for pre-installing them on their machine.
+--
