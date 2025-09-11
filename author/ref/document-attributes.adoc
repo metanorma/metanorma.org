@@ -306,6 +306,9 @@ The title of the document. If not supplied, the built-in AsciiDoc title
 The title of the document in the language `langcode` (where `langcode` is a ISO 639-1 code;
 for example, `:title-en:`, `:title-fr`:).
 
+`:title-{type}-{langcode}:`::
+The title of the document in the language `langcode`, and of type `type` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.6]. Note: this was previously supported only in individual flavours.
+
 `:doctype:`::
 The document type; e.g. `standard`, `guide`, `report`.
 
@@ -406,6 +409,16 @@ The bullet list rotates once the list is exceeded.
 ====
 +
 NOTE: Custom unordered list bullets are only processed for PDF output.
+
+`:presentation-metadata-annex-delim:`:: Delimiter between the line heading
+giving the number of an annex, and the title of the annex (Metanorma XML,
+default `<br/><br/>`)
+ [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.7].
+
+`:presentation-metadata-middle-title:`:: Presentation XML Liquid template for
+middle title (document title at the start of the main section of the document)
+(Metanorma XML, default `"<p class='zzSTDTitle1'>{{ doctitle }}</p>"`)
+ [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.7].
 
 [[document-relations]]
 == Document relations
