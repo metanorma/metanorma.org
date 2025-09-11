@@ -59,6 +59,108 @@ file, set the document attribute `data-uri-attachment: false`.
 
 PDF attachments can be embedded in the PDF output of a Metanorma document.
 
+Not all PDF readers support PDF attachments, though. This is the current list of
+attachment support in common PDF readers.
+
+.PDF attachment support on different platforms
+[cols="a,a,a",options="header"]
+|===
+| Support | Platform | Application
+
+| ✅ | Windows | Adobe Reader
+| ✅ | macOS | Adobe Reader
+| ❌ | macOS | Preview
+| ❌ | macOS | Skim
+| ❌ | Cross-platform | Firefox (built-in PDF viewer)
+| ❌ | Cross-platform | Chrome (built-in PDF viewer)
+
+|===
+
+NOTE: When distributing PDFs with attachments, it is advisable to inform readers
+about the presence of attachments and recommend using a compatible PDF reader.
+
+Metanorma supports the embedding of any kind of file to a PDF, including source code
+(e.g., `.c`, `.java`, `.py` files), data files (XML, JSON, YAML), other PDF
+documents, executable binaries, images and multimedia files, and spreadsheets
+and databases.
+
+In HTML output, Metanorma handles attachments as individual files that are
+linked from content. These attachments are placed in a separate directory
+alongside the HTML file.
+
+Given a Metanorma PDF files that contain attachments, users can easily download
+these attachments by clicking on the provided links.
+
+=== Adding PDF attachments
+
+Adding PDF attachments in Metanorma is a straightforward process that can be
+summarized in two steps:
+
+. Encode the file attachment(s) in the bibliography section
+. Reference the attachment(s) in the document using the usual cross-reference syntax
+
+To encode an attachment in the bibliography section, use the following syntax:
+
+.Syntax for encoding a PDF attachment
+[source,adoc]
+----
+* [[[attachment-anchor,attachment:({file-path-relative-to-root-document})]]]
+----
+
+This syntax creates an invisible bibliography entry for the attachment
+and assigns it an anchor that can be referenced later in the document.
+
+Now, you can reference the attachment anywhere in the document using the
+standard cross-reference syntax:
+
+.Syntax for referencing a PDF attachment
+[source,adoc]
+----
+<<attachment-anchor>>
+----
+
+This will create a hyperlink to the attachment in the generated PDF.
+
+=== Example: Attaching a C source file to a PDF
+
+Here's an example of how to attach a C source file to your Metanorma document:
+
+.Example of attaching a C source file
+[source,adoc]
+----
+== Scope
+
+The C reference implementation source: <<file1>>. <2>
+
+[bibliography]
+== Bibliography
+
+* [[[file1,attachment:(sources/program.c)]]] <1>
+----
+
+<1> The attachment is encoded in the bibliography section with the anchor `file1`.
+<2> The C reference implementation source is located at `sources/program.c`.
+
+In the rendered document:
+
+* The bibliography will be empty because attachments are never shown.
+* Clicking on the link `<<file1>>` will open the attached C source file.
+
+When the PDF is generated, the attachment will be accessible through a hyperlink
+in the document.
+
+Here's how it looks:
+
+.Hyperlink to a PDF attachment
+image::/assets/blog/2024-08-20_1.png[]
+
+Users can then save the attachment from the PDF file using a compatible PDF reader:
+
+.Saving a PDF attachment using a compatible PDF reader (Adobe Reader)
+image::/assets/blog/2024-08-20_2.png[]
+
+=== PDF attachment attributes
+
 PDF supports the following attributes for attachments:
 
 * _Volatile_: indicates that the attachment is volatile and should not be cached.
