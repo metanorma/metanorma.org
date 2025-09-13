@@ -165,6 +165,49 @@ The affiliations are extracted from the personal author names (see above) as
 comma-delimited, or else either the name or the address. So for example,
 `{ "CSIRO" => ["Fred Nerk", "Joe Bloggs"], "University of Auckland" => ["John Doe"] }`.
 
+`roles_authors_affiliations`:: a hash of personal contributors, mapping 
+contributor role to an array of an object containing 
+name and affiliation [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.7].
+For example,
++
+----
+{
+  author: [
+    { name: "Julius Caesar", aff: "Apple" },
+    { name: "Mark Antony", aff: "Microsoft" }
+  ]
+  editor: [
+    { name: "Octavius Augustus", aff: "Google" },
+  ]
+}
+----
+
+`roles_desc_authors_affiliations`:: a hash of personal contributors, mapping
+contributor role to contributor descriptions (or "") to an array of an object containing 
+name and affiliation [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.7].
+For example, 
++
+----
+{
+  author: {
+    "": [
+      { name: "Julius Caesar", aff: "Apple" },
+      { name: "Mark Antony", aff: "Microsoft" }
+    ],
+    "reviewer": [
+      { name: "Gnaeus Pompey", aff: "" },
+    ]
+  }
+  editor: {
+    "": [{ name: "Octavius Augustus", aff: "Google" }],
+    "contributing editor": [
+       { name: "Tiberius", aff: "Google" },
+       { name: "Caligula", aff: "Google" }
+    ]
+  }
+}
+----
+
 `{type}date`:: The date at which the `{type}` event occurred.
 The date is extracted from `//bidata/date[@type = {type}]`.
 The `{type}` is the name of the lifecycle event modelled by Relaton, including:
