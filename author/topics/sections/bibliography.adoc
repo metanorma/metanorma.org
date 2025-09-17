@@ -443,6 +443,21 @@ NOTE: Numeric references cannot be used for entries in normative references, as 
 Execution will abort if a numeric reference tag is found in normative references, in order to prevent
 numbering confusion [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.4].
 
+=== Blank reference tags
+
+If no document identifier is to be provided for the reference, give the reference tag as a space:
+
+[example]
+.Example of specifying numeric reference tags
+====
+[source,asciidoc]
+--
+* [[[ISO20483, ]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+--
+
+This has the same effect as specifying the reference tag with `dropid(...)` 
+(see <<dropid>>) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.7].
+
 
 === Named reference tags
 
@@ -1422,6 +1437,7 @@ ____
 ____
 ====
 
+As noted above, leaving the refeence tag as a space has the same effect: `*[[[id, ]]], Gibbon...`.
 
 
 [[hidden-citations]]
