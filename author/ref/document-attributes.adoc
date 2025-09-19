@@ -978,7 +978,7 @@ suppressed throughout the document [added in https://github.com/metanorma/metano
 Typically will be used for sourcecode fragments: `:block-unnumbered: sourcecode`.
 
 
-
+[[smart-quotes]]
 == Smart quotes
 
 `:smartquotes:`::
@@ -994,7 +994,21 @@ the downstream outputs). Available values below:
 `"&#x060; &#x060;"`, `'&#x060; &#x060;'`. The rules for smart formatting follow
 the https://github.com/pbhogan/sterile[sterile] gem, and are given in
 https://github.com/pbhogan/sterile/blob/main/lib/sterile/data/smart_format_rules.rb[smart_format_rules.rb].
+In particular:
 
+* `"` and `'` followed by space, with optional punctuation intervening, are treated as closing,
+and converted to smart closing quotes `”` and `’`.
+* `"` and `'` preceded by space, with optional punctuation intervening, are treated as opening,
+and converted to smart opening quotes `“` and `‘`.
+* Midword apostrophes are treated as closing: `Sana'a` becomes `Sana’a`.
+* Initial apostrophes before numerals are treated as closing: `'80s` becomes `’80s`.
+* There are many possible exceptions to these default rules, such as initial apostrophes
+(`fish ’n’ chips`), and quote pairs used to illustrate the punctuation (`Use smart quotes (" ")`).
+For such cases, use either real smart quotes (the literal characters `“ ” ‘ ’`) or the Asciidoc
+ASCII codes, `"&#x060; &#x060;"`, `'&#x060; &#x060;'`
+
+The smart quotes converted by Metanorma postprocessing are specifically those of English.
+Other languages' smart quotes will need to be entered as the correct characters.
 
 == Table of contents
 
