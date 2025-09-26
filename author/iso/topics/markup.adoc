@@ -315,6 +315,55 @@ reference, following ISO/IEC DIR 2: `<``<ISO24333,clause=5>``>` will be rendered
 as _ISO 24333, Clause 5_, but `<``<ISO7301,clause=3.1>``>` will be rendered as
 _ISO 7301, 3.1_.
 
+For bibliographic citations rendered with bracketed numbers, such as _[3]_,
+Metanorma follows the ISO House style and ISO/IEC DIR 2 in its rendering,
+in differentiating between sentence and non-sentence 
+citations [added in https://github.com/metanorma/metanorma-iso/releases/tag/v3.1.5].
+
+* By default, citations are considered to be non-sentence, and have the word "Reference"
+prefixed to them. This word is translated in languages other than English, and pluralised
+if it precedes a grouping of more than one reference.
+* A citation is considered to be in-sentence if it is given `style=superscript%` as its style.
+If that is the case, it is rendered instead as a superscript (following ISO House style),
+and the word "Reference" is not prefixed.
+** Metanorma will remove any space between the preceding sentence word and the superscript citation.
+** Metanorma will *not* move the superscript citation before any punctuation, as the risk of
+error is too great. That is the responsibility of the author.
+    
+So the following markup of references `ref1` anf `ref2`, which are to be cited as _[1]_ and _[2]_:
+
+[source,asciidoc]
+----
+Sentence <<ref1>>.
+
+Sentence <<ref1,style=superscript%>>.
+
+Sentence <<ref1;and!ref2>>.
+
+Sentence <<ref1;and!ref2,style=superscript%>>.
+
+Sentence <<ref1,clause=3>>.
+
+Sentence <<ref1,style=superscript%clause=3>>.
+----
+
+will be rendered as follows, with no intervention needed from the user:
+
+____
+
+Sentence Reference [1].
+
+Sentence^[1]^.
+
+Sentence References [1] and [2].
+
+Sentence^[1]^ ^and^ ^[2]^.
+
+Sentence Reference [1], Clause 3.
+
+Sentence^[1],^ ^Clause^ ^3^.
+____
+
 
 == Terms and definitions
 
@@ -465,7 +514,7 @@ the grouping was intended as a systematic term.
 ===== Declared term groupings
 
 The role `[.grouping]` explicitly declares a clause as a term grouping,
-and not a term. [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.3.4].
+and not a term [added in https://github.com/metanorma/metanorma-iso/releases/tag/v2.3.4].
 It is used to enforce mixed order divisions of terms.
 
 [source,asciidoc]

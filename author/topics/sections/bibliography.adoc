@@ -858,19 +858,99 @@ topic for more details.
 [[annotated-spans]]
 === Annotating pre-formatted references using semantic elements
 
-While a pre-formatted reference is not explicitly broken down into its semantic
-components, it may be expedient to mark up segments of the reference
-semantically, to provide information which is useful for parsing.
+A pre-formatted reference is not explicitly broken down into its semantic
+components, but it provides a useful means of providing that information to Metanorma,
+in broken down format after all: mark up segments of a reference
+semantically, as data used to generate a machine-readable reference. So while the reference
+looks like a human-readable reference, the markup highlights the critical information
+needed to generate a citation, to the same level of detail as would be fetched by Relaton
+from a bibliographic database.
+
+So a citation like the following is human-readable, but does not indicate to Metanorma
+how to extract useful information from it—what the document identifier is, who the authors
+are, who the editors are, etc.
 
 [example]
-In order to generate an author-date reference, it is necessary to indicate the
-author surnames and publication date.
+.Example encoding of a pre-formatted bibliographic item
+====
+[source,asciidoc]
+----
+Wozniak, S., Jobs, Steve, & Hoover, J. Edgar. 1991 [1996]. _Work_ In Gates W. H. &
+UNICEF (eds.), Collected Essays. _Bibiographers Anonymous_, 5: 2–21. ISO 1234. 
+Geneva: International Standardization Organization. http://www.example.com
+----
+====
 
-For that reason, a limited number of span categories can be used to annotate a
+To address this need, a limited number of span categories can be used to annotate a
 pre-formatted
 reference [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
+When this is done, *only* the content in spans is processed; any additional information,
+including formatting and punctuation, is ignored, though authors may choose to leave it in for
+readability:
 
-These are not an exhaustive list of bibliographic fields, and if more detail is
+[example]
+.Example encoding of a bibliographic item inline with semantic markup
+====
+[source,asciidoc]
+----
+* [[[A, B]]],
+  span:surname[Wozniak], span:initials[S.], span:surname[Jobs], span:givenname[Steve],
+    & span:surname[Hoover], span:initials[J.] span:givenname[Edgar].
+  span:date.issued[1991].
+  span:date[1996].
+  span:title[_Work_].
+  In span:in_surname.editor[Gates], span:in_initials.editor[W. H] &
+  span:in_organization[UNICEF],
+  span:in_title[Collected Essays].
+  _span:series[Bibliographers Anonymous]._
+  span:docid.ISO[ISO 1234].
+  span:pubplace[Geneva]:
+  span:publisher[International Standardization Organization].
+  span:uri.citation[http://www.example.com].
+  vol. span:volume[5],
+  pp. span:pages[2-21]
+  span:type[inbook]
+----
+====
+
+Note the distinction made in the example between Wozniak and Jobs (authors of the paper),
+and Gates and UNICEF (editors of the book including the paper). Similarly, note the
+distinction between the title of the paper (_Work_), and the title of the book including
+the paper (_Collected Essays_).
+
+As punctuation and formatting are ignored, this is processed identically to the following:
+
+[example]
+.Example encoding of a bibliographic item inline with semantic markup, with no formatting or
+punctuation.
+====
+[source,asciidoc]
+----
+* [[[A, B]]],
+  span:surname[Wozniak] span:initials[S.]
+  span:surname[Jobs] span:givenname[Steve]
+  span:surname[Hoover] span:initials[J.] span:givenname[Edgar]
+  span:date.issued[1991]
+  span:date[1996]
+  span:title[Work]
+  span:in_surname.editor[Gates] span:in_initials.editor[W. H]
+  span:in_organization[UNICEF]
+  span:in_title[Collected Essays]
+  span:series[Bibliographers Anonymous]
+  span:docid.ISO[ISO 1234]
+  span:pubplace[Geneva]
+  span:publisher[International Standardization Organization]
+  span:uri.citation[http://www.example.com]
+  span:volume[5]
+  span:pages[2-21]
+  span:type[inbook]
+----
+====
+
+Any punctuation or formatting will be provided by Metanorma, following the SDO's
+reference style sheet.
+
+The span types supported are not an exhaustive list of bibliographic fields. If more detail is
 required (or a dynamically generated reference is to be generated), one of the
 following explicit bibliographic entry methods should be used instead.
 
@@ -1010,7 +1090,9 @@ volume or volume range (e.g. _9_, _9-11_)
 `type`::
 Document type. List of valid document types given in
 https://www.relaton.org/model/bibtype/[Relaton model -- Bibitem type].
-The type is suppressed from rendering.
+The type is suppressed from rendering. If not supplied, it is assumed to be `standard`.
+It is vital to provide this field, if the reference is not a standard: most bibliographic
+fields are ignored when rendering standards.
 +
 [example]
 _standard_, _book_, _inbook_
@@ -1057,36 +1139,6 @@ See the examples below.
 
 * If everything before the surname ends in a full stop, they are all deemed
 initials. So in `span:fullname[A. D. Navarro Cortez]`, _A. D._ are parsed as initials.
-
-[example]
-.Example encoding of a bibliographic item inline with semantic markup
-====
-[source,asciidoc]
-----
-* [[[A, B]]],
-  span:surname[Wozniak], span:initials[S.], span:surname[Jobs], span:givenname[Steve],
-    & span:surname[Hoover], span:initials[J.] span:givenname[Edgar].
-  span:date.issued[1991].
-  span:date[1996].
-  span:title[_Work_].
-  In span:in_surname.editor[Gates], span:in_initials.editor[W. H] &
-  span:in_organization[UNICEF],
-  span:in_title[Collected Essays].
-  span:series[Bibliographers Anonymous].
-  span:docid.ISO[ISO 1234].
-  span:pubplace[Geneva]:
-  span:publisher[International Standardization Organization].
-  span:uri.citation[http://www.example.com].
-  vol. span:volume[5],
-  pp. span:pages[2-21]
-  span:type[inbook]
-----
-====
-
-Note the distinction in the example between Wozniak and Jobs (authors of the paper),
-and Gates and UNICEF (editors of the book including the paper). Similarly, note the
-distinction between the title of the paper (_Work_), and the title of the book including
-the paper (_Collected Essays_).
 
 After the first instances of `surname` and either `initials` or `givenname`, any
 subsequent instance of `surname` is
