@@ -300,7 +300,8 @@ Amount in grams; time in seconds.
 
 == Subfigures
 
-Subfigures are entered by including multiple images in an example block.
+Subfigures are entered by including multiple images in an example block. If this markup is used,
+the images will be rendered one verticaly after another.
 
 NOTE: Subfigures commonly appear in the ISO/IEC flavors.
 
@@ -323,6 +324,36 @@ image::rice_images/rice_image3_3.png[]
 --
 =====
 
+It is also possible to arrange the subfigures of a figure as a table; this allows both subfigures
+to be aligned horizontally, and as a table with multiple rows and/or columns, possibly with a subfigure
+spanning multiple rows or columns [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.9].
+In order to do so, the table containing the subfigures needs to be embedded in an example block marked as `[figure]`.
+
+[example]
+.Figure with 3 subfigures, in tabular format
+=====
+[source,asciidoc]
+--
+[figure]
+.Stages of gelatinization
+====
+[cols="1,3"]
+|===
+a|.Initial stages: No grains are fully gelatinized (ungelatinized starch granules are visible inside the kernels)
+image::spec/examples/rice_images/rice_image3_1.png[]
+
+a|.Intermediate stages: Some fully gelatinized kernels are visible
+image::spec/examples/rice_images/rice_image3_2.png[]
+
+2+a|.Final stages: All kernels are fully gelatinized
+image::spec/examples/rice_images/rice_image3_3.png[]
+|===
+
+[%key]
+A:: B
+====
+--
+=====
 
 == Preformatted content
 
