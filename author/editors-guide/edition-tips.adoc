@@ -311,3 +311,17 @@ This section has a custom ID, and can be referenced as
 `<<section_custom_id>>` or `<<section_custom_id,Section title>>`.
 --
 ====
+
+== Remove justification in list item paragraphs
+
+Paragraphs in DOCX/PDF outputs are justified by default. Removing this setting in most cases is as simple as adding `[align=left]` before the paragraph. With list items we need to apply another approach, however. This is the way to do it:
+
+[source,adoc]
+--
+* {blank}
++
+[align=left]
+This text is not justified.
+--
+
+The output will show a normal list item, with the text aligned to the left.
