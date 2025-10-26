@@ -440,8 +440,11 @@ rendered [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v
 
 As with link:/author/topics/document-format/xrefs#xref-styles[internal cross-references], cross-referenced
 citations can have a `style` attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.4].
-As of this writing, the only values allowed are the types of docidentifier value that can be substituted
-for the primary identifier of the reference, for standards documents; those values will need to be looked up in
+As of this writing, there are two sets of values allowed as citation styles.
+
+The first are docidentifier types [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.4.4];
+these are docidentifiers that can be substituted
+for the primary identifier of the reference, for standards documents. Those values will need to be looked up in
 Relaton (and the Semantic XML of the document). For example, given the citation
 
 [source,xml]
@@ -458,6 +461,37 @@ A crossreference `<<bib1>>` will be populated by default with the primary or els
 `docidentifier` value found, `ISO/FDIS 17664-1`. However, given `<<bib1,style=URN%>>`, the
 first `docidentifier` value of type `URN` will be sought instead, and the cross-reference
 will be populated by default as `URN urn:iso:std:iso-fdis:17664:-1:ed-1:fr`.
+
+The second type are general citation types, used to override the default citations for a document: [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.5]; 
+
+* `author_date`: the author and date of a citation; a disambiguating letter is added to the date if there are multiple
+references with the same author and date; e.g. _Jones 2001_, _Jones & Smith 2003b_
+* `author_date_br`: same as `author_date`, but with parentheses around the date; e.g. _Jones (2001)_, _Jones & Smith (2003b)_
+* `author`: the author alone; e.g.  _Jones_, _Jones & Smith_
+* `date`: the date alone; e.g.  _2001_, _2003b_ (used when an author-date citation is typographically broken up)
+* `reference-tag`: the bibliographic tag of the citation, which appears as its identifier before the reference in
+the bibliography; e.g. _ISO 634_ _[1]_, _[NIST623]_
+* `title`: the title of the reference alone; e.g. _Chicago Manual of Style_
+* `title_reference_tag`: the title of the reference, followed by the bibliographic tag; e.g.  _Chicago Manual of Style [22]_
+* `full`: the full bibliographic citation as it appears in the bibliography, thuugh without its final period
+* `short`: a truncated version of the full bibliographic citation, used specifically for in-document references;
+typically this omits URLs and dates of access.
+
+[example]
+====
+[source,asciidoc]
+----
+<<ISO7301,style=short%>>
+<<ISO7301,style=full%>>
+<<ISO7301,style=author_date%>>
+----
+====
+
+The default citation format for a flavour, which this attribute overrides, varies; but it is usually the document identifer for standards
+in normative references, and either the document identifier or an ordinal number for informative standards.
+(JIS and IEEE override these defaults, using short citations and author-date citations in a subset of
+references. Specifying the citation style explicitly prevents such overriding.)
+
 
 
 === Link-only references
