@@ -123,6 +123,7 @@ Options:
   -R, [--relaton=RELATON]             # Export Relaton XML for document to nominated filename
   -e, [--extract=EXTRACT]             # Export sourcecode fragments from this document to nominated directory
   -v, [--version=VERSION]             # Print version of code (accompanied with -t)
+  -L, [--log_messages]                # Display available log messages (accompanied with -t)
 ----
 
 So, let's put this in use. For example we have a document `my-iso-document.adoc`
@@ -262,6 +263,36 @@ The version of the `ieee` processor can be shown with the following command.
 metanorma version --type ieee
 ----
 ====
+
+== Show log messages (`metanorma log_messages`)
+
+The `log_messages` command returns the available log messages for
+a specific flavor.
+
+[example]
+.Showing log messages
+====
+The available log messages of the `ieee` processor can be shown with the following 
+command [added in https://github.com/metanorma/metanorma-cli/releases/tag/v1.14.1]
+
+[source, sh]
+----
+metanorma log_messages --type ieee
+----
+====
+
+The available log messages are returned listed by category. Many of those log messages
+are templated, with `%s` indicating where a value specific to a file location is added.
+
+[example]
+[source,console]
+----
+Bibliography:
+	STANDOC_9   : Attachment %s does not exist
+	STANDOC_11  : Reference %s is missing a title
+	STANDOC_12  : Reference %s is missing a document identifier (docid)
+...
+----
 
 == Add new template repository (`metanorma template-repo add`)
 
