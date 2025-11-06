@@ -1,0 +1,519 @@
+---
+layout: plateau-flavor
+---
+
+= Metanorma PLATEAU document attributes
+
+[[note_general_doc_ref_doc_attrib_plateau]]
+[NOTE]
+====
+Document attributes listed below are unique to the processing of PLATEAU documents in Metanorma.
+
+For _common document attributes_, see link:/author/ref/document-attributes/[Document attributes reference] in general Metanorma author's documentation. That page describes attributes that apply to all Metanorma flavors, not just PLATEAU. See also link:/author/jis/ref/document-attributes/[Document attributes reference], as PLATEAU inherits much of its markup from JIS, by design.
+
+For an _introduction to Metanorma AsciiDoc document attributes_ and how Metanorma uses them, see link:/author/ref/document-attributes/[the corresponding topic].
+====
+
+////
+== Document information
+
+`:doctype`::
+Document type. The default is `japanese-industrial-standard`.
+Supported values are:
++
+--
+* `japanese-industrial-standard`
+* `technical-report`
+* `technical-specification`
+* `amendment`
+* `expert-commentary`
+--
+
+`:title-main-ja:`, `:title-main-en:`::
+Main title of the document, in Japanese or English.
++
+.Title of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:title-main-ja: 規格票の様式及び作成方法
+:title-main-en: Rules for the layout and drafting of Japanese Industrial Standards
+----
+====
+
+`:title-intro-ja:`, `:title-intro-en:`::
+Introduction to title of the document, in Japanese or English
+
+`:title-part-ja:`, `:title-part-en:`::
+Part title of the document, in Japanese or English
+
+`:title-amendment-ja:`, `:title-amendment-en:`::
+Amendment title of the document, in Japanese or English
+
+`:docnumber:`::
+The number for the document.
++
+.Number of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:docnumber: 8301
+----
+====
+
+`:partnumber:`::
+The part number for the document.
+
+`:docseries:`::
++
+--
+The series for the document. Valid values are listed below
+(from https://www.jisc.go.jp/eng/jis-act/coverage-jis.html[JISC (eng)],
+https://www.jisc.go.jp/jis-act/index.html[JISC (jpn)]).
+
+.Series of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:docseries: Z
+----
+====
+
+.JIS Symbol and Classification (Coverage items)
+[cols="1,3",options="header"]
+|===
+|Letter Symbol |Division
+|A
+|土木及び建築 (Civil Engineering and Architecture)
+
+一般・構造／試験・検査・測量／設計・計画／設備・建具／材料・部品／施工／施工機械器具
+|B
+|一般機械 (Mechanical Engineering)
+
+機械基本／機械部品類／ＦＡ共通／工具・ジグ類／工作用機械／光学機械・精密機械
+|C
+|電子機器及び電気機械 (Electronic and Electrical Engineering)
+
+測定・試験用機器用具／材料／電線・ケーブル・電路用品／電気機械器具/通信機器・電子機器・部品／電球・照明器具・配線器具・電池／家電製品
+|D
+|自動車 (Automotive Engineering)
+
+試験・検査方法／共通部品／エンジン／シャシ・車体／電気装置・計器／建設車両・産業車両／修理・調整・試験・検査器具／自転車
+|E
+|鉄道 (Railway Engineering)
+
+線路一般／電車線路／信号・保安機器／鉄道車両一般／動力車／客貨車／綱索鉄道・索道
+|F
+|船舶 (Shipbuilding)
+
+船体／機関／電気機器／航海用機器・計器／機関用諸計測器
+|G
+|鉄鋼 (Ferrous Materials and Metallurgy)
+
+分析／原材料／鋼材／鋳鉄・銑鉄
+|H
+|非鉄金属 (Nonferrous Materials and Metallurgy)
+
+分析方法／原材料／伸銅品／その他伸展材／鋳物／機能性材料／加工方法・器具
+|K
+|化学 (Chemical Engineering)
+
+化学分析・環境分析／工業薬品／石油・コークス・タール製品／脂肪酸・油脂製品・バイオ／染料原料・中間物・染料・火薬／顔料・塗料／ゴム／皮革／プラスチック／写真材料・薬品・測定方法／試薬
+|L
+|繊維 (Textile Engineering)
+
+試験・検査／糸／織物／繊維製品／繊維加工機器
+|M
+|鉱山 (Mining)
+
+採鉱／選鉱・選炭／運搬／保安／鉱産物
+|P
+|パルプ及び紙 (Pulp and Paper)
+
+パルプ／紙／紙工品／試験・測定
+|Q
+|管理システム (Management System)
+
+標準物質／管理システム等
+|R
+|窯業 (Ceramics)
+
+陶磁器／耐火物・断熱材／ガラス・ガラス繊維／ほうろう／セメント／研磨材・特殊窯業製品／炭素製品／窯業用特殊機器
+|S
+|日用品 (Domestic Wares)
+
+家具・室内装飾品／ガス石油燃焼機器・食卓用品・台所用品／身の回り品／はきもの／文房具・事務用品／運動用具／娯楽用品・音楽用品
+|T
+|医療安全用具 (Medical Equipment and Safety Appliances)
+
+医療用電気機器類／一般医療機器／歯科機器・歯科材料／医療用設備・機器／労働安全／福祉関連機器／衛生用品
+|W
+|航空 (Aircraft and Aviation)
+
+専用材料／標準部品／機体／エンジン／計器／電気装備／地上設備
+|X
+|情報処理 (Information Processing)
+
+プログラム言語／図形・文書処理・文書交換／ＯＳＩ・ＬＡＮ・データ通信／出力機器・記録媒体
+|Y
+|サービス (Service)
+
+一般・共通／産業機械
+|Z
+|その他 (Miscellaneous)
+
+物流機器／包装材料・容器・包装方法／共通的試験方法／溶接／放射線／マイクログラフィックス／基本／環境・資源循環／工場管理・品質管理
+|===
+
+--
+
+`:amendment-number:`::
+The amendment number for the document.
+
+`:edition:`::
+The edition of the document.
++
+.Edition of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:edition: 1
+----
+====
+
+
+`:updates:`::
+Identifier of document that this document is an update of.
+
+`:language:`:: The language of the document (supports `en`, `ja`) (default: `ja`)
++
+.Language of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:docseries: Z
+----
+====
+
+`:copyright-year:`:: The year associated with the copyright for the document.
++
+.Copyright year of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:copyright-year: 2019
+----
+====
+
+`:ics-code:`::
+The ICS code for the document.
++
+.ICS code of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:ics-code: 01.120
+----
+====
+
+`:price-code:`::
+The price code for the document.
++
+.Price code of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:price-code: 19
+----
+====
+
+`:published-date:`::
+(発行日)
+The date on which the document was published (needed for inner cover page boilerplate).
++
+.Published date of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:published-date: 2019-07-22
+:published-date-ja: 令和元.7.22
+----
+====
+
+`:announced-date:`::
+(官報掲載日)
+The date on which the document was announced in the official gazette (needed for
+inner cover page boilerplate).
++
+.Announced date of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:announced-date: 2019-07-22
+:announced-date-ja: 令和元.7.22
+----
+====
+
+`:revdate:`, `:revision-date:`, `:revision-date-ja:`::
+(改正)
+The date on which the document was last updated (needed for inner cover page
+boilerplate).
++
+.Revision date of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:revision-date: 2019-07-22
+:revision-date-ja: 令和元.7.22
+----
+====
+
+`:establishment-date:`, `:establishment-date-ja:`::
+(制定)
+The date on which the document was established (needed for inner cover page
+boilerplate).
++
+.Establishment date of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:establishment-date: 1951-10-31
+:establishment-date-ja: 昭和 26.10.31
+----
+====
+
+
+NOTE: Dates are expected to be provided in ISO 8601 format, e.g. `2003-01-13`.
+Dates can be provided in the Japanese calendar, by appending `-ja` to the
+attribute name, e.g. `:announced-date-ja: 平成十五年1月13日`. However, without
+that, Metanorma will translate Gregorian dates to Japanese calendar dates in
+Japanese-language documents.
+
+== Contributor information
+
+=== Multilingual values
+
+All contributor information values can be specified in multilingual form, by
+adding `-ja` or `-en` after each attribute name.
+
+.Multilingual values for attribute `:fullname:`
+[example]
+====
+For `:fullname:`, the Japanese version would be `:fullname-ja:`, and the English
+version would be `:fullname-en:`.
+====
+
+.Multilingual values for attribute `:investigative-organization:`
+[example]
+====
+For `:investigative-organization_2:`, the Japanese version would be
+`:investigative-organization-ja_2:`, and the English version would be
+`:investigative-organization-en_2:`.
+====
+
+
+=== Authorizing contributors
+
+`:official-in-charge:`::
+(主務大臣)
+The official in charge of the document.
++
+.Official in charge of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:official-in-charge: 経済産業大臣
+----
+====
+
+
+=== Organization contributors
+
+`:publisher_{i}:`::
+Publisher for this document (default: `JIS`)
++
+.Publisher of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:publisher-ja: 日本規格協会
+:publisher-en: Japanese Standards Association
+----
+====
+
+`:publisher-abbr_{i}:`::
+Abbreviation of publisher for this document.
++
+.Publisher abbreviation of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:publisher-abbr: JSA
+----
+====
+
+`:publisher-logo_{i}:`::
+Path to logo image file of publisher for this document.
+
+`:copyright-holder_{i}:`::
+Copyright holder for this document (default: `JIS`)
+
+`:source-proposer-name:`::
+(原案作成者)
+Source proposer for this document.
++
+.Original proposer of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:source-proposer-name: 一般財団法人日本規格協会
+----
+====
+
+`:source-proposer-address:`::
+Source proposer address for this document.
++
+.Original proposer address of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:source-proposer-address: 〒108-0073 東京都港区三田 3-13-12 三田 MT ビル TEL 03-4231-8530
+----
+====
+
+
+`:investigative-organization_{i}`::
++
+--
+(審議機関)
+Investigative organization for this document.
+
+.Investigative organization of document (JIS Z 8301:2019)
+[example]
+====
+[source,asciidoc]
+----
+:investigative-organization-ja: 日本産業標準調査会
+:investigative-organization-en: Japanese Industrial Standards Committee
+----
+====
+--
+
+`:investigative-committee_{i}`::
++
+--
+(審議部会)
+Investigative committee for this document. Use only if the chairperson or other representative of the
+investigative committee is unknown, otherwise use a personal contributor to specify the representative's
+name, role, and position (as the inner cover boilerplate note names the committee representative).
+
+In order to be recognised, the role and role description must be given as below. If a position is not
+given (`:contributor-position:`), "chairperson" will be supplied, in English or Japanese:
+
+.Setting investigative committee without chairperson
+[example]
+====
+[source,asciidoc]
+----
+:investigative-committee: 日本産業標準調査会 標準第一部会
+----
+====
+
+.Setting investigative committee with chairperson
+[example]
+====
+[source,asciidoc]
+----
+:investigative-committee: 日本産業標準調査会 標準第一部会
+:investigative-committee-representative-name: 酒井 信介
+:investigative-committee-representative-role: 部会長
+----
+====
+
+.Setting investigative committee with chairperson (alternative)
+[example]
+====
+[source,asciidoc]
+----
+:fullname: 酒井 信介
+:role: authorizer
+:role-description: investigative committee
+:affiliation: ⽇本規格協会⽇本産業標準調査会 標準第⼀部会 (委員会⻑ 酒井 信介)
+:contributor-position: chairperson
+----
+====
+--
+
+`:subdivision_{i}:`::
+Subdivision of organization responsible for this document as author and publisher.
+
+`:subdivision-abbr_{i}:`::
+Abbreviation of subdivision of organization responsible for this document as author and publisher.
+
+
+=== Personal contributors (for document type `expert-commentary` only)
+
+For the document type `expert-commentary`, personal authors are supported. For
+all other document types, only organizations are supported.
+
+`:fullname_{i}:`::
+Name of personal author for this document (for document type `expert-commentary` only)
+
+`:givenname_{i}:`::
+Given Name of personal author for this document (for document type `expert-commentary` only)
+
+`:surname_{i}:`::
+Surname of personal author for this document (for document type `expert-commentary` only)
+
+`:affiliation_{i}:`::
+Name of organization or company for personal author for this document (for document type `expert-commentary` only)
+
+`:address_{i}:`::
+Address of personal author for this document (for document type `expert-commentary` only)
+
+`:email_{i}:`::
+Email of personal author for this document (for document type `expert-commentary` only)
+
+`:role_{i}:`::
+Role of personal author for this document (for document type `expert-commentary` only) (default: `author`)
+
+
+== Visual appearance
+
+`:presentation-metadata-vertical-layout:`:: For PDF output, Whether render the document in the vertical layout
+(Japanese text vertical orientation, top-bottom right-left text writing order).
+
+`true`::: The PDF document in the vertical layout.
+`false`::: (default) The PDF document in the usual horizontal layout.
+
+`:presentation-metadata-coverpage-header:`:: Cover page header title and pages headers text. By default,
+the value `日本工業規格` (Japan Industrial Standards) is using. For the vertical layout only.
+
+`:presentation-metadata-backpage-boilerplate-text:`:: Copyright text for page footer and back page text. By default,
+the text `著作権法により無断での複製，転載等は禁止されております。` is using. For the vertical layout only.
+
+== Document presentation
+
+`:presentation-metadata-autonumbering-style:` What numbering style to apply to automatically generated text
+containing numbers [added in https://github.com/metanorma/metanorma-jis/releases/tag/v0.3.7].
+Applies to edition numbers, Japanese dates, clause numbers, and ordered list numbers (in PDF).
+Allowed values are `arabic` (default) and `japanese`.
+
+////
