@@ -1,0 +1,625 @@
+---
+layout: post
+title: "Mastering error logging and filtering in Metanorma"
+date: 2025-11-08
+categories: documentation
+
+authors:
+  - name: Nick Nicholas
+    email: nick.nicholas@ribose.com
+    social_links:
+    - https://github.com/opoudjis
+
+excerpt: >-
+  Learn how to effectively manage Metanorma validation errors with enhanced
+  logging capabilities and powerful filtering options. This tutorial guides you
+  through understanding error severity, navigating error logs, and applying
+  filters to focus on what matters most.
+---
+
+== Introduction
+
+As Metanorma documents grow in complexity, so does the number of validation
+messages generated during compilation. While these messages are crucial for
+maintaining document quality and standards compliance, they can quickly become
+overwhelming when you're dealing with hundreds of validation errors across
+multiple categories.
+
+The good news? Metanorma now offers sophisticated error logging and filtering
+capabilities that help you focus on the errors that matter most while managing
+the noise. This tutorial will guide you through understanding and leveraging
+these features to streamline your document engineering workflow.
+
+Whether you're new to Metanorma or an experienced user looking to optimize your
+workflow, this guide will help you master error management—from understanding
+error structure to applying advanced filtering techniques.
+
+
+== Understanding validation in Metanorma
+
+=== How validation works
+
+When you compile a Metanorma document, the system validates it at multiple
+stages:
+
+1. The AsciiDoc source is processed and transformed into Metanorma Semantic XML
+2. The XML structure is validated against schemas
+3. Content is checked against style rules and best practices
+
+During this process, validation messages are output to two channels:
+
+* **Console output** (standard error, `STDERR`): Real-time feedback as
+compilation progresses
+* **Error log file** (`{document-name}.err.html`): A persistent, detailed HTML
+report you can review after compilation
+
+This dual-channel approach means you get immediate feedback during development
+while maintaining a comprehensive record for detailed analysis.
+
+
+== Anatomy of a validation message
+
+Every error logged by Metanorma includes specific information to help you
+identify and resolve issues:
+
+Error Category::
+A high-level classification like "Bibliography", "Anchors", or "Cross-references"
+
+Error ID::
+A unique identifier for each error type (e.g., `STANDOC_12`, `ISO_7`)
+
+Severity::
+A numeric level from 0 (fatal) to 3 (informational)
+
+Location::
+Where the error occurs—this might be an AsciiDoc line number, XML element ID,
+or section reference
+
+Context::
+Surrounding code or markup to help you understand the issue
+
+=== Viewing available error messages
+
+You can review all available error messages for your Metanorma flavor using:
+
+[source,bash]
+----
+metanorma -L -t iso
+----
+
+This displays error messages by category, with `%s` indicating parameterized
+values that will be filled in for specific occurrences:
+
+[source,console]
+----
+ISO_44  : Single terms clause in vocabulary document should have normal Terms and definitions heading
+ISO_45  : Multiple terms clauses in vocabulary document should have 'Terms related to' heading
+ISO_46  : 'see %s' is pointing to a normative section
+----
+
+
+== Error severity levels explained
+
+Understanding severity levels helps you prioritize which errors to address
+first.
+
+=== Severity 0: Fatal errors
+
+These errors prevent compilation and must be fixed:
+
+[example]
+====
+**Error**: `STANDOC_36` - Duplicate anchor in file
+
+**Impact**: Document compilation will abort
+
+**Action**: Must be resolved before proceeding
+====
+
+Common Severity 0 errors include:
+
+* Duplicate anchors (`STANDOC_36`)
+* Malformed URLs (`STANDOC_8`)
+* Missing include files (`STANDOC_41`)
+* Invalid MathML expressions (`STANDOC_6`)
+* Missing required bibliographic data sources (`STANDOC_54`)
+
+=== Severity 1: Critical errors
+
+These should be addressed to ensure document correctness:
+
+[example]
+====
+**Error**: `STANDOC_38` - Crossreference target is undefined
+
+**Impact**: Broken links in output documents
+
+**Action**: Highly recommended to fix
+====
+
+=== Severity 2: Warnings
+
+Less critical issues that may affect document quality:
+
+[example]
+====
+**Error**: XML validation warnings about element ordering
+
+**Impact**: Document may display incorrectly
+
+**Action**: Investigate if output appears wrong
+====
+
+=== Severity 3: Informational
+
+For awareness only, typically style suggestions:
+
+[example]
+====
+**Error**: Style guideline recommendations
+
+**Impact**: Minimal—mostly about consistency
+
+**Action**: Optional to address
+====
+
+
+== Navigating the error log file
+
+=== Structure overview
+
+When you compile `document.adoc`, Metanorma generates `document.err.html`. This
+HTML file opens in any browser and provides a structured view of all errors.
+
+The log starts with a summary showing error counts by category and severity:
+
+____
+**Style**: Severity 2: **9** errors
+
+**Metanorma XML Syntax**: Severity 2: **7** errors
+
+**Bibliography**: Severity 1: **1** error
+____
+
+Each category name links to a detailed table below, allowing quick navigation to
+specific error types.
+
+=== Reading the error table
+
+Errors are presented in tables with these columns:
+
+Line::
+Line number in your AsciiDoc source (where available)
+
+ID::
+Element identifier or anchor—often hyperlinked to the HTML output
+
+Error::
+The error identifier (e.g., `STANDOC_12`)
+
+Message::
+Description of what went wrong
+
+Context::
+Surrounding Metanorma XML code for reference
+
+Severity::
+Numeric severity level (0-3)
+
+=== Visual indicators
+
+Errors are color-coded by severity:
+
+* **Severity 0**: Boldface on pink background—impossible to miss
+* **Severity 1**: Boldface text—clearly important
+* **Severity 2**: Normal text—review if needed
+* **Severity 3**: Grey italic text—informational only
+
+=== Example error entry
+
+____
+|===
+| Line | ID | Error | Message | Context | Severity
+
+| 000064 | _a172c0b4-4751-941d-b6c5-344768eb7b1b | STANDOC_15 | Formula has not been cross-referenced within document
+a|
+....
+<formula id="_a172c0b4-4751-941d-b6c5-344768eb7b1b">
+  <asciimath>dot Theta ne ddot Theta</asciimath>
+</formula>
+....
+| 2
+|===
+____
+
+
+== Understanding error locations
+
+Errors are reported at different stages of processing, which affects how
+locations are specified:
+
+Document-level errors::
+Apply to the document as a whole and cannot be pinned to a specific location
+
+AsciiDoc line numbers::
+Errors identified during source processing, referenced as line numbers in the
+resolved AsciiDoc document (see `*.asciidoc.log.txt`)
+
+Section references::
+Errors requiring structural context, reported as `Section: ...`
+
+XML line numbers::
+Schema validation errors, reported as `XML Line ...`
+
+Anchor-based locations::
+Most errors are identified by the nearest anchor in the generated XML—these are
+hyperlinked to the corresponding HTML output location
+
+
+== Error categories at a glance
+
+Metanorma organizes validation errors into categories to help you understand
+where issues originate:
+
+=== Style validation
+
+`Style`::
+SDO-specific content requirements that don't prevent compilation but may not
+pass editorial review (e.g., house style violations, formatting preferences)
+
+=== Markup validation
+
+These categories deal with document structure and markup correctness:
+
+`Anchors`:: Issues with element identifiers or URIs
+`AsciiDoc Input`:: Problems with AsciiDoc markup that prevent parsing
+`Bibliography`:: Bibliographic markup issues
+`Relaton`:: Issues with external bibliographic records
+`Cross-references`:: Problems with cross-references
+`Document Attributes`:: Issues with AsciiDoc document attributes  
+`Images`:: Image-related problems
+`Include`:: Problems with included files
+`Maths`:: Mathematical expression issues
+`Requirements`:: Metanorma requirements markup issues
+`Table`:: Table syntax problems
+`Terms`:: Terms and definitions clause issues
+`Metanorma XML Syntax`:: XML schema validation errors
+
+Each category can contain errors at different severity levels. Use the error log
+to see which specific errors appear in your document and their severity.
+
+
+== Global filtering: Focus on what matters
+
+=== Why filter errors?
+
+Large documents can generate hundreds of validation messages. Filtering helps
+you:
+
+* Focus on critical issues first (high severity)
+* Ignore categories you've already addressed
+* Skip known issues you plan to fix later
+* Reduce cognitive overload during iterative development
+
+=== Filter by severity
+
+Exclude errors at or above a certain severity level:
+
+[source,asciidoc]
+----
+:log-filter-severity: 2
+----
+
+This filters out Severity 2 and 3 errors, showing only Severity 0 and 1—the
+truly critical issues.
+
+**Use case**: Initial document development when you want to focus only on errors
+that prevent compilation or break functionality.
+
+=== Filter by category
+
+Exclude entire error categories:
+
+[source,asciidoc]
+----
+:log-filter-category: Cross-references,Document Attributes,Metanorma XML Syntax
+----
+
+Use comma-separated values to exclude multiple categories.
+
+**Use case**: You've already reviewed and addressed all bibliography issues, so
+you want to hide them and focus on other problems.
+
+=== Filter by error ID
+
+Exclude specific error types:
+
+[source,asciidoc]
+----
+:log-filter-error-ids: STANDOC_12,ISO_7,STANDOC_38
+----
+
+This is the most granular filtering option, letting you target individual error
+messages.
+
+**Use case**: You know certain errors are false positives or plan to address
+them in a future revision.
+
+=== Combining filters
+
+You can use multiple filters together:
+
+[source,asciidoc]
+----
+:log-filter-severity: 3
+:log-filter-category: Cross-references,Style
+:log-filter-error-ids: STANDOC_15,STANDOC_20
+----
+
+This creates a highly focused error log showing only what you need to see right
+now.
+
+
+== Location-based filtering: Surgical precision
+
+=== Understanding location-based filtering
+
+Sometimes you want to suppress errors for specific sections of your document—
+perhaps legacy content you plan to refactor later, or a known issue in a
+particular clause.
+
+Location-based filtering uses reviewer comments to mark sections where certain
+errors should be ignored in the log file.
+
+=== Important limitations
+
+Location-based filtering:
+
+* Only applies to errors with anchor-based locations
+* Does NOT filter XML validation errors (identified by XML line)
+* Does NOT filter include errors or document-level errors
+* Only affects the generated log file—console output is unaffected
+
+=== Basic syntax
+
+Use a reviewer comment with `type=ignore-log`:
+
+[source,asciidoc]
+----
+[[clause1]]
+== My Problematic Section
+
+[from=clause1,type=ignore-log]
+****
+****
+
+Content that generates errors...
+----
+
+This suppresses ALL errors from the `clause1` section in the log file.
+
+=== Location ranges
+
+Suppress errors across multiple sections using `from` and `to`:
+
+[source,asciidoc]
+----
+[[clause1]]
+== Initial clause
+
+[[clause11]]
+=== First subclause
+
+[[clause12]]
+=== Second subclause
+
+[[clause2]]
+== Second clause
+
+[from=clause1,to=clause2,type=ignore-log]
+****
+****
+----
+
+This suppresses errors from `clause1` through `clause2` (inclusive).
+
+=== Filtering specific error IDs
+
+Suppress only certain error types in a location:
+
+[source,asciidoc]
+----
+[[problematic_section]]
+== Legacy Content
+
+[from=problematic_section,type=ignore-log]
+****
+STANDOC_39, STANDOC_38
+****
+
+Old content with known issues...
+----
+
+This suppresses only `STANDOC_39` and `STANDOC_38` errors from this section—
+other error types will still be reported.
+
+=== Hierarchical application
+
+When you specify a node for filtering, it applies to all child nodes:
+
+[source,asciidoc]
+----
+[[mainclause]]
+== Main Clause
+
+[from=mainclause,type=ignore-log]
+****
+****
+
+[[subclause1]]
+=== Subclause 1
+
+Content...
+
+[[subclause2]]
+=== Subclause 2
+
+More content...
+----
+
+Errors in both `subclause1` and `subclause2` are suppressed because they're
+children of `mainclause`.
+
+
+== Practical workflows
+
+=== Workflow 1: Initial document development
+
+When starting a new document, focus on fatal errors:
+
+[source,asciidoc]
+----
+:log-filter-severity: 1
+----
+
+Once compilation succeeds, remove the filter and address Severity 1 errors.
+
+=== Workflow 2: Large document with legacy sections
+
+You're updating a large document with some legacy content:
+
+[source,asciidoc]
+----
+== Current Work
+
+Modern, well-structured content...
+
+[[legacy_annex]]
+[appendix]
+== Legacy Annex
+
+[from=legacy_annex,type=ignore-log]
+****
+****
+
+Old content to be updated later...
+----
+
+The legacy section errors are suppressed so you can focus on new content.
+
+=== Workflow 3: Addressing errors systematically
+
+Take an iterative approach:
+
+**Step 1**: Filter to show only Severity 0 and 1
+[source,asciidoc]
+----
+:log-filter-severity: 2
+----
+
+**Step 2**: Fix those critical errors
+
+**Step 3**: Remove severity filter, add category filter
+[source,asciidoc]
+----
+:log-filter-category: Metanorma XML Syntax
+----
+
+**Step 4**: Fix remaining errors by category
+
+**Step 5**: Remove all filters and do final cleanup
+
+=== Workflow 4: CI/CD integration
+
+For continuous integration, you might want to fail builds only on critical
+errors while logging everything:
+
+[source,asciidoc]
+----
+// No filters - log everything
+// But check :novalid: to prevent build failure on warnings
+----
+
+Then use external tools to parse the error log and set pass/fail criteria.
+
+
+== Advanced tips and best practices
+
+=== Dealing with block comments and includes
+
+IMPORTANT: Block comments (`////`) do NOT comment out `include` commands. If an
+included file is missing, you'll get a fatal error even in a comment block.
+
+To safely comment out includes:
+
+[source,asciidoc]
+----
+// include::missing-file.adoc[]   ← Use line comments
+----
+
+NOT:
+
+[source,asciidoc]
+----
+////
+include::missing-file.adoc[]   ← This still tries to include!
+////
+----
+
+Alternatively, bypass validation entirely with `:novalid:` (use with caution).
+
+=== Understanding line numbers with includes
+
+When your source uses multiple `include` files, line numbers in the error log
+refer to the resolved, concatenated document found in `*.asciidoc.log.txt`.
+
+Check this file to determine which included file corresponds to a given line
+number.
+
+=== Creating a clean log for review
+
+Before final review or submission:
+
+1. Remove all filters
+2. Compile the document
+3. Review the complete error log
+4. Address all Severity 0 and 1 errors
+5. Investigate any Severity 2 errors affecting output
+6. Document any remaining known issues
+
+=== Using error IDs for documentation
+
+When documenting known issues or TODOs, reference error IDs:
+
+[source,asciidoc]
+----
+// TODO: Address STANDOC_38 - broken reference to iso123
+// Waiting for updated bibliography from upstream
+----
+
+This makes it easy to search and track issues over time.
+
+
+== Conclusion
+
+Effective error management is crucial for maintaining high-quality Metanorma
+documents. By understanding error severity, navigating the error log structure,
+and strategically applying filters, you can focus your attention where it
+matters most.
+
+Key takeaways:
+
+* **Start with severity filtering** to focus on critical errors first
+* **Use category filtering** to work through error types systematically
+* **Apply location-based filtering** for legacy content or known issues
+* **Review the complete log regularly** to ensure nothing is missed
+* **Document known issues** with error IDs for better tracking
+
+Remember that validation messages exist to help you create better documents. The
+filtering capabilities aren't about hiding problems—they're about managing
+complexity so you can address issues effectively.
+
+For more details on validation and error management, see the complete
+link:/author/topics/output/validation/[Validation documentation].
+
+Happy documenting!
