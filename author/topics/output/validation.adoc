@@ -11,7 +11,7 @@ format, which is validated against an XML schema for document structure, style
 rules around content.
 
 
-== Validation message output channels
+=== Validation message output channels
 
 Validation messages are output to the following channels:
 
@@ -19,81 +19,204 @@ Validation messages are output to the following channels:
 
 * an error log file (the filename of the current document, suffixed with `.err.html`).
 
+== Validation log structure
+
+All errors that are logged by Metanorma have the following properties:
+
+Error Category (see <<validation-error-classes>>):: An error category can
+include multiple error messages
+
+Error ID:: a single error message can be reported multiple times in a document,
+for different locations in the document
+
+Severity:: each error message is assigned a different level of severity
+
+Location:: some error messages are reported against one or more specific
+locations in the document
+
 In the error log file, messages are shown by:
 
 * error class and location in the
 text [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.21],
 
-* priority,
+* error identifier [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.2.1],
+
+* severity,
 
 * (where possible) with a hyperlink to the corresponding location in the
 generated HTML output
  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.6.2].
 
 
-== Validation log structure and severity levels
-
 The error log file has the following structure:
 
 ____
+*Error class listing*
+
 *Error class*
 
 |===
-| Line number (where available) | ID of element (where available) | Message | Context (by default, Metanorma XML) | Severity
+| Line number in Ascidoc source (where available) | ID of element in Metanorma XML (where available) | Error (identifier) | Message | Context (by default, Metanorma XML) | Severity
 |===
 ____
 
+For example:
+
+____
+* **Bibliography**: Severity 1: **1** error
+* **Anchors**: Severity 1: **1** error
+* **Metanorma XML Syntax**: Severity 2: **3** errors
+
+**Bibliography**
+
+|===
+| Line | ID | Error | Message | Context | Severity
+
+| 000012 | Anchor1 | STANDOC_12 | Reference RNP is missing a document identifier (docid)
+a|
+....
+<clause id="Anchor1" inline-header="false" bibitem="true" obligation="informative">
+
+<dl id="_8923fd28-1ac2-4b9a-94ea-d2b5efd4a467"> <dt>id</dt>
+
+<dt>contributor</dt>
+....
+
+| 1
+|===
+
+**Anchors**
+
+|===
+| Line | ID | Error | Message | Context | Severity
+
+| 00009 | Anchor2 | STANDOC_38 | Crossreference target iso123 is undefined | `<xref target="iso123"/>` | 1
+|===
+
+**Metanorma XML Syntax**
+
+|===
+| Line | ID | Error | Message | Context | Severity
+
+| | `XML Line 000005:11` | STANDOC_7 | element "copyright" incomplete; missing required element "owner" | | 2
+|===
+
+____
+
+== Error structure
+
+=== Severity
 
 There are four severity values, 0 through 3:
 
 Severity 0::
-* Causes execution to abort.
-* Alerts about fatal errors are also output to the console.
-* Must be addressed to get documents to compile.
+** Causes execution to abort.
+** Alerts about fatal errors are also output to the console.
+** Must be addressed to get documents to compile.
 
 Severity 1::
-* Should be addressed to ensure document correctness.
+** Should be addressed to ensure document correctness.
 
 Severity 2::
-* Less critical but should be investigated if the document is visibly wrong.
+** Less critical but should be investigated if the document is visibly wrong.
 
 Severity 3::
-* Information-only warnings.
+** Information-only warnings.
 
 These severity values are applicable to all flavours of Metanorma.
 
-== Filtering
+=== Location
 
-The error file can get quite large, and it is possible to filter certain classes
-of log messages from the error log:
+Errors are identified at different stages of Metanorma processing, and because
+of that, not all of them can be pinpointed to a particular location in the
+document in the same way.
 
-* To filter messages from a given severity level up, use the document attribute
-`:log-filter-severity:`.
 
-* To log messages from one or more categories, use the document attribute
-`:log-filter-category:`, with the categories to exclude (comma-delimited)
- [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.7].
+* Some errors apply to the document as a whole, and cannot be pinned down to one
+location in the text; for example, there is an inconsistency in how the document
+is structured, or in its metadata as expressed through document attributes
+
+* Some errors are identified while the document Asciidoc source is being
+processed. These are where possible identified against the line number of the
+Asciidoc document. In cases where the source document has been broken up into
+multiple documents through `include::[]`, the line number is that of the
+resolved, concatenated single Asciidoc document; this is output to the file
+`*.asciidoc.log.txt`, and you can check that document to work out what the line
+number refers to.
+
+* Some Asciidoc-level errors instead need to be reported against the structure
+of the Asciidoc document, by identifying the Asciidoc section (clause)
+containing the error. These are reported as `Section: ...`.
+
+* Errors involving parsing the generated Metanorma XML against the Metanorma XML
+schema are identified by line number of the Metanorma XML document; these are
+reported as `XML Line ...`.
+
+* Most errors are identified against the nearest node anchor in the generated
+XML (or the user-provided anchor in the source Asciidoc, which is the same); if
+no user-provided anchor is available, the GUID automatically generated by
+Metanorma is provided instead. Because these anchors can be tracked in the
+generated HTML output, those errors are hyperlinked from the error log to the
+corresponding location in the generated HTML output for the document.
+
+
+[[error-id]]
+=== Error ID
+
+All errors logged by Metanorma have an identifier, consisting of the flavor of
+Metanorma, then underscore, then by a number. These Error IDs are given in the
+error log.
 
 [example]
-.Filtering out all messages of severity 3 and all messages from the categories
-====
-[source,asciidoc]
-----
-:log-filter-severity: 3
-:log-filter-category: Crossreferences,Document Attributes,Metanorma XML Syntax
-----
-====
+`ISO_7`, `IEEE_15`.
 
-== Validation error classes
+Errors that are generic to Metanorma are prefixed by the gem generating them.
 
-=== General
+[example]
+`STANDOC_7`, `RELATON_4`, `METANORMA_2`, `ISODOC_1`.
+
+The available errors for a Metanorma flavour can also be reviewed by
+the following command:
+
+[source,console]
+----
+$ metanorma -L -t {flavor}`
+----
+
+Where,
+
+`{flavor}`:: is the Metanorma flavour being used
+
+[example]
+=====
+The command `metanorma -L -t iso` will list the available error messages by
+error class for the ISO flavour of Metanorma.
+=====
+
+
+NOTE: Some error messages are parameterized as templates, with blanks filled in
+specific to a location; these are indicated in the raw error messages displayed
+by `%s`.
+
+.Excerpt of ISO style messages
+[source,console]
+----
+ISO_44 : Single terms clause in vocabulary document should have normal Terms and definitions heading
+ISO_45 : Multiple terms clauses in vocabulary document should have 'Terms related to' heading
+ISO_46 : 'see %s' is pointing to a normative section
+----
+
+[[validation-error-classes]]
+=== Validation error classes
+
+==== General
 
 Each error class is a category of error that Metanorma can detect. The error
 classes are not exhaustive, and new error classes may be added as new
 functionality is added to Metanorma.
 
 
-=== Style validation error classes
+==== Style validation error classes
 
 `Style`::
 +
@@ -110,7 +233,7 @@ House Style specification.
 --
 
 
-=== Markup validation error classes
+==== Markup validation error classes
 
 Markup issues are typically more serious than style issues, and may prevent the
 document from being well-formed.
@@ -126,11 +249,9 @@ than style issues.
 Issue with identifiers of document elements, or resources (including URIs)
 
 Severity 0 (fatal):::
-+
---
-* Malformed URL
-* Duplicate, ambiguous anchor in file
---
+
+`STANDOC_8`:::: Malformed URL
+`STANDOC_36`:::: Duplicate, ambiguous anchor in file
 
 `AsciiDoc Input`::
 Issue with AsciiDoc markup, likely to prevent parsing of document
@@ -139,26 +260,34 @@ Issue with AsciiDoc markup, likely to prevent parsing of document
 Issue with bibliographic markup
 
 Severity 0 (fatal):::
-+
---
-* Reference to an IEV term (International Electrochemical Vocabulary) that does not exist;
-see link:/author/topics/sections/concepts/#sourcing-concepts-from-termbases[Sourcing concepts from termbases].
-* Missing local Relaton data source file;
+
+`STANDOC_9`:::: Nominated attachment file does not exist
+`STANDOC_19`:::: Missing reference in local Relaton data source file
+`STANDOC_37`:::: Invalid format of local Relaton data source file
+`STANDOC_52`:::: Error in specification of bibliographic annotation spans
+`STANDOC_54`:::: Missing local Relaton data source file;
 see link:/author/topics/sections/bibliography/#bibtex[Importing bibliographic records from other formats].
---
+
+`Relaton`::
+Issue with externally fetched bibliographic record, via the Relaton software library
+
+Severity 0 (fatal):::
+
+`RELATON_1`:::: Fatal error in the Relaton software library
+`RELATON_5`:::: Reference to an IEV term (International Electrochemical Vocabulary) that does not exist;
+see link:/author/topics/sections/concepts/#sourcing-concepts-from-termbases[Sourcing concepts from termbases].
 
 
 `Cross-references`::
 Issue with cross-reference to document elements
 
 Severity 0 (fatal):::
-+
---
-* Invalid specification of index term (too many attributes, suggests missing
+
+`STANDOC_3`:::: Invalid specification of index term (too many attributes, suggests missing
 quotation marks around a term containing a comma)
-* Mismatch of callouts and annotations on sourcecode snippet
-* Illegal connective between cross-references (other than `and`, `or`, `from`, `to`)
---
+`STANDOC_31`:::: Illegal connective between cross-references (other than `and`, `or`, `from`, `to`)
+`STANDOC_47`:::: Mismatch of callouts and annotations on sourcecode snippet
+
 
 
 `Document Attributes`::
@@ -168,22 +297,22 @@ Issue with content of AsciiDoc document attributes
 Issue with images
 
 Severity 0 (fatal):::
-+
---
-* Image file not found
---
+
+`STANDOC_44`:::: Image file not found
+`STANDOC_46`:::: Image file too large to be encoded as Data URI
 
 `Include`::
 Issue with includes
 
 Severity 0 (fatal):::
-+
-* The specified file indicated in the `include` command does not exist.
+
+`STANDOC_41`:::: The specified file indicated in the `include` command does not exist.
 +
 [NOTE]
 --
 It is important to note that "block comments" (comments delimited by `////`)
 **do not comment out** the `include` command.
+
 If an `include` command is given in a block comment, the `include` command will
 still be processed and the contents included in the commented out text. This
 means that if the included file does not exist, the "missing include file" error
@@ -211,60 +340,55 @@ instead of
 ----
 --
 
-* Specified boilerplate file does not exist (`:boilerplate-authority:`) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.7].
+`STANDOC_1`:::: Specified boilerplate file does not exist
+(`:boilerplate-authority:`) [added in
+https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.7].
 
 
 `Maths`::
 Issue with mathematical expressions
 
 Severity 0 (fatal):::
-+
---
-* Malformed MathML expression (whether entered as MathML, or after being
+
+`STANDOC_6`:::: Malformed MathML expression (whether entered as MathML, or after being
 converted from any math syntax)
---
+`STANDOC_33`:::: Invalid MathML expression
 
 
 `Requirements`::
 Issue with Metanorma requirements markup
 
 Severity 0 (fatal):::
-+
---
-* (In Modspec) requirement identifier is used more than once
---
+
+`MODSPEC_3`:::: (In Modspec) requirement identifier is used more than once
 
 `Table`::
 Issue with syntax of table declarations.
 
 Severity 0 (fatal):::
-+
---
-* Inconsistent number of rows specified (rowspan)
-* Inconsistent number of columns specified (colspan)
---
+
+`STANDOC_2`:::: Empty table
+`STANDOC_4`:::: Inconsistent number of rows specified (rowspan)
+`STANDOC_5`:::: Inconsistent number of columns specified (colspan)
 
 
 `Terms`::
 Issue with syntax in the terms and definitions clauses.
 
 Severity 0 (fatal):::
-+
---
-* Concept markup (`{{...}}`) points to something which is not a term or symbol
-* Designation markup (`preferred:[]`, `admitted:[]`, `deprecated:[]`) used in a clause not recognised as a terms clause
---
+
+`STANDOC_23`:::: Concept markup (`{{...}}`) points to something which is not a term or symbol
+`STANDOC_25`:::: Designation markup (`preferred:[]`, `admitted:[]`, `deprecated:[]`) used in a clause not recognised as a terms clause
+
 
 `Metanorma XML Syntax`::
 Issue with validation of Metanorma Semantic XML.
 
 Severity 0 (fatal):::
-+
---
-* Passthrough markup has been specified as Metanorma XML (with no `format` attribute),
+
+`STANDOC_42`:::: Passthrough markup has been specified as Metanorma XML (with no `format` attribute),
 but it contains non-Metanorma elements. If a different XML format is intended,
 `format=` should be used. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.5]
---
 
 Severity 2 (info):::
 These errors deal with such things as restrictions on what kinds of text can
@@ -277,4 +401,104 @@ those errors.
 These errors can proliferate as the schema is quite strict, and should be
 investigated only when the document is visibly wrong.
 
+== Filtering
 
+=== Global
+
+The error file can get quite large, and it is possible to filter certain classes
+of log messages from the error log:
+
+* To filter messages from a given severity level up, use the document attribute
+`:log-filter-severity:`.
+
+* To filter messages from one or more logging categories, use the document attribute
+`:log-filter-category:`, with the categories to exclude (comma-delimited)
+(<<validation-error-classes>>) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.9.7].
+
+* To filter messages by the identifier of individual errors, use the document attribute
+`:log-filter-error-ids:`, with the identifiers of individual errors to exclude (comma-delimited)
+(<<error-id>>) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.2.1].
+
+[example]
+.Filtering out all messages of severity 3 and all messages from the categories
+====
+[source,asciidoc]
+----
+:log-filter-severity: 3
+:log-filter-category: Crossreferences,Document Attributes,Metanorma XML Syntax
+:log-filter-error-ids: STANDOC_12,ISO_7
+----
+====
+
+=== By location
+
+It is also possible to filter error messages by location in the generated XML file, by reference to
+user-defined anchors (which persist in the XML file).
+
+* The filtering only applies to error messages which are specific to locations identified by anchor.
+It will not filter out errors in XML validation (which are located by XML line); errors that are identified
+in Asciidoc processing outside of specific nodes (e.g. include errors); or global
+to the document and thus have no specific location.
+* Filtering only applies to the generated log file, and it takes place when that file is output
+to disk. Many errors are also displayed to console as they are encountered; this filtering will not prevent
+that from happening.
+
+The directive to filter error messages out by location is embedded in the Asciidoc document as a
+link:/author/topics/blocks/annotations/#reviewer[reviewer comment]` of type `ignore-log`. These comments
+are removed from the generated Metanorma output, and only apply to the Metanorma log. As with reviewer
+comments in general, the `from` argument of the comment specifies the node to which the filter applies,
+and the optional `to` argument specifies the final node in a range of nodes to which the filter applies.
+If a node is specified for a filter, the filter applies to all child nodes of that node.
+
+So for a document that looks like:
+
+[source,asciidoc]
+----
+[[clause1]]
+== Initial clause
+
+[[clause11]]
+=== First subclause
+
+[[clause12]]
+=== Second subclause
+
+[[clause2]]
+== Second clause
+
+[[clause21]]
+=== First subclause of Second clause
+
+[[clause3]]
+== Third clause
+
+[[clause31]]
+=== First subclause of Third clause
+
+[[clause32]]
+=== Second subclause of Third clause
+----
+
+* `from=clause1` applies to "Initial clause" and its subclauses, but not "Second clause" or "Third clause"
+* `from=clause1,to=clause31` applies to all nodes inclusive between "Initial clause" and "First subclause of Third clause"—
+including "Second clause". It does not apply to "Second subclause of Third clause".
+
+If the review comment is empty, then all reported errors specific to the identified range will be skipped in the
+generated error log:
+
+[source]
+----
+[from=Clause1,type=ignore-log]
+****
+****
+----
+
+If the review comment contains a comma-delimited list of Error IDs (<<error-id>>), only those errors will be skipped:
+
+[source]
+----
+[from=Clause1,type=ignore-log]
+****
+STANDOC_39, STANDOC_38
+****
+----
