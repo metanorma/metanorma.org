@@ -43,8 +43,9 @@ Output the bibliographic record describing the document as a Relaton XML file (w
 
 
 
+== Bibliography
 
-== Reference lookup
+=== Reference lookup
 
 For bibliographic lookup, see link:/author/basics/reference-lookups[automatic reference lookup].
 
@@ -53,7 +54,7 @@ If set, do not use the `relaton` or `iev` gem functionality to look up
 ISO and IEV references online, nor the cache of `relaton` and `iev` searches.
 
 
-== Caching
+=== Caching
 
 For bibliographic caches, see
 link:/author/basics/reference-lookups/#lookup-result-caching[lookup result caching].
@@ -98,6 +99,15 @@ The different bibliographic sources are differentiated through the value of the 
 :relaton-data-source-bib2: PATH/TO/SECOND/FILE
 ----
 ====
+
+=== Reference lookup
+
+`:relaton-render-config:`::
+Override the default configuration of Relaton Render selectively, with attributes from the
+named configuration YAML file [added in https://github.com/metanorma/metanorma-standoc/releases/tag/3.2.4].
+See https://www.relaton.org/specs/relaton-render/[Relaton Render specification] for description of
+the configuration file format. We recommend you inspect the configuration compiled into the flavor gem
+(`lib/relaton/render/config.yml`) and include modifications of that in the override config file.
 
 == Math and scientific formatting
 
