@@ -265,10 +265,20 @@ extracted from `organization/email`
 extracted from `organization/uri`
 {blank}[added in https://github.com/metanorma/isodoc/releases/tag/v1.2.6].
 
+`authorizer`:: An array of all the organisation names responsible for authorising the document.
+Extracted from
+`//bibdata/contributor[xmlns:role/@type = 'authorizer']/organization/name`
+{blank}[added in https://github.com/metanorma/isodoc/releases/tag/v3.4.3].
+
+`enabler`:: An array of all the organisation names responsible for sponsoring the document.
+Extracted from
+`//bibdata/contributor[xmlns:role/@type = 'enabler']/organization/name`
+{blank}[added in https://github.com/metanorma/isodoc/releases/tag/v3.4.3].
+
 `copublisher_logos`:: The logos of copublishers of the document, to be added to the coverpage
 {blank}[added in https://github.com/metanorma/isodoc/releases/tag/v3.1.11].
 
-`copublisher_logo_attrs`:: Attibutes of logos of copublishers of the document, to be added to the coverpage:
+`copublisher_logo_attrs`:: Attributes of logos of copublishers of the document, to be added to the coverpage:
 an array of hashes, with a key for each output format mapping to a hash of height and width, for example
 `[ nil, { doc: { height: 30, width: 60 }, html: { height: 45, width: 90 } } ]`
 {blank}[added in https://github.com/metanorma/isodoc/releases/tag/v3.2.0].
