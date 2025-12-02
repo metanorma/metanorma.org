@@ -35,35 +35,6 @@ NOTE: This pattern is derived from IHO S-102.
 
 == Preface segments
 
-=== Document History
-
-The document history of the publication is marked up as a table.
-
-.Example of Document History encoding (IHO S-102)
-[example]
-====
-[source,adoc]
-----
-[.preface]
-== Document History
-
-[%unnumbered]
-[cols="a,a,a,a",options="headers"]
-|===
-|Version Number |Date |Approved By |Purpose
-
-|1.0.0
-|April 2012
-|TSMAD
-|Approved edition of S-102
-
-...
-|===
-
-----
-====
-
-
 === Automatic generated content
 
 The templated material ("boilerplate") of the document front matter is all
@@ -526,8 +497,8 @@ Repetition.footnote:abc[]
 // tag::document-history[]
 
 Revision history is encoded using
-link:/author/topics/metadata/history#detailed-history[detailed change history]
- [added in https://github.com/metanorma/metanorma-iho/releases/tag/v0.9.0].
+link:/author/topics/metadata/history#detailed-history[detailed change history],
+as a YAML sourcecode snippet [added in https://github.com/metanorma/metanorma-iho/releases/tag/v0.9.0].
 
 The following information is required:
 
@@ -539,6 +510,9 @@ The following information is required:
 The author is expected to be specified with an acronym (or initials, in the case
 of a person). Relaton requires a proper name to be specified for contributors,
 but the `abbreviation` field should be used alongside it.
+
+An initiall note can be inserted before the YAML sourcecode snippet, as an open block
+with role attribute `[.boilerplate]` [added in https://github.com/metanorma/metanorma-iho/releases/tag/v1.2.11].
 
 The following illustrates what semantic markup of IHO document history should
 look like.
@@ -552,6 +526,13 @@ look like.
 == metanorma-extension
 
 === document history
+
+[.boilerplate]
+--
+Changes to this Specification are coordinated by the IHO S-100 Working Group. New
+editions will be made available via the IHO website. Maintenance of the Specification
+shall conform to IHO Resolution 2/2007 (as amended).
+--
 
 [source,yaml]
 ----
