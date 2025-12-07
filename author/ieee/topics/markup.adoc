@@ -848,7 +848,9 @@ Table heads and table subheads are marked up as header cells. They are different
 
 h| Table Row Head +
 Table Row Subhead | Value
+|===
 ----
+
 
 == Inline
 
@@ -860,21 +862,53 @@ start of a sentence is incorrect, you can override Metanorma's auto-generated
 text, by providing it explicitly within the cross-reference, e.g.
 `<<xref1,Clause 3.1>>`.
 
-References to the bibliography are automatically populated by designator and bibliographic number (e.g. _ISO 639-2, [B1]_),
-if the reference is to a standard or technical report, or otherwise by author and bibliographic number. The IEEE stylesheet
-allows the choice of either author or title; a switch to title and bibliographic number can be indicated by setting the
-style of the reference to `style=title%` [added in https://github.com/metanorma/metanorma-ieee/releases/tag/v1.5.4];
-so for a book citation, 
-`<<eref1,style=title%>>` would give _Demystifying Deep Learning: An Introduction to the Mathematics of Neural Networks [B1]_,
-whereas `<<eref1,style=author%>>` or `<<eref1>>` would give _Douglas [B1]_.
+References to the bibliography are automatically populated by designator and
+bibliographic number (e.g. _ISO 639-2, [B1]_), if the reference is to a standard
+or technical report, or otherwise by author and bibliographic number.
 
-References to the bibliography that have text supplied (e.g. `<<eref,Studies on perpendicularity>>`) are
-by default assumed to be using a variant form of the title or of author names, and also have the bibliographic number
-appended after them: _Studies on perpendicularity [B1]_. In order to suppress this behaviour, and treat
-the supplied text as running text rather than a citation, prefix it with 
-`style=no-biblio-tag%` [added in https://github.com/metanorma/metanorma-ieee/releases/tag/v1.5.4]; e.g.
-`<<eref,style=no-biblio-tag%the aforementioned study>>` will render as _the aforementioned study_,
-although in HTML it will still hyperlink to the relevant point in the bibliography.
+The IEEE Style Manual allows either author or title to be used as a reference to
+the bibliography. A switch to title and bibliographic number can be indicated by
+setting the style of the reference to `style=title%` [added in
+https://github.com/metanorma/metanorma-ieee/releases/tag/v1.5.4].
+
+[example]
+====
+For a book citation, `<<eref1,style=title%>>` would give _Demystifying Deep
+Learning: An Introduction to the Mathematics of Neural Networks [B1]_,
+====
+
+[example]
+====
+`<<eref1,style=author%>>` or `<<eref1>>` would give _Douglas [B1]_.
+====
+
+
+References to the bibliography that have render text suppliedare by default assumed to be using a
+variant form of the title or of author names. Metanorma will automatically append the bibliographic
+number after them.
+
+[example]
+====
+`<<eref,Studies on perpendicularity>>` will be rendered as _Studies on
+perpendicularity [B1]_. (assuming the bibliographic number is B1).
+====
+
+It is possible to override this behavior to treat the supplied text as running
+text instead of a citation.
+
+The method to do so is to supply the style option of `style=no-biblio-tag%`
+before the render text
+ [added in https://github.com/metanorma/metanorma-ieee/releases/tag/v1.5.4].
+
+NOTE: In HTML output, a suppressed bibliographic number will still have the
+citation text hyperlink to the relevant point in the bibliography.
+
+[example]
+====
+`<<eref,style=no-biblio-tag%the aforementioned study>>` will render as _the
+aforementioned study_.
+====
+
 
 === Footnotes
 

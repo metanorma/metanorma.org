@@ -488,19 +488,23 @@ ____
 
 ==== Named reference tag with automatic reference fetching
 
-Users can provide both their own alphanumeric label, and the
-well-defined reference identification code for the standards document.
+Users can provide both their own alphanumeric label, and the well-defined
+publication identifier for a cited standards document.
 
-This will result in the bibliographic entry being auto-fetched, so long
-as that auto-fetch is supported for that class of references
-[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.15]:
+If the publication identifier is recognized for auto-fetching, the bibliographic
+entry will be automatically retrieved.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.3.15]:
+
+If the publication identifier is not recognized for auto-fetching, the
+bibliographic entry will display the user-supplied reference list text after the
+comma.
 
 If a named reference is to be auto-fetched, it is entered by prefixing
-the named reference tag (in parentheses) to the document identifier:
+the named reference tag (in parentheses) to the publication identifier:
 
 [source,asciidoc]
 --
-* [[[{anchor},({reference tag}){reference identification code}]]], _{reference list text}_
+* [[[{anchor},({reference tag}){publication identifier}]]], _{reference list text}_
 --
 
 [[ex-named-ref]]
@@ -509,12 +513,13 @@ the named reference tag (in parentheses) to the document identifier:
 ====
 [source,adoc]
 ----
-* [[[ISO20483,(CerMoist)ISO 20483]]], _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
-* [[[ISO6540,(MaiMoist)ISO 6540]]]. _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
+* [[[ISO20483,(CerMoist)ISO 20483]]] _ISO 20483:2013 Cereals and cereal products -- Determination of moisture content -- Reference method_
+* [[[ISO6540,(MaiMoist)ISO 6540]]] _ISO 6540:1980 Maize -- Determination of moisture content (on milled grains and on whole grains)_
 ----
 ====
 
-Rich-text formatting is supported within the named reference tag [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.3].
+Rich-text formatting is supported within the named reference tag
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.3].
 
 [example]
 .Example of rich-text formatting in named reference tag
@@ -528,7 +533,7 @@ Rich-text formatting is supported within the named reference tag [added in https
 
 WARNING: It is strongly advised not to use rich-text formatting within named
 reference tags, as it can lead to unexpected results and problems with
-copy-pasting. 
+copy-pasting.
 
 The preferred way of modifying a fetched reference to add a footnote indicating its status
 (added to the reference tag in most flavours) is to give a footnote after the citation.
@@ -538,9 +543,9 @@ to be updated [added in https://github.com/metanorma/metanorma-standoc/releases/
 [example]
 .Example of added footnote to a named reference tag (ISO/IEC 17025:2017)
 ====
-[source,adoc] 
+[source,adoc]
 ----
-* [[[ISO_IEC_Guide_99_2007,ISO/IEC Guide 99:2007]] footnote:[Also known as JCGM 200]
+* [[[ISO_IEC_Guide_99_2007,ISO/IEC Guide 99:2007]]] footnote:[Also known as JCGM 200]
 
 * [[[ISO_IEC_17000_2004,ISO/IEC 17000:2004]]]
 ----
@@ -1103,7 +1108,7 @@ for references they have reviewed themselves.
 The bibliographic `span:...[]` notation can be used to emend bibliographic
 entries fetched through
 Relaton [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.4].
-This is only done if the document identifier is wrapped with 
+This is only done if the document identifier is wrapped with
 `amend(...)` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.3].
 If the identifier is not wrapped with `amend(...)`, the supplied bibliographic `span:...[]` notation
 is used instead of the fetched bibliographic record.
