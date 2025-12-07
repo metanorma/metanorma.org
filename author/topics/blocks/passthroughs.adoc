@@ -6,11 +6,11 @@ title: Passthrough to output formats
 
 == Skip Metanorma processing of markup
 
-Metanorma uses Asciidoc markup with some additions, such as `{{...}}` for concepts.
+Metanorma uses AsciiDoc markup with some additions, such as `{{...}}` for concepts.
 Metanorma will render markup as it finds it. If you wish to ignore Metanorma processing
 of markup, you will need to use pass-through markup: `&#x2b;&#x2b;&#x2b;&#x2b;` for blocks, `&#x2b;&#x2b;` for inline
 markup. For example, if you want `{{A}}` to display in a document, you will need to
-enter it as `&#x2b;+{{A}}&#x2b;+`. 
+enter it as `&#x2b;+{{A}}&#x2b;+`.
 
 If you have more complex markup, `&#x2b;&#x2b;` may not be adequate; the Unicode Zero-Width joiner, `&amp;#x200d;`,
 may be necessary to force Metanorma not to process the markup. (Asciidoctor's underlying
