@@ -867,9 +867,16 @@ bibliographic number (e.g. _ISO 639-2, [B1]_), if the reference is to a standard
 or technical report, or otherwise by author and bibliographic number.
 
 The IEEE Style Manual allows either author or title to be used as a reference to
-the bibliography. A switch to title and bibliographic number can be indicated by
-setting the style of the reference to `style=title%` [added in
-https://github.com/metanorma/metanorma-ieee/releases/tag/v1.5.4].
+the bibliography.
+
+A switch to a different rendered reference style can be set using the `style=`
+option on the
+cross-reference [added in https://github.com/metanorma/metanorma-ieee/releases/tag/v1.5.4]:
+
+* `style=title`: References are rendered by title. This is the default for
+references that are not standards or technical reports.
+
+* `style=authors`: References are rendered by author names.
 
 [example]
 ====
@@ -883,9 +890,9 @@ Learning: An Introduction to the Mathematics of Neural Networks [B1]_,
 ====
 
 
-References to the bibliography that have render text suppliedare by default assumed to be using a
-variant form of the title or of author names. Metanorma will automatically append the bibliographic
-number after them.
+References to the bibliography that have render text supplied are by default
+assumed to be using a variant form of the title or of author names. Metanorma
+will automatically append the bibliographic number after them.
 
 [example]
 ====
