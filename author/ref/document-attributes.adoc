@@ -506,11 +506,22 @@ The date on which the document was announced as forthcoming [added in https://gi
 The name of the relevant technical committee.
 
 `:corporate-author_{i}:`:: The organization authoring the standard [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.5].
-This is normally identical to the agency publishing the standard, as specified in `:publisher:` or populated by default,
-in which case `corporate-:author:` should not be provided. It is only provided in rare cases
-where a standard is authored or co-authored with a distinct agency, but only the default agency is credited as the publisher. More than one
-agency can be specified as the author, as with `publisher`; the first agency specified as author is expected to be the publishing agency.
-Personal authors are instead specified through `:fullname:` or `:surname:` and `:givenname:`.
++
+This document attribute **should not** be provided if the authoring organization
+is identical to the publishing body, as its value is automatically set to that
+of `:publisher:`.
++
+Use `:corporate-author:` **only when** a standard is authored or co-authored by
+an agency distinct from the publishing body, and only the publishing agency is
+credited as the publisher.
++
+Multiple agencies can be specified as corporate authors (similar to
+`:publisher:`). The first agency specified is expected to be the publishing
+body. Use `:corporate-author_2:`, `:corporate-author_3:`, etc. for additional
+agencies.
++
+NOTE: For personal authors, use `:fullname:` or `:surname:` and `:givenname:`
+instead.
 
 [[fullname]] `:fullname{_i}:`::
 The full name of a person who is a contributor to the document.
