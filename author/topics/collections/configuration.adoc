@@ -312,15 +312,15 @@ The index page for the entire document links to the index page for the
 Defaults to `true`. When set to `false`, the file is not to be included in
 any listing of manifest contents (i.e. in the collection cover page).
 +
-[NOTE]
 --
+[NOTE]
+====
 Boolean attributes of files (`attachment`, `sectionsplit`, `index`) can be inherited from
 `entry` to all their `file` descendants [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0].
---
-
+====
 
 [NOTE]
---
+====
 In the old manifest format, information about files as opposed to manifests
 needed to be stored under a separate `docref` container.
 
@@ -366,20 +366,23 @@ entry:
       - file: annex1.adoc
       - file: annex2.adoc
 ----
---
+====
 
 `prefatory-content`::
 Content to put at the beginning of the collection container.
 
 `final-content`::
 Content to put at the end of the collection container.
-Both prefatory and final content are entered as Asciidoc, and are compiled
-as a document in the same flavor as the collection, with `bibdata`
-(bibliographic metadata) taken from the collection. This bibdata is merged
-with any bibdata that is added in processing the Asciidoc; that for instance
-allows markup of document history to be passed into a collection as metadata
-  [added in https://github.com/metanorma/metanorma/releases/tag/v2.3.1].
-
++
+Both prefatory and final content are entered as Metanorma AsciiDoc, and are
+compiled as a document in the same flavor as the collection, with `bibdata`
+(bibliographic metadata) taken from the collection.
++
+This `bibdata` is merged with any `bibdata` that is added in processing the
+Metanorma AsciiDoc; that for instance allows markup of document history to be
+passed into a collection as metadata
+ [added in https://github.com/metanorma/metanorma/releases/tag/v2.3.1].
++
 .Example collection manifest
 [example]
 ====
@@ -451,10 +454,12 @@ final-content:
 
 === Manifest hooks
 
-If the collection is being processed programmatically, in a Ruby script, it is possible
-to intervene in that processing, to change the content of the manifests it reads in.
-This may be needed, for example, if a collection YAML points to certain files by default,
-but those file locations need to be different for distribution.
+If the collection is being processed programmatically, in a Ruby script, it is
+possible to intervene in that processing, to change the content of the manifests
+it reads in.
+
+This may be needed, for example, if a collection YAML points to certain files by
+default, but those file locations need to be different for distribution.
 
 [source,ruby]
 ----
@@ -480,14 +485,19 @@ end
 The hooks provided [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0]
 are:
 
-* `set_fileref_resolver`: given `ref_folder` (the folder containing the manifest file) and
-`fileref` (the path to a file from within the manifest file), generate a new path to the
-file, redirecting the file reference. The generated path needs to be either absolute, or
-relative to `ref_folder`.
-* `set_identifier_resolver`: given `identifier`, the identifier of a file in the collection,
-generate a new identifier.
-* `pre_parse_model`: given a collection manifest (as parsed by YAML into a Ruby hash),
-return a new collection manifest.
+`set_fileref_resolver`::
+given `ref_folder` (the folder containing the manifest file) and `fileref` (the
+path to a file from within the manifest file), generate a new path to the file,
+redirecting the file reference. The generated path needs to be either absolute,
+or relative to `ref_folder`.
+
+`set_identifier_resolver`::
+given `identifier`, the identifier of a file in the collection, generate a new
+identifier.
+
+`pre_parse_model`::
+given a collection manifest (as parsed by YAML into a Ruby hash), return a new
+collection manifest.
 
 
 === Site manifest
