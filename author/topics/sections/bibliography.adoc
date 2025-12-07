@@ -443,12 +443,14 @@ NOTE: Numeric references cannot be used for entries in normative references, as 
 Execution will abort if a numeric reference tag is found in normative references, in order to prevent
 numbering confusion [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.8.4].
 
+
 === Blank reference tags
 
-If no document identifier is to be provided for the reference, give the reference tag as a space:
+If no document identifier is to be provided for the reference, give the
+reference tag as a space:
 
 [example]
-.Example of specifying numeric reference tags
+.Example of specifying a blank numeric reference tag
 ====
 [source,asciidoc]
 --
@@ -456,7 +458,7 @@ If no document identifier is to be provided for the reference, give the referenc
 --
 ====
 
-This has the same effect as specifying the reference tag with `dropid(...)` 
+This has the same effect as specifying the reference tag with `dropid(...)`
 (see <<dropid>>) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.7].
 
 
@@ -855,20 +857,23 @@ references, on an experimental basis. See the
 link:/author/basics/reference-lookups[Automatic reference lookup]
 topic for more details.
 
+
 [[annotated-spans]]
-=== Annotating pre-formatted references using semantic elements
+=== Encoding semantic bibliographic elements ("bibliographic spans")
 
-A pre-formatted reference is not explicitly broken down into its semantic
-components, but it provides a useful means of providing that information to Metanorma,
-in broken down format after all: mark up segments of a reference
-semantically, as data used to generate a machine-readable reference. So while the reference
-looks like a human-readable reference, the markup highlights the critical information
-needed to generate a citation, to the same level of detail as would be fetched by Relaton
-from a bibliographic database.
+==== General
 
-So a citation like the following is human-readable, but does not indicate to Metanorma
-how to extract useful information from it—what the document identifier is, who the authors
-are, who the editors are, etc.
+Metanorma supports semantic markup of bibliographic entries, to allow
+generation of machine-readable references from pre-formatted reference entries.
+
+Different from a pre-formatted reference, of which the entire content is treated
+as a single block of text to be rendered as-is, with no further processing,
+semantic markup allows authors to mark up segments of a reference semantically
+to generate a machine-readable reference that suits the flavor's citation style.
+
+A pre-formatted reference like the following is human-readable, but does not
+indicate to Metanorma how to extract useful information from it -- what the
+document identifier is, who the authors are, who the editors are, etc.
 
 [example]
 .Example encoding of a pre-formatted bibliographic item
@@ -876,54 +881,52 @@ are, who the editors are, etc.
 [source,asciidoc]
 ----
 Wozniak, S., Jobs, Steve, & Hoover, J. Edgar. 1991 [1996]. _Work_ In Gates W. H. &
-UNICEF (eds.), Collected Essays. _Bibiographers Anonymous_, 5: 2–21. ISO 1234. 
+UNICEF (eds.), Collected Essays. _Bibiographers Anonymous_, 5: 2–21. ISO 1234.
 Geneva: International Standardization Organization. http://www.example.com
 ----
 ====
 
-To address this need, a limited number of span categories can be used to annotate a
-pre-formatted
-reference [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
-When this is done, *only* the content in spans is processed; any additional information,
-including formatting and punctuation, is ignored, though authors may choose to leave it in for
-readability:
+Metanorma provides the "bibliographic span" mechanism to allow authors to
+annotate critical bibliographic information as the content of the list item
+that declares the bibliographic entry. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.1.6].
+
+This method allows authors to provide bibliographic information at a level of
+detail supported by the Relaton citation model. The span categories supported
+are described below.
+
+In the resulting reference text, any punctuation or formatting will be provided
+by Metanorma, following the flavor's reference style.
+
+
+Syntax:
+
+[source,asciidoc]
+----
+* [[[anchor,reference tag]]],
+  span:{span-type}[{span content}]
+  span:{span-type}[{span content}]
+  ...
+  span:{span-type}[{span content}]
+----
+
+
+==== Textual annotation
+
+Metanorma supports annotations surrounding the bibliographic spans in the
+reference.
+
+While Metanorma only processes the content within the spans, authors can
+choose to add punctuation, formatting and other text around the spans for
+readability.
+
 
 [example]
 .Example encoding of a bibliographic item inline with semantic markup
 ====
-[source,asciidoc]
-----
-* [[[A, B]]],
-  span:surname[Wozniak], span:initials[S.], span:surname[Jobs], span:givenname[Steve],
-    & span:surname[Hoover], span:initials[J.] span:givenname[Edgar].
-  span:date.issued[1991].
-  span:date[1996].
-  span:title[_Work_].
-  In span:in_surname.editor[Gates], span:in_initials.editor[W. H] &
-  span:in_organization[UNICEF],
-  span:in_title[Collected Essays].
-  _span:series[Bibliographers Anonymous]._
-  span:docid.ISO[ISO 1234].
-  span:pubplace[Geneva]:
-  span:publisher[International Standardization Organization].
-  span:uri.citation[http://www.example.com].
-  vol. span:volume[5],
-  pp. span:pages[2-21]
-  span:type[inbook]
-----
-====
+These two entries are equivalent.
 
-Note the distinction made in the example between Wozniak and Jobs (authors of the paper),
-and Gates and UNICEF (editors of the book including the paper). Similarly, note the
-distinction between the title of the paper (_Work_), and the title of the book including
-the paper (_Collected Essays_).
+With no punctuation or formatting:
 
-As punctuation and formatting are ignored, this is processed identically to the following:
-
-[example]
-.Example encoding of a bibliographic item inline with semantic markup, with no formatting or
-punctuation.
-====
 [source,asciidoc]
 ----
 * [[[A, B]]],
@@ -945,14 +948,43 @@ punctuation.
   span:pages[2-21]
   span:type[inbook]
 ----
+
+With punctuation and formatting:
+
+[source,asciidoc]
+----
+* [[[A, B]]],
+  span:surname[Wozniak], span:initials[S.], span:surname[Jobs], span:givenname[Steve],
+    & span:surname[Hoover], span:initials[J.] span:givenname[Edgar].
+  span:date.issued[1991].
+  span:date[1996].
+  span:title[_Work_].
+  In span:in_surname.editor[Gates], span:in_initials.editor[W. H] &
+  span:in_organization[UNICEF],
+  span:in_title[Collected Essays].
+  _span:series[Bibliographers Anonymous]._
+  span:docid.ISO[ISO 1234].
+  span:pubplace[Geneva]:
+  span:publisher[International Standardization Organization].
+  span:uri.citation[http://www.example.com].
+  vol. span:volume[5],
+  pp. span:pages[2-21]
+  span:type[inbook]
+----
+
+Note the distinction made in the example between Wozniak and Jobs (authors of
+the paper), and Gates and UNICEF (editors of the book including the paper).
+Similarly, note the distinction between the title of the paper (_Work_), and the
+title of the book including the paper (_Collected Essays_).
 ====
 
-Any punctuation or formatting will be provided by Metanorma, following the SDO's
-reference style sheet.
 
-The span types supported are not an exhaustive list of bibliographic fields. If more detail is
-required (or a dynamically generated reference is to be generated), one of the
-following explicit bibliographic entry methods should be used instead.
+==== Supported bibliographic span types
+
+The span types supported are not an exhaustive list of bibliographic fields. If
+more detail is required (or a dynamically generated reference is to be
+generated), one of the following explicit bibliographic entry methods should be
+used instead.
 
 The span categories supported are:
 
@@ -991,8 +1023,9 @@ Corporate contributor, with role _XXX_ (e.g. _editor_).
 Title.
 
 `in_title`::
-Title of containing bibliographic item. For types `inbook`, `inproceedings`, `incollection`,
-the title of the book, proceedings, collection containing the item.
+Title of containing bibliographic item. For types `inbook`, `inproceedings`,
+`incollection`, the title of the book, proceedings, collection containing the
+item.
 
 `in_surname`, `in_initials`, `in_givenname`, `in_organization`::
 Name of contributor for containing bibliographic item
@@ -1010,32 +1043,33 @@ Series title. For articles, this is the journal title.
 Document identifier.
 
 `docid.XXX`::
-Document identifier, of type _XXX_. The identifiers follow Relaton XML practice, and the following 
-types are in place for the major classes of bibliographic identifier:
+Document identifier, of type `XXX`. The identifiers follow Relaton XML practice,
+and the following types are in place for the major classes of bibliographic
+identifier:
 +
-* metanorma-ordinal: ordinal number provided for reference, normally supplied automatically by Metanorma
-and used only for bibliography
-* title: identifier repeating the title of the reference, supplied automatically in normative reference contexts
-when no other identifier has been provided
-* metanorma: identifier not otherwise recognised as specific to an SDO
-* repository: link to other document in a Metanorma collection
-* ISBN
-* ISSN
-* DOI
-* URN
-* ISO
-* IEC
-* IETF
-* IEEE
-* BIPM
-* BSI
-* NIST
-* JIS
-* ITU
-* PLATEAU
-* Ribose
-* IHO
-* CalConnect
+`metanorma-ordinal`::: ordinal number provided for reference, normally supplied
+automatically by Metanorma and used only for bibliography
+`title`::: identifier repeating the title of the reference, supplied automatically
+in normative reference contexts when no other identifier has been provided
+`metanorma`::: identifier not otherwise recognised as specific to an SDO
+`repository`::: link to other document in a Metanorma collection
+`ISBN`::: This identifier is an International Standard Book Number (ISBN-10 or ISBN-13)
+`ISSN`::: This identifier is an International Standard Serial Number (ISSN-8 or ISSN-13)
+`DOI`::: This identifier is a Digital Object Identifier (DOI)
+`URN`::: This identifier is a Uniform Resource Name (`urn:` namespace)
+`ISO`::: This identifier is an International Organization for Standardization publication identifier
+`IEC`::: This identifier is an International Electrotechnical Commission publication identifier
+`IETF`::: This identifier is an Internet Engineering Task Force publication identifier
+`IEEE`::: This identifier is an Institute of Electrical and Electronics Engineers publication identifier
+`BIPM`::: This identifier is a Bureau International des Poids et Mesures publication identifier
+`BSI`::: This identifier is a British Standards Institution publication identifier
+`NIST`::: This identifier is a National Institute of Standards and Technology publication identifier
+`JIS`::: This identifier is a Japanese Industrial Standards publication identifier
+`ITU`::: This identifier is an International Telecommunication Union publication identifier
+`IHO`::: This identifier is an International Hydrographic Organization publication identifier
+`CalConnect`::: This identifier is a CalConnect publication identifier
+`PLATEAU`::: This identifier is a PLATEAU publication identifier
+`Ribose`::: This identifier is a Ribose publication identifier
 
 `publisher`::
 Publisher.
