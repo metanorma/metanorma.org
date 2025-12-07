@@ -37,18 +37,45 @@ line will open on that folder location.
 . In the command line, execute the command `ren ++*++.PNG ++*++.png`,
 and all `++*++.PNG` files will be renamed as `*.png`.
 
+
 == Exporting SVG images from Adobe Illustrator
 
-When exporting SVG files from Adobe Illustrator for inclusion in Metanorma documents, rendering issues may arise if the export options are not properly configured. Use this following setup to ensure proper rendering across different output formats:
+When exporting SVG files from Adobe Illustrator for inclusion in Metanorma
+documents, use the following settings to ensure compatibility and proper
+rendering across different output formats.
+
+Use this following setup to ensure proper rendering across different output
+formats:
 
 image::/assets/author/edition-tips/illustrator-export-settings.png[]
 
-Basically, the settings are:
+The required settings are:
 
-- Styling: `Inline Style`
-- Font: `Convert To Outlines`
-- Images: `Embed`
-- Object IDs: `Unique`
+* Styling: `Inline Style`
+* Font: `Convert To Outlines`
+* Images: `Embed`
+* Object IDs: `Unique`
+
+Without using these settings, the resulting Metanorma document may not render
+the SVG images correctly across different output formats (such as HTML, PDF).
+
+The reasons for these settings are:
+
+* Inline styles ensure that the SVG renders correctly without relying on
+external stylesheets. Metanorma may be executed in an environment where external
+stylesheets (as local paths or on the Internet) may not be accessible.
+
+* Converting fonts to outlines preserves the appearance of text, avoiding font
+substitution issues. Without this setting, if the target system does not have
+the same fonts installed, the text will not render as intended.
+
+* Embedding images ensures that any raster images are included in the SVG file,
+preventing missing image errors if the images are not available in the target
+environment.
+
+* Unique object IDs are necessary for proper referencing and manipulation of SVG
+elements. Otherwise, ID conflicts may arise if you have more than one SVG using
+the same IDs, leading to rendering issues.
 
 
 == Using different math expression languages
