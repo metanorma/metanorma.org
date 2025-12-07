@@ -26,8 +26,8 @@ Scripts other than Latin pose their own challenges in internationalisation, incl
 RTL (right-to-left) scripts like Arabic and Hebrew, and CJK (Chinese, Japanese, Korean),
 ideographic scripts. Our
 recent move to support documents in Japanese has led to a good deal of effort in CJK scripts
-specifically.  We have already written here on the work we have done with 
-link:/blog/2023-12-19-ruby-in-metanorma/[Ruby annotation].  We summarise here some of our recent work. 
+specifically.  We have already written here on the work we have done with
+link:/blog/2023-12-19-ruby-in-metanorma/[Ruby annotation].  We summarise here some of our recent work.
 
 == JIS and Plateau
 
@@ -42,7 +42,7 @@ by the Japanese Standards Association (JSA). The JSA as a national standards bod
 with ISO and IEC, and its format is closely aligned to ISO. Its documents are published in both
 Japanese and English.
 
-* link:https://github.com/metanorma/metanorma-plateau[`metanorma-plateau`] supports the 
+* link:https://github.com/metanorma/metanorma-plateau[`metanorma-plateau`] supports the
 https://www.mlit.go.jp/plateau/[Plateau] project of the Japanese Ministry of Land, Infrastructure, Transport and Tourism.
 The flavour is implemented to derive from `metanorma-jis`, but overrides its formatting in several
 instances.
@@ -51,7 +51,7 @@ instances.
 
 The default for Japanese standardisation documents follows the Western convention of writing text
 left-to-right, top-down; this is particularly preferred as standardisation documents typically
-include mathematical formulas, and Western-language text. However, the 
+include mathematical formulas, and Western-language text. However, the
 https://en.wikipedia.org/wiki/Horizontal_and_vertical_writing_in_East_Asian_scripts:[traditional Japanese practice of writing Japanese top-to-bottom, right-to-left]
 remains common, particularly in legal text. Metanorma is currently working on implementing vertical
 writing in CJK in the PDF format of JIS docuemnts, as a rendering option.
@@ -62,7 +62,7 @@ Japan uses the Western Gregorian calendar alongside the traditional https://en.w
 which uses regnal years for the year rather than Anno Domini dating. In official contexts, the Japanese calendar
 is used: that includes indication of when documents were created and published.
 
-Metanorma uses ISO 8601, which is founded on the Gregorian calendar, to enter its dates as metadata; so the date 
+Metanorma uses ISO 8601, which is founded on the Gregorian calendar, to enter its dates as metadata; so the date
 a document was published will be indicated as something like `created-date: 2020-10-11`. When the date
 is displayed in the document frontispiece, it is rendered in the Japanese calendar, as 令和二年10月11日
 [Year 2 of the Reiwa era -- the reign of emperor Naruhito; month 10 day 11].
@@ -71,7 +71,7 @@ is displayed in the document frontispiece, it is rendered in the Japanese calend
 
 As with vertical printing, Japanese standardisation documents typically use Arabic numerals
 for automated numbering (clause numbers, ordered list numbers) and in metadata (edition numbers,
-dates of publication). However more conservatively formatted documents such as legal documents, 
+dates of publication). However more conservatively formatted documents such as legal documents,
 that tend to use vertical writing, also tend to use Japanese numbering (properly speaking, Chinese
 numbering) in those contexts. Metanorma has recently added functionality in JIS and Plateau
 to use Japanese numbering instead of Arabic numbering in those contexts. So by default, a Japanese
@@ -150,13 +150,13 @@ If Japanese numbering is being used, that needs to be rendered not as _一)_, bu
 with a full-width parenthesis.
 
 Often in technical documents, Roman text and Arabic numberals are interspersed with CJK text.
-In such cases, full-width punctuation should not be applied when it adjoins Roman text, but 
+In such cases, full-width punctuation should not be applied when it adjoins Roman text, but
 only with CJK text. So in the example above, if Arabic numbering is used for lists, _1)_ should
 be left alone, and not converted to _1）_.
 
 == CJK carriage return
 
-In Roman text, the carriage return at the end of a line in Asciidoc is interpreted as space; so
+In Roman text, the carriage return at the end of a line in AsciiDoc is interpreted as space; so
 a text entered as
 
 [source,asciidoc]
@@ -172,7 +172,7 @@ is reflowed in Metanorma XML (and thus Metanorma outputs) as
 <p>Now is the time for all good men to come to the aid of the party.</p>
 ----
 
-Space is used much more sparingly in CJK; as a result, a carriage return in CJK Asciidoc text
+Space is used much more sparingly in CJK; as a result, a carriage return in CJK AsciiDoc text
 is *not* interpreted as space; so
 
 [source,asciidoc]
