@@ -451,6 +451,22 @@ There are two groups of style values allowed as citation styles:
 
 * General citation style types
 
+Cross-reference styles can be specified at the individual cross-references
+using the following syntax:
+
+[source,adoc]
+----
+<<LOCATOR,style={STYLE}%>>
+----
+
+Where,
+
+`LOCATOR`:: is the locator, which could be an anchor;
+`STYLE`:: is one of the cross-reference styles codes.
+
+NOTE: This syntax is identical to that used for internal cross-references
+(link:/author/topics/document-format/xrefs#xref-styles[Cross-reference styles]).
+
 
 ===== Document identifier style types
 
@@ -523,7 +539,7 @@ _Jones_, _Jones & Smith_
 [example]
 _2001_, _2003b_
 
-`reference-tag`:: the bibliographic tag of the citation, which appears as its
+`reference_tag`:: the bibliographic tag of the citation, which appears as its
 identifier before the reference in the bibliography
 +
 [example]

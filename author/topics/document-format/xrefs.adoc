@@ -59,6 +59,19 @@ depending on where in the document it occurs.)
 
 Metanorma supports multiple cross-reference styles [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.6].
 
+Cross-reference styles can be specified at the individual cross-references
+using the following syntax:
+
+[source,adoc]
+----
+<<LOCATOR,style={STYLE}%>>
+----
+
+Where,
+
+`LOCATOR`:: is the locator, which could be an anchor;
+`STYLE`:: is one of the cross-reference styles codes.
+
 NOTE: The document attribute `:xrefstyle:` applies the same setting as a
 document default.
 
@@ -92,18 +105,7 @@ anchor) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2
 "/req/crs/crs-uri", where `/req/crs/crs-uri` is an identifier of the referenced object.
 ====
 
-These cross-reference styles can be specified at the individual cross-references
-by using the following syntax:
 
-[source,adoc]
-----
-<<LOCATOR,style={STYLE}%>>
-----
-
-Where,
-
-* `LOCATOR` is the locator, which could be an anchor;
-* `STYLE` is one of the cross-reference styles codes.
 
 .Example of a cross-reference rendered in the basic style
 [example]
