@@ -247,6 +247,22 @@ metanorma list-extensions ieee
 ----
 ====
 
+== Export flavor configuration  (`metanorma export-config`)
+
+Especially when working with Metanorma tastes, it is necessary to inspect and
+manipulate the various configuration files that flavors and tastes of Metanorma
+use to determine flavor behaviour. To do so, run:
+
+[source,sh]
+----
+metanorma export-config <flavor>
+----
+
+This will export all relevant files from the Metanorma gem to the directory
+`export-config-<flavor>`, preserving the directory structure of the gem.
+If a taste is specified, the taste configuration files are also exported, under the
+`taste/<flavor>` subdirectory.
+
 
 == Show processor version (`metanorma version`)
 
