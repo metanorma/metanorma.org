@@ -4,6 +4,11 @@ title: Contributor metadata
 ---
 = Contributor metadata
 
+This is a basic discussion of how contributors are specified in document metadata.
+More comprehensive information, and a broader set of options is given in
+link:/author/ref/document-attributes/#author-information[Document attributes: Author information],
+and in the document attributes discussion for specific flavors.
+
 == Organizations
 
 === Basic information
@@ -98,10 +103,10 @@ NOTE: The subdivision can only be set for the first organization with role
 
 == Groups
 
-Contributor groups of organizations are specified using document attributes.
+Contributor groups of organizations, i.e. editorial committees, are specified using document attributes.
 
-These attributes are specific to Metanorma flavours, and are treated as
-SDO-specific metadata.
+ISO-aligned standards (including ISO itself) break their committee down as technical committees,
+subcommittees, and workgroups, and these are specified accordingly:
 
 .Example of SDO-specific group contributor for ISO and IEC
 ====
@@ -114,8 +119,23 @@ SDO-specific metadata.
 * `workgroup-type` specifies the type of the WG, such as `WG`, `AG`, `CAG`, etc.
 ====
 
+For different flavors, the legal types of committee, used instead of "technical-committee", "subcommittee", etc.,
+are:
+
+Default:: technical-committee
+BIPM:: committee, workgroup
+CalConnect:: technical-committee
+Ribose:: committee
+CSA:: committee
+IHO:: committee, workgroup, commission
+IEEE:: society, balloting-group, working-group, committee
+IETF:: workgroup
+ITU:: bureau, sector, group, subgroup, workgroup
+NIST:: technical-committee, subcommittee, workgroup
+OGC:: committee, subcommittee, workgroup
+
 By default, the corporate author of the document is assumed to be the same as
-the publishing organization.
+the publishing organization. This can be overridden with `:corporate-author:`
 
 Default values for both the corporate author and the publisher are set in each
 Metanorma flavour.
