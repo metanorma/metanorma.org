@@ -270,6 +270,28 @@ renders as:
 image::/assets/author/topics/document-format/text/fig-stem-equality.png[Example of a block stem equation in Metanorma]
 ====
 
+A key can also be a paragraph preceding, following, or instead of the definition list;
+the following syntax is also allowed [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.2.5]
+
+[source,asciidoc]
+----
+[%key]
+Paragraph used instead of definition list
+----
+
+[source,asciidoc]
+----
+[%key]
+--
+Open block allowing multiple paragraphs and definition lists to be combined into a single key
+
+a::b
+c::d
+
+Text may also follow after the definition list in a key
+--
+----
+
 Instead of `[%key]`, the definition list can also be preceded with a paragraph
 containing the English word `where`, though this is not recommended practice.
 
