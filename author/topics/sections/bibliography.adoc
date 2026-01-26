@@ -305,7 +305,8 @@ reference list text can be left out, as it will instead be generated based on th
 fetched entry.
 
 A bibliographic reference can optionally be followed by one or more notes. This allows an
-annotated bibliography to be generated. Notes are sorted together with their preceding bibliographic entry.
+annotated bibliography to be generated. Notes are sorted together with their preceding bibliographic entry,
+and are rendered as part of that entry.
 
 [source,asciidoc]
 ----
@@ -322,7 +323,7 @@ NOTE: This is the first instance of three-letter codes in ISO-639.
 
 == Best practice
 
-There are myriad ways of entering bibliographic references as shown in
+There are several ways of entering bibliographic references as shown in
 <<entering-refs>>.
 
 As best practice, we recommend the following order of entering bibliographic
@@ -1091,6 +1092,24 @@ Version
 
 `note`::
 Note (can also be used for miscellaneous content)
+
+`note.XXX`::
+Note, of type _XXX_. More than one type can be applied to a note; in that case, the different values
+are comma delimited. 
+More than one note can be present in a bibliographic entry. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.2.5]
++
+--
+NOTE: In order to ensure that the note is rendered in the bibliography, as part of an annotated
+bibliography, you need to include the type `display` in the note types.
+
+====
+[source,asciidoctor]
+----
+* [[[A,1]]] span:note.display,editorial[This entry may be revised later.]
+* [[[B,1]]] span:note.display[This entry may be revised later.]
+----
+====
+--
 
 `uri`::
 URI.
