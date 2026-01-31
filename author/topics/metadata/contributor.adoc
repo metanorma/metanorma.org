@@ -9,6 +9,9 @@ More comprehensive information, and a broader set of options is given in
 link:/author/ref/document-attributes/#author-information[Document attributes: Author information],
 and in the document attributes discussion for specific flavors.
 
+Multiple instances of contributors are specified by suffixing a number to the
+document attribute, as `_2`, `_3`, etc.
+
 == Organizations
 
 === Basic information
@@ -100,7 +103,7 @@ NOTE: The subdivision can only be set for the first organization with role
 ----
 ====
 
-
+[[committee-groups]]
 == Groups
 
 Contributor groups of organizations, i.e. editorial committees, are specified using document attributes.
@@ -139,6 +142,32 @@ the publishing organization. This can be overridden with `:corporate-author:`
 
 Default values for both the corporate author and the publisher are set in each
 Metanorma flavour.
+
+The following attributes can be specified for each contributor group type:
+
+`{group}`:: the name of the group
+`{group}-number`:: the unprefixed identifier of the group
+`{group}-type`:: the type of the group, as an abbreviation; the identifier of the group is assumed to be type + number, e.g. _TC 2_
+`{group}-agency`:: the agency that the group lies under, in case of multiple groups
+`{group}-agency-abbr`:: the abbreviation of the agency that the group lies under, in case of multiple groups
+`{group}_logo`:: the logo of group
+
+.Example of multiple groups and subgroups
+====
+:technical-committee: Geographic information/Geomantics
+:technical-committee-number: 211
+:technical-committee-type: TC
+:workgroup: Information management
+:workgroup-number: 9
+:workgroup-type: WG
+:technical-committee_2: Technical solutions sub-group
+:technical-committee-number_2: TS
+:technical-committee-type_2: SG
+:technical-committee-agency_2: British Standards Institute
+:technical-committee-agency-abbr_2: BSI
+:technical-committee_logo_2: bsi.svg
+====
+
 
 
 == Individuals
