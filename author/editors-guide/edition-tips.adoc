@@ -365,3 +365,54 @@ This text is not justified.
 --
 
 The output will show a normal list item, with the text aligned to the left.
+
+
+== Escaping callouts in code blocks
+
+In some situations, it is necessary to include literal instances of `<n>`
+(where `n` is any natural number) inside a code block. For example:
+
+[source,asciidoc]
+--
+[source,ruby]
+---
+require 'sinatra' \<1>
+
+get '/hi' do \<2> \<3>
+  "Hello World!"
+end
+---
+--
+
+However, in its current form, this code will not render as intended.
+The sequences `<1>`, `<2>`, and `<3>` may be interpreted by Metanorma as
+link:https://docs.asciidoctor.org/asciidoc/latest/verbatim/callouts/[*callouts*].
+As a result, they will be rendered as `(1)`, `(2)`, and `(3)`, respectively,
+as shown below:
+
+[source,asciidoc]
+--
+[source,ruby]
+---
+require 'sinatra' <1>
+
+get '/hi' do <2> <3>
+  "Hello World!"
+end
+---
+--
+
+To prevent callout recognition and preserve the literal output, you can escape the callout
+syntax by prefixing it with a backslash. This ensures the code block renders as expected:
+
+[source,asciidoc]
+--
+[source,ruby]
+---
+require 'sinatra' \\<1>
+
+get '/hi' do \<2> \\<3>
+  "Hello World!"
+end
+---
+--
