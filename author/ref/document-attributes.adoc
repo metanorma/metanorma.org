@@ -275,11 +275,18 @@ attributes are ignored_ when composing the identifier for the document. The
 normal SDO conventions, and for which the identifier cannot be constructed out of
 `:docnumber:` in the normal way.
 +
-NOTE: Since `:docidentifier:` is a preformatted value, and it is opaque to
-Metanorma. This means that Metanorma cannot make any inference about the
-internal structure of the identifier. For example, Metanorma cannot generate
-undated or language-specific variants of the identifier, or mark up the part
-number separately from the document number, as is required by ISO.
+[note]
+--
+Since `:docidentifier:` is a preformatted value, and it is opaque to Metanorma. This means that Metanorma cannot
+make any inference about the internal structure of the identifier. For example, Metanorma cannot generate
+undated or language-specific variants of the identifier, or mark up the part number separately
+from the document number, as is required by ISO.
+
+However, the `:docidentifier:` content can be a 
+Liquid template [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.0].
+Refer to link:develop/topics/metadata-and-boilerplate/#default-metadata[Default metadata values]
+for the typical values that can be used in metadata-driven Liquid templates under Metanorma.
+--
 +
 WARNING: `:docidentifier:` should be avoided unless absolutely necessary due to
 the limitations its usage brings. Metanorma maintains the `pubid-*` set of
@@ -465,6 +472,8 @@ default `<br/><br/>`)
 middle title (document title at the start of the main section of the document)
 (Metanorma XML, default `"<p class='zzSTDTitle1'>{{ doctitle }}</p>"`)
  [added in https://github.com/metanorma/isodoc/releases/tag/v3.2.7].
+Refer to link:develop/topics/metadata-and-boilerplate/#default-metadata[Default metadata values]
+for the typical values that can be used in metadata-driven Liquid templates under Metanorma.
 
 [[document-relations]]
 == Document relations
