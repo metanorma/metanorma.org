@@ -127,6 +127,46 @@ The calendar year used in the week calendar...
 ____
 --
 
+The replacement text may additionally include clauses, and not just block content.
+This is addressed by providing subclauses to the change 
+clause [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.0].
+For each such subclause, auto-numbering macros need to be provided independently.
+No change metadata is provided for the subclauses: the change metadata for the change clause
+applies to the replacement text as a whole.
+
+====
+[source,asciidoc]
+----
+[change=add,locality="clause=3.1.2.16"]
+== 3.1.2
+
+Add the following terminological entries after 3.1.2.13:
+
+=== 3.1.2.14 pass-format:metanorma[<br/>]canonical form 
+
+autonumber:example[1]
+autonumber:table[3]
+
+date and time expression where all its time scale components are _normalised_
+(3.1.2.15)
+
+====
+example
+====
+
+NOTE: Note 1 to entry: A
+
+|===
+|A |B
+|===
+----
+====
+
+NOTE: There is no current support for specially formatted subclauses, such as terms. In the foregoing example,
+the formatting of terms in ISO is done by putting a linebreak between term number and preferred term,
+and by providing the term note label "Note 1 to entry" as explicit text in the note, which is otherwise
+unnumbered and thus unlabelled.
+
 [[corrigenda]]
 == Corrigenda
 
