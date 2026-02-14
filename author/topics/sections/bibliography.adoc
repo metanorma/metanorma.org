@@ -304,9 +304,9 @@ machine-readable one. If the bibliographic entry is auto-fetched, the
 reference list text can be left out, as it will instead be generated based on the
 fetched entry.
 
-A bibliographic reference can optionally be followed by one or more notes. This allows an
-annotated bibliography to be generated. Notes are sorted together with their preceding bibliographic entry,
-and are rendered as part of that entry.
+A bibliographic reference can optionally be followed by one or more notes. This
+allows an annotated bibliography to be generated. Notes are sorted together with
+their preceding bibliographic entry, and are rendered as part of that entry.
 
 [source,asciidoc]
 ----
@@ -1094,16 +1094,18 @@ Version
 Note (can also be used for miscellaneous content)
 
 `note.XXX`::
-Note, of type _XXX_. More than one type can be applied to a note; in that case, the different values
-are comma delimited. 
+Note, of a specialized type _XXX_. More than one type can be applied to a note;
+in that case, the different values are comma delimited.
++
 More than one note can be present in a bibliographic entry. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.0]
 +
 --
-NOTE: In order to ensure that the note is rendered in the bibliography, as part of an annotated
-bibliography, you need to include the type `display` in the note types.
+For notes that are intended to be rendered with bibliographic entries, as part
+of an annotated bibliography, the note type `display` is required.
 
+[example]
 ====
-[source,asciidoctor]
+[source,adoc]
 ----
 * [[[A,1]]] span:note.display,editorial[This entry may be revised later.]
 * [[[B,1]]] span:note.display[This entry may be revised later.]

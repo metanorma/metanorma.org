@@ -26,7 +26,8 @@ PDF::
 treated as a single document, composed of the individual Metanorma documents.
 
 PDF Portfolio::
-treated as a PDF portfolio of documents, one for each individual Metanorma document.
+treated as a PDF portfolio of multiple PDF files, each generated from an
+individual Metanorma document.
  [added in https://github.com/metanorma/metanorma/releases/tag/v2.3.1].
 
 Word DOC::
@@ -196,9 +197,11 @@ detection of source files, so if the source file has changed and an XML present,
 the XML will still not be recompiled.
 
 `coverpage-pdf-portflio`:::
-The cover page for the PDF portfolio, as a file name. This is is a fallback PDF file,
-to be rendered if the PDF browser does not support PDF Portfolio, and a PDF Portfolio
-has been generated [added in https://github.com/metanorma/metanorma/releases/tag/v2.3.1].
+The path to the file name of the fallback cover page in PDF format, for the
+generated PDF portfolio output.
+This PDF file is included in the PDF Portfolio as the cover page rendered if the
+PDF reader does not not support reading PDF Portfolio files
+natively [added in https://github.com/metanorma/metanorma/releases/tag/v2.3.1].
 
 `flavor`:::
 The flavor of Metanorma to use in processing the collection metadata and (by default)
@@ -302,67 +305,88 @@ If the identifier is not supplied,
 and this is a Metanorma document, the identifier will be extracted
 from the document [added in https://github.com/metanorma/metanorma/releases/tag/v2.0.0].
 
-`pdf-file`::: The name to be used for the output PDF file, within a PDF portfolio.
+`pdf-file`::: In PDF Portfolio output, specifies the file name to be used for the output PDF file.
  [added in https://github.com/metanorma/metanorma/releases/tag/v2.3.1].
 
-`output-filename`::: The output name to be given to the document, without any file extensions; e.g. `document`
+`output-filename`::: The output name to be given to the document, without no file extension, e.g. `document`
  [added in https://github.com/metanorma/metanorma/releases/tag/v2.3.1].
-+
---
-* If this is a hierarchical level of the manifest with children, the output name is inherited by all child nodes of this node (and any
-documents they describe);
-if this is a hierarchical level of the manifest with parents, the output name overrides any child nodes specified in ancestors.
-* If an output filename is not specified, the document has the same base name as the input file name (given in `file`),
-but all such files appear at the root level of the output folder.
-*  The `output-filename` path can specify subdirectories,
-imposing hierarchy on the output files of the collection (e.g. `directory/filename`).
-* If more than one output entry ends up with the same filename in the same location, disambiguating numbers are automatically inserted
-after the filename. For example, three entries with the same `output-filename`, `dir1/filename`, will end up output as
-`{output-folder}/dir1/filename.html`, `{output-folder}/dir1/filename.1.html`, `{output-folder}/dir1/filename.2.html`.
-Two `file` entries specified as `dir1/filename.adoc` and `dir2/filename.adoc` with no `output-filename` specified 
-will end up in the same location, the output directory root: they will be generated as
-`{output-folder}/filename.html` and `{output-folder}/filename.1.html`.
-* The same `output-filename` variable can be used across multiple files that are child nodes of a manifest entry,
-with parameters used to differentiate them. The following parameters are used for `output-filename`:
-`{basename}`:: the base name of the current document, with no extensions; e.g. `dir/filename.xml` maps to `filename`
-`{basename_legacy}`:: the base name of the current document, with its specified extension; e.g. `dir/filename.xml` maps to `filename.xml`
-`{document-num}`:: the index number of the current document among all the Metanorma documents specified in the collection,
-numbered depth-first, and with numbering starting at 0.
---
 
-`attachment`::::
+*** If this is a hierarchical level of the manifest with children, the output
+name is inherited by all child nodes of this node (and any documents they
+describe); if this is a hierarchical level of the manifest with parents, the
+output name overrides any child nodes specified in ancestors.
+
+*** If an output filename is not specified, the document has the same base name
+as the input file name (given in `file`), but all such files appear at the root
+level of the output folder.
+
+*** The `output-filename` path can specify subdirectories, imposing hierarchy on
+the output files of the collection (e.g. `directory/filename`).
+
+*** If more than one output entry ends up with the same filename in the same
+location, disambiguating numbers are automatically inserted after the filename.
+For example, three entries with the same `output-filename`, `dir1/filename`,
+will end up output as `{output-folder}/dir1/filename.html`,
+`{output-folder}/dir1/filename.1.html`, `{output-folder}/dir1/filename.2.html`.
+Two `file` entries specified as `dir1/filename.adoc` and `dir2/filename.adoc`
+with no `output-filename` specified will end up in the same location, the output
+directory root: they will be generated as `{output-folder}/filename.html` and
+`{output-folder}/filename.1.html`.
+
+*** The same `output-filename` variable can be used across multiple files that
+are child nodes of a manifest entry, with parameters used to differentiate them.
+The following parameters are used for `output-filename`:
+
+`{basename}`:::: the base name of the current document, with no extensions; e.g.
+`dir/filename.xml` maps to `filename`
+
+`{basename_legacy}`:::: the base name of the current document, with its
+specified extension; e.g. `dir/filename.xml` maps to `filename.xml`
+
+`{document-num}`:::: the index number of the current document among all the
+Metanorma documents specified in the collection, numbered depth-first, and with
+numbering starting at 0.
+
+
+`attachment`:::
 When set to `true`, the file is not a Metanorma document but an attachment, and
 therefore will not be compiled but directly included by
 Metanorma [added in https://github.com/metanorma/metanorma/releases/tag/v1.2.9].
 
-`url`::::
+`url`:::
 Provides the external URL to link to for references to this document, replacing any
 links to the locally generated file [added in https://github.com/metanorma/metanorma/releases/tag/v1.7.7].
 Is not currently intended to replace locally included files: `fileref` is still
 required for any such files to be processed.
 
-`sectionsplit`::::
+`sectionsplit`:::
 When set to `true`, the HTML output for the specified file is arranged as one
 HTML file per clause, with an index page created for the overall document.
 +
 The index page for the entire document links to the index page for the
 `sectionsplit` document.
 
-`sectionsplit-filename`::: The output name to be given to each document generated under the sectionsplit file
+`sectionsplit-filename`::: The output name to be given to each document
+generated under the sectionsplit file
  [added in https://github.com/metanorma/metanorma/releases/tag/v2.3.1].
-+
---
-* If `sectionsplit-filename` is not specified, the files are named using the file entry base name, followed by a
-sequential number starting with 0, e.g. `filename.adoc` will generate `filename.0.html`, `filename.1.html`, `filename.2.html`, etc.
-* Like `output-filename`, `sectionsplit-filename` can include a directory path.
-* The template for the sectionsplit file names is the same for all files in the entry, and the same parameters can be used
-as for `output-filename` to differentiate them. The sequence number needs to be specified for differntiation, as
-`{sectionsplit-num}`. For example, given `filename.adoc`, `{basename}.{sectionsplit-num}` will generate the default
-filenames `filename.0.html`, `filename.1.html`, `filename.2.html`, etc.
---
+
+*** If `sectionsplit-filename` is not specified, the files are named using the
+file entry base name, followed by a sequential number starting with 0, e.g.
+`filename.adoc` will generate `filename.0.html`, `filename.1.html`,
+`filename.2.html`, etc.
+
+*** Like `output-filename`, `sectionsplit-filename` can include a directory
+path.
+
+*** The template for the sectionsplit file names is the same for all files in
+the entry, and the same parameters can be used as for `output-filename` to
+differentiate them. The sequence number needs to be specified for
+differntiation, as `{sectionsplit-num}`. For example, given `filename.adoc`,
+`{basename}.{sectionsplit-num}` will generate the default filenames
+`filename.0.html`, `filename.1.html`, `filename.2.html`, etc.
 
 
-`index`::::
+`index`:::
 Defaults to `true`. When set to `false`, the file is not to be included in
 any listing of manifest contents (i.e. in the collection cover page).
 +
@@ -421,6 +445,7 @@ entry:
       - file: annex2.adoc
 ----
 ====
+--
 
 `prefatory-content`::
 Content to put at the beginning of the collection container.
@@ -428,15 +453,16 @@ Content to put at the beginning of the collection container.
 `final-content`::
 Content to put at the end of the collection container.
 +
+--
 Both prefatory and final content are entered as Metanorma AsciiDoc, and are
 compiled as a document in the same flavor as the collection, with `bibdata`
 (bibliographic metadata) taken from the collection.
-+
+
 This `bibdata` is merged with any `bibdata` that is added in processing the
 Metanorma AsciiDoc; that for instance allows markup of document history to be
 passed into a collection as metadata
  [added in https://github.com/metanorma/metanorma/releases/tag/v2.3.1].
-+
+
 .Example collection manifest
 [example]
 ====
@@ -498,17 +524,16 @@ entry:
     - file: rice1-en.final.adoc
       sectionsplit: true
       sectionsplit-output: "{basename}-{sectionsplit-num}"
-prefatory-content:
-|
+prefatory-content: |
   == Clause
   Welcome to our collection
 
-final-content:
-|
+final-content: |
   == Exordium
   Hic explicit
 ----
 ====
+--
 
 === Manifest hooks
 
