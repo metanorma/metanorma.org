@@ -23,6 +23,8 @@ brew install metanorma/metanorma/metanorma
 [[macos-install-ruby]]
 == Install Ruby
 
+NOTE: This is only necessary for a developer installation of Metanorma.
+
 While macOS provides a default installation of Ruby, it is restricted in a number of ways.
 
 We strongly recommend installing a Ruby outside of the system Ruby using `rbenv`.
@@ -39,14 +41,14 @@ $ brew install autoconf gcc make
 # Remember to follow the setup steps by running `rbenv init`!
 $ curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
-# Install Ruby 3.1.2 through rbenv [or whatever the latest version is]
-$ rbenv install 3.1.2
+# Install Ruby 3.4.7 through rbenv [or whatever the latest version is]
+$ rbenv install 3.4.7
 
-# Set Ruby 3.1.2 as your global version
-$ rbenv global 3.1.2
+# Set Ruby 3.4.7 as your global version
+$ rbenv global 3.4.7
 
 # Then restart Terminal.app
 ----
 
-NOTE: Very large documents may trigger a 'Too many open files" error on MacOS. We recommend you set
-`ulimit -n 1024` on your Mac to forestall this.
+NOTE: Very large documents may trigger a "Too many open files" error on macOS.
+A setting of `ulimit -n 1024` on the shell is recommended to avoid this issue.
