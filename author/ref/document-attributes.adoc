@@ -110,9 +110,9 @@ the configuration file format. We recommend you inspect the configuration compil
 (`lib/relaton/render/config.yml`) and include modifications of that in the override config file.
 
 `:sort-biblio:`::
-Sort the bibliographies in the document according to criteria set by the SDO
- [added in https://github.com/metanorma/metanorma-standoc/releases/tag/3.3.0]. The default value for
-this attribute is true.
+Sort bibliographies in the document according to criteria set by the flavor
+Default: `true`.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/3.3.0].
 
 == Math and scientific formatting
 
@@ -222,7 +222,7 @@ attributer–value pairs. For example, for `:publisher:`, the first publisher is
 `:publisher:`; more publishers are added with the suffix `_2`, `_3`, etc., e.g. `:publisher_2:`,
 `:publisher_3:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
 
-`:publisher{_i}:`:: The standards agency publishing the standard. 
+`:publisher{_i}:`:: The standards agency publishing the standard.
 +
 NOTE: Prior to 1.7.0, this field accepted comma-delimited values [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.5.1].
 +
@@ -234,17 +234,21 @@ but other attributes of organisations are ignored (`publisher_logo`, `pub-addres
 organisation of the standard, the SDO's abbreviation will already be available to Metanorma, and will be
 supplied [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.0.7].
 
-`:publisher_logo{_i}:`:: The logo of the publisher, specified as an image file; the numbers in the attribute
-align to the `:publisher{_i}:` attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
+`:publisher_logo{_i}:`:: The path to the logo of the publisher, specified as an
+image file; the numbers in the attribute align to the `:publisher{_i}:`
+attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
 
 `:sponsor{_i}:`:: An organization sponsoring the publication of this document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
 +
-NOTE: If a person needs to be nominated as the responsible party for a sponsoring organization,
-that person should be treated as a personal contributor (`:surname{_i}:`, `:affiliation{_i}:`, etc.),
-with a `:role:` attribute of `enabler`.
+NOTE: If a person needs to be nominated as the responsible party for a
+sponsoring organization, that person should be treated as a personal contributor
+(`:surname{_i}:`, `:affiliation{_i}:`, etc.), with a `:role:` attribute of
+`enabler`.
 
-`:sponsor_logo{_i}:`:: The logo of the sponsoring organization, specified as an image file; the numbers in the attribute
-align to the `:sponsor{_i}:` attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
+`:sponsor_logo{_i}:`:: The path to the logo of the sponsoring organization,
+specified as an image file; the numbers in the attribute align to the
+`:sponsor{_i}:`
+attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
 
 `:copyright-holder:`:: The copyright holder, if distinct from the publisher;
 can be multiple
@@ -271,10 +275,11 @@ attributes are ignored_ when composing the identifier for the document. The
 normal SDO conventions, and for which the identifier cannot be constructed out of
 `:docnumber:` in the normal way.
 +
-NOTE: Since `:docidentifier:` is a preformatted value, and it is opaque to Metanorma. This means that Metanorma cannot
-make any inference about the internal structure of the identifier. For example, Metanorma cannot generate
-undated or language-specific variants of the identifier, or mark up the part number separately
-from the document number, as is required by ISO.
+NOTE: Since `:docidentifier:` is a preformatted value, and it is opaque to
+Metanorma. This means that Metanorma cannot make any inference about the
+internal structure of the identifier. For example, Metanorma cannot generate
+undated or language-specific variants of the identifier, or mark up the part
+number separately from the document number, as is required by ISO.
 +
 WARNING: `:docidentifier:` should be avoided unless absolutely necessary due to
 the limitations its usage brings. Metanorma maintains the `pubid-*` set of
@@ -385,13 +390,19 @@ NOTE: As of this writing, implemented in the IEEE, BSI, ITU and ISO flavours.
 
 Metanorma allows generic metadata to be passed to the generated document in key/value form, for downstream
 use [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.1].
-This metadata needs to be indicated as either semantic, or presentation-related. The name of the metadata
-value is included in the document attribute:
 
-In the following, `{_i}` indicates that multiple values are permitted for the document attribute, in separate
-attributer–value pairs. For example, for `:publisher:`, the first publisher is given as 
-`:publisher:`; more publishers are added with the suffix `_2`, `_3`, etc., e.g. `:publisher_2:`,
+This metadata needs to be indicated as either semantic, or presentation-related.
+The name of the metadata value is included in the document attribute:
+
+In the following, `{_i}` indicates that multiple values are permitted for the
+document attribute, in separate attributer-value pairs.
+
+[example]
+====
+For `:publisher:`, the first publisher is given as `:publisher:`; more
+publishers are added with the suffix `_2`, `_3`, etc., e.g. `:publisher_2:`,
 `:publisher_3:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
+====
 
 `:semantic-metadata-{name}:`::
 Comma-delimited list of values, relating to `name` as semantic metadata about the document.
@@ -550,44 +561,71 @@ The date on which the document was announced as forthcoming [added in https://gi
 
 == Author information
 
-In the following, `{_i}` indicates that multiple values are permitted for the document attribute, in separate
-attributer–value pairs. For example, for `:publisher:`, the first publisher is given as 
-`:publisher:`; more publishers are added with the suffix `_2`, `_3`, etc., e.g. `:publisher_2:`,
+In the following, `{_i}` indicates that multiple values are permitted for the
+document attribute, in separate attributer–value pairs.
+
+[example]
+====
+For example, for `:publisher:`, the first publisher is given as `:publisher:`;
+more publishers are added with the suffix `_2`, `_3`, etc., e.g.
+`:publisher_2:`,
 `:publisher_3:` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0].
+====
 
 `:technical-committee_{1}:`::
-The name of a relevant editorial group. The document attribute name for editorial groups varies by flavor,
-and there can be multiple types of editorial group, each with its own document attribute;
-see link:/author/topics/metadata/contributor#committee-groups[Contributor metadata: Groups] for the value
-for each flavor. In the following list, `technical-committee` can be replaced by each of the allowed
-editorial group labels; for example, if `workgroup` is an editorial group label, then `:workgroup-label:` and
-`:workgroup-type:` are document attributes, instead of `:technical-committee-label:` and
+The name of the relevant editorial group. The document attribute name for
+editorial groups varies by flavor, and there can be multiple types of editorial
+group, each with its own document attribute;
+see link:/author/topics/metadata/contributor#committee-groups[Contributor metadata: Groups]
+for the value for each flavor.
++
+[example]
+====
+In the following list, `technical-committee` can be replaced by each of the
+allowed editorial group labels; for example, if `workgroup` is an editorial
+group label, then `:workgroup-label:` and `:workgroup-type:` are document
+attributes, instead of `:technical-committee-label:` and
 `:technical-committee-type:`.
+====
 
 `:technical-committee-number{_i}:`::
 The identifier of the editorial group.
 
 `:technical-committee-type{_i}:`::
-The type of the editorial group. Typically this is used as the abbreviation prefixed to the editoriall group number;
-e.g. `:technical-committee-number: 2`, `:technical-committee-type: TC`, giving _TC 2_.
+The type of the editorial group. Typically this is used as the abbreviation
+prefixed to the editorial group number.
++
+[example]
+====
+`:technical-committee-number: 2`, `:technical-committee-type: TC`, giving _TC 2_.
+====
 
-`:technical-committee-agency{_i}:`:: The agency that the editorial group lies under, if it is other than the home agency
+`:technical-committee-agency{_i}:`:: The agency that the editorial group lies
+under, if it is other than the home agency
 (the publisher of the document) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.4].
 Only needed for multiple editorial groups.
 
-`:technical-committee-agency-abbr{_i}:`:: The abbreviation of the agency that the editorial group
-lies under [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.4].
-In most flavors, the abbreviation of the SDO is already available for lookup in Metanorma, and users
-need not provide this attribute; e.g. under metanorma-iso, `:technical-committee-agency:` can be specified as `ISO`,
-rather than needing to specify both `:technical-committee-agency: International Standardization Organization` and
+`:technical-committee-agency-abbr{_i}:`:: The abbreviation of the agency that
+the editorial group lies
+under [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.4].
++
+In most flavors, the abbreviation of the SDO is already available for lookup in
+Metanorma, and users need not provide this attribute.
++
+[example]
+====
+For example, under metanorma-iso, `:technical-committee-agency:` can be
+specified as `ISO`, rather than needing to specify both
+`:technical-committee-agency: International Standardization Organization` and
 `:technical-committee-agency-abbr: ISO`.
+====
 
 `:technical-committee_logo{_i}:`:: The logo of the editorial group,
 specified as an image file [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.0].
 
-`:committee-types:`:: Comma-delimited list of committee types to be recognised 
-for the document  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.0].
-Overrides the preset commitee types set for the flavor.
+`:committee-types:`:: Comma-delimited list of committee types to be recognized
+for the document. Overrides the preset committee types set for the flavor.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.0].
 
 `:corporate-author{_i}:`:: The organization authoring the standard [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.5].
 +
@@ -764,8 +802,9 @@ the different hierarchical levels can optionally be prefixed with type and a col
 The organisation that authorised this document  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3].
 
 `:authorizer_logo{_i}:`::
-The logo of the sponsoring organization, specified as an image file; the numbers in the attribute
-align to the `:authorizer{_i}:` attributes   [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3].
+The path to the logo of the authorizing organization, specified as an image
+file; the numbers in the attribute align to the `:authorizer{_i}:` attributes
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3].
 
 `:authorizer-address{_i}:`, `:authorizer-phone{_i}:`, `:authorizer-fax{_i}:`, `:authorizer-email{_i}:`, `:authorizer-uri{_i}:`::
 The address, phone number, fax number, email, URI of an organization authorizing
@@ -998,8 +1037,10 @@ Defaults to `png`. [added in https://github.com/metanorma/metanorma-standoc/rele
 == Cross-references
 
 `:xrefstyle:`::
-Override the default rendering of cross-references to
-other locations in the document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.6].
+Override the default rendering style of internal cross-references to other
+locations in the
+document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.6].
++
 Available styles as follows:
 
 `short`::: (default) the clause type and number is used as the cross-reference.
@@ -1045,12 +1086,12 @@ Renders the cross-reference as:
 ====
 
 `:erefstyle:`::
-Override the default rendering of cross-references to bibliographic entries
+Override the default rendering style of cross-references to bibliographic entries
  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.0].
 The legal values for such override are drawn from link:/author/topics/inline_markup/citations/#citation-style-types[General citation style types].
 
 `:originstyle:`::
-Override the default rendering of source references to bibliographic entries
+Override the default rendering style of source references to bibliographic entries
  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.0].
 The legal values for such override are drawn from link:/author/topics/inline_markup/citations/#citation-style-types[General citation style types].
 

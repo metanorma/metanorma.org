@@ -4,7 +4,8 @@ title: Contributor metadata
 ---
 = Contributor metadata
 
-This is a basic discussion of how contributors are specified in document metadata.
+Contributors are specified in document metadata using document attributes.
+
 More comprehensive information, and a broader set of options is given in
 link:/author/ref/document-attributes/#author-information[Document attributes: Author information],
 and in the document attributes discussion for specific flavors.
@@ -106,13 +107,16 @@ NOTE: The subdivision can only be set for the first organization with role
 [[committee-groups]]
 == Groups
 
-Contributor groups of organizations, i.e. editorial committees, are specified using document attributes.
+Contributor groups of organizations, i.e. editorial committees, are specified
+using document attributes.
 
-ISO-aligned standards (including ISO itself) break their committee down as technical committees,
-subcommittees, and workgroups, and these are specified accordingly:
+Different Metanorma flavors utilize different types of group semantics.
 
 .Example of SDO-specific group contributor for ISO and IEC
 ====
+ISO and IEC use group semantics composing of technical committees,
+subcommittees, and workgroups, and these are specified accordingly:
+
 * `technical-committee` specifies the Technical Committee(s)
 * `technical-committee-number` specifies the TC number
 * `subcommittee` specifies the Subcommittee(s)
@@ -122,8 +126,7 @@ subcommittees, and workgroups, and these are specified accordingly:
 * `workgroup-type` specifies the type of the WG, such as `WG`, `AG`, `CAG`, etc.
 ====
 
-For different flavors, the legal types of committee, used instead of "technical-committee", "subcommittee", etc.,
-are:
+For different flavors, the accepted types of committee are as follows:
 
 Default:: technical-committee
 BIPM:: committee, workgroup
@@ -146,11 +149,18 @@ Metanorma flavour.
 The following attributes can be specified for each contributor group type:
 
 `{group}`:: the name of the group
+
 `{group}-number`:: the unprefixed identifier of the group
-`{group}-type`:: the type of the group, as an abbreviation; the identifier of the group is assumed to be type + number, e.g. _TC 2_
+
+`{group}-type`:: the type of the group, as an abbreviation; the identifier of
+the group is assumed to be type + number, e.g. _TC 2_
+
 `{group}-agency`:: the agency that the group lies under, in case of multiple groups
-`{group}-agency-abbr`:: the abbreviation of the agency that the group lies under, in case of multiple groups
-`{group}_logo`:: the logo of group
+
+`{group}-agency-abbr`:: the abbreviation of the agency that the group lies
+under, in case of multiple groups
+
+`{group}_logo`:: the image path to the logo of group.
 
 .Example of multiple groups and subgroups
 ====
