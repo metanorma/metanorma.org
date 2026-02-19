@@ -1261,6 +1261,17 @@ If the URI is not accessible, no date last accessed will be given.
 Typically, SDO expectation is that authors should provide dates last accessed
 for references they have reviewed themselves.
 
+NOTE: In order to prevent anachronism when compiling older documents, Metanorma
+makes a best effort attempt to prevent Relaton from fetching versions of documents
+dated after the document date of publication or
+last update [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.1].
+So if a reference is cited with no publication date, in a document with a publication date of 2019,
+its bibliography should represent the status of references as of 2019, which is what 
+the document would have been published with.
+In particular, if a reference was published before 2019, but entered into draft in 2022,
+the version of the reference fetched for the 2019 document should present the cited
+document as published as of 2019, not as draft as of 2022.
+
 
 [[emebd-citation]]
 === Overriding auto-fetched reference fields
