@@ -112,18 +112,33 @@ Usage:
   metanorma compile FILENAME [..options]
 
 Options:
-  -t, [--type=TYPE]                   # Type of standard to generate
-  -x, [--extensions=EXTENSIONS]       # Type of extension to generate per type
-  -f, [--format=FORMAT]               # Format of source file: eg. asciidoc
-                                      # Default: asciidoc
-
-  -r, [--require=one two three]       # Require LIBRARY prior to execution
-  -w, [--wrapper], [--no-wrapper]     # Create wrapper folder for HTML output
-  -a, [--asciimath], [--no-asciimath] # Keep Asciimath in XML output instead of converting it to MathM
-  -R, [--relaton=RELATON]             # Export Relaton XML for document to nominated filename
-  -e, [--extract=EXTRACT]             # Export sourcecode fragments from this document to nominated directory
-  -v, [--version=VERSION]             # Print version of code (accompanied with -t)
-  -L, [--log_messages]                # Display available log messages (accompanied with -t)
+  -t, [--type=TYPE]                           # Type of standard to generate
+  -x, [--extensions=EXTENSIONS]               # Type of extension to generate per type
+  -f, [--format=FORMAT]                       # Format of source file: eg. asciidoc
+                                              # Default: asciidoc
+  -r, [--require=LIBRARY]                     # Require LIBRARY prior to execution
+  -w, [--wrapper], [--no-wrapper]             # Create wrapper folder for HTML output
+  -a, [--asciimath], [--no-asciimath]         # Keep Asciimath in XML output instead of 
+                                              # converting it to MathML
+  -d, [--datauriimage], [--no-datauriimage]   # Encode HTML output images as data URIs
+  -R, [--relaton=RELATON]                     # Export Relaton XML for document to nominated 
+                                              # filename
+  -e, [--extract=EXTRACT]                     # Export sourcecode fragments from this document 
+                                              # to nominated directory
+  -v, [--version=VERSION]                     # Print version of code (accompanied with -t)
+  -L, [--log_messages]                        # Display available log messages 
+                                              # (accompanied with -t)
+  -o, [--output-dir=DIRECTORY]                # Directory to save compiled files
+  -S, [--strict], [--no-strict]               # Strict compilation: abort if there are any 
+                                              # errors
+      [--agree-to-terms], [--no-agree-to-terms] # Agree/Disagree with all third-party 
+                                              # licensing terms presented 
+                                              # (WARNING: do know what you are agreeing with!)
+      [--install-fonts], [--no-install-fonts] # Install required fonts (default: true)
+      [--continue-without-fonts], 
+      [--no-continue-without-fonts]           # Continue processing even when fonts are missing
+  -s, [--progress], [--no-progress]           # Show progress for long running tasks
+      [--keep-tempfiles], [--no-keep-tempfiles] # Keep temporary files generated during compilation
 ----
 
 So, let's put this in use. For example we have a document `my-iso-document.adoc`
@@ -140,6 +155,84 @@ metanorma --type iso -x html my-iso-document.adoc
 This should compile any valid document, but if there are some issues then it
 will also print those out in the terminal. Currently, the supported flavors
 are `ietf`, `iso`, `gb`, `calconnect`, `csa`, `m3d` and `rsd`.
+
+=== Additional compile options
+
+==== Data URI images (`--datauriimage`)
+
+Encode all images in HTML output as data URIs instead of external file references.
+This creates self-contained HTML files but increases file size.
+
+[source, sh]
+----
+metanorma compile --type iso -x html --datauriimage my-document.adoc
+----
+
+==== Output directory (`--output-dir`)
+
+Specify a custom directory where compiled files will be saved.
+
+[source, sh]
+----
+metanorma compile --type iso -o output/documents my-document.adoc
+----
+
+==== Strict mode (`--strict`)
+
+Enable strict compilation mode which will abort the compilation if there are any errors.
+
+[source, sh]
+----
+metanorma compile --type iso --strict my-document.adoc
+----
+
+==== Font installation options
+
+Control how fonts are handled during compilation:
+
+[source, sh]
+----
+# Skip font installation
+metanorma compile --type iso --no-install-fonts my-document.adoc
+
+# Continue even if fonts are missing
+metanorma compile --type iso --continue-without-fonts my-document.adoc
+----
+
+==== Progress display (`--progress`)
+
+Show progress for long running tasks such as font downloads:
+
+[source, sh]
+----
+metanorma compile --type iso --progress my-document.adoc
+----
+
+==== Keep temporary files (`--keep-tempfiles`)
+
+Preserve temporary files created during the compilation process for debugging or inspection:
+
+[source, sh]
+----
+metanorma compile --type iso --keep-tempfiles my-document.adoc
+----
+
+The `--keep-tempfiles` option prevents the automatic cleanup of temporary files generated
+during compilation. These files are typically deleted after compilation completes, but keeping
+them can be useful for:
+
+* Debugging compilation issues
+* Inspecting intermediate compilation stages
+* Understanding the compilation workflow
+* Troubleshooting problems with specific documents
+
+This option is particularly helpful when you need to examine what's happening during the
+compilation process:
+
+[source, sh]
+----
+metanorma compile --type iso --keep-tempfiles --strict my-document.adoc
+----
 
 
 == Compile a document collection (`metanorma collection`)
@@ -184,10 +277,115 @@ Usage:
   metanorma collection FILENAME [..options]
 
 Options:
-  -x, [--extensions=EXTENSIONS]     # Type of extension to generate
-  -w, [--output-folder=FOLDER]      # Folder to generate collection in
-  -c, [--coverpage=COVERPAGE]       # Cover page as Liquid template for collection (currently HTML only)
+  -x, [--format=FORMATS]                      # Formats to generate
+  -w, [--output-folder=FOLDER]                # Directory to save compiled files
+  -c, [--coverpage=COVERPAGE]                 # Liquid template for collection cover page 
+                                              # (currently HTML only)
+      [--agree-to-terms], [--no-agree-to-terms] # Agree/Disagree with all third-party 
+                                              # licensing terms presented
+      [--install-fonts], [--no-install-fonts] # Install required fonts (default: true)
+      [--continue-without-fonts], 
+      [--no-continue-without-fonts]           # Continue processing even when fonts are missing
+  -S, [--strict], [--no-strict]               # Strict compilation: abort if there are any 
+                                              # errors
+  -s, [--progress], [--no-progress]           # Show progress for long running tasks
 ----
+
+
+== Convert documents between formats (`metanorma convert`)
+
+The `convert` command converts documents between different formats, including:
+
+* STS (Standards Tag Suite) XML to Metanorma AsciiDoc
+* Metanorma XML to STS (ISO, NISO, IEEE flavors)
+* RFC XML to Metanorma AsciiDoc
+
+This is particularly useful for migrating existing standards documents to the Metanorma format
+or exporting Metanorma documents to other standard formats.
+
+[source]
+----
+Usage:
+  metanorma convert FILENAME [..options]
+
+Options:
+      [--output-format=FORMAT]                # Output format: xml|adoc|iso|niso|ieee
+      [--output-file=FILE]                    # Output file path
+      [--imagesdir=DIRECTORY]                 # For STS input only: folder with images
+      [--input-format=FORMAT]                 # Input format: metanorma|sts|rfc
+      [--debug], [--no-debug]                 # Enable debug output
+      [--sts-type=TYPE]                       # For STS input only: type of standard to generate
+      [--check-type=TYPE]                     # Check against XSD/DTD
+      [--xsl-file=FILE]                       # Path to XSL file
+      [--split-bibdata], [--no-split-bibdata] # For STS input only: create MN Adoc and Relaton XML
+      [--semantic], [--no-semantic]           # For STS input only: generate semantic XML
+----
+
+=== Converting STS XML to Metanorma
+
+Convert an STS XML file to Metanorma AsciiDoc format:
+
+[source, sh]
+----
+metanorma convert --input-format sts --output-format adoc \
+  --output-file my-document.adoc my-document.xml
+----
+
+When converting from STS, you can specify an images directory and the type of standard:
+
+[source, sh]
+----
+metanorma convert --input-format sts --output-format adoc \
+  --imagesdir images --sts-type iso my-document.xml
+----
+
+To split bibliographic data into separate Metanorma AsciiDoc and Relaton XML files:
+
+[source, sh]
+----
+metanorma convert --input-format sts --output-format adoc \
+  --split-bibdata my-document.xml
+----
+
+=== Converting Metanorma to STS
+
+Convert Metanorma XML to STS format (ISO, NISO, or IEEE):
+
+[source, sh]
+----
+metanorma convert --input-format metanorma --output-format iso \
+  --output-file my-document.sts.xml my-document.xml
+----
+
+=== Converting RFC XML
+
+Convert RFC XML to Metanorma AsciiDoc:
+
+[source, sh]
+----
+metanorma convert --input-format rfc --output-format adoc \
+  --output-file my-rfc.adoc my-rfc.xml
+----
+
+=== Debug mode for conversion
+
+Enable debug output to see detailed information about the conversion process:
+
+[source, sh]
+----
+metanorma convert --debug --input-format sts --output-format adoc my-document.xml
+----
+
+The `--debug` option will:
+
+* Display the conversion command being executed
+* Show the output from the conversion process
+* Print informational messages during conversion
+* Enable debug mode in the underlying conversion tool
+
+This is particularly useful when troubleshooting conversion issues or understanding
+how the conversion process works.
+
 
 == List supported doctypes (`metanorma list-doctypes`)
 
