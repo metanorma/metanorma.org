@@ -138,7 +138,6 @@ Options:
       [--continue-without-fonts], 
       [--no-continue-without-fonts]           # Continue processing even when fonts are missing
   -s, [--progress], [--no-progress]           # Show progress for long running tasks
-      [--keep-tempfiles], [--no-keep-tempfiles] # Keep temporary files generated during compilation
 ----
 
 So, let's put this in use. For example we have a document `my-iso-document.adoc`
@@ -207,34 +206,6 @@ Show progress for long running tasks such as font downloads:
 ----
 metanorma compile --type iso --progress my-document.adoc
 ----
-
-==== Keep temporary files (`--keep-tempfiles`)
-
-Preserve temporary files created during the compilation process for debugging or inspection
- [added in https://github.com/metanorma/metanorma-cli/releases/tag/v1.15.1]:
-
-[source, sh]
-----
-metanorma compile --type iso --keep-tempfiles my-document.adoc
-----
-
-The `--keep-tempfiles` option prevents the automatic cleanup of temporary files generated
-during compilation. These files are typically deleted after compilation completes, but keeping
-them can be useful for:
-
-* Debugging compilation issues
-* Inspecting intermediate compilation stages
-* Understanding the compilation workflow
-* Troubleshooting problems with specific documents
-
-This option is particularly helpful when you need to examine what's happening during the
-compilation process:
-
-[source, sh]
-----
-metanorma compile --type iso --keep-tempfiles --strict my-document.adoc
-----
-
 
 == Compile a document collection (`metanorma collection`)
 
