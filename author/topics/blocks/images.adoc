@@ -146,6 +146,26 @@ command to the specified path.
 More details of the `:imagesdir:` attribute can be found at documentation of
 https://docs.asciidoctor.org/asciidoc/latest/macros/images-directory/[Asciidoctor AsciiDoc].
 
+=== Alternative images
+
+Metanorma allows alternate images to be specified for different outputs. This is done
+through an open block tagged as `[altmedia]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.2].
+The block specifies the alternate images through inline image macros in a definition list,
+with its definition terms the keywords specifying when each image should be used. By default,
+the keywords are the possible output formats of Metanorm, `pdf`, `doc`, `html`. A fallback value of
+`default` is also supported, and is used if the current output format is not one of the specified
+output formats.
+
+[source,adoc]
+----
+[altmedia]
+.Image with alternatives
+--
+html:: image:spec/assets/correct.png[200,300]
+doc:: image:spec/assets/corrupt.png[300,600]
+default:: image:spec/assets/warning_test.png[auto,auto,alttext]
+--
+----
 
 === Attributes
 
