@@ -1261,31 +1261,51 @@ If the URI is not accessible, no date last accessed will be given.
 Typically, SDO expectation is that authors should provide dates last accessed
 for references they have reviewed themselves.
 
-NOTE: In order to prevent anachronism when compiling older documents, Metanorma
-makes a best effort attempt to prevent Relaton from fetching versions of documents
-dated after the document date of publication or
-last update [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.1].
-So if a reference is cited with no publication date, in a document with a publication date of 2019,
-its bibliography should represent the status of references as of 2019, which is what 
-the document would have been published with.
-In particular, if a reference was published before 2019, but entered into draft in 2022,
-the version of the reference fetched for the 2019 document should present the cited
-document as published as of 2019, not as draft as of 2022.
+
+=== Auto-fetch bibliographic date cut-off
+
+NOTE: Feature available since [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.1].
+
+When a document is published, it is published with a bibliography that reflects
+the state of the bibliography at the time of publication. This means that if a
+reference is cited with no publication date, in a document with a publication
+date of 2019, its bibliography should represent the status of references as of
+2019, which is what the document would have been published with.
+
+Metanorma supports this principle of bibliographic date cut-off, to prevent
+anachronism when compiling older documents.
+
+This feature is achieved by configuring Relaton to fetch the version of the
+reference as of the document date of publication or last update, if the
+reference is cited with no publication date.
+
+This means that if a reference was published before 2019, but entered into draft
+in 2022, the version of the reference fetched for the 2019 document should
+present the cited document as published as of 2019, not as draft as of 2022.
 
 
 [[emebd-citation]]
 === Overriding auto-fetched reference fields
 
-The bibliographic `span:...[]` notation can be used to emend bibliographic
-entries fetched through
-Relaton [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.4].
-This is only done if the document identifier is wrapped with
-`amend(...)` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.3].
-If the identifier is not wrapped with `amend(...)`, the supplied bibliographic `span:...[]` notation
-is used instead of the fetched bibliographic record.
+Depending on the quality of the bibliographic record fetched, it may be
+necessary to amend or emend the auto-fetched information.
+
+Auto-fetched references can be altered by specifying the `amend(...)` function
+on the document identifier of the reference, and then providing amended
+information fields using the bibliographic span notation (`span:...[]`) to
+override the auto-fetched information.
+ [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.3].
+
+If the `amend(...)` function is not used, the bibliographic spans will be
+treated as a full override: the auto-fetched information will be ignored, and
+only the information in the bibliographic spans will be used for the reference.
+
+The bibliographic span notation (`span:...[]`) is used to specify
+bibliographic fields to a bibliographic record in the
+bibliography [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.3.4].
 
 NOTE: This is particularly important for DOI auto-fetched information, as the
-Crossref records are of variable quality, and often lack crucial information for
+CrossRef records are of variable quality, and often lack crucial information for
 citations.
 
 * Data encoded in the title following the bibliographic anchor with `span:[]` is
