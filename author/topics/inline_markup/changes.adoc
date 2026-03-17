@@ -144,7 +144,7 @@ This is addressed by providing subclauses to the change
 clause [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.0].
 
 For each such subclause, auto-numbering macros need to be provided
-independently.
+independently. Such auto-numbering includes the clauses themselves
 
 No change metadata is provided for the subclauses: the change metadata for the
 change clause applies to the replacement text as a whole.
@@ -158,7 +158,9 @@ change clause applies to the replacement text as a whole.
 
 Add the following terminological entries after 3.1.2.13:
 
-=== 3.1.2.14 pass-format:metanorma[<br/>]canonical form
+autonumber:clause[3.1.2.14]
+
+=== pass-format:metanorma[<br/>]canonical form
 
 autonumber:example[1]
 autonumber:table[3]
@@ -175,6 +177,8 @@ NOTE: Note 1 to entry: A
 |===
 |A |B
 |===
+
+=== pass-format:metanorma[<br/>]non-canonical form
 ----
 =====
 
@@ -182,7 +186,28 @@ NOTE: There is no current support for specially formatted subclauses, such as
 terms. In the foregoing example, the formatting of terms in ISO is done by
 putting a linebreak between term number and preferred term, and by providing the
 term note label "Note 1 to entry" as explicit text in the note, which is
-otherwise unnumbered and thus unlabelled.
+otherwise unnumbered and thus unlabelled. The clause number will be autonumbered
+(3.1.2.14, 3.1.2.15), and inserted in front of the title.
+
+In order to include an annex in an amend clause, use `[type=annex]` for the
+subclause [added in https://github.com/metanorma/isodoc/releases/tag/v3.4.8].
+The numbering of the annex is still indicated with `autonumber:clause[]`.
+
+[example]
+=====
+[source,asciidoc]
+----
+[change=add,locality="clause=D",path=".",position=after]
+== Annex E
+
+Add the following new annex after Annex D, before the Bibliography:
+
+autonumber:clause[E]
+
+[type=annex]
+=== Recommendations relating to storage and storage and transport conditions
+----
+=====
 
 [[corrigenda]]
 == Corrigenda
