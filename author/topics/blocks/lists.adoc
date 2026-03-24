@@ -213,6 +213,64 @@ retracted [added in https://github.com/metanorma/isodoc/releases/tag/v2.0.3],
 because of the bugs it introduces with list cross-referencing and rendering.
 --
 
+=== Lists as tables
+
+It is possible to specify that nested lists be rendered as 
+tables [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.3].
+Under this rendering, each level of the nested list is given a separate column,
+and each branching entry of the list is given its own row. Nested titles of sublists
+are treated as column headings.
+
+To specify table rendering of a list, use the attribute `display=table`.
+
+====
+[source,adoc]
+[display=table]
+----
+.List turned into table 
+. List 1
++
+--
+.Second header
+.. Sublist 1
+*** A
+*** B
+*** C
+.. Sublist 2
+--
+. List 2
+. List 3
+.. Sublist 3
+... D
+... E
+----
+
+renders as
+
+[cols="1,1,1"]
+|===
+| List turned into table  | Second header | 
+
+.2+| 1. List 1 | a. Sublist 1 a|
+* A
+* B
+* C
+2+| b. Sublist 2
+3+| 2. List 2
+| 3. List 3 | a. Sublist 3 a|
+. i. D
+. ii. E
+|===
+====
+
+In order to fix the relative widths of the table columns, add the attribute
+`display-directives="colgroup='...'"`, where `...` is a comma-delimited list of
+column widths, just as are used in the native Asciidoc attribute `cols`:
+
+[source,adoc]
+----
+[display=table,display-directives="colgroup='1,2,1'"]
+----
 
 === Definition list styling
 
