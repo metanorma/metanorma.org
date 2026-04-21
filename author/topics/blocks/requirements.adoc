@@ -44,6 +44,7 @@ requirements model scheme:: set of models intending to represent requirements
 model instance:: description of a concept (in a structure) fitting with
 characteristics that belong to a particular model
 
+model rendering:: defined rendering of a model
 
 === Model schemes
 
@@ -79,6 +80,11 @@ models.
 Each model scheme provides models that have different structures, validation
 rules, and renderings of requirements.
 
+A single model has a default rendering, but can be rendered in
+different ways [added in https://github.com/metanorma/metanorma-standoc/releases/tag/3.4.1].
+
+* Metanorma MRR can have `default` rendering, or `inline` rendering.
+
 A single document can combine requirements from different model schemes.
 
 NOTE: Mixing requirements from different requirement model schemes in the same
@@ -109,6 +115,22 @@ will use more than one model within a document.
 NOTE: The `model` attribute cannot be specified in a definition list, unlike
 other arguments.
 
+=== Specifying model schemes
+
+MRR and Modspec both have a default rendering. MRR has the alternate rendering
+`inline` [added in https://github.com/metanorma/mn-requirements/releases/tag/v0.6.0].
+This can be specified in two ways:
+
+. Document-wide specification. Use the `:requirements-render:` document attribute
+to specify the requirements rendering for the current document.
++
+[example]
+If you want the requirements in an ISO document to be rendered as `inline`, add
+`requirements-render: inline` as a document attribute to the document.
+
+. Instance specification. Use the `render` attribute to specify the rendering
+specific to that requirement. This is extra effort, and only makes sense if you
+will use more than one model within a document.
 
 === Specification of model instances
 
@@ -130,7 +152,7 @@ attributes [added in https://github.com/metanorma/metanorma-standoc/releases/tag
 ======
 [source,adoc]
 ----
-[{type-of-requirement},{model-scheme}]
+[{type-of-requirement},{model-scheme},{model-rendering}]
 ====
 [%metadata]
 {attribute}:: {attribute value}
@@ -149,6 +171,9 @@ requirements model scheme
 * `{model-scheme}` is the name of the model scheme. The default is Metanorma MRR
 for most flavors.
 
+* `{rendering}` is the name of the model rendering. This defaults to the default
+rendering of the model scheme.
+
 * `{attribute}` are names of attributes
 
 * `{attribute value}` are values of the corresponding attributes
@@ -163,6 +188,36 @@ up separately.
 NOTE: The model scheme should not be specified in the definition list as `model`.
 The processing of the definition list varies by model, and Metanorma needs to be
 aware of which model to apply as early as possible.
+
+[example]
+.Example of an MRR requirement with complex values
+======
+[source,asciidoc]
+----
+[requirement,model=default,render=inline]
+====
+[%metadata]
+type:: class
+identifier:: http://www.opengis.net/spec/waterml/2.0/req/xsd-xml-rules[*req/core*]
+subject:: Encoding of logical models
+inherit:: urn:iso:dis:iso:19156:clause:7.2.2
+inherit:: urn:iso:dis:iso:19156:clause:8
+inherit:: http://www.opengis.net/doc/IS/GML/3.2/clause/2.4
+inherit:: O&M Abstract model, OGC 10-004r3, clause D.3.4
+inherit:: http://www.opengis.net/spec/SWE/2.0/req/core/core-concepts-used
+inherit:: <<ref2>>
+inherit:: <<ref3>>
+target:: http://www.example.com
+classification:: priority:P0
+classification:: domain:Hydrology,Groundwater
+classification:: control-class:Technical
+obligation:: recommendation,requirement
+class:: provision
+
+I recommend this
+====
+----
+======
 
 [example]
 .Example of an OGC ModSpec requirement with complex values
@@ -201,6 +256,9 @@ The following attributes are supported for requirement instances
 
 `model`:: The requirement model scheme that applies to the instance.
 
+`render`:: The requirement model rendering that applies 
+to the instance. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.1]
+
 `type`:: The data model type of the instance.
 
 `identifier`:: The identifier assigned to an instance. Identifiers can be simple
@@ -225,8 +283,6 @@ are treated as
 "classification tags". [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.2.0]
 
 Other attributes may be supported in different models: refer to model documentation.
-
-
 
 
 === Alternative attribute list specification syntax
