@@ -1,0 +1,207 @@
+---
+layout: develop-docs
+---
+
+= Date formatting and i18n
+
+Metanorma renders dates through a single extended `strftime`-style formatter
+shipped in the `isodoc-i18n` gem (`IsoDoc::ExtendedDateFormatter`) [added in https://github.com/metanorma/isodoc-i18n/releases/tag/v1.5.1]. The
+formatter supports POSIX `%E*` / `%O*` modifiers for era years and alternative
+numbering systems on top of locale-aware month and day names, so a single
+format string can express anything from a plain Gregorian date to a Japanese
+regnal-year colophon or a Continental-European bibliographic date with a
+Roman-numeral month.
+
+This page documents:
+
+* the format-string grammar accepted by `IsoDoc::ExtendedDateFormatter`,
+* how it is reached from the `<date value="…" format="…"/>` presentation-XML
+element and from the `date_i18n` Liquid filter,
+* the per-flavour YAML keys that hold the canonical format strings for each
+locale and rendering mode.
+
+
+== Format string grammar
+
+Most strftime conversions work as in Ruby's `Date#strftime` — `%Y`, `%m`, `%d`,
+`%-m`, `%-d`, `%H`, `%M`, etc. — and pass through to the underlying date. On
+top of that, the formatter recognises three families of extended tokens:
+
+[cols="1,3,3", options="header"]
+|===
+| Token family | Meaning | Backed by
+
+| `%EY`, `%Ey`, `%EC`
+| Era year. `%EY` is the full era+year string (e.g. `令和6`), `%Ey` is the
+era year alone (`6`), `%EC` is the era name alone (`令和`).
+| `japanese_calendar` gem for `%JN` / `era_year`.
+
+| `%Om`, `%Od`, `%OY`, `%Oy`
+| Alternative numbering for date components. The *script* of the digits is
+controlled by an optional argument (see below) rather than the underlying
+month/day value, which is unchanged.
+| `twitter_cldr` spellout rules, the `roman-numerals` gem for Roman.
+
+| `%B`, `%b`, `%h`, `%A`, `%a`, `%P`, `%p`
+| Localised month / weekday / am-pm names, sourced from CLDR for the active
+locale.
+| `twitter_cldr` calendar data.
+
+|===
+
+The `%E*` and `%O*` tokens take an optional square-bracket-delimited
+argument naming the numbering system or calendar:
+
+[cols="1,3", options="header"]
+|===
+| Argument | Effect
+
+| `numeric` (or `latn`)
+| Plain Arabic numerals (`6`, `9`, `30`). Default when no argument is given.
+
+| `spellout`
+| CLDR spellout: locale-appropriate spelled-out form (Japanese kanji
+`六`/`九`/`三十`, French `six`/`neuf`/`trente`, etc.).
+
+| `hanidec`
+| Han ideographic digits (`〇`/`一`/`二`/…/`九`), positional rather than spelled
+out.
+
+| `roman`, `roman-lower`
+| Roman numerals (`IX`, `ix`).
+
+| `cal=japanese` / `cal=gregorian`
+| For `%E*` tokens, select the calendar backend. Defaults to `japanese` for
+the `ja` locale and `gregorian` otherwise.
+
+|===
+
+Arguments can be combined comma-separated, e.g. `%EY{spellout, cal=japanese}`.
+The first non-`key=value` argument is treated as the numbering system.
+
+
+== Calendar selection
+
+The era family (`%EY` / `%Ey` / `%EC`) dispatches to a calendar backend selected
+via `cal=`. Currently implemented:
+
+* `cal=japanese` — Japanese era (Reiwa, Heisei, Shōwa, …), backed by the
+`japanese_calendar` gem. Returns the Gregorian year if the date predates
+Meiji.
+* `cal=gregorian` — Gregorian year (`%EY` returns the year as a number,
+`%EC` returns an empty string).
+
+The following CLDR calendar identifiers are reserved as extension points and
+will raise `NotImplementedError` when used today: `roc` (Republic of China /
+Minguo), `buddhist` (Thai), `persian` (Solar Hijri), `islamic` (Hijri),
+`indian` (Saka), `hebrew`. The framework dispatches on them so they can be
+implemented later without API changes.
+
+If `cal=` is omitted, the default calendar is `japanese` when the active
+locale is `ja` and `gregorian` otherwise.
+
+
+== Worked examples
+
+[cols="2,1,2", options="header"]
+|===
+| Format string | Locale | Output (for `2024-09-30`)
+
+| `"%Y-%m-%d"` | (any) | `2024-09-30`
+| `"%-d %B %Y"` | `en` | `30 September 2024`
+| `"%B %-d, %Y"` | `en` | `September 30, 2024`
+| `"%-d.%Om[roman].%Y"` | `en` | `30.IX.2024`
+| `"%EY[numeric]年%-m月%-d日"` | `ja` | `令和6年9月30日`
+| `"%EY[spellout]年%Om[spellout]月%Od[spellout]日"` | `ja` | `令和六年九月三十日`
+| `"%EY[hanidec]年%Om[hanidec]月%Od[hanidec]日"` | `ja` | `令和六年九月三〇日`
+
+|===
+
+
+== `<date>` element
+
+Inside the presentation XML, the `<date value="ISO-DATE" format="FMT"/>`
+element renders by passing `value` and `format` to `IsoDoc::I18n#date`,
+which delegates to `IsoDoc::ExtendedDateFormatter`. The active locale and
+script come from the `IsoDoc::I18n` instance for the document being rendered,
+so `<date value="2024-09-30" format="%EY[numeric]年%-m月%-d日"/>` in a `ja`
+document produces `令和6年9月30日` automatically.
+
+
+== `date_i18n` Liquid filter
+
+For Liquid templates inside flavour gems and Liquid snippets in authored
+documents, the same formatter is exposed as the `date_i18n` filter,
+registered globally on `Liquid::Environment.default` by `IsoDoc::I18n`.
+
+Signature:
+
+[source,liquid]
+----
+{{ value | date_i18n: format }}
+{{ value | date_i18n: format, lang }}
+{{ value | date_i18n: format, lang, calendar }}
+----
+
+* `value` — an ISO 8601 date string (`YYYY-MM-DD`, `YYYY-MM`, or `YYYY`).
+Returned unchanged if `nil` or empty.
+* `format` — the extended strftime format string.
+* `lang` (optional) — override the active locale just for this call. When
+omitted, the locale is inherited from the `IsoDoc::I18n` instance.
+* `calendar` (optional) — override the calendar (`"japanese"`,
+`"gregorian"`, …). When omitted, the calendar is derived from the locale.
+
+Format strings inline cleanly inside Liquid string literals because
+the `%E*[…]` / `%O*[…]` argument syntax uses square brackets, which do
+not clash with Liquid's `{{...}}` template delimiters:
+
+[source,liquid]
+----
+{{ revdate | date_i18n: "%-d.%Om[roman].%Y" }}
+{{ revdate | date_i18n: "%EY[numeric]年%-m月%-d日", "ja" }}
+----
+
+For non-trivial format strings, the convention in metanorma flavour gems
+is to centralise them in a YAML key and reference by name — see the
+per-flavour YAML keys section below.
+
+
+== Per-flavour YAML keys
+
+Each metanorma flavour gem ships a `lib/isodoc/<flavour>/i18n-<lang>.yaml`
+file with localisation data. Date format strings live under a `date_format`
+key with two branches keyed by rendering mode:
+
+[source,yaml]
+----
+# Example: metanorma-jis/lib/isodoc/jis/i18n-ja.yaml
+date_format:
+  default:                 # standalone rendering: kanji year, Arabic month/day
+    year:       "%EY[spellout]年"
+    year_month: "%EY[spellout]年%-m月"
+    full:       "%EY[spellout]年%-m月%-d日"
+  japanese_numbering:      # autonumbering-style: japanese — full kanji
+    year:       "%EY[spellout]年"
+    year_month: "%EY[spellout]年%Om[spellout]月"
+    full:       "%EY[spellout]年%Om[spellout]月%Od[spellout]日"
+----
+
+The inner `year` / `year_month` / `full` keys correspond to the three input
+arities (year only, year + month, full year-month-day). The flavour's i18n
+class picks the right format based on the date arity and the active rendering
+mode, then calls `IsoDoc::ExtendedDateFormatter.format(...)`.
+
+Downstream flavours can override individual sub-trees via Ruby's
+`Hash#deep_merge` — for example, `metanorma-plateau` extends `metanorma-jis`
+and overrides only `date_format.default` to switch from spellout kanji year
+(`令和六年`) to numeric Arabic year (`令和6年`), while inheriting the
+`japanese_numbering` sub-tree from JIS unchanged.
+
+
+== See also
+
+* link:/develop/topics/localization/[Localization] — how `lib/isodoc/i18n-*.yaml`
+files are loaded and merged across flavours.
+* link:/develop/topics/metadata-and-boilerplate/[Metadata and predefined text]
+— how `revdate` and other date-bearing metadata fields reach the rendering
+pipeline.
