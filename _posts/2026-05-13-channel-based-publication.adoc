@@ -1,0 +1,271 @@
+---
+layout: post
+title: "Channel-based publication for Metanorma: safe, declarative, zero-config"
+date: 2026-05-13
+categories: [release,pipeline,architecture]
+
+authors:
+- name: Ronald Tse
+  email: ronald.tse@ribose.com
+  social_links:
+  - https://github.com/ronaldtse
+
+excerpt: >-
+  A new channel-based publication architecture for Metanorma that ensures
+  documents only appear on the intended portals, with pattern-based manifests
+  that require zero per-document configuration.
+---
+
+== The problem: a single firehose
+
+When you publish dozens of document types — standards, reports, advisories,
+directives — from multiple repositories, a single release stream doesn't work.
+A portal has to download *every* release from *every* repo just to figure out
+which ones are relevant. And worse, without careful gating, a working draft or
+an internal document can leak to a public portal.
+
+We needed an architecture that is:
+
+. **Safe** — unpublished or internal documents *cannot* appear on public portals
+. **Declarative** — channels are assigned by pattern, not per-document configuration
+. **Zero-config** — adding a new document should not require manifest updates
+. **Auditable** — channel assignments are visible in the release metadata
+
+== The architecture
+
+The Metanorma publication system has four components:
+
+```
+Author         CI/CD           GitHub          Portal
+sources/       actions-mn/     Releases        actions-mn/
+*.adoc    →    site-gen   →   per-document →   aggregate    →  Jekyll site
+               + release       releases         index.json
+```
+
+[width="100%",cols="1,2,2"]
+|===
+| Component | Role | Repo
+
+| `actions-mn/site-gen`
+| Compiles AsciiDoc → HTML/PDF/XML/RXL
+| Per-document repo
+
+| `actions-mn/release`
+| Publishes compiled docs as GitHub Releases with channel metadata
+| Per-document repo
+
+| GitHub Releases
+| Stores per-document release artifacts + metadata
+| GitHub
+
+| `actions-mn/aggregate`
+| Discovers, filters, downloads, indexes released docs
+| Portal repo
+|===
+
+== Channels: audience + category
+
+A channel is an `audience/category` pair:
+
+- **audience**: `public`, `members`, or `internal` — determines access scope
+- **category**: free-form identifier — determines routing within a portal
+
+```
+public/standards        ← public audience, standards category
+members/internal-review ← members audience, internal-review category
+internal/working-draft  ← internal audience, never aggregated
+```
+
+The publisher sets the channel. The aggregator filters by it. The aggregator
+*cannot* override or discover channels the publisher didn't assign.
+
+== Three-layer safety model
+
+```
+Layer 1: Publisher gate (manifest)
+  → Unmatched documents = private (not released)
+  → "If it's not in the manifest, it doesn't exist."
+
+Layer 2: Channel assignment (release action)
+  → Pattern → channel mapping is authoritative
+  → "The publisher decides the channel. Period."
+
+Layer 3: Aggregation filter (aggregate action)
+  → Portal declares which channels it wants
+  → "The portal sees only what it asks for."
+```
+
+The critical rule: **never** set `defaults.visibility: public` in production
+manifests. When a document doesn't match any pattern, it defaults to private
+and no release is created.
+
+== Pattern-based manifests: zero per-document config
+
+Instead of listing every document individually, use patterns based on document
+ID conventions:
+
+```yaml
+# metanorma.release.yml
+documents:
+  - pattern: "cc-s-*"
+    channels: [public/standards]
+  - pattern: "cc-r-*"
+    channels: [public/reports]
+  - pattern: "cc-a-*"
+    channels: [public/admin]
+  - pattern: "cc-adv-*"
+    channels: [public/advisories]
+```
+
+When an author adds a new document like `cc-s-51020`, the pattern `cc-s-*`
+automatically assigns it to `public/standards`. No manifest update needed.
+
+For single-document repos or exceptions, use `source` instead:
+
+```yaml
+documents:
+  - source: sources/cc-10001.adoc
+    channels: [public/directives]
+```
+
+Stage gating adds an extra safety layer:
+
+```yaml
+documents:
+  - pattern: "cc-s-*"
+    stages: [published]
+    channels: [public/standards]
+```
+
+With this constraint, working drafts and committee drafts never create a GitHub
+Release — only the `published` stage triggers publication.
+
+== Publication flow
+
+```
+Author pushes to main
+         │
+         ▼
+site-gen: Compile AsciiDoc → HTML, PDF, XML, RXL
+         │
+         ▼
+release action:
+  1. Extract RXL         → Parse document metadata (ID, title, stage, edition)
+  2. Load manifest       → metanorma.release.yml → channel + visibility policy
+  3. Filter              → Pattern match + stage filter
+  4. Detect changes      → Content hash vs. last release
+  5. Package             → Zip with canonical filenames
+  6. Publish             → Create/update GitHub Release with metadata
+         │
+         ▼
+GitHub Release per document:
+  - Assets: cc-s-51015-ed1.zip (HTML+PDF+XML+RXL)
+  - Body: content-hash + mn-release-metadata JSON (channels, version, stage)
+         │
+         ▼
+aggregate action:
+  1. Discover repos      → Topic search or explicit list
+  2. Check manifest      → .metanorma/channels.yml → skip if no overlap
+  3. Fetch releases      → Paginated, with ETag caching
+  4. Parse metadata      → mn-release-metadata JSON from release body
+  5. Filter              → Channel + stage matching
+  6. Dedup               → Content-hash comparison → skip unchanged
+  7. Download + extract  → Zip → files, canonicalize filenames
+  8. Route files         → flat / by-doctype / by-format
+  9. Generate index      → index.json with full document metadata
+         │
+         ▼
+Portal (Jekyll) renders HTML pages from aggregated documents
+```
+
+== Release metadata
+
+Each GitHub Release carries structured metadata in its body:
+
+```
+content-hash:abc123...
+
+<!-- mn-release-metadata
+{"version":1,"id":"cc-s-51015",
+ "channels":["public/standards"],"stage":"published",
+ "edition":"1","title":"CalConnect Standard 51015"}
+ -->
+
+## CC/A 51015
+| Channels | public/standards |
+```
+
+The `mn-release-metadata` JSON block (inside an HTML comment) is machine-
+parseable by downstream consumers. The `content-hash` on the first line enables
+incremental aggregation — unchanged releases are skipped entirely.
+
+== The CalConnect channel registry
+
+CalConnect uses five public channels for its document types:
+
+[width="100%",cols="2,1,2,3"]
+|===
+| Channel | Audience | Document IDs | Description
+
+| `public/standards`
+| Public
+| `cc-s-*`
+| Published CalConnect Standards
+
+| `public/reports`
+| Public
+| `cc-r-*`
+| Conference, roundtable, IOP test reports
+
+| `public/admin`
+| Public
+| `cc-a-*`
+| Administrative documents
+
+| `public/advisories`
+| Public
+| `cc-adv-*`
+| Advisories
+
+| `public/directives`
+| Public
+| `cc-dir-*`
+| CalConnect directives
+|===
+
+== Migration path
+
+For existing Metanorma repositories, migration follows three steps:
+
+. **Update `metanorma.release.yml`** — replace explicit source lists with
+  pattern-based channel assignments
+. **Add `.metanorma/channels.yml`** — declare which channels the repo publishes
+  (enables efficient discovery by aggregators)
+. **Force re-release** — trigger a new release to add channel metadata to
+  existing documents
+
+For portals, migration means switching from source-based builds to
+`actions-mn/aggregate`:
+
+```yaml
+- uses: actions-mn/aggregate@v1
+  with:
+    organizations: CalConnect
+    topic: metanorma-release
+    channels: 'public/standards,public/reports'
+    output-dir: _site/cc
+    cache-dir: .cache/mn-aggregate
+    token: ${{ secrets.GITHUB_TOKEN }}
+```
+
+== Result
+
+- **Authors** add a document, push to main. It appears on the right portal
+  automatically.
+- **Portal maintainers** declare which channels they want. They only see
+  documents published to those channels.
+- **Safety** is enforced at every layer: publisher, channel assignment, and
+  aggregation filter. An unlisted document is invisible. Period.
+
+The channel system is available now in `actions-mn/release@v1` and
+`actions-mn/aggregate@v1`.
