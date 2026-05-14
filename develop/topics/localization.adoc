@@ -98,6 +98,7 @@ def i18n_init(lang, script)
 end
 ----
 
+
 == Date formatting
 
 Locale-aware date rendering is documented separately at
@@ -106,6 +107,7 @@ covers the extended strftime grammar (era years, alternative numbering
 systems, calendar selection), the `<date value=… format=…/>` element, the
 `date_i18n` Liquid filter, and the `date_format` YAML keys that flavour
 gems use to centralise format strings per locale and rendering mode.
+
 
 == Grammatical information
 
@@ -135,16 +137,16 @@ correct gender (neuter третье издание, not masculine третий �
 
 == Templating syntax
 
-* The YAML file can use parameters to pass arbitrary variables in for processing; these are indicated as `%` or `%1`, `%2`, `%3`... 
+* The YAML file can use parameters to pass arbitrary variables in for processing; these are indicated as `%` or `%1`, `%2`, `%3`...
 The interpretation of those parameters is hardcoded for those templated variables. For example, in `termnote: Note % to entry`, `%` is
 hard-coded to pass in the number of the term note.
-* The YAML file can use Liquid to pass named variables, and process them using defined filters. For example, in 
+* The YAML file can use Liquid to pass named variables, and process them using defined filters. For example, in
 `"{{ var1 | ordinal_word: 'edition', 'acc.sg' }} издание"`, Metanorma is extracted to convert the number in `var1` passed to the template
 into an ordinal number in the target language, and further (1) look up the inflectional categories for the word "edition" (which, in Russian,
 is neuter), and (2) add to it the inflectional information in the second argument (we want the accusative singular of the Russian ordinal).
 As of this writing, ordinals of numbers (e.g. "third", "третье") are the only such Liquid template defined.
-* Other entries in the YAML file can be invoked through 
-`#{ self["path-to-entry"] }` [added in https://github.com/metanorma/isodoc-18n/releases/tag/v1.4.1]. 
+* Other entries in the YAML file can be invoked through
+`#{ self["path-to-entry"] }` [added in https://github.com/metanorma/isodoc-18n/releases/tag/v1.4.1].
 For example, the enumeration comma for Japanese is different in different flavours, and can be defined specific to a flavour or even a document.
 An entry like `"%1#{ self["punct"]["enum-comma"]%2"` allows Metanorma to retrieve whatever the current definition of the enumeration comma is,
 and use it elsewhere in the configuration.
