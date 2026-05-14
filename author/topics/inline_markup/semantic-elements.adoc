@@ -393,23 +393,42 @@ the `large_notation` option must be applied. If not provided, it defaults to 1e6
 `number:0.0000032232232[notation-basic,large_notation=e,large_notation_min=1e-7]` is formatted as _0.0000032232232_.
 ====
 
-`base`::: Sets the numeric base (radix) used to render both the integer and fractional parts 
-of the number [added in https://github.com/metanorma/isodoc/releases/tag/v3.5.1]. 
-Supported values are `2` (binary), `8` (octal), `10` (decimal, default) and `16` (hexadecimal). 
+`base`::: Sets the numeric base (radix) used to render both the integer and
+fractional parts of the number [added in https://github.com/metanorma/isodoc/releases/tag/v3.5.1].
+Supported values are:
 
-`base_prefix`::: Overrides the default base prefix for non‑decimal 
-bases [added in https://github.com/metanorma/isodoc/releases/tag/v3.5.1]. 
-When omitted, standard prefixes are used (`0b` for base `2`, `0o` for base 8, `0x` for base 16).
-`nil` or an empty string can be used to omit the prefix.
+`2`:::: binary
+`8`:::: octal
+`10`:::: decimal (default)
+`16`:::: hexadecimal
 
-`base_postfix`::: If present, a postfix is appended to the converted number instead of 
-using any base prefix [added in https://github.com/metanorma/isodoc/releases/tag/v3.5.1]. 
-This is applied after digit grouping. `nil` or an empty string can be used to omit the postfix.
+`base_prefix`::: Overrides the default base prefix for non‑decimal
+bases [added in https://github.com/metanorma/isodoc/releases/tag/v3.5.1].
 
-`hex_capital`::: When `true` and `base` is `16`, all characters in the range `a-f` in the converted output
-are rendered using uppercase letters of the number [added in https://github.com/metanorma/isodoc/releases/tag/v3.5.1]. 
-This includes both hexadecimal digits and any separators (such as `decimal`, `group`, `fraction_group`) that happen
-to be letters in the `a-f` range. The `base_prefix` and `base_postfix` values are never modified. It has no effect for other bases.
+`(omitted)`:::: when omitted, standard prefixes are used (`0b` for base `2`,
+`0o` for base 8, `0x` for base 16).
+
+`nil` or empty string:::: omits the prefix entirely.
+
+`base_postfix`::: If present, a postfix is appended to the converted number instead of
+using any base prefix [added in https://github.com/metanorma/isodoc/releases/tag/v3.5.1].
+This is applied after digit grouping.
+
+`(text present)`:::: the specified text is used as the postfix.
+`nil` or empty string:::: omits the postfix.
+
+`hex_capital`::: the capitalisation of hexadecimal digits, namely, characters in
+the range `a-f`, and any letters used as separators in hexadecimal numbers. This
+only applies when `base` is `16`. This includes both hexadecimal digits and any
+separators (such as `decimal`, `group`, `fraction_group`) that happen to be
+letters in the `a-f` range. The `base_prefix` and `base_postfix` values are
+never modified. It has no effect for other bases.
+ [added in https://github.com/metanorma/isodoc/releases/tag/v3.5.1].
+
+`false`:::: Hexadecimal digits and any letters used as separators in hexadecimal numbers are rendered in lowercase (default).
+
+`true`:::: Hexadecimal digits and any letters used as separators in hexadecimal numbers are rendered in uppercase.
+
 
 === Profiles
 

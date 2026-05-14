@@ -5,12 +5,13 @@ layout: develop-docs
 = Date formatting and i18n
 
 Metanorma renders dates through a single extended `strftime`-style formatter
-shipped in the `isodoc-i18n` gem (`IsoDoc::ExtendedDateFormatter`) [added in https://github.com/metanorma/isodoc-i18n/releases/tag/v1.5.1]. The
-formatter supports POSIX `%E*` / `%O*` modifiers for era years and alternative
-numbering systems on top of locale-aware month and day names, so a single
-format string can express anything from a plain Gregorian date to a Japanese
-regnal-year colophon or a Continental-European bibliographic date with a
-Roman-numeral month.
+shipped in the `isodoc-i18n` gem (`IsoDoc::ExtendedDateFormatter`) [added in https://github.com/metanorma/isodoc-i18n/releases/tag/v1.5.1].
+
+The formatter supports POSIX `%E*` / `%O*` modifiers for era years and
+alternative numbering systems on top of locale-aware month and day names, so a
+single format string can express anything from a plain Gregorian date to a
+Japanese regnal-year colophon or a Continental-European bibliographic date with
+a Roman-numeral month.
 
 This page documents:
 
@@ -168,7 +169,7 @@ per-flavour YAML keys section below.
 
 == Per-flavour YAML keys
 
-Each metanorma flavour gem ships a `lib/isodoc/<flavour>/i18n-<lang>.yaml`
+Each Metanorma flavour gem ships a `lib/isodoc/<flavour>/i18n-<lang>.yaml`
 file with localisation data. Date format strings live under a `date_format`
 key with two branches keyed by rendering mode:
 
@@ -187,14 +188,15 @@ date_format:
 ----
 
 The inner `year` / `year_month` / `full` keys correspond to the three input
-arities (year only, year + month, full year-month-day). The flavour's i18n
-class picks the right format based on the date arity and the active rendering
-mode, then calls `IsoDoc::ExtendedDateFormatter.format(...)`.
+arities (year only, year + month, full year-month-day).
+
+The flavour's i18n class picks the right format based on the date arity and the
+active rendering mode, then calls `IsoDoc::ExtendedDateFormatter.format(...)`.
 
 Downstream flavours can override individual sub-trees via Ruby's
 `Hash#deep_merge` — for example, `metanorma-plateau` extends `metanorma-jis`
-and overrides only `date_format.default` to switch from spellout kanji year
-(`令和六年`) to numeric Arabic year (`令和6年`), while inheriting the
+and overrides only `date_format.default` to switch from the "spellout" kanji
+year (`令和六年`) to numeric Arabic year (`令和6年`), while inheriting the
 `japanese_numbering` sub-tree from JIS unchanged.
 
 
@@ -202,6 +204,7 @@ and overrides only `date_format.default` to switch from spellout kanji year
 
 * link:/develop/topics/localization/[Localization] — how `lib/isodoc/i18n-*.yaml`
 files are loaded and merged across flavours.
+
 * link:/develop/topics/metadata-and-boilerplate/[Metadata and predefined text]
 — how `revdate` and other date-bearing metadata fields reach the rendering
 pipeline.
