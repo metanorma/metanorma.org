@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Channel-based publication for Metanorma: safe, declarative, zero-config"
+title: "CI architecture for Metanorma: from authoring to a live portal"
 date: 2026-05-13
-categories: [release,pipeline,architecture]
+categories: [release,pipeline,architecture,ci]
 
 authors:
 - name: Ronald Tse
@@ -11,95 +11,334 @@ authors:
   - https://github.com/ronaldtse
 
 excerpt: >-
-  A new channel-based publication architecture for Metanorma that ensures
-  documents only appear on the intended portals, with pattern-based manifests
-  that require zero per-document configuration.
+  How Metanorma's CI system takes a document from an AsciiDoc source file in a
+  per-document repository, through compilation, per-document release, channel-based
+  routing, and aggregation, to a live portal site — with safety guarantees at
+  every layer.
 ---
 
-== The problem: a single firehose
+== Two scales of document publishing
 
-When you publish dozens of document types — standards, reports, advisories,
-directives — from multiple repositories, a single release stream doesn't work.
-A portal has to download *every* release from *every* repo just to figure out
-which ones are relevant. And worse, without careful gating, a working draft or
-an internal document can leak to a public portal.
+Metanorma documents are published at two scales:
 
-We needed an architecture that is:
+Single-repo site::
+A single repository contains one or more documents. On every push, the site is
+compiled and deployed to GitHub Pages or a similar host.
+This is the common case for individual projects or small teams.
 
-. **Safe** — unpublished or internal documents *cannot* appear on public portals
-. **Declarative** — channels are assigned by pattern, not per-document configuration
-. **Zero-config** — adding a new document should not require manifest updates
-. **Auditable** — channel assignments are visible in the release metadata
+Organization-scale portal::
+Dozens of repositories — each containing one or more documents — feed into a
+unified portal. Documents have different types (standards, reports, directives)
+and different audiences (public, members, internal). The portal must aggregate
+them all without leaking drafts or internal documents.
 
-== The architecture
+Both scales are supported on GitHub through the
+https://github.com/actions-mn[`actions-mn`] ecosystem of GitHub Actions.
+Non-GitHub platforms (GitLab, Travis CI, CircleCI, Jenkins, Bitrise) support
+compilation and deployment via the `metanorma/metanorma` Docker image, but the
+advanced features described in this post — per-document releases, channels,
+aggregation, topic-based discovery — are GitHub-only.
+See the link:/install/cicd/[CI/CD documentation] for platform-specific setup.
 
-The Metanorma publication system has four components:
 
-```
-Author         CI/CD           GitHub          Portal
-sources/       actions-mn/     Releases        actions-mn/
-*.adoc    →    site-gen   →   per-document →   aggregate    →  Jekyll site
-               + release       releases         index.json
-```
+== The actions-mn ecosystem
+
+Metanorma provides a set of composable GitHub Actions at
+https://github.com/actions-mn[`actions-mn`]. Each action handles one stage of
+the document lifecycle:
 
 [width="100%",cols="1,2,2"]
 |===
-| Component | Role | Repo
+| Action | Role | Used in
 
-| `actions-mn/site-gen`
-| Compiles AsciiDoc → HTML/PDF/XML/RXL
-| Per-document repo
+| https://github.com/actions-mn/setup[`setup`]
+| Install the `metanorma` CLI
+| Any workflow (skip if using Docker)
 
-| `actions-mn/release`
-| Publishes compiled docs as GitHub Releases with channel metadata
-| Per-document repo
+| https://github.com/actions-mn/cache[`cache`]
+| Cache fonts, Relaton data, and site output
+| Any build workflow
 
-| GitHub Releases
-| Stores per-document release artifacts + metadata
-| GitHub
+| https://github.com/actions-mn/compile[`compile`]
+| Compile a single Metanorma document
+| Single-document repos
 
-| `actions-mn/aggregate`
-| Discovers, filters, downloads, indexes released docs
-| Portal repo
+| https://github.com/actions-mn/site-gen[`site-gen`]
+| Compile all documents from a `metanorma.yml` manifest
+| Any repo with multiple documents
+
+| https://github.com/actions-mn/build-and-publish[`build-and-publish`]
+| Meta-action: cache + site-gen + upload Pages artifact
+| Simple site deployments
+
+| https://github.com/actions-mn/deploy-pages[`deploy-pages`]
+| Deploy to GitHub Pages with PR preview support
+| Any Pages deployment
+
+| https://github.com/actions-mn/release[`release`]
+| Publish compiled docs as per-document GitHub Releases
+| Organization-scale publishing
+
+| https://github.com/actions-mn/aggregate[`aggregate`]
+| Collect released docs from multiple repos into a portal
+| Portal repositories
+
+| https://github.com/actions-mn/setup-flavors[`setup-flavors`]
+| Install extra or private Metanorma flavor gems
+| Repos using non-standard flavors
 |===
 
-== Channels: audience + category
+These actions compose into two pipeline patterns.
 
-A channel is an `audience/category` pair:
 
-- **audience**: `public`, `members`, or `internal` — determines access scope
-- **category**: free-form identifier — determines routing within a portal
+== Pipeline pattern 1: Simple site (any platform)
 
-```
-public/standards        ← public audience, standards category
-members/internal-review ← members audience, internal-review category
-internal/working-draft  ← internal audience, never aggregated
-```
-
-The publisher sets the channel. The aggregator filters by it. The aggregator
-*cannot* override or discover channels the publisher didn't assign.
-
-== Three-layer safety model
+For a single repository that compiles and deploys its own site:
 
 ```
-Layer 1: Publisher gate (manifest)
-  → Unmatched documents = private (not released)
-  → "If it's not in the manifest, it doesn't exist."
-
-Layer 2: Channel assignment (release action)
-  → Pattern → channel mapping is authoritative
-  → "The publisher decides the channel. Period."
-
-Layer 3: Aggregation filter (aggregate action)
-  → Portal declares which channels it wants
-  → "The portal sees only what it asks for."
+checkout → setup → cache → site-gen → deploy-pages
 ```
 
-The critical rule: **never** set `defaults.visibility: public` in production
-manifests. When a document doesn't match any pattern, it defaults to private
-and no release is created.
+On GitHub, the `build-and-publish` meta-action bundles cache + site-gen +
+upload, so the workflow is minimal:
 
-== Pattern-based manifests: zero per-document config
+[source,yml]
+----
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: metanorma/metanorma:latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-mn/cache@v1
+      - uses: actions-mn/build-and-publish@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          agree-to-terms: true
+----
+
+On non-GitHub platforms, the equivalent is `metanorma site generate` inside
+the Docker container. See the link:/install/cicd/[CI/CD documentation] for
+GitLab CI, Travis CI, CircleCI, Jenkins, and Bitrise examples.
+
+
+== Pipeline pattern 2: Organization-scale (GitHub only)
+
+When an organization publishes many documents from many repositories into one
+portal, the pipeline splits into two sides:
+
+```
+Per-document repo (each repo)            Portal repo (one)
+─────────────────────────            ──────────────────────
+checkout                             checkout
+  → site-gen (compile)                 → aggregate (discover + download)
+  → release (publish)                  → build site (Jekyll, etc.)
+         │                             → deploy
+         ▼
+    GitHub Releases
+    (per-document,
+     with channel metadata)
+```
+
+Each per-document repository is independent. It compiles its own documents and
+publishes them as GitHub Releases. The portal discovers those releases,
+downloads the artifacts, and builds the site.
+
+This pipeline relies on two GitHub-specific features that have no equivalent on
+other platforms:
+
+- **GitHub Releases** — per-document release artifacts with structured metadata
+  in the release body
+- **GitHub Topics** — the `metanorma-release` topic tag enables automatic
+  repository discovery by the portal
+
+
+== Per-document repository structure
+
+A repository that participates in the organization-scale pipeline has this
+canonical structure:
+
+```
+my-documents/
+  .github/workflows/
+    release.yml            ← compiles and releases on push to main
+    generate.yml           ← builds preview site on push and PRs
+  .metanorma/
+    channels.yml           ← declares which channels this repo publishes
+  sources/
+    cc-s-51015.adoc        ← AsciiDoc authoring sources
+    cc-s-51024.adoc
+  metanorma.yml            ← site/collection config (lists source files)
+  metanorma.release.yml    ← release manifest (channel routing + stage gating)
+  Gemfile                  ← typically just "metanorma-cli"
+```
+
+Each file's role:
+
+`metanorma.yml`::
+Tells `metanorma site generate` which source files to compile and what
+collection metadata to use.
+
+`metanorma.release.yml`::
+Controls which documents get released, to which channels, and at which stages.
+Uses pattern-based matching so new documents are automatically included.
+
+`.metanorma/channels.yml`::
+Declares which channels the repository publishes. Aggregators read this file
+to skip repos that don't match the requested channels — no wasted API calls.
+
+`.github/workflows/release.yml`::
+Compiles documents and publishes them as GitHub Releases. Typically calls a
+reusable workflow (see below).
+
+`.github/workflows/generate.yml`::
+Builds a preview site on every push and PR. Deployed to GitHub Pages for
+review before merging.
+
+
+== Reusable workflows
+
+Per-document repositories don't need to define their own build logic.
+Metanorma provides two reusable workflows that handle the entire pipeline:
+
+`actions-mn/.github/.github/workflows/metanorma-release.yml`::
+Checks out the repo, runs `actions-mn/site-gen@v1` to compile documents,
+then runs `actions-mn/release@v1` to publish changed documents as GitHub
+Releases.
+
+`actions-mn/.github/.github/workflows/metanorma-generate.yml`::
+Checks out the repo inside the `metanorma/metanorma` Docker container,
+runs `actions-mn/cache@v1` and `actions-mn/build-and-publish@v1`, then
+deploys the preview to GitHub Pages.
+
+A per-document repository's entire release workflow is just:
+
+[source,yml]
+----
+# .github/workflows/release.yml
+name: Release
+on:
+  push:
+    branches: [main]
+    paths: ['sources/**', 'metanorma.yml', 'metanorma.release.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    uses: actions-mn/.github/.github/workflows/metanorma-release.yml@main
+    with:
+      default-visibility: private
+    secrets: inherit
+----
+
+That's it. The reusable workflow handles compilation, change detection,
+packaging, and publishing.
+
+
+== The `metanorma-release` GitHub topic
+
+The `metanorma-release` topic is a GitHub repository topic that signals "this
+repo publishes Metanorma documents via GitHub Releases." It is the mechanism
+that makes portal aggregation zero-maintenance.
+
+When the `actions-mn/aggregate` action runs in a portal repository, it queries
+the GitHub Search API:
+
+```
+search/repositories?q=topic:metanorma-release+org:CalConnect
+```
+
+This returns all repositories in the organization that have opted in by adding
+the topic. No submodules, no hardcoded repo lists, no configuration drift.
+
+To add the topic to a repository:
+
+[source,bash]
+----
+gh api repos/{owner}/{repo}/topics -X PUT \
+  --field names='["metanorma-release"]'
+----
+
+If topic-based discovery is not suitable (e.g., aggregating repos from multiple
+organizations or external sources), the aggregate action also accepts an
+explicit `repos` input:
+
+[source,yml]
+----
+- uses: actions-mn/aggregate@v1
+  with:
+    repos: 'my-org/repo-a,other-org/repo-b'
+    channels: 'public/standards'
+----
+
+
+== Document stages
+
+Every Metanorma document has a stage, extracted from its RXL metadata:
+
+[width="40%",cols="1,1"]
+|===
+| Stage | ISO code
+
+| Working Draft | 20
+| Committee Draft | 30
+| Draft | 40
+| Published | 60
+| Withdrawn | 95
+|===
+
+The release action respects stages in two ways:
+
+**Manifest-level stage gating** restricts which stages trigger a release:
+
+```yaml
+# metanorma.release.yml
+documents:
+  - pattern: "cc-s-*"
+    stages: [published]        # only published documents get released
+    channels: [public/standards]
+```
+
+With this constraint, working drafts and committee drafts are compiled and
+previewed but never published as GitHub Releases.
+
+**CI-level stage override** filters at the workflow level:
+
+```yaml
+- uses: actions-mn/release@v1
+  with:
+    stages: 'published,final-draft'
+```
+
+Both can be combined: the manifest defines the policy, and the CI input
+narrows it further for a specific run.
+
+Published releases are **immutable** — their tag is created once and never
+overwritten. Draft releases are **rolling** — the same tag is updated in-place
+as the draft evolves.
+
+
+== Channels: routing documents to the right portal
+
+A channel is an `audience/category` pair that determines where a document
+appears:
+
+- **audience**: `public`, `members`, or `internal` — who can see it
+- **category**: free-form identifier — where it appears in the portal
+
+```
+public/standards        ← published standards, visible to everyone
+public/reports          ← conference and technical reports
+members/internal-review ← only visible to organization members
+internal/working-draft  ← never aggregated by any external portal
+```
+
+The publisher sets the channel. The aggregator filters by it. A portal
+**cannot** override or discover channels the publisher didn't assign.
+
+=== Pattern-based manifests
 
 Instead of listing every document individually, use patterns based on document
 ID conventions:
@@ -128,78 +367,7 @@ documents:
     channels: [public/directives]
 ```
 
-Stage gating adds an extra safety layer:
-
-```yaml
-documents:
-  - pattern: "cc-s-*"
-    stages: [published]
-    channels: [public/standards]
-```
-
-With this constraint, working drafts and committee drafts never create a GitHub
-Release — only the `published` stage triggers publication.
-
-== Publication flow
-
-```
-Author pushes to main
-         │
-         ▼
-site-gen: Compile AsciiDoc → HTML, PDF, XML, RXL
-         │
-         ▼
-release action:
-  1. Extract RXL         → Parse document metadata (ID, title, stage, edition)
-  2. Load manifest       → metanorma.release.yml → channel + visibility policy
-  3. Filter              → Pattern match + stage filter
-  4. Detect changes      → Content hash vs. last release
-  5. Package             → Zip with canonical filenames
-  6. Publish             → Create/update GitHub Release with metadata
-         │
-         ▼
-GitHub Release per document:
-  - Assets: cc-s-51015-ed1.zip (HTML+PDF+XML+RXL)
-  - Body: content-hash + mn-release-metadata JSON (channels, version, stage)
-         │
-         ▼
-aggregate action:
-  1. Discover repos      → Topic search or explicit list
-  2. Check manifest      → .metanorma/channels.yml → skip if no overlap
-  3. Fetch releases      → Paginated, with ETag caching
-  4. Parse metadata      → mn-release-metadata JSON from release body
-  5. Filter              → Channel + stage matching
-  6. Dedup               → Content-hash comparison → skip unchanged
-  7. Download + extract  → Zip → files, canonicalize filenames
-  8. Route files         → flat / by-doctype / by-format
-  9. Generate index      → index.json with full document metadata
-         │
-         ▼
-Portal (Jekyll) renders HTML pages from aggregated documents
-```
-
-== Release metadata
-
-Each GitHub Release carries structured metadata in its body:
-
-```
-content-hash:abc123...
-
-<!-- mn-release-metadata
-{"version":1,"id":"cc-s-51015",
- "channels":["public/standards"],"stage":"published",
- "edition":"1","title":"CalConnect Standard 51015"}
- -->
-
-## CC/A 51015
-| Channels | public/standards |
-```
-
-The `mn-release-metadata` JSON block (inside an HTML comment) is machine-
-parseable by downstream consumers. The `content-hash` on the first line enables
-incremental aggregation — unchanged releases are skipped entirely.
-
-== The CalConnect channel registry
+=== The CalConnect channel registry
 
 CalConnect uses five public channels for its document types:
 
@@ -233,30 +401,123 @@ CalConnect uses five public channels for its document types:
 | CalConnect directives
 |===
 
-== Migration path
 
-For existing Metanorma repositories, migration follows three steps:
+== Three-layer safety model
 
-. **Update `metanorma.release.yml`** — replace explicit source lists with
-  pattern-based channel assignments
-. **Add `.metanorma/channels.yml`** — declare which channels the repo publishes
-  (enables efficient discovery by aggregators)
-. **Force re-release** — trigger a new release to add channel metadata to
-  existing documents
+The architecture enforces safety at three independent layers:
 
-For portals, migration means switching from source-based builds to
-`actions-mn/aggregate`:
-
-```yaml
-- uses: actions-mn/aggregate@v1
-  with:
-    organizations: CalConnect
-    topic: metanorma-release
-    channels: 'public/standards,public/reports'
-    output-dir: _site/cc
-    cache-dir: .cache/mn-aggregate
-    token: ${{ secrets.GITHUB_TOKEN }}
 ```
+Layer 1: Publisher gate (manifest)
+  → Unmatched documents = private (not released)
+  → "If it's not in the manifest, it doesn't exist."
+
+Layer 2: Channel assignment (release action)
+  → Pattern → channel mapping is authoritative
+  → "The publisher decides the channel. Period."
+
+Layer 3: Aggregation filter (aggregate action)
+  → Portal declares which channels it wants
+  → "The portal sees only what it asks for."
+```
+
+The critical rule: **never** set `defaults.visibility: public` in production
+manifests. When a document doesn't match any pattern, it defaults to the
+`default-visibility` input (default: `public`). In production, set
+`default-visibility: private` so unlisted documents are invisible.
+
+
+== Publication flow: the end-to-end journey
+
+```
+Author pushes to main
+         │
+         ▼
+site-gen: Compile AsciiDoc → HTML, PDF, XML, RXL
+         │
+         ▼
+release action:
+  1. Extract RXL         → Parse document metadata (ID, title, stage, edition)
+  2. Load manifest       → metanorma.release.yml → channel + visibility policy
+  3. Filter              → Pattern match + stage filter
+  4. Detect changes      → Content hash vs. last release
+  5. Package             → Zip with canonical filenames
+  6. Publish             → Create/update GitHub Release with metadata
+         │
+         ▼
+GitHub Release per document:
+  - Assets: cc-s-51015-ed1.zip (HTML+PDF+XML+RXL)
+  - Body: content-hash + mn-release-metadata JSON (channels, version, stage)
+         │
+         ▼
+aggregate action:
+  1. Discover repos      → Topic search via GitHub API
+  2. Check manifest      → .metanorma/channels.yml → skip if no overlap
+  3. Fetch releases      → Paginated, with ETag caching
+  4. Parse metadata      → mn-release-metadata JSON from release body
+  5. Filter              → Channel + stage matching
+  6. Dedup               → Content-hash comparison → skip unchanged
+  7. Download + extract  → Zip → files, canonicalize filenames
+  8. Route files         → flat / by-doctype / by-format
+  9. Generate index      → index.json with full document metadata
+         │
+         ▼
+Portal (Jekyll) renders HTML pages from aggregated documents
+```
+
+
+== The portal side: aggregation
+
+The portal repository uses `actions-mn/aggregate` to discover, download, and
+index released documents. Here is a real-world example from
+https://standards.calconnect.org/[standards.calconnect.org]:
+
+[source,yml]
+----
+# .github/workflows/build_deploy.yml
+name: Build and Deploy
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *'    # daily refresh at 06:00 UTC
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: .cache/aggregate
+          key: mn-aggregate-${{ github.run_id }}
+          restore-keys: mn-aggregate-
+
+      - name: Aggregate released documents
+        uses: actions-mn/aggregate@v1
+        with:
+          organizations: CalConnect
+          topic: metanorma-release
+          output-dir: _site/cc
+          channels: 'public/standards,public/reports,public/admin,public/advisories,public/directives'
+          canonicalize: true
+          cache-dir: .cache/aggregate
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build site
+        run: bundle exec jekyll build
+
+      - uses: actions/upload-pages-artifact@v3
+----
+
+The aggregate action uses ETag-based caching so unchanged repositories are
+skipped. Daily scheduled builds pick up any new releases automatically. The
+portal build is fully incremental — no full rebuild needed.
+
+This portal currently aggregates **189 documents from 51 repositories** across
+**5 channels**, deployed to GitHub Pages.
+
 
 == Result
 
@@ -267,5 +528,13 @@ For portals, migration means switching from source-based builds to
 - **Safety** is enforced at every layer: publisher, channel assignment, and
   aggregation filter. An unlisted document is invisible. Period.
 
-The channel system is available now in `actions-mn/release@v1` and
-`actions-mn/aggregate@v1`.
+The full CI architecture is available now:
+
+- `actions-mn/release@v1` — per-document GitHub Releases with channels and
+  stage gating
+- `actions-mn/aggregate@v1` — multi-repo aggregation with channel filtering
+  and incremental caching
+- Reusable workflows in `actions-mn/.github` for zero-config per-repo setup
+
+See the link:/install/cicd/[CI/CD documentation] for complete input tables,
+configuration reference, and platform-specific setup guides.
