@@ -467,8 +467,8 @@ Any clause within a "`Terms and definitions`" section which is a non-terminal
 subclause (has child nodes) is automatically considered a terms (or definitions)
 section.
 
-On the other hand, any descendant of a `nonterm` clause is also a `nonterm`
-clause.
+On the other hand, any descendant of a `[.nonterm]` clause is also a `[.nonterm]`
+clause, and any descendant of a `[.terms]` clause is by default a term (see below).
 
 Informative clauses are indicated with the attribute `[obligation=informative]`;
 clauses are normative by default.
@@ -561,6 +561,36 @@ the function which are related to some tuple of inputs
 .Proper rendering of a term subclause
 image::/assets/author/topics/document-format/section-terms/fig-term-clause-correct.png[Proper rendering of a term subclause]
 ======
+
+
+===== Empty terms collections
+
+A top-level empty terms collection, with no term subclauses inside it, will be recognised by Metanorma as such by default:
+
+[source,asciidoc]
+----
+== Terms and definitions
+
+== Next Clause
+----
+
+However, a subclause within a terms collection, intended to be an empty terms collection itself, needs special markup, just as a
+nonterm clause does, in order not to be processed as a single term. Mirroring `[.nonterm]`, the markup for an empty terms
+subcollection is `[.terms]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.5].
+
+[source,asciidoc]
+----
+== Terms and definitions
+
+=== I am a term
+
+=== I am a terms collection
+
+==== Because I contain at least one term
+
+[.terms]
+=== I am an empty terms collection
+----
 
 
 === Working with individual concepts
