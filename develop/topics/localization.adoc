@@ -100,24 +100,298 @@ end
 ----
 
 
-== Date formatting
+== Label vocabulary
 
-Locale-aware date rendering is documented separately at
-link:/develop/topics/date-formatting/[Date formatting and i18n]. That page
-covers the extended strftime grammar (era years, alternative numbering
-systems, calendar selection), the `<date value=… format=…/>` element, the
-`date_i18n` Liquid filter, and the `date_format` YAML keys that flavour
-gems use to centralise format strings per locale and rendering mode.
+The English master vocabulary is at
+https://github.com/metanorma/isodoc/blob/main/lib/isodoc-yaml/i18n-en.yaml[`isodoc/lib/isodoc-yaml/i18n-en.yaml`].
+Every Metanorma flavour inherits its labels from this file and overrides
+selected entries per locale. A translator producing `i18n-{lang}.yaml`
+for a new language should provide a value for every entry below.
+This vocabulary is liable to change, and developers should check against the
+latest version of the `i18n-en.yaml` file when implementing a new language or updating an existing one.
 
+In code, labels are accessed in renderer code either as method-style attributes
+on the i18n object (`@i18n.foreword`, `@i18n.table`) or, for entries
+nested under a hash key, by indexing the `@labels` map
+(`@i18n.labels["punct"]["em-dash"]`,
+`@i18n.labels["inflection"]["Clause"]["pl"]`). Several entries are
+templates rather than literal strings: `%` and `%1`/`%2`/`%3` are
+positional placeholders, and `{{ var1 | … }}` is a Liquid expression.
+See <<_templating_syntax>> for the template grammar and
+<<_grammatical_information>> for the inflection conventions referenced
+below.
+
+=== Clause names
+
+Section headings used to title automatically-generated clauses and
+front/back matter in the rendered output.
+
+`foreword`:: "Foreword".
+`introduction`:: "Introduction".
+`preface`:: "Preface" — wrapper title for the preface group.
+`scope`:: "Scope".
+`abstract`:: "Abstract".
+`acknowledgements`:: "Acknowledgements".
+`executivesummary`:: "Executive summary".
+`clause`:: "Clause" (main section of document).
+`annex`:: "Annex".
+`appendix`:: "Appendix".
+`index`:: "Index".
+`table_of_contents`:: "Table of contents".
+`normref`:: "Normative references".
+`bibliography`:: "Bibliography".
+`symbols`:: "Symbols".
+`abbrev`:: "Abbreviated terms".
+`symbolsabbrev`:: "Symbols and abbreviated terms".
+`termsdef`:: "Terms and definitions".
+`termsdefabbrev`:: "Terms, definitions and abbreviated terms".
+`termsdefsymbols`:: "Terms, definitions and symbols".
+`termsdefsymbolsabbrev`:: "Terms, definitions, symbols and abbreviated terms".
+`toc_figures`:: "List of figures" — title of the optional list-of-figures TOC.
+`toc_tables`:: "List of tables" — title of the optional list-of-tables TOC.
+`toc_recommendations`:: "List of recommendations" — title of the optional list-of-recommendations TOC.
+`inform_annex`:: "informative" — obligation qualifier appended to informative-annex titles in parentheses.
+`norm_annex`:: "normative" — obligation qualifier appended to normative-annex titles in parentheses.
+
+=== Block names
+
+Captions and headers placed at the head (or sometimes within) a
+block-level element in the rendered output.
+
+`table`:: "Table" — caption prefix.
+`figure`:: "Figure" — caption prefix.
+`diagram`:: "Diagram" — caption prefix on diagram blocks.
+`formula`:: "Formula" — caption prefix.
+`inequality`:: "Formula" — caption prefix for inequality blocks (intentional variant of `formula`).
+`list`:: "List" — generic list label, typically specific to ordinal lists for referencing.
+`deflist`:: "Definition List".
+`example`:: "EXAMPLE" — block prefix on example blocks.
+`box`:: "Box".
+`note`:: "NOTE" — block prefix on notes.
+`termnote`:: "Note % to entry" — block prefix on a term-note inside a term entry; `%` is the term-note number.
+`source`:: "SOURCE" — header line on a SOURCE annotation under a figure, example, or term entry (see also <<_bibliographic_rendering>>).
+`key`:: "Key" — header of the symbol/legend definition list inside a figure or sourcecode block.
+`where`:: "where" — preamble before the symbol-definition list of a formula with multiple defined symbols.
+`where_one`:: "where" — preamble for the same list when only one symbol is defined.
+`continued`:: "continued" — appended to a caption when a block continues across pages (e.g. "Table 4 (continued)").
+`requirement`:: "Requirement" — block caption.
+`recommendation`:: "Recommendation" — block caption.
+`permission`:: "Permission" — block caption.
+`recommendationtest`:: "Recommendation test" — Modspec block caption.
+`requirementtest`:: "Requirement test" — Modspec block caption.
+`permissiontest`:: "Permission test" — Modspec block caption.
+`recommendationclass`:: "Recommendations class" — Modspec block caption.
+`requirementclass`:: "Requirements class" — Modspec block caption.
+`permissionclass`:: "Permissions class" — Modspec block caption.
+`abstracttest`:: "Abstract test" — Modspec block caption.
+`conformanceclass`:: "Conformance class" — Modspec block caption.
+`admonition.danger`:: "Danger" — admonition heading.
+`admonition.warning`:: "Warning" — admonition heading.
+`admonition.caution`:: "Caution" — admonition heading.
+`admonition.important`:: "Important" — admonition heading.
+`admonition.safety precautions`:: "Safety Precautions" — admonition heading.
+`admonition.editorial`:: "Editorial Note" — admonition heading.
+
+=== Cross-reference names
+
+Labels used when one element references another by identifier, either
+as the bare prefix of an `<xref>` ("see Clause 3") or as the literal
+value of the `type` attribute on an `<eref>` locality (bibliographic reference).
+
+`clause`:: "Clause" — xref prefix.
+`section`:: "Section" — xref prefix.
+`annex`:: "Annex" — xref prefix.
+`appendix`:: "Appendix" — xref prefix.
+`para_xref`:: "Paragraph" — xref prefix when targeting a paragraph.
+`example_xref`:: "Example" — xref prefix when targeting an example (paired with the block name `example`).
+`note_xref`:: "Note" — xref prefix when targeting a note (paired with the block name `note`).
+`wholeoftext`:: "Whole of text" — locality value when an `<eref>` targets the entire referenced document.
+`nested_xref`:: `"%1<comma>,</comma> %2"` — template joining the parts of a nested cross-reference; `%1` and `%2` are the locality components.
+`list_nested_xref`:: `"%1 %2"` — template joining list-level nested xref parts (looser variant of `nested_xref`).
+`locality.section`:: "Section" — eref locality label.
+`locality.clause`:: "Clause" — eref locality label.
+`locality.part`:: "Part" — eref locality label.
+`locality.paragraph`:: "Paragraph" — eref locality label.
+`locality.chapter`:: "Chapter" — eref locality label.
+`locality.page`:: "Page" — eref locality label.
+`locality.table`:: "Table" — eref locality label.
+`locality.annex`:: "Annex" — eref locality label.
+`locality.figure`:: "Figure" — eref locality label.
+`locality.example`:: "Example" — eref locality label.
+`locality.note`:: "Note" — eref locality label.
+`locality.formula`:: "Formula" — eref locality label.
+
+=== Boilerplate
+
+Multi-sentence template paragraphs inserted whole into the rendered
+output at fixed structural positions. The `%` placeholder, where
+present, is replaced at render time with a cross-reference or other content.
+
+`norm_with_refs_pref`:: Preamble paragraph at the head of a non-empty Normative References clause.
+`norm_empty_pref`:: "There are no normative references in this document." — preamble when Normative References is empty.
+`internal_terms_boilerplate`:: Preamble when terms are defined only inside the current document.
+`external_terms_boilerplate`:: Preamble when terms are inherited from an external reference; `%` is the cross-reference to the source.
+`internal_external_terms_boilerplate`:: Preamble for a mix of internal and external terms; `%` is the cross-reference to the external source.
+`no_terms_boilerplate`:: "No terms and definitions are listed in this document." — used when the Terms clause is empty.
+`term_def_boilerplate`:: Optional header preceding the term-definition list. Empty by default; flavours override.
+`no_information_available`:: "[NO INFORMATION AVAILABLE]" — placeholder when a bibliographic metadata field is missing.
+`no_identifier`:: "(NO ID)" — placeholder when a `<bibitem>` carries no docidentifier.
+
+=== Conjunctions
+
+Templates used to join multiple items into a single coordinated phrase.
+`%1` and `%2` are the operands; `<conn>`, `<comma>` and `<enum-comma>`
+are render-time markers that may be styled or replaced per locale.
+
+`and`:: "and" — bare connector word, used outside the templates below.
+`binary_and`:: `"%1 <conn>and</conn> %2"` — joins two items with "and".
+`binary_or`:: `"%1 <conn>or</conn> %2"` — joins two items with "or".
+`multiple_and`:: `"%1<enum-comma>,</enum-comma> <conn>and</conn> %2"` — joins the last item of a 3+ list with comma-then-"and" (Oxford comma in English).
+`multiple_or`:: `"%1<enum-comma>,</enum-comma> <conn>or</conn> %2"` — joins the last item of a 3+ list with comma-then-"or".
+`chain_and`:: `"%1 <conn>and</conn> %2"` — chain "and" connector used in range-style concatenations.
+`chain_or`:: `"%1 <conn>or</conn> %2"` — chain "or" connector.
+`chain_from`:: `"%1 <conn>from</conn> %2"` — chain "from" connector (range start).
+`chain_to`:: `"%1 <conn>to</conn> %2"` — chain "to" connector (range end).
+
+=== i18n directives
+
+Machine-targeting strings that select rule sets or formatting modes
+rather than appearing as visible text.
+
+`SpelloutRules`:: "spellout-ordinal" — CLDR rule name used by the spelled-out-ordinal formatter (e.g. "first", "second").
+`OrdinalRules`:: "digits-ordinal" — CLDR rule name used by the digit-ordinal formatter (e.g. "1st", "2nd").
+`ordinal_keys`:: Empty array by default; flavours may populate it to constrain which inflection keys participate in ordinal formatting.
+
+=== Bibliographic rendering
+
+Labels and templates that appear when a citation, bibliographic entry,
+or term-provenance annotation is rendered.
+
+`all_parts`:: "All Parts" — appended in lowercase to a multi-part document citation.
+`edition`:: "edition" — bare label used in narrative bibliographic prose.
+`edition_cardinal`:: `"edition {{ var1 }}"` — Liquid template; cardinal-form edition reference.
+`edition_ordinal`:: `"{{ var1 | ordinal_word: '', '' }} edition"` — Liquid template; ordinal-form edition reference.
+`version`:: "version" — bare label.
+`draft_label`:: "draft" — appended to a docidentifier when the cited document is a draft.
+`adapted`:: "adapted" — provenance annotation flagging a term definition adapted from its source.
+`modified`:: "modified" — provenance annotation flagging a term definition modified from its source.
+`source`:: See <<_block_names>> — the `source` label is documented there as the SOURCE annotation line; flavours that re-use it elsewhere in citation rendering pick it up from the same key.
+
+=== Document titles
+
+Prefixes used when rendering the title of a document or its
+sub-publication, especially for amendment- and supplement-type
+companion documents to a base standard.
+
+`title_prefixes.part`:: "Part" — prefix used in part titles of multi-part standards.
+`title_prefixes.amendment`:: "Amendment".
+`title_prefixes.corrigendum`:: "Corrigendum".
+`title_prefixes.addendum`:: "Addendum".
+`title_prefixes.supplement`:: "Supplement".
+`title_prefixes.annex`:: "Annex" — prefix used in standalone annex titles.
+`title_prefixes.appendix`:: "Appendix" — prefix used in standalone appendix titles.
+
+=== Grammar
+
+The `inflection` sub-tree provides singular/plural forms (and optional
+`grammar:` sub-blocks giving gender and other tags) for every noun
+that the renderer may need to pluralise or inflect. The
+`grammar_abbrevs` sub-tree gives the short tags used in those
+`grammar:` sub-blocks. See <<_grammatical_information>> for the
+mechanics.
+
+`inflection.Clause`:: sg/pl forms of "Clause".
+`inflection.Annex`:: sg/pl forms of "Annex".
+`inflection.Appendix`:: sg/pl forms of "Appendix".
+`inflection.Note`:: sg/pl forms of "Note".
+`inflection."Note % to entry"`:: sg/pl forms of the term-note caption; `%` is the term-note number.
+`inflection.List`:: sg/pl forms of "List".
+`inflection.Figure`:: sg/pl forms of "Figure".
+`inflection.Formula`:: sg/pl forms of "Formula".
+`inflection.Table`:: sg/pl forms of "Table".
+`inflection.Requirement`:: sg/pl forms of "Requirement".
+`inflection.Recommendation`:: sg/pl forms of "Recommendation".
+`inflection.Permission`:: sg/pl forms of "Permission".
+`inflection.Example`:: sg/pl forms of "Example".
+`inflection.Part`:: sg/pl forms of "Part".
+`inflection.Section`:: sg/pl forms of "Section".
+`inflection.Paragraph`:: sg/pl forms of "Paragraph".
+`inflection.Chapter`:: sg/pl forms of "Chapter".
+`inflection.Page`:: sg/pl forms of "Page".
+`grammar_abbrevs.masculine`:: "m" — short tag for masculine gender.
+`grammar_abbrevs.feminine`:: "f" — short tag for feminine gender.
+`grammar_abbrevs.neuter`:: "n" — short tag for neuter gender.
+`grammar_abbrevs.common`:: "common" — short tag for common gender.
+`grammar_abbrevs.singular`:: "sg" — short tag for singular number.
+`grammar_abbrevs.dual`:: "dual" — short tag for dual number.
+`grammar_abbrevs.pl`:: "pl" — short tag for plural number.
+`grammar_abbrevs.isPreposition`:: "prep" — part-of-speech tag.
+`grammar_abbrevs.isParticiple`:: "part" — part-of-speech tag.
+`grammar_abbrevs.isAdjective`:: "adj" — part-of-speech tag.
+`grammar_abbrevs.isAdverb`:: "adv" — part-of-speech tag.
+`grammar_abbrevs.isNoun`:: "noun" — part-of-speech tag.
+`grammar_abbrevs.isVerb`:: "verb" — part-of-speech tag.
+
+=== Punctuation
+
+Locale-specific punctuation, primarily so that the CJK and French
+localisations can swap in their own spacing and quotation conventions
+without renderer changes. An empty value disables the mark for the
+current locale. More information on Metanorma's classification of punctuation is available at
+https://metanorma.github.io/docs/documents/115/document.html[Internationalized semantic punctuation framework]
+
+`punct.colon`:: ":" — colon character.
+`punct.comma`:: "," — comma character.
+`punct.enum-comma`:: "," — comma used inside enumeration templates (`multiple_and`, `multiple_or`); in CJK it is the full-width enumeration comma "、".
+`punct.semicolon`:: ";".
+`punct.period`:: "." — sentence-final period.
+`punct.open-paren`:: "(" — opening parenthesis.
+`punct.close-paren`:: ")" — closing parenthesis.
+`punct.open-bracket`:: "[" — opening square bracket.
+`punct.close-bracket`:: "]" — closing square bracket.
+`punct.question-mark`:: "?".
+`punct.exclamation-mark`:: "!".
+`punct.emphasis-mark`:: Empty in English; in CJK locales it carries the side-dot emphasis mark.
+`punct.em-dash`:: "—".
+`punct.en-dash`:: "–".
+`punct.number-en-dash`:: "–" — en dash used between numbers (may differ from `en-dash` in some locales).
+`punct.open-quote`:: U+201C "“" — primary opening quote.
+`punct.close-quote`:: U+201D "”" — primary closing quote.
+`punct.open-nested-quote`:: U+2018 "‘" — secondary opening quote.
+`punct.close-nested-quote`:: U+2019 "’" — secondary closing quote.
+`punct.ellipse`:: "…".
+`punct.cjk-latin-separator`:: Empty in English; in CJK locales it carries the thin space inserted between CJK and Latin characters.
+
+=== Terminology relations
+
+Labels rendered as connectors inside a term entry or concept entry to
+express semantic relations between terms (deprecation, synonymy,
+hierarchy, equivalence).
+
+`see`:: "see" — connector pointing from a non-preferred designation to its preferred form.
+`see_also`:: "see also" — connector pointing to a related but not equivalent term.
+`deprecated`:: "DEPRECATED" — marker prepended to a deprecated designation in a term entry.
+`obligation`:: "Obligation" — column header / row label used in requirement-obligation tables (typically overridden by flavours).
+`term_defined_in`:: `"(%)"` — template wrapping a cross-reference to the document where a term is defined; `%` is the reference.
+`relatedterms.deprecates`:: "deprecates" — relation label.
+`relatedterms.supersedes`:: "supersedes" — relation label.
+`relatedterms.narrower`:: "narrower" — relation label.
+`relatedterms.broader`:: "broader" — relation label.
+`relatedterms.equivalent`:: "equivalent" — relation label.
+`relatedterms.compare`:: "compare" — relation label.
+`relatedterms.contrast`:: "contrast" — relation label.
+`relatedterms.see`:: "see" — relation label (within `relatedterms`; distinct from the top-level `see`).
+`relatedterms.seealso`:: "see also" — relation label (within `relatedterms`; distinct from the top-level `see_also`).
 
 == Grammatical information
 
 Grammatical information about words is needed to generate the correct output. This is stored under `inflection` in the YAML file,
 and it takes two forms:
 
-* Giving the different numbers of the word, so that plurals can be generated correctly
-* Giving other grammatical information where necessary, under `grammar`. This is mostly used so that templated text can use the
-right gender associated with the word.
+* Giving the different numbers of the word, so that plurals can be generated correctly. (In future expansions, this
+may extend to other inflectional categories such as case, but currently only number is supported.) This is done by giving the singular and plural forms of the word under `sg` and `pl` keys respectively. The singular form is used when referring to a single instance of the word (e.g. "Clause 3"), and the plural form is used when referring to multiple instances (e.g. "Clauses 3-7").
+* Giving other grammatical information where necessary, under `grammar`. This is mostly used so that templated text can identify the
+right gender associated with the word, in order to associate it with the correct form of any adjectives that may be generated with it. For example, in Russian, "edition" is neuter, and so any adjectives generated with it (e.g. "third edition") need to be in the neuter form (третье издание), not the masculine form (третий издание).
 
 So the Russian YAML file includes the following information for Глава "chapter" and издание "edition":
 
