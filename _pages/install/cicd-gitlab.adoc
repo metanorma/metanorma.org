@@ -1,0 +1,76 @@
+---
+layout: docs-base
+html-class: docs-page
+title: GitLab CI Integration
+---
+
+== Overview
+
+Metanorma runs in GitLab CI using the `metanorma/metanorma` Docker image.
+Compilation and GitLab Pages deployment are supported. Organization-scale
+publishing (per-document releases, channels, aggregation) is GitHub-only.
+
+Metanorma provides reusable GitLab CI configurations at the
+https://github.com/metanorma/ci/main/cimas-config/gitlab-ci/[`metanorma/ci`] repository.
+
+== Quick setup
+
+Include the reusable configuration:
+
+.`.gitlab-ci.yml` (reusable workflow)
+[example]
+====
+[source,yml]
+----
+include:
+- remote: 'https://raw.githubusercontent.com/metanorma/ci/main/cimas-config/gitlab-ci/samples/docker.shared.yml'
+----
+====
+
+== Full example
+
+The following example compiles a Metanorma site and deploys it to GitLab Pages:
+
+.`.gitlab-ci.yml` (full configuration)
+[example]
+====
+[source,yml]
+----
+image:
+  name: metanorma/metanorma
+  entrypoint: [ "" ]
+
+cache:
+  paths:
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+    - curl -L --retry 3 https://raw.githubusercontent.com/metanorma/ci/main/gemfile-to-bundle-add.sh | bash
+    - bundle install
+    - metanorma site generate --output-dir public --agree-to-terms .
+
+  artifacts:
+    paths:
+      - public
+
+pages:
+  dependencies:
+    - build
+  stage: deploy
+  script:
+    - |
+      curl --location --output artifacts.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" \
+          "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/jobs/artifacts/master/download?job=build"
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+    - main
+----
+====

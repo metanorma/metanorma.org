@@ -1,0 +1,680 @@
+---
+layout: docs-base
+html-class: docs-page
+title: Organization-Scale Document Publishing Setup
+---
+
+== Overview
+
+Metanorma supports two publishing scales. A single-repo site compiles and deploys from one repository. An organization-scale portal aggregates documents from many repositories into a unified site with channel-based routing and display categorization.
+
+This page explains how to set up the two components of organization-scale publishing:
+
+. **Per-document repositories** — individual repos that compile and release documents with channel routing
+. **Portal aggregation site** — a single repo that discovers, fetches, and renders published documents
+
+For the conceptual architecture and a step-by-step tutorial, see link:/blog/2026-05-13-channel-based-publication/[the blog post].
+For the GitHub Actions reference (action inputs, release metadata protocol), see link:/install/cicd-github[GitHub Actions integration].
+For other CI/CD platforms, see link:/install/cicd[CI/CD integration].
+
+
+== Component 1: Per-document repositories
+
+=== Architecture principle
+
+The document repository is the **single point of truth for routing**. It decides which channel each document goes to, based on document ID patterns, stage, and doctype. The aggregator simply subscribes to channels — it does not re-filter.
+
+=== File checklist
+
+|===
+| File | Required | Purpose
+
+| `metanorma.yml`
+| yes
+| Compilation manifest — tells `metanorma site generate` which source files to compile
+
+| `metanorma.release.yml`
+| yes
+| Release manifest — channel routing, stage gating, pattern matching
+
+| `.github/workflows/release.yml`
+| yes
+| CI workflow for compiling and publishing GitHub Releases
+
+| `.github/workflows/generate.yml`
+| optional
+| CI workflow for building a preview site on every push
+
+| `Gemfile`
+| recommended
+| Ruby dependencies (typically just `metanorma-cli` + flavor gem)
+|===
+
+=== `metanorma.yml` (compilation manifest)
+
+This file lists the source files to compile. See link:/install/site/[site generation docs] for the full schema.
+
+Single document:
+
+[source,yaml]
+----
+metanorma:
+  source:
+    files:
+      - sources/cc-18011.adoc
+  collection:
+    name: Date and time — Explicit representation
+    organization: CalConnect
+----
+
+Multiple documents (glob patterns accepted):
+
+[source,yaml]
+----
+metanorma:
+  source:
+    files:
+      - "sources/*.adoc"
+  collection:
+    name: Administrative Documents
+    organization: CalConnect
+----
+
+=== `metanorma.release.yml` (release manifest)
+
+This file controls which documents get released, to which channels, and at which stages. It is the single point of truth for routing decisions.
+
+Full schema:
+
+[source,yaml]
+----
+defaults:
+  visibility: public               # default: public, private, or members
+
+documents:                         # document routing rules (first match wins)
+  - pattern: "prefix-*"            # glob pattern matching document IDs
+    channels: [public/standards]
+  - source: sources/specific.adoc  # exact source file match
+    channels: [public/reports]
+  - pattern: "draft-*"
+    visibility: members
+    channels: [members/drafts]
+  - stage: ["60"]                  # match by ISO stage code
+    channels: [public/standards]
+  - doctype: [report]              # match by document type
+    channels: [public/reports]
+  - channels: [public]             # catch-all default (no pattern/stage/doctype)
+----
+
+Each entry can use any combination of `pattern`, `stage`, and `doctype` to
+match documents. Entries are evaluated in order; first match wins. A
+catch-all entry with only `channels:` (no match fields) serves as the default.
+
+[width="100%",cols="2,1,3"]
+|===
+| Field | Type | Description
+
+| `defaults.visibility`
+| string
+| Default visibility for unmatched documents (`public`, `private`, or `members`).
+
+| `documents[].pattern`
+| string
+| Glob pattern matched against the document identifier (from RXL metadata). Example: `"cc-s-*"` matches `cc-s-51015`.
+
+| `documents[].source`
+| string
+| Exact source file path. Used for single-document repos or exceptions.
+
+| `documents[].stage`
+| string list
+| ISO stage codes to match (e.g., `"60"` for published, `"50"` for draft). Can be combined with `pattern` and `doctype`.
+
+| `documents[].doctype`
+| string list
+| Document types to match (e.g., `"standard"`, `"report"`). Can be combined with `pattern` and `stage`.
+
+| `documents[].channels`
+| string list
+| Channels for matched documents.
+|===
+
+Pattern matching rules:
+
+* `pattern` matches against the document identifier (e.g., `cc-s-51015`).
+* `source` matches against the file path suffix.
+* `stage` matches against the ISO stage code from RXL metadata.
+* `doctype` matches against the document type from RXL metadata.
+* Entries are checked in order; first match wins.
+* A catch-all entry (no match fields) at the end provides the default.
+
+[[document-stages]]
+=== Document stages
+
+Every Metanorma document has a stage, extracted from its RXL metadata:
+
+[width="40%",cols="1,1"]
+|===
+| Stage | ISO code
+
+| Working Draft | 20
+| Committee Draft | 30
+| Draft | 40
+| Published | 60
+| Withdrawn | 95
+|===
+
+Use the `stage` field in the release manifest to gate which stages trigger
+a release:
+
+[source,yaml]
+----
+documents:
+  - pattern: "cc-s-*"
+    stages: [published]        # only published documents get released
+    channels: [public/standards]
+----
+
+Stage filtering can also be applied at the CI level. See
+link:/install/cicd-github[GitHub Actions integration] for the `stages` action
+input.
+
+Published releases are **immutable** — the tag is created once and never
+overwritten. Draft releases are **rolling** — the same tag is updated in-place
+as the draft evolves.
+
+==== Real example: single-document repo (`cc-datetime-explicit`)
+
+[source,yaml]
+----
+documents:
+  - pattern: "cc-*"
+    channels: [public/standards]
+----
+
+One pattern, one channel. Any document with an ID starting with `cc-` goes to `public/standards`.
+
+==== Real example: multi-document repo (`cc-admin-documents`)
+
+[source,yaml]
+----
+documents:
+  - pattern: "cc-s-*"
+    channels: [public/standards]
+  - pattern: "cc-r-*"
+    channels: [public/reports]
+  - pattern: "cc-a-*"
+    channels: [public/admin]
+  - pattern: "cc-adv-*"
+    channels: [public/advisories]
+----
+
+Four patterns, four channels. Documents are routed by ID convention.
+
+==== Real example: directive repo (`cc-directive-standardization-publication`)
+
+[source,yaml]
+----
+documents:
+  - pattern: "cc-dir-*"
+    channels: [public/directives]
+----
+
+=== Release workflow
+
+The minimal release workflow delegates everything to a reusable workflow:
+
+[source,yml]
+----
+# .github/workflows/release.yml
+name: Release
+on:
+  push:
+    branches: [main]
+    paths: ['sources/**', 'metanorma.yml', 'metanorma.release.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    uses: actions-mn/.github/.github/workflows/metanorma-release.yml@main
+    with:
+      default-visibility: private
+    secrets: inherit
+----
+
+[width="100%",cols="2,1,3"]
+|===
+| Reusable workflow input | Default | Description
+
+| `default-visibility`
+| `public`
+| Visibility for documents not matched by the manifest. Use `private` in production.
+
+| `include-pattern`
+| `*`
+| Glob to filter documents for this run. Useful for selective re-release.
+
+| `force`
+| `false`
+| Force release even if content hash is unchanged.
+
+| `force-replace`
+| (empty)
+| Comma-separated patterns for selective force-replace of specific documents.
+|===
+
+For multi-document repos that need selective re-release, add workflow dispatch inputs:
+
+[source,yml]
+----
+on:
+  workflow_dispatch:
+    inputs:
+      include-pattern:
+        description: 'Glob pattern to filter documents (e.g. cc-1903*)'
+        required: false
+        default: '*'
+      force:
+        description: 'Force release even if unchanged'
+        required: false
+        type: boolean
+        default: false
+jobs:
+  release:
+    uses: actions-mn/.github/.github/workflows/metanorma-release.yml@main
+    with:
+      default-visibility: private
+      include-pattern: ${{ github.event.inputs.include-pattern || '*' }}
+      force: ${{ github.event.inputs.force || 'false' }}
+    secrets: inherit
+----
+
+=== Adding the `metanorma-release` topic
+
+The portal discovers document repositories via the `metanorma-release` GitHub topic. Add it to each repo:
+
+[source,bash]
+----
+gh api repos/{owner}/{repo}/topics -X PUT \
+  --field names='["metanorma-release"]'
+----
+
+=== Preview workflow (optional)
+
+A separate workflow builds a preview site on every push and PR:
+
+[source,yml]
+----
+# .github/workflows/generate.yml
+name: Generate
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    uses: actions-mn/.github/.github/workflows/metanorma-generate.yml@main
+    secrets: inherit
+----
+
+
+== Component 2: Portal aggregation site
+
+=== Architecture principle
+
+The aggregator **subscribes to channels**. It does not filter by stage, doctype, or contributor — all routing decisions are encoded in channel names by the document repos. The aggregator outputs `index.json` + files with full metadata. The site consumer (Jekyll, Hugo, etc.) handles display-time filtering.
+
+=== `metanorma.aggregate.yml`
+
+This file configures how the portal discovers, fetches, and categorizes published documents.
+
+[source,yaml]
+----
+source: github                     # Discovery source: "github" or "local:PATH"
+output_dir: _site/documents        # Output for extracted document files
+file_routing: flat                 # "flat", "by-document", or "by-format"
+cache_dir: .cache/aggregate        # Persistent cache for delta state
+data_dir: _data                    # Optional: write flattened documents.json
+
+channels:                          # Channels to aggregate (prefix matching)
+  - public                         # matches public/standards, public/reports, etc.
+
+include_drafts: false              # Include prerelease/draft releases
+
+display_categories:                # How to group documents on the site
+  - name: Standards, Specifications & Reports
+    slug: standards
+    doctypes: [standard, specification, report]
+  - name: Guides & Advisories
+    slug: guides
+    doctypes: [guide, advisory]
+
+github:
+  organizations:                   # Organizations to scan
+    - MyOrg
+  topic: metanorma-release         # Topic for repo discovery
+----
+
+[width="100%",cols="2,1,3"]
+|===
+| Field | Type | Description
+
+| `source`
+| string
+| Discovery source. `github` uses the GitHub API. `local:PATH` reads from a local directory.
+
+| `output_dir`
+| string
+| Directory where extracted document files are written.
+
+| `file_routing`
+| string
+| File layout: `flat` (`cc-18011.html`), `by-document` (`cc-18011/cc-18011.html`), or `by-format` (`html/cc-18011.html`).
+
+| `cache_dir`
+| string
+| Cache directory for delta state (ETags, content hashes). Enables incremental aggregation.
+
+| `data_dir`
+| string
+| If set, writes a flattened `documents.json` with Relaton-enriched data for site generators.
+
+| `channels`
+| string list
+| Channels to aggregate. Prefix matching: `public` matches `public/standards`, `public/reports`, etc.
+
+| `include_drafts`
+| boolean
+| Include prerelease/draft releases. Default: `false`.
+
+| `display_categories`
+| array
+| Display groupings for the site. Each entry has `name`, `slug`, and `doctypes`. Documents are matched by doctype.
+
+| `github.organizations`
+| string list
+| GitHub organizations to scan for repos.
+
+| `github.topic`
+| string
+| GitHub repository topic filter for discovery.
+|===
+
+=== How it works
+
+. **Discovery** — The aggregator finds all repos with the `metanorma-release` topic in the configured organizations.
+. **Pre-filter** — It reads each repo's `metanorma.release.yml` to extract channel names. Repos with no channel overlap are skipped (saves API calls).
+. **Fetch** — For matching repos, it downloads releases and their ZIP assets.
+. **Filter** — Releases are included if their channels match the aggregator's subscription.
+. **Output** — Files are extracted to `output_dir`, `index.json` is written, and optionally `documents.json` with Relaton-enriched data.
+
+=== Real example: `standards.calconnect.org`
+
+[source,yaml]
+----
+source: github
+output_dir: _site/cc
+file_routing: flat
+cache_dir: .cache/aggregate
+data_dir: _data
+
+channels:
+  - public
+
+include_drafts: true
+
+display_categories:
+  - name: Standards, Specifications & Reports
+    slug: standards
+    doctypes: [standard, specification, report]
+  - name: Guides & Advisories
+    slug: guides
+    doctypes: [guide, advisory]
+  - name: Directives
+    slug: directives
+    doctypes: [directive]
+  - name: Administrative
+    slug: administrative
+    doctypes: [administrative]
+  - name: Amendments & Technical Corrigenda
+    slug: amendments
+    doctypes: [amendment, technical-corrigendum]
+
+github:
+  organizations:
+    - CalConnect
+  topic: metanorma-release
+----
+
+The `channels: [public]` entry subscribes to all public channels (`public/standards`, `public/reports`, `public/admin`, `public/advisories`, `public/directives`) via prefix matching.
+
+=== Portal workflow
+
+[source,yml]
+----
+# .github/workflows/build_deploy.yml
+name: Build and Deploy
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *'            # daily refresh at 06:00 UTC
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: .cache/aggregate
+          key: mn-aggregate-${{ github.run_id }}
+          restore-keys: mn-aggregate-
+
+      - name: Aggregate released documents
+        uses: actions-mn/aggregate@v1
+        with:
+          organizations: CalConnect
+          topic: metanorma-release
+          output-dir: _site/cc
+          channels: 'public'
+          canonicalize: true
+          cache-dir: .cache/aggregate
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build site
+        run: bundle exec jekyll build
+
+      - uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/deploy-pages@v4
+----
+
+=== Running aggregation with the gem CLI
+
+You can also run aggregation locally using the `metanorma-release` gem:
+
+[source,sh]
+----
+# Using the config file (metanorma.aggregate.yml)
+bundle exec metanorma-release aggregate
+
+# From specific repos, overriding channels
+bundle exec metanorma-release aggregate \
+  --repos CalConnect/cc-datetime-explicit \
+  --channels public \
+  --output-dir _test
+----
+
+Set `GITHUB_TOKEN` as an environment variable for GitHub API access.
+
+=== Aggregate output structure
+
+----
+_site/cc/
+  index.json              # Document metadata index
+  relaton/
+    index.json            # Full Relaton-enriched bibliography (JSON)
+    index.yaml            # Same data in YAML
+  cc-18011-2018.html      # Document files (flat routing)
+  cc-18011-2018.pdf
+  cc-18011-2018.xml
+  cc-18011-2018.rxl
+
+_data/
+  documents.json          # Flattened document data for Jekyll/Hugo/etc.
+----
+
+The `index.json` contains all document metadata:
+
+[source,json]
+----
+{
+  "version": 1,
+  "generatedAt": "2026-05-20T12:00:00Z",
+  "summary": {
+    "repoCount": 51,
+    "documentCount": 168,
+    "channelsFound": ["public/standards", "public/reports"]
+  },
+  "documents": [
+    {
+      "slug": "cc-18011-2018",
+      "id": "CC 18011:2018",
+      "title": "Date and time — Explicit representation",
+      "stage": "published",
+      "doctype": "standard",
+      "channels": ["public/standards"],
+      "files": [
+        {"name": "cc-18011-2018.html", "path": "cc-18011-2018.html"},
+        {"name": "cc-18011-2018.pdf", "path": "cc-18011-2018.pdf"},
+        {"name": "cc-18011-2018.xml", "path": "cc-18011-2018.xml"}
+      ]
+    }
+  ]
+}
+----
+
+When `data_dir` is set, a flattened `documents.json` is also written with Relaton-enriched data (abstracts, contributors, committee info, display categories) suitable for use in Jekyll, Hugo, or any site generator templates.
+
+=== File routing
+
+The `file_routing` option in `metanorma.aggregate.yml` controls the output
+file layout:
+
+`flat` (default):: All files in `output-dir/` — `cc-18011-2018.html`, `cc-18011-2018.pdf`
+`by-document`:: `{output-dir}/{document-id}/` subdirectories — `cc-18011-2018/cc-18011-2018.html`
+`by-format`:: `{output-dir}/{ext}/` subdirectories — `html/cc-18011-2018.html`, `pdf/cc-18011-2018.pdf`
+
+
+== Using the `metanorma-release` gem CLI
+
+Install:
+
+[source,sh]
+----
+gem install metanorma-release
+----
+
+Or add to your Gemfile:
+
+[source,ruby]
+----
+gem "metanorma-release", "~> 0.2"
+----
+
+Commands:
+
+[source,sh]
+----
+# Package compiled documents (no publishing)
+metanorma-release package --output-dir _site
+
+# Release to GitHub
+metanorma-release release --platform github --token $GITHUB_TOKEN
+
+# Aggregate from all repos in an organization
+metanorma-release aggregate
+
+# Aggregate from specific repos
+metanorma-release aggregate --repos my-org/repo-a,my-org/repo-b
+
+# Force re-aggregation (ignore cache)
+metanorma-release aggregate --force
+----
+
+See the https://github.com/metanorma/metanorma-release[gem README] for the full CLI reference.
+
+
+== Tagging conventions
+
+Tags are generated automatically based on the publisher type. The `slug` section in the release manifest controls the strategy:
+
+[width="100%",cols="2,2,3"]
+|===
+| Strategy | Publisher | Tag format
+
+| `edition` (default)
+| CalConnect, ISO
+| `cc-18011-2018/ed1`
+
+| `internet-draft`
+| IETF drafts
+| `id-ietf-foo/1`
+
+| `rfc`
+| IETF RFCs
+| `rfc-1234/ed1`
+
+| `draft-suffix`
+| IEEE
+| `ieee-8021/d1`
+
+| `version`
+| IHO, OGC
+| `iho-s44/v1`
+|===
+
+Published releases use immutable tags (created once). Draft releases use rolling tags (updated in-place as the draft evolves).
+
+
+== Checklist: new repository setup
+
+. Create `metanorma.yml` with source files and collection metadata
+. Create `metanorma.release.yml` with pattern and channel routing
+. Create `.github/workflows/release.yml` using the reusable workflow
+. Add the `metanorma-release` topic to the repository
+. Push to `main` and verify a GitHub Release is created
+. Verify the portal picks up the document (may need a scheduled run or manual trigger)
+
+
+== Troubleshooting
+
+[width="100%",cols="2,3"]
+|===
+| Problem | Check
+
+| Release not created
+| `paths` filter in workflow (must include `sources/**`), stage gating in manifest, pattern match
+
+| Document missing from portal
+| Channel mismatch between release and aggregate config, missing `metanorma-release` topic, stale cache
+
+| Old version showing
+| Content hash unchanged (use `force: true` to override), clear `.cache/aggregate`
+
+| Wrong page on portal
+| `display_categories` mapping in `metanorma.aggregate.yml`, `doctype` in document RXL
+|===

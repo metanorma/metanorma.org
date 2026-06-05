@@ -1,0 +1,35 @@
+---
+title: Metanorma Release
+description: Per-document release management and multi-repo aggregation for organization-scale publishing.
+repo_url: https://github.com/metanorma/metanorma-release
+
+external_links:
+  - url: https://github.com/metanorma/metanorma-release
+  - url: https://rubygems.org/gems/metanorma-release
+
+tags: ["writtenin:Ruby", "interface:CLI"]
+
+feature_with_priority: 2
+---
+
+The `metanorma-release` gem manages the full release lifecycle of Metanorma
+documents: per-document GitHub Releases with channel-based routing,
+multi-repo aggregation with incremental caching, and Relaton-enriched
+metadata output.
+
+It provides the `metanorma-release` CLI with three commands:
+
+* `metanorma-release package` -- package compiled documents into zip archives
+* `metanorma-release release` -- publish documents as GitHub Releases with
+  metadata and channel assignments
+* `metanorma-release aggregate` -- discover, fetch, filter, and index released
+  documents from multiple repositories into a unified file tree
+
+The gem is used by the https://github.com/actions-mn[`actions-mn`] GitHub
+Actions (`actions-mn/release` and `actions-mn/aggregate`) but can also be run
+standalone for local testing or non-GitHub workflows.
+
+See link:/install/publication-setup/[Organization-Scale Publishing Setup] for
+the full setup guide and CLI reference.
+For GitHub Action inputs and release metadata protocol, see
+link:/install/cicd-github[GitHub Actions integration].
