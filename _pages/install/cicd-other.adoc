@@ -1,0 +1,121 @@
+---
+layout: docs-base
+html-class: docs-page
+title: Other CI/CD Platforms
+---
+
+== Overview
+
+Metanorma can be used on any CI/CD platform that supports Docker. The
+`metanorma/metanorma` Docker image is available on
+https://hub.docker.com/r/metanorma[Docker Hub].
+
+These platforms support compilation and artifact generation. Site deployment
+must be configured manually. Organization-scale publishing (per-document
+releases, channels, aggregation) is GitHub-only.
+
+For site generation options, see link:/install/site/[Site generation].
+For GitHub Actions (which support the full feature set), see
+link:/install/cicd-github[GitHub Actions integration].
+
+
+== Travis CI
+
+.`.travis.yml`
+[example]
+====
+[source,yml]
+----
+language: minimal
+
+services:
+  - docker
+
+before_install:
+  - docker pull metanorma/metanorma
+
+script:
+  - docker run --rm -v $(pwd):/metanorma metanorma/metanorma metanorma site generate --agree-to-terms
+----
+====
+
+
+== CircleCI
+
+.`.circleci/config.yml`
+[example]
+====
+[source,yml]
+----
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: metanorma/metanorma
+    steps:
+      - checkout
+      - run:
+          name: Generate Metanorma site
+          command: metanorma site generate --agree-to-terms
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
+----
+====
+
+
+== Jenkins
+
+.`Jenkinsfile`
+[example]
+====
+[source,groovy]
+----
+pipeline {
+    agent {
+        docker {
+            image 'metanorma/metanorma'
+        }
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'metanorma site generate --agree-to-terms'
+            }
+        }
+    }
+}
+----
+====
+
+
+== Bitrise
+
+.`bitrise.yml`
+[example]
+====
+[source,yml]
+----
+format_version: '8'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+
+workflows:
+  primary:
+    steps:
+      - git-clone: {}
+      - docker-compose:
+          inputs:
+            - content: |
+                version: '3'
+                services:
+                  metanorma:
+                    image: metanorma/metanorma
+                    volumes:
+                      - .:/metanorma
+                    command: metanorma site generate --agree-to-terms
+----
+====
