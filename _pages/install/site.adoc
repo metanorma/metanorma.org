@@ -53,6 +53,13 @@ Define output filenames using Liquid templating
 link:https://github.com/metanorma/metanorma/blob/d06ef49c90862bc08b2fc19f882094b6e6234249/lib/metanorma/compile/relaton_drop.rb[Relaton model]
 for variable access)
 
+[[cli-extensions]]
+`-x, --extensions FORMATS`:: Comma-separated list of output formats to generate
+(e.g. `html,rxl`), restricting output to those formats only.
+Overrides the manifest `extensions:` key (see <<manifest-extensions>>) and any
+per-collection `format:`.
+Defaults to all formats the document's flavor supports.
+
 `--agree-to-terms`:: Accept third-party licensing terms
 
 `--no-agree-to-terms`::: Reject licensing terms
@@ -97,6 +104,9 @@ metanorma:
     path: "templates"  <4>
     stylesheet: "custom.css" <5>
     output_filename: ""  <6>
+  extensions:  <7>
+    - html
+    - rxl
 ----
 <1> `metanorma.source.files`: Array of files to process
 <2> `metanorma.collection.name`: Site title
@@ -104,6 +114,7 @@ metanorma:
 <4> `metanorma.template.path`:  Custom template directory (see <<templates_and_styling>>)
 <5> [[manifest-stylesheet]] `metanorma.template.stylesheet`:  Custom stylesheet
 <6> `metanorma.template.output_filename`:  Filename template (see <<output_filename_templates>>)
+<7> [[manifest-extensions]] `metanorma.extensions`:  Restrict the output formats generated for all sources in this run (e.g. `html`, `rxl`), overriding any per-collection `format:`. Omit to generate every format the flavor supports. The CLI `--extensions` / `-x` flag (see <<cli-extensions>>) takes precedence over this key.
 
 By default, the file `metanorma.yml` located in the source directory would be
 used.
