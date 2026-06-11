@@ -565,7 +565,8 @@ image::/assets/author/topics/document-format/section-terms/fig-term-clause-corre
 
 ===== Empty terms collections
 
-A top-level empty terms collection, with no term subclauses inside it, will be recognised by Metanorma as such by default:
+A top-level empty terms collection, with no term subclauses inside it, will be
+recognised by Metanorma as such by default:
 
 [source,asciidoc]
 ----
@@ -574,10 +575,18 @@ A top-level empty terms collection, with no term subclauses inside it, will be r
 == Next Clause
 ----
 
-However, a subclause within a terms collection, intended to be an empty terms collection itself, needs special markup, just as a
-nonterm clause does, in order not to be processed as a single term. Mirroring `[.nonterm]`, the markup for an empty terms
-subcollection is `[.terms]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.5].
+However, a subclause within a terms collection, intended to be an empty terms
+collection itself, needs special markup, just as a `nonterm` clause does, in
+order not to be processed as a single term.
 
+To declare a subclause as an empty terms collection, the style attribute
+`[.terms]` is used.
+
+NOTE: The usage of `[.terms]` is intended to mirror `[.nonterm]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.5].
+
+.Example encoding of an empty terms collection
+[example]
+======
 [source,asciidoc]
 ----
 == Terms and definitions
@@ -591,6 +600,7 @@ subcollection is `[.terms]` [added in https://github.com/metanorma/metanorma-sta
 [.terms]
 === I am an empty terms collection
 ----
+======
 
 
 === Working with individual concepts

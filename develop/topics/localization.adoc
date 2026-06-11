@@ -102,13 +102,16 @@ end
 
 == Label vocabulary
 
-The English master vocabulary is at
+The main English vocabulary is at
 https://github.com/metanorma/isodoc/blob/main/lib/isodoc-yaml/i18n-en.yaml[`isodoc/lib/isodoc-yaml/i18n-en.yaml`].
+
 Every Metanorma flavour inherits its labels from this file and overrides
 selected entries per locale. A translator producing `i18n-{lang}.yaml`
 for a new language should provide a value for every entry below.
+
 This vocabulary is liable to change, and developers should check against the
-latest version of the `i18n-en.yaml` file when implementing a new language or updating an existing one.
+latest version of the `i18n-en.yaml` file when implementing a new language or
+updating an existing one.
 
 In code, labels are accessed in renderer code either as method-style attributes
 on the i18n object (`@i18n.foreword`, `@i18n.table`) or, for entries
@@ -116,7 +119,7 @@ nested under a hash key, by indexing the `@labels` map
 (`@i18n.labels["punct"]["em-dash"]`,
 `@i18n.labels["inflection"]["Clause"]["pl"]`). Several entries are
 templates rather than literal strings: `%` and `%1`/`%2`/`%3` are
-positional placeholders, and `{{ var1 | … }}` is a Liquid expression.
+positional placeholders, and `{{ var1 | ... }}` is a Liquid expression.
 See <<_templating_syntax>> for the template grammar and
 <<_grammatical_information>> for the inflection conventions referenced
 below.
@@ -133,7 +136,7 @@ front/back matter in the rendered output.
 `abstract`:: "Abstract".
 `acknowledgements`:: "Acknowledgements".
 `executivesummary`:: "Executive summary".
-`clause`:: "Clause" (main section of document).
+`clause`:: "Clause" (a main section of document).
 `annex`:: "Annex".
 `appendix`:: "Appendix".
 `index`:: "Index".
@@ -423,5 +426,5 @@ As of this writing, ordinals of numbers (e.g. "third", "третье") are the o
 * Other entries in the YAML file can be invoked through
 `#{ self["path-to-entry"] }` [added in https://github.com/metanorma/isodoc-18n/releases/tag/v1.4.1].
 For example, the enumeration comma for Japanese is different in different flavours, and can be defined specific to a flavour or even a document.
-An entry like `"%1#{ self["punct"]["enum-comma"]%2"` allows Metanorma to retrieve whatever the current definition of the enumeration comma is,
+An entry like `"%1#{ self["punct"]["enum-comma"] }%2"` allows Metanorma to retrieve whatever the current definition of the enumeration comma is,
 and use it elsewhere in the configuration.
