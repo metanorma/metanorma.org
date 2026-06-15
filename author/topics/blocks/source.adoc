@@ -146,3 +146,13 @@ renders as:
 end
 --
 ====
+
+NOTE: The `{{{ ... }}}` markup already converts inline AsciiDoc, so it does not
+need to be combined with the `macros` substitution (`subs="macros"` or
+`subs="verbatim,macros"`). If it _is_ combined, and a `{{{ ... }}}` span contains
+an inline macro such as `image:`, AsciiDoc resolves that macro into an element
+*before* Metanorma processes the delimiters; Metanorma then strips the delimiters
+around the resolved element, but any non-macro markup in the same span (for
+example `*bold*`) is left as literal text rather than being converted. To have
+all of a span's content converted, use `{{{ ... }}}` on its own, without
+`subs="macros"`.
