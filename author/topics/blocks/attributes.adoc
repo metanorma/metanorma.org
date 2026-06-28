@@ -51,3 +51,43 @@ renders:
 image::/assets/author/topics/document-format/text/fig-left-aligned.png[Illustration of left-alignment for multiple line-breaks]
 ====
 
+== Custom CSS class
+
+A block can be given one or more custom CSS classes through the `class`
+attribute [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.7].
+The class is passed through to the `class` attribute of the corresponding HTML
+element, so that CSS or JavaScript can target specific blocks (for example, to
+make a particular table sortable).
+
+[example]
+====
+[source,asciidoc]
+--
+[class="sortable"]
+|===
+| Name | Value
+| a | 1
+| b | 2
+|===
+--
+====
+
+The custom class is _additive_: it is appended to the block's built-in HTML
+class rather than replacing it. For example, a figure with `[class="sortable"]`
+renders as `<figure class="figure sortable">`, and a table as
+`<table class="MsoISOTable sortable">`. Provide multiple classes as a
+space-separated list, for example `[class="sortable fixed"]`.
+
+The `class` attribute is honoured for the following blocks: paragraphs, source
+code, figures, examples, quotes, ordered and unordered lists, notes,
+admonitions, pseudocode, and tables. For blocks that take a positional style
+(such as source code, examples, and admonitions), give `class` as a named
+attribute alongside it, for example `[source,ruby,class="special"]` or
+`[NOTE,class="special"]`.
+
+[NOTE]
+====
+The custom class is emitted to HTML output only. Word output does not carry it,
+because Word CSS is too inflexible to honour it reliably.
+====
+
