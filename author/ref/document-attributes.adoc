@@ -54,6 +54,22 @@ If set, do not use the `relaton` or `iev` gem functionality to look up
 ISO and IEV references online, nor the cache of `relaton` and `iev` searches.
 
 
+=== Publication date cutoff
+
+By default, bibliographic references are resolved as of the document's own
+publication date, derived from its date attributes (such as `:copyright-year:`
+and `:revdate:`): an undated reference resolves to the latest edition published
+on or before that date, and a reference's status (for example, withdrawn or
+replaced) is shown as of that date rather than as of today.
+
+`:bibliography-cutoff-date:`::
+Override the publication date used for the bibliographic cutoff, instead of
+deriving it from the document's own date attributes. Accepts a date
+(`YYYY`, `YYYY-MM`, or `YYYY-MM-DD`); the value `none` (or `false`) disables the
+cutoff entirely, so references resolve to their latest editions and current
+status. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.8]
+
+
 === Caching
 
 For bibliographic caches, see
