@@ -1,0 +1,187 @@
+---
+title: Metanorma-IETF library documentation
+description: >-
+  Library documentation for Metanorma-IETF, the Metanorma flavor for IETF Internet-Drafts and RFCs.
+  Synced from the upstream gem README at github.com/metanorma/metanorma-ietf.
+source_url: https://github.com/metanorma/metanorma-ietf/blob/main/README.adoc
+is_library_doc: true
+layout: page
+---
+
+:source-highlighter: coderay
+:icons: font
+
+`metanorma-ietf` lets you write IETF Internet-Drafts and RFCs via Metanorma.
+
+
+== Functionality
+
+This gem processes https://www.metanorma.com[Metanorma documents] following
+a template for generating IETF deliverables.
+
+Metanorma-IETF adheres to AsciiRFC syntax, an AsciiDoc syntax for writing IETF documents
+developed by the Metanorma team.
+
+The gem currently inherits from the https://github.com/metanorma/metanorma-standoc
+gem, and aligns closely to it.
+
+The following outputs are generated:
+
+* RFC XML v3
+** Metanorma `doctype`: `ietf`
+** Metanorma file extension: `xmlrfc` (not `xml`!)
+
+The "`xml2rfc`" Vocabulary (hereinafter "`RFC XML`") is an XML-based language
+used for writing
+https://www.ietf.org/id-info/guidelines.html[Internet-Drafts]
+and https://tools.ietf.org/html/rfc7322[RFCs (RFC7322)].
+
+This gem allows you to author these types of documents in AsciiDoc, and outputs
+RFC XML output in v3 format:
+
+* v3 RFC XML (https://tools.ietf.org/html/rfc7991[RFC 7991])
+
+Its syntax is designed to be "`native-asciidoctor`" as much as possible, with
+some templated use of attributes to convey added information for RFC XML
+output.
+
+For further information about the markup used, please refer to the
+https://www.metanorma.org/author/ietf/[Writing IETF I-Ds and RFCs using AsciiDoc & Metanorma].
+
+== Usage
+
+The preferred way to invoke this gem is via the `metanorma` command:
+
+[source,console]
+----
+$ metanorma --type ietf a.adoc                     # output RFC XML v3, text, HTML
+$ metanorma --type ietf --extensions xmlrfc a.adoc # output RFC XML v3
+----
+
+The gem translates the document into IETF XML RFC format. By default, the gem
+then runs the `xml2rfc` tool to generate text and HTML versions as well.
+
+== Installation
+
+=== Metanorma
+
+Please visit https://www.metanorma.com for installation instructions
+for all platforms.
+
+=== Gem usage
+
+Add this line to your application's Gemfile:
+
+[source,ruby]
+----
+gem "metanorma-ietf"
+----
+
+And then execute:
+
+[source,console]
+----
+$ bundle
+----
+
+== Quick Start / Template
+
+Clone the
+https://github.com/metanorma/rfc-asciirfc-minimal[`rfc-asciirfc-minimal`]
+repository as a template, and populate it for your Asciidoc RFCs and
+Internet-Drafts:
+
+[source,console]
+----
+$ git clone https://github.com/metanorma/rfc-asciirfc-minimal
+----
+
+See the https://github.com/metanorma/rfc-asciirfc-minimal[README] of that document for
+more information.
+
+== Documentation
+
+See https://www.metanorma.com/author/ietf/[Writing IETF I-Ds and RFCs using AsciiDoc & Metanorma].
+
+== Usage
+
+Converting your AsciiDoc to RFC XML is a simple as running the appropriate
+`metanorma` command.
+
+Once processing completes, you should see the RFC XML file `draft-example-00.xml` in the
+same directory.
+
+=== RFC XML v3 Example
+
+ifdef::env-github[]
+include::spec/examples/example-v3.adoc[]
+endif::[]
+ifndef::env-github[]
+[source,asciidoc]
+----
+include::spec/examples/example-v3.adoc[]
+----
+endif::[]
+
+== Development
+
+We follow Sandi Metz's Rules for this gem, you can read the
+http://robots.thoughtbot.com/post/50655960596/sandi-metz-rules-for-developers[description of the rules here].
+
+All new code should follow these
+rules. If you make changes in a pre-existing file that violates these rules you
+should fix the violations as part of your contribution.
+
+=== Setup
+
+Clone the repository.
+
+[source,sh]
+----
+git clone https://github.com/metanorma/metanorma-ietf
+----
+
+Setup your environment.
+
+[source,sh]
+----
+bin/setup
+----
+
+Run the test suite
+
+[source,sh]
+----
+bin/rspec
+----
+
+== Contributing
+
+First, thank you for contributing! We love pull requests from everyone. By
+participating in this project, you hereby grant https://www.ribose.com[Ribose Inc.] the
+right to grant or transfer an unlimited number of non exclusive licenses or
+sub-licenses to third parties, under the copyright covering the contribution
+to use the contribution by all means.
+
+Here are a few technical guidelines to follow:
+
+. Open an https://github.com/metanorma/metanorma-ietf/issues[issue] to discuss a new feature.
+. Write tests to support your new feature.
+. Make sure the entire test suite passes locally and on CI.
+. Open a Pull Request.
+. https://github.com/thoughtbot/guides/tree/master/protocol/git#write-a-feature[Squash your commits] after receiving feedback.
+. Party!
+
+== Credits
+
+This gem is developed, maintained and funded by https://www.ribose.com[Ribose Inc.]
+
+== Examples
+
+* Example documents are available at the https://github.com/metanorma/mn-samples-ietf[mn-samples-ietf] repository.
+
+* Document templates are available at the https://github.com/metanorma/mn-templates-ietf[mn-templates-ietf] repository.
+
+== Notes
+
+Metanorma-IETF was formerly published as the `asciidoctor-rfc` gem.

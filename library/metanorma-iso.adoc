@@ -1,0 +1,83 @@
+---
+title: Metanorma-ISO library documentation
+description: >-
+  Library documentation for Metanorma-ISO, the Metanorma flavor for ISO standards.
+  Synced from the upstream gem README at github.com/metanorma/metanorma-iso.
+source_url: https://github.com/metanorma/metanorma-iso/blob/main/README.adoc
+is_library_doc: true
+layout: page
+---
+
+
+== Functionality and Approach
+
+For the conceptual underpinnings of this gem, and the other gems in the Metanorma suite, see the https://github.com/metanorma/metanorma-model-standoc/blob/master/README.adoc[metanorma-standoc README].
+
+== Outputs
+
+This gem processes https://www.metanorma.com[Metanorma documents] following a template for generating ISO
+International Standards. The following outputs are generated.
+
+* The XML representation of the document, intended as a document model for ISO
+International Standards. 
+* Microsoft Word output (`.doc`), following the style conventions of the 
+https://www.iso.org/iso-templates.html[ISO Standard Microsoft Word template]. 
+* HTML. For ISO, two HTML files are generated: the `.html` file follows ISO
+conventions in rendering, which looks very similar to the Word output, while
+the `-alt.html` file has richer styling.
+* PDF. Not supported for the ISO gem, but available for other specifications,
+generated from the HTML file.
+
+The following input formats are supported:
+
+* http://asciidoctor.org/[Asciidoctor]
+(This AsciiDoc syntax for writing ISO standards is hereby named "AsciiISO".)
+
+== Usage
+
+The preferred way to invoke this gem is via the `metanorma` script:
+
+[source,console]
+----
+$ metanorma --type iso a.adoc                   # output HTML and DOC
+$ metanorma --type iso --extensions html a.adoc # output just HTML
+$ metanorma --type iso --extensions doc a.adoc  # output just DOC
+$ metanorma --type iso --extensions xml a.adoc  # output CSD XML
+----
+
+The gem translates the document into ISO XML format, and then
+validates its output against the ISO XML document model; errors are
+reported to console against the XML, and are intended for users to
+check that they have provided all necessary components of the
+document.
+
+The gem then converts the XML into HTML and DOC.
+
+=== Installation
+
+If you are using a Mac, the https://github.com/metanorma/metanorma-macos-setup
+repository has instructions on setting up your machine to run Metanorma
+scripts such as this one. You need only run the following in a Terminal console:
+
+[source,console]
+----
+$ bash <(curl -s https://raw.githubusercontent.com/metanorma/metanorma-macos-setup/master/metanorma-setup)
+$ gem install metanorma-iso
+$ gem install metanorma-cli 
+----
+
+The metanorma-cli gem is the command-line interface for the Metanorma tool suite
+(incorporating the `metanorma` executable seen above).
+
+== Documentation
+
+See https://www.metanorma.com/author/iso/[The ISO flavor of Metanorma].
+
+== Examples
+
+* Example documents are available at the https://github.com/metanorma/mn-samples-iso[mn-samples-iso] repository.
+* Document templates are available at the https://github.com/metanorma/mn-templates-iso[mn-templates-iso] repository.
+
+== Notes
+
+Metanorma-ISO was formerly published as `asciidoctor-iso`.

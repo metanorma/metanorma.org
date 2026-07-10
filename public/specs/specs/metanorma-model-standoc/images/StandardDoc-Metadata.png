@@ -1,0 +1,360 @@
+digraph G {
+	graph [bb="0,0,1701.5,1284",
+		nodesep="1.2.equally",
+		pad=0.5,
+		rankdir=BT,
+		ranksep="1.2.equally",
+		splines=ortho
+	];
+	node [fontname="Helvetica-bold",
+		label="\N",
+		shape=box
+	];
+	edge [color=gray50];
+	StandardAmendBlock	[fontname=Helvetica,
+		height=1.0278,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>StandardAmendBlock</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+autoNumber : AutoNumber&#91;0..*&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="568.88,1217",
+		shape=plain,
+		width=3.066];
+	BibDataExtensionType	[fontname=Helvetica,
+		height=1.0278,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«BasicDocument»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>BibDataExtensionType</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="LEFT"></TD></TR>
+  </TABLE></TD>
+  </TR>
+
+  </TABLE>>,
+		pos="1119.9,332",
+		shape=plain,
+		width=2.3472];
+	StandardBibDataExtensionType	[fontname=Helvetica,
+		height=2.2778,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>StandardBibDataExtensionType</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+schema-version : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+doctype : String</TD></TR>
+            <TR><TD ALIGN="LEFT">+doctypeAbbreviation : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+subdoctype : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+editorialGroup : EditorialGroupType&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+ics : IcsType&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+structuredidentifier : StructuredIdentifierType&#91;0..*&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="1119.9,627",
+		shape=plain,
+		width=4.5035];
+	BibDataExtensionType -> StandardBibDataExtensionType	[arrowhead=onormal,
+		arrowtail=onormal,
+		dir=back,
+		pos="s,1119.9,368.77 1119.9,380.28 1119.9,380.28 1119.9,545.08 1119.9,545.08"];
+	BibData	[fontname=Helvetica,
+		height=1.0278,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«BasicDocument»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>BibData</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="LEFT"></TD></TR>
+  </TABLE></TD>
+  </TR>
+
+  </TABLE>>,
+		pos="716.88,37",
+		shape=plain,
+		width=1.8368];
+	StandardBibData	[fontname=Helvetica,
+		height=1.4444,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>StandardBibData</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+relation : StandardDocumentRelation&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+amend : AmendBlock&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+ext : StandardBibDataExtensionType</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="716.88,332",
+		shape=plain,
+		width=3.8889];
+	BibData -> StandardBibData	[arrowhead=onormal,
+		arrowtail=onormal,
+		dir=back,
+		pos="s,716.88,73.765 716.88,85.279 716.88,85.279 716.88,280.1 716.88,280.1"];
+	DocumentRelation	[fontname=Helvetica,
+		height=1.0278,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«Relaton»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>DocumentRelation</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="LEFT"></TD></TR>
+  </TABLE></TD>
+  </TR>
+
+  </TABLE>>,
+		pos="419.88,332",
+		shape=plain,
+		width=1.9722];
+	StandardDocumentRelation	[fontname=Helvetica,
+		height=1.0278,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>StandardDocumentRelation</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+bibitem : StandardReducedBibliographicItem</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="428.88,627",
+		shape=plain,
+		width=4.1493];
+	DocumentRelation -> StandardDocumentRelation	[arrowhead=onormal,
+		arrowtail=onormal,
+		dir=back,
+		pos="s,419.88,368.77 419.88,380.28 419.88,380.28 419.88,590.24 419.88,590.24"];
+	ReducedBibliographicItem	[fontname=Helvetica,
+		height=1.0278,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«Relaton»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>ReducedBibliographicItem</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="LEFT"></TD></TR>
+  </TABLE></TD>
+  </TR>
+
+  </TABLE>>,
+		pos="96.875,627",
+		shape=plain,
+		width=2.691];
+	StandardReducedBibliographicItem	[fontname=Helvetica,
+		height=1.0278,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>StandardReducedBibliographicItem</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+amend : AmendBlock&#91;0..*&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="428.88,922",
+		shape=plain,
+		width=3.5035];
+	ReducedBibliographicItem -> StandardReducedBibliographicItem	[arrowhead=onormal,
+		arrowtail=onormal,
+		dir=back,
+		pos="s,96.875,663.77 96.875,675.28 96.875,675.28 96.875,922 96.875,922 96.875,922 208.97,922 302.89,922"];
+	StandardReducedBibliographicItem -> StandardAmendBlock	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,506.75,958.77 506.75,969.98 506.75,969.98 506.75,1180.2 506.75,1180.2"];
+	StandardBibData -> StandardAmendBlock	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,628.75,383.73 628.75,394.95 628.75,394.95 628.75,1180.4 628.75,1180.4"];
+	StandardBibData -> StandardDocumentRelation	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,577.24,376 566.03,376 566.03,376 533.88,376 533.88,376 533.88,376 533.88,520.52 533.88,590.23"];
+	StandardBibData -> StandardBibDataExtensionType	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,847.44,383.86 847.44,395.08 847.44,395.08 847.44,567 847.44,567 847.44,567 899.35,567 957.86,567"];
+	StandardDocumentRelation -> StandardReducedBibliographicItem	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,428.88,663.77 428.88,674.98 428.88,674.98 428.88,885.24 428.88,885.24"];
+	EditorialGroupType	[fontname=Helvetica,
+		height=1.0278,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>EditorialGroupType</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+technicalcommittee : TechnicalCommitteeType&#91;1..*&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="1531.9,922",
+		shape=plain,
+		width=4.7118];
+	StandardBibDataExtensionType -> EditorialGroupType	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,1281.8,627 1293,627 1293,627 1531.9,627 1531.9,627 1531.9,627 1531.9,806.15 1531.9,885.23"];
+	IcsType	[fontname=Helvetica,
+		height=1.2361,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>IcsType</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+code : String</TD></TR>
+            <TR><TD ALIGN="LEFT">+text : String&#91;0..1&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="1211.9,922",
+		shape=plain,
+		width=1.7847];
+	StandardBibDataExtensionType -> IcsType	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,1211.9,708.78 1211.9,720 1211.9,720 1211.9,877.56 1211.9,877.56"];
+	StructuredIdentifierType	[fontname=Helvetica,
+		height=3.5278,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>StructuredIdentifierType</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+type : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+agency : String&#91;1..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+class : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+docnumber : String</TD></TR>
+            <TR><TD ALIGN="LEFT">+partnumber : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+edition : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+version : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+supplementtype : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+supplementnumber : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+amendment : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+corrigendum : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+year : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+language : String&#91;0..1&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="949.88,922",
+		shape=plain,
+		width=3.1076];
+	StandardBibDataExtensionType -> StructuredIdentifierType	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,1009.8,708.78 1009.8,720 1009.8,720 1009.8,795.24 1009.8,795.24"];
+	TechnicalCommitteeType	[fontname=Helvetica,
+		height=1.8611,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>TechnicalCommitteeType</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+number : Integer&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+identifier : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+type : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+prefix : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+text : String</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="1531.9,1217",
+		shape=plain,
+		width=2.5972];
+	EditorialGroupType -> TechnicalCommitteeType	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,1531.9,958.77 1531.9,969.98 1531.9,969.98 1531.9,1150.2 1531.9,1150.2"];
+}

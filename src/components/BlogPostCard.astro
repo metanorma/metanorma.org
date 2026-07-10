@@ -1,0 +1,13 @@
+---
+import type { BlogPost } from '../data/posts'
+import { formatDate } from '../lib/format-date'
+
+interface Props { post: BlogPost }
+const { post } = Astro.props
+---
+
+<a href={post.url} class="card-lift rounded-xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg)] p-6 no-underline">
+  <time class="text-[13px] text-[var(--mn-c-text-3)]">{formatDate(post.date)}</time>
+  <h2 class="my-2 text-xl font-semibold text-[var(--mn-c-text-1)]">{post.title}</h2>
+  {post.description && <p class="text-sm leading-relaxed text-[var(--mn-c-text-2)]">{post.description}</p>}
+</a>

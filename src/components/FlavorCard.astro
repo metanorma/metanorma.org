@@ -1,0 +1,19 @@
+---
+import type { Flavor } from '../data/types'
+import FlavorLogo from './FlavorLogo.astro'
+import CategoryBadge from './CategoryBadge.astro'
+interface Props { flavor: Flavor }
+const { flavor } = Astro.props
+const isExperimental = flavor.status === 'experimental'
+---
+
+<a href={`/flavors/${flavor.id}/`} class="card-lift flex flex-col gap-1 rounded-xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg)] p-5 no-underline">
+  <div class="mb-2 flex items-center justify-between">
+    <FlavorLogo flavor={flavor} />
+    <CategoryBadge label={flavor.category} />
+  </div>
+  <h3 class="m-0 text-lg font-bold text-[var(--mn-c-text-1)]">{flavor.label}</h3>
+  <p class="m-0 text-[13px] text-[var(--mn-c-text-3)]">{flavor.fullName}</p>
+  <p class="mt-2 text-sm text-[var(--mn-c-text-2)]">{flavor.description}</p>
+  {isExperimental && <span class="mt-1 inline-block w-fit rounded bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase text-amber-600">Beta</span>}
+</a>

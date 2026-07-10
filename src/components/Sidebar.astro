@@ -1,0 +1,112 @@
+---
+import { sidebarFor } from '../config/site'
+import { sourcePathToUrl } from '../lib/nav-tree'
+import type { NavNode } from '../lib/nav-tree'
+
+interface Props { pathname: string }
+const { pathname } = Astro.props
+const nav = sidebarFor(pathname)
+
+function norm(url: string): string {
+  return '/' + url.replace(/^\/+|\/+$/g, '') + '/'
+}
+function fileToUrl(file?: string): string {
+  return file ? sourcePathToUrl(file) : '#'
+}
+function isActive(file?: string): boolean {
+  return file ? fileToUrl(file) === norm(pathname) : false
+}
+function isInSection(file?: string): boolean {
+  if (!file) return false
+  const linkUrl = fileToUrl(file)
+  const pathUrl = norm(pathname)
+  return linkUrl.startsWith(pathUrl) && pathUrl !== (nav?.prefix || '')
+}
+function groupContainsPath(items?: NavNode[]): boolean {
+  return (items ?? []).some(n =>
+    isActive(n.file) || isInSection(n.file) ||
+    (n.items && groupContainsPath(n.items))
+  )
+}
+---
+
+{nav && nav.items.length > 0 && (
+  <aside class="sidebar-scroll sticky top-16 hidden h-[calc(100vh-4rem)] w-72 flex-shrink-0 self-start overflow-y-auto overflow-x-hidden lg:block">
+    <nav class="space-y-1 py-6 pr-2 text-sm">
+      {nav.title && (
+        <div class="mb-3 flex items-center justify-between px-3">
+          <p class="text-xs font-bold uppercase tracking-wider text-[var(--mn-c-text-3)]">
+            {nav.title}
+          </p>
+          <button type="button" class="text-[10px] font-medium uppercase text-[var(--mn-c-text-3)] hover:text-[var(--mn-c-brand-1)]" onclick="var d=document.querySelectorAll('aside.sidebar-scroll details');var a=Array.from(d).some(function(x){return !x.open});d.forEach(function(x){x.open=a})">
+            {'+/−'}
+          </button>
+        </div>
+      )}
+      {nav.items.map(item => (
+        <div>
+          {item.items ? (
+            <details open={groupContainsPath(item.items)}>
+              <summary class="cursor-pointer list-none rounded-lg px-3 py-2 text-xs font-bold uppercase tracking-wider text-[var(--mn-c-text-3)] hover:text-[var(--mn-c-text-2)]">
+                {item.title}
+              </summary>
+              <div class="mt-0.5 ml-3 space-y-0.5 border-l border-[var(--mn-c-divider)] pl-3">
+                {item.file && (
+                  <a href={fileToUrl(item.file)} title="Overview"
+                     class={`block rounded-md px-3 py-1.5 no-underline transition-colors ${
+                       isActive(item.file)
+                         ? 'bg-[var(--mn-c-brand-soft)] font-medium text-[var(--mn-c-brand-1)]'
+                         : 'text-[var(--mn-c-text-3)] hover:text-[var(--mn-c-text-1)]'
+                     }`}>Overview</a>
+                )}
+                {(item.items ?? []).map(sub => (
+                  <div>
+                    {sub.items ? (
+                      <details open={groupContainsPath(sub.items)}>
+                        <summary class="cursor-pointer list-none rounded-md px-3 py-1.5 font-medium text-[var(--mn-c-text-3)] hover:text-[var(--mn-c-text-1)]">
+                          {sub.title}
+                        </summary>
+                        <div class="mt-0.5 ml-3 space-y-0.5 border-l border-[var(--mn-c-divider)] pl-3">
+                          {sub.file && (
+                            <a href={fileToUrl(sub.file)} title="Overview"
+                               class={`block rounded-md px-3 py-1.5 text-[13px] no-underline transition-colors ${
+                                 isActive(sub.file)
+                                   ? 'bg-[var(--mn-c-brand-soft)] font-medium text-[var(--mn-c-brand-1)]'
+                                   : 'text-[var(--mn-c-text-3)] hover:text-[var(--mn-c-text-1)]'
+                               }`}>Overview</a>
+                          )}
+                          {(sub.items ?? []).map(leaf => (
+                            <a href={fileToUrl(leaf.file)} title={leaf.description || leaf.title}
+                               class={`block rounded-md px-3 py-1.5 text-[13px] no-underline transition-colors ${
+                                 isActive(leaf.file)
+                                   ? 'bg-[var(--mn-c-brand-soft)] font-medium text-[var(--mn-c-brand-1)]'
+                                   : 'text-[var(--mn-c-text-3)] hover:text-[var(--mn-c-text-1)]'
+                               }`}>{leaf.title}</a>
+                          ))}
+                        </div>
+                      </details>
+                    ) : (
+                      <a href={fileToUrl(sub.file)} title={sub.description || sub.title}
+                         class={`block rounded-md px-3 py-1.5 no-underline transition-colors ${
+                           isActive(sub.file)
+                             ? 'bg-[var(--mn-c-brand-soft)] font-medium text-[var(--mn-c-brand-1)]'
+                             : 'text-[var(--mn-c-text-3)] hover:text-[var(--mn-c-text-1)]'
+                         }`}>{sub.title}</a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </details>
+          ) : item.file ? (
+            <a href={fileToUrl(item.file)} title={item.description || item.title}
+               class={`block rounded-lg px-3 py-2 font-medium no-underline transition-colors ${
+                 isActive(item.file)
+                   ? 'bg-[var(--mn-c-brand-soft)] text-[var(--mn-c-brand-1)]'
+                   : 'text-[var(--mn-c-text-2)] hover:bg-[var(--mn-c-bg-soft)] hover:text-[var(--mn-c-text-1)]'
+               }`}>{item.title}</a>
+          ) : null}
+        </div>
+      ))}
+    </nav>
+  </aside>
+)}

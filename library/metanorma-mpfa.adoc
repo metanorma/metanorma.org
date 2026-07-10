@@ -1,0 +1,80 @@
+---
+title: Metanorma-MPFA library documentation
+description: >-
+  Library documentation for Metanorma-MPFA, the Metanorma flavor for MPFA documents.
+  Synced from the upstream gem README at github.com/metanorma/metanorma-mpfa.
+source_url: https://github.com/metanorma/metanorma-mpfa/blob/main/README.adoc
+is_library_doc: true
+layout: page
+---
+
+WARNING: This gem is still under development. Moreover, unlike other Metanorma gems, 
+there is no formal MPFA specification, and this work is still currently exploratory.
+
+== Functionality
+
+This gem processes https://www.metanorma.com/[Metanorma documents] following
+a template for generating documents for the http://www.mpfa.org.hk[Mandatory Provident Fund Schemes Authority of Hong Kong].
+
+The gem currently inherits from the https://github.com/metanorma/metanorma-standoc
+gem, and aligns closely to it. Refer to https://metanorma.com[] for guidance.
+
+== Usage
+
+The preferred way to invoke this gem is via the `metanorma` script:
+
+[source,console]
+----
+$ metanorma --type mpfa a.adoc                   # output HTML and DOC
+$ metanorma --type mpfa --extensions html a.adoc # output just HTML
+$ metanorma --type mpfa --extensions doc a.adoc  # output just DOC
+$ metanorma --type mpfa --extensions xml a.adoc  # output MPFA XML
+----
+
+The gem translates the document into Metanorma XML format, and then
+validates its output against the MPFA Metanorma XML document model; errors are
+reported to console against the XML, and are intended for users to
+check that they have provided all necessary components of the
+document.
+
+The gem then converts the XML into output formats such as HTML and DOC.
+
+Sample documents are available at https://github.com/metanorma/mn-samples-mpfa
+
+=== Installation
+
+If you are using a Mac, the https://github.com/metanorma/metanorma-macos-setup
+repository has instructions on setting up your machine to run Metanorma
+scripts such as this one. You need only run the following in a Terminal console:
+
+[source,console]
+----
+$ bash <(curl -s https://raw.githubusercontent.com/metanorma/metanorma-macos-setup/master/metanorma-setup)
+$ gem install metanorma-mpfa
+$ gem install metanorma-cli
+----
+
+The metanorma-cli gem is the command-line interface for the Metanorma tool suite
+(incorporating the `metanorma` executable seen above).
+
+== Documentation
+
+See https://www.metanorma.com/author/mpfa/[The MPFA flavor of Metanorma]
+
+== Data Models
+
+The MPFA Document format is an instance of the
+https://github.com/metanorma/metanorma-model-standoc[StandardDocument model]. Details of
+this general model can be found on its page. 
+
+== Examples
+
+* Example documents are available at the https://github.com/metanorma/mn-samples-mpfa[MPFA Samples] repository.
+
+////
+* Document templates are available at the https://github.com/metanorma/mn-templates-mpf[mn-templates-mpf] repository.
+/////
+
+== Notes
+
+Metanorma-MPFA was formerly published as `metanorma-mpfd`.

@@ -1,0 +1,30 @@
+---
+import BaseLayout from './BaseLayout.astro'
+import TOC from '../components/TOC.astro'
+import type { SiteFrontmatter } from '../data/types'
+import type { MarkdownHeading } from 'astro'
+
+const { frontmatter, headings } = Astro.props as { frontmatter: SiteFrontmatter; headings?: MarkdownHeading[] }
+const title = frontmatter.title || ''
+const description = frontmatter.description || ''
+const tocHeadings = (headings || []).filter(h => h.depth >= 2 && h.depth <= 4)
+const hasToc = tocHeadings.length >= 2
+---
+
+<BaseLayout title={title} description={description} frontmatter={frontmatter}>
+  {hasToc ? (
+    <div class="mx-auto grid max-w-[1440px] gap-8 px-6 pb-8 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_224px]">
+      <div>
+        <TOC headings={tocHeadings} variant="mobile" bp="lg" />
+        <article class="mn-rendered mx-auto max-w-3xl px-2 py-12">
+          <slot />
+        </article>
+      </div>
+      <TOC headings={tocHeadings} variant="desktop" bp="lg" />
+    </div>
+  ) : (
+    <article class="mn-rendered mx-auto max-w-3xl px-6 py-12">
+      <slot />
+    </article>
+  )}
+</BaseLayout>

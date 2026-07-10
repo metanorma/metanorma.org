@@ -1,0 +1,27 @@
+---
+import { gems } from '../data/software'
+import CategoryBadge from './CategoryBadge.astro'
+
+const order = ['core', 'cli', 'flavor', 'tool'] as const
+const labels: Record<string, string> = { core: 'Core Libraries', cli: 'CLI Tools', flavor: 'Flavor Processors', tool: 'Utilities' }
+const softwareGroups = order
+  .map(cat => ({ label: labels[cat], items: gems.filter(g => g.category === cat) }))
+  .filter(g => g.items.length > 0)
+---
+
+<div>
+  {softwareGroups.map(group => (
+    <section class="mb-12">
+      <h2 class="mb-4 text-xl font-bold tracking-tight text-[var(--mn-c-text-1)]">{group.label}</h2>
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3">
+        {group.items.map(gem => (
+          <a href={`/software/${gem.id}/`} class="card-lift rounded-xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg)] p-5 no-underline">
+            <CategoryBadge label={gem.category} />
+            <h3 class="mb-1 mt-2 text-base font-semibold text-[var(--mn-c-text-1)]">{gem.displayName}</h3>
+            <p class="text-[13px] leading-relaxed text-[var(--mn-c-text-2)]">{gem.description}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  ))}
+</div>

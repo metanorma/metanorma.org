@@ -1,18 +1,68 @@
+# Synced upstream content (regenerated via `rake sync`)
 _software/*/.git
 _software/*/docs
+_software/*/.gitignore
 _software/_*_repo
 _software/metanorma-bipm/
 _software/metanorma-generic/
 _software/metanorma-iho/
 _specs/*/
 !_specs/*.*
-parent-hub
-_site/
-.sass-cache/
-.jekyll-cache/
-.jekyll-metadata
-.DS_Store
 
-.rubocop-https--*
+# Stale Jekyll/vite-ssg generated markdown (content now flows through
+# .adoc → mirror-json, not these .md intermediates)
+author/**/*.md
+develop/**/*.md
+learn/**/*.md
+_software/**/*.md
+_specs/**/*.md
+_software/*.md
+_specs/*.md
+
+# OS / editor
+.DS_Store
 .vscode/
+
+# CI artifacts
+.playwright-mcp/
+.lychee.report.v2
+.lycheecache
+parent-hub
+
+# Dependencies
+node_modules/
 Gemfile.lock
+
+# Build output (regenerated)
+dist/
+.astro/
+mirror-json/
+_upstream/
+
+# Stale TODO/planning directories
+TODO.astro/
+TODO.migrate/
+TODO.refactor/
+TODO.remaining/
+.omo/
+
+# Root-level stale sources (now in src/pages/)
+/about.md
+/get-started.md
+
+# Old Jekyll root-level page directories (content now in _pages/, author/, etc.)
+/blog/
+/contribute/
+/docs/
+/flavors/
+/install/
+/reference/
+/samples/
+/software/
+/specs/
+/author.adoc
+/contribute.md
+/index.html
+/index.md
+.jekyll-cache/
+.lychee.report*

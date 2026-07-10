@@ -1,0 +1,81 @@
+---
+title: Metanorma-Plateau library documentation
+description: >-
+  Library documentation for Metanorma-Plateau, the Metanorma flavor for Plateau (Korean) standards.
+  Synced from the upstream gem README at github.com/metanorma/metanorma-plateau.
+source_url: https://github.com/metanorma/metanorma-plateau/blob/main/README.adoc
+is_library_doc: true
+layout: page
+---
+
+
+== Functionality
+
+This gem processes https://www.metanorma.com[Metanorma documents] following
+the Metanorma model for generating MLIT Project PLATEAU documents.
+
+Project PLATEAU documents are found at:
+
+* https://www.mlit.go.jp/plateau/libraries
+
+The gem is built on top of
+https://github.com/metanorma/metanorma-jis[metanorma-jis] with customized
+rendering to meet requirements of MLIT's Project PLATEAU.
+
+It provides the following functions:
+
+. Compiles Metanorma input into the Metanorma-PLATEAU XML format
+. Validates XML output against the Metanorma-Plateau document model
+** Errors are reported to console against the XML, and are intended for users to
+check that they have provided all necessary components of the
+document.
+. Metanorma-Plateau XML is then converted into desired output formats.
+
+The following outputs are supported:
+
+* Primary: the canonical Metanorma-PLATEAU XML representation (`.xml`).
+* Secondary: the Metanorma-PLATEAU XML representation is processed to generate the following outputs
+as end deliverable PLATEAU documents.
+** HTML (`.html`)
+** PDF (`.pdf`)
+
+== Structure
+
+This gem inherits from the
+https://github.com/metanorma/metanorma-jis[metanorma-jis] gem, and aligns
+closely to it.
+
+=== Quickstart
+
+Please see https://www.metanorma.org for instructions to get started.
+
+You will need to setup your Git credentials for bundler or for HTTPS in order
+to fetch the software. Please refer to the following articles for details:
+
+* https://depfu.com/blog/2017/08/02/bundler-and-private-dependencies[Setting up bundler for private dependencies]
+* https://bundler.io/v1.16/bundle_config.html#CREDENTIALS-FOR-GEM-SOURCES[Bundler credentials for gem sources]
+* https://help.github.com/articles/caching-your-github-password-in-git[GitHub - Caching your GitHub credentials in Git]
+
+== Usage
+
+Using the `metanorma` CLI:
+
+[source,console]
+----
+$ metanorma --type plateau a.adoc                   # output HTML
+$ metanorma --type plateau --extensions html a.adoc # output just HTML
+$ metanorma --type plateau --extensions xml a.adoc  # output Metanorma XML
+----
+
+== Authoring
+
+Please refer to Metanorma for ISO documentation for general information.
+
+== Documentation
+
+See https://www.metanorma.com/author/iso/[Write ISO documents with Metanorma]
+
+== Examples
+
+* Example documents: https://github.com/metanorma/mn-samples-plateau[mn-samples-plateau].
+* Document templates: https://github.com/metanorma/mn-templates-plateau[mn-templates-plateau].

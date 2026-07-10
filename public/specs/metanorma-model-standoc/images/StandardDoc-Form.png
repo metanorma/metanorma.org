@@ -1,0 +1,242 @@
+digraph G {
+	graph [bb="0,0,664.75,951.5",
+		nodesep="1.2.equally",
+		pad=0.5,
+		rankdir=BT,
+		ranksep="1.2.equally",
+		splines=ortho
+	];
+	node [fontname="Helvetica-bold",
+		label="\N",
+		shape=box
+	];
+	edge [color=gray50];
+	Form	[fontname=Helvetica,
+		height=2.2778,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>Form</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+id : String</TD></TR>
+            <TR><TD ALIGN="LEFT">+name : String</TD></TR>
+            <TR><TD ALIGN="LEFT">+action : String</TD></TR>
+            <TR><TD ALIGN="LEFT">+class : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+text : TextElement&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+input : FormInput&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+label : Label&#91;0..*&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="332.25,82",
+		shape=plain,
+		width=2.3056];
+	FormInput	[fontname=Helvetica,
+		height=1.4444,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>FormInput</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">id : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">name : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">value : String&#91;0..1&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="332.25,339.5",
+		shape=plain,
+		width=1.8472];
+	Form -> FormInput	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,332.25,163.83 332.25,175.05 332.25,175.05 332.25,287.84 332.25,287.84"];
+	Label	[fontname=Helvetica,
+		height=0.81944,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>Label</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="LEFT"></TD></TR>
+  </TABLE></TD>
+  </TR>
+
+  </TABLE>>,
+		pos="548.25,339.5",
+		shape=plain,
+		width=0.79514];
+	Form -> Label	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,406.25,163.83 406.25,175.05 406.25,175.05 406.25,339.5 406.25,339.5 406.25,339.5 478.42,339.5 519.86,339.5"];
+	Input	[fontname=Helvetica,
+		height=2.0694,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>Input</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">type : InputType</TD></TR>
+            <TR><TD ALIGN="LEFT">checked : Boolean&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">disabled : Boolean&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">readonly : Boolean&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">maxlength : Int&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">minlength : Int&#91;0..1&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="82.25,597",
+		shape=plain,
+		width=2.2847];
+	FormInput -> Input	[arrowhead=onormal,
+		arrowtail=onormal,
+		dir=back,
+		pos="s,310.08,391.42 310.08,402.93 310.08,402.93 310.08,529.5 310.08,529.5 310.08,529.5 229.5,529.5 164.18,529.5"];
+	Select	[fontname=Helvetica,
+		height=1.6528,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>Select</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">disabled : Boolean&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">multiple : Boolean&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">size : Int&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">option : Option&#91;1..*&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="332.25,597",
+		shape=plain,
+		width=2.2639];
+	FormInput -> Select	[arrowhead=onormal,
+		arrowtail=onormal,
+		dir=back,
+		pos="s,354.42,391.3 354.42,402.81 354.42,402.81 354.42,537.62 354.42,537.62"];
+	Textarea	[fontname=Helvetica,
+		height=1.2361,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>Textarea</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">rows : Int&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">cols : Int&#91;0..1&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="553.25,597",
+		shape=plain,
+		width=1.4826];
+	FormInput -> Textarea	[arrowhead=onormal,
+		arrowtail=onormal,
+		dir=back,
+		pos="s,398.69,380.5 410.21,380.5 410.21,380.5 510.69,380.5 510.69,380.5 510.69,380.5 510.69,489.33 510.69,552.67"];
+	InputType	[fontname=Helvetica,
+		height=2.6944,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«enumeration»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>InputType</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">button</TD></TR>
+            <TR><TD ALIGN="LEFT">checkbox</TD></TR>
+            <TR><TD ALIGN="LEFT">date</TD></TR>
+            <TR><TD ALIGN="LEFT">file</TD></TR>
+            <TR><TD ALIGN="LEFT">password</TD></TR>
+            <TR><TD ALIGN="LEFT">radio</TD></TR>
+            <TR><TD ALIGN="LEFT">submit</TD></TR>
+            <TR><TD ALIGN="LEFT">text</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="82.25,854.5",
+		shape=plain,
+		width=1.566];
+	Input -> InputType	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,82.25,671.48 82.25,682.7 82.25,682.7 82.25,757.63 82.25,757.63"];
+	Option	[fontname=Helvetica,
+		height=1.4444,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>Option</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">disabled : Boolean&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">value : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">content : PureTextElement&#91;0..1&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="332.25,854.5",
+		shape=plain,
+		width=2.9306];
+	Select -> Option	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,332.25,656.4 332.25,667.62 332.25,667.62 332.25,802.8 332.25,802.8"];
+	ReferenceToIdElement	[height=0.5,
+		pos="583.25,82",
+		width=2.2639];
+	ReferenceToIdElement -> Label	[arrowhead=onormal,
+		arrowtail=onormal,
+		dir=back,
+		pos="s,548.25,100.11 548.25,111.62 548.25,111.62 548.25,310.34 548.25,310.34"];
+}
