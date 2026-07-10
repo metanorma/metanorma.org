@@ -116,6 +116,43 @@ The different bibliographic sources are differentiated through the value of the 
 ----
 ====
 
+=== Reference sort order
+
+Within a bibliography or normative references section, references are sorted by
+publisher and then by identifier. Each flavour defines a default publisher
+ranking (for example, ISO before IEC in ISO documents); this can be overridden
+per document, or by a Metanorma taste, with the following attributes.
+
+`:sort-biblio:`::
+If set to `false`, do not sort the bibliography; references are left in document
+order. Sorting is on by default.
+
+`:sort-biblio-{abbrev}:`::
+Override the publisher sort ranking for the bibliography, one attribute per
+publisher [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.9].
+The attribute-name suffix `{abbrev}` is the publisher's abbreviation; the value
+is the sort rank (lower sorts earlier) followed by the publisher's full name,
+separated by a colon (`{rank}: {name}`). A reference is matched to a publisher
+by its abbreviation (case-insensitive) or its name; matched publishers sort in
+the given rank order, followed by other standards, then other references.
++
+[example]
+====
+Sort OIML references ahead of ISO and IEC:
+
+[source,adoc]
+----
+:sort-biblio-OIML: 1: International Organization of Legal Metrology
+:sort-biblio-ISO: 2: International Organization for Standardization
+:sort-biblio-IEC: 3: International Electrotechnical Commission
+----
+====
++
+This is the mechanism a Metanorma taste uses to set a house bibliographic sort
+order: the taste configuration compiles to these document attributes. Because
+they are ordinary document attributes, an author can equally set them directly
+in a single document to override the sort order for that document alone.
+
 === Reference rendering
 
 `:relaton-render-config:`::
