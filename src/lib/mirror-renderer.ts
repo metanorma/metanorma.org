@@ -24,6 +24,11 @@ export interface RenderContext {
 
 export type NodeRenderer = (node: MirrorNode, ctx: RenderContext) => string
 
+export interface MarkHandler {
+  open: (attrs?: Record<string, string>) => string
+  close: () => string
+}
+
 import { sectionLevelToHeadingLevel } from './heading-levels'
 import { escapeHtml } from './html'
 
@@ -72,53 +77,58 @@ function xrefHref(target: string | undefined): string {
   return t
 }
 
+// ── Mark handler registry ─────────────────────────────────────────────
+// Table-driven: each mark type maps to { open, close }. Adding a mark
+// = adding one entry. No dual switches to keep in sync.
+
+const wrap = (open: string, close: string): MarkHandler => ({
+  open: () => open,
+  close: () => close,
+})
+
+const markHandlers: Record<string, MarkHandler> = {
+  bold: wrap('<strong>', '</strong>'),
+  strong: wrap('<strong>', '</strong>'),
+  italic: wrap('<em>', '</em>'),
+  emphasis: wrap('<em>', '</em>'),
+  code: wrap('<code>', '</code>'),
+  link: {
+    open: (attrs) => {
+      const href = escapeHtml(attrs?.href || '#')
+      const external = attrs?.href?.startsWith('http') ? ' target="_blank" rel="noopener"' : ''
+      return `<a href="${href}"${external}>`
+    },
+    close: () => '</a>',
+  },
+  xref: {
+    open: (attrs) => `<a href="${escapeHtml(xrefHref(attrs?.target))}">`,
+    close: () => '</a>',
+  },
+  underline: wrap('<u>', '</u>'),
+  strikethrough: wrap('<s>', '</s>'),
+  subscript: wrap('<sub>', '</sub>'),
+  superscript: wrap('<sup>', '</sup>'),
+  highlight: wrap('<mark>', '</mark>'),
+  stem: wrap('<span class="stem">', '</span>'),
+  span: {
+    open: (attrs) => `<span class="${escapeHtml(attrs?.role || '')}">`,
+    close: () => '</span>',
+  },
+}
+
 function renderMarksOpen(marks?: Mark[]): string {
   if (!marks || marks.length === 0) return ''
   return marks.map(m => {
-    switch (m.type) {
-      case 'bold':
-      case 'strong':
-        return '<strong>'
-      case 'italic':
-      case 'emphasis':
-        return '<em>'
-      case 'code': return '<code>'
-      case 'link': return `<a href="${escapeHtml(m.attrs?.href || '#')}"${m.attrs?.href?.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>`
-      case 'xref': return `<a href="${escapeHtml(xrefHref(m.attrs?.target))}">`
-      case 'underline': return '<u>'
-      case 'strikethrough': return '<s>'
-      case 'subscript': return '<sub>'
-      case 'superscript': return '<sup>'
-      case 'highlight': return '<mark>'
-      case 'stem': return '<span class="stem">'
-      case 'span': return `<span class="${escapeHtml(m.attrs?.role || '')}">`
-      default: return '<span>'
-    }
+    const handler = markHandlers[m.type]
+    return handler ? handler.open(m.attrs) : '<span>'
   }).join('')
 }
 
 function renderMarksClose(marks?: Mark[]): string {
   if (!marks || marks.length === 0) return ''
   return [...marks].reverse().map(m => {
-    switch (m.type) {
-      case 'bold':
-      case 'strong':
-        return '</strong>'
-      case 'italic':
-      case 'emphasis':
-        return '</em>'
-      case 'code': return '</code>'
-      case 'link': return '</a>'
-      case 'xref': return '</a>'
-      case 'underline': return '</u>'
-      case 'strikethrough': return '</s>'
-      case 'subscript': return '</sub>'
-      case 'superscript': return '</sup>'
-      case 'highlight': return '</mark>'
-      case 'stem': return '</span>'
-      case 'span': return '</span>'
-      default: return '</span>'
-    }
+    const handler = markHandlers[m.type]
+    return handler ? handler.close() : '</span>'
   }).join('')
 }
 
@@ -394,4 +404,13 @@ export function registerNodeRenderer(type: string, renderer: NodeRenderer): void
 
 export function lookupNodeRenderer(type: string): NodeRenderer | undefined {
   return nodeRenderers[type]
+}
+
+// Mark handler extension points — mirrors the node renderer pattern.
+export function registerMarkHandler(type: string, handler: MarkHandler): void {
+  markHandlers[type] = handler
+}
+
+export function lookupMarkHandler(type: string): MarkHandler | undefined {
+  return markHandlers[type]
 }

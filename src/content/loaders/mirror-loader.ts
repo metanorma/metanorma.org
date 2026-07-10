@@ -13,10 +13,8 @@
 import { glob } from 'node:fs/promises'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { renderMirrorToHtml } from '../../lib/mirror-renderer'
-import { renderMath } from '../../lib/render-math'
-import { renderCode } from '../../lib/render-code'
-import { MIRROR_DIR, slugFromFile } from '../../lib/mirror-store'
+import { defaultPipeline } from '../../lib/render-pipeline'
+import { extractRedirects, MIRROR_DIR, slugFromFile } from '../../lib/mirror-store'
 import type { Loader, LoaderContext } from 'astro/loaders'
 
 interface RawEnvelope {
@@ -54,18 +52,9 @@ export function mirrorLoader(): Loader {
         }
 
         const slug = slugFromFile(file)
-
-        const rawHtml = renderMirrorToHtml(envelope.mirror_json)
-        const mathHtml = renderMath(rawHtml)
-        const html = await renderCode(mathHtml)
+        const html = await defaultPipeline.run(envelope.mirror_json)
         const headings = extractHeadings(html)
-
         const fm = envelope.frontmatter || {}
-        const redirect_from = Array.isArray(fm.redirect_from)
-          ? fm.redirect_from.map(String)
-          : fm.redirect_from
-            ? [String(fm.redirect_from)]
-            : []
 
         store.set({
           id: slug,
@@ -74,7 +63,7 @@ export function mirrorLoader(): Loader {
             frontmatter: fm,
             headings,
             source: envelope.source || slug,
-            redirect_from,
+            redirect_from: extractRedirects(fm),
             mirror_json: envelope.mirror_json,
             rendered_html: html,
           } satisfies MirrorEntry,

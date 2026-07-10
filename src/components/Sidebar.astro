@@ -1,0 +1,43 @@
+---
+import { sidebarFor, type SidebarItem } from '../config/site'
+
+interface Props { pathname: string }
+const { pathname } = Astro.props
+const items: SidebarItem[] | null = sidebarFor(pathname)
+---
+
+{items && items.length > 0 && (
+  <aside class="hidden w-60 flex-shrink-0 md:block" aria-label="Secondary">
+    <nav class="sticky top-20 space-y-5 text-sm">
+      {items.map(item => (
+        <div>
+          {item.link ? (
+            <a href={item.link} class="block rounded-md px-3 py-1.5 font-medium text-[var(--mn-c-text-2)] no-underline transition-colors hover:bg-[var(--mn-c-bg-soft)] hover:text-[var(--mn-c-brand-1)]">{item.text}</a>
+          ) : (
+            <details open>
+              <summary class="cursor-pointer list-none px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-[var(--mn-c-text-3)]">{item.text}</summary>
+              <div class="mt-1 space-y-px border-l border-[var(--mn-c-divider)] pl-2">
+                {item.items?.map(sub => (
+                  <div>
+                    {sub.link ? (
+                      <a href={sub.link} class="block rounded-md px-3 py-1.5 text-[var(--mn-c-text-2)] no-underline transition-colors hover:bg-[var(--mn-c-bg-soft)] hover:text-[var(--mn-c-brand-1)]">{sub.text}</a>
+                    ) : (
+                      <details>
+                        <summary class="cursor-pointer list-none px-3 py-1.5 text-[var(--mn-c-text-2)] font-medium">{sub.text}</summary>
+                        <div class="space-y-px border-l border-[var(--mn-c-divider)] pl-2">
+                          {sub.items?.map(leaf => (
+                            <a href={leaf.link} class="block rounded-md px-3 py-1.5 text-[var(--mn-c-text-2)] no-underline transition-colors hover:bg-[var(--mn-c-bg-soft)] hover:text-[var(--mn-c-brand-1)]">{leaf.text}</a>
+                          ))}
+                        </div>
+                      </details>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
+        </div>
+      ))}
+    </nav>
+  </aside>
+)}
