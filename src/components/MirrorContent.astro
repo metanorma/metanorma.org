@@ -1,0 +1,15 @@
+---
+// MirrorContent.astro — outputs pre-rendered mirror-json HTML.
+//
+// The mirror-loader renders AST → HTML → KaTeX → Shiki at build time.
+// This component just emits that HTML. No client-side rendering, no
+// framework runtime. The single `html` prop is the pre-rendered string
+// from the content collection entry's `rendered_html` field.
+
+interface Props {
+  html: string
+}
+const { html } = Astro.props
+---
+
+<div class="mn-rendered mirror-content" set:html={html} />

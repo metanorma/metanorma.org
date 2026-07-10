@@ -1,0 +1,96 @@
+---
+import type { GetStaticPaths } from 'astro'
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import MirrorContent from '../../components/MirrorContent.astro'
+import { formatDate } from '../../lib/format-date'
+
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('mirror')
+  return entries
+    .filter((entry: typeof entries[number]) => entry.id.startsWith('blog/'))
+    .map((entry: typeof entries[number]) => ({
+      params: { slug: entry.id.replace(/^blog\//, '') },
+      props: { entry },
+    }))
+}) satisfies GetStaticPaths
+
+interface Props {
+  entry: {
+    id: string
+    data: {
+      title: string
+      frontmatter: Record<string, any>
+      headings: Array<{ depth: number; slug: string; text: string }>
+      source: string
+      redirect_from: string[]
+      mirror_json: string
+    }
+  }
+}
+
+const { entry } = Astro.props as Props
+const { title, frontmatter, rendered_html } = entry.data as any
+const date = frontmatter.date ? formatDate(String(frontmatter.date)) : ''
+const isoDate = frontmatter.date ? String(frontmatter.date).slice(0, 10) : ''
+const author = frontmatter.author || {}
+const desc = frontmatter.excerpt || frontmatter.description || ''
+const authorPicture = author.use_picture ? `/assets/${author.use_picture.replace(/^assets\/?/, '')}` : null
+---
+
+<BaseLayout title={title} description={desc} frontmatter={frontmatter}>
+  <article class="mx-auto max-w-2xl px-6 py-16">
+    <!-- Breadcrumb -->
+    <nav class="mb-8 flex items-center gap-2 text-sm text-[var(--mn-c-text-3)]" aria-label="Breadcrumb">
+      <a href="/" class="no-underline hover:text-[var(--mn-c-brand-1)]">Home</a>
+      <span class="text-[var(--mn-c-divider)]">/</span>
+      <a href="/blog/" class="no-underline hover:text-[var(--mn-c-brand-1)]">Blog</a>
+    </nav>
+
+    <!-- Article header -->
+    <header class="mb-12">
+      <div class="mb-4 flex flex-wrap items-center gap-3 text-sm text-[var(--mn-c-text-3)]">
+        {date && <time datetime={isoDate} class="font-medium">{date}</time>}
+        {author.name && (
+          <span class="flex items-center gap-2">
+            <span class="text-[var(--mn-c-divider)]">·</span>
+            <span class="text-[var(--mn-c-text-2)]">{author.name}</span>
+          </span>
+        )}
+      </div>
+      <h1 class="text-4xl font-extrabold leading-tight tracking-tight text-[var(--mn-c-text-1)]">{title}</h1>
+      {desc && <p class="mt-4 text-lg leading-relaxed text-[var(--mn-c-text-2)]">{desc}</p>}
+    </header>
+
+    <!-- Article body -->
+    <div class="mn-rendered">
+      <MirrorContent html={rendered_html} />
+    </div>
+
+    <!-- Author bio -->
+    {author.name && (author.social_links?.length || authorPicture) && (
+      <footer class="mt-16 flex items-center gap-4 rounded-2xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-soft)] p-5">
+        {authorPicture && (
+          <img src={authorPicture} alt={author.name} class="h-12 w-12 rounded-full border border-[var(--mn-c-divider)]" />
+        )}
+        <div>
+          <p class="font-semibold text-[var(--mn-c-text-1)]">{author.name}</p>
+          {author.social_links?.length && (
+            <div class="mt-1 flex flex-wrap gap-3 text-sm">
+              {author.social_links.map((link: string) => (
+                <a href={link} target="_blank" rel="noopener" class="text-[var(--mn-c-brand-1)] no-underline hover:underline">
+                  {link.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      </footer>
+    )}
+
+    <!-- Back to blog -->
+    <div class="mt-12">
+      <a href="/blog/" class="text-sm font-medium text-[var(--mn-c-brand-1)] no-underline hover:underline">← Back to blog</a>
+    </div>
+  </article>
+</BaseLayout>

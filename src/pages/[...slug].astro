@@ -1,0 +1,53 @@
+---
+// src/pages/[...slug].astro — catch-all route for mirror-json content.
+//
+// Replaces ~80 lines of custom router logic in .ssg/router.ts.
+// Astro's file-based routing + getStaticPaths does the dispatch.
+
+import type { GetStaticPaths } from 'astro'
+import { getCollection } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Article from '../components/Article.astro'
+import MirrorContent from '../components/MirrorContent.astro'
+import Sidebar from '../components/Sidebar.astro'
+import TOC from '../components/TOC.astro'
+
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('mirror')
+  return entries.map((entry: typeof entries[number]) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }))
+}) satisfies GetStaticPaths
+
+interface Props {
+  entry: {
+    id: string
+    data: {
+      title: string
+      frontmatter: Record<string, any>
+      headings: Array<{ depth: number; slug: string; text: string }>
+      source: string
+      redirect_from: string[]
+      mirror_json: string
+    }
+  }
+}
+
+const { entry } = Astro.props as Props
+const { title, frontmatter, headings, rendered_html } = entry.data as any
+const subtitle = (frontmatter.subtitle as string) || (frontmatter.description as string) || ''
+const pathname = Astro.url.pathname
+---
+
+<BaseLayout title={title} frontmatter={frontmatter}>
+  <div class="mn-content-layout">
+    <Sidebar pathname={pathname} />
+    <div class="mn-content-area">
+      <Article title={title} subtitle={subtitle}>
+        <MirrorContent html={rendered_html} />
+      </Article>
+    </div>
+    <TOC headings={headings} />
+  </div>
+</BaseLayout>
