@@ -1,10 +1,10 @@
-export interface NavItem {
+export interface NavigationItem {
   text: string
   link?: string
-  items?: NavItem[]
+  items?: NavigationItem[]
 }
 
-export const nav: NavItem[] = [
+export const nav: NavigationItem[] = [
   { text: 'Get Started', link: '/get-started/' },
   {
     text: 'Author',
@@ -49,11 +49,7 @@ export const nav: NavItem[] = [
   { text: 'About', link: '/about/' },
 ]
 
-export interface SidebarItem {
-  text: string
-  link?: string
-  items?: SidebarItem[]
-}
+export type SidebarItem = NavigationItem
 
 // Auto-generated per-section sidebars (flavor subdirs under /author/).
 // Produced by scripts/build-sidebars.mjs from pages/ structure.

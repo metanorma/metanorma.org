@@ -1,0 +1,23 @@
+---
+import type { Flavor } from '../data/types'
+
+interface Props {
+  flavor: Flavor
+  imgClass?: string
+  containerClass?: string
+  fallbackTextClass?: string
+}
+
+const {
+  flavor,
+  imgClass = 'h-[30px] max-w-[100px] object-contain',
+  containerClass = 'flex h-11 items-center rounded-lg border border-[var(--mn-c-divider)] bg-white px-2.5',
+  fallbackTextClass = 'text-xl font-bold text-[var(--mn-c-brand-1)]',
+} = Astro.props
+---
+
+<div class={containerClass}>
+  {flavor.logo
+    ? <img src={flavor.logo} alt={flavor.label} class={imgClass} />
+    : <span class={fallbackTextClass}>{flavor.label.charAt(0)}</span>}
+</div>

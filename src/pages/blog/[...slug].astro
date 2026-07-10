@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro'
-import { getCollection } from 'astro:content'
+import { getCollection, type CollectionEntry } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import MirrorContent from '../../components/MirrorContent.astro'
 import { formatDate } from '../../lib/format-date'
@@ -8,29 +8,16 @@ import { formatDate } from '../../lib/format-date'
 export const getStaticPaths = (async () => {
   const entries = await getCollection('mirror')
   return entries
-    .filter((entry: typeof entries[number]) => entry.id.startsWith('blog/'))
-    .map((entry: typeof entries[number]) => ({
+    .filter((entry: CollectionEntry<'mirror'>) => entry.id.startsWith('blog/'))
+    .map((entry: CollectionEntry<'mirror'>) => ({
       params: { slug: entry.id.replace(/^blog\//, '') },
       props: { entry },
     }))
 }) satisfies GetStaticPaths
 
-interface Props {
-  entry: {
-    id: string
-    data: {
-      title: string
-      frontmatter: Record<string, any>
-      headings: Array<{ depth: number; slug: string; text: string }>
-      source: string
-      redirect_from: string[]
-      mirror_json: string
-    }
-  }
-}
-
+interface Props { entry: CollectionEntry<'mirror'> }
 const { entry } = Astro.props as Props
-const { title, frontmatter, rendered_html } = entry.data as any
+const { title, frontmatter, rendered_html } = entry.data
 const date = frontmatter.date ? formatDate(String(frontmatter.date)) : ''
 const isoDate = frontmatter.date ? String(frontmatter.date).slice(0, 10) : ''
 const author = frontmatter.author || {}

@@ -1,0 +1,39 @@
+---
+import type { GetStaticPaths } from 'astro'
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import PageHeader from '../../../components/PageHeader.astro'
+import BlogPostCard from '../../../components/BlogPostCard.astro'
+import Pagination from '../../../components/Pagination.astro'
+import { posts } from '../../../data/posts'
+
+export const getStaticPaths = (({ paginate }) => {
+  return paginate(posts, { pageSize: 10 })
+    .filter(p => String(p.params.page) !== '1')
+}) satisfies GetStaticPaths
+
+interface PageProps {
+  page: {
+    data: Array<(typeof posts)[number]>
+    currentPage: number
+    lastPage: number
+    url: { current: string; next: string | undefined; prev: string | undefined }
+  }
+}
+
+const { page } = Astro.props as PageProps
+---
+
+<BaseLayout title={`Blog — Page ${page.currentPage}`} description="News, releases, and articles from the Metanorma team">
+  <div class="mx-auto max-w-[800px] px-6 py-12">
+    <PageHeader title="Blog" />
+    <div class="flex flex-col gap-4">
+      {page.data.map(post => <BlogPostCard post={post} />)}
+    </div>
+    <Pagination
+      currentPage={page.currentPage}
+      lastPage={page.lastPage}
+      prevUrl={page.currentPage === 2 ? '/blog/' : `/blog/page/${page.currentPage - 1}/`}
+      nextUrl={page.url.next}
+    />
+  </div>
+</BaseLayout>
