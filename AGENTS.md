@@ -66,6 +66,14 @@ Each Metanorma flavor needs:
 
 Flavor abbreviation ≠ org abbreviation (e.g., M3AAWG flavor = `m3aawg`). The `--type` CLI flag matches the lowercase flavor abbreviation.
 
+## ABSOLUTE RULE: NEVER USE ASCIIDOCTOR OR ANTORA
+
+- **NEVER use `asciidoctor`** (Ruby gem, JS npm package `@asciidoctor/core`, or any other binding). Not for rendering, not for conversion, not as fallback.
+- **NEVER use `antora`** or any Antora components (`@antora/*`).
+- The ONLY approved tool for AsciiDoc processing is **coradoc** (installed via the `Gemfile` — `gem "coradoc-adoc"`). If coradoc has a bug, fix coradoc upstream and bump the gem version.
+- The pipeline is: `.adoc` → coradoc parse → CoreModel → coradoc-mirror → ProseMirror JSON → Astro renderer.
+- This rule applies to ALL projects, ALL sessions, forever.
+
 ## ANTI-PATTERNS
 
 - **Never delete or rename pages** without adding `redirect_from:` to avoid dead links

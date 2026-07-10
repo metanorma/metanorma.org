@@ -1,0 +1,67 @@
+---
+title: Metanorma-M3AAWG library documentation
+description: >-
+  Library documentation for Metanorma-M3AAWG, the Metanorma flavor for M3AAWG documents.
+  Synced from the upstream gem README at github.com/metanorma/metanorma-m3aawg.
+source_url: https://github.com/metanorma/metanorma-m3aawg/blob/main/README.adoc
+is_library_doc: true
+layout: page
+---
+
+https://github.com/metanorma/metanorma-m3aawg[metanorma-m3aawg] _Formerly known as_ `asciidoctor-m3d`.
+
+== Functionality
+
+This gem processes https://www.metanorma.com[Metanorma documents] following
+a template for generating M3AAWG documents.
+
+The gem currently inherits from the https://github.com/metanorma/metanorma-standoc
+gem, and aligns closely to it. Refer to https://metanorma.com[] for guidance.
+
+== Usage
+
+The preferred way to invoke this gem is via the `metanorma` script:
+
+[source,console]
+----
+$ metanorma --type m3aawg a.adoc                   # output HTML and DOC
+$ metanorma --type m3aawg --extensions html a.adoc # output just HTML
+$ metanorma --type m3aawg --extensions doc a.adoc  # output just DOC
+$ metanorma --type m3aawg --extensions xml a.adoc  # output Metanorma XML
+----
+
+The gem translates the document into Metanorma XML format, and then
+validates its output against the M3AAWG Metanorma XML document model; errors are
+reported to console against the XML, and are intended for users to
+check that they have provided all necessary components of the
+document.
+
+The gem then converts the XML into output formats such as HTML and DOC.
+
+=== Installation
+
+If you are using a Mac, the https://github.com/metanorma/metanorma-macos-setup
+repository has instructions on setting up your machine to run Metanorma
+scripts such as this one. You need only run the following in a Terminal console:
+
+[source,console]
+----
+$ bash <(curl -s https://raw.githubusercontent.com/metanorma/metanorma-macos-setup/master/metanorma-setup)
+$ gem install metanorma-m3aawg
+----
+
+== Documentation
+
+See https://www.metanorma.com/author/m3aawg/[Author M^3^AAWG documents with metanorma-m3aawg]
+
+== Data Models
+
+The M3AAWG Standard Document format is an instance of the
+https://github.com/metanorma/metanorma-model-standoc[StandardDocument model]. Details of
+this general model can be found on its page. Details of the M3AAWG modifications
+to this general model can be found on the https://github.com/metanorma/metanorma-model-m3d[M3AAWG model]
+repository.
+
+////
+== Examples
+////

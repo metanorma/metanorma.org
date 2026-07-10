@@ -1,0 +1,274 @@
+digraph G {
+	graph [bb="0,0,1434.4,1086.5",
+		nodesep="1.2.equally",
+		pad=0.5,
+		rankdir=BT,
+		ranksep="1.2.equally",
+		splines=ortho
+	];
+	node [fontname="Helvetica-bold",
+		label="\N",
+		shape=box
+	];
+	edge [color=gray50];
+	TermCollection	[fontname=Helvetica,
+		height=1.4444,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«Term»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>TermCollection</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+term : Term&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+terms : TermCollection&#91;0..*&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="864.12,52",
+		shape=plain,
+		width=2.691];
+	Term	[fontname=Helvetica,
+		height=4.3611,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«Term»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>Term</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+language : «BasicDocument»Iso639Code&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+script : «BasicDocument»Iso15924Code&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+locale : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+tag : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+multilingual-rendering : MultilingualRenderingType&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+id : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+preferred : Designation&#91;1..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+admitted : Designation&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+related : RelatedTerm&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+deprecates : Designation&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+domain : «BasicDocument»LocalizedString&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+subject : «BasicDocument»LocalizedString&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+definition : TermDefinition&#91;1..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+note : StandardNoteBlock&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+example : StandardExampleBlock&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+source : TermSource&#91;0..*&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="864.12,362",
+		shape=plain,
+		width=5.0243];
+	TermCollection -> Term	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,864.12,103.89 864.12,115.11 864.12,115.11 864.12,205.21 864.12,205.21"];
+	TermDefinition	[fontname=Helvetica,
+		height=1.6528,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«Term»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>TermDefinition</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+type : String&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+verbalexpression : VerbalExpression&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+nonverbalrepresentation : NonVerbalRepresentation&#91;0..1&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="186.12,672",
+		shape=plain,
+		width=5.1701];
+	Term -> TermDefinition	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,706.88,518.64 706.88,529.86 706.88,529.86 706.88,623.5 706.88,623.5 706.88,623.5 521.47,623.5 371.92,623.5"];
+	RelatedTerm	[fontname=Helvetica,
+		height=1.8611,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>RelatedTerm</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+type : RelatedTermType</TD></TR>
+            <TR><TD ALIGN="LEFT">+preferred : Designation</TD></TR>
+            <TR><TD ALIGN="LEFT">+xref : ReferenceToIdElement&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+eref : ReferenceToCitationElement&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+termref : ReferenceToTermbase&#91;0..1&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="864.12,672",
+		shape=plain,
+		width=3.7118];
+	Term -> RelatedTerm	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,864.12,518.82 864.12,530.03 864.12,530.03 864.12,605.27 864.12,605.27"];
+	TermSource	[fontname=Helvetica,
+		height=1.8611,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«Term»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>TermSource</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+status : TermSourceStatus</TD></TR>
+            <TR><TD ALIGN="LEFT">+type : TermSourceType</TD></TR>
+            <TR><TD ALIGN="LEFT">+origin : «Bibliography»Citation</TD></TR>
+            <TR><TD ALIGN="LEFT">+modification : «BasicDocument»ParagraphBlock&#91;0..1&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="1259.1,672",
+		shape=plain,
+		width=4.8681];
+	Term -> TermSource	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,1021.4,518.56 1021.4,529.78 1021.4,529.78 1021.4,671.5 1021.4,671.5 1021.4,671.5 1048.4,671.5 1084.2,671.5"];
+	Definition	[fontname=Helvetica,
+		height=1.0278,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«BasicDocument»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>Definition</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="LEFT"></TD></TR>
+  </TABLE></TD>
+  </TR>
+
+  </TABLE>>,
+		pos="369.12,982",
+		shape=plain,
+		width=1.8368];
+	TermDefinition -> Definition	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,337.62,731.4 337.62,742.62 337.62,742.62 337.62,945.15 337.62,945.15"];
+	RelatedTermType	[fontname=Helvetica,
+		height=2.9028,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«enumeration»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>RelatedTermType</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">deprecates</TD></TR>
+            <TR><TD ALIGN="LEFT">supersedes</TD></TR>
+            <TR><TD ALIGN="LEFT">narrower</TD></TR>
+            <TR><TD ALIGN="LEFT">broader</TD></TR>
+            <TR><TD ALIGN="LEFT">equivalent</TD></TR>
+            <TR><TD ALIGN="LEFT">compare</TD></TR>
+            <TR><TD ALIGN="LEFT">contrast</TD></TR>
+            <TR><TD ALIGN="LEFT">see</TD></TR>
+            <TR><TD ALIGN="LEFT">seealso</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="864.12,982",
+		shape=plain,
+		width=1.8889];
+	RelatedTerm -> RelatedTermType	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,864.12,738.88 864.12,750.1 864.12,750.1 864.12,877.73 864.12,877.73"];
+	TermSourceStatus	[fontname=Helvetica,
+		height=2.6944,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«enumeration»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>TermSourceStatus</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">identical</TD></TR>
+            <TR><TD ALIGN="LEFT">modified</TD></TR>
+            <TR><TD ALIGN="LEFT">adapted</TD></TR>
+            <TR><TD ALIGN="LEFT">restyled</TD></TR>
+            <TR><TD ALIGN="LEFT">context-added</TD></TR>
+            <TR><TD ALIGN="LEFT">generalisation</TD></TR>
+            <TR><TD ALIGN="LEFT">specialisation</TD></TR>
+            <TR><TD ALIGN="LEFT">unspecified</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="1259.1,982",
+		shape=plain,
+		width=1.9826];
+	TermSource -> TermSourceStatus	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,1259.1,738.88 1259.1,750.1 1259.1,750.1 1259.1,885.23 1259.1,885.23"];
+	DefinitionCollection	[fontname=Helvetica,
+		height=1.0278,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>DefinitionCollection</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+definitions : Definition&#91;0..*&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="551.12,672",
+		shape=plain,
+		width=2.5868];
+	DefinitionCollection -> Definition	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,458.21,671.5 446.99,671.5 446.99,671.5 403.75,671.5 403.75,671.5 403.75,671.5 403.75,862.91 403.75,945.16"];
+}

@@ -1,0 +1,55 @@
+---
+import type { Flavor } from '../data/types'
+import CategoryBadge from './CategoryBadge.astro'
+import FlavorLogo from './FlavorLogo.astro'
+interface Props { flavor: Flavor }
+const { flavor } = Astro.props
+---
+
+<article class="mx-auto max-w-3xl px-2 py-8">
+  <header class="mb-8 flex items-start gap-6">
+    <FlavorLogo
+      flavor={flavor}
+      containerClass="flex h-[72px] w-24 flex-shrink-0 items-center justify-center rounded-2xl border border-[var(--mn-c-divider)] bg-white px-2.5"
+      imgClass="h-[50px] max-w-full object-contain"
+      fallbackTextClass="text-4xl font-bold text-[var(--mn-c-brand-1)]"
+    />
+    <div>
+      <div class="mb-1"><CategoryBadge label={flavor.category} /></div>
+      <h1 class="m-0 text-3xl font-bold">{flavor.fullName}</h1>
+      <p class="mt-2 text-base text-[var(--mn-c-text-2)]">{flavor.label} — {flavor.description}</p>
+    </div>
+  </header>
+
+  {flavor.deliverables && flavor.deliverables.length > 0 && (
+    <section class="mb-8">
+      <h2 class="mb-3 text-xl font-semibold">Supported Deliverables</h2>
+      <ul class="list-disc pl-6">
+        {flavor.deliverables.map(d => <li class="my-1">{d}</li>)}
+      </ul>
+    </section>
+  )}
+
+  <section class="mb-8">
+    <h2 class="mb-3 text-xl font-semibold">Quick Start</h2>
+    <pre class="overflow-x-auto rounded-lg border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-soft)] p-4"><code class="text-[13px] leading-relaxed" style="font-family: var(--mn-font-mono)">{`# Install the flavor gem
+gem install ${flavor.gem}
+
+# Or add to your Gemfile
+gem '${flavor.gem}'
+
+# Compile a document
+metanorma compile -t ${flavor.id} -x html,doc my-document.adoc`}</code></pre>
+  </section>
+
+  <section class="mb-8">
+    <h2 class="mb-3 text-xl font-semibold">Resources</h2>
+    <ul class="list-disc space-y-1 pl-6">
+      {flavor.authoringGuide && <li><a href={`/flavors/${flavor.id}/`} class="text-[var(--mn-c-brand-1)]">Authoring Guide</a></li>}
+      <li><a href={flavor.repoUrl} target="_blank" rel="noopener" class="text-[var(--mn-c-brand-1)]">GitHub Repository</a></li>
+      <li><a href={`/software/${flavor.gem}/`} class="text-[var(--mn-c-brand-1)]">Software Details</a></li>
+    </ul>
+  </section>
+
+  <slot />
+</article>

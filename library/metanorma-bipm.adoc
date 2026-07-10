@@ -1,0 +1,54 @@
+---
+title: Metanorma-BIPM library documentation
+description: >-
+  Library documentation for Metanorma-BIPM, the Metanorma flavor for BIPM standards.
+  Synced from the upstream gem README at github.com/metanorma/metanorma-bipm.
+source_url: https://github.com/metanorma/metanorma-bipm/blob/main/README.adoc
+is_library_doc: true
+layout: page
+---
+
+
+== Functionality
+
+This gem processes https://www.metanorma.com[Metanorma documents] following a template for generating BIPM standards.
+
+== Usage
+
+The preferred way to invoke this gem is via the `metanorma` script:
+
+[source,console]
+----
+$ metanorma --type bipm a.adoc                   # output HTML and PDF
+$ metanorma --type bipm --extensions html a.adoc # output just HTML
+$ metanorma --type bipm --extensions pdf a.pdf   # output just PDF
+$ metanorma --type bipm --extensions xml a.adoc  # output Metanorma XML
+----
+
+The gem translates the document into Metanorma XML format, and then
+validates its output against the BIPM Metanorma XML document model; errors are
+reported to console against the XML, and are intended for users to
+check that they have provided all necessary components of the
+document.
+
+The gem then converts the XML into output formats such as HTML and PDF.
+
+=== Installation
+
+If you are using a Mac, the https://github.com/metanorma/metanorma-macos-setup
+repository has instructions on setting up your machine to run Metanorma
+scripts such as this one. You need only run the following in a Terminal console:
+
+[source,console]
+----
+$ bash <(curl -s https://raw.githubusercontent.com/metanorma/metanorma-macos-setup/master/metanorma-setup)
+$ gem install metanorma-bipm
+----
+
+== Data Models
+
+The document model for BIPM is given in https://github.com/metanorma/metanorma-model-bipm[metanorma-model-bipm].
+
+== Examples
+
+Sample documents are given in https://github.com/metanorma/mn-samples-bipm[mn-samples-bipm]

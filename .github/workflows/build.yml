@@ -1,0 +1,73 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      page_url: ${{ steps.pages.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm install
+
+      - name: Sync upstream content
+        run: bundle exec rake sync
+
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build site
+        run: npm run build
+        env:
+          BASE_URL: ${{ steps.pages.outputs.base_url }}
+
+      - name: Verify content quality
+        run: node scripts/verify-content.mjs
+
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

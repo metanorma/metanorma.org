@@ -1,0 +1,89 @@
+---
+title: Metanorma-OGC library documentation
+description: >-
+  Library documentation for Metanorma-OGC, the Metanorma flavor for OGC standards.
+  Synced from the upstream gem README at github.com/metanorma/metanorma-ogc.
+source_url: https://github.com/metanorma/metanorma-ogc/blob/main/README.adoc
+is_library_doc: true
+layout: page
+---
+
+
+== Functionality
+
+This gem processes https://www.metanorma.com[Metanorma documents] following
+a template for generating OGC standards and documents.
+
+It provides the following functions:
+
+. Compiles Metanorma input into the Metanorma-OGC XML format
+. Validates XML output against the Metanorma-OGC document model
+** Errors are reported to console against the XML, and are intended for users to
+check that they have provided all necessary components of the
+document.
+. Metanorma-OGC XML is then converted into desired output formats.
+
+The following outputs are supported:
+
+* Primary: the canonical Metanorma-OGC XML representation (`.xml`).
+* Secondary: the Metanorma-OGC XML representation is processed to generate the following outputs
+as end deliverable OGC documents.
+** HTML (`.html`)
+** PDF (`.pdf`)
+** Word (`.doc`)
+
+== Structure
+
+This gem inherits from the https://github.com/metanorma/metanorma-standoc
+gem, and aligns closely to it.
+
+=== Quickstart
+
+Please see https://www.metanorma.com for instructions to get started.
+
+If you are using a Mac, the https://github.com/metanorma/metanorma-macos-setup
+repository has instructions on setting up your machine to run Metanorma
+scripts such as this one. You need only run the following in a Terminal console:
+
+[source,console]
+----
+$ bash <(curl -s https://raw.githubusercontent.com/metanorma/metanorma-macos-setup/master/metanorma-setup)
+$ gem install metanorma-cli
+$ gem install metanorma-ogc
+----
+
+== Usage
+
+Using the `metanorma` CLI:
+
+[source,console]
+----
+$ metanorma --type ogc a.adoc                   # output HTML
+$ metanorma --type ogc --extensions html a.adoc # output just HTML
+$ metanorma --type ogc --extensions xml a.adoc  # output Metanorma XML
+----
+
+== Authoring
+
+Please refer to the Metanorma-ISO documentation for general documentation.
+
+* Metanorma-ISO general documentation: https://www.metanorma.com/software/metanorma-iso/
+
+* Metanorma-ISO guidance: https://www.metanorma.com/software/metanorma-iso/docs/guidance/
+
+////
+** http://asciimath.org[AsciiMathML] is used for mathematical formatting.
+The gem uses the https://github.com/asciidoctor/asciimath[Ruby AsciiMath parser],
+which is syntactically stricter than the common MathJax processor;
+if you do not get expected results, try bracketing terms your in AsciiMathML
+expressions.
+////
+
+== Documentation
+
+See https://www.metanorma.com/author/ogc/[Write Open Geospatial Consortium documents with Metanorma]
+
+== Examples
+
+* Example documents are available at the https://github.com/metanorma/mn-samples-ogc[mn-samples-ogc] repository.
+* Document templates are available at the https://github.com/metanorma/mn-templates-ogc[mn-templates-ogc] repository.

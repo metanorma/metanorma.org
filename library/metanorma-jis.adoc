@@ -1,0 +1,79 @@
+---
+title: Metanorma-JIS library documentation
+description: >-
+  Library documentation for Metanorma-JIS, the Metanorma flavor for Japanese Industrial Standards.
+  Synced from the upstream gem README at github.com/metanorma/metanorma-jis.
+source_url: https://github.com/metanorma/metanorma-jis/blob/main/README.adoc
+is_library_doc: true
+layout: page
+---
+
+
+== Functionality
+
+This gem processes https://www.metanorma.com[Metanorma documents] following
+the Metanorma model for generating JIS standards.
+
+The gem is basically the https://github.com/metanorma/metanorma-iso gem, with some tweaking of rendering to meet the particular requirements of the JIS.
+
+It provides the following functions:
+
+. Compiles Metanorma input into the Metanorma-JIS XML format (which is identical to Metanorma-ISO, since the two standards share the same document model)
+. Validates XML output against the Metanorma-JIS document model
+** Errors are reported to console against the XML, and are intended for users to
+check that they have provided all necessary components of the
+document.
+. Metanorma-JIS XML is then converted into desired output formats.
+
+The following outputs are supported:
+
+* Primary: the canonical Metanorma-JIS XML representation (`.xml`).
+* Secondary: the Metanorma-JIS XML representation is processed to generate the following outputs
+as end deliverable JIS documents.
+** HTML (`.html`)
+** Word (`.doc`)
+** PDF (`.pdf`)
+
+== Structure
+
+This gem inherits from the https://github.com/metanorma/metanorma-iso
+gem, and aligns closely to it.
+
+=== Quickstart
+
+Please see https://www.metanorma.com for instructions to get started.
+
+You will need to setup your Git credentials for bundler or for HTTPS in order
+to fetch the software. Please refer to the following articles for details:
+
+* https://depfu.com/blog/2017/08/02/bundler-and-private-dependencies[Setting up bundler for private dependencies]
+* https://bundler.io/v1.16/bundle_config.html#CREDENTIALS-FOR-GEM-SOURCES[Bundler credentials for gem sources]
+* https://help.github.com/articles/caching-your-github-password-in-git[GitHub - Caching your GitHub credentials in Git]
+
+== Usage
+
+Using the `metanorma` CLI:
+
+[source,console]
+----
+$ metanorma --type jis a.adoc                   # output HTML
+$ metanorma --type jis --extensions html a.adoc # output just HTML
+$ metanorma --type jis --extensions xml a.adoc  # output Metanorma XML
+----
+
+== Authoring
+
+Please refer to the Metanorma-ISO documentation for general documentation.
+
+* Metanorma-ISO general documentation: https://www.metanorma.com/software/metanorma-iso/
+
+* Metanorma-ISO guidance: https://www.metanorma.com/software/metanorma-iso/docs/guidance/
+
+== Documentation
+
+See https://www.metanorma.com/author/iso/[Write ISO documents with Metanorma]
+
+== Examples
+
+* Example documents are available at the https://github.com/metanorma/mn-samples-jis[mn-samples-jis] repository.
+* Document templates are available at the https://github.com/metanorma/mn-templates-jis[mn-templates-jis] repository.

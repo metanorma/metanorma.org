@@ -1,0 +1,92 @@
+---
+import type { GetStaticPaths } from 'astro'
+import { getCollection, type CollectionEntry } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Article from '../components/Article.astro'
+import MirrorContent from '../components/MirrorContent.astro'
+import Sidebar from '../components/Sidebar.astro'
+import TOC from '../components/TOC.astro'
+import Breadcrumb from '../components/Breadcrumb.astro'
+import { sidebarFor } from '../config/site'
+
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('mirror')
+  return entries.map((entry: CollectionEntry<'mirror'>) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }))
+}) satisfies GetStaticPaths
+
+interface Props { entry: CollectionEntry<'mirror'> }
+const { entry } = Astro.props as Props
+const { title, frontmatter, headings, rendered_html, source } = entry.data as {
+  title: string
+  frontmatter: Record<string, any>
+  headings: Array<{ depth: number; slug: string; text: string }>
+  rendered_html: string
+  source: string
+}
+const subtitle = (frontmatter.subtitle as string) || (frontmatter.description as string) || ''
+const pathname = Astro.url.pathname
+const nav = sidebarFor(pathname)
+const tocItems = headings.filter(h => h.depth >= 2 && h.depth <= 4)
+const hasSidebar = nav !== null && nav.items.length > 0
+const hasToc = tocItems.length >= 2
+const isHubPage = source === 'synthesized hub'
+---
+
+<BaseLayout title={title} frontmatter={frontmatter}>
+  {hasSidebar ? (
+    <div class="mx-auto grid max-w-[1440px] gap-8 px-6 pb-8 grid-cols-1 lg:grid-cols-[288px_minmax(0,1fr)] xl:grid-cols-[288px_minmax(0,1fr)_224px]">
+      <Sidebar pathname={pathname} />
+      <div class="mn-content-area">
+        {hasToc && <TOC headings={headings} variant="mobile" />}
+        <div class="px-2 pt-4">
+          <Breadcrumb pathname={pathname} />
+        </div>
+        <Article title={title} subtitle={subtitle}>
+          {isHubPage ? (
+            <p class="text-[var(--mn-c-text-2)]">Browse the topics in this section using the navigation panel on the left.</p>
+          ) : (
+            <MirrorContent html={rendered_html} />
+          )}
+        </Article>
+      </div>
+      {hasToc && <TOC headings={headings} variant="desktop" />}
+    </div>
+  ) : hasToc ? (
+    <div class="mx-auto grid max-w-[1440px] gap-8 px-6 pb-8 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_224px]">
+      <div>
+        <TOC headings={headings} variant="mobile" bp="lg" />
+        <article class="mn-rendered mx-auto max-w-3xl px-2 py-12">
+          <Breadcrumb pathname={pathname} />
+          {title && (
+            <header class="mb-8 border-b border-[var(--mn-c-divider)] pb-4">
+              <h1 class="m-0 text-4xl font-extrabold leading-tight tracking-tight">{title}</h1>
+              {subtitle && <p class="mt-2 text-[var(--mn-c-text-2)]">{subtitle}</p>}
+            </header>
+          )}
+          {isHubPage ? (
+            <p class="text-[var(--mn-c-text-2)]">Browse the topics using the navigation above.</p>
+          ) : (
+            <MirrorContent html={rendered_html} />
+          )}
+        </article>
+      </div>
+      <TOC headings={headings} variant="desktop" bp="lg" />
+    </div>
+  ) : (
+    <>
+      <article class="mn-rendered mx-auto max-w-3xl px-6 py-12">
+        <Breadcrumb pathname={pathname} />
+        {title && (
+          <header class="mb-8 border-b border-[var(--mn-c-divider)] pb-4">
+            <h1 class="m-0 text-4xl font-extrabold leading-tight tracking-tight">{title}</h1>
+            {subtitle && <p class="mt-2 text-[var(--mn-c-text-2)]">{subtitle}</p>}
+          </header>
+        )}
+        <MirrorContent html={rendered_html} />
+      </article>
+    </>
+  )}
+</BaseLayout>

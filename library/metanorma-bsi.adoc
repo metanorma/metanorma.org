@@ -1,0 +1,413 @@
+---
+title: Metanorma-BSI library documentation
+description: >-
+  Library documentation for Metanorma-BSI, the Metanorma flavor for BSI standards.
+  Synced from the upstream gem README at github.com/metanorma/metanorma-bsi.
+source_url: https://github.com/metanorma/metanorma-bsi/blob/main/README.adoc
+is_library_doc: true
+layout: page
+---
+
+== Functionality
+
+This gem processes https://www.metanorma.com[Metanorma documents] following
+the Metanorma model for generating BSI standards.
+
+The gem is basically the https://github.com/metanorma/metanorma-iso gem, with some tweaking of rendering to meet the particular requirements of the BSI.
+
+It provides the following functions:
+
+. Compiles Metanorma input into the Metanorma-BSI XML format (which is identical to Metanorma-ISO, since the two standards share the same document model)
+. Validates XML output against the Metanorma-BSI document model
+** Errors are reported to console against the XML, and are intended for users to
+check that they have provided all necessary components of the
+document.
+. Metanorma-BSI XML is then converted into desired output formats.
+
+The following outputs are supported:
+
+* Primary: the canonical Metanorma-BSI XML representation (`.xml`).
+* Secondary: the Metanorma-BSI XML representation is processed to generate the following outputs
+as end deliverable BSI documents.
+** HTML (`.html`)
+** Word (`.doc`)
+
+== Structure
+
+This gem inherits from the https://github.com/metanorma/metanorma-iso
+gem, and aligns closely to it.
+
+=== Quickstart
+
+Please see https://www.metanorma.com for instructions to get started.
+
+You will need to setup your Git credentials for bundler or for HTTPS in order
+to fetch the software. Please refer to the following articles for details:
+
+* https://depfu.com/blog/2017/08/02/bundler-and-private-dependencies[Setting up bundler for private dependencies]
+* https://bundler.io/v1.16/bundle_config.html#CREDENTIALS-FOR-GEM-SOURCES[Bundler credentials for gem sources]
+* https://help.github.com/articles/caching-your-github-password-in-git[GitHub - Caching your GitHub credentials in Git]
+
+== Usage
+
+Using the `metanorma` CLI:
+
+[source,console]
+----
+$ metanorma --type bsi a.adoc                   # output HTML
+$ metanorma --type bsi --extensions html a.adoc # output just HTML
+$ metanorma --type bsi --extensions xml a.adoc  # output Metanorma XML
+----
+
+== Authoring
+
+Please refer to the Metanorma-ISO documentation for general documentation.
+
+* Metanorma-ISO general documentation: https://www.metanorma.com/software/metanorma-iso/
+
+* Metanorma-ISO guidance: https://www.metanorma.com/software/metanorma-iso/docs/guidance/
+
+== Documentation
+
+See https://www.metanorma.com/author/iso/[Write ISO documents with Metanorma]
+
+Extensions specific to BSI:
+
+=== Document types
+
+The following document types are recognised in the `:doctype:` document attribute:
+
+BSI document types::
++
+--
+* british-standard
+* draft-for-development
+* published-document
+* privately-subscribed-standard
+* publicly-available-specification
+* flex-standard
+--
+
+Adoptable types, ISO ::
++
+--
+* international-standard
+* technical-specification
+* technical-report
+* guide
+* publicly-available-specification
+* international-workshop-agreement
+--
+
+Adoptable types, IEC ::
++
+--
+* international-standard
+* technical-specification
+* technical-report
+* industry-technical-agreement
+--
+
+Adoptable types, CEN and CENELEC ::
++
+--
+* standard
+* technical-specification
+* technical-report
+* guide
+* european-workshop-agreement
+--
+
+The following document types are recognised in the `:docsubtype:` document attribute:
+
+* specification
+* method-of-test
+* method-of-specifying
+* vocabulary
+* code-of-practice
+
+=== Document numbers
+
+In the case of native BS standards, the identifier is compiled from a combination of the `doctype`,
+`docnumber`, and `copyright-year` document attributes, with a numeric `docnumber` value. So
+
+[source,asciidoctor]
+----
+:docnumber: 1000
+:doctype: publicly-available-specification
+:copyright-year: 2021
+----
+
+generates the document identifier "PAS 1000:2021".
+
+In the case of document adoptions, the `docnumber` attribute is expected to be the complete source
+document identifier (including year number), to which `BS` is prefixed. Part numbers of the original
+document should also be included in the `docnumber` attribute, instead of being named with the `partnumber`
+attribute. So
+
+[source,asciidoctor]
+----
+:docnumber: ISO 123-2:1985
+:doctype: technical-report
+----
+
+generates the document identifier "BS ISO 123-2:1985". 
+
+Note that the `:copyright-year:` attribute is added to the identifier of a native BSI document,
+but not to that of an adopted document. So a 2022 adoption of ISO 123:1985 will still have the identifer
+"BS ISO 123:1985".
+
+=== Related BSI Standards
+
+The frontispiece of BSI Standards includes text like the following:
+
+____
+The following BSI references relate to the work on this document: +
+Committee reference DEF/1 +
+Draft for comment 20/30387670 DC
+____
+
+This text is created by adding the BSI list of documents that the document relates to
+as a semicolon-delimited list of references, using `:bsi-related:`:
+
+[source,asciidoctor]
+----
+:bsi-related: Committee reference DEF/1;Draft for comment 20/30387670 DC
+----
+
+The introductory phrase is added automatically.
+
+=== Adoption of standard
+
+An adopted external standard is defined as `:adopted-from:`:
+
+[source,asciidoctor]
+----
+:docidentifier: NA to BS EN 1991-1-2
+:adopted-from: EN 1991-1-2
+----
+
+[source,asciidoctor]
+----
+:docidentifier: BS ISO 639-2
+:adopted-from: ISO 639-2
+----
+
+The identifier for such adoptions is generated based on the `:adopted-from:` value. if
+`:docidentifier:` is not supplied.
+
+=== Corrigenda
+
+Corrigenda are specified by a prefatory clause, of type "corrigenda":
+
+[source,asciidoctor]
+----
+[.preface,type=corrigenda]
+== Amendments/corrigenda issued since publication
+[[tab_ace_nat]]
+[cols="1,1",options="header,unnumbered"]
+|===
+|Date |Text affected
+|===
+----
+
+=== Visual appearance
+
+`:coverpage-image:`:: Comma-delimited list of image locations, for images to be included on the PDF cover page. All image locations are relative to the source document.
+`:innercoverpage-image:`:: Same, for images to be included on the PDF inside cover page.
+`:tocside-image:`:: Same, for images to be included on the PDF Table of Contents side page.
+`:backpage-image:`:: Same, for images to be included on the PDF back page.
+
+`:presentation-metadata-color-cover-background:`:: Background colour on PDF front cover (BSI Flex and PAS only), as #HEX.
+`:presentation-metadata-color-cover-title:`:: Title colour on PDF front cover (PAS only), as #HEX.
+`:presentation-metadata-color-secondary-shade-1:`:: Colour on PDF text accents (headings, titles and odd table header rows, BSI Flex and PAS only), as #HEX.
+`:presentation-metadata-color-secondary-shade-2:`:: Colour (lighter accents) on PDF even (odd for preface) table header rows (BSI Flex and PAS only), as #HEX.
+`:presentation-metadata-color-secondary-shade-3:`:: Colour (even lighter accents) on PDF odd (even for preface) table body rows (BSI Flex and PAS only), as #HEX.
+`:presentation-metadata-color-secondary-shade-4:`:: Colour (much lighter accent) for background on PDF preface and even table body rows (BSI Flex and PAS only), as #HEX.
+`:presentation-metadata-color-list-label:`:: List item bullet and label colour (BSI Flex and PAS only), as #HEX.
+`:presentation-metadata-color-clause-union-background:`:: Background colour on clauses under floating titles (BSI Flex and PAS only), as #HEX
+`:presentation-metadata-color-backpage-background:`:: Background colour on PDF back cover (BSI Flex and PAS only), as #HEX.
+
+`:presentation-metadata-layout-columns:`:: Alternate between one-column and two-column output; default is `1`. `2` is expected for PAS documents authored before 2023.
+
+`:toclevels:`::
+Number of table of contents levels to render. Accepts an integer value. (default: `1` for BSI).
+Can be overridden with output-specific options (`htmltoclevels`, `doctoclevels`).
+
+`:htmltoclevels:`::
+Number of table of contents levels to render in HTML output; used to override
+`:toclevels:` for HTML output. Accepts an integer value. (default: `1` for BSI).
+
+`:doctoclevels:`::
+Number of table of contents levels to render in Microsoft Word "DOC" output;
+used to override `:toclevels:` for Word DOC output. Accepts an integer value.
+(default: `1` for BSI).
+
+=== Commentaries
+
+Commentaries are entered as notes of type `commentary`,
+with an optional `target` attribute,
+giving the anchor of the block the commentary is referencing. If no target
+is given, the commentary is assumed to be about the subclause containing it.
+
+[source,asciidoc]
+----
+[[reag]]
+=== Reagents
+
+[NOTE,type=commentary,target=reag]
+This is a commentary on the reagents
+
+[[table1]]
+.Reagents in use
+|===
+| A | B
+|===
+----
+
+____
+*7.6 Reagents*
+
+COMMENTARY ON CLAUSE 7.6
+This is a commentary on the reagents
+
+|===
+| A | B
+|===
+_Table 1: Reagents in use_
+----
+____
+
+[source,asciidoc]
+----
+[[reag]]
+=== Reagents
+
+[NOTE,type=commentary]
+This is a commentary on the reagents
+
+[[table1]]
+.Reagents in use
+|===
+| A | B
+|===
+----
+
+____
+*7.6 Reagents*
+
+COMMENTARY ON CLAUSE 7.6
+This is a commentary on the reagents
+
+|===
+| A | B
+|===
+_Table 1: Reagents in use_
+----
+____
+
+[source,asciidoc]
+----
+=== Reagents
+
+[NOTE,type=commentary,target=table1]
+This is a commentary on the table
+
+[[table1]]
+.Reagents in use
+|===
+| A | B
+|===
+----
+
+____
+*7.6 Reagents*
+
+COMMENTARY ON TABLE 1
+This is a commentary on the table
+
+|===
+| A | B
+|===
+_Table 1: Reagents in use_
+----
+____
+
+=== Sections
+
+Sections are signalled through floating titles with a "section" option. The "Section _n_" heading of the title
+is prefixed automatically; if it is missing, the title is left blank.
+
+[source,asciidoc]
+----
+[discrete%section]
+== {blank}
+
+== Clause
+
+[discrete%section]
+== Added Considerations
+----
+
+rendered as
+
+____
+*Section 1*
+
+*Clause 1*
+
+*Section 2. Added Considerations*
+____
+
+==== Bibliography
+
+The BSI predefined text for bibliographies ("For dated references, only the edition cited applies..." &c.) is
+inserted by default. To prevent this, insert a blank boilerplate note:
+
+[source,asciidoc]
+----
+== Bibliography
+
+[bibliography]
+=== Standards publications
+
+[NOTE,type=boilerplate]
+--
+--
+
+==== {blank}
+----
+
+==== Term sources
+
+Term sources can be not only identical relative to their original; they can also be adapted, quoted,
+or modified.  These are indicated as follows:
+
+[source,asciidoc]
+----
+[.source%adapted]
+<<reference>>
+----
+
+[source,asciidoc]
+----
+[.source%quoted]
+<<reference>>
+----
+
+[source,asciidoc]
+----
+[.source%modified]
+<<reference>>
+----
+
+=== Font
+
+fontist repo setup metanorma https://github.com/metanorma/fontist-formulas-private
+fontist repo update metanorma
+fontist install "BSI Gesta"
+
+== Examples
+
+* Example documents are available at the https://github.com/metanorma/mn-samples-bsi[mn-samples-bsi] repository.
+* Document templates are available at the https://github.com/metanorma/mn-templates-bsi[mn-templates-bsi] repository.

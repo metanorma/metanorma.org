@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import FlavorGrid from '../../components/FlavorGrid.astro'
+import PageHeader from '../../components/PageHeader.astro'
+const title = 'Metanorma Flavors'
+const description = 'Metanorma flavors — supported, experimental, and private implementations for standards organizations worldwide'
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="mx-auto max-w-[1200px] px-6 py-12">
+    <PageHeader title={title} description={description} />
+    <p class="mb-8 text-[var(--mn-c-text-2)]">
+      Metanorma supports generation of standardization deliverables for the following organizations, as distinct implementations ("flavors" of Metanorma).
+    </p>
+    <FlavorGrid />
+  </div>
+</BaseLayout>

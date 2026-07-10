@@ -1,0 +1,116 @@
+---
+interface Heading { depth: number; slug: string; text: string }
+interface Props { headings: Heading[]; variant?: 'desktop' | 'mobile'; bp?: 'lg' | 'xl' }
+const { headings, variant = 'desktop', bp = 'xl' } = Astro.props
+const tocItems = headings.filter(h => h.depth >= 2 && h.depth <= 4)
+const hasToc = tocItems.length >= 2
+const desktopShow = bp === 'lg' ? 'lg:block' : 'xl:block'
+const mobileShow = bp === 'lg' ? 'lg:hidden' : 'xl:hidden'
+---
+
+{hasToc && variant === 'desktop' && (
+  <aside class={`hidden w-56 flex-shrink-0 ${desktopShow}`}>
+    <div class="toc-scroll sticky top-16 max-h-[calc(100vh-4rem)] overflow-y-auto overflow-x-hidden pb-8 pt-6">
+      <p class="mb-3 text-xs font-bold uppercase tracking-wider text-[var(--mn-c-text-3)]">On this page</p>
+      <nav class="border-l border-[var(--mn-c-divider)]">
+        {tocItems.map(item => (
+          <a
+            href={`#${item.slug}`}
+            class="toc-link block border-l-2 border-transparent py-1.5 text-sm text-[var(--mn-c-text-3)] no-underline hover:text-[var(--mn-c-text-1)]"
+            style={`padding-left: ${item.depth === 3 ? '1.5rem' : '1rem'}; overflow-wrap: break-word;`}
+            data-toc-target={item.slug}
+          >{item.text}</a>
+        ))}
+      </nav>
+    </div>
+  </aside>
+)}
+
+{hasToc && variant === 'mobile' && (
+  <details class={`${mobileShow} sticky top-16 z-30 border-b border-[var(--mn-c-divider)] bg-[var(--mn-c-bg)]`}>
+    <summary class="flex cursor-pointer list-none items-center justify-between px-6 py-3 text-sm font-semibold text-[var(--mn-c-text-2)]">
+      <span>On this page</span>
+      <svg class="h-4 w-4 text-[var(--mn-c-text-3)] transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <nav class="max-h-[50vh] overflow-y-auto overflow-x-hidden border-t border-[var(--mn-c-divider)] px-6 py-3">
+      {tocItems.map(item => (
+        <a
+          href={`#${item.slug}`}
+          class="toc-link block py-1.5 text-sm text-[var(--mn-c-text-3)] no-underline hover:text-[var(--mn-c-text-1)]"
+          style={item.depth === 3 ? 'padding-left: 1rem;' : ''}
+          data-toc-target={item.slug}
+        >{item.text}</a>
+      ))}
+    </nav>
+  </details>
+)}
+
+<style>
+  .toc-link[data-active="true"] {
+    color: var(--mn-c-brand-1) !important;
+    font-weight: 500;
+    border-left-color: var(--mn-c-brand-1) !important;
+  }
+  .toc-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+  .toc-scroll::-webkit-scrollbar { display: none; }
+</style>
+
+<script is:inline>
+  (function() {
+    var tocLinks = document.querySelectorAll('.toc-link[data-toc-target]');
+    if (!tocLinks.length) return;
+
+    var observed = {};
+
+    function setActive(id) {
+      tocLinks.forEach(function(link) {
+        var isActive = link.getAttribute('data-toc-target') === id;
+        link.setAttribute('data-active', isActive ? 'true' : 'false');
+        if (isActive) {
+          link.scrollIntoView({ block: 'nearest' });
+        }
+      });
+    }
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        var visible = entries.filter(function(e) { return e.isIntersecting; });
+        if (visible.length) {
+          visible.sort(function(a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
+          setActive(visible[0].target.id);
+        }
+      }, { rootMargin: '-80px 0px -75% 0px', threshold: [0, 1] });
+
+      tocLinks.forEach(function(link) {
+        var targetId = link.getAttribute('data-toc-target');
+        var el = document.getElementById(targetId);
+        if (el && !observed[targetId]) {
+          observer.observe(el);
+          observed[targetId] = true;
+        }
+      });
+    }
+
+    setActive(tocLinks[0].getAttribute('data-toc-target'));
+
+    document.addEventListener('astro:after-swap', function() {
+      tocLinks = document.querySelectorAll('.toc-link[data-toc-target]');
+      observed = {};
+      if ('IntersectionObserver' in window) {
+        observer = new IntersectionObserver(function(entries) {
+          var visible = entries.filter(function(e) { return e.isIntersecting; });
+          if (visible.length) {
+            visible.sort(function(a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
+            setActive(visible[0].target.id);
+          }
+        }, { rootMargin: '-80px 0px -75% 0px', threshold: [0, 1] });
+        tocLinks.forEach(function(link) {
+          var targetId = link.getAttribute('data-toc-target');
+          var el = document.getElementById(targetId);
+          if (el) observer.observe(el);
+        });
+      }
+      if (tocLinks.length) setActive(tocLinks[0].getAttribute('data-toc-target'));
+    });
+  })();
+</script>

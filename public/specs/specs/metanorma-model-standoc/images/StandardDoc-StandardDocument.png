@@ -1,0 +1,149 @@
+digraph G {
+	graph [bb="0,0,735,626.5",
+		nodesep="1.2.equally",
+		pad=0.5,
+		rankdir=BT,
+		ranksep="1.2.equally",
+		splines=ortho
+	];
+	node [fontname="Helvetica-bold",
+		label="\N",
+		shape=box
+	];
+	edge [color=gray50];
+	BasicDocument	[fontname=Helvetica,
+		height=1.0278,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«BasicDocument»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>BasicDocument</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="LEFT"></TD></TR>
+  </TABLE></TD>
+  </TR>
+
+  </TABLE>>,
+		pos="348.62,37",
+		shape=plain,
+		width=1.8368];
+	StandardDocument	[fontname=Helvetica,
+		height=3.3194,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>StandardDocument</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+bibdata : StandardBibData</TD></TR>
+            <TR><TD ALIGN="LEFT">+extension : MiscContainer&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+boilerplate : BoilerplateType&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+preface : StandardHierarchicalSection&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+sections : StandardHierarchicalSection&#91;1..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+annex : StandardHierarchicalSection&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+bibliography : StandardReferencesSection&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+indexsect : StandardHierarchicalSection&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+colophon : StandardHierarchicalSection&#91;0..*&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+type : StandardDocumentType</TD></TR>
+            <TR><TD ALIGN="LEFT">+version : String</TD></TR>
+            <TR><TD ALIGN="LEFT">+schema-version : String</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="348.62,302",
+		shape=plain,
+		width=4.316];
+	BasicDocument -> StandardDocument	[arrowhead=onormal,
+		arrowtail=onormal,
+		dir=back,
+		pos="s,348.62,73.847 348.62,85.361 348.62,85.361 348.62,182.78 348.62,182.78"];
+	MiscContainer	[fontname=Helvetica,
+		height=1.0278,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>MiscContainer</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+element : Any&#91;0..*&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="70.625,567",
+		shape=plain,
+		width=1.9618];
+	StandardDocument -> MiscContainer	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,210.31,421.48 210.31,432.7 210.31,432.7 210.31,566.5 210.31,566.5 210.31,566.5 175.66,566.5 140.88,566.5"];
+	BoilerplateType	[fontname=Helvetica,
+		height=1.6528,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER"><B>BoilerplateType</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">+copyright : HierarchicalSection&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+license : HierarchicalSection&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+legal : HierarchicalSection&#91;0..1&#93;</TD></TR>
+            <TR><TD ALIGN="LEFT">+feedback : HierarchicalSection&#91;0..1&#93;</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="348.62,567",
+		shape=plain,
+		width=3.3681];
+	StandardDocument -> BoilerplateType	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,348.62,421.32 348.62,432.54 348.62,432.54 348.62,507.69 348.62,507.69"];
+	StandardDocumentType	[fontname=Helvetica,
+		height=1.4444,
+		label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+    <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR><TD ALIGN="CENTER">«enumeration»</TD></TR>\n<TR><TD ALIGN="CENTER"><B>StandardDocumentType</B></TD></TR>
+  </TABLE>
+  </TD>
+  </TR>
+
+  <TR>
+    <TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+              <TR><TD ALIGN="LEFT">semantic</TD></TR>
+            <TR><TD ALIGN="LEFT">presentation</TD></TR>
+  </TABLE>
+        </TD>
+  </TR>
+
+  </TABLE>>,
+		pos="645.62,567",
+		shape=plain,
+		width=2.4826];
+	StandardDocument -> StandardDocumentType	[arrowhead=onormal,
+		arrowtail=vee,
+		dir=back,
+		pos="s,486.94,421.48 486.94,432.7 486.94,432.7 486.94,566.5 486.94,566.5 486.94,566.5 520.37,566.5 556.54,566.5"];
+}

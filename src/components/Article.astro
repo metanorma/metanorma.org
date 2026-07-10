@@ -1,0 +1,17 @@
+---
+interface Props {
+  title?: string
+  subtitle?: string
+}
+const { title, subtitle } = Astro.props
+---
+
+<article class="w-full">
+  {title && (
+    <header class="mb-8 border-b border-[var(--mn-c-divider)] pb-4">
+      <h1 class="m-0 text-4xl font-extrabold leading-tight tracking-tight">{title}</h1>
+      {subtitle && <p class="mt-2 text-[var(--mn-c-text-2)]">{subtitle}</p>}
+    </header>
+  )}
+  <slot />
+</article>

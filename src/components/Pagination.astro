@@ -1,0 +1,32 @@
+---
+interface Props {
+  currentPage: number
+  lastPage: number
+  prevUrl?: string
+  nextUrl?: string
+}
+
+function pageUrl(page: number): string {
+  return page === 1 ? '/blog/' : `/blog/page/${page}/`
+}
+
+const { currentPage, lastPage, prevUrl, nextUrl } = Astro.props
+const pages = Array.from({ length: lastPage }, (_, i) => i + 1)
+---
+
+<nav class="mt-10 flex items-center justify-center gap-1 border-t border-[var(--mn-c-divider)] pt-6" aria-label="Pagination">
+  {currentPage > 1 && (
+    <a href={prevUrl || pageUrl(currentPage - 1)} class="mr-2 rounded-lg border border-[var(--mn-c-divider)] px-3 py-1.5 text-sm no-underline hover:border-[var(--mn-c-brand-1)] hover:text-[var(--mn-c-brand-1)]">← Prev</a>
+  )}
+  {pages.map(p => (
+    <a
+      href={pageUrl(p)}
+      class={`rounded-lg border px-3 py-1.5 text-sm no-underline ${p === currentPage
+        ? 'border-[var(--mn-c-brand-1)] bg-[var(--mn-c-brand-1)] text-white'
+        : 'border-[var(--mn-c-divider)] text-[var(--mn-c-text-2)] hover:border-[var(--mn-c-brand-1)] hover:text-[var(--mn-c-brand-1)]'}`}
+    >{p}</a>
+  ))}
+  {currentPage < lastPage && (
+    <a href={nextUrl || pageUrl(currentPage + 1)} class="ml-2 rounded-lg border border-[var(--mn-c-divider)] px-3 py-1.5 text-sm no-underline hover:border-[var(--mn-c-brand-1)] hover:text-[var(--mn-c-brand-1)]">Next →</a>
+  )}
+</nav>
