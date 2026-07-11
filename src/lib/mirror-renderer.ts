@@ -18,8 +18,15 @@ export interface MirrorNode {
   marks?: Mark[]
 }
 
+export interface HeadingRef {
+  depth: number
+  slug: string
+  text: string
+}
+
 export interface RenderContext {
   seenIds: Set<string>
+  headings: HeadingRef[]
 }
 
 export type NodeRenderer = (node: MirrorNode, ctx: RenderContext) => string
@@ -68,6 +75,12 @@ function resolveHeadingId(attrs: Record<string, unknown>, fallbackText: string, 
     return explicit
   }
   return uniqueId(slugify(fallbackText), ctx)
+}
+
+function recordHeading(depth: number, id: string, node: MirrorNode, ctx: RenderContext): void {
+  if (depth >= 2 && depth <= 4 && id) {
+    ctx.headings.push({ depth, slug: id, text: extractText(node) })
+  }
 }
 
 function xrefHref(target: string | undefined): string {
@@ -153,6 +166,7 @@ const renderHeading: NodeRenderer = (node, ctx) => {
   const attrs = node.attrs || {}
   const level = (attrs.level as number) || 1
   const id = resolveHeadingId(attrs, extractText(node), ctx)
+  recordHeading(level, id, node, ctx)
   return `<h${level}${id ? ` id="${escapeHtml(id)}"` : ''}>${renderChildren(node, ctx)}</h${level}>`
 }
 
@@ -191,6 +205,7 @@ const renderSectionLike: NodeRenderer = (node, ctx) => {
   const attrs = node.attrs || {}
   const level = sectionLevelToHeadingLevel(attrs.level as number)
   const id = resolveHeadingId(attrs, String(attrs.title || ''), ctx)
+  if (attrs.title) recordHeading(level, id, node, ctx)
   const heading = attrs.title
     ? `<h${level}${id ? ` id="${escapeHtml(id)}"` : ''}>${escapeHtml(String(attrs.title))}</h${level}>`
     : ''
@@ -269,6 +284,7 @@ const renderFloatingTitle: NodeRenderer = (node, ctx) => {
   const level = sectionLevelToHeadingLevel(attrs.level as number)
   const title = String(attrs.title || '')
   const id = resolveHeadingId(attrs, title, ctx)
+  recordHeading(level, id, node, ctx)
   return `<h${level}${id ? ` id="${escapeHtml(id)}"` : ''}>${escapeHtml(title)}</h${level}>`
 }
 
@@ -384,15 +400,20 @@ export function renderNode(node: MirrorNode, ctx: RenderContext): string {
 }
 
 export function renderMirrorToHtml(doc: MirrorNode | string): string {
+  return renderMirrorWithHeadings(doc).html
+}
+
+export function renderMirrorWithHeadings(doc: MirrorNode | string): { html: string; headings: HeadingRef[] } {
   if (typeof doc === 'string') {
     try {
       doc = JSON.parse(doc) as MirrorNode
     } catch {
-      return ''
+      return { html: '', headings: [] }
     }
   }
-  const ctx: RenderContext = { seenIds: new Set() }
-  return renderNode(doc, ctx)
+  const ctx: RenderContext = { seenIds: new Set(), headings: [] }
+  const html = renderNode(doc, ctx)
+  return { html, headings: ctx.headings }
 }
 
 // Exported for testing and for callers that need to register custom

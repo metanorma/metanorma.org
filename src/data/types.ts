@@ -1,3 +1,20 @@
+export interface SiteFrontmatter {
+  title?: string
+  description?: string
+  excerpt?: string
+  subtitle?: string
+  date?: string
+  layout?: string
+  author?: {
+    name?: string
+    use_picture?: string
+    social_links?: string[]
+  }
+  card_image?: string
+  redirect_from?: string[]
+  [key: string]: unknown
+}
+
 export interface Flavor {
   id: string
   label: string

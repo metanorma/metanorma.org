@@ -150,13 +150,16 @@ module Convert
         return prod == output_key ? [] : ["/#{prod}/"]
       end
 
+      # Derive the production path by applying each DIR_MAPPINGS rewrite
+      # to the source-relative path, then stripping the _pages/ prefix
+      # and the source extension. This keeps redirect generation in sync
+      # with the mapping table — no separate hardcoded .sub() chain.
       prod = rel_path
-        .sub(/\A_pages\//, "")
-        .sub(/\A_software\//, "software/")
-        .sub(/\A_specs\//, "specs/")
-        .sub(/\A_samples\//, "samples/")
-        .sub(/\A_library\//, "library/")
-        .sub(/\.(adoc|html)\z/, "")
+      DIR_MAPPINGS.each do |src, dest|
+        prod = prod.sub(/\A#{Regexp.escape(src)}\//, "#{dest}/")
+      end
+      prod = prod.sub(/\A_pages\//, "")
+      prod = prod.sub(/\.(adoc|html)\z/, "")
 
       return [] if prod == output_key
       ["/#{prod}/"]

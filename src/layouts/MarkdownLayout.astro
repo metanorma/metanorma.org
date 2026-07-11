@@ -1,0 +1,14 @@
+---
+import BaseLayout from './BaseLayout.astro'
+import type { SiteFrontmatter } from '../data/types'
+
+const { frontmatter } = Astro.props as { frontmatter: SiteFrontmatter }
+const title = frontmatter.title || ''
+const description = frontmatter.description || ''
+---
+
+<BaseLayout title={title} description={description} frontmatter={frontmatter}>
+  <article class="mn-rendered mx-auto max-w-3xl px-6 py-12">
+    <slot />
+  </article>
+</BaseLayout>

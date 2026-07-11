@@ -4,23 +4,27 @@
 // The pipeline owns the ordering. Adding a new transform (e.g., image
 // lazy-loading) = adding one entry to the array, not editing the loader.
 
-import { renderMirrorToHtml, type MirrorNode } from './mirror-renderer'
+import { renderMirrorWithHeadings, type MirrorNode, type HeadingRef } from './mirror-renderer'
 import { renderMath } from './render-math'
 import { renderCode } from './render-code'
 
 export type RenderStep = (input: string) => string | Promise<string>
 
+export interface RenderResult {
+  html: string
+  headings: HeadingRef[]
+}
+
 export class RenderPipeline {
   constructor(private readonly steps: RenderStep[]) {}
 
-  async run(mirrorJson: string | MirrorNode): Promise<string> {
-    let html = typeof mirrorJson === 'string'
-      ? renderMirrorToHtml(mirrorJson)
-      : renderMirrorToHtml(mirrorJson)
+  async run(mirrorJson: string | MirrorNode): Promise<RenderResult> {
+    const { html: rawHtml, headings } = renderMirrorWithHeadings(mirrorJson)
+    let html = rawHtml
     for (const step of this.steps) {
       html = await step(html)
     }
-    return html
+    return { html, headings }
   }
 }
 

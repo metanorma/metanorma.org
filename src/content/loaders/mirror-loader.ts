@@ -52,8 +52,7 @@ export function mirrorLoader(): Loader {
         }
 
         const slug = slugFromFile(file)
-        const html = await defaultPipeline.run(envelope.mirror_json)
-        const headings = extractHeadings(html)
+        const { html, headings } = await defaultPipeline.run(envelope.mirror_json)
         const fm = envelope.frontmatter || {}
 
         store.set({
@@ -74,25 +73,4 @@ export function mirrorLoader(): Loader {
       logger.info(`mirror-loader: ${count} entries synced`)
     },
   }
-}
-
-// Extract headings from rendered HTML. Single regex pass; matches
-// <hN id="..."> elements emitted by the renderer (N = 2..4 — page
-// title is h1 and excluded from TOC).
-function extractHeadings(html: string): Array<{ depth: number; slug: string; text: string }> {
-  const re = /<h([234])\s+id="([^"]+)"[^>]*>(.*?)<\/h\1>/g
-  const out: Array<{ depth: number; slug: string; text: string }> = []
-  let m: RegExpExecArray | null
-  while ((m = re.exec(html)) !== null) {
-    out.push({
-      depth: Number(m[1]),
-      slug: m[2],
-      text: stripTags(m[3]),
-    })
-  }
-  return out
-}
-
-function stripTags(s: string): string {
-  return s.replace(/<[^>]+>/g, '')
 }

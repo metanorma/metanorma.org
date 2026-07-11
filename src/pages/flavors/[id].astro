@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import FlavorPage from '../../components/FlavorPage.astro'
+import { flavors } from '../../data/flavors'
+
+export async function getStaticPaths() {
+  return flavors.map(flavor => ({
+    params: { id: flavor.id },
+    props: { flavor },
+  }))
+}
+
+interface Props {
+  flavor: typeof flavors[number]
+}
+const { flavor } = Astro.props as Props
+---
+
+<BaseLayout title={flavor.fullName} description={flavor.description}>
+  <FlavorPage flavor={flavor} />
+</BaseLayout>
