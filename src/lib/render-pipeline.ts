@@ -7,6 +7,7 @@
 import { renderMirrorWithHeadings, type MirrorNode, type HeadingRef } from './mirror-renderer'
 import { renderMath } from './render-math'
 import { renderCode } from './render-code'
+import './component-renderers'
 
 export type RenderStep = (input: string) => string | Promise<string>
 

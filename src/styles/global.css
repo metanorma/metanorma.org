@@ -109,6 +109,13 @@ html, body {
 .mn-rendered code { background: var(--mn-c-bg-soft); padding: 2px 6px; border-radius: 4px; font-size: 0.88em; font-family: var(--mn-font-mono); overflow-wrap: anywhere; }
 .mn-rendered pre { background: var(--mn-c-bg-soft); padding: 16px 20px; border-radius: 10px; overflow-x: auto; border: 1px solid var(--mn-c-divider); margin: 16px 0; }
 .mn-rendered pre code { background: none; padding: 0; font-size: 13px; }
+.mn-rendered .code-block { margin: 20px 0; border-radius: 10px; overflow: hidden; border: 1px solid var(--mn-c-divider); }
+.mn-rendered .code-block pre { margin: 0; border: none; border-radius: 0; }
+.mn-rendered .code-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: var(--mn-c-bg-mute); border-bottom: 1px solid var(--mn-c-divider); font-size: 12px; }
+.mn-rendered .code-filename { font-family: var(--mn-font-mono); color: var(--mn-c-text-2); font-weight: 500; }
+.mn-rendered .code-lang { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--mn-c-text-3); font-weight: 600; }
+.mn-rendered .table-wrapper { margin: 20px 0; overflow-x: auto; border-radius: 8px; border: 1px solid var(--mn-c-divider); }
+.mn-rendered .table-wrapper table { margin: 0; border: none; display: table; }
 .mn-rendered blockquote { border-left: 3px solid var(--mn-c-brand-1); padding: 12px 16px; color: var(--mn-c-text-2); margin: 16px 0; background: var(--mn-c-brand-soft); border-radius: 0 8px 8px 0; }
 .mn-rendered hr { border: none; border-top: 1px solid var(--mn-c-divider); margin: 32px 0; }
 .mn-rendered img { max-width: 100%; border-radius: 8px; }
@@ -117,13 +124,22 @@ html, body {
 .mn-rendered dt:first-child { margin-top: 0; }
 .mn-rendered dd { margin: 0; padding: 2px 0 4px 16px; border-left: 2px solid var(--mn-c-divider); line-height: 1.7; }
 .mn-rendered dd p { margin: 4px 0; }
-.mn-rendered .admonition { padding: 16px 20px; border-radius: 8px; margin: 16px 0; border-left: 4px solid; }
+.mn-rendered .admonition { padding: 0; border-radius: 10px; margin: 20px 0; border-left: 4px solid; overflow: hidden; }
 .mn-rendered .admonition-note { background: rgba(59,130,246,0.06); border-color: #3B82F6; }
+.mn-rendered .admonition-note .admonition-header { background: rgba(59,130,246,0.12); color: #2563EB; }
 .mn-rendered .admonition-tip { background: rgba(16,185,129,0.06); border-color: #10B981; }
+.mn-rendered .admonition-tip .admonition-header { background: rgba(16,185,129,0.12); color: #059669; }
 .mn-rendered .admonition-warning { background: rgba(245,158,11,0.06); border-color: #F59E0B; }
+.mn-rendered .admonition-warning .admonition-header { background: rgba(245,158,11,0.12); color: #D97706; }
 .mn-rendered .admonition-important { background: rgba(139,92,246,0.06); border-color: #8B5CF6; }
-.mn-rendered .admonition-caution { background: rgba(239,68,68,0.06); border-color: #EF4444; }
-.mn-rendered .admonition-label { font-weight: 700; font-size: 13px; text-transform: uppercase; margin-bottom: 8px; }
+.mn-rendered .admonition-important .admonition-header { background: rgba(139,92,246,0.12); color: #7C3AED; }
+.mn-rendered .admonition-caution, .mn-rendered .admonition-danger { background: rgba(239,68,68,0.06); border-color: #EF4444; }
+.mn-rendered .admonition-caution .admonition-header, .mn-rendered .admonition-danger .admonition-header { background: rgba(239,68,68,0.12); color: #DC2626; }
+.mn-rendered .admonition-header { display: flex; align-items: center; gap: 8px; padding: 10px 16px; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.03em; }
+.mn-rendered .admonition-icon { flex-shrink: 0; }
+.mn-rendered .admonition-body { padding: 12px 16px; }
+.mn-rendered .admonition-body > *:first-child { margin-top: 0; }
+.mn-rendered .admonition-body > *:last-child { margin-bottom: 0; }
 .mn-rendered .example-block { padding: 16px 20px; border: 1px solid var(--mn-c-divider); border-radius: 8px; margin: 16px 0; }
 .mn-rendered .example-label { font-weight: 700; font-size: 13px; text-transform: uppercase; margin-bottom: 8px; color: var(--mn-c-text-3); }
 .mn-rendered .open-block { margin: 16px 0; }
