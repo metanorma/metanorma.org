@@ -179,6 +179,15 @@ html, body {
   box-shadow: 0 16px 40px -12px rgba(87, 90, 190, 0.10);
 }
 
+@keyframes mn-hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.mn-hero-float { animation: mn-hero-float 4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .mn-hero-float { animation: none; }
+}
+
 html { scrollbar-width: thin; scrollbar-color: var(--mn-c-divider) transparent; }
 html::-webkit-scrollbar { width: 8px; height: 8px; }
 html::-webkit-scrollbar-track { background: transparent; }

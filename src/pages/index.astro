@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { homeData as d } from '../data/home'
+import { flavors } from '../data/flavors'
+import { posts } from '../data/posts'
+import { formatDate } from '../lib/format-date'
+const supportedFlavors = flavors.filter(f => f.status === 'supported')
+---
+
+<BaseLayout title={d.hero.titleLine1 + ' ' + d.hero.titleLine2} description={d.hero.subtitle}>
+  <!-- Hero: Logo on turbulent ocean waves -->
+  <section class="relative flex min-h-[600px] items-center justify-center overflow-hidden">
+    <!-- Background -->
+    <div class="absolute inset-0 z-0">
+      <div class="absolute inset-0 bg-gradient-to-b from-[var(--mn-c-bg-soft)] via-[var(--mn-c-bg)] to-[var(--mn-c-bg-soft)]"></div>
+      <!-- Radial glow behind logo -->
+      <div class="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-3xl" style="background: radial-gradient(circle, var(--mn-c-brand-glow) 0%, transparent 60%);"></div>
+    </div>
+
+    <!-- Animated wave layers at bottom -->
+    <svg class="absolute bottom-0 left-0 z-0 w-full" viewBox="0 0 1440 320" preserveAspectRatio="none" style="height: 40%">
+      <path fill="rgba(87,90,190,0.04)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,144C960,149,1056,139,1152,128C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+        <animate attributeName="d" dur="8s" repeatCount="indefinite"
+          values="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,144C960,149,1056,139,1152,128C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;
+            M0,128L48,144C96,160,192,192,288,186.7C384,181,480,139,576,138.7C672,139,768,181,864,176C960,171,1056,117,1152,106.7C1248,96,1344,128,1392,144L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;
+            M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,144C960,149,1056,139,1152,128C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z" />
+      </path>
+      <path fill="rgba(87,90,190,0.07)" d="M0,224L48,213.3C96,203,192,181,288,176C384,171,480,181,576,202.7C672,224,768,256,864,250.7C960,245,1056,203,1152,192C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+        <animate attributeName="d" dur="6s" repeatCount="indefinite"
+          values="M0,224L48,213.3C96,203,192,181,288,176C384,171,480,181,576,202.7C672,224,768,256,864,250.7C960,245,1056,203,1152,192C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;
+            M0,192L48,202.7C96,213,192,235,288,240C384,245,480,235,576,224C672,213,768,192,864,186.7C960,181,1056,192,1152,208C1248,224,1344,256,1392,272L1440,288L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;
+            M0,224L48,213.3C96,203,192,181,288,176C384,171,480,181,576,202.7C672,224,768,256,864,250.7C960,245,1056,203,1152,192C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z" />
+      </path>
+    </svg>
+
+    <!-- Content -->
+    <div class="relative z-10 px-6 text-center">
+      <!-- Metanorma icon — gently floating on the waves -->
+      <div class="mx-auto mb-10 mn-hero-float">
+        <img src="/metanorma-logo_icon-light.svg" alt="Metanorma" class="mx-auto h-32 w-32 dark:hidden md:h-40 md:w-40" />
+        <img src="/metanorma-logo_icon-dark.svg" alt="Metanorma" class="mx-auto hidden h-32 w-32 dark:block md:h-40 md:w-40" />
+      </div>
+
+      <h1 class="text-5xl font-extrabold tracking-tight text-[var(--mn-c-text-1)] md:text-6xl">
+        {d.hero.titleLine1}<br/>
+        <em class="text-[var(--mn-c-brand-1)]">{d.hero.titleLine2}</em>
+      </h1>
+      <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-[var(--mn-c-text-2)]">{d.hero.subtitle}</p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <a href={d.hero.primaryAction.href} class="rounded-xl bg-[var(--mn-c-brand-1)] px-8 py-3.5 font-semibold text-white no-underline shadow-lg shadow-[var(--mn-c-brand-1)]/20 transition-all hover:scale-105 hover:shadow-xl">
+          {d.hero.primaryAction.label}
+        </a>
+        <a href={d.hero.secondaryAction.href} class="rounded-xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-elv)]/80 px-8 py-3.5 font-semibold text-[var(--mn-c-text-1)] no-underline backdrop-blur-sm transition-all hover:border-[var(--mn-c-brand-1)] hover:text-[var(--mn-c-brand-1)]">
+          {d.hero.secondaryAction.label}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pipeline -->
+  <section class="mx-auto max-w-[1440px] px-6 py-16">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {d.pipeline.map(step => (
+        <a href={step.link} class="card-lift rounded-xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg)] p-6 no-underline">
+          <span class="text-sm font-bold text-[var(--mn-c-brand-1)]">{step.number}</span>
+          <h3 class="mt-2 text-lg font-semibold text-[var(--mn-c-text-1)]">{step.title}</h3>
+          <p class="mt-1 text-sm leading-relaxed text-[var(--mn-c-text-2)]">{step.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Flavors -->
+  <section class="mx-auto max-w-[1440px] px-6 py-16">
+    <h2 class="mb-2 text-3xl font-bold tracking-tight text-[var(--mn-c-text-1)]">{d.flavorsSection.title}</h2>
+    <p class="mb-8 text-[var(--mn-c-text-2)]">{d.flavorsSection.subtitle}</p>
+    <div class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-3">
+      {supportedFlavors.slice(0, 12).map(flavor => (
+        <a href={`/flavors/${flavor.id}/`} class="card-lift flex flex-col items-center gap-2 rounded-xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg)] p-4 text-center no-underline">
+          {flavor.logo && <img src={flavor.logo} alt={flavor.label} class="h-8" />}
+          <strong class="text-sm text-[var(--mn-c-text-1)]">{flavor.label}</strong>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Recent posts -->
+  <section class="mx-auto max-w-[1440px] px-6 py-16">
+    <div class="flex items-end justify-between">
+      <h2 class="text-3xl font-bold tracking-tight text-[var(--mn-c-text-1)]">{d.blogSection.title}</h2>
+      <a href="/blog/" class="text-sm font-medium text-[var(--mn-c-brand-1)] no-underline hover:underline">All posts →</a>
+    </div>
+    <div class="mt-6 grid gap-4 md:grid-cols-3">
+      {posts.slice(0, 3).map(post => (
+        <a href={post.url} class="card-lift flex flex-col rounded-xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg)] p-5 no-underline">
+          <time class="text-xs text-[var(--mn-c-text-3)]">{formatDate(post.date)}</time>
+          <h3 class="mt-2 font-semibold text-[var(--mn-c-text-1)]">{post.title}</h3>
+          {post.description && <p class="mt-1 line-clamp-2 text-sm text-[var(--mn-c-text-2)]">{post.description}</p>}
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
