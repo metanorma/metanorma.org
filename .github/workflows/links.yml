@@ -3,47 +3,53 @@ name: links
 on:
   push:
     branches:
-    - main
+      - main
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
-  link_checker:
+  link-checker:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.3'
-        bundler-cache: true
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
 
-    - name: Build site
-      env:
-        JEKYLL_ENV: production
-      run: bundle exec jekyll build
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
 
-    - name: Restore lychee cache
-      uses: actions/cache@v4
-      with:
-        path: .lycheecache
-        key: cache-lychee-${{ github.sha }}
-        restore-keys: cache-lychee-
+      - name: Install Node dependencies
+        run: npm ci
 
-    - name: Run lychee
-      uses: lycheeverse/lychee-action@v2
-      with:
-        args: |
-          --verbose
-          --no-progress
-          --cache
-          --accept 200..=299,401,403,404,429,500,503,999
-          --max-cache-age 1d
-          --root-dir "${{ github.workspace }}/_site" "_site/**/*.html"
-        fail: true
+      - name: Build site
+        run: npm run build
 
-      # - name: Create Issue From File
-      #   uses: peter-evans/create-issue-from-file@v2
-      #   with:
-      #     title: Link Checker Report
-      #     content-filepath: ./lychee/out.md
-      #     labels: report, automated issue
+      - name: Restore lychee cache
+        uses: actions/cache@v4
+        with:
+          path: .lycheecache
+          key: cache-lychee-${{ github.sha }}
+          restore-keys: cache-lychee-
+
+      - name: Run lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --verbose
+            --no-progress
+            --cache
+            --accept 200..=299,401,403,404,429,500,503,999
+            --max-cache-age 1d
+            --root-dir "${{ github.workspace }}/dist"
+            "dist/**/*.html"
+          fail: true
