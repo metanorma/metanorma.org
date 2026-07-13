@@ -1,0 +1,106 @@
+---
+title: Metanorma-NIST library documentation
+description: >-
+  Library documentation for Metanorma-NIST, the Metanorma flavor for NIST publications.
+  Synced from the upstream gem README at github.com/metanorma/metanorma-nist.
+source_url: https://github.com/metanorma/metanorma-nist/blob/main/README.adoc
+is_library_doc: true
+layout: page
+---
+
+== Functionality
+
+This gem processes https://www.metanorma.com[Metanorma documents] following
+a template for generating NIST standards.
+
+It provides the following functions:
+
+. Compiles Metanorma input into the Metanorma-NIST XML format
+. Validates XML output against the Metanorma-NIST document model
+** Errors are reported to console against the XML, and are intended for users to
+check that they have provided all necessary components of the
+document.
+. Metanorma-NIST XML is then converted into desired output formats.
+
+The following outputs are supported:
+
+* Primary: the canonical Metanorma-NIST XML representation (`.xml`).
+* Secondary: the Metanorma-NIST XML representation is processed to generate the following outputs
+as end deliverable NIST documents.
+** HTML (`.html`)
+** PDF (`.pdf`)
+** Word (`.doc`)
+
+== Structure
+
+This gem inherits from the https://github.com/metanorma/metanorma-standoc
+gem, and aligns closely to it.
+
+=== Quickstart
+
+Please see https://www.metanorma.com for instructions to get started.
+
+If you are using a Mac, the https://github.com/metanorma/metanorma-macos-setup
+repository has instructions on setting up your machine to run Metanorma
+scripts such as this one. You need only run the following in a Terminal console:
+
+[source,console]
+----
+$ bash <(curl -s https://raw.githubusercontent.com/metanorma/metanorma-macos-setup/master/metanorma-setup)
+$ gem install metanorma-cli
+$ gem install metanorma-nist
+----
+
+== Usage
+
+Using the `metanorma` CLI:
+
+[source,console]
+----
+$ metanorma --type nist a.adoc                   # output HTML
+$ metanorma --type nist --extensions html a.adoc # output just HTML
+$ metanorma --type nist --extensions xml a.adoc  # output Metanorma XML
+----
+
+== Authoring
+
+Please refer to the Metanorma-ISO documentation for general documentation.
+
+* Metanorma-ISO general documentation: https://www.metanorma.com/software/metanorma-iso/
+
+* Metanorma-ISO guidance: https://www.metanorma.com/software/metanorma-iso/docs/guidance/
+
+== Approach
+
+=== Document model
+
+The NIST SP 800 document model is detailed here:
+
+* https://github.com/metanorma/metanorma-model-nist[NIST SP 800 document model]
+
+It is an instance of the
+https://github.com/metanorma/metanorma-model-standoc[StandardDocument model].
+
+=== Document input
+
+Document input to Metanorma is for the compilation of content into the
+Metanorma XML document.
+
+The Metanorma-NIST processor supports AsciiDoc input.
+
+Similar to Markdown, AsciiDoc is a lightweight markup format, but
+combines the rigor and expressivity of DocBook.
+A number of editors (through plugins) support preview of AsciiDoc files,
+so textual content can be previewed without running the Metanorma toolchain.
+
+The Metanorma processor automates numbering of headings, figures,
+tables etc, automatically generates references and citations,
+and  the resulting output presentations.
+
+NOTE: The Asciidoctor gem is used for AsciiDoc input parsing.
+
+Note: documentation has been moved to https://www.metanorma.org/author/nist[metanorma.org]
+
+== Examples
+
+See https://gitlab.com/metanorma/mn-samples-nist (private repository)

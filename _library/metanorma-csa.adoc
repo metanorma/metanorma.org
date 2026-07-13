@@ -1,0 +1,75 @@
+---
+title: Metanorma-CSA library documentation
+description: >-
+  Library documentation for Metanorma-CSA, the Metanorma flavor for Cloud Security Alliance documents.
+  Synced from the upstream gem README at github.com/metanorma/metanorma-csa.
+source_url: https://github.com/metanorma/metanorma-csa/blob/main/README.adoc
+is_library_doc: true
+layout: page
+---
+
+
+*NOTE: This gem is no longer supported. The Cloud Security Alliance is now supported by Metanorma
+as a taste, rather than as a separate flavour: see https://github.com/metanorma/metanorma-taste[]*
+
+== Functionality
+
+This gem processes https://www.metanorma.com/[Metanorma documents] following
+a template for generating CSA documents.
+
+The gem currently inherits from the https://github.com/metanorma/metanorma-standoc
+gem, and aligns closely to it. Refer to the ISO gem documentation
+for guidance, including https://github.com/metanorma/metanorma-iso/wiki/Guidance-for-authoring
+
+The following outputs are generated.
+
+* Metanorma XML
+* HTML output (from Metanorma XML)
+* PDF output (from Metanorma XML)
+
+// This AsciiDoc syntax for writing CSAND standards is hereby named "AsciiCSAND".
+
+== Usage
+
+The preferred way to invoke this gem is via the `metanorma` command:
+
+[source,console]
+----
+$ metanorma --type csa a.adoc                   # output just HTML
+$ metanorma --type csa a.adoc --extensions html # output just HTML
+$ metanorma --type csa a.adoc --extensions xml  # output CSAND XML
+----
+
+The gem translates the document into CSAND XML format, and then
+validates its output against the CSAND XML document model; errors are
+reported to console against the XML, and are intended for users to
+check that they have provided all necessary components of the
+document.
+
+The gem then converts the XML to HTML, and
+outputs that files with the appropriate `.html` suffix.
+
+=== Installation
+
+If you are using a Mac, the https://github.com/metanorma/metanorma-macos-setup
+repository has instructions on setting up your machine to run Metanorma
+scripts such as this one. You need only run the following in a Terminal console:
+
+[source,console]
+----
+$ bash <(curl -s https://raw.githubusercontent.com/metanorma/metanorma-macos-setup/master/metanorma-setup)
+$ gem install metanorma-csa
+
+----
+
+== Documentation
+
+See https://www.metanorma.com/author/csa/[Author Cloud Security Alliance documents with Metanorma-CSAND].
+
+== Examples
+
+See https://github.com/metanorma/mn-samples-csa for sample documents.
+
+== Notes
+
+Metanorma-CSA was formerly published as `asciidoctor-csand`.

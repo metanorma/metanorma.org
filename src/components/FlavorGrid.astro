@@ -1,0 +1,26 @@
+---
+import { flavors } from '../data/flavors'
+import type { Flavor } from '../data/types'
+import FlavorCard from './FlavorCard.astro'
+
+type Status = Flavor['status']
+const groups: Array<{ label: string; statuses: Status[] }> = [
+  { label: 'Supported Flavors', statuses: ['supported'] },
+  { label: 'Experimental', statuses: ['experimental'] },
+  { label: 'Private', statuses: ['private'] },
+]
+const flavorGroups = groups
+  .map(g => ({ ...g, items: flavors.filter(f => g.statuses.includes(f.status)) }))
+  .filter(g => g.items.length > 0)
+---
+
+<div>
+  {flavorGroups.map(group => (
+    <section class="mb-12">
+      <h2 class="mb-4 text-xl font-bold tracking-tight text-[var(--mn-c-text-1)]">{group.label}</h2>
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3">
+        {group.items.map(flavor => <FlavorCard flavor={flavor} />)}
+      </div>
+    </section>
+  ))}
+</div>

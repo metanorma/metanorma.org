@@ -1,16 +1,11 @@
-////
-Case construct, see:
-https://shopify.github.io/liquid/tags/control-flow/
-////
-:page-liquid:
-
+// tag::intro
 The code for this exercise is available on https://github.com/metanorma/metanorma-tutorial/tree/master/sources/standard[GitHub].
 
-The corresponding file is named `{{include.content}}.adoc`
+The corresponding file is named `{exercise-file}.adoc`
+// end::intro
 
-{% case {{include.content}} %}
-  {% when "exercise-2-1" %}
-Now it’s your turn. Fill the document with the following attributes:
+// tag::exercise-2-1
+Now it's your turn. Fill the document with the following attributes:
 
 [%interactive]
 * [ ] Document title
@@ -29,8 +24,9 @@ To declare an attribute, follow the syntax `:attribute: value`.
 
 For example: `:publisher: Ribose Inc.`
 ====
+// end::exercise-2-1
 
-  {% when "exercise-2-2" %}
+// tag::exercise-2-2
 Look at the prepopulated Metanorma document.
 There are many clauses describing the content but there are sections missing to form a correct standard document.
 Add the following sections:
@@ -43,8 +39,9 @@ Add the following sections:
 * [ ] Normative references on line 45
 * [ ] Terms and definitions on line 60
 * [ ] Bibliography on line 95
+// end::exercise-2-2
 
-  {% when "exercise-2-3-1" %}
+// tag::exercise-2-3-1
 Add lists to the prepopulated document.
 
 [%interactive]
@@ -62,8 +59,9 @@ Unordered list items start with an asterisk, followed by a blank: `* List item`.
 To write a definition list, follow the syntax:
 `term:: Definition`
 ====
+// end::exercise-2-3-1
 
-  {% when "exercise-2-3-2" %}
+// tag::exercise-2-3-2
 Create a term definition entry for the term "job":
 [%interactive]
 * [ ] Add an alternative term ("task")
@@ -83,8 +81,9 @@ deprecated:[deprecated term]
 definition
 ----
 ======
+// end::exercise-2-3-2
 
-  {% when "exercise-2-3-3" %}
+// tag::exercise-2-3-3
 Let's compare rice against wheat in a table:
 [%interactive]
 * [ ] Create an empty three column table with five rows.
@@ -116,7 +115,9 @@ The structure for a three column table looks like this:
 |===
 ----
 ======
-  {% when "exercise-2-3-4" %}
+// end::exercise-2-3-3
+
+// tag::exercise-2-3-4
 Insert a diagram of of a rice plant in line 17 by following the steps below:
 [%interactive]
 * [ ] Add an image macro.
@@ -140,8 +141,9 @@ The syntax for images is: `image::URL[]`.
 
 Make sure to include the square brackets after the link.
 ====
+// end::exercise-2-3-4
 
-  {% when "exercise-2-3-5" %}
+// tag::exercise-2-3-5
 Turn the existing text into admonitions:
 [%interactive]
 * [ ] Turn the text in line 22 into an `IMPORTANT` admonition.
@@ -162,8 +164,9 @@ Line three.
 ====
 ----
 ======
+// end::exercise-2-3-5
 
-  {% when "exercise-2-3-6" %}
+// tag::exercise-2-3-6
 There are some code samples in the document but they are not neatly packed into `source` blocks, so they cause trouble.
 
 [%interactive]
@@ -184,8 +187,9 @@ Code
 ====
 ----
 ======
+// end::exercise-2-3-6
 
-  {% when "exercise-2-4-1" %}
+// tag::exercise-2-4-1
 Format the text using the following formatting:
 [%interactive]
 * [ ] Add underline formatting to the sentence in line 23
@@ -193,8 +197,9 @@ Format the text using the following formatting:
 * [ ] Add smallcaps formatting to "FAIR" in line 27
 * [ ] Add italic formatting to _the OGC Innovation Program_ in line 30
 * [ ] Add a footnote on line 30 to explain the OGC Innovation Program. Footnote text: See all active initiatives at the OGC website. https://www.ogc.org/projects/initiatives/active.
+// end::exercise-2-4-1
 
-  {% when "exercise-2-4-2" %}
+// tag::exercise-2-4-2
 Let's add some index entries to the text.
 [%interactive]
 * [ ] Add a visible index entry to "OGC" on line 25
@@ -209,8 +214,9 @@ Visible index terms: `\((Level 1 index term))`
 
 Hidden index terms: `(\((Level 1 index term, Level 2 index term, Level 3 index term)))`
 ====
+// end::exercise-2-4-2
 
-  {% when "exercise-2-4-3" %}
+// tag::exercise-2-4-3
 Let's add some references to the sample document.
 
 Internal references:
@@ -229,19 +235,31 @@ The text references some standards which don't have a matching entry in the bibl
 .Hint
 [%collapsible]
 ====
-Setting an anchor: `\[[anchor]]`
+Setting an anchor:
 
-Referencing an anchor: `\<<anchor>>`
+[source,asciidoc]
+----
+[[anchor]]
+----
+
+Referencing an anchor:
+
+[source,asciidoc]
+----
+<<anchor>>
+----
 ====
+// end::exercise-2-4-3
 
-  {% when "exercise-3-1" %}
+// tag::exercise-3-1
 The text contains some typos. Mark the errors using comments.
 [%interactive]
 * [ ] Line 25: commnuity
 * [ ] Line 27: agencys
 * [ ] Line 20: colaborative
+// end::exercise-3-1
 
-  {% when "exercise-3-2" %}
+// tag::exercise-3-2
 Let's check out what happens when we compile `exercise-3-2.adoc`
 To compile our document:
 
@@ -275,8 +293,9 @@ docker run -v "%cd%":/metanorma/ -w /metanorma metanorma/metanorma metanorma com
 . Relaton fetches checks the cited standards if it can fetch some information automatically.
 .
 ====
+// end::exercise-3-2
 
-  {% when "exercise-4-2" %}
+// tag::exercise-4-2
 The following document doesn't compile because there are some errors.
 
 . Enter `metnanorma exercise-4-2.adoc` to trigger the build process.
@@ -303,6 +322,4 @@ Since the scope section already contains text, you can delete the reference.
 ====
 Line 236: The image attribute contains a whitespace after `image::`, so the path is invalid. Delete the whitespace.
 ====
-  {% else %}
-     Couldn't load exercise.
-{% endcase %}
+// end::exercise-4-2

@@ -1,0 +1,142 @@
+---
+title: Metanorma-UN library documentation
+description: >-
+  Library documentation for Metanorma-UN, the Metanorma flavor for UN standards.
+  Synced from the upstream gem README at github.com/metanorma/metanorma-un.
+source_url: https://github.com/metanorma/metanorma-un/blob/main/README.adoc
+is_library_doc: true
+layout: page
+---
+
+(Formerly known as metanorma-unece)
+
+THIS GEM IS NO LONGER MAINTAINED AS OF 20241009
+
+== Functionality
+
+This gem processes https://www.metanorma.com/[Metanorma documents] following
+a template for generating UN International Standards.
+
+The gem currently inherits from the https://github.com/metanorma/metanorma-standoc[Metanorma-Standoc]
+gem, and aligns closely to it. Refer to the ISO gem documentation
+for guidance, including https://github.com/metanorma/metanorma-iso/wiki/Guidance-for-authoring[the Authoring Guide].
+
+The following outputs are generated.
+
+* an XML representation of the document, intended as a document model for UN
+International Standards.
+* The XML representation is processed in turn to generate the following outputs
+as end deliverable UN standard drafts.
+** HTML
+** Word
+
+NOTE: http://asciimath.org[AsciiMathML] is to be used for mathematical formatting.
+The gem uses the https://github.com/asciidoctor/asciimath[Ruby AsciiMath parser],
+which is syntactically stricter than the common MathJax processor;
+if you do not get expected results, try bracketing terms your in AsciiMathML
+expressions.
+
+== Usage
+
+The preferred way to invoke this gem is via the `metanorma` script:
+
+[source,console]
+----
+$ metanorma --type un a.adoc                   # output HTML and PDF
+$ metanorma --type un --extensions html a.adoc # output just HTML
+$ metanorma --type un --extensions pdf a.adoc  # output just PDF
+$ metanorma --type un --extensions xml a.adoc  # output UN Metanorma XML
+----
+
+The gem translates the document into UN Metanorma XML format, and then
+validates its output against the UN Metanorma XML document model; errors are
+reported to console against the XML, and are intended for users to
+check that they have provided all necessary components of the
+document.
+
+The gem then converts the XML into HTML and PDF.
+
+////
+The gem can also be invoked directly within asciidoctor, though this is deprecated:
+
+[source,console]
+----
+$ asciidoctor -b un -r 'metanorma-un' a.adoc
+----
+////
+
+== Installation
+
+=== Quick start
+
+https://www.metanorma.com/overview/getting-started/
+
+=== macOS
+
+If you are using macOS, the https://github.com/metanorma/metanorma-macos-setup
+repository has instructions on setting up your machine to run Metanorma
+scripts such as this one. You need only run the following in a Terminal console:
+
+[source,console]
+----
+$ bash <(curl -s https://raw.githubusercontent.com/metanorma/metanorma-macos-setup/master/metanorma-setup)
+$ gem install metanorma-un
+$ gem install metanorma-cli
+----
+
+=== Testing
+
+Since this software is still in development it is not yet as mature as the other standards we support. We plan to fully complete support if there is interest.
+
+The easiest way to try out is using a Mac. It takes a little bit more work on a Windows machine through the platform-independent Docker container (see the https://www.metanorma.com/overview/getting-started/#docker-setup[Metanorma Quickstart guide]) , but it is doable.
+
+The current examples of UN documents encoded using Metanorma is provided in https://github.com/metanorma/mn-samples-un
+
+(Please run the 2-line macOS setup script prior to the following)
+
+First, use Git to clone the code and documents:
+
+[source,console]
+--
+git clone https://github.com/metanorma/mn-samples-un/
+--
+
+Then, install all dependencies with this command:
+
+[source,console]
+--
+bundle
+--
+
+Next, run the compilation toolchain:
+
+[source,console]
+--
+make all
+--
+
+Then you will see the files generated, including HTML and Word Doc. 
+ 
+The easiest way to start a new document is to copy one of the two samples and modify them.
+
+== Documentation
+
+See https://www.metanorma.com/author/un/[The UN flavor of Metanorma]
+
+== Data Models
+
+The UN Standard Document format is an instance of the
+https://github.com/metanorma/metanorma-model-standoc[StandardDocument model]. Details of
+this general model can be found on its page.
+
+Details of the UN modifications to this general model can be found in the
+https://github.com/metanorma/metanorma-model-un[UN model]
+repository.
+
+== Examples
+
+* Example documents are available at the https://github.com/metanorma/mn-samples-un[mn-samples-un] repository.
+
+////
+* Document templates are available at the https://github.com/metanorma/mn-templates-un[mn-templates-un] repository.
+////

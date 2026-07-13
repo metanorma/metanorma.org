@@ -1,0 +1,215 @@
+version: v3.4.5 #Verify versions
+
+inherits_from:
+  # Also may be referred to as “parent flavor”
+  flavor: standoc
+  version: v1.x.x
+
+document_attributes:
+#--- Document info ---#
+  tc-docnumber:
+    tags: ["Document info"]
+    title: "Technical Committee Document Number"
+    description: "Document number assigned by the Technical committee."
+    required: "don't know"
+
+  partnumber:
+    tags: ["Document info"]
+    title: "Part Number"
+    description: "ISO document part number. This can be “part-subpart” if this is an ISO/IEC or IEC document."
+    required: "don't know"
+
+  doctype:
+    tags: ["Document info"]
+    title: "Document Type"
+    description: "Assign one of the predefined document types to your document."
+    required: true
+    value_spec: "enum: international-standard, technical-specification, technical-report, publicly-available-specification, international-workshop-agreement, guide, technical-corrigendum, amendment"
+    value_default: international-standard
+
+  updates-document-type:
+    tags: ["Document info"]
+    title: "Update document type"
+    description: "Indicates the type of the document that is being updated by an Amendment or Technical Corrigendum. (Only valid when `doctype` is set to `amendment` or `technical-corrigendum`.)"
+    required: "don't know"
+    added_in_version: v1.3.25
+
+  docsubtype:
+    tags: ["Document info"]
+    title: "Document subtype"
+    description: |
+      A subclass of doctype for which special processing rules apply:
+      - vocabulary: The "vocabulary" document type is defined in the ISO House Rules and title requirements defined in the ISO/IEC Directives, Part 2, 2018, 11.5.2. The initial clause of the terms section, “For the purposes of this document, the following terms and definitions apply”, is deleted; terminological entries are permitted outside of Clause 3.
+    added_in_version: v1.8.2
+    more_information: "See https://www.iso.org/ISO-house-style.html[ISO house style]"
+
+  docstage:
+    tags: ["Document info"]
+    title: "Document Stage"
+    description: |
+      Stage code for the document status (see International harmonized stage codes). Synonym of `:status:`.
+      ISO authors usually create Metanorma documents at stages 00 through 40 (PWI 00., AWI, NP, WD, CD, DIS). Documents at the final stages, 50 and 60 (FDIS, PRF, IS), are created by ISO Editorial Program Managers at ISO/CS (aka ISO EPMs, ISO Editors). Authors using Metanorma are not expected to edit documents at those stages, and are not necessary in a normal submission process. These stages, however, can be used for mirroring and tracking of final stage and published standards, which many authors do.
+    required: true
+    more_information: "See https://www.iso.org/stage-codes.html[ISO stage codes]"
+
+  docsubstage:
+    tags: ["Document info"]
+    title: "Document Sub-stage"
+    description: "Substage code for the document status (see International harmonized stage codes). If this is left out, a substage of “00” is assumed, with the exception of stage “60” (published), where a substage of “60” is assumed. (“60.00” is the final proof “PRF stage”, “60.60” the published document “published”.)"
+    required: "don't know"
+    more_information: "See https://www.iso.org/stage-codes.html[ISO stage codes]"
+
+  horizontal:
+    tags: ["Document info"]
+    title: "Horizontal"
+    description: "Document is a horizontal standard."
+    value_spec: boolean
+    added_in_version: v1.5.13
+
+#--- Title ---#
+  title-intro-en:
+    tags: ["Title"]
+    title: "Introductory Document Title"
+    description: "Introductory component of the English title of the document."
+
+  title-intro-fr:
+    tags: ["Title"]
+    title: "Introductory Document Title"
+    description: "Introductory component of the French title of the document."
+
+  title-main-en:
+    tags: ["Title"]
+    title: "Main Document Title"
+    description: "Main component of the English title of the document."
+    required: true
+
+  title-main-fr:
+    tags: ["Title"]
+    title: "Main Document Title"
+    description: "Main component of the French title of the document."
+    required: true
+
+  title-part-en:
+    tags: ["Title"]
+    title: "Document Part Title"
+    description: "English title of the document part."
+
+  title-part-fr:
+    tags: ["Title"]
+    title: "Document Part Title"
+    description: "French title of the document part."
+
+  title-amendment-en:
+    tags: ["Title"]
+    title: "Title Ammendment in English"
+    description: "English title of the amendment. (Only when `doctype` is set to `amendment` or `technical-corrigendum`.)"
+    added_in_version: v1.3.25
+
+  title-amendment-fr:
+    tags: ["Title"]
+    title: "Title Ammendment in French"
+    description: "French title of the amendment. (Only when `doctype` is set to `amendment` or `technical-corrigendum`.)"
+    added_in_version: v1.3.25
+
+  amendment-number:
+    tags: ["Title"]
+    title: "Amendment Number"
+    description: "Number of the amendment. Use only when `doctype` is set to `amendment`."
+    value_spec: number
+    added_in_version: v1.3.25
+
+  corrigendum-number:
+    tags: ["Title"]
+    title: "Corrigendum Number"
+    description: "Number of the technical corrigendum. Use only when `doctype` is set to `technical-corrigendum`."
+    value_spec: number
+    added_in_version: v1.3.25
+
+
+#--- Author info ---#
+  secretariat:
+    tags: ["Author info"]
+    title: "Secretariat"
+    description: "National body acting as the secretariat for the document in the drafting stage."
+    required: "don't know"
+
+  technical-committee-number:
+    tags: ["Author info"]
+    title: "Technical Committee Number"
+    description: "Number of the relevant ISO technical committee."
+    required: "don't know"
+    declaration: ":technical-committee-number:, :technical-committee-number{_i}:"
+    value_spec: number
+    example: |
+      In case of having more than one Technical Committee Number, multiple groups
+      can be encoded by suffixing `_i` to the attribute where `i` is a sequential number after 1.
+      Ex. ":technical-committee-number_2:", ":technical-committee-number_3:", ":technical-committee-number_i:"
+
+  technical-committee-type:
+    tags: ["Author info"]
+    title: "Technical Committee Type"
+    description: "Type of the relevant technical committee."
+    required: "don't know"
+    value_spec: "enum: TC, PC, JTC, JPC"
+    value_default: "TC"
+
+  technical-committee:
+    tags: ["Author info"]
+    title: "Technical Committee"
+    description: "Name of the relevant ISO technical committee."
+    required: true
+    declaration: ":technical-committee:, :technical-committee{_i}:"
+    example: |
+      In case of having more than one Technical Committee, multiple groups
+      can be encoded by suffixing `_i` to the attribute where `i` is a sequential number after 1.
+      Ex. ":technical-committee_2:", ":technical-committee_3:", ":technical-committee_i:"
+
+  subcommittee-number:
+    tags: ["Author info"]
+    title: "Subcommittee Number"
+    description: "Number of the relevant ISO subcommittee."
+    required: "don't know"
+    declaration: ":subcommittee-number:, :subcommittee-number{_i}:"
+    value_spec: number
+    example: |
+      In case of having more than one Subcommittee Number, multiple groups
+      can be encoded by suffixing `_i` to the attribute where `i` is a sequential number after 1.
+      Ex. ":subcommittee-number_2:", ":subcommittee-number_3:", ":subcommittee-number_i:"
+
+  subcommittee-type:
+    tags: ["Author info"]
+    title: "Subcommittee Type"
+    description: "Type of the relevant ISO subcommittee. Typical values: SC, JSC."
+    required: "don't know"
+    value_default: "SC"
+
+  subcommittee:
+    tags: ["Author info"]
+    title: "Subcommittee"
+    description: "Name of the relevant ISO subcommittee."
+    required: "don't know"
+    declaration: ":subcommittee:, :subcommittee{_i}:"
+    example: |
+      In case of having more than one Subcommittee, multiple groups can be encoded by suffixing `_i` to the attribute where `i` is a sequential number after 1. +
+      Ex. ":subcommittee_2:", ":subcommittee_3:", ":subcommittee_i:"
+
+  workgroup-number:
+    tags: ["Author info"]
+    title: "Workgroup Number"
+    description: "Number of the relevant ISO working group."
+    required: "don't know"
+    value_spec: number
+
+  workgroup-type:
+    tags: ["Author info"]
+    title: "Workgroup Number"
+    description: "Type of the relevant ISO working group."
+    required: "don't know"
+    value_default: "WG"
+    example: "`JWG`, `JAG`, `AG` (advisory group), `AHG`, `SWG`, `SG`, `MA` (maintenance agency), `CORG`, `JCG`, `CAG`"
+
+  workgroup:
+    tags: ["Author info"]
+    title: "Workgroup"
+    description: "Type of the relevant ISO working group."
+    required: "don't know"

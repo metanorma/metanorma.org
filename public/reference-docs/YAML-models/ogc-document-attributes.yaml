@@ -1,0 +1,188 @@
+version: v3.4.5 #Verify versions
+
+inherits_from:
+  # Also may be referred to as “parent flavor”
+  flavor: standoc
+  version: v1.x.x
+
+document_attributes:
+#--- Document info  ---#
+  abbrev:
+    tags: ["Document info"]
+    title: "Standard abbreviation"
+    description: "Standard abbreviation of the document, used e.g. in URIs."
+
+  doctype:
+    tags: ["Document info"]
+    title: "Document type"
+    description: |
+      Document type. Choices:
+      +
+      --
+      * `standard`: Standard (requires a document subtype)
+      * `abstract-specification-topic`: Abstract Specification
+      * `best-practice`: Best Practice (requires a document subtype)
+      * `change-request-supporting-document`: Change Request Supporting Document
+      * `community-practice`: Community Practice
+      * `community-standard`: Community Standard
+      * `discussion-paper`: Discussion Paper
+      * `engineering-report`: Engineering Report
+      * `other`: Note, Primer, etc.
+      * `policy`: Policy, Name Type Specification
+      * `reference-model`: Reference Model
+      * `release-notes`: Release Notes
+      * `test-suite`: Test Suite
+      * `user-guide`: User Guide
+      * `white-paper`: White Paper
+      --
+    required: true
+    value_spec: "enum: standard, abstract-specification-topic, best-practice, change-request-supporting-document, community-practice, community-standard, discussion-paper, engineering-report, other, policy, reference-model, release-notes, test-suite, user-guide, white-paper"
+    value_default: standard
+
+  docsubtype:
+    tags: ["Document info"]
+    title: "Document subtype"
+    description: |
+      Document subtype.
+      Choices:
+      +
+      --
+      * For `doctype` set to `standard`:
+      ** `implementation`: Implementation (_default_)
+      ** `conceptual-model`: Conceptual model
+      ** `conceptual-model-and-encoding`: Conceptual model and encoding
+      ** `conceptual-model-and-implementation`: Conceptual model and implementation
+      ** `encoding`: Encoding
+      ** `extension`: Extension
+      ** `profile`: Profile
+      ** `profile-with-extension`: Profile with extension
+
+      * For `doctype` set to `best-practice`:
+      ** `general`: General (_default_)
+      ** `encoding`: Encoding
+      ** `extension`: Extension
+      ** `profile`: Profile
+      ** `profile-with-extension`: Profile with extension
+      --
+    value_default: "implementation, general"
+
+  status:
+    tags: ["Document info"]
+    title: "Status"
+    description: |
+      Document status/stage. Synonym: `:docstage:`.
+      Choices:
+      +
+      --
+      * `swg-draft`: SWG Draft. This is the draft created after the TC approval and PC approval votes.
+      * `oab-review`: OAB Review. This is the intended draft for the "`OAB + OGC-NA Review`".
+      * `public-rfc`: Public RFC. This is the draft for the (30 days) public comment period.
+      * `tc-vote`: TC Vote. This is the intended draft for the TC adoption and PC adoption votes.
+      * `approved`: Published. This is the document intended to be published, after comments are handled with the TC chair (after `tc-vote`). `published` is allowed as a synonym of `approved`  [added in https://github.com/metanorma/metanorma-ogc/releases/tag/v1.2.5].
+      * `deprecated`: Deprecated. This document has been deprecated.
+      * `retired`: Retired. This document has been retired and no longer considered normative.
+      --
+    required: "don't know"
+    value_spec: "enum: swg-draft, oab-review, public-rfc, tc-vote, approved, deprecated, retired"
+
+  edition:
+    tags: ["Document info"]
+    title: "Edition"
+    description: "Version number of the document. Dot-delimited, consists of a major version number, a minor version number, and an optional patch version number; e.g. `2.3.1`: major version 2, minor version 3, patch version 1."
+
+#--- Author info ---#
+  committee:
+    tags: ["Author info"]
+    title: "Committee"
+    description: "Name of relevant committee producing the document."
+    required: true
+    value_spec: "enum: technical, planning, strategic-member-advisory"
+
+  subcommittee-type:
+    tags: ["Author info"]
+    title: "Subcommittee type"
+    description: "Type of the relevant subcommittee producing the document."
+
+  subcommittee-number:
+    tags: ["Author info"]
+    title: "Subcommittee number"
+    description: "Number of the relevant subcommittee producing the document."
+    value_spec: number
+
+  workingGroup:
+    tags: ["Author info"]
+    title: "Working Group"
+    description: "Name of relevant working group producing the document."
+    required: true
+
+  workgroup-type:
+    tags: ["Author info"]
+    title: "Workgroup Type"
+    description: "Type of the relevant workgroup producing the document."
+
+  workgroup-number:
+    tags: ["Author info"]
+    title: "Workgroup number"
+    description: "Number of the relevant workgroup producing the document."
+    value_spec: number
+
+  submitting-organizations:
+    tags: ["Author info"]
+    title: "Submitting organizations"
+    description: "Semicolon-delimited list of the submitting organizations for this document. The organization names themselves may contain commas."
+    example: "_University of Calgary, Canada; National Central University, Taiwan_"
+
+  editor:
+    tags: ["Author info"]
+    title: "Editor"
+    description: "Same as `:fullname:` alongside `:role:` specified as `editor`."
+    example: |
+      [source,asciidoc]
+      ----
+      :editor: Scott Henderson
+      :editor_2: Andy Timmons
+      ----
+
+      is the same as:
+
+      [source,asciidoc]
+      ----
+      :fullname: Scott Henderson
+      :role: editor
+      :fullname_2: Andy Timmons
+      :role_2: editor
+      ----
+
+#--- URIs and IDs ---#
+  external-id:
+    tags: ["URIs and IDs"]
+    title: "External ID"
+    description: |
+      External identifier referring to this document. If not supplied, a default value is generated: `http://www.opengis.net/doc/{abbrevation of doctype}/{abbrev}/{version}`. 
+      
+      If there is no version is provided, it will be omitted. If `:abbrev:` and `:doctype:` are not provided, the default value is not generated.
+
+  referenceURLID:
+    tags: ["URIs and IDs"]
+    title: "Reference URL"
+    description: "Identifier embedded into a document type-specific external URL."
+
+  previous-uri:
+    tags: ["URIs and IDs"]
+    title: "Previous URI"
+    description: "URI of previous version of the document."
+
+  docnumber:
+    tags: ["URIs and IDs"]
+    title: "Document number"
+    description: |
+      The document number assigned to the OGC document (without the "`OGC`" prefix).
+
+      The number is formulated according to the following rules:
+      +
+      * The final two digits of the year are used at the start of the number (`YY`).
+      * A three digit number is assigned sequentially for each document in the year (`NNN`).
+      * The first edition of a document has the document number `YY-NNN`; for example, `00-027` is OGC document 027 first published in 2000.
+      * Minor editorial changes and corrigenda do not result in a change to the document number
+      * The `YY-NNN` identifier for a document (the document number root) is maintained if the document undergoes content changes (revisions). These revisions are numbered sequentially, and are indicated with `r` followed by the revision number. So `05-020r27` is revision 27 of OGC document 020 first published in 2005. (Revision 27 may appear years later than 2005.)
+      * A new major version of a document receives a new document number, including likely a new year.
