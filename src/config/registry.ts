@@ -1,11 +1,14 @@
 import type { SidebarItem } from './site'
 
 // SidebarRegistry resolves which sidebar items to show for a given
-// pathname. It merges hand-authored and auto-generated sidebars with
-// a precedence rule: hand-authored entries win on exact-key conflicts,
-// AND generated entries that are sub-paths of a hand-authored prefix
-// are suppressed so the curated sidebar shows for every page in that
-// section.
+// pathname. Merges hand-authored and auto-generated sidebars, then
+// uses longest-prefix matching so the most specific sidebar wins.
+//
+// Hand-authored entries take precedence on exact-key conflicts.
+// Generated entries that are MORE SPECIFIC (longer prefix) than
+// hand-authored ones are NOT suppressed — this lets sub-sections
+// like /author/ogc/authoring-guide/ show their own generated sidebar
+// even though /author/ has a hand-authored one.
 export class SidebarRegistry {
   private entries: Record<string, SidebarItem[]> = {}
 
@@ -13,28 +16,7 @@ export class SidebarRegistry {
     generated?: Record<string, SidebarItem[]>
     handAuthored?: Record<string, SidebarItem[]>
   } = {}) {
-    const suppressed = this.suppressCoveredGenerated(
-      options.generated || {},
-      options.handAuthored || {},
-    )
-    this.entries = { ...suppressed, ...(options.handAuthored || {}) }
-  }
-
-  // Suppress generated entries whose prefix is a sub-path of any
-  // hand-authored prefix. Without this, longest-prefix matching on
-  // /author/basics/ would pick the generated sidebar (flat page-title
-  // list) over the hand-authored /author/ sidebar (curated groups).
-  private suppressCoveredGenerated(
-    generated: Record<string, SidebarItem[]>,
-    handAuthored: Record<string, SidebarItem[]>,
-  ): Record<string, SidebarItem[]> {
-    const handAuthoredPrefixes = Object.keys(handAuthored)
-    const out: Record<string, SidebarItem[]> = {}
-    for (const [key, items] of Object.entries(generated)) {
-      const covered = handAuthoredPrefixes.some(prefix => key.startsWith(prefix))
-      if (!covered) out[key] = items
-    }
-    return out
+    this.entries = { ...(options.generated || {}), ...(options.handAuthored || {}) }
   }
 
   resolve(pathname: string): SidebarItem[] | null {

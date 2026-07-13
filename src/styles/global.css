@@ -151,21 +151,23 @@ html, body {
 .mn-rendered div.example { margin: 16px 0; padding: 16px 20px; border-radius: 8px; border: 1px solid var(--mn-c-divider); border-left: 3px solid var(--mn-c-brand-1); background: var(--mn-c-bg-soft); }
 .mn-rendered div.example h4 { margin: 0 0 8px; font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--mn-c-brand-1); }
 
-/* Responsive helpers for content layout */
+/* 3-column documentation layout: sidebar (288px) + content (flex) + TOC (224px) */
 .mn-content-layout {
   display: grid;
-  grid-template-columns: 240px minmax(0, 1fr) 200px;
+  grid-template-columns: 288px minmax(0, 1fr) 224px;
   gap: 32px;
   max-width: 1440px;
   margin: 0 auto;
   padding: 32px 24px;
   overflow-x: hidden;
 }
-@media (max-width: 1024px) {
-  .mn-content-layout { grid-template-columns: 240px 1fr; }
+/* Below xl (1280px): hide TOC, keep sidebar + content */
+@media (max-width: 1279px) {
+  .mn-content-layout { grid-template-columns: 288px minmax(0, 1fr); }
   .mn-content-layout > :nth-child(3) { display: none; }
 }
-@media (max-width: 768px) {
+/* Below lg (1024px): single column, no sidebar, no TOC */
+@media (max-width: 1023px) {
   .mn-content-layout { grid-template-columns: 1fr; padding: 16px; }
   .mn-content-layout > :nth-child(1) { display: none; }
 }

@@ -1,0 +1,50 @@
+---
+interface Heading { depth: number; slug: string; text: string }
+interface Props { headings: Heading[] }
+const { headings } = Astro.props
+const tocItems = headings.filter(h => h.depth >= 2 && h.depth <= 4)
+const hasToc = tocItems.length >= 2
+---
+
+{hasToc && (
+  <aside class="hidden w-56 flex-shrink-0 xl:block" aria-label="On this page" data-toc>
+    <div class="sticky top-20">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--mn-c-text-3)]">On this page</p>
+      <nav class="space-y-1 border-l border-[var(--mn-c-divider)]">
+        {tocItems.map(item => (
+          <a
+            href={`#${item.slug}`}
+            class={`block border-l-2 border-transparent -ml-px py-1 text-sm text-[var(--mn-c-text-3)] no-underline transition-colors hover:text-[var(--mn-c-brand-1)] data-[active=true]:border-[var(--mn-c-brand-1)] data-[active=true]:font-medium data-[active=true]:text-[var(--mn-c-brand-1)] ${item.depth === 3 ? 'pl-5' : 'pl-3'}`}
+            data-toc-target={item.slug}
+          >{item.text}</a>
+        ))}
+      </nav>
+    </div>
+  </aside>
+)}
+
+<script>
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (!prefersReduced) {
+    const links = document.querySelectorAll<HTMLAnchorElement>('[data-toc-target]')
+    if (links.length) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              const id = entry.target.id
+              links.forEach(a => {
+                a.dataset.active = String(a.dataset.tocTarget === id)
+              })
+            }
+          }
+        },
+        { rootMargin: '-80px 0px -70% 0px' },
+      )
+      links.forEach(a => {
+        const el = document.getElementById(a.dataset.tocTarget || '')
+        if (el) observer.observe(el)
+      })
+    }
+  }
+</script>

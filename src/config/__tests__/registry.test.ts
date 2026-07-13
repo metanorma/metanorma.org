@@ -51,17 +51,19 @@ describe('SidebarRegistry', () => {
     expect(reg.resolve('/author/')).toEqual(handAuthored)
   })
 
-  it('generated sub-paths of hand-authored prefixes are suppressed', () => {
+  it('generated sub-paths of hand-authored prefixes are NOT suppressed — longest-prefix wins', () => {
     const handAuthored = sampleItems(['Getting Started', 'Basics'])
     const generatedSub = sampleItems(['Approach', 'Workflow'])
     const reg = new SidebarRegistry({
       generated: { '/author/basics/': generatedSub },
       handAuthored: { '/author/': handAuthored },
     })
-    // /author/basics/ resolves to the hand-authored /author/ sidebar,
-    // NOT the generated /author/basics/ sidebar.
-    expect(reg.resolve('/author/basics/')).toEqual(handAuthored)
-    expect(reg.resolve('/author/basics/approach/')).toEqual(handAuthored)
+    // /author/basics/ resolves to the generated sidebar (longest prefix),
+    // NOT the hand-authored /author/ sidebar.
+    expect(reg.resolve('/author/basics/')).toEqual(generatedSub)
+    expect(reg.resolve('/author/basics/approach/')).toEqual(generatedSub)
+    // /author/ itself still uses the hand-authored sidebar.
+    expect(reg.resolve('/author/')).toEqual(handAuthored)
   })
 
   it('generated entries NOT covered by hand-authored are preserved', () => {
