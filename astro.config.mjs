@@ -51,6 +51,15 @@ export default defineConfig({
         const path = new URL(page).pathname
         return !redirectSourceSet.has(path) && !redirectSourceSet.has(path.replace(/\/$/, ''))
       },
+      serialize: (items) => {
+        items.push({
+          url: 'https://www.metanorma.org/learn/template.html',
+          lastmod: new Date().toISOString(),
+          changefreq: 'yearly',
+          priority: 0.3,
+        })
+        return items
+      },
     }),
     vue(),
   ],

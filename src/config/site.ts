@@ -43,10 +43,12 @@ export const nav: NavigationItem[] = [
     ],
   },
   { text: 'Reference', link: '/reference/' },
+  { text: 'Specs', link: '/specs/' },
   { text: 'Software', link: '/software/' },
   { text: 'Library', link: '/library/' },
   { text: 'Blog', link: '/blog/' },
   { text: 'About', link: '/about/' },
+  { text: 'Contribute', link: '/contribute/' },
 ]
 
 export type SidebarItem = NavigationItem
