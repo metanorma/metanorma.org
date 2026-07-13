@@ -40,6 +40,9 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
+      - name: Sync upstream content
+        run: bundle exec rake sync
+
       - name: Configure GitHub Pages
         id: pages
         uses: actions/configure-pages@v5
