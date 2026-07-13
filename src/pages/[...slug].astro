@@ -32,21 +32,25 @@ const hasToc = tocItems.length >= 2
     <div class="mn-content-layout">
       <Sidebar pathname={pathname} />
       <div class="mn-content-area">
+        {hasToc && <TOC headings={headings} variant="mobile" />}
         <Article title={title} subtitle={subtitle}>
           <MirrorContent html={rendered_html} />
         </Article>
       </div>
-      {hasToc && <TOC headings={headings} />}
+      {hasToc && <TOC headings={headings} variant="desktop" />}
     </div>
   ) : (
-    <article class="mn-rendered mx-auto max-w-3xl px-6 py-12">
-      {title && (
-        <header class="mb-8 border-b border-[var(--mn-c-divider)] pb-4">
-          <h1 class="m-0 text-4xl font-extrabold leading-tight tracking-tight">{title}</h1>
-          {subtitle && <p class="mt-2 text-[var(--mn-c-text-2)]">{subtitle}</p>}
-        </header>
-      )}
-      <MirrorContent html={rendered_html} />
-    </article>
+    <>
+      {hasToc && <TOC headings={headings} variant="mobile" />}
+      <article class="mn-rendered mx-auto max-w-3xl px-6 py-12">
+        {title && (
+          <header class="mb-8 border-b border-[var(--mn-c-divider)] pb-4">
+            <h1 class="m-0 text-4xl font-extrabold leading-tight tracking-tight">{title}</h1>
+            {subtitle && <p class="mt-2 text-[var(--mn-c-text-2)]">{subtitle}</p>}
+          </header>
+        )}
+        <MirrorContent html={rendered_html} />
+      </article>
+    </>
   )}
 </BaseLayout>

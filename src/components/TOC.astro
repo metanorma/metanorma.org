@@ -1,14 +1,14 @@
 ---
 interface Heading { depth: number; slug: string; text: string }
-interface Props { headings: Heading[] }
-const { headings } = Astro.props
+interface Props { headings: Heading[]; variant?: 'desktop' | 'mobile' }
+const { headings, variant = 'desktop' } = Astro.props
 const tocItems = headings.filter(h => h.depth >= 2 && h.depth <= 4)
 const hasToc = tocItems.length >= 2
 ---
 
-{hasToc && (
+{hasToc && variant === 'desktop' && (
   <aside class="hidden w-56 flex-shrink-0 xl:block" aria-label="On this page" data-toc>
-    <div class="sticky top-20">
+    <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pb-8 pr-1">
       <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--mn-c-text-3)]">On this page</p>
       <nav class="space-y-1 border-l border-[var(--mn-c-divider)]">
         {tocItems.map(item => (
@@ -21,6 +21,24 @@ const hasToc = tocItems.length >= 2
       </nav>
     </div>
   </aside>
+)}
+
+{hasToc && variant === 'mobile' && (
+  <details class="xl:hidden group sticky top-16 z-30 border-b border-[var(--mn-c-divider)] bg-[var(--mn-c-bg)]">
+    <summary class="flex cursor-pointer list-none items-center justify-between px-6 py-3 text-sm font-semibold text-[var(--mn-c-text-2)]">
+      <span>On this page</span>
+      <svg class="h-4 w-4 text-[var(--mn-c-text-3)] transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <nav class="max-h-[50vh] overflow-y-auto border-t border-[var(--mn-c-divider)] px-6 py-3">
+      {tocItems.map(item => (
+        <a
+          href={`#${item.slug}`}
+          class={`block py-1.5 text-sm text-[var(--mn-c-text-3)] no-underline transition-colors hover:text-[var(--mn-c-brand-1)] ${item.depth === 3 ? 'pl-4' : ''}`}
+          data-toc-target={item.slug}
+        >{item.text}</a>
+      ))}
+    </nav>
+  </details>
 )}
 
 <script>
