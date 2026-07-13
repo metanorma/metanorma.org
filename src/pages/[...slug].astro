@@ -1,9 +1,4 @@
 ---
-// src/pages/[...slug].astro — catch-all route for mirror-json content.
-//
-// Replaces ~80 lines of custom router logic in .ssg/router.ts.
-// Astro's file-based routing + getStaticPaths does the dispatch.
-
 import type { GetStaticPaths } from 'astro'
 import { getCollection, type CollectionEntry } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
@@ -11,6 +6,7 @@ import Article from '../components/Article.astro'
 import MirrorContent from '../components/MirrorContent.astro'
 import Sidebar from '../components/Sidebar.astro'
 import TOC from '../components/TOC.astro'
+import { sidebarFor } from '../config/site'
 
 export const getStaticPaths = (async () => {
   const entries = await getCollection('mirror')
@@ -25,16 +21,32 @@ const { entry } = Astro.props as Props
 const { title, frontmatter, headings, rendered_html } = entry.data
 const subtitle = (frontmatter.subtitle as string) || (frontmatter.description as string) || ''
 const pathname = Astro.url.pathname
+const sidebarItems = sidebarFor(pathname)
+const tocItems = headings.filter(h => h.depth >= 2 && h.depth <= 4)
+const hasSidebar = sidebarItems !== null && sidebarItems.length > 0
+const hasToc = tocItems.length >= 2
 ---
 
 <BaseLayout title={title} frontmatter={frontmatter}>
-  <div class="mn-content-layout">
-    <Sidebar pathname={pathname} />
-    <div class="mn-content-area">
-      <Article title={title} subtitle={subtitle}>
-        <MirrorContent html={rendered_html} />
-      </Article>
+  {hasSidebar ? (
+    <div class="mn-content-layout">
+      <Sidebar pathname={pathname} />
+      <div class="mn-content-area">
+        <Article title={title} subtitle={subtitle}>
+          <MirrorContent html={rendered_html} />
+        </Article>
+      </div>
+      {hasToc && <TOC headings={headings} />}
     </div>
-    <TOC headings={headings} />
-  </div>
+  ) : (
+    <article class="mn-rendered mx-auto max-w-3xl px-6 py-12">
+      {title && (
+        <header class="mb-8 border-b border-[var(--mn-c-divider)] pb-4">
+          <h1 class="m-0 text-4xl font-extrabold leading-tight tracking-tight">{title}</h1>
+          {subtitle && <p class="mt-2 text-[var(--mn-c-text-2)]">{subtitle}</p>}
+        </header>
+      )}
+      <MirrorContent html={rendered_html} />
+    </article>
+  )}
 </BaseLayout>

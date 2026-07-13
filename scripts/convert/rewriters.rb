@@ -61,6 +61,7 @@ module Convert
       path = path.split("/").map { |seg| seg.tr("_", "-") }.join("/")
       path = path.sub(/\.adoc\z/, "")
       path = Convert.resolve_against_output_dir(path, @source_output_key)
+      path = File.expand_path(path) if path.include?("..")
 
       fragment ? "#{path}##{fragment}" : path
     end
