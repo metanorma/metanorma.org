@@ -52,6 +52,9 @@ jobs:
         env:
           BASE_URL: ${{ steps.pages.outputs.base_url }}
 
+      - name: Verify content quality
+        run: node scripts/verify-content.mjs
+
       - name: Upload build artifact
         uses: actions/upload-pages-artifact@v4
         with:
