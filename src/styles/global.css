@@ -184,8 +184,14 @@ html, body {
   50% { transform: translateY(-10px); }
 }
 .mn-hero-float { animation: mn-hero-float 4s ease-in-out infinite; }
+
+@keyframes mn-hero-glow {
+  0%, 100% { opacity: 0.15; transform: translate(-50%, -50%) scale(0.9); }
+  50% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.1); }
+}
+.mn-hero-glow { animation: mn-hero-glow 5s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) {
-  .mn-hero-float { animation: none; }
+  .mn-hero-float, .mn-hero-glow { animation: none; }
 }
 
 html { scrollbar-width: thin; scrollbar-color: var(--mn-c-divider) transparent; }
