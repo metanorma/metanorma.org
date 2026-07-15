@@ -21,6 +21,12 @@ async function ensurePagefind() {
   return pagefind
 }
 
+function stripHtml(html: string): string {
+  const el = document.createElement('div')
+  el.innerHTML = html
+  return (el.textContent || '').trim()
+}
+
 let searchTimer: ReturnType<typeof setTimeout> | null = null
 
 async function doSearch() {
@@ -35,7 +41,7 @@ async function doSearch() {
     limited.map(async (r: any) => {
       const data = await r.data()
       const title = data?.meta?.title || r.url
-      const excerpt = (data?.excerpt || data?.meta?.description || '').replace(/<[^>]+>/g, '').trim()
+      const excerpt = stripHtml(data?.excerpt || data?.meta?.description || '')
       return { url: r.url, title, excerpt: excerpt.slice(0, 120) + (excerpt.length > 120 ? '...' : '') }
     })
   )

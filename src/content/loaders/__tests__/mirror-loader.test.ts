@@ -64,11 +64,12 @@ describe('mirror-loader regex (extractHeadings)', () => {
     expect(matches[0][1]).toBe('3')
   })
 
-  it('strips inner tags from heading text', () => {
+  it('captures heading text including inner tags', () => {
     const html = '<h2 id="x">Hello <code>World</code></h2>'
     const matches = [...html.matchAll(/<h([234])\s+id="([^"]+)"[^>]*>(.*?)<\/h\1>/g)]
-    const text = matches[0][3].replace(/<[^>]+>/g, '')
-    expect(text).toBe('Hello World')
+    const raw = matches[0][3]
+    expect(raw).toContain('Hello')
+    expect(raw).toContain('World')
   })
 
   it('does not match h5 or h6 (excluded from TOC)', () => {

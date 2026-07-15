@@ -52,8 +52,8 @@ function extractBodyText(html) {
     if (!m) return ''
     body = m[1]
   }
-  body = body.replace(/<script[\s\S]*?<\/script>/g, '')
-  body = body.replace(/<style[\s\S]*?<\/style>/g, '')
+  body = body.replace(/<script[\s\S]*?<\/script>/gi, '')
+  body = body.replace(/<style[\s\S]*?<\/style>/gi, '')
   body = body.replace(/<[^>]+>/g, ' ')
   return body.replace(/\s+/g, ' ').trim()
 }
@@ -220,7 +220,7 @@ function extractMirrorText(mirror) {
 
 function markdownBodyLen(md) {
   const stripped = md.replace(/^---\n[\s\S]*?\n---\n?/, '')
-  const noScript = stripped.replace(/<script[\s\S]*?<\/script>/g, '')
+  const noScript = stripped.replace(/<script[\s\S]*?<\/script>/gi, '')
   const noTags = noScript.replace(/<[^>]+>/g, ' ')
   return noTags.replace(/\s+/g, ' ').trim().length
 }
