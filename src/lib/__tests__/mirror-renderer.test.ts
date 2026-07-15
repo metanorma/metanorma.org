@@ -112,7 +112,7 @@ describe('renderMirrorToHtml', () => {
         text: '<script>alert(1)</script>',
       })
       expect(out).toContain('&lt;script&gt;')
-      expect(out).not.toMatch(/<script>/)
+      expect(out).not.toContain('<script')
     })
 
     it('escapes footnote id and ref_id', () => {
