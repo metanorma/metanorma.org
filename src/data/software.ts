@@ -259,14 +259,6 @@ export const gems: SoftwareEntry[] = [
     flavorId: 'mbxif',
   },
   {
-    id: 'reverse-adoc',
-    name: 'reverse_adoc',
-    displayName: 'Reverse AsciiDoctor',
-    repoUrl: 'https://github.com/metanorma/reverse_asciidoctor',
-    description: 'Converts HTML and DOCX back to AsciiDoc for migration to Metanorma.',
-    category: 'tool',
-  },
-  {
     id: 'homebrew-metanorma',
     name: 'homebrew-metanorma',
     displayName: 'Homebrew Metanorma',

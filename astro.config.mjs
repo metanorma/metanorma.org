@@ -17,7 +17,6 @@ const STATIC_LEGACY_REDIRECTS = {
   '/vcard-format-specification-rendered/': '/samples/vcard-format-specification/',
   '/software/Core_parts/': '/software/',
   '/software/Metanorma_flavor/': '/software/',
-  '/software/reverse-asciidoctor/': '/software/reverse-adoc/',
   '/software/interface:CLI/': '/software/',
   '/software/writtenin:Ruby/': '/software/',
   '/software/user:enterprises/': '/software/',
