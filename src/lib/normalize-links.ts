@@ -4,6 +4,7 @@
 export function normalizeLinks(html: string): string {
   return html
     .replace(/href="(\/[^"#?]*[^"#?/])"/g, 'href="$1/"')
+    .replace(/href=""/g, 'href="#"')
     .replace(/href="https?:\/\/"/g, 'href="#"')
     .replace(/href="https?:"/g, 'href="#"')
     .replace(/href="href"/g, 'href="#"')
