@@ -105,7 +105,7 @@ function checkKeyPages() {
     { url: '/develop/', name: 'Develop index', minBody: 500 },
     { url: '/learn/', name: 'Learn index', minBody: 500 },
     { url: '/install/', name: 'Install index', minBody: 500 },
-    { url: '/reference/', name: 'Reference index', minBody: 500 },
+    { url: '/author/ref/', name: 'Reference index', minBody: 500 },
     { url: '/software/', name: 'Software index', minBody: 500 },
     { url: '/library/', name: 'Library index', minBody: 500 },
     { url: '/about', name: 'About', minBody: 500 },
