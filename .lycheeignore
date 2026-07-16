@@ -66,3 +66,21 @@ https://docs.asciidoctor.org/asciidoc/latest/macros/link-macro/*
 # IEEE sites timeout in CI
 https://mentor.ieee.org/*
 http://dictionary.ieee.org/
+
+# Code examples rendered as links by coradoc (not real URLs)
+.*/http$
+.*/PATH$
+.*/\.\.\.$
+.*/title$
+.*/href=$
+.*/clause3;table2$
+
+# Placeholder/empty URLs in documentation
+^http://$
+^https?://$
+
+# Zero-width space in URLs (rendering artifact)
+.*&#x200c;.*
+
+# Empty href attributes
+^$
