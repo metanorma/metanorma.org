@@ -2453,7 +2453,7 @@ a|
 ====
 [source,xml]
 ----
-<ext-link ext-link-type="uri" xlink:href="http://www.iso.org/directives"> www.iso.org/directives</ext-link>
+<ext-link ext-link-type="uri" pass:[xlink:href]="http://www.iso.org/directives"> www.iso.org/directives</ext-link>
 ----
 ====
 
@@ -2461,13 +2461,13 @@ a|
 | *indirect*
 a|
 a|
-`ext-link/@xlink:href`
+`ext-link/@pass:[xlink:href]`
 
 [example%unnumbered]
 ====
 [source,xml]
 ----
-<ext-link xlink:type="simple" xlink:href="http://bsigroup.com/standards"> bsigroup.com/standards</ext-link>
+<ext-link xlink:type="simple" pass:[xlink:href]="http://bsigroup.com/standards"> bsigroup.com/standards</ext-link>
 ----
 ====
 
@@ -2485,7 +2485,7 @@ bsigroup.com/standards</link>
 ====
 
 a|
-`@x\link:href[@xlink:href]`
+`@x\link:href[@pass:[xlink:href]]`
 
 NOTE: for BSI documents, non-hyphen minus (U+2011) replaces by minus.
 a|
@@ -2552,7 +2552,7 @@ IF `@content-type = term` and points to `term-sec` or `termEntry`, then put `ter
 if `text` different than `term`, then put also `text` before `term`
 
 ELSE +
-put `xlink:href` and `text` +
+put `pass:[xlink:href]` and `text` +
 `]`
 | `named-content`
 | *`<`*
@@ -2575,13 +2575,13 @@ a|
 `xref[not contains digits or Annex]/@content-type`
 a|
 a|
-`named-content/@xlink:href`
+`named-content/@pass:[xlink:href]`
 
 NOTE: if empty, then get text content of named-content
 | *`>`*
 | `xref/@target`
 a|
-| `named-content/@xlink:href`
+| `named-content/@pass:[xlink:href]`
 | *`<`*
 | `xref[not contains digits or Annex]/@target`
 a|
@@ -4409,7 +4409,7 @@ a|
 [source,xml]
 ----
 <graphic xlink:type="simple"
-xlink:href="30238432_FigA01a">
+pass:[xlink:href]="30238432_FigA01a">
 <label>a)</label><caption>
 <title>Imposed loads for treads
 with a span of up to 1 200 mm
@@ -4505,27 +4505,27 @@ width="auto"
 
 a|
 a|
-`inline-graphic \| graphic/@xlink:href and not processing-instruction('isoimg-id')`
+`inline-graphic \| graphic/@pass:[xlink:href] and not processing-instruction('isoimg-id')`
 
-NOTE: if there isn't `processing-instruction('isoimg-id'`), then `@xlink:href` contains image file name.
+NOTE: if there isn't `processing-instruction('isoimg-id'`), then `@pass:[xlink:href]` contains image file name.
 | *`>`*
 a|
 `image/@src` +
 `string in base64 encoding OR` +
-`imagedir path + @xlink:href + .png(optional, if @xlink:href doesn't have file extension)` | `image:: ...`
+`imagedir path + @pass:[xlink:href] + .png(optional, if @pass:[xlink:href] doesn't have file extension)` | `image:: ...`
 a|
 `graphic/processing-instruction('isoimg-id')`
 
-NOTE: if there is this PI, then it contains image file name (but not `@xlink:href`)
+NOTE: if there is this PI, then it contains image file name (but not `@pass:[xlink:href]`)
 
-NOTE: `graphic/@xlink:href` +
+NOTE: `graphic/@pass:[xlink:href]` +
 *conversion gap* +
 https://github.com/metanorma/mn-samples-bsi/issues/25[https://github.com/metanorma/mn-samples-bsi/issues/25]
 | *`>`*
 a|
 `image/@src` +
 `imagedir path + value from 'isoimg-id'` | `image:: ...`
-| `graphic/@xlink:href`
+| `graphic/@pass:[xlink:href]`
 | *`<`*
 | `image/@id`
 a|
