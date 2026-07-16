@@ -43,8 +43,8 @@ module Convert
       "reference_docs/Ref-ISO-document-attributes.adoc"     => "superseded by /flavors/iso/ref/document-attributes/",
       # MPFA removed from site per product decision. Source files retained
       # per the never-delete-source rule; filtered out at collection time.
-      "_software/metanorma-mpfa.adoc"                    => "MPFA removed from site",
-      "_library/metanorma-mpfa.adoc"                     => "MPFA removed from site",
+      "software/metanorma-mpfa.adoc"                    => "MPFA removed from site",
+      "library/metanorma-mpfa.adoc"                     => "MPFA removed from site",
       "author/mpfa.adoc"                                 => "MPFA removed from site",
       "author/mpfa/authoring.adoc"                       => "MPFA removed from site",
       "author/mpfa/sample.adoc"                          => "MPFA removed from site",
