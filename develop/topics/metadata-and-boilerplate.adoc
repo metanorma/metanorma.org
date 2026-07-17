@@ -154,6 +154,20 @@ These are the default metadata values extracted by the base
 `Isodoc::Metadata` class, and the corresponding Metanorma XML locations
 they are populated from:
 
+`bibdata`:: the complete bibliographic description of the document, as a nested
+hash parsed from the entire `//bibdata` element through the Relaton object
+model [added in https://github.com/metanorma/isodoc/releases/tag/v3.7.0].
+Field names follow the Relaton YAML serialisation of `bibdata`: element names
+become keys, attributes become subfields, and repeatable elements become
+arrays. For example, `{{ bibdata.docnumber }}`,
+`{{ bibdata.status.stage.content }}`, `{{ bibdata.ext.doctype.content }}`; or,
+to extract a DOI,
+`{% assign doi = bibdata.docidentifier | where: "type", "DOI" | first %}{{ doi.content }}`.
+Unlike the curated metadata values below, which are normalized for display,
+this is a faithful representation of the entire bibliographic data set of the
+document, so any of its fields can be addressed in templated text without
+flavour code.
+
 `authors`:: an array of personal author names, each name extracted from
 `//bibdata/contributor[role/@type = 'author' or xmlns:role/@type = 'editor']/person`,
 and being either `./name/completename` or `./name/forename` + " " `./name/surname`.
@@ -366,6 +380,15 @@ https://shopify.github.io/liquid/[Liquid template language].
 
 The keys of the metadata hash are the variable names passed into
 Liquid.
+
+Alongside the curated per-key metadata values, the entire bibliographic
+data set of the document is available to all templated text as the
+`bibdata` variable (see its entry under
+<<default-metadata,Default metadata values>>), so any `bibdata` field can
+be interpolated without flavour-specific extraction
+code [added in https://github.com/metanorma/isodoc/releases/tag/v3.7.0].
+(Previously this was available only in the customisable
+`metanorma-generic` flavour.)
 
 Given given the metadata Hash above, the following templated text:
 

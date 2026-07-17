@@ -217,12 +217,12 @@ giving a comma-delimited list of charset-font pairs.  For instance:
 :fonts: "Code 2000";"BabelStone PUA"
 ----
 
-As with link:/author/topics/inline-markup/text-formatting#css[CSS declarations],
+As with link:/author/topics/inline_markup/text_formatting#css[CSS declarations],
 any font specified as a custom charset font also needs to be passed to Metanorma
 in the `:fonts:` document attribute.
 
 For a more deep explanation about encoding custom characters, see
-link:/blog/2024/08/12/fonts-special-chars/[Encoding and rendering special characters in Metanorma].
+link:/blog/2024-08-12-fonts-special-chars[Encoding and rendering special characters in Metanorma].
 
 === Numeric ranges
 
@@ -303,8 +303,12 @@ by spaces. Flanking spaces (as in `x -- y`) are rendered as thin
 spaces (Unicode 'Thin Space' `U+2009`).
 
 In addition to these character substitutions, Metanorma converts straight quotes to smart quotes
-in postprocesssing: see ink:/author/ref/document-attributes#smart-quotes[Smart quotes] for the
-associated rules.
+in postprocessing: see link:/author/ref/document-attributes#smart-quotes[Smart quotes] for the
+associated rules. To keep a specific run of text as straight quotes (for example, literal
+characters quoted from a specification), use
+link:/author/topics/blocks/passthroughs#pass-format-straightquotes[`pass-format:straightquotes[...]`].
+AsciiDoc's native plus-delimited inline passthrough (`+...+`) does not prevent this conversion,
+because smart quotes are applied in postprocessing after AsciiDoc passthroughs are resolved.
 
 
 

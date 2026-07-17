@@ -36,7 +36,7 @@ Suppress document validation.
 
 `:index-terms:`::
 Terms (and symbols) are indexed automatically in postprocessing.
-See link:/author/topics/inline-markup/index-terms#auto-index-terms[automatic terms indexing]. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.3]
+See link:/author/topics/inline_markup/index_terms#auto-index-terms[automatic terms indexing]. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.3]
 
 `:relaton-output-file:` (legacy: `:mn-relaton-output-file:`)::
 Output the bibliographic record describing the document as a Relaton XML file (with the suffix `.rxl`).
@@ -52,6 +52,22 @@ For bibliographic lookup, see link:/author/basics/reference-lookups[automatic re
 `:no-isobib:`::
 If set, do not use the `relaton` or `iev` gem functionality to look up
 ISO and IEV references online, nor the cache of `relaton` and `iev` searches.
+
+
+=== Publication date cutoff
+
+By default, bibliographic references are resolved as of the document's own
+publication date, derived from its date attributes (such as `:copyright-year:`
+and `:revdate:`): an undated reference resolves to the latest edition published
+on or before that date, and a reference's status (for example, withdrawn or
+replaced) is shown as of that date rather than as of today.
+
+`:bibliography-cutoff-date:`::
+Override the publication date used for the bibliographic cutoff, instead of
+deriving it from the document's own date attributes. Accepts a date
+(`YYYY`, `YYYY-MM`, or `YYYY-MM-DD`); the value `none` (or `false`) disables the
+cutoff entirely, so references resolve to their latest editions and current
+status. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.8]
 
 
 === Caching
@@ -100,6 +116,43 @@ The different bibliographic sources are differentiated through the value of the 
 ----
 ====
 
+=== Reference sort order
+
+Within a bibliography or normative references section, references are sorted by
+publisher and then by identifier. Each flavour defines a default publisher
+ranking (for example, ISO before IEC in ISO documents); this can be overridden
+per document, or by a Metanorma taste, with the following attributes.
+
+`:sort-biblio:`::
+If set to `false`, do not sort the bibliography; references are left in document
+order. Sorting is on by default.
+
+`:sort-biblio-{abbrev}:`::
+Override the publisher sort ranking for the bibliography, one attribute per
+publisher [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.9].
+The attribute-name suffix `{abbrev}` is the publisher's abbreviation; the value
+is the sort rank (lower sorts earlier) followed by the publisher's full name,
+separated by a colon (`{rank}: {name}`). A reference is matched to a publisher
+by its abbreviation (case-insensitive) or its name; matched publishers sort in
+the given rank order, followed by other standards, then other references.
++
+[example]
+====
+Sort OIML references ahead of ISO and IEC:
+
+[source,adoc]
+----
+:sort-biblio-OIML: 1: International Organization of Legal Metrology
+:sort-biblio-ISO: 2: International Organization for Standardization
+:sort-biblio-IEC: 3: International Electrotechnical Commission
+----
+====
++
+This is the mechanism a Metanorma taste uses to set a house bibliographic sort
+order: the taste configuration compiles to these document attributes. Because
+they are ordinary document attributes, an author can equally set them directly
+in a single document to override the sort order for that document alone.
+
 === Reference rendering
 
 `:relaton-render-config:`::
@@ -139,7 +192,7 @@ link:/author/topics/blocks/math/[mathematical expressions].
 Sets the formatting options for the `number:[]` command in the
 document [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
 Please refer to the dedicated section at
-link:/author/topics/inline-markup/semantic-elements#numbers[numbers] for usage.
+link:/author/topics/inline_markup/semantic-elements#numbers[numbers] for usage.
 +
 .Using the `:number-presentation:` attribute
 [example]
@@ -157,7 +210,7 @@ number:341[]
 Sets the formatting options for the `number:[]` command in the document
 as profile `{NAME}` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
 Please refer to the dedicated section at
-link:/author/topics/inline-markup/semantic-elements#numbers[numbers] for usage.
+link:/author/topics/inline_markup/semantic-elements#numbers[numbers] for usage.
 +
 .Using the `:number-presentation-profile-{NAME}:` attribute
 [example]
@@ -175,7 +228,7 @@ number:342[profile=3]
 `:number-presentation-formula:`::
 Sets the formatting options for numbers contained in formulas [added in https://github.com/metanorma/metanorma-standoc/releases/tag/2.9.6].
 Please refer to the dedicated section at
-link:/author/topics/inline-markup/semantic-elements#formula-numbers[numbers in formulas].
+link:/author/topics/inline_markup/semantic-elements#formula-numbers[numbers in formulas].
 
 == Languages and localization
 
@@ -379,6 +432,14 @@ Boolean. If not provided, and if there is no setting specific to the flavor, the
 default is that only the stage "published" is considered published.
   [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.0]
 
+`:docstage-valid:`::
+Comma-delimited list of the statuses recognised as valid for this document,
+superseding the flavour's own repertoire in status validation. Normally set by
+a Metanorma taste rather than by authors: a taste that defines its own stages
+advertises through this attribute the base stages it maps them to, so that the
+underlying flavour does not report them as unrecognised.
+  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.9]
+
 `:docsubstage:`:: The substage code for the document status, where applicable.
 
 `:iteration:`:: The iteration of a stage, in case there have been multiple drafts
@@ -498,6 +559,11 @@ for the typical values that can be used in metadata-driven Liquid templates unde
 as an icon in front of the label for all admonitions of type `{type}`; overrides
 any value given in `admonition-icon` under the `i18n` internationalization file
  [added in https://github.com/metanorma/isodoc/releases/tag/v3.6.4].
+
+`:presentation-metadata-html-details-open:`:: Whether the details element in HTML
+(used for collapsible examples) should be open or closed for HTML documents. Defaults to true,
+and corresponds to `<details open="open">` vs `<details>`.
+ [added in https://github.com/metanorma/isodoc/releases/tag/v3.6.12].
 
 [[document-relations]]
 == Document relations
@@ -1121,12 +1187,12 @@ Renders the cross-reference as:
 `:erefstyle:`::
 Override the default rendering style of cross-references to bibliographic entries
  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.0].
-The legal values for such override are drawn from link:/author/topics/inline-markup/citations/#citation-style-types[General citation style types].
+The legal values for such override are drawn from link:/author/topics/inline_markup/citations/#citation-style-types[General citation style types].
 
 `:originstyle:`::
 Override the default rendering style of source references to bibliographic entries
  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.3.0].
-The legal values for such override are drawn from link:/author/topics/inline-markup/citations/#citation-style-types[General citation style types].
+The legal values for such override are drawn from link:/author/topics/inline_markup/citations/#citation-style-types[General citation style types].
 
 `:modspec-identifier-base:`::
 (optional)
@@ -1176,6 +1242,11 @@ ASCII codes, `"&#x060; &#x060;"`, `'&#x060; &#x060;'`
 The smart quotes converted by Metanorma postprocessing are specifically those of English.
 Other languages' smart quotes will need to be entered as the correct characters.
 
+NOTE: `:smartquotes:` is a document-wide toggle. To keep *specific* runs of text as
+straight quotes while the rest of the document remains smart-quoted — for example,
+literal characters quoted from a specification, such as PDF string-delimiter operators —
+use link:/author/topics/blocks/passthroughs#pass-format-straightquotes[`pass-format:straightquotes["..."]`].
+
 == Table of contents
 
 `:toclevels:`::
@@ -1202,17 +1273,25 @@ Accepts an integer value. (default: `2`)
 Introduce table of contents for figures [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
 No attribute value needed.
 Only numbered and/or captioned figures are included.
+Disabled if given the value `false` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.9].
 
 `:toc-tables:`::
 Introduce table of contents for tables [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
+No attribute value needed.  Only numbered and/or captioned tables are included. 
+Disabled if given the value `false` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.9].
+
+`:toc-examples:`::
+Introduce table of contents for examples [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.7].
 No attribute value needed.
-Only numbered and/or captioned tables are included.
+Only numbered and/or captioned examples are included.
+Disabled if given the value `false` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.9].
 
 `:toc-requirements:`::
 Introduce table of contents for requirements, recommendations, and
 permissions [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.0.4].
 No attribute value needed.
 Only numbered and/or captioned requirements, recommendations, and permissions are included.
+Disabled if given the value `false` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.9].
 
 
 == Tables

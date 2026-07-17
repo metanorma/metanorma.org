@@ -263,6 +263,8 @@ Severity 0 (fatal):::
 
 `STANDOC_9`:::: Nominated attachment file does not exist
 `STANDOC_64`:::: Invalid empty index term
+`STANDOC_61`:::: Improperly nested sourcecode markup (`{{{ ... }}}`)
+`STANDOC_65`:::: Unbalanced (unclosed) sourcecode markup (`{{{ ... }}}`)
 `STANDOC_19`:::: Missing reference in local Relaton data source file
 `STANDOC_37`:::: Invalid format of local Relaton data source file
 `STANDOC_52`:::: Error in specification of bibliographic annotation spans
@@ -362,6 +364,20 @@ Issue with Metanorma requirements markup
 Severity 0 (fatal):::
 
 `MODSPEC_3`:::: (In Modspec) requirement identifier is used more than once
+
+`Rendering`::
+Issue with rendering a document into an output format
+
+Severity 0 (fatal):::
+
+`METANORMA_4`:::: (In collections) a collection member did not generate an expected
+output file. All members of the collection are rendered before the collection
+build aborts, so a single run reports every failed member. [added in
+https://github.com/metanorma/metanorma/releases/tag/v2.5.2]
+`METANORMA_5`:::: (In collections) an error was raised while rendering a collection
+member. Reports the exception class and message of the underlying error;
+typically accompanies `METANORMA_4` for the same member. [added in
+https://github.com/metanorma/metanorma/releases/tag/v2.5.2]
 
 `Table`::
 Issue with syntax of table declarations.

@@ -398,6 +398,43 @@ stem:[w_max] +
 ----
 ====
 
+=== Custom classes
+
+A custom CSS class can be attached to a table using the `class` attribute
+[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.8].
+This allows CSS or JavaScript to target specific tables in HTML output -- for
+example, to make a particular table sortable.
+
+[source,asciidoc]
+----
+[class="sortable"]
+|===
+|A |B
+|===
+----
+
+The custom class is _appended_ to the table's built-in class rather than
+replacing it, so the flavour's default table styling is preserved and the
+custom class is added alongside it. Multiple space-separated classes are
+passed through verbatim:
+
+[source,asciidoc]
+----
+[class="sortable fixed"]
+|===
+|A |B
+|===
+----
+
+NOTE: The `class` attribute affects HTML output only. It is not applied to
+Word output, whose CSS handling is more restrictive; a custom-class table still
+renders normally in Word, but without the custom class.
+
+NOTE: The `class` attribute does not affect a table's borders or shading. Those
+are controlled independently by `[%plain]` (see below): a table with a custom
+class still receives the flavour's default table styling unless `[%plain]` is
+also given.
+
 === Row and cell styling
 
 Metanorma provides two primary commands for applying CSS styles to table elements:
@@ -410,8 +447,18 @@ Metanorma also supports the attribute `css-style` which applies to tables
 themselves  [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.1]
 
 Flavours of Metanorma often apply border or shading to tables by default, as prescribed by the SDO. In order to overrule
-these defaults, and reset a table not to have any styling, give it the attribute 
+these defaults, and reset a table not to have any styling, give it the attribute
 `[%plain]` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.1.2]
+
+When a table is _not_ `[%plain]`, the default ISO-style border treatment
+applied by most flavours consists of:
+
+* a 1px table border with no cell spacing;
+* a heavy top border on the first row, with bold header cells;
+* light separators between body rows, and a heavy border on the last row.
+
+Giving a table `[%plain]` removes all of this, so its appearance must be built
+from scratch using `css-style`, `tr-style:`, `td-style:`, or a custom `class`.
 
 
 === Supported CSS properties
