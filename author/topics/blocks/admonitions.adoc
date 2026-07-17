@@ -122,19 +122,27 @@ This notice must not be ignored.
 
 === Specifying DANGER and SAFETY
 
-If the admonitions "`Danger`" and "`Safety Precaution`" are needed, they should
+If the admonitions "`Danger`" and "`Safety Precautions`" are needed, they should
 be indicated through a `type` attribute, which will override the admonition type
 appearing.
 
+The `type` value is matched case-insensitively against the admonition labels
+defined in the `i18n` internationalization dictionary; the predefined keys are
+`danger` and `safety precautions`. Apart from case, the value must match the
+dictionary key exactly: `type=Safety Precautions` matches the predefined
+`safety precautions` label, but `type=Safety Precaution` (singular) does not,
+and no admonition label will be rendered for it. Additional admonition types
+can be supported by adding entries under `admonition` in the `i18n` dictionary.
+
 [example]
-.Example of specifying Danger and Safety Precaution messages
+.Example of specifying Danger and Safety Precautions messages
 ======
 [source,adoc]
 --
 [type=Danger]
 CAUTION: Do not perform maintenance tasks while the machine is still operating.
 
-[WARNING,type=Safety Precaution]
+[WARNING,type=Safety Precautions]
 ====
 This is a safety precaution
 
