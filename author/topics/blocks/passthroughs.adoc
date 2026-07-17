@@ -211,6 +211,30 @@ NOTE: Text that is marked up as `pass-format` is not subject to substitutions
 such as smart quotes. It can be used to keep straight quotes in a document that
 otherwise uses smart quotes.
 
-The value `pass-format:straightquotes["..."] is used specifically to prevent
-dumb quotes from being substituted with smart quotes, but otherwise is treated
-as Metanorma XML.
+[[pass-format-straightquotes]]
+The value `pass-format:straightquotes["..."]` is used specifically to prevent
+dumb (straight) quotes from being substituted with smart quotes, while otherwise
+treating the content as ordinary text (Metanorma Semantic XML). Use it for runs
+of text that must retain literal straight quotes — for example, characters quoted
+verbatim from a specification, such as the `"` and `'` string-delimiter operators
+defined in PDF (ISO 32000-2).
+
+[example]
+.Keeping literal straight quotes within smart-quoted text
+====
+[source,asciidoc]
+--
+The PDF string delimiters pass-format:straightquotes["] and
+pass-format:straightquotes['] are left as straight quotes.
+--
+====
+
+This per-instance opt-out is distinct from the document-wide
+link:/author/ref/document-attributes#smart-quotes[`:smartquotes:` attribute]:
+`:smartquotes: false` turns *automatic* conversion of bare quotes off for the
+whole document, whereas `pass-format:straightquotes["..."]` keeps *specific* runs
+straight while the rest of the document is still smart-quoted. Note that
+AsciiDoc's native plus-delimited inline passthrough (`+...+`) does *not* prevent
+smart-quote conversion, because Metanorma applies smart quotes in postprocessing,
+after AsciiDoc passthroughs have already been resolved; use `pass-format` (or
+`pass:[...]`) instead.

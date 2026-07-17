@@ -27,7 +27,21 @@ the value of the document attribute `:stem:`. It can be set to:
 `\stem:[...]` and `[stem]` markup that contains MathML markup
 (as detected by an initial `<math ... >`) is interpreted as MathML.
 
-MathML is used as the internal representation of STEM expressions in Metanorma.
+Raw MathML supplied to Metanorma (in `stem:[]` or `[stem]` blocks, or embedded
+in ingested content) must be **MathML 4**
+[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.9].
+MathML 3 content is currently accepted where it is forward-compatible with
+MathML 4 (MathML 4 is designed as a compatible extension of MathML 3), but
+Metanorma processes and validates all mathematical content as MathML 4, and
+MathML 3-only constructs (e.g. `mfenced`) should not be relied on.
+
+NOTE: During the transition to MathML 4, MathML 4-only additions (e.g. the
+`intent` and `arg` attributes) are not yet accepted by Metanorma's schema
+validation; they become available when the MathML 4 grammar migration
+(https://github.com/metanorma/metanorma/issues/585) completes.
+
+MathML (MathML 4) is used as the internal representation of STEM expressions
+in Metanorma.
 
 
 === Using AsciiMath

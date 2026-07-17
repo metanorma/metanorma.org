@@ -42,7 +42,7 @@ To customize behaviour further than Simple Adoption, you need to create a custom
 The toolchains currently available proceed in two steps:
 
 . map an input markup language (currently AsciiDoc only) into Metanorma Standoc Semantic XML; and
-. map Metanorma Standoc XML into various output formats (currently Word doc, HTML, PDF, all via Metanorma Standoc Presentation XML).
+. map Metanorma Standoc XML into various output formats (currently Word doc, HTML, PDF, all via Metanorma Standoc Presentation XML; flavor-specific XML output formats such as IETF RFC XML and ISO STS are prospectively to be generated through document models, see <<document-model-outputs>>).
 
 Running the `metanorma` CLI tool involves a third step, of exposing the capabilities available in the first two in a consistent format.
 
@@ -81,6 +81,67 @@ The `Isodoc::HtmlConvert` and `Isodoc::WordConvert` are expected to be near-iden
 In addition to these, `Relaton::Render` is used to provide a rendering of the Relaton XML bibliographic references for the document
 in the Presentation XML, based on a stylesheet provided for the flavour. The `Relaton::Render` methods may themselves be
 customised for the current flavour. The configuration of `Relaton::Render` is described in https://relaton.org/specs/relaton-render[relaton.org].
+
+[[document-model-outputs]]
+=== Document-model output formats (prospective)
+
+NOTE: This mechanism is a *prospective change*: it has been merged into
+`metanorma-core` but is not yet part of a released Metanorma version, and no
+flavor output format is generated through it in production yet. This section
+will be updated once the mechanism and its adopters go live.
+
+Besides the Presentation XML based rendering described above, a flavor will be
+able to register output formats that are rendered through a *document model*:
+the Metanorma XML is read into a
+https://github.com/metanorma/metanorma-document[metanorma-document] model by a
+flavor-specific *reader* class, transformed into a model of the target format
+by an output *transformer* class, and the resulting model is serialized to the
+output file:
+
+....
+(Semantic | Presentation) XML → reader.from_xml → transformer.transform → target.to_xml
+....
+
+This is the intended mechanism for IETF RFC XML output and ISO STS output.
+
+A flavor adds such a format by overriding
+`Metanorma::Processor#document_transformers` in its processor class, mapping
+the output format symbol to the two injected classes, plus serialization
+options:
+
+[source,ruby]
+--
+def document_transformers
+  {
+    rfc: {
+      # required: responds to .from_xml(String), returning a document model
+      reader: Metanorma::IetfDocument::Root,
+      # required: .new(model, options); the instance responds to #transform,
+      # returning a target model that responds to #to_xml
+      transformer: Metanorma::Ietf::Transformer::IetfToRfcV3,
+      # optional: strip the default XML namespace before reading (default false)
+      strip_default_namespace: true,
+      # optional: keyword arguments splatted into target.to_xml (default {})
+      to_xml_options: { pretty: true, declaration: true, encoding: "utf-8" },
+      # optional: callable (xml, transformer, options) -> xml,
+      # run after serialization (default: identity)
+      post_process: ->(xml, _transformer, _options) { xml },
+    },
+  }
+end
+--
+
+The base `Metanorma::Processor#output` consults this registry before falling
+back to writing out its input as is, and drives the registered chain through
+`Metanorma::Processor#render_via_document_model`. Whether the format is fed
+Semantic XML or Presentation XML is decided, as for all output formats, by
+`Metanorma::Processor#use_presentation_xml`.
+
+The reader and transformer classes are duck-typed and need not live inside the
+`Metanorma::` namespace, so they can be supplied by any gem. A flavor that
+renders only through document models needs no `output` override at all; a
+flavor with mixed output formats keeps its `case` dispatch in `output` and
+lets `super` route the document-model formats.
 
 === Metanorma::Standoc customization examples
 

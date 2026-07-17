@@ -760,6 +760,229 @@ The options are:
   comma-delimited list of Metanorma XML tags; e.g. `p,note,term`.
 
 
+== Incremental collection builds (memory-bounded)
+[added in https://github.com/metanorma/metanorma/releases/tag/v2.5.0]
+
+=== Why
+
+A collection is normally compiled in a single process, with every component
+document resident in memory at once. For large collections this accumulates
+memory across documents until the build runs out of memory: the failure is
+_cumulative_, not per-document (each document's own peak may be modest), and no
+per-document optimization removes it. Collections in the hundreds of documents —
+for example large information-model libraries — hit this limit.
+
+The _incremental build_ stages the compilation so that peak memory is bounded by
+a _single_ document rather than the whole collection. It is *opt-in*: the default
+collection build path is unchanged.
+
+=== How it works
+
+The incremental build has three stages.
+
+. *Compile each document in isolation*, preserving its outgoing cross-document
+references as stubs on the semantic XML — rather than stripping them, as an
+isolated document with absent siblings otherwise would — and writing the result
+to a durable, content-addressed on-disk store.
+
+. *Run the isolated compiles one per process, sequentially.* Process isolation is
+what bounds memory: each document is compiled in its own operating-system
+process, which exits and releases all its memory before the next document begins.
+Only one document is ever resident.
+
+. *Reinflate*: a final pass reads the stored stubs and resolves them into real
+cross-document links, producing the same output an all-present build would —
+across HTML, PDF and Word.
+
+Because cross-document reference resolution lives in the collection layer,
+operating on the semantic XML _upstream_ of where output branches into the three
+formats, one implementation serves all of them: HTML, PDF (via
+`collection.presentation.xml`) and Word.
+
+[IMPORTANT]
+====
+The isolated compiles are run *sequentially, not in parallel*. Running them in
+parallel would re-introduce the cross-linking and section-split races that
+Metanorma deliberately avoids. The memory saving comes from process isolation and
+memory reclamation between documents, not from concurrency.
+====
+
+=== Render options
+
+The incremental build is driven by three collection render options:
+
+`preserve_unresolved`::
+When compiling a document in isolation, keep its unresolved cross-document
+`repo:()` references as stubs (retaining the `bibitemid` and repository
+document identifier) instead of stripping them to plain text. This is what allows
+a document built without its siblings present to be relinked later.
+
+`artifact_store_dir`::
+The directory of the content-addressed on-disk store that each document's
+stub-bearing semantic XML and anchor catalogue are written to. It is optional:
+when `preserve_unresolved` is set and `artifact_store_dir` is omitted, the store
+defaults to a directory named `.metanorma-collection-cache` in the working
+directory. That name begins with a dot, so it is a _hidden_ directory — it does
+not clutter ordinary directory listings. Pass `artifact_store_dir` only to place
+the store somewhere else.
+
+`reinflate`::
+Run the final reinflation pass: resolve the stored stubs into real
+cross-document links over the stored semantic XML. Only the cross-document
+resolution is run — the intra-document rendering passes were already applied
+during the isolated compile, so nothing is re-inflated.
+
+[NOTE]
+====
+These are collection _render_ options. Orchestration of the per-document
+processes — scheduling one bounded-memory process per document, then the
+reinflation pass — is provided separately (see metanorma/suma#94); command-line
+integration follows. Until then, the staged cycle is driven by a small
+per-process driver over the collection manifest.
+====
+
+=== The content-addressed store
+
+Each document's stored artefacts are named:
+
+[source]
+----
+<document-id-slug>.<content-hash>.<stage>.<format>
+----
+
+For example:
+
+[source]
+----
+ISO-99000-1-2024.fd4e958e5f82dc20.semantic.xml
+ISO-99000-1-2024.fd4e958e5f82dc20.anchors.json
+----
+
+`document-id-slug`::: The document identifier, made filesystem-safe
+(`ISO 99000-1:2024` becomes `ISO-99000-1-2024`). Human-readable but lossy; the
+hash carries identity.
+
+`content-hash`::: A 16-hexadecimal-digit SHA-256 over the compiled input and the
+Metanorma version. This is the resumption key.
+
+`stage`::: `semantic` (the stub-bearing semantic XML), `anchors` (the document's
+anchor catalogue, contributed to the collection-wide index), or `presentation`
+(after reinflation).
+
+`format`::: `xml` for semantic and presentation, `json` for anchors.
+
+The store defaults to a directory named `.metanorma-collection-cache` — a hidden
+directory, since the name begins with a dot — in the working directory, and
+persists between builds, which gives two properties:
+
+Resumable::
+An interrupted build recompiles only what is missing: a document whose artefacts
+for the current content hash are already present is skipped.
+
+Idempotent::
+Re-running produces the same output with no side effects. By default, when a
+document's content changes, only its _latest_ hashed version is retained;
+previous-hash versions of the same document are pruned. Pass `keep_cache` to
+retain every version.
+
+=== What resumability does and does not provide
+
+The store provides *memory-bounding* and *cross-document correctness* — not
+`make`-style compile-time incrementality. Every incremental build still
+reinflates every document; unchanged documents are not skipped at compile time.
+
+[CAUTION]
+====
+The content hash is computed over a document's compiled input, not over the
+_shared_ inputs it depends on. If you edit shared inputs — templates, or (for
+information-model documents) the referenced schemas — the hash will not see the
+change, because it is upstream of the document source, and stale cached artefacts
+could be reused. After editing shared inputs, clear the store so it is rebuilt.
+Tracking dependencies across shared inputs is the collection maintainer's
+responsibility.
+====
+
+=== Worked example
+
+Take a three-part collection whose `collection.yml` lists the members
+`ISO 99000-1:2024`, `ISO 99000-2:2024` and `ISO 99000-3:2024`, cross-referencing
+one another.
+
+==== Stage each document, then generate the collection
+
+A document is staged by rendering a manifest that contains _only_ that document,
+with `preserve_unresolved` and `artifact_store_dir` set — so it compiles in its
+own process, keeps its cross-document references as stubs, and writes them to the
+store:
+
+[source,ruby]
+----
+# One member, in its own process (this is what the orchestration runs per document)
+Metanorma::Collection.parse("iso-99000-1-only.yml").render(
+  format: %i[xml],
+  output_folder: "tmp",                      # discarded; the store is the output
+  preserve_unresolved: true,
+  # artifact_store_dir omitted, so the store defaults to the hidden
+  # .metanorma-collection-cache directory; pass it only to place the store elsewhere.
+)
+----
+
+Running that once per member (`-1`, `-2`, `-3`), sequentially, leaves the store
+holding one stub-bearing semantic XML and one anchor catalogue per document:
+
+[source]
+----
+.metanorma-collection-cache/
+  ISO-99000-1-2024.fd4e958e5f82dc20.semantic.xml
+  ISO-99000-1-2024.fd4e958e5f82dc20.anchors.json
+  ISO-99000-2-2024.ca9a7421d97ecdda.semantic.xml
+  ISO-99000-2-2024.ca9a7421d97ecdda.anchors.json
+  ISO-99000-3-2024.0eeb3368552ba91f.semantic.xml
+  ISO-99000-3-2024.0eeb3368552ba91f.anchors.json
+----
+
+The collection is then generated by reinflating those stored stubs — a manifest
+whose members point at the stored semantic XML, rendered with `reinflate`:
+
+[source,ruby]
+----
+# Reinflation reads the stored stubs and resolves cross-document links; it does
+# not re-inflate the documents.
+Metanorma::Collection.parse("reinflate.yml").render(
+  format: %i[xml html],                      # add presentation/pdf/doc as needed
+  output_folder: "_site",
+  reinflate: true,
+)
+----
+
+The result in `_site/` is identical to an all-present single-process build: each
+`repo:()` reference is a live link (`ISO 99000-2:2024`'s reference to
+`ISO 99000-1:2024` becomes `<a href="…">`), across HTML, PDF and Word.
+
+==== Update a single document
+
+To update one document — say `ISO 99000-2:2024` has changed — re-stage *only that
+document* and regenerate the collection:
+
+. *Re-stage the changed document* by running the per-document build for
+`ISO 99000-2:2024` again. Its content hash changes, so a new
+`ISO-99000-2-2024.<new-hash>.semantic.xml` is written and the previous-hash files
+for that document are pruned (unless `keep_cache` is set). Its inflation is paid
+once; the other two documents are untouched in the store.
+
+. *Regenerate the collection* by reinflating as above. The two unchanged documents
+are served from their existing stored stubs; only the cross-document links are
+recomputed.
+
+[NOTE]
+====
+You choose which document to re-stage — the build does not auto-detect which
+documents changed. Re-staging a document whose source is unchanged re-inflates it
+(the store saves the _write_, not the inflation), so re-stage only what you
+actually changed. Automatic change detection across a collection's dependency
+closure is deliberately deferred.
+====
+
 == Going further: organization-scale publishing
 
 Collections group documents within a single repository. For organizations that
