@@ -386,3 +386,31 @@ Comments without `::` between list items are skipped correctly. Workaround
 applied at `flavors/itu/ref/document-attributes.adoc` (rewrote the comment
 so it does not form a term). Suggested fix: `dlist_term` (or the list-item
 loop) should reject lines starting with `//`.
+
+---
+
+## Bug 5: bare-URL autolink keeps trailing sentence punctuation
+
+coradoc's bare-URL autolink includes trailing `.`, `,`, and `:` in the
+href; asciidoctor strips them. Rendered links 404 for users.
+
+### Minimal reproduction
+
+```ruby
+doc = Coradoc.parse("URL https://example.com/x.pdf. Next sentence.\n", format: :asciidoc)
+# link href is "https://example.com/x.pdf." — the sentence period is kept.
+# asciidoctor produces href "https://example.com/x.pdf"
+```
+
+Also: the `URL:[text]` shorthand (link macro without space) is not
+recognized — the trailing `:` joins the URL instead
+(`https://en.wikipedia.org/wiki/Foo:[text]`).
+
+### Workarounds applied (metanorma.org)
+
+The five corpus spots were rewritten with explicit `link:URL[text]`
+macros (`_posts/2022-01-09-nist-pubid.adoc`,
+`_posts/2024-10-26-i18n-japanese.adoc`,
+`flavors/ietf/topics/references.adoc`, `learn/lessons/exercises.adoc`).
+Suggested fix: strip trailing `[.,;:]` runs from autolink matches, and
+support the `URL:[text]` shorthand in inline link parsing.
