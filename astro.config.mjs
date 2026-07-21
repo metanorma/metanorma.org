@@ -77,6 +77,20 @@ const STATIC_LEGACY_REDIRECTS = {
   '/samples/': '/flavors/',
   '/samples/draft-camelot-holy-grenade/': '/flavors/ietf/sample/',
   '/samples/vcard-format-specification/': '/flavors/cc/sample/',
+  // Synced gem README docs (software/<gem>/docs/*) were deleted upstream
+  // (the repos removed their docs/ dirs — the maintained equivalents now
+  // live in the flavor guides). The stale duplicates were removed; their
+  // URLs land on the flavor equivalents.
+  '/software/metanorma-iso/docs/': '/flavors/iso/',
+  '/software/metanorma-iso/docs/asciiiso-syntax/': '/flavors/iso/topics/markup/',
+  '/software/metanorma-iso/docs/guidance/': '/flavors/iso/topics/',
+  '/software/metanorma-iso/docs/navigation/': '/flavors/iso/',
+  '/software/metanorma-iso/docs/quickstart/': '/flavors/iso/sample/',
+  '/software/metanorma-cc/docs/': '/flavors/cc/',
+  '/software/metanorma-cc/docs/navigation/': '/flavors/cc/',
+  '/software/metanorma-cc/docs/quickstart/': '/flavors/cc/sample/',
+  '/software/metanorma-standoc/docs/': '/get-started/',
+  '/software/metanorma-standoc/docs/quickstart/': '/get-started/',
 }
 
 // Flavor user-name redirects, derived from the canonical Flavor catalog.
