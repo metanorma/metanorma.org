@@ -1,0 +1,103 @@
+---
+// Animated Metanorma lighthouse — the brand icon come alive.
+//
+// Library: public/js/lighthouse.js (from the metanorma branding repo).
+// The static brand icon remains as a no-JS / pre-init fallback and is
+// removed once the animation initializes. Theme follows the site theme
+// (.dark on <html>); motion respects prefers-reduced-motion (static mode).
+// Pointer interactions come from the library: move to aim, click to kick,
+// hold for SOS.
+interface Props {
+  class?: string
+}
+const { class: className = '' } = Astro.props
+---
+
+<div class:list={['mn-lighthouse relative', className]} data-lighthouse-hero>
+  <div
+    class="lh-mount h-full w-full touch-none select-none [&>svg]:block [&>svg]:h-full [&>svg]:w-full"
+    role="img"
+    aria-label="Metanorma lighthouse — its beam sweeps the sea, guiding documents home"
+  ></div>
+  <img
+    src="/metanorma-logo_icon-light.svg"
+    alt=""
+    class="lh-fallback pointer-events-none absolute inset-0 m-auto h-full w-full dark:hidden"
+    data-lh-fallback
+  />
+  <img
+    src="/metanorma-logo_icon-dark.svg"
+    alt=""
+    class="lh-fallback pointer-events-none absolute inset-0 m-auto hidden h-full w-full dark:block"
+    data-lh-fallback
+  />
+</div>
+
+<script is:inline>
+  (() => {
+    const MOUNT_SEL = '[data-lighthouse-hero] .lh-mount'
+
+    const siteTheme = () =>
+      document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+
+    function ensureLib() {
+      if (window.Lighthouse) return Promise.resolve()
+      if (window.__mnLhLibPromise) return window.__mnLhLibPromise
+      window.__mnLhLibPromise = new Promise((resolve, reject) => {
+        const s = document.createElement('script')
+        s.src = '/js/lighthouse.js'
+        s.onload = () => resolve()
+        s.onerror = () => reject(new Error('lighthouse.js failed to load'))
+        document.head.appendChild(s)
+      })
+      return window.__mnLhLibPromise
+    }
+
+    let themeObserver = null
+
+    async function init() {
+      const mount = document.querySelector(MOUNT_SEL)
+      if (!mount || window.__mnLh) return
+      try {
+        await ensureLib()
+      } catch {
+        return // static fallback stays visible
+      }
+      if (window.__mnLh || !document.contains(mount)) return
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      window.__mnLh = new window.Lighthouse(mount, {
+        theme: siteTheme(),
+        mode: reduced ? 'static' : 'rotate',
+        period: 7.5,
+      })
+      document
+        .querySelectorAll('[data-lighthouse-hero] [data-lh-fallback]')
+        .forEach((el) => el.remove())
+      themeObserver = new MutationObserver(() => {
+        if (window.__mnLh) window.__mnLh.configure({ theme: siteTheme() })
+      })
+      themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+      })
+    }
+
+    function teardown() {
+      if (themeObserver) {
+        themeObserver.disconnect()
+        themeObserver = null
+      }
+      if (window.__mnLh) {
+        window.__mnLh.destroy()
+        window.__mnLh = null
+      }
+    }
+
+    if (!window.__mnLhWired) {
+      window.__mnLhWired = true
+      document.addEventListener('astro:before-swap', teardown)
+      document.addEventListener('astro:after-swap', init)
+    }
+    init()
+  })()
+</script>

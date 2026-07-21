@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { flavors } from '../flavors'
 import { gems } from '../software'
 import { posts } from '../posts'
-import { homeData, counts } from '../home'
+import { homeData } from '../home'
 
 describe('Flavors catalog completeness', () => {
   it('every flavor has a unique id', () => {
@@ -108,11 +108,5 @@ describe('Home data completeness', () => {
       expect(step.title).toBeTruthy()
       expect(step.desc).toBeTruthy()
     }
-  })
-
-  it('counts has numeric values', () => {
-    expect(typeof counts.allFlavorCount).toBe('number')
-    expect(counts.allFlavorCount).toBeGreaterThan(0)
-    expect(typeof counts.supportedFlavorCount).toBe('number')
   })
 })

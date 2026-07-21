@@ -1,0 +1,14 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://www.metanorma.org/schemas/root-labels.schema.yaml
+title: Metanorma breadcrumb root labels
+description: >-
+  The contract for src/config/root-labels.yml — maps root-level URL
+  segments to the display labels used by breadcrumbs when no _nav.yml
+  resolves the segment.
+
+type: object
+propertyNames:
+  pattern: "^[a-z0-9-]+$"
+additionalProperties:
+  type: string
+  minLength: 1

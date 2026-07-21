@@ -1,23 +1,26 @@
 # Synced upstream content (regenerated via `rake sync`)
-_software/*/.git
-_software/*/docs
-_software/*/.gitignore
-_software/_*_repo
-_software/metanorma-bipm/
-_software/metanorma-generic/
-_software/metanorma-iho/
-_specs/*/
-!_specs/*.*
+software/*/docs
+software/*/.git
+software/*/.gitignore
+software/_*_repo
+# Full upstream clones left by the old Jekyll helpers gem
+software/metanorma-bipm/
+software/metanorma-generic/
+software/metanorma-iho/
+# Synced model repos (images + .git); keep top-level .adoc sources
+specs/*/
+!specs/*.*
 
 # Stale Jekyll/vite-ssg generated markdown (content now flows through
 # .adoc → mirror-json, not these .md intermediates)
 author/**/*.md
 develop/**/*.md
 learn/**/*.md
-_software/**/*.md
-_specs/**/*.md
-_software/*.md
-_specs/*.md
+flavors/**/*.md
+install/**/*.md
+samples/**/*.md
+software/**/*.md
+specs/**/*.md
 
 # OS / editor
 .DS_Store
@@ -31,7 +34,6 @@ parent-hub
 
 # Dependencies
 node_modules/
-Gemfile.lock
 
 # Build output (regenerated)
 dist/
@@ -50,16 +52,11 @@ TODO.remaining/
 /about.md
 /get-started.md
 
-# Old Jekyll root-level page directories (content now in _pages/, author/, etc.)
+# Old Jekyll root-level page directories (content now in _pages/, _posts/, etc.)
 /blog/
 /contribute/
 /docs/
-/flavors/
-/install/
 /reference/
-/samples/
-/software/
-/specs/
 /author.adoc
 /contribute.md
 /index.html

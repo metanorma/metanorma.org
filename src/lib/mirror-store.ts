@@ -6,11 +6,38 @@
 // that logic behind one interface so the directory path, slug rule,
 // and redirect normalization live in exactly one place.
 
-import { glob } from 'node:fs/promises'
-import { readFileSync, existsSync } from 'node:fs'
+import { glob, readFile } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 
+// Apply fn to items with bounded concurrency, preserving input order in
+// the output array. Envelope reads/renders are the loader bottleneck —
+// sequential readFile+render per entry — so both are batched (chunks of
+// `concurrency` under Promise.all). Order stays deterministic because
+// results are collected by position, not completion.
+export async function mapConcurrent<T, R>(
+  items: readonly T[],
+  concurrency: number,
+  fn: (item: T) => Promise<R>,
+): Promise<R[]> {
+  const out: R[] = new Array(items.length)
+  for (let i = 0; i < items.length; i += concurrency) {
+    const chunk = items.slice(i, i + concurrency)
+    const results = await Promise.all(chunk.map(fn))
+    for (let j = 0; j < results.length; j++) out[i + j] = results[j]
+  }
+  return out
+}
+
 export const MIRROR_DIR = 'mirror-json'
+
+// The converter writes run metadata (stats, file_map) to
+// mirror-json/manifest.json — it is not a page envelope.
+const NON_ENVELOPE_FILES = new Set(['manifest.json'])
+
+export function isEnvelopeFile(file: string): boolean {
+  return !NON_ENVELOPE_FILES.has(file)
+}
 
 export interface MirrorEnvelope {
   slug: string
@@ -37,40 +64,33 @@ export function extractRedirects(frontmatter: Record<string, any> | undefined): 
   return [String(raw)]
 }
 
-// Read a single envelope by slug, or null if missing.
-export function readEnvelope(slug: string): MirrorEnvelope | null {
-  const candidates = [
-    join(MIRROR_DIR, `${slug}.json`),
-    join(MIRROR_DIR, slug, 'index.json'),
-  ]
-  for (const path of candidates) {
-    if (!existsSync(path)) continue
+export interface ReadEnvelopesOptions {
+  // Called for each file that fails to read/parse (the file is skipped).
+  // Absent = skip silently (the caller decides whether to log).
+  onError?: (file: string, err: Error) => void
+  // Read concurrency (files read in parallel per chunk). Default 16.
+  concurrency?: number
+}
+
+// Walk all mirror-json envelopes and return them as a flat array in
+// glob (sorted-path) order. Files that fail to parse are skipped.
+export async function readAllEnvelopes(options: ReadEnvelopesOptions = {}): Promise<MirrorEnvelope[]> {
+  if (!existsSync(MIRROR_DIR)) return []
+  const files: string[] = []
+  for await (const file of glob('**/*.json', { cwd: MIRROR_DIR })) {
+    if (isEnvelopeFile(file)) files.push(file)
+  }
+  const read = async (file: string): Promise<MirrorEnvelope | null> => {
     try {
-      const raw = JSON.parse(readFileSync(path, 'utf-8'))
-      return toEnvelope(slug, raw)
-    } catch {
+      const raw = JSON.parse(await readFile(join(MIRROR_DIR, file), 'utf-8'))
+      return toEnvelope(slugFromFile(file), raw)
+    } catch (err) {
+      options.onError?.(file, err as Error)
       return null
     }
   }
-  return null
-}
-
-// Walk all mirror-json envelopes and return them as a flat array.
-// Skips files that fail to parse (logs nothing — caller decides).
-export async function readAllEnvelopes(): Promise<MirrorEnvelope[]> {
-  if (!existsSync(MIRROR_DIR)) return []
-  const out: MirrorEnvelope[] = []
-  for await (const file of glob('**/*.json', { cwd: MIRROR_DIR })) {
-    const fullPath = join(MIRROR_DIR, file)
-    let raw: any
-    try {
-      raw = JSON.parse(readFileSync(fullPath, 'utf-8'))
-    } catch {
-      continue
-    }
-    out.push(toEnvelope(slugFromFile(file), raw))
-  }
-  return out
+  const envelopes = await mapConcurrent(files, options.concurrency ?? 16, read)
+  return envelopes.filter((e): e is MirrorEnvelope => e !== null)
 }
 
 function toEnvelope(slug: string, raw: any): MirrorEnvelope {

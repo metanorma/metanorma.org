@@ -6,6 +6,9 @@ description: Install Metanorma and author your first standards document
 
 # Get Started with Metanorma
 
+> **Prefer a guided course?** The [Learn Metanorma tutorial](/learn/) walks
+> through the same steps — and more — lesson by lesson.
+
 ## 1. Install Metanorma
 
 The fastest way to get started is with Docker:
@@ -47,11 +50,11 @@ This produces `my-standard.html` and `my-standard.pdf`.
 
 The `-t` flag selects the target standards organization (the "flavor"). Common flavors include:
 
-- `iso` — ISO standards
-- `iec` — IEC standards
-- `ietf` — IETF RFCs and Internet-Drafts
-- `ieee` — IEEE standards
-- `ogc` — Open Geospatial Consortium
+- `iso` — ISO standards ([ISO quick-start sample](/flavors/iso/sample/))
+- `iec` — IEC standards ([IEC quick-start sample](/flavors/iec/sample/))
+- `ietf` — IETF RFCs and Internet-Drafts ([IETF quick-start sample](/flavors/ietf/sample/))
+- `ieee` — IEEE standards ([IEEE quick-start sample](/flavors/ieee/sample/))
+- `ogc` — Open Geospatial Consortium ([OGC quick-start sample](/flavors/ogc/sample/))
 
 See the [flavors page](/flavors/) for the complete list.
 

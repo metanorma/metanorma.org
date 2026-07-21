@@ -1,31 +1,16 @@
 # frozen_string_literal: true
 
-require "yaml"
-
-# Path and URL mapping for the converter.
-#
-# Encodes the source→output path transformation rules and the tables of
-# superseded/special-cased files. The main script calls `map_output_path`
-# per source file and `legacy_redirects_for` to compute redirect entries.
 module Convert
+  # Section-independent path/URL string helpers, plus the table of
+  # superseded source files.
+  #
+  # All section knowledge (source dirs, output prefixes, mapping kinds)
+  # lives in src/config/sections.yml and is exposed through
+  # Convert::SectionRegistry. This module keeps only the string
+  # transforms that sections, rewriters, and sources share — kebab in
+  # particular has exactly one implementation here (kebab_segment).
   module PathMapping
-    SITE_ROOT = File.expand_path("..", File.dirname(__dir__))
-
-    MAPPING = {
-      "_pages" => {
-        "install.adoc" => "install/index",
-        "author.adoc" => "author/index",
-        "develop.adoc" => "develop/index",
-        "learn.adoc" => "learn/index",
-        "contribute.adoc" => "contribute/index",
-        "reference_docs.adoc" => "reference/index",
-      },
-      "_pages/install" => { prefix: "install/" },
-      "_posts" => { prefix: "blog/", date_prefix: true },
-      "_software" => { prefix: "software/", data_driven: true },
-      "_specs" => { prefix: "specs/" },
-      "_samples" => { prefix: "samples/" },
-    }.freeze
+    SITE_ROOT = Convert::SITE_ROOT
 
     SUPERSEDED = {
       "_pages/flavors.adoc"                              => "hand-authored pages/flavors/index.md",
@@ -48,45 +33,40 @@ module Convert
       "author/mpfa.adoc"                                 => "MPFA removed from site",
       "author/mpfa/authoring.adoc"                       => "MPFA removed from site",
       "author/mpfa/sample.adoc"                          => "MPFA removed from site",
+      "flavors/mpfa.adoc"                                => "MPFA removed from site",
+      "flavors/mpfa/authoring.adoc"                      => "MPFA removed from site",
+      "flavors/mpfa/sample.adoc"                         => "MPFA removed from site",
+      # /author/getting-started/ was org-adoption content misplaced in the
+      # author area; merged into the developer landing page (/develop/).
+      "author/getting-started.adoc"                      => "merged into /develop/ (developer documentation landing)",
+      # The four document-attribute reference pages are now rendered from
+      # the machine-readable manifests (attributes/*.yaml) by the named
+      # Astro routes (registry: src/lib/attr-registry.ts) at the same
+      # URLs. Sources stay on disk per the never-delete-source rule; the
+      # prose companions (flavors/iso/ref/identifier-patterns.adoc,
+      # flavors/ietf/ref/global-options.adoc) REMAIN live mirror pages.
+      "author/ref/document-attributes.adoc"              => "superseded by attributes/standoc.yaml generated reference",
+      "flavors/iso/ref/document-attributes.adoc"         => "superseded by attributes/iso.yaml generated reference",
+      "flavors/ietf/ref/document-attributes.adoc"        => "superseded by attributes/ietf.yaml generated reference",
+      "flavors/ietf/ref/document-attributes-v2.adoc"     => "superseded by attributes/ietf-v2.yaml generated reference",
+      # learn/template.html is an unfinished author scratch template (empty
+      # <title>, Jekyll-era include notes), not content. Redirected to
+      # /learn/; the file stays on disk per the never-delete-source rule.
+      "learn/template.html"                              => "author scratch template, not content — redirected to /learn/",
     }.freeze
-
-    DIR_MAPPINGS = {
-      "author"         => "author",
-      "flavors"        => "flavors",
-      "develop"        => "develop",
-      "learn"          => "learn",
-      "software"       => "software",
-      "specs"          => "specs",
-      "samples"        => "samples",
-      "library"        => "library",
-    }.freeze
-
-    # Single source of truth for all directories that contain source
-    # .adoc files or assets. sources.rb derives its glob patterns and
-    # asset copy list from this; DIR_MAPPINGS provides the output
-    # mapping for each entry.
-    SOURCE_DIRS = %w[
-      author
-      flavors
-      _posts
-      develop
-      learn
-      reference_docs
-      software
-      specs
-      samples
-      library
-      _pages
-    ].freeze
 
     module_function
 
-    def site_root
-      SITE_ROOT
+    # THE kebab implementation. Every snake_case → kebab-case conversion
+    # in the converter (output mapping, link rewriting, asset copying)
+    # goes through this method.
+    def kebab_segment(segment)
+      segment.tr("_", "-")
     end
 
-    def kebab(s)
-      s.tr("_", "-")
+    # Kebab every segment of a slash-separated path.
+    def kebab_path(path)
+      path.split("/").map { |seg| kebab_segment(seg) }.join("/")
     end
 
     def strip_adoc_ext(filename)
@@ -106,130 +86,19 @@ module Convert
     def filename_date(rel_path)
       File.basename(rel_path, ".adoc")[/\A\d{4}-\d{2}-\d{2}/, 0]
     end
+  end
 
-    def map_output_path(source_dir, filename)
-      rel_dir = source_dir.sub("#{SITE_ROOT}/", "")
+  # Resolve a relative path against the source file's output directory.
+  # The clean-URL restructure (page.html → page/index.html) shifts
+  # rendered pages one level deeper, so sibling-relative paths must be
+  # rebased against the parent directory of the output key.
+  def self.resolve_against_output_dir(path, output_key)
+    return path if path.start_with?("/")
+    return path if output_key.nil? || output_key.empty?
 
-      return MAPPING["_pages"][filename] if rel_dir == "_pages"
+    parent_dir = output_key.rpartition("/").first
+    return path if parent_dir.empty?
 
-      if rel_dir == "_posts"
-        info = extract_blog_slug(filename)
-        return info && "blog/#{info[:year]}-#{info[:month]}-#{info[:day]}-#{info[:slug]}"
-      end
-
-      if rel_dir =~ %r{\A_pages/(.+)\z}
-        subdir = kebab(Regexp.last_match(1))
-        return "#{subdir}/#{kebab(strip_src_ext(filename))}"
-      end
-
-      if rel_dir == "reference_docs"
-        base = strip_src_ext(filename).sub(/^Ref-/, "").downcase
-        return "reference/#{kebab(base)}"
-      end
-
-      DIR_MAPPINGS.each do |src, dest|
-        return "#{dest}/#{kebab(strip_adoc_ext(filename))}" if rel_dir == src
-        if rel_dir =~ %r{\A#{Regexp.escape(src)}/(.+)\z}
-          subdir = kebab(Regexp.last_match(1))
-          return "#{dest}/#{subdir}/#{kebab(strip_adoc_ext(filename))}"
-        end
-      end
-
-      "#{kebab(rel_dir)}/#{kebab(strip_src_ext(filename))}"
-    end
-
-    def legacy_redirects_for(rel_path, output_key, frontmatter_date: nil)
-      if rel_path.start_with?("_posts/")
-        redirects = []
-        if frontmatter_date && frontmatter_date != filename_date(rel_path)
-          slug = File.basename(rel_path, ".adoc").sub(/\A\d{4}-\d{2}-\d{2}-/, "")
-          redirects << "/blog/#{frontmatter_date}-#{slug}/"
-        end
-        return redirects
-      end
-
-      if rel_path.start_with?("reference_docs/")
-        base = File.basename(rel_path, File.extname(rel_path))
-        prod = "reference_docs/#{base}"
-        return prod == output_key ? [] : ["/#{prod}/"]
-      end
-
-      # Derive the production path by applying each DIR_MAPPINGS rewrite
-      # to the source-relative path, then stripping the _pages/ prefix
-      # and the source extension. This keeps redirect generation in sync
-      # with the mapping table — no separate hardcoded .sub() chain.
-      prod = rel_path
-      DIR_MAPPINGS.each do |src, dest|
-        prod = prod.sub(/\A#{Regexp.escape(src)}\//, "#{dest}/")
-      end
-      prod = prod.sub(/\A_pages\//, "")
-      prod = prod.sub(/\.(adoc|html)\z/, "")
-
-      return [] if prod == output_key
-      ["/#{prod}/"]
-    end
-
-    # Reverse-map an output path segment back to its source directory.
-    # flavors/iso/topics → flavor/iso/topics (mirrors DIR_MAPPINGS).
-    def source_dir_for_output(rel_output)
-      segments = rel_output.split("/")
-      first = segments.first
-      segments[0] = DIR_MAPPINGS.key(first) || first
-      segments.join("/")
-    end
-
-    # Read _nav.yml for a directory (relative to SITE_ROOT). Tries both
-    # the exact path and the snake_case variant (source dirs may use
-    # either dashes or underscores). Returns the parsed Hash or nil.
-    def read_nav_yml(rel_dir)
-      [rel_dir, rel_dir.tr("-", "_")].uniq.each do |dir|
-        path = File.join(SITE_ROOT, dir, "_nav.yml")
-        next unless File.exist?(path)
-        begin
-          return YAML.load_file(path)
-        rescue StandardError
-          next
-        end
-      end
-      nil
-    end
-
-    # Recursively search nav items for one whose `file:` or `dir:`
-    # matches file_base. Both can reference a page: `file:` for a
-    # standalone page, `dir:` for a sub-directory landing page.
-    def find_nav_title(items, file_base)
-      return nil unless items.is_a?(Array)
-      items.each do |item|
-        next unless item.is_a?(Hash)
-        if item["title"] && (item["file"] == file_base || item["dir"] == file_base)
-          return item["title"]
-        end
-        if item["items"]
-          title = find_nav_title(item["items"], file_base)
-          return title if title
-        end
-      end
-      nil
-    end
-
-    # Look up the human-readable title for a page from _nav.yml files.
-    # Strategy (first match wins):
-    # 1. The target directory's own _nav.yml `title:` (section title)
-    # 2. An item in rel_dir's _nav.yml with matching `file:` or `dir:`
-    # 3. An item in the parent's _nav.yml with matching `file:` or `dir:`
-    def nav_title_for(rel_dir, file_base)
-      subdir = rel_dir == "." ? file_base : File.join(rel_dir, file_base)
-      subdir_nav = read_nav_yml(subdir)
-      return subdir_nav["title"] if subdir_nav && subdir_nav["title"]
-
-      nav = read_nav_yml(rel_dir)
-      title = find_nav_title(nav["items"], file_base) if nav
-      return title if title
-
-      parent_dir = File.dirname(rel_dir)
-      return nil if parent_dir == rel_dir
-      nav = read_nav_yml(parent_dir)
-      find_nav_title(nav["items"], file_base) if nav
-    end
+    File.expand_path(path, "/#{parent_dir}")
   end
 end

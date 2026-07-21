@@ -2,11 +2,16 @@
 interface Props {
   title?: string
   subtitle?: string
+  // Extra classes for the <article> element. Pages with a sidebar get
+  // the default plain wrapper; standalone pages pass their centering /
+  // typography classes (e.g. "mn-rendered mx-auto max-w-3xl px-6 py-12").
+  class?: string
 }
-const { title, subtitle } = Astro.props
+const { title, subtitle, class: className = 'w-full' } = Astro.props
 ---
 
-<article class="w-full">
+<article class={className}>
+  <slot name="breadcrumb" />
   {title && (
     <header class="mb-8 border-b border-[var(--mn-c-divider)] pb-4">
       <h1 class="m-0 text-4xl font-extrabold leading-tight tracking-tight">{title}</h1>

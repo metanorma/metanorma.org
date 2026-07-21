@@ -31,6 +31,9 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
+      - name: Run Ruby specs
+        run: bundle exec rspec
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -39,6 +42,21 @@ jobs:
 
       - name: Install Node dependencies
         run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Check navigation
+        run: npm run check:nav
+
+      - name: Validate YAML data against schemas
+        run: npm run check:schemas
+
+      - name: Check generated schemas are in sync
+        run: node scripts/build-schemas.mjs --check
+
+      - name: Type-check
+        run: npm run check
 
       - name: Sync upstream content
         run: bundle exec rake sync

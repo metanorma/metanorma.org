@@ -1,7 +1,8 @@
 import { flavors } from '../data/flavors'
+import { kebabSegment } from './kebab'
 
 const flavorIdPattern = flavors
-  .map(f => f.id.replace(/_/g, '-'))
+  .map(f => kebabSegment(f.id))
   .join('|')
 
 const re = new RegExp(`(href=")/author/(${flavorIdPattern})(/[^"]*)?"`, 'g')

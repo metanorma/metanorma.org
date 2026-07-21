@@ -1,5 +1,6 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
-import { catalog, flavors, gems } from '../index'
+import { describe, expect, it } from 'vitest'
+import { flavors } from '../flavors'
+import { gems } from '../software'
 
 describe('catalog', () => {
   it('exports flavors array', () => {
@@ -10,12 +11,6 @@ describe('catalog', () => {
   it('exports gems array', () => {
     expect(Array.isArray(gems)).toBe(true)
     expect(gems.length).toBeGreaterThan(0)
-  })
-
-  it('exports the catalog aggregate', () => {
-    expect(catalog).toBeDefined()
-    expect(catalog.flavors).toBe(flavors)
-    expect(catalog.gems).toBe(gems)
   })
 
   it('every flavor has required fields', () => {
@@ -63,24 +58,5 @@ describe('catalog', () => {
         expect(flavorIds.has(g.flavorId)).toBe(true)
       }
     }
-  })
-})
-
-describe('catalog drift check (dev mode)', () => {
-  beforeEach(() => {
-    (vi.stubEnv as any)('DEV', true)
-    vi.spyOn(console, 'error').mockImplementation(() => {})
-  })
-
-  afterEach(() => {
-    vi.unstubAllEnvs()
-    vi.restoreAllMocks()
-  })
-
-  it('does NOT log orphans when every flavor-category gem has matching flavor', () => {
-    // flavors.ts and software.ts should be in sync at HEAD. This test
-    // catches regressions where someone adds a gem but forgets the
-    // flavor entry (or vice versa).
-    expect(console.error).not.toHaveBeenCalled()
   })
 })

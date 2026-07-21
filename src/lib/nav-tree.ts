@@ -1,8 +1,15 @@
 // Declarative navigation tree reader.
 //
-// Content roots are defined in src/config/content.yml.
-// Each directory with a _nav.yml gets a sidebar.
-// URLs are file paths — no transformation, no mapping tables.
+// Content sections are defined in src/config/sections.yml (the single
+// section registry, shared with the Ruby converter). Sections with
+// nav_root: true are the sidebar roots: each directory with a _nav.yml
+// gets a sidebar.
+// URLs are source file paths translated through the section registry:
+// a section whose source_dir differs from its output_prefix (install:
+// _pages/install → /install/) has its nav prefixes and file URLs mapped
+// to output space, with every segment kebabed like the converter's
+// output mapping. Tree sections (source_dir == output_prefix) are
+// identity-mapped, so `file:` entries are plain source paths.
 
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
@@ -24,16 +31,44 @@ export interface NavRoot {
 
 const SOURCE_ROOT = process.cwd()
 
-// Content roots from src/config/content.yml.
-const CONFIG = load(readFileSync(join(SOURCE_ROOT, 'src/config/content.yml'), 'utf-8')) as { roots: string[] }
-const CONTENT_ROOTS = CONFIG.roots
+// Sidebar roots: sections with nav_root: true in src/config/sections.yml.
+interface SectionEntry {
+  id: string
+  source_dir: string
+  output_prefix: string
+  nav_root?: boolean
+  mapping: string
+}
+
+// Read lazily (like the tree build below) — importing this module must
+// not touch the filesystem.
+let sectionsCache: SectionEntry[] | null = null
+function getSections(): SectionEntry[] {
+  if (sectionsCache) return sectionsCache
+  const config = load(readFileSync(join(SOURCE_ROOT, 'src/config/sections.yml'), 'utf-8')) as { sections: SectionEntry[] }
+  sectionsCache = config.sections
+  return sectionsCache
+}
+
+function getContentRoots(): SectionEntry[] {
+  return getSections().filter(s => s.nav_root)
+}
 
 const SKIP_DIRS = new Set(['node_modules', '_upstream', 'dist', '.astro',
   '.git', 'SUPERSEDED', 'scripts', 'src', 'public', 'mirror-json',
   '.github', '.playwright-mcp', '.jekyll-cache'])
 
-function dirToPrefix(dir: string): string {
-  return '/' + dir + '/'
+function kebabSegment(segment: string): string {
+  return segment.replace(/_/g, '-')
+}
+
+// URL prefix for a nav directory inside a section: the section's
+// output_prefix plus the directory's path relative to the section's
+// source_dir, kebabed (the converter kebabs every output segment).
+function dirToPrefix(section: SectionEntry, dir: string): string {
+  const rel = dir === section.source_dir ? '' : dir.slice(section.source_dir.length + 1)
+  const relKebab = rel.split('/').map(kebabSegment).join('/')
+  return '/' + [section.output_prefix, relKebab].filter(Boolean).join('/') + '/'
 }
 
 function readNavYml(dir: string): NavNode | null {
@@ -44,6 +79,29 @@ function readNavYml(dir: string): NavNode | null {
   } catch {
     return null
   }
+}
+
+// Superseded source files (removed from the site but kept on disk per
+// the never-delete-source rule) are filtered by the converter at
+// collection time — Convert::PathMapping::SUPERSEDED in
+// scripts/convert/path_mapping.rb — so they must not count as nav
+// orphans either. The Ruby table is the single source of truth; its
+// entry format is stable (one `"path" => "reason",` per line) and is
+// read here directly rather than duplicated into a second list.
+let supersededCache: Set<string> | null = null
+function getSuperseded(): Set<string> {
+  if (supersededCache) return supersededCache
+  supersededCache = new Set()
+  try {
+    const ruby = readFileSync(join(SOURCE_ROOT, 'scripts/convert/path_mapping.rb'), 'utf-8')
+    const block = ruby.match(/SUPERSEDED\s*=\s*\{(.*?)\}\.freeze/s)
+    if (block) {
+      for (const m of block[1].matchAll(/^\s*"([^"]+)"\s*=>/gm)) {
+        supersededCache.add(m[1])
+      }
+    }
+  } catch {}
+  return supersededCache
 }
 
 function resolveDirRefs(node: NavNode, baseDir: string): void {
@@ -97,11 +155,18 @@ function collectDirRefs(dir: string): Set<string> {
   return claimed
 }
 
-export const navTrees: NavRoot[] = (() => {
-  const trees: NavRoot[] = []
-  const allNavDirs: string[] = []
+// The tree build (sections.yml read + _nav.yml discovery walk) runs on
+// FIRST call, not at import time: importing this module is side-effect
+// free, and consumers that never need the nav never pay for it.
+let navTreesCache: NavRoot[] | null = null
 
-  for (const root of CONTENT_ROOTS) {
+export function getNavTrees(): NavRoot[] {
+  if (navTreesCache) return navTreesCache
+  const trees: NavRoot[] = []
+  const allNavDirs: Array<{ section: SectionEntry; dir: string }> = []
+
+  for (const section of getContentRoots()) {
+    const root = section.source_dir
     if (!existsSync(join(SOURCE_ROOT, root))) continue
     const found: string[] = []
     discoverNavFiles(root, found)
@@ -113,12 +178,12 @@ export const navTrees: NavRoot[] = (() => {
     }
     for (const d of found) {
       if (d === root || !claimed.has(d)) {
-        allNavDirs.push(d)
+        allNavDirs.push({ section, dir: d })
       }
     }
   }
 
-  for (const dir of allNavDirs) {
+  for (const { section, dir } of allNavDirs) {
     const nav = readNavYml(dir)
     if (!nav) continue
     resolveDirRefs(nav, dir)
@@ -126,22 +191,42 @@ export const navTrees: NavRoot[] = (() => {
       console.warn(`[nav] _nav.yml missing title: ${dir}/_nav.yml`)
     }
     trees.push({
-      prefix: dirToPrefix(dir),
+      prefix: dirToPrefix(section, dir),
       title: nav.title || dir,
       items: nav.items || [],
     })
   }
 
-  return trees.sort((a, b) => b.prefix.length - a.prefix.length)
-})()
+  navTreesCache = trees.sort((a, b) => b.prefix.length - a.prefix.length)
+  return navTreesCache
+}
 
 export function resolveNavTree(pathname: string): NavRoot | null {
   const normalized = pathname.replace(/\/$/, '') + '/'
-  return navTrees.find(t => normalized.startsWith(t.prefix)) || null
+  return getNavTrees().find(t => normalized.startsWith(t.prefix)) || null
 }
 
+// Map a nav `file:` entry (a source path after resolveDirRefs, e.g.
+// _pages/install/macos) to its site URL. The owning section is the one
+// with the longest matching source_dir; its output_prefix replaces the
+// source_dir and every remaining segment is kebabed, mirroring the
+// converter's output mapping. A trailing /index collapses to the
+// directory URL (`file: index` is the section landing page — the source
+// may live at the parent level, e.g. _pages/install.adoc → install/index).
+// Files outside every section keep the historic identity mapping.
 export function sourcePathToUrl(file: string): string {
-  return '/' + file.replace(/\/index$/, '').replace(/\\/g, '/') + '/'
+  const normalized = file.replace(/\\/g, '/')
+  const section = getSections()
+    .filter(s => s.source_dir &&
+      (normalized === s.source_dir || normalized.startsWith(s.source_dir + '/')))
+    .sort((a, b) => b.source_dir.length - a.source_dir.length)[0]
+  if (!section) {
+    return '/' + normalized.replace(/\/index$/, '') + '/'
+  }
+  const rel = normalized === section.source_dir ? '' : normalized.slice(section.source_dir.length + 1)
+  const relKebab = rel.split('/').map(kebabSegment).join('/')
+  const joined = [section.output_prefix, relKebab].filter(Boolean).join('/')
+  return ('/' + joined + '/').replace(/\/index\/$/, '/')
 }
 
 function collectAdocFiles(dir: string, base: string = dir): string[] {
@@ -163,16 +248,19 @@ function collectAdocFiles(dir: string, base: string = dir): string[] {
 
 export function validateAllNav(): Array<{ section: string; orphans: string[] }> {
   const results: Array<{ section: string; orphans: string[] }> = []
-  for (const root of CONTENT_ROOTS) {
+  for (const section of getContentRoots()) {
+    const root = section.source_dir
     if (!existsSync(join(SOURCE_ROOT, root))) continue
     if (!existsSync(join(SOURCE_ROOT, root, '_nav.yml'))) continue
 
-    const allFiles = collectAdocFiles(root, root).map(f =>
-      join(root, f).replace(/\\/g, '/').replace(/\.adoc$/, '')
-    )
+    const superseded = getSuperseded()
+    const allFiles = collectAdocFiles(root, root)
+      .map(f => join(root, f).replace(/\\/g, '/'))
+      .filter(f => !superseded.has(f))
+      .map(f => f.replace(/\.adoc$/, ''))
 
-    const rootPrefix = dirToPrefix(root)
-    const trees = navTrees.filter(t =>
+    const rootPrefix = dirToPrefix(section, root)
+    const trees = getNavTrees().filter(t =>
       t.prefix === rootPrefix || t.prefix.startsWith(rootPrefix))
 
     const declared = new Set<string>()

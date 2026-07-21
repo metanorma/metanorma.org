@@ -1,37 +1,50 @@
 // Custom Astro Content Layer loader for mirror-json envelopes.
 //
 // Single source of truth for:
-//   1. Where mirror-json files live on disk (`mirror-json/`).
-//   2. How to parse the envelope (source, frontmatter, title, mirror_json).
-//   3. How to extract headings at build time (calls the renderer once,
-//      scrapes <h2>/<h3>/<h4> from the rendered HTML).
+//   1. Where mirror-json files live on disk (`mirror-json/`) — the walk
+//      itself is mirror-store.readAllEnvelopes (one implementation,
+//      shared with posts.ts and astro.config.mjs).
+//   2. How envelopes become collection entries: the stored data shape is
+//      MirrorEntryData from src/lib/mirror-schema.ts (the ONE envelope
+//      model; content.config.ts uses the same zod schema).
+//   3. How headings are extracted at build time: the renderer records
+//      them while emitting HTML — no DOM scraping. A first heading that
+//      duplicates the page title is stripped by the renderer itself
+//      (stripFirstHeadingIf), replacing the old indexOf/substring HTML
+//      surgery, which dropped headings[0] even when the HTML strip did
+//      not fire.
 //
 // Pages get headings for free from the collection entry — no DOM
 // scraping at request time. Replaces the client-side PageToc.vue
 // scraper (~180 lines) and centralizes "what's in a mirror-json page".
 
-import { glob } from 'node:fs/promises'
-import { readFileSync } from 'node:fs'
-import { join } from 'node:path'
 import { defaultPipeline } from '../../lib/render-pipeline'
-import { extractRedirects, MIRROR_DIR, slugFromFile } from '../../lib/mirror-store'
+import { mapConcurrent, readAllEnvelopes, type MirrorEnvelope } from '../../lib/mirror-store'
+import type { MirrorEntryData } from '../../lib/mirror-schema'
 import type { Loader, LoaderContext } from 'astro/loaders'
 
-interface RawEnvelope {
-  source: string
-  frontmatter: Record<string, any>
-  title: string
-  mirror_json: string
-}
+// Render concurrency: pipeline.run awaits shiki/highlight work, so
+// sequential rendering is the loader bottleneck. Batched under
+// Promise.all; results keep glob order (mapConcurrent preserves it),
+// and store.set is keyed by id, so insertion order is irrelevant anyway.
+const RENDER_CONCURRENCY = 16
 
-export interface MirrorEntry {
-  title: string
-  frontmatter: Record<string, any>
-  headings: Array<{ depth: number; slug: string; text: string }>
-  source: string
-  redirect_from: string[]
-  mirror_json: string
-  rendered_html: string
+async function renderEntry(envelope: MirrorEnvelope): Promise<{ id: string; data: MirrorEntryData }> {
+  const { html, headings } = await defaultPipeline.run(envelope.mirror_json, {
+    stripFirstHeadingIf: envelope.title || undefined,
+  })
+  return {
+    id: envelope.slug,
+    data: {
+      title: envelope.title,
+      frontmatter: envelope.frontmatter,
+      headings,
+      source: envelope.source,
+      redirect_from: envelope.redirect_from,
+      mirror_json: envelope.mirror_json,
+      rendered_html: html,
+    },
+  }
 }
 
 export function mirrorLoader(): Loader {
@@ -39,58 +52,17 @@ export function mirrorLoader(): Loader {
     name: 'mirror-loader',
     async load(ctx: LoaderContext) {
       const { store, logger } = ctx
-      let count = 0
+      // Drop entries from previous runs first: a mirror-json file deleted
+      // since the last load must not leave a ghost entry in the store.
+      store.clear()
 
-      for await (const file of glob('**/*.json', { cwd: MIRROR_DIR })) {
-        const fullPath = join(MIRROR_DIR, file)
-        let envelope: RawEnvelope
-        try {
-          envelope = JSON.parse(readFileSync(fullPath, 'utf-8'))
-        } catch (err) {
-          logger.warn(`Failed to parse ${file}: ${(err as Error).message}`)
-          continue
-        }
+      const envelopes = await readAllEnvelopes({
+        onError: (file, err) => logger.warn(`Failed to parse ${file}: ${err.message}`),
+      })
+      const entries = await mapConcurrent(envelopes, RENDER_CONCURRENCY, renderEntry)
+      for (const entry of entries) store.set(entry)
 
-        const slug = slugFromFile(file)
-        const { html: rawHtml, headings: rawHeadings } = await defaultPipeline.run(envelope.mirror_json)
-        const fm = envelope.frontmatter || {}
-
-        const title = envelope.title || ''
-        let html = rawHtml
-        let headings = rawHeadings
-
-        if (title && headings.length > 0 && headings[0].text.trim() === title.trim()) {
-          const first = headings[0]
-          const openTag = `<h${first.depth}`
-          const closeTag = `</h${first.depth}>`
-          const startIdx = html.indexOf(openTag)
-          if (startIdx >= 0) {
-            const tagEnd = html.indexOf('>', startIdx)
-            const closeIdx = html.indexOf(closeTag, tagEnd)
-            if (closeIdx >= 0 && html.substring(startIdx, tagEnd).includes(`id="${first.slug}"`)) {
-              const afterClose = closeIdx + closeTag.length
-              html = html.substring(0, startIdx) + html.substring(afterClose).replace(/^\s+/, '')
-            }
-          }
-          headings = headings.slice(1)
-        }
-
-        store.set({
-          id: slug,
-          data: {
-            title,
-            frontmatter: fm,
-            headings,
-            source: envelope.source || slug,
-            redirect_from: extractRedirects(fm),
-            mirror_json: envelope.mirror_json,
-            rendered_html: html,
-          } satisfies MirrorEntry,
-        })
-        count++
-      }
-
-      logger.info(`mirror-loader: ${count} entries synced`)
+      logger.info(`mirror-loader: ${entries.length} entries synced`)
     },
   }
 }

@@ -25,7 +25,7 @@ function getHighlighter() {
   return highlighterPromise
 }
 
-const CODE_BLOCK_RE = /<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g
+const CODE_BLOCK_RE = /<pre><code class="language-([^\s">]+)">([\s\S]*?)<\/code><\/pre>/g
 const PLAIN_CODE_RE = /<pre><code>([\s\S]*?)<\/code><\/pre>/g
 
 export async function renderCode(html: string): Promise<string> {

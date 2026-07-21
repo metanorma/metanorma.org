@@ -1,0 +1,56 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://www.metanorma.org/schemas/frontmatter.schema.yaml
+title: Metanorma page frontmatter
+description: >-
+  The contract for the YAML frontmatter block of .adoc content pages
+  (title, description, redirect_from, blog metadata, …). This YAML schema
+  is the SINGLE SOURCE OF TRUTH: the zod model
+  (src/lib/frontmatter-schema.generated.ts) is generated from it by
+  scripts/build-schemas.mjs. Extra keys are allowed and preserved verbatim.
+
+type: object
+additionalProperties: true
+properties:
+  title:
+    type: string
+    description: Page title — rendered as the only <h1>.
+  subtitle:
+    type: string
+  description:
+    type: string
+    description: Meta/OG description (SEO fallback chain).
+  excerpt:
+    type: string
+    description: Blog excerpt; second in the description fallback chain.
+  date:
+    type: string
+    description: Post date; the converter emits ISO strings (date or datetime).
+  published_at:
+    type: string
+  author:
+    $ref: "#/$defs/frontmatterAuthorSchema"
+  card_image:
+    type: string
+    description: Per-page social image (overrides the default OG card).
+  redirect_from:
+    description: Legacy URLs that redirect to this page; scalar or list.
+    anyOf:
+      - type: string
+      - type: array
+        items:
+          type: string
+
+$defs:
+  frontmatterAuthorSchema:
+    description: Blog post author block. Extra keys pass through.
+    type: object
+    additionalProperties: true
+    properties:
+      name:
+        type: string
+      use_picture:
+        type: string
+      social_links:
+        type: array
+        items:
+          type: string

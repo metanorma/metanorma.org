@@ -1,50 +1,78 @@
 import { describe, expect, it } from 'vitest'
+import { renderCode } from '../render-code'
+import { unescapeHtml } from '../html'
 
-// Test the pure parts of render-code (regex matching, HTML unescaping)
-// without needing Shiki's async initialization.
+// Test the REAL renderCode() with real Shiki (it works in node) and the
+// REAL unescapeHtml. Previously this file tested copy-pasted regexes
+// and a re-implemented unescapeHtml.
 
-describe('render-code internals', () => {
-  it('regex matches language-tagged code blocks', () => {
-    const re = /<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g
+describe('renderCode', () => {
+  it('highlights language-class blocks with shiki', async () => {
     const html = '<pre><code class="language-ruby">def foo; end</code></pre>'
-    const m = re.exec(html)
-    expect(m).not.toBeNull()
-    expect(m![1]).toBe('ruby')
-    expect(m![2]).toBe('def foo; end')
+    const out = await renderCode(html)
+    expect(out).toContain('shiki')
+    expect(out).not.toContain('<pre><code class="language-ruby">')
   })
 
-  it('regex matches multiple code blocks', () => {
-    const re = /<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g
-    const html = '<pre><code class="language-ruby">a</code></pre><p>text</p><pre><code class="language-js">b</code></pre>'
-    const matches: string[] = []
-    let m
-    while ((m = re.exec(html)) !== null) matches.push(m[1])
-    expect(matches).toEqual(['ruby', 'js'])
+  it('unescapes HTML entities before highlighting', async () => {
+    const html = '<pre><code class="language-ruby">puts &quot;hi&quot; &amp; bye</code></pre>'
+    const out = await renderCode(html)
+    // Shiki re-escapes for output, so the literal source entities must
+    // have been decoded first — a raw pass-through would double-escape.
+    expect(out).toContain('shiki')
+    expect(out).not.toContain('&amp;quot')
   })
 
-  it('regex does not match plain code blocks (no language)', () => {
-    const re = /<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g
+  it('highlights plain code blocks (no language) as text', async () => {
     const html = '<pre><code>plain text</code></pre>'
-    expect(re.exec(html)).toBeNull()
+    const out = await renderCode(html)
+    expect(out).toContain('shiki')
+    expect(out).not.toContain('<pre><code>')
   })
 
-  it('plain code regex matches blocks without language class', () => {
-    const re = /<pre><code>([\s\S]*?)<\/code><\/pre>/g
-    const html = '<pre><code>plain text</code></pre>'
-    const m = re.exec(html)
-    expect(m).not.toBeNull()
-    expect(m![1]).toBe('plain text')
+  it('falls back to the original block for unknown languages', async () => {
+    const html = '<pre><code class="language-notalang123">some code</code></pre>'
+    const out = await renderCode(html)
+    expect(out).toBe(html)
+  })
+
+  it('handles c++-style language classes (widened lang regex)', async () => {
+    // The language regex was widened from \w+ to [^\s">]+ so c++/f#-style
+    // classes match at all. Shiki knows c++ as a cpp alias and highlights
+    // it even though cpp is not in COMMON_LANGS (it lazy-loads).
+    const html = '<pre><code class="language-c++">int main() { return 0; }</code></pre>'
+    const out = await renderCode(html)
+    expect(out).toContain('shiki')
+    expect(out).not.toContain('class="language-c++"')
+  })
+
+  it('handles f#-style language classes without corrupting the block', async () => {
+    // f# is not a Shiki-known language alias, so the block falls back to
+    // its original form — matched by the widened regex, rescued by the
+    // unknown-language fallback.
+    const html = '<pre><code class="language-f#">let x = 1</code></pre>'
+    const out = await renderCode(html)
+    expect(out).toBe(html)
+  })
+
+  it('highlights multiple blocks in one document', async () => {
+    const html = '<pre><code class="language-ruby">a</code></pre><p>text</p><pre><code class="language-yaml">b: c</code></pre>'
+    const out = await renderCode(html)
+    expect(out).toContain('shiki')
+    expect(out).toContain('<p>text</p>')
+    // Both blocks were replaced.
+    expect(out).not.toContain('class="language-ruby"')
+    expect(out).not.toContain('class="language-yaml"')
+  })
+
+  it('leaves non-code content untouched', async () => {
+    const html = '<p>Hello <code>inline</code> world</p>'
+    const out = await renderCode(html)
+    expect(out).toBe(html)
   })
 })
 
 describe('unescapeHtml', () => {
-  function unescapeHtml(s: string): string {
-    const entities: Record<string, string> = {
-      amp: '&', lt: '<', gt: '>', quot: '"', '#39': "'",
-    }
-    return s.replace(/&(amp|lt|gt|quot|#39);/g, (_, e: string) => entities[e] ?? `&${e};`)
-  }
-
   it('unescapes common HTML entities', () => {
     expect(unescapeHtml('&lt;div&gt;')).toBe('<div>')
     expect(unescapeHtml('&amp;amp')).toBe('&amp')
@@ -54,5 +82,15 @@ describe('unescapeHtml', () => {
 
   it('leaves plain text unchanged', () => {
     expect(unescapeHtml('hello world')).toBe('hello world')
+  })
+
+  it('leaves unknown entities untouched', () => {
+    expect(unescapeHtml('&nbsp;')).toBe('&nbsp;')
+    expect(unescapeHtml('&copy;')).toBe('&copy;')
+  })
+
+  it('only decodes complete entity references', () => {
+    expect(unescapeHtml('&amp')).toBe('&amp')
+    expect(unescapeHtml('a & b')).toBe('a & b')
   })
 })

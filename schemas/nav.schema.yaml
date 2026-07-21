@@ -1,0 +1,48 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://www.metanorma.org/schemas/nav.schema.yaml
+title: Metanorma sidebar navigation tree
+description: >-
+  The contract for the per-directory _nav.yml files that drive section
+  sidebars (resolved by src/lib/nav-tree.ts). A root _nav.yml declares
+  the section title and item tree; `dir:` inlines a subdirectory's own
+  _nav.yml; `file:` entries become page links resolved against the owning
+  section's output_prefix. See schemas/README.md for examples.
+
+type: object
+additionalProperties: false
+required: [title]
+properties:
+  title:
+    type: string
+    minLength: 1
+    description: Section display title (sidebar heading).
+  items:
+    type: array
+    items:
+      $ref: "#/$defs/navNode"
+
+$defs:
+  navNode:
+    type: object
+    additionalProperties: false
+    required: [title]
+    properties:
+      title:
+        type: string
+        minLength: 1
+      file:
+        type: string
+        description: >-
+          Source-relative page path without extension (e.g. `sample`,
+          `topics/markup`). Resolved through the section's output_prefix
+          to the page URL.
+      description:
+        type: string
+        description: Short blurb shown under the item in hub/sidebar listings.
+      dir:
+        type: string
+        description: Subdirectory whose own _nav.yml is inlined here (its items become this node's children).
+      items:
+        type: array
+        items:
+          $ref: "#/$defs/navNode"

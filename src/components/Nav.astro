@@ -1,8 +1,29 @@
 ---
+import { getCollection, type CollectionEntry } from 'astro:content'
 import { nav } from '../config/site'
+import { flavors } from '../data/flavors'
+import { flavorNavGroups } from '../lib/flavor-groups'
 import DarkToggle from './DarkToggle.vue'
 import SearchButton from './SearchButton.vue'
+import MobileMenu from './MobileMenu.vue'
 import Logo from './Logo.astro'
+
+// Mega-menu data: only flavors that have docs content (a mirror entry
+// with id `flavors/<id>` exists), grouped by category. Docs-less flavors
+// stay reachable from /flavors/ but don't clutter the header.
+const mirrorIds = new Set<string>(
+  (await getCollection('mirror')).map((e: CollectionEntry<'mirror'>) => e.id),
+)
+const flavorGroups = flavorNavGroups(flavors, mirrorIds)
+
+// Pure-CSS dropdowns: panels open on the group's :hover AND :focus-within
+// (tabbing to the trigger opens the panel, tab moves into its links,
+// focus leaving closes it). `invisible` keeps closed panels untabbable.
+const panelClass =
+  'invisible absolute top-full rounded-lg border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-elv)] opacity-0 shadow-lg transition-all' +
+  ' group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100'
+const linkClass =
+  'block rounded px-3 py-1.5 text-sm text-[var(--mn-c-text-2)] no-underline hover:bg-[var(--mn-c-bg-soft)] hover:text-[var(--mn-c-brand-1)]'
 ---
 
 <header class="sticky top-0 z-50 border-b border-[var(--mn-c-divider)] bg-[var(--mn-c-nav-bg)] backdrop-blur-sm">
@@ -11,31 +32,62 @@ import Logo from './Logo.astro'
       <Logo class="h-8" />
     </a>
 
-    <nav class="hidden flex-1 items-center justify-end gap-5 md:flex" aria-label="Primary">
-      {nav.map((item) => (
-        <div class="group relative">
-          {item.items ? (
-            <>
-              <button type="button" class="flex items-center gap-1 border-0 bg-transparent text-sm font-medium text-[var(--mn-c-text-2)] hover:text-[var(--mn-c-brand-1)]">
-                {item.text}
-                <span class="inline-block h-0 w-0 border-l-[3px] border-r-[3px] border-t-[4px] border-l-transparent border-r-transparent border-t-current"></span>
-              </button>
-              <div class="invisible absolute left-0 top-full min-w-[200px] rounded-lg border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-elv)] p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100">
-                {item.items.map((sub) => (
-                  <a href={sub.link} class="block rounded px-3 py-1.5 text-sm text-[var(--mn-c-text-2)] no-underline hover:bg-[var(--mn-c-bg-soft)] hover:text-[var(--mn-c-brand-1)]">{sub.text}</a>
-                ))}
-              </div>
-            </>
-          ) : (
-            <a href={item.link} class="text-sm font-medium text-[var(--mn-c-text-2)] no-underline hover:text-[var(--mn-c-brand-1)]">{item.text}</a>
-          )}
-        </div>
-      ))}
+    <nav class="hidden flex-1 items-center justify-end md:flex" aria-label="Primary" role="navigation">
+      <ul class="flex items-center gap-5">
+        {nav.map((item) => (
+          <li class="group relative">
+            {item.items ? (
+              <>
+                <a href={item.link} class="flex items-center gap-1 text-sm font-medium text-[var(--mn-c-text-2)] no-underline hover:text-[var(--mn-c-brand-1)]">
+                  {item.text}
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="transition-transform group-hover:rotate-180 group-focus-within:rotate-180"><path d="m6 9 6 6 6-6" /></svg>
+                </a>
+                {item.mega ? (
+                  <div class={`${panelClass} right-0 w-[600px] p-4`}>
+                    <div class="grid grid-cols-3 gap-4">
+                      {flavorGroups.map(group => (
+                        <div>
+                          <p class="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-[var(--mn-c-text-3)]">{group.label}</p>
+                          <ul>
+                            {group.items.map(flavor => (
+                              <li>
+                                <a href={flavor.href} class={`${linkClass} flex items-center gap-2`}>
+                                  {flavor.label}
+                                  {flavor.status === 'experimental' && <span class="rounded bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase text-amber-600">Beta</span>}
+                                  {flavor.status === 'private' && <span class="rounded bg-[var(--mn-c-bg-mute)] px-1.5 py-0.5 text-[9px] font-semibold uppercase text-[var(--mn-c-text-3)]">Private</span>}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                    <a href="/flavors/" class="mt-3 block border-t border-[var(--mn-c-divider)] px-3 pt-3 text-sm font-medium text-[var(--mn-c-brand-1)] no-underline hover:underline">
+                      All flavors →
+                    </a>
+                  </div>
+                ) : (
+                  <div class={`${panelClass} left-0 min-w-[200px] p-2`}>
+                    <ul>
+                      {item.items.map((sub) => (
+                        <li><a href={sub.link} class={linkClass}>{sub.text}</a></li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </>
+            ) : (
+              <a href={item.link} class="text-sm font-medium text-[var(--mn-c-text-2)] no-underline hover:text-[var(--mn-c-brand-1)]">{item.text}</a>
+            )}
+          </li>
+        ))}
+      </ul>
     </nav>
 
     <div class="ml-auto flex items-center gap-2">
       <SearchButton client:idle />
       <DarkToggle client:load />
+      <MobileMenu client:load nav={nav} flavorGroups={flavorGroups} />
     </div>
   </div>
 </header>

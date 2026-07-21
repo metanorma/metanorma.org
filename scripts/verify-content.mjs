@@ -1,13 +1,19 @@
 import { readFileSync, existsSync, readdirSync, statSync } from 'fs'
 import { join, dirname, relative } from 'path'
 import { fileURLToPath } from 'url'
+import { load } from 'js-yaml'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const SITE_ROOT = join(__dirname, '..')
 const BUILD_DIR = join(SITE_ROOT, 'dist')
 const MIRROR_DIR = join(SITE_ROOT, 'mirror-json')
 const MANIFEST_PATH = join(MIRROR_DIR, 'manifest.json')
-const PAGES_DIR = join(SITE_ROOT, 'pages')
+// Hand-authored Astro pages live here; used to detect hand-authored
+// pages shadowed by thin mirror-json content.
+const PAGES_DIR = join(SITE_ROOT, 'src', 'pages')
+// Content areas for the page-count report are derived from the single
+// section registry (src/config/sections.yml), shared with the converter.
+const SECTIONS_PATH = join(SITE_ROOT, 'src', 'config', 'sections.yml')
 
 const MIN_BODY_TEXT = 200
 const MIN_HUB_CHILDREN = 1
@@ -107,7 +113,6 @@ function checkKeyPages() {
     { url: '/install/', name: 'Install index', minBody: 500 },
     { url: '/author/ref/', name: 'Reference index', minBody: 500 },
     { url: '/software/', name: 'Software index', minBody: 500 },
-    { url: '/library/', name: 'Library index', minBody: 500 },
     { url: '/about', name: 'About', minBody: 500 },
     { url: '/get-started', name: 'Get Started', minBody: 500 },
     { url: '/contribute', name: 'Contribute', minBody: 500 },
@@ -134,53 +139,13 @@ function checkKeyPages() {
   console.log(`  Key pages: ${keyPass}/${keyPages.length}`)
 }
 
-function checkBlogIndex() {
-  const blogIndexPath = readHtmlCandidates('/blog/')
-  if (!blogIndexPath) {
-    recordFail('blog_index', '/blog/', 'no blog index HTML')
-    return
-  }
-
-  const html = readFileSync(blogIndexPath, 'utf-8')
-  const titleMatches = Array.from(html.matchAll(/blog-entry-title"[^>]*>([^<]+)</g))
-  const titles = titleMatches.map(m => m[1].trim())
-
-  const seen = new Set()
-  const duplicates = []
-  for (const t of titles) {
-    if (seen.has(t)) duplicates.push(t)
-    else seen.add(t)
-  }
-  const numeric = titles.filter(t => /^\d+$/.test(t))
-
-  if (duplicates.length > 0) {
-    recordFail('blog_dup', '/blog/', `${duplicates.length} duplicate titles: ${Array.from(new Set(duplicates)).slice(0, 5).join(', ')}`)
-  }
-  if (numeric.length > 0) {
-    recordFail('blog_numeric_title', '/blog/', `${numeric.length} numeric titles (synthesized hub leak?): ${numeric.slice(0, 5).join(', ')}`)
-  }
-
-  const postFiles = []
-  function walk(dir) {
-    if (!existsSync(dir)) return
-    for (const e of readdirSync(dir)) {
-      const full = join(dir, e)
-      if (statSync(full).isDirectory()) walk(full)
-      else if (e.endsWith('.md') && e !== 'index.md') postFiles.push(full)
-    }
-  }
-  walk(join(PAGES_DIR, 'blog'))
-
-  if (titles.length !== postFiles.length) {
-    recordWarn('blog_count', '/blog/', `index lists ${titles.length} posts, pages/blog/ has ${postFiles.length} .md files`)
-  }
-}
-
 function checkHubPages(manifest) {
   if (!existsSync(MIRROR_DIR) || !manifest) return
   const fileMap = manifest.file_map || {}
+  // Synthesized hubs are flagged by the converter (hub: true) in the
+  // manifest — no shared magic string between Ruby and JS.
   const synthesized = Object.entries(fileMap).filter(
-    ([, info]) => info.source === 'synthesized hub'
+    ([, info]) => info.hub === true
   )
 
   for (const [outputKey] of synthesized) {
@@ -230,7 +195,7 @@ function checkThinMirrorJson(manifest) {
 
   for (const [outputKey, info] of Object.entries(fileMap)) {
     if (info.status !== 'ok' && info.status !== 'cached') continue
-    if (info.source === 'synthesized hub') continue
+    if (info.hub === true) continue
     const jsonPath = join(MIRROR_DIR, `${outputKey}.json`)
     if (!existsSync(jsonPath)) continue
     try {
@@ -270,9 +235,14 @@ function checkThinMirrorJson(manifest) {
 }
 
 function checkContentCounts() {
-  const counts = {
-    author: 0, blog: 0, develop: 0, learn: 0, install: 0,
-    reference: 0, specs: 0, samples: 0, software: 0, library: 0, flavors: 0,
+  // Areas = output prefixes of every mapped section (the `fixed` _pages
+  // section only redirects into other sections' prefixes).
+  const sections = (load(readFileSync(SECTIONS_PATH, 'utf-8'))).sections || []
+  const counts = {}
+  for (const s of sections) {
+    if (s.mapping === 'fixed') continue
+    const area = String(s.output_prefix).split('/')[0]
+    if (area) counts[area] = 0
   }
 
   function walkHtml(dir) {
@@ -310,7 +280,6 @@ if (!existsSync(BUILD_DIR)) {
 
 const manifest = checkManifest()
 checkKeyPages()
-checkBlogIndex()
 checkHubPages(manifest)
 checkThinMirrorJson(manifest)
 checkContentCounts()

@@ -1,19 +1,10 @@
-export interface SiteFrontmatter {
-  title?: string
-  description?: string
-  excerpt?: string
-  subtitle?: string
-  date?: string
-  layout?: string
-  author?: {
-    name?: string
-    use_picture?: string
-    social_links?: string[]
-  }
-  card_image?: string
-  redirect_from?: string[]
-  [key: string]: unknown
-}
+import type { MirrorFrontmatter } from '../lib/mirror-schema'
+
+// The ONE frontmatter model lives in src/lib/mirror-schema.ts (zod,
+// with .passthrough() for extra keys). Pages and layouts consume it via
+// CollectionEntry<'mirror'>['data']; this alias keeps the historical
+// name used by the layouts.
+export type SiteFrontmatter = MirrorFrontmatter
 
 export interface Flavor {
   id: string
@@ -58,13 +49,22 @@ export interface HeroSection {
   subtitle: string
   primaryAction: { label: string; href: string }
   secondaryAction: { label: string; href: string }
+  codeSample: { label: string; code: string; command: string }
+}
+
+export interface HomeSection {
+  eyebrow: string
+  title: string
+  subtitle?: string
 }
 
 export interface HomeData {
   hero: HeroSection
+  pipelineSection: HomeSection
   pipeline: ArchitectureStep[]
-  flavorsSection: { title: string; subtitle: string }
-  blogSection: { title: string }
+  flavorsSection: HomeSection
+  orgSection: HomeSection & { action: { label: string; href: string } }
+  blogSection: HomeSection & { allPostsAction: { label: string; href: string } }
   ctaSection: {
     title: string
     primaryAction: { label: string; href: string }

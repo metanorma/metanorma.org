@@ -10,9 +10,9 @@ require "timeout"
 # Upstream content sync.
 #
 # Pulls library docs and model diagrams from per-flavor GitHub repos into the
-# local _software/{flavor}/ and _specs/{model}/ subtrees, based on the
-# frontmatter already declared on each _software/{flavor}.adoc and
-# _specs/{model}.adoc index page.
+# local software/{flavor}/ and specs/{model}/ subtrees, based on the
+# frontmatter already declared on each software/{flavor}.adoc and
+# specs/{model}.adoc index page.
 #
 # Adding a new flavor = adding frontmatter to its .adoc index page; this file
 # should not need to change.
@@ -24,8 +24,8 @@ UPSTREAM_CACHE = File.join(SITE_ROOT, "_upstream")
 def upstream_targets
   targets = []
 
-  # Library docs: _software/{flavor}.adoc with docs.git_repo_subtree.
-  Dir.glob(File.join(SITE_ROOT, "_software", "*.adoc")).each do |adoc|
+  # Library docs: software/{flavor}.adoc with docs.git_repo_subtree.
+  Dir.glob(File.join(SITE_ROOT, "software", "*.adoc")).each do |adoc|
     frontmatter = read_frontmatter(adoc)
     next unless frontmatter.is_a?(Hash) && frontmatter["docs"]
 
@@ -42,12 +42,12 @@ def upstream_targets
       repo: repo,
       branch: branch,
       subtree: subtree,
-      dest_subdir: "_software/#{flavor}/docs",
+      dest_subdir: "software/#{flavor}/docs",
     }
   end
 
-  # Model diagrams: _specs/{model}.adoc with spec_source.git_repo_subtree.
-  Dir.glob(File.join(SITE_ROOT, "_specs", "*.adoc")).each do |adoc|
+  # Model diagrams: specs/{model}.adoc with spec_source.git_repo_subtree.
+  Dir.glob(File.join(SITE_ROOT, "specs", "*.adoc")).each do |adoc|
     frontmatter = read_frontmatter(adoc)
     next unless frontmatter.is_a?(Hash) && frontmatter["spec_source"]
 
@@ -64,7 +64,7 @@ def upstream_targets
       repo: repo,
       branch: branch,
       subtree: subtree,
-      dest_subdir: "_specs/#{model}/#{subtree}",
+      dest_subdir: "specs/#{model}/#{subtree}",
     }
   end
 
@@ -189,12 +189,12 @@ namespace :sync do
     end
   end
 
-  desc "Sync library docs from metanorma-{flavor} repos into _software/{flavor}/docs/"
+  desc "Sync library docs from metanorma-{flavor} repos into software/{flavor}/docs/"
   task :libs do
     sync_kind("library")
   end
 
-  desc "Sync model diagrams from metanorma-{flavor}-model repos into _specs/{model}/{subtree}/"
+  desc "Sync model diagrams from metanorma-{flavor}-model repos into specs/{model}/{subtree}/"
   task :models do
     sync_kind("model")
   end
@@ -237,6 +237,7 @@ def sync_kind(kind)
   ok = results.count { |status, _| status == :ok }
   failed = results.count { |status, _| status == :failed }
   puts "  done: #{ok} synced, #{failed} failed."
+  exit 1 if failed.positive?
 end
 
 desc "Sync all upstream content (library docs + model diagrams)"

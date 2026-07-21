@@ -1,80 +1,202 @@
-import { describe, expect, it } from 'vitest'
-import { renderMirrorToHtml } from '../../../lib/mirror-renderer'
+import { describe, expect, it, beforeEach, afterEach } from 'vitest'
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join, dirname } from 'node:path'
+import type { LoaderContext } from 'astro/loaders'
+import { mirrorLoader } from '../mirror-loader'
+import { readAllEnvelopes } from '../../../lib/mirror-store'
+import { collections } from '../../../content.config'
 
-describe('mirror-loader headings extraction', () => {
-  // The loader uses the same renderMirrorToHtml to produce HTML, then
-  // regex-extracts headings. Verify the renderer emits <h2 id="..."> etc.
-  // so the loader's extraction works end-to-end.
+// REAL loader tests: run mirrorLoader().load with a fake LoaderContext
+// (Map-backed store, recording logger). Previously this file tested a
+// heading-extraction regex that no longer exists in the loader; its
+// renderer-heading cases were already covered by
+// src/lib/__tests__/mirror-renderer.test.ts.
 
-  it('renders h2 with id for clause', () => {
-    const html = renderMirrorToHtml({
-      type: 'doc',
-      content: [
-        { type: 'clause', attrs: { title: 'Section', level: 1 }, content: [] },
-      ],
-    })
-    expect(html).toMatch(/<h2 id="section">Section<\/h2>/)
-  })
+const schema = collections.mirror.schema
+if (!schema || typeof schema === 'function') {
+  throw new Error('content.config.ts mirror collection must use a static zod schema')
+}
 
-  it('renders nested h3 for sub-clause', () => {
-    const html = renderMirrorToHtml({
-      type: 'doc',
-      content: [
-        {
-          type: 'clause',
-          attrs: { title: 'Top', level: 1 },
-          content: [
-            { type: 'clause', attrs: { title: 'Sub', level: 2 }, content: [] },
-          ],
-        },
-      ],
-    })
-    expect(html).toMatch(/<h2 id="top">Top<\/h2>/)
-    expect(html).toMatch(/<h3 id="sub">Sub<\/h3>/)
-  })
+// Minimal structural stand-in for Astro's MutableDataStore: the loader
+// only uses set({id, data}) and clear().
+class FakeStore {
+  private map = new Map<string, any>()
+  set(entry: { id: string; data: any }): void {
+    this.map.set(entry.id, entry.data)
+  }
+  clear(): void {
+    this.map.clear()
+  }
+  get(id: string): any {
+    return this.map.get(id)
+  }
+  has(id: string): boolean {
+    return this.map.has(id)
+  }
+  get size(): number {
+    return this.map.size
+  }
+  ids(): string[] {
+    return [...this.map.keys()]
+  }
+}
 
-  it('excludes h1 from TOC-eligible headings', () => {
-    // h1 is the page title (Article.astro emits it). TOC.astro filters
-    // to depth 2-4, so h1 doesn't appear in the right-side TOC.
-    const html = renderMirrorToHtml({
-      type: 'doc',
-      content: [{ type: 'paragraph', content: [{ type: 'text', text: 'body' }] }],
-    })
-    expect(html).not.toMatch(/<h1 /)
-  })
+function makeCtx() {
+  const store = new FakeStore()
+  const warnings: string[] = []
+  const logger = {
+    warn: (m: string) => { warnings.push(m) },
+    info: () => {},
+  }
+  const ctx = { store, logger } as unknown as LoaderContext
+  return { store, warnings, ctx }
+}
+
+describe('mirrorLoader against the real mirror-json tree', () => {
+  it('loads every envelope, schema-conformant, with no manifest entry', async () => {
+    const { store, ctx } = makeCtx()
+    await mirrorLoader().load(ctx)
+
+    const envelopes = await readAllEnvelopes()
+    expect(store.size).toBe(envelopes.length)
+    expect(store.has('manifest')).toBe(false)
+
+    for (const id of store.ids()) {
+      const parsed = schema.safeParse(store.get(id))
+      expect(parsed.success, `entry "${id}" conforms to content.config.ts schema`).toBe(true)
+    }
+  }, 300_000)
 })
 
-describe('mirror-loader regex (extractHeadings)', () => {
-  // The loader's extractHeadings regex parses renderer output. Verify
-  // it catches realistic patterns including attributes on <hN>.
+describe('mirrorLoader against a synthetic tree', () => {
+  let root: string
+  let prevCwd: string
 
-  it('matches <h2 id="slug">text</h2>', () => {
-    const html = '<h2 id="my-section">My Section</h2>'
-    const matches = [...html.matchAll(/<h([234])\s+id="([^"]+)"[^>]*>(.*?)<\/h\1>/g)]
-    expect(matches).toHaveLength(1)
-    expect(matches[0][1]).toBe('2')
-    expect(matches[0][2]).toBe('my-section')
-    expect(matches[0][3]).toBe('My Section')
+  beforeEach(() => {
+    root = mkdtempSync(join(tmpdir(), 'mirror-loader-'))
+    mkdirSync(join(root, 'mirror-json'), { recursive: true })
+    prevCwd = process.cwd()
+    process.chdir(root)
   })
 
-  it('matches <h3> with extra attributes', () => {
-    const html = '<h3 id="x" class="foo">Text</h3>'
-    const matches = [...html.matchAll(/<h([234])\s+id="([^"]+)"[^>]*>(.*?)<\/h\1>/g)]
-    expect(matches).toHaveLength(1)
-    expect(matches[0][1]).toBe('3')
+  afterEach(() => {
+    process.chdir(prevCwd)
+    rmSync(root, { recursive: true, force: true })
   })
 
-  it('captures heading text including inner tags', () => {
-    const html = '<h2 id="x">Hello <code>World</code></h2>'
-    const matches = [...html.matchAll(/<h([234])\s+id="([^"]+)"[^>]*>(.*?)<\/h\1>/g)]
-    const raw = matches[0][3]
-    expect(raw).toContain('Hello')
-    expect(raw).toContain('World')
+  function writeEnvelope(rel: string, data: Record<string, unknown>): void {
+    const full = join(root, 'mirror-json', rel)
+    mkdirSync(dirname(full), { recursive: true })
+    writeFileSync(full, JSON.stringify(data))
+  }
+
+  function clauseDoc(title: string, body = 'Body.'): string {
+    return JSON.stringify({
+      type: 'doc',
+      content: [{
+        type: 'clause',
+        attrs: { title, level: 1 },
+        content: [{ type: 'paragraph', content: [{ type: 'text', text: body }] }],
+      }],
+    })
+  }
+
+  it('strips the first heading when it duplicates the page title', async () => {
+    writeEnvelope('my-page.json', {
+      source: '_pages/my-page.adoc',
+      title: 'My Page',
+      frontmatter: {},
+      mirror_json: clauseDoc('My Page'),
+    })
+    const { store, ctx } = makeCtx()
+    await mirrorLoader().load(ctx)
+
+    const data = store.get('my-page')
+    expect(data.title).toBe('My Page')
+    expect(data.headings).toEqual([])
+    expect(data.rendered_html).not.toContain('<h2')
+    expect(data.rendered_html).toContain('Body.')
+    expect(schema.safeParse(data).success).toBe(true)
   })
 
-  it('does not match h5 or h6 (excluded from TOC)', () => {
-    const html = '<h5 id="deep">Deep</h5><h6 id="deeper">Deeper</h6>'
-    const matches = [...html.matchAll(/<h([234])\s+id="([^"]+)"[^>]*>(.*?)<\/h\1>/g)]
-    expect(matches).toHaveLength(0)
+  it('keeps the first heading when it differs from the page title', async () => {
+    writeEnvelope('other.json', {
+      source: 'other.adoc',
+      title: 'Other Title',
+      frontmatter: {},
+      mirror_json: clauseDoc('A Section'),
+    })
+    const { store, ctx } = makeCtx()
+    await mirrorLoader().load(ctx)
+
+    const data = store.get('other')
+    expect(data.headings).toEqual([{ depth: 2, slug: 'a-section', text: 'A Section' }])
+    expect(data.rendered_html).toContain('<h2 id="a-section">A Section</h2>')
+  })
+
+  it('passes redirect_from through as a flat string array', async () => {
+    writeEnvelope('redir.json', {
+      source: 'redir.adoc',
+      title: 'Redir',
+      frontmatter: { redirect_from: '/legacy/' },
+      mirror_json: clauseDoc('Redir'),
+    })
+    writeEnvelope('multi.json', {
+      source: 'multi.adoc',
+      title: 'Multi',
+      frontmatter: { redirect_from: ['/a/', '/b/'] },
+      mirror_json: clauseDoc('Multi'),
+    })
+    const { store, ctx } = makeCtx()
+    await mirrorLoader().load(ctx)
+
+    expect(store.get('redir').redirect_from).toEqual(['/legacy/'])
+    expect(store.get('multi').redirect_from).toEqual(['/a/', '/b/'])
+    expect(store.get('redir').frontmatter.redirect_from).toBe('/legacy/')
+  })
+
+  it('collapses /index files to their directory id', async () => {
+    writeEnvelope('sub/index.json', {
+      source: 'sub.adoc',
+      title: 'Sub',
+      frontmatter: {},
+      mirror_json: clauseDoc('Sub'),
+    })
+    const { store, ctx } = makeCtx()
+    await mirrorLoader().load(ctx)
+    expect(store.has('sub')).toBe(true)
+    expect(store.has('sub/index')).toBe(false)
+  })
+
+  it('skips the manifest and unparseable files with a warning', async () => {
+    writeEnvelope('manifest.json', { stats: { ok: 1 } })
+    writeFileSync(join(root, 'mirror-json', 'broken.json'), 'not json {')
+    writeEnvelope('ok.json', {
+      source: 'ok.adoc',
+      title: 'OK',
+      frontmatter: {},
+      mirror_json: clauseDoc('OK'),
+    })
+    const { store, warnings, ctx } = makeCtx()
+    await mirrorLoader().load(ctx)
+
+    expect(store.ids()).toEqual(['ok'])
+    expect(warnings.some(w => w.includes('broken.json'))).toBe(true)
+  })
+
+  it('clears the store before loading (no ghost entries from deleted files)', async () => {
+    writeEnvelope('present.json', {
+      source: 'present.adoc',
+      title: 'Present',
+      frontmatter: {},
+      mirror_json: clauseDoc('Present'),
+    })
+    const { store, ctx } = makeCtx()
+    store.set({ id: 'ghost-of-deleted-file', data: { stale: true } })
+    await mirrorLoader().load(ctx)
+
+    expect(store.has('ghost-of-deleted-file')).toBe(false)
+    expect(store.has('present')).toBe(true)
   })
 })

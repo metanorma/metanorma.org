@@ -1,9 +1,15 @@
 ---
+import { getCollection, type CollectionEntry } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import FlavorGrid from '../../components/FlavorGrid.astro'
 import PageHeader from '../../components/PageHeader.astro'
 const title = 'Metanorma Flavors'
 const description = 'Metanorma flavors — supported, experimental, and private implementations for standards organizations worldwide'
+// Flavors without a mirror entry have no docs on the site yet — the grid
+// marks them with a "Docs coming soon" badge (same rule as the header).
+const docsIds = new Set<string>(
+  (await getCollection('mirror')).map((e: CollectionEntry<'mirror'>) => e.id),
+)
 ---
 
 <BaseLayout title={title} description={description}>
@@ -12,6 +18,6 @@ const description = 'Metanorma flavors — supported, experimental, and private 
     <p class="mb-8 text-[var(--mn-c-text-2)]">
       Metanorma supports generation of standardization deliverables for the following organizations, as distinct implementations ("flavors" of Metanorma).
     </p>
-    <FlavorGrid />
+    <FlavorGrid docsIds={docsIds} />
   </div>
 </BaseLayout>
