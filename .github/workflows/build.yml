@@ -43,6 +43,11 @@ jobs:
       - name: Install Node dependencies
         run: npm install
 
+      # mirror-json is gitignored and only produced by the converter;
+      # the real-tree vitest suites need it present.
+      - name: Convert content (adoc → mirror-json)
+        run: npm run convert
+
       - name: Run tests
         run: npm test
 
