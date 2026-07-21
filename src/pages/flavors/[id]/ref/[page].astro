@@ -1,0 +1,70 @@
+---
+// Flavor document attribute reference pages, rendered from
+// attributes/<flavor>.yaml merged with the inherited standoc manifest
+// (src/lib/attributes.ts). The registry in src/lib/attr-registry.ts
+// declares which {id, page} pairs exist — currently:
+//   /flavors/iso/ref/document-attributes/
+//   /flavors/ietf/ref/document-attributes/
+//   /flavors/ietf/ref/document-attributes-v2/
+// Same URLs and page titles as the superseded mirror pages.
+import type { GetStaticPaths } from 'astro'
+import { getCollection, type CollectionEntry } from 'astro:content'
+import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import Article from '../../../../components/Article.astro'
+import Sidebar from '../../../../components/Sidebar.astro'
+import TOC from '../../../../components/TOC.astro'
+import Breadcrumb from '../../../../components/Breadcrumb.astro'
+import AttributeRef from '../../../../components/AttributeRef.astro'
+import { sidebarFor } from '../../../../config/site'
+import { mergeForFlavor, tocHeadings } from '../../../../lib/attributes'
+import { buildCrumbs } from '../../../../lib/breadcrumbs'
+import { FLAVOR_ATTRIBUTE_PAGES, type AttrPage } from '../../../../lib/attr-registry'
+import type { AttrManifest } from '../../../../lib/attr-schema'
+import { hasToc } from '../../../../lib/toc'
+
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('attributes')
+  const manifests: Record<string, AttrManifest> = {}
+  for (const e of entries as CollectionEntry<'attributes'>[]) manifests[e.id] = e.data
+  return FLAVOR_ATTRIBUTE_PAGES.map(attrPage => ({
+    params: { id: attrPage.flavorId, page: attrPage.page },
+    props: { attrPage, merged: mergeForFlavor(attrPage.manifestId, manifests), manifests },
+  }))
+}) satisfies GetStaticPaths
+
+interface Props {
+  attrPage: AttrPage
+  merged: ReturnType<typeof mergeForFlavor>
+  manifests: Record<string, AttrManifest>
+}
+const { attrPage, merged, manifests } = Astro.props as Props
+const title = attrPage.title
+const pathname = Astro.url.pathname
+const nav = sidebarFor(pathname)
+const headings = tocHeadings(merged)
+const showToc = hasToc(headings)
+const hasSidebar = nav !== null && nav.items.length > 0
+---
+
+<BaseLayout title={title} crumbs={buildCrumbs(nav, pathname)}>
+  {hasSidebar ? (
+    <div class="mx-auto grid max-w-[1440px] gap-8 px-6 pb-8 grid-cols-1 lg:grid-cols-[288px_minmax(0,1fr)] xl:grid-cols-[288px_minmax(0,1fr)_224px]">
+      <Sidebar nav={nav} pathname={pathname} />
+      <div class="mn-content-area">
+        {showToc && <TOC headings={headings} variant="mobile" />}
+        <div class="px-2 pt-4">
+          <Breadcrumb nav={nav} pathname={pathname} />
+        </div>
+        <Article title={title}>
+          <AttributeRef page={merged} manifests={manifests} />
+        </Article>
+      </div>
+      {showToc && <TOC headings={headings} variant="desktop" />}
+    </div>
+  ) : (
+    <Article class="mn-rendered mx-auto max-w-3xl px-6 py-12" title={title}>
+      <Breadcrumb slot="breadcrumb" nav={nav} pathname={pathname} />
+      <AttributeRef page={merged} manifests={manifests} />
+    </Article>
+  )}
+</BaseLayout>

@@ -1,0 +1,58 @@
+---
+// The standoc (all-flavors) document attribute reference, rendered from
+// attributes/standoc.yaml. Same URL and page title as the superseded
+// author/ref/document-attributes.adoc mirror page; the registry entry is
+// src/lib/attr-registry.ts (STANDOC_PAGE).
+import { getCollection, type CollectionEntry } from 'astro:content'
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import Article from '../../../components/Article.astro'
+import Sidebar from '../../../components/Sidebar.astro'
+import TOC from '../../../components/TOC.astro'
+import Breadcrumb from '../../../components/Breadcrumb.astro'
+import AttributeRef from '../../../components/AttributeRef.astro'
+import { sidebarFor } from '../../../config/site'
+import { mergeForFlavor, tocHeadings } from '../../../lib/attributes'
+import { buildCrumbs } from '../../../lib/breadcrumbs'
+import { STANDOC_PAGE } from '../../../lib/attr-registry'
+import type { AttrManifest } from '../../../lib/attr-schema'
+import { hasToc } from '../../../lib/toc'
+
+const entries = await getCollection('attributes')
+const manifests: Record<string, AttrManifest> = {}
+for (const e of entries as CollectionEntry<'attributes'>[]) manifests[e.id] = e.data
+
+const page = mergeForFlavor(STANDOC_PAGE.manifestId, manifests)
+const title = STANDOC_PAGE.title
+const pathname = Astro.url.pathname
+// The page resolves the nav tree ONCE and hands it to Sidebar and
+// Breadcrumb as props (same pattern as [...slug].astro).
+const nav = sidebarFor(pathname)
+// TOC from categories + subsections (attribute entries excluded — see
+// tocHeadings in src/lib/attributes.ts).
+const headings = tocHeadings(page)
+const showToc = hasToc(headings)
+const hasSidebar = nav !== null && nav.items.length > 0
+---
+
+<BaseLayout title={title} crumbs={buildCrumbs(nav, pathname)}>
+  {hasSidebar ? (
+    <div class="mx-auto grid max-w-[1440px] gap-8 px-6 pb-8 grid-cols-1 lg:grid-cols-[288px_minmax(0,1fr)] xl:grid-cols-[288px_minmax(0,1fr)_224px]">
+      <Sidebar nav={nav} pathname={pathname} />
+      <div class="mn-content-area">
+        {showToc && <TOC headings={headings} variant="mobile" />}
+        <div class="px-2 pt-4">
+          <Breadcrumb nav={nav} pathname={pathname} />
+        </div>
+        <Article title={title}>
+          <AttributeRef page={page} manifests={manifests} />
+        </Article>
+      </div>
+      {showToc && <TOC headings={headings} variant="desktop" />}
+    </div>
+  ) : (
+    <Article class="mn-rendered mx-auto max-w-3xl px-6 py-12" title={title}>
+      <Breadcrumb slot="breadcrumb" nav={nav} pathname={pathname} />
+      <AttributeRef page={page} manifests={manifests} />
+    </Article>
+  )}
+</BaseLayout>

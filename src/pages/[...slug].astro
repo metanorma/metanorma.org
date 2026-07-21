@@ -7,86 +7,94 @@ import MirrorContent from '../components/MirrorContent.astro'
 import Sidebar from '../components/Sidebar.astro'
 import TOC from '../components/TOC.astro'
 import Breadcrumb from '../components/Breadcrumb.astro'
+import PrevNext from '../components/PrevNext.astro'
 import { sidebarFor } from '../config/site'
+import { flavors } from '../data/flavors'
+import { hasToc } from '../lib/toc'
+import { getNavTrees } from '../lib/nav-tree'
+import { buildCrumbs } from '../lib/breadcrumbs'
+import { ATTRIBUTE_PAGES } from '../lib/attr-registry'
 
 export const getStaticPaths = (async () => {
   const entries = await getCollection('mirror')
-  return entries.map((entry: CollectionEntry<'mirror'>) => ({
-    params: { slug: entry.id },
-    props: { entry },
-  }))
+  // Named routes always win over this catch-all: blog/index.astro serves
+  // /blog/, software/index.astro serves /software/, flavors/index.astro
+  // serves /flavors/, and flavors/[id].astro serves /flavors/<id>/ for
+  // every catalog flavor. The attribute reference pages are served from
+  // attributes/*.yaml manifests by their own named routes (see
+  // src/lib/attr-registry.ts) — their mirror envelopes are superseded
+  // but, until pruned, would still collide here. Skip all of these so
+  // the catch-all doesn't emit shadowed pages (route-conflict warnings).
+  const shadowed = new Set([
+    'blog', 'software', 'flavors',
+    ...flavors.map(f => `flavors/${f.id}`),
+    ...ATTRIBUTE_PAGES.map(p => p.urlPath),
+  ])
+  return entries
+    // blog/* entries are served by blog/[...slug].astro — emitting them
+    // here too would produce route-conflict warnings on every build.
+    .filter((entry: CollectionEntry<'mirror'>) =>
+      !shadowed.has(entry.id) && !entry.id.startsWith('blog/'))
+    .map((entry: CollectionEntry<'mirror'>) => ({
+      params: { slug: entry.id },
+      props: { entry },
+    }))
 }) satisfies GetStaticPaths
 
 interface Props { entry: CollectionEntry<'mirror'> }
 const { entry } = Astro.props as Props
-const { title, frontmatter, headings, rendered_html, source } = entry.data as {
-  title: string
-  frontmatter: Record<string, any>
-  headings: Array<{ depth: number; slug: string; text: string }>
-  rendered_html: string
-  source: string
-}
-const subtitle = (frontmatter.subtitle as string) || (frontmatter.description as string) || ''
+// entry.data conforms to mirrorEntrySchema (src/lib/mirror-schema.ts) —
+// the one envelope model. No inline shape re-assertion.
+const { title, frontmatter, headings, rendered_html } = entry.data
+const subtitle = frontmatter.subtitle || frontmatter.description || ''
 const pathname = Astro.url.pathname
+// The page resolves the nav tree ONCE and hands it to Sidebar and
+// Breadcrumb as props.
 const nav = sidebarFor(pathname)
-const tocItems = headings.filter(h => h.depth >= 2 && h.depth <= 4)
+const showToc = hasToc(headings)
 const hasSidebar = nav !== null && nav.items.length > 0
-const hasToc = tocItems.length >= 2
-const isHubPage = source === 'synthesized hub'
+// Prev/next pagination is a /learn/ feature: the sequence is the course
+// order declared in learn/_nav.yml (the learn ROOT tree — lesson pages
+// resolve the /learn/lessons/ sidebar tree, whose item order is not the
+// reading order, so pagination must not use it).
+const learnNav = pathname.startsWith('/learn/')
+  ? getNavTrees().find(t => t.prefix === '/learn/') ?? null
+  : null
 ---
 
-<BaseLayout title={title} frontmatter={frontmatter}>
+<BaseLayout title={title} frontmatter={frontmatter} crumbs={buildCrumbs(nav, pathname)}>
   {hasSidebar ? (
     <div class="mx-auto grid max-w-[1440px] gap-8 px-6 pb-8 grid-cols-1 lg:grid-cols-[288px_minmax(0,1fr)] xl:grid-cols-[288px_minmax(0,1fr)_224px]">
-      <Sidebar pathname={pathname} />
+      <Sidebar nav={nav} pathname={pathname} />
       <div class="mn-content-area">
-        {hasToc && <TOC headings={headings} variant="mobile" />}
+        {showToc && <TOC headings={headings} variant="mobile" />}
         <div class="px-2 pt-4">
-          <Breadcrumb pathname={pathname} />
+          <Breadcrumb nav={nav} pathname={pathname} />
         </div>
         <Article title={title} subtitle={subtitle}>
-          {isHubPage ? (
-            <p class="text-[var(--mn-c-text-2)]">Browse the topics in this section using the navigation panel on the left.</p>
-          ) : (
-            <MirrorContent html={rendered_html} />
-          )}
+          <MirrorContent html={rendered_html} />
+          {learnNav && <PrevNext nav={learnNav} pathname={pathname} />}
         </Article>
       </div>
-      {hasToc && <TOC headings={headings} variant="desktop" />}
+      {showToc && <TOC headings={headings} variant="desktop" />}
     </div>
-  ) : hasToc ? (
+  ) : showToc ? (
     <div class="mx-auto grid max-w-[1440px] gap-8 px-6 pb-8 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_224px]">
       <div>
         <TOC headings={headings} variant="mobile" bp="lg" />
-        <article class="mn-rendered mx-auto max-w-3xl px-2 py-12">
-          <Breadcrumb pathname={pathname} />
-          {title && (
-            <header class="mb-8 border-b border-[var(--mn-c-divider)] pb-4">
-              <h1 class="m-0 text-4xl font-extrabold leading-tight tracking-tight">{title}</h1>
-              {subtitle && <p class="mt-2 text-[var(--mn-c-text-2)]">{subtitle}</p>}
-            </header>
-          )}
-          {isHubPage ? (
-            <p class="text-[var(--mn-c-text-2)]">Browse the topics using the navigation above.</p>
-          ) : (
-            <MirrorContent html={rendered_html} />
-          )}
-        </article>
+        <Article class="mn-rendered mx-auto max-w-3xl px-2 py-12" title={title} subtitle={subtitle}>
+          <Breadcrumb slot="breadcrumb" nav={nav} pathname={pathname} />
+          <MirrorContent html={rendered_html} />
+          {learnNav && <PrevNext nav={learnNav} pathname={pathname} />}
+        </Article>
       </div>
       <TOC headings={headings} variant="desktop" bp="lg" />
     </div>
   ) : (
-    <>
-      <article class="mn-rendered mx-auto max-w-3xl px-6 py-12">
-        <Breadcrumb pathname={pathname} />
-        {title && (
-          <header class="mb-8 border-b border-[var(--mn-c-divider)] pb-4">
-            <h1 class="m-0 text-4xl font-extrabold leading-tight tracking-tight">{title}</h1>
-            {subtitle && <p class="mt-2 text-[var(--mn-c-text-2)]">{subtitle}</p>}
-          </header>
-        )}
-        <MirrorContent html={rendered_html} />
-      </article>
-    </>
+    <Article class="mn-rendered mx-auto max-w-3xl px-6 py-12" title={title} subtitle={subtitle}>
+      <Breadcrumb slot="breadcrumb" nav={nav} pathname={pathname} />
+      <MirrorContent html={rendered_html} />
+      {learnNav && <PrevNext nav={learnNav} pathname={pathname} />}
+    </Article>
   )}
 </BaseLayout>

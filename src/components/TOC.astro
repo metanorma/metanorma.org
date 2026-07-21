@@ -1,14 +1,19 @@
 ---
+import { computeTocItems, hasToc } from '../lib/toc'
+
 interface Heading { depth: number; slug: string; text: string }
 interface Props { headings: Heading[]; variant?: 'desktop' | 'mobile'; bp?: 'lg' | 'xl' }
 const { headings, variant = 'desktop', bp = 'xl' } = Astro.props
-const tocItems = headings.filter(h => h.depth >= 2 && h.depth <= 4)
-const hasToc = tocItems.length >= 2
+// The toc predicate (depth 2–4, ≥2 items) is owned by src/lib/toc.ts —
+// pages use the same helpers for their layout decisions, so the grid
+// and the TOC can never disagree.
+const tocItems = computeTocItems(headings)
+const showToc = hasToc(headings)
 const desktopShow = bp === 'lg' ? 'lg:block' : 'xl:block'
 const mobileShow = bp === 'lg' ? 'lg:hidden' : 'xl:hidden'
 ---
 
-{hasToc && variant === 'desktop' && (
+{showToc && variant === 'desktop' && (
   <aside class={`hidden w-56 flex-shrink-0 ${desktopShow}`}>
     <div class="toc-scroll sticky top-16 max-h-[calc(100vh-4rem)] overflow-y-auto overflow-x-hidden pb-8 pt-6">
       <p class="mb-3 text-xs font-bold uppercase tracking-wider text-[var(--mn-c-text-3)]">On this page</p>
@@ -26,7 +31,7 @@ const mobileShow = bp === 'lg' ? 'lg:hidden' : 'xl:hidden'
   </aside>
 )}
 
-{hasToc && variant === 'mobile' && (
+{showToc && variant === 'mobile' && (
   <details class={`${mobileShow} sticky top-16 z-30 border-b border-[var(--mn-c-divider)] bg-[var(--mn-c-bg)]`}>
     <summary class="flex cursor-pointer list-none items-center justify-between px-6 py-3 text-sm font-semibold text-[var(--mn-c-text-2)]">
       <span>On this page</span>

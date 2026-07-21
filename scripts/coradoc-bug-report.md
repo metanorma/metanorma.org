@@ -264,3 +264,125 @@ bundle exec ruby -e '
   puts Coradoc.serialize(core, to: :markdown)
 '
 ```
+
+---
+
+# Addendum — 2026-07-19
+
+**Pipeline:** `.adoc` → `Coradoc.parse(text, format: :asciidoc)` → CoreModel → `coradoc-mirror` → ProseMirror JSON → HTML
+**coradoc version:** coradoc 2.0.28 / coradoc-adoc 2.0.31 (latest on rubygems at time of writing)
+
+## Bug 4: Definition list splits after a `+`-attached block; `+` cannot attach a nested list
+
+Two related gaps in `coradoc-adoc`'s list grammar (`lib/coradoc/asciidoc/parser/list.rb`)
+break the standard dlist idiom for documenting enumerated values
+(`term::` … continuation … `value:::`), used across dozens of
+document-attributes pages.
+
+### 4a. List splits on blank lines after an attached block
+
+`dlist_item` accepts `+` continuations (`attached`), but nothing consumes
+trailing blank lines afterwards, so `definition_list`'s
+`dlist_item.repeat(1)` cannot resume. The list ends early; the nested
+`:::` items parse as a DETACHED sibling list, and subsequent `::`
+attributes are absorbed into it at the wrong depth.
+
+Asciidoctor nests them correctly (blank lines do not end a list).
+
+#### Minimal reproduction
+
+```ruby
+require "coradoc"
+doc = Coradoc.parse("`:a:`:: first.\n+\nNOTE: n.\n\n`x`::: X\n`y`::: Y\n\n`:b:`:: second.\n`z`::: Z\n", format: :asciidoc)
+# Expected (asciidoctor): DL(:a:[+NOTE, nested DL(x, y)], :b:[+nested DL(z)])
+# Actual:   DL(:a:[+NOTE])  +  DL(x, y, :b:[+nested DL(z)])
+#           — values detached; :b: demoted into the values list.
+```
+
+#### Root cause + suggested fix
+
+`definition_list` should consume blank lines between items:
+
+```ruby
+def definition_list(_delimiter = nil)
+  (attribute_list >> newline).maybe >>
+    (dlist_item >> empty_line.repeat(0)).repeat(1).as(:definition_list) >>
+    dlist_item.absent?
+end
+```
+
+### 4b. `+` continuation cannot attach a nested list to a dd
+
+AsciiDoc attaches a following list to the current item's dd with `+`
+(e.g. `+` before a values run or a bullet list). The `attached` rule in
+`dlist_item` only accepts `(admonition_line | paragraph | block)`, so the
+`+` marker dangles and the list splits off.
+
+#### Minimal reproduction
+
+```ruby
+doc = Coradoc.parse("`:a:`:: text.\n+\n`x`::: X\n`y`::: Y\n", format: :asciidoc)
+# Expected: DL(:a:[+attached DL(x, y)])  — values attached inside the dd
+# Actual:   DL(:a:)  +  DL(x, y)          — detached sibling list
+```
+
+#### Suggested fix
+
+Accept lists in the `attached` alternation (tried before `paragraph`):
+
+```ruby
+attached = (list_continuation.present? >>
+             list_continuation >>
+             (admonition_line | definition_list | unordered_list(1) | ordered_list(1) | paragraph | block)
+           ).repeat(0).as(:attached)
+```
+
+Caveat: a depth-aware variant would be better still — the attached dlist
+should only consume items deeper than the parent's delimiter, so a
+following top-level `::` attribute is not swallowed into the attachment.
+
+### Resolution (2026-07-19)
+
+Fixed UPSTREAM in the coradoc monorepo (`coradoc-adoc`
+`lib/coradoc/asciidoc/parser/list.rb`):
+
+1. `definition_list` consumes blank lines and comment lines between
+   items (new non-capturing `dlist_comment_line`), so a list no longer
+   splits after an attached block.
+2. `dlist_item#attached` accepts `unordered_list(1)`/`ordered_list(1)`
+   (bullets attach to the dd), and a `+` line directly before a
+   continuing dlist run is consumed as a list-continuation marker, so
+   the run stays in the current list and nests by delimiter depth —
+   no depth machinery needed, and no greedy swallow of the following
+   top-level attribute.
+3. `dlist_term` rejects `//`-led lines (Bug 4c).
+
+Regression specs: `coradoc-adoc/spec/coradoc/asciidoc/parser/
+definition_list_continuation_spec.rb` (7 examples). Suites green:
+coradoc-adoc 1292, coradoc-mirror 1173, coradoc 1173 examples,
+0 failures. The metanorma.org Gemfile pins the monorepo branch
+`fix/dlist-continuation-nesting` (commit 6a35222, pushed to
+github.com/metanorma/coradoc) until coradoc-adoc 2.0.32 is released;
+the temporary monkey-patch was deleted. Site-side behavior guards live in
+`spec/convert/dlist_continuation_spec.rb`. Content fixes applied at
+`flavors/ieee/ref/document-attributes.adoc` (`****` → `*` bullets
+attached with `+`), `flavors/iec/ref/document-attributes.adoc` (stray
+period), `flavors/itu/ref/document-attributes.adoc` (comment no longer
+forms a term).
+
+### 4c. Comment lines between list items parse as bogus terms
+
+A `//` comment line inside a definition list that itself contains `::`
+is parsed as a definition term (the `//` becomes part of the term text)
+instead of being skipped:
+
+```ruby
+doc = Coradoc.parse("`:a:`:: first.\n\n// `:annextitle:`:: Shorthand for x.\n\n`:b:`:: second.\n", format: :asciidoc)
+# Expected: DL(:a:, :b:) — the comment is skipped
+# Actual:   DL(:a:, "// :annextitle:", :b:) — bogus term renders on the page
+```
+
+Comments without `::` between list items are skipped correctly. Workaround
+applied at `flavors/itu/ref/document-attributes.adoc` (rewrote the comment
+so it does not form a term). Suggested fix: `dlist_term` (or the list-item
+loop) should reject lines starting with `//`.

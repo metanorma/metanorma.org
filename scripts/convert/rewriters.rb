@@ -1,35 +1,10 @@
 # frozen_string_literal: true
 
-require "coradoc"
-require_relative "path_mapping"
-
 module Convert
   # Skip URLs with a scheme (http, https, ftp, mailto, irc, data).
   # Shared by SiteLinkRewriter and ImagePathNormalizer so the scheme
   # list lives in exactly one place.
   SCHEME_RE = %r{\A(https?|ftp|mailto|irc|data):}i.freeze
-
-  # Flavor IDs discovered from the flavor/ source directory.
-  # Used to rewrite old /author/{flavor}/ links → /flavors/{flavor}/.
-  FLAVOR_IDS = Dir.glob(File.join(PathMapping::SITE_ROOT, "flavor", "*/"))
-    .map { |d| File.basename(d) }
-    .freeze
-
-  # Resolve a relative path against the source file's output directory.
-  # The clean-URL restructure (page.html → page/index.html) shifts
-  # rendered pages one level deeper, so sibling-relative paths must be
-  # rebased against the parent directory of the output key.
-  module_function
-
-  def resolve_against_output_dir(path, output_key)
-    return path if path.start_with?("/")
-    return path if output_key.nil? || output_key.empty?
-
-    parent_dir = output_key.rpartition("/").first
-    return path if parent_dir.empty?
-
-    File.expand_path(path, "/#{parent_dir}")
-  end
 
   # Post-parse link/xref rewriter.
   #
@@ -70,11 +45,10 @@ module Convert
         path = "#{m[1]}#{m[2]}-#{m[3]}-#{m[4]}-#{m[5]}"
       end
 
-      path = path.split("/").map { |seg| seg.tr("_", "-") }.join("/")
+      path = path.split("/").map { |seg| PathMapping.kebab_segment(seg) }.join("/")
       path = path.sub(/\.adoc\z/, "")
       path = Convert.resolve_against_output_dir(path, @source_output_key)
       path = File.expand_path(path) if path.include?("..")
-      path = rewrite_flavor_path(path)
       path = path.chomp("/") + "/" unless path.end_with?("/")
 
       fragment ? "#{path}##{fragment}" : path
@@ -86,20 +60,6 @@ module Convert
       return false unless kind == :xref
       return false if fragment
       path !~ /[\/.]/
-    end
-
-    # Rewrite old /author/{flavor}/ links → /flavors/{flavor}/.
-    # Flavor content migrated from author/{flavor}/ to flavor/{flavor}/
-    # but cross-references in the corpus still point to the old path.
-    def rewrite_flavor_path(path)
-      return path unless path.start_with?("/")
-      FLAVOR_IDS.each do |fid|
-        kebab = fid.tr("_", "-")
-        if path == "/author/#{kebab}" || path.start_with?("/author/#{kebab}/")
-          return path.sub("/author/#{kebab}", "/flavors/#{kebab}")
-        end
-      end
-      path
     end
   end
 

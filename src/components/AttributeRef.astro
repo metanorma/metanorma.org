@@ -1,0 +1,234 @@
+---
+// Renders one merged attribute reference page (the content area below
+// the page chrome): intro description, notes pointer, legend, filter
+// input, then per-category sections with own entries and — for flavor
+// pages — inherited entries under a collapsed <details> region.
+//
+// Page chrome (BaseLayout/Sidebar/Article/TOC) lives in the routes:
+//   src/pages/author/ref/document-attributes.astro
+//   src/pages/flavors/[id]/ref/[page].astro
+import type { AttrManifest, AttrSectionProse } from '../lib/attr-schema'
+import type { MergedCategory, MergedPage } from '../lib/attributes'
+import { anchorIdFor, slugify } from '../lib/attributes'
+import { renderDescription, renderInline } from '../lib/attr-description'
+import AttrEntry from './AttrEntry.astro'
+
+interface Props {
+  page: MergedPage
+  manifests: Record<string, AttrManifest>
+}
+
+const { page, manifests } = Astro.props
+const m = page.manifest
+
+// name → anchor id of every entry on the page (see:/alias_of: links).
+const anchorByName = new Map<string, string>()
+for (const cat of page.categories) {
+  for (const g of [...cat.own, ...cat.inherited]) {
+    for (const a of g.attrs) anchorByName.set(a.name, anchorIdFor(a.name, a.data))
+  }
+}
+
+// sections: prose for a category, split by subsection presence.
+function proseWithoutSubsection(cat: MergedCategory): AttrSectionProse[] {
+  return cat.prose.filter(p => !p.subsection)
+}
+function proseFor(cat: MergedCategory, subsection?: string): AttrSectionProse[] {
+  return cat.prose.filter(p => p.subsection === subsection)
+}
+// Prose naming a subsection that no entry group has (e.g. standoc's
+// 'Document relations / General') — rendered as prose-only subsections.
+function orphanProse(cat: MergedCategory): AttrSectionProse[] {
+  const grouped = new Set(
+    [...cat.own, ...cat.inherited].map(g => g.subsection).filter(Boolean),
+  )
+  return cat.prose.filter(p => p.subsection && !grouped.has(p.subsection))
+}
+
+function countAttrs(cat: MergedCategory, kind: 'own' | 'inherited'): number {
+  return cat[kind].reduce((n, g) => n + g.attrs.length, 0)
+}
+
+// Top-level manifest notes pointer ('See /path/ for …') with the path
+// linkified.
+function notesHtml(notes: string): string {
+  return renderInline(notes).replace(/(\/[\w./-]+\/)/, '<a href="$1">$1</a>')
+}
+
+const totalEntries = page.categories.reduce(
+  (n, c) => n + countAttrs(c, 'own') + countAttrs(c, 'inherited'), 0)
+---
+
+<div class="mn-rendered attribute-ref" data-total-entries={totalEntries}>
+  {m.description && <div class="attr-intro"><Fragment set:html={renderDescription(m.description)} /></div>}
+
+  {m.notes && <p class="attr-notes-pointer" set:html={notesHtml(m.notes)} />}
+
+  <div class="attr-legend">
+    <strong>How to read this page.</strong> Each entry is annotated with chips:
+    applicability (<span class="attr-chip attr-chip-scope">All flavors</span> or
+    <span class="attr-chip attr-chip-scope">{page.label} only</span>),
+    <span class="attr-chip attr-chip-required">Required</span>, the value type,
+    <span class="attr-chip">Default: …</span>,
+    <span class="attr-chip">Repeatable</span>, and version chips such as
+    <span class="attr-chip attr-chip-version">component ≥ v1.2.3</span>
+    (linked to release notes; amber/red marks deprecation).
+    {page.parentLabel && <> Entries inherited from {page.parentLabel} are collapsed per category.</>}
+  </div>
+
+  <div class="attr-filter">
+    <input
+      id="attr-filter"
+      type="search"
+      placeholder={`Filter ${totalEntries} attributes by name or description…`}
+      aria-label="Filter attributes"
+    />
+  </div>
+
+  {page.categories.map(cat => {
+    const catId = slugify(cat.name)
+    return (
+      <section class="attr-category" data-attr-category>
+        <h2 id={catId}>{cat.name}</h2>
+        {proseWithoutSubsection(cat).map(p => (
+          <Fragment set:html={renderDescription(p.prose)} />
+        ))}
+        {cat.own.map(group => (
+          <div class="attr-group" data-attr-group>
+            {group.subsection && <h3 id={slugify(group.subsection)}>{group.subsection}</h3>}
+            {proseFor(cat, group.subsection).map(p => (
+              <Fragment set:html={renderDescription(p.prose)} />
+            ))}
+            {group.attrs.map(a => (
+              <AttrEntry attr={a} page={page} manifests={manifests} anchorByName={anchorByName} level={group.subsection ? 4 : 3} />
+            ))}
+          </div>
+        ))}
+        {orphanProse(cat).map(p => (
+          <div class="attr-group" data-attr-group>
+            <h3 id={slugify(p.subsection!)}>{p.subsection}</h3>
+            <Fragment set:html={renderDescription(p.prose)} />
+          </div>
+        ))}
+        {cat.inherited.length > 0 && (
+          <details class="attr-inherited" data-attr-inherited>
+            <summary>
+              Inherited from {page.parentLabel} ({countAttrs(cat, 'inherited')} attributes)
+            </summary>
+            {cat.inherited.map(group => (
+              <div class="attr-group" data-attr-group>
+                {group.subsection && <h3 id={slugify(group.subsection)}>{group.subsection}</h3>}
+                {group.attrs.map(a => (
+                  <AttrEntry attr={a} page={page} manifests={manifests} anchorByName={anchorByName} level={group.subsection ? 4 : 3} />
+                ))}
+              </div>
+            ))}
+          </details>
+        )}
+      </section>
+    )
+  })}
+</div>
+
+<style>
+  .attr-notes-pointer {
+    font-size: 14px;
+    color: var(--mn-c-text-3);
+    border-left: 3px solid var(--mn-c-brand-1);
+    padding-left: 12px;
+  }
+  .attr-legend {
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--mn-c-text-3);
+    border: 1px solid var(--mn-c-divider);
+    border-radius: 10px;
+    background: var(--mn-c-bg-soft);
+    padding: 12px 16px;
+    margin: 20px 0;
+  }
+  .attr-legend .attr-chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0 8px;
+    font-size: 10.5px;
+    font-weight: 600;
+    border: 1px solid var(--mn-c-divider);
+    color: var(--mn-c-text-3);
+    background: var(--mn-c-bg);
+    margin: 0 2px;
+    white-space: nowrap;
+  }
+  .attr-legend .attr-chip-scope { color: var(--mn-c-brand-1); border-color: var(--mn-c-brand-1); }
+  .attr-legend .attr-chip-required { color: #b45309; border-color: #f59e0b; }
+  .attr-legend .attr-chip-version { color: #047857; border-color: #10b981; }
+  .attr-filter { margin: 16px 0 8px; }
+  .attr-filter input {
+    width: 100%;
+    max-width: 480px;
+    padding: 10px 14px;
+    border: 1px solid var(--mn-c-divider);
+    border-radius: 10px;
+    background: var(--mn-c-bg);
+    color: var(--mn-c-text-1);
+    font-size: 14px;
+  }
+  .attr-filter input:focus {
+    outline: 2px solid var(--mn-c-brand-1);
+    outline-offset: 1px;
+  }
+  .attr-inherited {
+    margin: 4px 0 24px;
+    border: 1px dashed var(--mn-c-divider);
+    border-radius: 10px;
+    padding: 0 16px;
+  }
+  .attr-inherited > summary {
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--mn-c-text-3);
+  }
+  .attr-inherited > summary:hover { color: var(--mn-c-text-1); }
+  .attr-category.attr-filtered-out,
+  .attr-group.attr-filtered-out { display: none; }
+</style>
+
+<script is:inline>
+  (function () {
+    var input = document.getElementById('attr-filter')
+    if (!input) return
+    var entries = Array.from(document.querySelectorAll('[data-attr-entry]'))
+    var groups = Array.from(document.querySelectorAll('[data-attr-group]'))
+    var cats = Array.from(document.querySelectorAll('[data-attr-category]'))
+    var inherited = Array.from(document.querySelectorAll('[data-attr-inherited]'))
+
+    function visible(el) { return !el.classList.contains('attr-filtered-out') }
+
+    input.addEventListener('input', function () {
+      var q = input.value.trim().toLowerCase()
+      entries.forEach(function (el) {
+        var hay = (el.getAttribute('data-attr-name') + ' ' + el.textContent).toLowerCase()
+        el.classList.toggle('attr-filtered-out', q !== '' && hay.indexOf(q) === -1)
+      })
+      groups.forEach(function (el) {
+        var any = Array.from(el.querySelectorAll('[data-attr-entry]')).some(visible)
+        var hasEntries = el.querySelector('[data-attr-entry]') !== null
+        el.classList.toggle('attr-filtered-out', q !== '' && hasEntries && !any)
+      })
+      cats.forEach(function (el) {
+        var any = Array.from(el.querySelectorAll('[data-attr-entry]')).some(visible)
+        el.classList.toggle('attr-filtered-out', q !== '' && !any)
+      })
+      inherited.forEach(function (d) {
+        if (q === '') {
+          d.open = false
+        } else {
+          d.open = d.querySelector('[data-attr-entry]:not(.attr-filtered-out)') !== null
+        }
+      })
+    })
+  })()
+</script>

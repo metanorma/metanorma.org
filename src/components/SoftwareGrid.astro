@@ -1,11 +1,17 @@
 ---
 import { gems } from '../data/software'
+import type { SoftwareEntry } from '../data/types'
 import CategoryBadge from './CategoryBadge.astro'
+
+// The grid defaults to the full registry but accepts any subset — the
+// caller owns which entries are shown (props over globals).
+interface Props { items?: SoftwareEntry[] }
+const { items = gems } = Astro.props
 
 const order = ['core', 'cli', 'flavor', 'tool'] as const
 const labels: Record<string, string> = { core: 'Core Libraries', cli: 'CLI Tools', flavor: 'Flavor Processors', tool: 'Utilities' }
 const softwareGroups = order
-  .map(cat => ({ label: labels[cat], items: gems.filter(g => g.category === cat) }))
+  .map(cat => ({ label: labels[cat], items: items.filter(g => g.category === cat) }))
   .filter(g => g.items.length > 0)
 ---
 

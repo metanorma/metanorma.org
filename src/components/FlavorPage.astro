@@ -2,8 +2,19 @@
 import type { Flavor } from '../data/types'
 import CategoryBadge from './CategoryBadge.astro'
 import FlavorLogo from './FlavorLogo.astro'
-interface Props { flavor: Flavor }
-const { flavor } = Astro.props
+
+// Doc-section existence flags, computed per flavor from the mirror
+// collection in src/pages/flavors/[id].astro (getStaticPaths) — the
+// Resources list links only to docs that actually exist for the flavor.
+export interface FlavorResources {
+  hasSample: boolean
+  hasTopics: boolean
+  hasAttrRef: boolean
+  hasGuide: boolean
+  guideHref: string
+}
+interface Props { flavor: Flavor; resources?: FlavorResources }
+const { flavor, resources } = Astro.props
 ---
 
 <article class="mx-auto max-w-3xl px-2 py-8">
@@ -45,7 +56,10 @@ metanorma compile -t ${flavor.id} -x html,doc my-document.adoc`}</code></pre>
   <section class="mb-8">
     <h2 class="mb-3 text-xl font-semibold">Resources</h2>
     <ul class="list-disc space-y-1 pl-6">
-      {flavor.authoringGuide && <li><a href={`/flavors/${flavor.id}/`} class="text-[var(--mn-c-brand-1)]">Authoring Guide</a></li>}
+      {resources?.hasSample && <li><a href={`/flavors/${flavor.id}/sample/`} class="text-[var(--mn-c-brand-1)]">Quick start</a></li>}
+      {resources?.hasTopics && <li><a href={`/flavors/${flavor.id}/topics/`} class="text-[var(--mn-c-brand-1)]">Authoring topics</a></li>}
+      {resources?.hasAttrRef && <li><a href={`/flavors/${flavor.id}/ref/document-attributes/`} class="text-[var(--mn-c-brand-1)]">Document attributes</a></li>}
+      {resources?.hasGuide && <li><a href={resources.guideHref} class="text-[var(--mn-c-brand-1)]">Authoring guide</a></li>}
       <li><a href={flavor.repoUrl} target="_blank" rel="noopener" class="text-[var(--mn-c-brand-1)]">GitHub Repository</a></li>
       <li><a href={`/software/${flavor.gem}/`} class="text-[var(--mn-c-brand-1)]">Software Details</a></li>
     </ul>

@@ -1,0 +1,191 @@
+---
+// Renders ONE attribute entry of a merged reference page: heading with
+// anchor (+ alias/legacy anchors), chip row, description, values,
+// example, and the small meta lines. Prose fields go through the tiny
+// formatter (src/lib/attr-description.ts); structure comes from the
+// merged model (src/lib/attributes.ts).
+import type { AttrManifest, AttrValue, AttrVersionRef } from '../lib/attr-schema'
+import type { MergedAttribute, MergedPage } from '../lib/attributes'
+import { anchorIdFor, labelFor } from '../lib/attributes'
+import { renderDescription, renderInline } from '../lib/attr-description'
+
+interface Props {
+  attr: MergedAttribute
+  page: MergedPage
+  manifests: Record<string, AttrManifest>
+  // name → anchor id of every entry on the page (see:/alias_of: links)
+  anchorByName: Map<string, string>
+  // Heading level: h3 under plain categories, h4 under subsections.
+  level: 3 | 4
+}
+
+const { attr, page, manifests, anchorByName, level } = Astro.props
+const { name, data } = attr
+const Heading = `h${level}` as 'h3' | 'h4'
+const anchorId = anchorIdFor(name, data)
+
+function releaseUrl(v: AttrVersionRef): string {
+  const ver = v.version.startsWith('v') ? v.version : `v${v.version}`
+  return `https://github.com/metanorma/${v.component}/releases/tag/${ver}`
+}
+
+// Applicability chip: 'All flavors' for standoc-origin entries, the
+// flavor label for own entries, 'A+B' for applies_to subsets.
+function applicabilityChip(a: MergedAttribute): string {
+  const subset = a.data.applies_to?.length
+    ? a.data.applies_to.map(id => labelFor(manifests, id)).join('+')
+    : null
+  if (page.parentLabel === null) return subset ?? 'All flavors' // standoc page
+  if (a.origin === page.flavorId) return `${page.label} only`
+  return subset ?? 'All flavors'
+}
+
+// ':name:' for attribute-syntax names; pattern entries like
+// '= Document Title' render bare.
+function displayName(n: string): string {
+  return /^[\w{}-]+$/.test(n) ? `:${n}:` : n
+}
+
+function anchorHref(target: string): string {
+  return `#${anchorByName.get(target) ?? target.replace(/\s+/g, '-')}`
+}
+
+function exampleHtml(example: string): string {
+  // First line is the block title when it is followed by a blank line
+  // and is not itself attribute/example syntax.
+  const nl = example.indexOf('\n\n')
+  let title: string | undefined
+  let body = example
+  if (nl > 0) {
+    const first = example.slice(0, nl).trim()
+    if (first.length > 0 && first.length <= 120 && !first.startsWith(':') && !first.startsWith('[')) {
+      title = first
+      body = example.slice(nl + 2)
+    }
+  }
+  return `<div class="example-block attr-example"><div class="example-label">${title ? renderInline(title) : 'Example'}</div>${renderDescription(body)}</div>`
+}
+
+function valueBody(v: AttrValue): string {
+  let html = v.description ? renderDescription(v.description) : ''
+  if (v.notes) html += `<p class="attr-meta">Note: ${renderInline(v.notes)}</p>`
+  return html
+}
+---
+
+<section class="attr-entry" data-attr-entry data-attr-name={name} id={anchorId}>
+  {/* Alias + legacy names carry anchors so old deep links keep working. */}
+  {data.aliases?.map(a => <span class="attr-anchor-alias" id={a} />)}
+  {data.legacy?.map(l => <span class="attr-anchor-alias" id={l} />)}
+  <Heading class="attr-name"><code>{displayName(name)}</code></Heading>
+  <div class="attr-chips">
+    <span class="attr-chip attr-chip-scope">{applicabilityChip(attr)}</span>
+    {data.required && <span class="attr-chip attr-chip-required">Required</span>}
+    {data.type && <span class="attr-chip">{data.type}</span>}
+    {data.default !== undefined && <span class="attr-chip">Default: <code>{data.default}</code></span>}
+    {data.repeatable && <span class="attr-chip">Repeatable</span>}
+    {data.deprecated && <span class="attr-chip attr-chip-warn">Deprecated</span>}
+    {data.added_in && (
+      <a class="attr-chip attr-chip-version" href={releaseUrl(data.added_in)} target="_blank" rel="noopener"
+         title={`Added in ${data.added_in.component} ${data.added_in.version}`}>
+        {data.added_in.component} ≥ {data.added_in.version}
+      </a>
+    )}
+    {data.deprecated_in && (
+      <a class="attr-chip attr-chip-warn" href={releaseUrl(data.deprecated_in)} target="_blank" rel="noopener"
+         title={`Deprecated in ${data.deprecated_in.component} ${data.deprecated_in.version}`}>
+        deprecated in {data.deprecated_in.component} ≥ {data.deprecated_in.version}
+      </a>
+    )}
+    {(data.version_history ?? []).map(v => (
+      <a class="attr-chip attr-chip-history" href={releaseUrl(v)} target="_blank" rel="noopener"
+         title={`Changed in ${v.component} ${v.version}`}>{v.component} {v.version}</a>
+    ))}
+  </div>
+  <div class="attr-body">
+    {data.alias_of && (
+      <p class="attr-meta">Alias of <a href={anchorHref(data.alias_of)}><code>{displayName(data.alias_of)}</code></a></p>
+    )}
+    {data.see && (
+      <p class="attr-meta">See <a href={anchorHref(data.see)}><code>{displayName(data.see)}</code></a></p>
+    )}
+    {data.description && <Fragment set:html={renderDescription(data.description)} />}
+    {data.values && data.values.length > 0 && (
+      <dl class="attr-values">
+        {data.values.map(v => (
+          <>
+            <dt>
+              <code>{v.name}</code>
+              {v.added_in && (
+                <a class="attr-chip attr-chip-version" href={releaseUrl(v.added_in)} target="_blank" rel="noopener"
+                   title={`Added in ${v.added_in.component} ${v.added_in.version}`}>
+                  {v.added_in.component} ≥ {v.added_in.version}
+                </a>
+              )}
+            </dt>
+            <dd set:html={valueBody(v)} />
+          </>
+        ))}
+      </dl>
+    )}
+    {data.example && <Fragment set:html={exampleHtml(data.example)} />}
+    {data.aliases && data.aliases.length > 0 && (
+      <p class="attr-meta">Also accepted: {data.aliases.map((a, i) => (<Fragment>{i > 0 ? ', ' : ''}<code>{displayName(a)}</code></Fragment>))}</p>
+    )}
+    {data.legacy && data.legacy.length > 0 && (
+      <p class="attr-meta">Legacy names: {data.legacy.map((l, i) => (<Fragment>{i > 0 ? ', ' : ''}<code>{displayName(l)}</code></Fragment>))}</p>
+    )}
+    {data.source_term && (
+      <p class="attr-meta">Recovered from source term <code>{data.source_term}</code></p>
+    )}
+    {data.notes && <p class="attr-meta" set:html={`Note: ${renderInline(data.notes)}`} />}
+  </div>
+</section>
+
+<style>
+  .attr-entry {
+    margin: 0 0 28px;
+    padding-top: 4px;
+    scroll-margin-top: 5rem;
+  }
+  .attr-anchor-alias { display: block; height: 0; overflow: hidden; }
+  .attr-name { scroll-margin-top: 5rem; }
+  .attr-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 6px 0 10px;
+  }
+  .attr-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 9999px;
+    padding: 1px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border: 1px solid var(--mn-c-divider);
+    color: var(--mn-c-text-3);
+    background: var(--mn-c-bg-soft);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .attr-chip code { font-size: 10.5px; padding: 0 2px; }
+  .attr-chip-scope { color: var(--mn-c-brand-1); border-color: var(--mn-c-brand-1); background: var(--mn-c-brand-soft); }
+  .attr-chip-required { color: #b45309; border-color: #f59e0b; background: rgba(245, 158, 11, 0.08); }
+  .attr-chip-version { color: #047857; border-color: #10b981; background: rgba(16, 185, 129, 0.08); }
+  .attr-chip-warn { color: #b91c1c; border-color: #ef4444; background: rgba(239, 68, 68, 0.08); }
+  .attr-chip-history { font-weight: 500; }
+  a.attr-chip:hover { filter: brightness(0.95); }
+  .attr-body { margin-top: 4px; }
+  .attr-values { margin: 10px 0; }
+  .attr-values dt { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .attr-meta {
+    font-size: 13px;
+    color: var(--mn-c-text-3);
+    margin: 6px 0;
+  }
+  .attr-example { margin: 10px 0; }
+  .attr-entry.attr-filtered-out { display: none; }
+</style>

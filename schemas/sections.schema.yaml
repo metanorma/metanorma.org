@@ -1,0 +1,69 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://www.metanorma.org/schemas/sections.schema.yaml
+title: Metanorma content section registry
+description: >-
+  The contract for src/config/sections.yml — the single source of truth
+  for content sections: which directories hold source .adoc files, where
+  their output lives, and which sections get a sidebar nav tree. Consumed
+  by the Ruby converter, src/lib/nav-tree.ts, and scripts/verify-content.mjs.
+  See schemas/README.md for the field reference.
+
+type: object
+additionalProperties: false
+required: [sections]
+properties:
+  sections:
+    type: array
+    minItems: 1
+    items:
+      $ref: "#/$defs/section"
+
+$defs:
+  section:
+    type: object
+    additionalProperties: false
+    required: [id, source_dir, output_prefix, nav_root, mapping]
+    properties:
+      id:
+        type: string
+        pattern: "^[a-z0-9-]+$"
+        description: Stable section identifier.
+      source_dir:
+        type: string
+        minLength: 1
+        description: Directory (repo-root relative) holding source files.
+      output_prefix:
+        type: string
+        description: mirror-json/URL prefix for this section's pages (may be empty for the fixed root map).
+      nav_root:
+        type: boolean
+        description: Whether nav-tree.ts treats this section as a sidebar root.
+      mapping:
+        type: string
+        enum: [tree, prefix, date_prefix, fixed, ref_strip]
+        description: >-
+          Output path mapping kind: tree (recursive kebab), prefix
+          (tree + .html strip), date_prefix (blog posts), fixed
+          (explicit files map), ref_strip (Ref- prefix strip).
+      source_extensions:
+        type: array
+        description: File extensions to collect (default [adoc]).
+        items:
+          type: string
+          pattern: "^[a-z0-9]+$"
+      files:
+        type: object
+        description: Explicit filename → output key map (required when mapping is fixed).
+        additionalProperties:
+          type: string
+    # Conditional contract (mapping = fixed ⇒ files required) — enforced
+    # here via JSON Schema if/then; not expressible in zod, so generated
+    # models document it as a comment and the runtime enforces it.
+    allOf:
+      - if:
+          properties:
+            mapping:
+              const: fixed
+          required: [mapping]
+        then:
+          required: [files]

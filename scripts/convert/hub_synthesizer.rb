@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "coradoc"
-require_relative "path_mapping"
-
 module Convert
   # Synthesizes Hub Pages — index pages for directories that have child
   # pages but no explicit index source.

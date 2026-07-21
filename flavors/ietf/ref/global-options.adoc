@@ -1,0 +1,150 @@
+---
+layout: ietf-flavor
+---
+
+= IETF global options and processing instructions
+
+This page collects the header rules, author-attribute conventions, and
+`xml2rfc` processing-instruction guidance that accompany the
+link:/author/ietf/ref/document-attributes[IETF document attributes (AsciiRFC v3)]
+and link:/author/ietf/ref/document-attributes-v2[AsciiRFC v2] references.
+The attributes themselves are documented there.
+
+== AsciiRFC v3 (RFC XML v3)
+
+=== Document header attributes
+
+Metanorma-IETF allows setting the RFC XML document header using the following
+document attributes. Complying with AsciiDoc syntax, no blank lines are
+permitted between the title, listing of authors, and the document attributes.
+
+Also following AsciiDoc syntax, character entities will be ignored in the document
+header: `\&nbsp;` in the header for example will be rendered as `&amp;nbsp;`.
+
+NOTE: Most attributes listed here, unless specifically stated, are common between
+AsciiRFC v3 (RFC XML v3) and AsciiRFC v2 (RFC XML v2).
+
+[example]
+.Example of document metadata for an IETF document
+====
+[source,asciidoc]
+----
+= The Holy Hand Grenade of Antioch
+Arthur son of Uther Pendragon
+:doctype: internet-draft
+:submission-type: independent
+:intended-series: informational
+:docnumber: draft-camelot-holy-grenade-01
+:status: informational
+----
+====
+
+=== Author attribute suffixing
+
+As multiple authors can be specified, the document attribute to specify the
+first author uses a unsuffixed attribute name `:role`, and the second author's
+attributes onwards use a numeric suffix to identify the author: `:role_2`, `:role_3`, etc.
+
+NOTE: You can provide organization information without providing name information
+for an author.
+
+=== Processing instructions for `xml2rfc`
+
+The `xml2rfc` tool accepts processing instructions of the form `<?rfc keyword='value'?>`:
+see https://xml2rfc.tools.ietf.org/authoring/README.html#processing.instructions .
+(Of these, `sort-refs`, `sym-refs` and `toc-include` are also present in the
+RFC XML v3 specification, as attributes of the
+root `rfc` element: link:/author/ietf/ref/document-attributes[v3-specific document attributes].)
+
+Those processing instructions which apply to the entire document can also be
+specified in Metanorma-IETF as document attributes.
+
+The processing-instruction attributes (`:artworkdelimiter:`, `:toc-include:`, and
+so on) are documented in the
+link:/author/ietf/ref/document-attributes[AsciiRFC v3 document attributes]
+reference.
+
+Exceptionally, `compact`, `toc-include`, `sym-refs`, `sort-refs` and `strict`
+are is set by default to `yes`, `subcompact` to `no`, and `toc-depth` to `4`.
+
+== AsciiRFC v2 (RFC XML v2)
+
+=== Document header attributes
+
+Metanorma-IETF allows setting the RFC XML document header using the following
+document attributes. Complying with AsciiDoc syntax, no blank lines are
+permitted between the title, listing of authors, and the document attributes.
+Also following AsciiDoc syntax, character entities will be ignored in the document
+header: `\&nbsp;` in the header for example will be rendered as `&amp;nbsp;`.
+
+NOTE: Most attributes listed here, unless specifically stated, are common between
+AsciiRFC v3 (RFC XML v3) and AsciiRFC v2 (RFC XML v2).
+
+=== Author attribute suffixing
+
+As multiple authors can be specified, the document attribute to specify the
+first author uses a unsuffixed attribute name `:role`, and the second author's
+attributes onwards use a numeric suffix to identify the author: `:role_2`, `:role_3`, etc.
+
+NOTE: You can provide organization information without providing name information
+for an author.
+
+Combining the address attributes produces RFC XML as follows:
+
+====
+This source:
+
+[source,asciidoc]
+----
+:street: 57 Mt Pleasant St\ Technology Park
+:city: Dullsville
+:region: NSW
+:country: Australia
+:code: 3333
+----
+
+Produces this RFC XML output:
+
+[source,xml]
+----
+<address>
+  <postal>
+    <street>57 Mt Pleasant St</street>
+    <street>Technology Park</street>
+    <city>Dullsville</city>
+    <region>NSW</region>
+    <code>3333</code>
+    <country>Australia</country>
+  </postal>
+</address>
+----
+
+====
+
+=== Processing instructions for `xml2rfc`
+
+The `xml2rfc` tool accepts processing instructions of the form `<?rfc keyword='value'?>`:
+see https://xml2rfc.tools.ietf.org/authoring/README.html#processing.instructions .
+(Of these, `sort-refs`, `sym-refs` and `toc-include` are also present in the
+RFC XML v3 specification, as attributes of the
+root `rfc` element: link:/author/ietf/ref/document-attributes[v3-specific document attributes].)
+
+Those processing instructions which apply to the entire document can also be
+specified in Metanorma-IETF as document attributes.
+
+The `xml2rfc` tool accepts processing instructions of the form `<?rfc keyword='value'?>`:
+see https://xml2rfc.tools.ietf.org/authoring/README.html#processing.instructions .
+(Of these, `sort-refs`, `sym-refs` and `toc-include`  are also present in the
+RFC XML v3 specification, as attributes of the
+root `rfc` element: link:/author/ietf/ref/document-attributes[v3-specific document attributes].)
+Those processing instructions which apply to the entire document can also be
+specified in Metanorma-IETF as document options.
+
+The processing-instruction attributes are documented in the
+link:/author/ietf/ref/document-attributes-v2[AsciiRFC v2 document attributes]
+reference.
+
+Exceptionally, `compact`, `toc-include`, `sym-refs`, `sort-refs` and `strict` are is set by default to `yes`, `subcompact` to `no`, and `toc-depth` to 4.
+
+The additional document option `rfc2629xslt` (default value: true) injects into the document header the processing
+instruction `<?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?>`, which impacts on the output of xml2rfc.

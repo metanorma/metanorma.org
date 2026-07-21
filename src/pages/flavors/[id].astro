@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro'
-import { getEntry } from 'astro:content'
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import FlavorPage from '../../components/FlavorPage.astro'
 import Sidebar from '../../components/Sidebar.astro'
@@ -8,36 +8,70 @@ import TOC from '../../components/TOC.astro'
 import Breadcrumb from '../../components/Breadcrumb.astro'
 import MirrorContent from '../../components/MirrorContent.astro'
 import { flavors } from '../../data/flavors'
-import type { MirrorEntry } from '../../content/loaders/mirror-loader'
+import { sidebarFor } from '../../config/site'
+import { hasToc } from '../../lib/toc'
+import { buildCrumbs } from '../../lib/breadcrumbs'
 
 export const getStaticPaths = (async () => {
-  return flavors.map(flavor => ({
-    params: { id: flavor.id },
-    props: { flavor },
-  }))
+  // Doc-section existence per flavor, derived from the mirror collection
+  // (the same source the header uses to tell docs-ful from docs-less
+  // flavors). Computed once here and handed to FlavorPage as props.
+  const mirrorIds = new Set<string>(
+    (await getCollection('mirror')).map((e: CollectionEntry<'mirror'>) => e.id),
+  )
+  return flavors.map(flavor => {
+    const prefix = `flavors/${flavor.id}`
+    const hasGuideDir = mirrorIds.has(`${prefix}/authoring-guide`)
+    const hasGuidePage = mirrorIds.has(`${prefix}/authoring`)
+    return {
+      params: { id: flavor.id },
+      props: {
+        flavor,
+        resources: {
+          hasSample: mirrorIds.has(`${prefix}/sample`),
+          hasTopics: mirrorIds.has(`${prefix}/topics`) ||
+            [...mirrorIds].some(id => id.startsWith(`${prefix}/topics/`)),
+          hasAttrRef: mirrorIds.has(`${prefix}/ref/document-attributes`),
+          hasGuide: hasGuideDir || hasGuidePage,
+          guideHref: hasGuideDir
+            ? `/flavors/${flavor.id}/authoring-guide/`
+            : `/flavors/${flavor.id}/authoring/`,
+        },
+      },
+    }
+  })
 }) satisfies GetStaticPaths
 
 interface Props {
   flavor: typeof flavors[number]
+  resources: {
+    hasSample: boolean
+    hasTopics: boolean
+    hasAttrRef: boolean
+    hasGuide: boolean
+    guideHref: string
+  }
 }
-const { flavor } = Astro.props as Props
+const { flavor, resources } = Astro.props as Props
 const pathname = `/flavors/${flavor.id}/`
 const landingSlug = `flavors/${flavor.id}`
-const entry = await getEntry('mirror', landingSlug) as { data: MirrorEntry } | null
+// Typed by the collection schema (src/lib/mirror-schema.ts) — no cast.
+const entry = await getEntry('mirror', landingSlug)
 const landing = entry?.data
-const tocItems = landing?.headings.filter(h => h.depth >= 2 && h.depth <= 4) ?? []
-const hasToc = tocItems.length >= 2
+const showToc = hasToc(landing?.headings ?? [])
+// The page resolves the nav tree ONCE and hands it down as a prop.
+const nav = sidebarFor(pathname)
 ---
 
-<BaseLayout title={flavor.fullName} description={flavor.description}>
+<BaseLayout title={flavor.fullName} description={flavor.description} crumbs={buildCrumbs(nav, pathname)}>
   <div class="mx-auto grid max-w-[1440px] gap-8 px-6 pb-8 grid-cols-1 lg:grid-cols-[288px_minmax(0,1fr)] xl:grid-cols-[288px_minmax(0,1fr)_224px]">
-    <Sidebar pathname={pathname} />
+    <Sidebar nav={nav} pathname={pathname} />
     <div class="mn-content-area">
-      {hasToc && <TOC headings={landing!.headings} variant="mobile" />}
+      {showToc && <TOC headings={landing!.headings} variant="mobile" />}
       <div class="px-2 pt-4">
-        <Breadcrumb pathname={pathname} />
+        <Breadcrumb nav={nav} pathname={pathname} />
       </div>
-      <FlavorPage flavor={flavor}>
+      <FlavorPage flavor={flavor} resources={resources}>
         {landing && landing.rendered_html && (
           <section class="mt-8">
             <MirrorContent html={landing.rendered_html} />
@@ -45,6 +79,6 @@ const hasToc = tocItems.length >= 2
         )}
       </FlavorPage>
     </div>
-    {hasToc && <TOC headings={landing!.headings} variant="desktop" />}
+    {showToc && <TOC headings={landing!.headings} variant="desktop" />}
   </div>
 </BaseLayout>

@@ -2,62 +2,66 @@
 import { ClientRouter } from 'astro:transitions'
 import Nav from '../components/Nav.astro'
 import Footer from '../components/Footer.astro'
+import Seo from '../components/Seo.astro'
 import '../styles/global.css'
 import type { SiteFrontmatter } from '../data/types'
+import { THEME_KEY } from '../lib/theme'
+import { SITE, buildTitle, buildDescription, autoCrumbs } from '../lib/seo'
+import type { Crumb } from '../lib/breadcrumbs'
 
 interface Props {
   title?: string
   description?: string
   frontmatter?: SiteFrontmatter
   ogImage?: string
+  ogImageAlt?: string
   publishedAt?: string
+  authorName?: string
+  seoTitle?: string          // absolute <title>, bypasses the "| Metanorma" suffix
+  crumbs?: Crumb[]           // override; defaults to pathname-derived crumbs
 }
 
 const props = Astro.props as Props
 const frontmatter = props.frontmatter || {}
-const title = props.title || frontmatter.title || ''
-const description = props.description || frontmatter.description || frontmatter.excerpt || ''
+const docTitle = props.title || frontmatter.title || ''
+const title = props.seoTitle || buildTitle(docTitle)
+const description = buildDescription(props.description, frontmatter.description, frontmatter.excerpt)
 const canonical = new URL(Astro.url.pathname, Astro.site).toString()
 const ogImage = props.ogImage || frontmatter.card_image || null
 const publishedAt = props.publishedAt || frontmatter.date || null
-
-const jsonLd = publishedAt ? {
-  '@context': 'https://schema.org', '@type': 'Article',
-  headline: title, description, datePublished: publishedAt, url: canonical,
-  ...(frontmatter.author?.name && { author: { '@type': 'Person', name: frontmatter.author.name } }),
-} : { '@context': 'https://schema.org', '@type': 'WebPage', headline: title, description, url: canonical }
+const authorName = props.authorName || frontmatter.author?.name || null
+const pathname = Astro.url.pathname
+const crumbs = props.crumbs ?? (pathname === '/' ? [] : autoCrumbs(pathname, docTitle))
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>{title}</title>
-    {description && <meta name="description" content={description} />}
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="canonical" href={canonical} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200;12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="canonical" href={canonical} />
-    <meta property="og:type" content={publishedAt ? 'article' : 'website'} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:title" content={title} />
-    {description && <meta property="og:description" content={description} />}
-    {ogImage && <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />}
-    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
-    <meta name="twitter:title" content={title} />
-    {description && <meta name="twitter:description" content={description} />}
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <Seo
+      title={title}
+      docTitle={docTitle || SITE.name}
+      description={description}
+      canonical={canonical}
+      type={publishedAt ? 'article' : 'website'}
+      image={ogImage}
+      imageAlt={props.ogImageAlt}
+      publishedAt={publishedAt}
+      authorName={authorName}
+      crumbs={crumbs}
+    />
     <ClientRouter />
-    <script is:inline>
-      // Key must match THEME_KEY in src/lib/theme.ts
-      (function(){try{var s=localStorage.getItem('mn-theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(s==='dark'||(s!=='light'&&d))document.documentElement.classList.add('dark')}catch(e){}})()
+    <script is:inline define:vars={{ THEME_KEY }}>
+      (function(){try{var s=localStorage.getItem(THEME_KEY);var d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(s==='dark'||(s!=='light'&&d))document.documentElement.classList.add('dark')}catch(e){}})()
       document.addEventListener('astro:before-swap',function(ev){if(document.documentElement.classList.contains('dark')){ev.newDocument.documentElement.classList.add('dark')}})
     </script>
   </head>

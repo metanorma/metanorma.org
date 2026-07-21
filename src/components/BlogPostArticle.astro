@@ -1,0 +1,65 @@
+---
+// A single blog post: breadcrumb, header (date/author/title/lede),
+// pre-rendered content, author card, back link. Extracted from
+// blog/[...slug].astro, which duplicated this whole structure across
+// its hasToc / no-Toc branches — the only difference between them is
+// the <article> class (and the TOC beside it, which stays in the page).
+import MirrorContent from './MirrorContent.astro'
+import type { MirrorFrontmatterAuthor } from '../lib/mirror-schema'
+
+interface Props {
+  title: string
+  date: string
+  isoDate: string
+  desc: string
+  author: MirrorFrontmatterAuthor
+  authorPicture: string | null
+  html: string
+  class?: string
+}
+const { title, date, isoDate, desc, author, authorPicture, html, class: className } = Astro.props
+---
+
+<article class={className}>
+  <nav class="mb-8 flex items-center gap-2 text-sm text-[var(--mn-c-text-3)]" aria-label="Breadcrumb">
+    <a href="/" class="no-underline hover:text-[var(--mn-c-brand-1)]">Home</a>
+    <span class="text-[var(--mn-c-divider)]">/</span>
+    <a href="/blog/" class="no-underline hover:text-[var(--mn-c-brand-1)]">Blog</a>
+  </nav>
+  <header class="mb-12">
+    <div class="mb-4 flex flex-wrap items-center gap-3 text-sm text-[var(--mn-c-text-3)]">
+      {date && <time datetime={isoDate} class="font-medium">{date}</time>}
+      {author.name && (
+        <span class="flex items-center gap-2">
+          <span class="text-[var(--mn-c-divider)]">·</span>
+          <span class="text-[var(--mn-c-text-2)]">{author.name}</span>
+        </span>
+      )}
+    </div>
+    <h1 class="text-4xl font-extrabold leading-tight tracking-tight text-[var(--mn-c-text-1)]">{title}</h1>
+    {desc && <p class="mt-4 text-lg leading-relaxed text-[var(--mn-c-text-2)]">{desc}</p>}
+  </header>
+  <MirrorContent html={html} />
+  {author.name && (author.social_links?.length || authorPicture) && (
+    <footer class="mt-16 flex items-center gap-4 rounded-2xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-soft)] p-5">
+      {authorPicture && (
+        <img src={authorPicture} alt={author.name} class="h-12 w-12 rounded-full border border-[var(--mn-c-divider)]" />
+      )}
+      <div>
+        <p class="font-semibold text-[var(--mn-c-text-1)]">{author.name}</p>
+        {author.social_links?.length && (
+          <div class="mt-1 flex flex-wrap gap-3 text-sm">
+            {author.social_links.map((link: string) => (
+              <a href={link} target="_blank" rel="noopener" class="text-[var(--mn-c-brand-1)] no-underline hover:underline">
+                {link.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </footer>
+  )}
+  <div class="mt-12">
+    <a href="/blog/" class="text-sm font-medium text-[var(--mn-c-brand-1)] no-underline hover:underline">← Back to blog</a>
+  </div>
+</article>

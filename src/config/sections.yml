@@ -1,0 +1,100 @@
+# yaml-language-server: $schema=../../schemas/sections.schema.yaml
+# Content section registry — the single source of truth for "which
+# directories hold source .adoc files, where their mirror-json output
+# lives, and which sections get a sidebar nav tree".
+#
+# Consumers:
+#   - scripts/convert (Ruby converter): source collection, output path
+#     mapping, legacy redirects, per-section _nav.yml cache scoping.
+#   - src/lib/nav-tree.ts: sidebar roots = sections with nav_root: true.
+#   - scripts/verify-content.mjs: content-area page counts.
+#
+# Fields per section:
+#   id:                stable identifier
+#   source_dir:        directory (repo-root relative) holding source files
+#   output_prefix:     mirror-json/URL prefix for this section's pages
+#   nav_root:          whether nav-tree.ts treats it as a sidebar root
+#   mapping:           output path mapping kind (see below)
+#   source_extensions: file extensions to collect (default: [adoc])
+#   files:             explicit filename → output key map (fixed kind only)
+#
+# mapping kinds:
+#   tree        recursive: <output_prefix>/<kebab subpath>/<kebab basename>;
+#               only the .adoc extension is stripped
+#   prefix      like tree, but .html is stripped as well (legacy _pages
+#               subdirectories)
+#   date_prefix blog posts: YYYY-MM-DD-slug.adoc →
+#               <output_prefix>/YYYY-MM-DD-slug (files without a date
+#               prefix are unmapped)
+#   fixed       explicit per-file map (`files:`); unlisted files are
+#               unmapped; matches files directly in source_dir only
+#   ref_strip   reference docs: basename minus any Ref- prefix,
+#               downcased and kebabed, under <output_prefix>/
+sections:
+  - id: author
+    source_dir: author
+    output_prefix: author
+    nav_root: true
+    mapping: tree
+
+  - id: flavors
+    source_dir: flavors
+    output_prefix: flavors
+    nav_root: true
+    mapping: tree
+
+  - id: develop
+    source_dir: develop
+    output_prefix: develop
+    nav_root: true
+    mapping: tree
+
+  - id: learn
+    source_dir: learn
+    output_prefix: learn
+    nav_root: true
+    mapping: tree
+
+  - id: software
+    source_dir: software
+    output_prefix: software
+    nav_root: true
+    mapping: tree
+
+  - id: specs
+    source_dir: specs
+    output_prefix: specs
+    nav_root: true
+    mapping: tree
+
+  - id: blog
+    source_dir: _posts
+    output_prefix: blog
+    nav_root: false
+    mapping: date_prefix
+
+  - id: install
+    source_dir: _pages/install
+    output_prefix: install
+    nav_root: true
+    mapping: prefix
+
+  - id: pages
+    source_dir: _pages
+    output_prefix: ""
+    nav_root: false
+    mapping: fixed
+    source_extensions: [adoc, html]
+    files:
+      install.adoc: install/index
+      author.adoc: author/index
+      develop.adoc: develop/index
+      learn.adoc: learn/index
+      contribute.adoc: contribute/index
+      reference_docs.adoc: reference/index
+
+  - id: reference
+    source_dir: reference_docs
+    output_prefix: reference
+    nav_root: false
+    mapping: ref_strip

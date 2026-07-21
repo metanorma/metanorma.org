@@ -33,5 +33,3 @@ export const posts: BlogPost[] = envelopes
     const db = b.date ? new Date(b.date).getTime() : 0
     return db - da
   })
-
-export const data = posts

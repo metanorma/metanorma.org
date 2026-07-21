@@ -1,13 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import FlavorLogo from '../components/FlavorLogo.astro'
+import HeroLighthouse from '../components/HeroLighthouse.astro'
+import { SITE } from '../lib/seo'
 import { homeData as d } from '../data/home'
 import { flavors } from '../data/flavors'
 import { posts } from '../data/posts'
 import { formatDate } from '../lib/format-date'
 const allFlavors = flavors
+// Logo image treatment for the flavor tiles, shared with FlavorCard /
+// FlavorPage through FlavorLogo. The tile itself keeps its own dark-mode
+// background special case (flavors with only a light logo need a light
+// tile to stay visible).
+const tileImgClass = 'h-12 max-w-full object-contain transition-transform duration-300 group-hover:scale-110'
 ---
 
-<BaseLayout title={d.hero.titleLine1 + ' ' + d.hero.titleLine2} description={d.hero.subtitle}>
+<BaseLayout title={d.hero.titleLine1 + ' ' + d.hero.titleLine2} seoTitle={`${SITE.name} — ${SITE.tagline}`} description={d.hero.subtitle}>
   <!-- ═══ HERO ═══ -->
   <section class="mn-grain relative overflow-hidden">
     <!-- Ambient background: gradient mesh + glow -->
@@ -41,36 +49,20 @@ const allFlavors = flavors
             {d.hero.secondaryAction.label}
           </a>
         </div>
+
+        <!-- Code sample -->
+        <figure class="mn-rise mt-10 max-w-[520px] overflow-hidden rounded-2xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-elv)]" style="animation-delay: 0.4s;">
+          <figcaption class="border-b border-[var(--mn-c-divider)] px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-[var(--mn-c-text-3)]">{d.hero.codeSample.label}</figcaption>
+          <pre class="overflow-x-auto px-5 py-4"><code class="text-[13px] leading-relaxed text-[var(--mn-c-text-2)]" style="font-family: var(--mn-font-mono)">{d.hero.codeSample.code}</code></pre>
+          <pre class="overflow-x-auto border-t border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-soft)] px-5 py-3"><code class="text-[13px] font-medium text-[var(--mn-c-brand-1)]" style="font-family: var(--mn-font-mono)">$ {d.hero.codeSample.command}</code></pre>
+        </figure>
       </div>
 
-      <!-- ▸ RIGHT — Large brand icon -->
+      <!-- ▸ RIGHT — Animated brand icon -->
       <div class="mn-rise relative flex items-center justify-center" style="animation-delay: 0.4s;">
         <div class="mn-glow-pulse absolute inset-0 rounded-full blur-3xl" style="background: radial-gradient(circle, var(--mn-c-brand-glow), transparent 65%);"></div>
         <div class="mn-hero-float relative">
-          <img src="/metanorma-logo_icon-light.svg" alt="Metanorma" class="h-64 w-64 dark:hidden md:h-80 md:w-80 lg:h-96 lg:w-96" />
-          <img src="/metanorma-logo_icon-dark.svg" alt="Metanorma" class="hidden h-64 w-64 dark:block md:h-80 md:w-80 lg:h-96 lg:w-96" />
-        </div>
-      </div>
-    </div>
-
-    <!-- ▸ Create your flavor -->
-    <div class="relative z-10 mx-auto max-w-[1320px] px-6 py-16">
-      <div class="mn-grain relative overflow-hidden rounded-3xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-elv)] px-8 py-10 md:px-12 md:py-12">
-        <div class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-[0.05] blur-3xl" style="background: radial-gradient(circle, var(--mn-c-brand-glow), transparent);"></div>
-        <div class="relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <div>
-            <p class="text-xs font-bold uppercase tracking-[0.2em] text-[var(--mn-c-brand-1)]">
-              For your organization
-            </p>
-            <h2 class="mt-2 text-2xl font-bold leading-tight text-[var(--mn-c-text-1)] md:text-3xl">
-              Build a custom flavor
-            </h2>
-            <p class="mt-2 max-w-md text-[var(--mn-c-text-2)]">Tailor Metanorma to your SDO's specific formatting, validation, and output requirements.</p>
-          </div>
-          <a href="/develop/topics/adopting-toolchain/" class="group flex flex-shrink-0 items-center gap-2 rounded-full bg-[var(--mn-c-brand-1)] px-7 py-3.5 text-sm font-semibold text-white no-underline shadow-lg shadow-[var(--mn-c-brand-1)]/20 transition-all duration-300 hover:shadow-xl">
-            Create your flavor
-            <svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
+          <HeroLighthouse class="h-64 w-64 md:h-80 md:w-80 lg:h-96 lg:w-96" />
         </div>
       </div>
     </div>
@@ -79,9 +71,9 @@ const allFlavors = flavors
   <!-- ═══ FLAVORS ═══ -->
   <section class="mx-auto max-w-[1320px] px-6 py-20">
     <div class="mb-10">
-      <p class="text-xs font-bold uppercase tracking-[0.25em] text-[var(--mn-c-brand-1)]">{allFlavors.length} flavors</p>
-      <h2 class="mt-3 text-3xl font-bold text-[var(--mn-c-text-1)] md:text-4xl">Supported organizations</h2>
-      <p class="mt-2 max-w-2xl text-[var(--mn-c-text-2)]">Spanning international, regional, national, and industry standards bodies.</p>
+      <p class="text-xs font-bold uppercase tracking-[0.25em] text-[var(--mn-c-brand-1)]">{d.flavorsSection.eyebrow}</p>
+      <h2 class="mt-3 text-3xl font-bold text-[var(--mn-c-text-1)] md:text-4xl">{d.flavorsSection.title}</h2>
+      <p class="mt-2 max-w-2xl text-[var(--mn-c-text-2)]">{d.flavorsSection.subtitle}</p>
     </div>
     <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
       {allFlavors.map((flavor, i) => (
@@ -91,18 +83,12 @@ const allFlavors = flavors
           title={flavor.description}
           style={`animation-delay: ${i * 0.04}s;`}
         >
-          <div class="flex h-14 items-center justify-center">
-            {flavor.logoLight
-              ? (<>
-                <img src={flavor.logoLight} alt={flavor.label} class="h-12 max-w-full object-contain transition-transform duration-300 group-hover:scale-110 dark:hidden" />
-                {flavor.logoDark
-                  ? <img src={flavor.logoDark} alt={flavor.label} class="hidden h-12 max-w-full object-contain transition-transform duration-300 group-hover:scale-110 dark:block" />
-                  : <img src={flavor.logoLight} alt={flavor.label} class="hidden h-12 max-w-full object-contain transition-transform duration-300 group-hover:scale-110 dark:block" />}
-              </>)
-            : flavor.logo
-              ? <img src={flavor.logo} alt={flavor.label} class={`h-12 max-w-full object-contain transition-transform duration-300 group-hover:scale-110 ${flavor.logoInvert ? 'dark:invert' : ''}`} />
-              : <span class="text-3xl font-bold text-[var(--mn-c-brand-1)]" style="font-family: var(--mn-font-display);">{flavor.label.charAt(0)}</span>}
-          </div>
+          <FlavorLogo
+            flavor={flavor}
+            containerClass="flex h-14 items-center justify-center"
+            imgClass={flavor.logoInvert ? `${tileImgClass} dark:invert` : tileImgClass}
+            fallbackTextClass="text-3xl font-bold text-[var(--mn-c-brand-1)]"
+          />
           <span class={`text-sm font-semibold ${flavor.logoLight && !flavor.logoDark ? 'dark:text-gray-800' : 'text-[var(--mn-c-text-1)]'}`}>{flavor.label}</span>
           {flavor.status === 'experimental' && <span class="absolute right-2 top-2 rounded-full bg-amber-500/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-600">Beta</span>}
           {flavor.status === 'private' && <span class="absolute right-2 top-2 rounded-full bg-[var(--mn-c-bg-mute)] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--mn-c-text-3)]">Private</span>}
@@ -114,8 +100,8 @@ const allFlavors = flavors
   <!-- ═══ PIPELINE ═══ -->
   <section class="mx-auto max-w-[1320px] px-6 py-20">
     <div class="mb-10 text-center">
-      <p class="text-xs font-bold uppercase tracking-[0.25em] text-[var(--mn-c-brand-1)]">How it works</p>
-      <h2 class="mt-3 text-3xl font-bold text-[var(--mn-c-text-1)] md:text-4xl">From source to published standard</h2>
+      <p class="text-xs font-bold uppercase tracking-[0.25em] text-[var(--mn-c-brand-1)]">{d.pipelineSection.eyebrow}</p>
+      <h2 class="mt-3 text-3xl font-bold text-[var(--mn-c-text-1)] md:text-4xl">{d.pipelineSection.title}</h2>
     </div>
     <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {d.pipeline.map((step, i) => (
@@ -131,15 +117,37 @@ const allFlavors = flavors
     </div>
   </section>
 
+  <!-- ═══ FOR YOUR ORGANIZATION ═══ -->
+  <section class="mx-auto max-w-[1320px] px-6 py-20">
+    <div class="mn-grain relative overflow-hidden rounded-3xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-elv)] px-8 py-10 md:px-12 md:py-12">
+      <div class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-[0.05] blur-3xl" style="background: radial-gradient(circle, var(--mn-c-brand-glow), transparent);"></div>
+      <div class="relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.2em] text-[var(--mn-c-brand-1)]">
+            {d.orgSection.eyebrow}
+          </p>
+          <h2 class="mt-2 text-2xl font-bold leading-tight text-[var(--mn-c-text-1)] md:text-3xl">
+            {d.orgSection.title}
+          </h2>
+          <p class="mt-2 max-w-md text-[var(--mn-c-text-2)]">{d.orgSection.subtitle}</p>
+        </div>
+        <a href={d.orgSection.action.href} class="group flex flex-shrink-0 items-center gap-2 rounded-full bg-[var(--mn-c-brand-1)] px-7 py-3.5 text-sm font-semibold text-white no-underline shadow-lg shadow-[var(--mn-c-brand-1)]/20 transition-all duration-300 hover:shadow-xl">
+          {d.orgSection.action.label}
+          <svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ RECENT POSTS ═══ -->
   <section class="mx-auto max-w-[1320px] px-6 py-20">
     <div class="mb-10 flex items-end justify-between">
       <div>
-        <p class="text-xs font-bold uppercase tracking-[0.25em] text-[var(--mn-c-brand-1)]">Latest news</p>
-        <h2 class="mt-3 text-3xl font-bold text-[var(--mn-c-text-1)] md:text-4xl">From the blog</h2>
+        <p class="text-xs font-bold uppercase tracking-[0.25em] text-[var(--mn-c-brand-1)]">{d.blogSection.eyebrow}</p>
+        <h2 class="mt-3 text-3xl font-bold text-[var(--mn-c-text-1)] md:text-4xl">{d.blogSection.title}</h2>
       </div>
-      <a href="/blog/" class="group flex items-center gap-1.5 text-sm font-semibold text-[var(--mn-c-brand-1)] no-underline">
-        All posts
+      <a href={d.blogSection.allPostsAction.href} class="group flex items-center gap-1.5 text-sm font-semibold text-[var(--mn-c-brand-1)] no-underline">
+        {d.blogSection.allPostsAction.label}
         <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </a>
     </div>
@@ -151,6 +159,23 @@ const allFlavors = flavors
           {post.description && <p class="mt-2 line-clamp-2 text-sm leading-relaxed text-[var(--mn-c-text-2)]">{post.description}</p>}
         </a>
       ))}
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="mx-auto max-w-[1320px] px-6 pb-24 pt-4">
+    <div class="mn-grain relative overflow-hidden rounded-3xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-elv)] px-8 py-12 text-center md:px-12">
+      <div class="pointer-events-none absolute -left-20 -top-20 h-64 w-64 rounded-full opacity-[0.05] blur-3xl" style="background: radial-gradient(circle, var(--mn-c-brand-glow), transparent);"></div>
+      <h2 class="relative text-2xl font-bold leading-tight text-[var(--mn-c-text-1)] md:text-3xl">{d.ctaSection.title}</h2>
+      <div class="relative mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a href={d.ctaSection.primaryAction.href} class="group inline-flex items-center gap-2 rounded-full bg-[var(--mn-c-brand-1)] px-7 py-3.5 text-sm font-semibold text-white no-underline transition-all duration-300 hover:shadow-xl hover:shadow-[var(--mn-c-brand-1)]/25">
+          {d.ctaSection.primaryAction.label}
+          <svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href={d.ctaSection.secondaryAction.href} class="inline-flex items-center gap-2 rounded-full border border-[var(--mn-c-divider)] px-7 py-3.5 text-sm font-semibold text-[var(--mn-c-text-1)] no-underline transition-all duration-300 hover:border-[var(--mn-c-brand-1)] hover:text-[var(--mn-c-brand-1)]">
+          {d.ctaSection.secondaryAction.label}
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>

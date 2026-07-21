@@ -1,0 +1,29 @@
+---
+import type { NavRoot } from '../lib/nav-tree'
+import { prevNextForPath } from '../lib/prev-next'
+
+// Prev/next pagination along a nav tree's reading sequence (see
+// src/lib/prev-next.ts). Renders nothing when the current page is not
+// part of the sequence. The nav tree comes in as a prop — pages resolve
+// it once and hand it down.
+interface Props { nav: NavRoot; pathname: string }
+const { nav, pathname } = Astro.props
+const { prev, next } = prevNextForPath(nav, pathname)
+---
+
+{(prev || next) && (
+  <nav aria-label="Pagination" class="mt-12 flex items-stretch gap-4 border-t border-[var(--mn-c-divider)] pt-6 text-sm">
+    {prev ? (
+      <a href={prev.href} class="group flex-1 rounded-lg border border-[var(--mn-c-divider)] px-4 py-3 no-underline transition-colors hover:border-[var(--mn-c-brand-1)]">
+        <span class="block text-xs font-medium uppercase tracking-wider text-[var(--mn-c-text-3)]">&larr; Previous</span>
+        <span class="mt-1 block font-semibold text-[var(--mn-c-brand-1)]">{prev.title}</span>
+      </a>
+    ) : <span class="flex-1" />}
+    {next ? (
+      <a href={next.href} class="group flex-1 rounded-lg border border-[var(--mn-c-divider)] px-4 py-3 text-right no-underline transition-colors hover:border-[var(--mn-c-brand-1)]">
+        <span class="block text-xs font-medium uppercase tracking-wider text-[var(--mn-c-text-3)]">Next &rarr;</span>
+        <span class="mt-1 block font-semibold text-[var(--mn-c-brand-1)]">{next.title}</span>
+      </a>
+    ) : <span class="flex-1" />}
+  </nav>
+)}

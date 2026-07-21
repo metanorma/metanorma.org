@@ -1,0 +1,175 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://www.metanorma.org/schemas/attribute-manifest.schema.yaml
+title: Metanorma document-attribute manifest
+description: >-
+  The contract for attributes/<flavor>.yaml — machine-readable, per-flavor
+  document-attribute definitions that drive the generated reference pages.
+  This YAML schema is the SINGLE SOURCE OF TRUTH: the zod model
+  (src/lib/attr-schema.generated.ts) is generated from it by
+  scripts/build-schemas.mjs. Authoring guide: attributes/README.md.
+
+type: object
+additionalProperties: false
+required: [flavor, label, attributes]
+properties:
+  flavor:
+    type: string
+    description: Machine id of the flavor ('standoc' for the generic set).
+  label:
+    type: string
+    description: Display name of the flavor.
+  inherits_from:
+    description: Parent manifest whose attributes are inherited; null for standoc.
+    anyOf:
+      - type: string
+      - type: "null"
+  gem:
+    type: string
+    description: The gem implementing these attributes (e.g. metanorma-iso).
+  source:
+    type: string
+    description: Provenance — the source page/spec the manifest was extracted from.
+  notes:
+    type: string
+    description: Top-level pointer rendered under the page intro (e.g. companion-page link).
+  description:
+    type: string
+    description: Intro prose rendered at the top of the reference page.
+  sections:
+    type: array
+    description: Prose blocks belonging to a category (standoc page intros).
+    items:
+      $ref: "#/$defs/sectionProseSchema"
+  attributes:
+    type: object
+    description: The attributes, keyed by name as typed in the document header.
+    additionalProperties:
+      $ref: "#/$defs/attributeSchema"
+
+$defs:
+  attrTypeSchema:
+    description: Attribute value kinds — the fixed vocabulary for `type:`.
+    enum: [string, enum, boolean, integer, number, uri, date, comma-list]
+
+  versionRefSchema:
+    description: "{component, version} — the gem and release that introduced/deprecated the attribute (e.g. metanorma-iso / v1.3.25). Rendered as a linked version chip."
+    type: object
+    additionalProperties: false
+    required: [component, version]
+    properties:
+      component:
+        type: string
+      version:
+        type: string
+
+  attrValueSchema:
+    description: One accepted value of an enum attribute.
+    type: object
+    additionalProperties: false
+    required: [name]
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      added_in:
+        $ref: "#/$defs/versionRefSchema"
+      notes:
+        type: string
+
+  attributeSchema:
+    description: >-
+      One document attribute. The record KEY in the manifest is the attribute
+      name (e.g. docstage, fullname{_i}); there is no duplicate name field.
+    type: object
+    additionalProperties: false
+    required: [category]
+    properties:
+      title:
+        type: string
+        description: Display title when it differs from the attribute name.
+      category:
+        type: string
+        description: Top-level grouping on the reference page.
+      subsection:
+        type: string
+        description: Second-level grouping inside the category.
+      type:
+        $ref: "#/$defs/attrTypeSchema"
+      values:
+        type: array
+        description: Accepted values (enum attributes).
+        items:
+          $ref: "#/$defs/attrValueSchema"
+      default:
+        type: string
+        description: Value applied when the attribute is omitted.
+      required:
+        type: boolean
+        description: The document cannot be processed without this attribute.
+      repeatable:
+        type: boolean
+        description: Indexed attribute ({_i}).
+      added_in:
+        $ref: "#/$defs/versionRefSchema"
+      deprecated_in:
+        $ref: "#/$defs/versionRefSchema"
+      version_history:
+        type: array
+        description: Further releases that changed the attribute.
+        items:
+          $ref: "#/$defs/versionRefSchema"
+      example:
+        type: string
+        description: 'Header snippet, e.g. ":docstage: 60".'
+      description:
+        type: string
+        description: Prose documentation (inline markup subset — see attributes/README.md).
+      anchor:
+        type: string
+        description: Deep-link anchor when it differs from the attribute name.
+      aliases:
+        type: array
+        description: Other names for the same attribute (alias anchors are emitted).
+        items:
+          type: string
+      alias_of:
+        type: string
+        description: This entry is an alias OF another entry (satellite).
+      see:
+        type: string
+        description: Pointer to the entry that actually documents this name.
+      legacy:
+        type: array
+        description: Legacy mn-* names (alias anchors are emitted).
+        items:
+          type: string
+      deprecated:
+        type: boolean
+      notes:
+        type: string
+        description: Extra caveats, shown as a meta line.
+      source_term:
+        type: string
+        description: The source-page term this entry was recovered/normalized from.
+      applies_to:
+        type: array
+        description: >-
+          Flavor ids this attribute applies to. Absent in standoc.yaml =
+          all flavors; absent in a flavor manifest = that flavor only;
+          present = exactly the listed flavors.
+        items:
+          type: string
+
+  sectionProseSchema:
+    description: Prose block belonging to a category (optionally a subsection).
+    type: object
+    additionalProperties: false
+    required: [name, prose]
+    properties:
+      name:
+        type: string
+      subsection:
+        type: string
+      prose:
+        type: string

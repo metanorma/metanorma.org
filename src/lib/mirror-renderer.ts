@@ -27,6 +27,17 @@ export interface HeadingRef {
 export interface RenderContext {
   seenIds: Set<string>
   headings: HeadingRef[]
+  // Renderer table for this render. When absent, renderNode dispatches
+  // through the module-level baseRenderers registry (the public
+  // registerNodeRenderer extension point). RenderPipeline passes its
+  // explicitly composed table here.
+  renderers?: Record<string, NodeRenderer>
+  // Trimmed page title to strip a duplicate first heading for (see
+  // recordHeading). Undefined = no stripping.
+  stripTitle?: string
+  // Set once the first recordable heading has been considered as a
+  // strip candidate — only that first heading can be stripped.
+  stripCandidateSeen?: boolean
 }
 
 export type NodeRenderer = (node: MirrorNode, ctx: RenderContext) => string
@@ -77,10 +88,24 @@ function resolveHeadingId(attrs: Record<string, unknown>, fallbackText: string, 
   return uniqueId(slugify(fallbackText), ctx)
 }
 
-function recordHeading(depth: number, id: string, node: MirrorNode, ctx: RenderContext): void {
-  if (depth >= 2 && depth <= 4 && id) {
-    ctx.headings.push({ depth, slug: id, text: extractText(node) })
+// Records a heading in the TOC list. Returns true when the heading was
+// STRIPPED instead: when a strip title is set, the first recordable
+// heading (depth 2-4 with an id) whose text matches it is dropped from
+// both the headings array and (by the callers below) the emitted HTML.
+// This replaces the old indexOf/substring HTML surgery in the loader,
+// which dropped headings[0] even when the HTML strip itself did not
+// fire — the renderer knows the first heading when it emits it.
+function recordHeading(depth: number, id: string, node: MirrorNode, ctx: RenderContext): boolean {
+  if (depth < 2 || depth > 4 || !id) return false
+  const text = extractText(node)
+  if (!ctx.stripCandidateSeen) {
+    ctx.stripCandidateSeen = true
+    if (ctx.stripTitle !== undefined && text.trim() === ctx.stripTitle) {
+      return true
+    }
   }
+  ctx.headings.push({ depth, slug: id, text })
+  return false
 }
 
 function xrefHref(target: string | undefined): string {
@@ -166,7 +191,7 @@ const renderHeading: NodeRenderer = (node, ctx) => {
   const attrs = node.attrs || {}
   const level = (attrs.level as number) || 1
   const id = resolveHeadingId(attrs, extractText(node), ctx)
-  recordHeading(level, id, node, ctx)
+  if (recordHeading(level, id, node, ctx)) return ''
   return `<h${level}${id ? ` id="${escapeHtml(id)}"` : ''}>${renderChildren(node, ctx)}</h${level}>`
 }
 
@@ -205,8 +230,8 @@ const renderSectionLike: NodeRenderer = (node, ctx) => {
   const attrs = node.attrs || {}
   const level = sectionLevelToHeadingLevel(attrs.level as number)
   const id = resolveHeadingId(attrs, String(attrs.title || ''), ctx)
-  if (attrs.title) recordHeading(level, id, node, ctx)
-  const heading = attrs.title
+  const stripped = attrs.title ? recordHeading(level, id, node, ctx) : false
+  const heading = attrs.title && !stripped
     ? `<h${level}${id ? ` id="${escapeHtml(id)}"` : ''}>${escapeHtml(String(attrs.title))}</h${level}>`
     : ''
   return `<section${id ? ` id="${escapeHtml(id)}"` : ''}>${heading}${renderChildren(node, ctx)}</section>`
@@ -284,7 +309,7 @@ const renderFloatingTitle: NodeRenderer = (node, ctx) => {
   const level = sectionLevelToHeadingLevel(attrs.level as number)
   const title = String(attrs.title || '')
   const id = resolveHeadingId(attrs, title, ctx)
-  recordHeading(level, id, node, ctx)
+  if (recordHeading(level, id, node, ctx)) return ''
   return `<h${level}${id ? ` id="${escapeHtml(id)}"` : ''}>${escapeHtml(title)}</h${level}>`
 }
 
@@ -336,8 +361,12 @@ const renderDefault: NodeRenderer = (node, ctx) =>
 // Single source of truth for type → renderer. Multiple types can alias
 // the same renderer (e.g., clause/annex/references share renderSectionLike).
 // Adding a new type = adding one entry here.
+//
+// Exported as baseRenderers so RenderPipeline can compose its own table
+// explicitly ({ ...baseRenderers, ...componentRenderers }) instead of
+// relying on import-time registration side effects.
 
-const nodeRenderers: Record<string, NodeRenderer> = {
+export const baseRenderers: Record<string, NodeRenderer> = {
   doc: renderDoc,
   frontmatter: () => '',
   sections: renderChildrenOnly,
@@ -395,15 +424,26 @@ const nodeRenderers: Record<string, NodeRenderer> = {
 
 export function renderNode(node: MirrorNode, ctx: RenderContext): string {
   if (!node || typeof node.type !== 'string') return ''
-  const renderer = nodeRenderers[node.type] ?? renderDefault
+  const table = ctx.renderers ?? baseRenderers
+  const renderer = table[node.type] ?? renderDefault
   return renderer(node, ctx)
 }
 
-export function renderMirrorToHtml(doc: MirrorNode | string): string {
-  return renderMirrorWithHeadings(doc).html
+export function renderMirrorToHtml(doc: MirrorNode | string, options: RenderMirrorOptions = {}): string {
+  return renderMirrorWithHeadings(doc, options).html
 }
 
-export function renderMirrorWithHeadings(doc: MirrorNode | string): { html: string; headings: HeadingRef[] } {
+export interface RenderMirrorOptions {
+  // Renderer table to dispatch through for this render (default:
+  // the module-level baseRenderers registry).
+  renderers?: Record<string, NodeRenderer>
+  // When set (and non-empty), the first recorded heading whose text
+  // matches this title (trimmed) is stripped from both the HTML and
+  // the headings array — the renderer-level duplicate-title strip.
+  stripFirstHeadingIf?: string
+}
+
+export function renderMirrorWithHeadings(doc: MirrorNode | string, options: RenderMirrorOptions = {}): { html: string; headings: HeadingRef[] } {
   if (typeof doc === 'string') {
     try {
       doc = JSON.parse(doc) as MirrorNode
@@ -412,26 +452,22 @@ export function renderMirrorWithHeadings(doc: MirrorNode | string): { html: stri
     }
   }
   const ctx: RenderContext = { seenIds: new Set(), headings: [] }
+  if (options.renderers) ctx.renderers = options.renderers
+  if (options.stripFirstHeadingIf) ctx.stripTitle = options.stripFirstHeadingIf.trim()
   const html = renderNode(doc, ctx)
   return { html, headings: ctx.headings }
 }
 
-// Exported for testing and for callers that need to register custom
-// renderers (extension point — OCP: extend without modifying the
-// dispatch table above).
+// Public extension API (OCP: extend without modifying the dispatch
+// table above). Registration mutates baseRenderers, so it affects
+// renderMirrorToHtml/renderMirrorWithHeadings callers that do not pass
+// an explicit table. RenderPipeline composes its own table at
+// construction time and is therefore NOT affected by later
+// registration — pass custom renderers to its constructor instead.
 export function registerNodeRenderer(type: string, renderer: NodeRenderer): void {
-  nodeRenderers[type] = renderer
+  baseRenderers[type] = renderer
 }
 
 export function lookupNodeRenderer(type: string): NodeRenderer | undefined {
-  return nodeRenderers[type]
-}
-
-// Mark handler extension points — mirrors the node renderer pattern.
-export function registerMarkHandler(type: string, handler: MarkHandler): void {
-  markHandlers[type] = handler
-}
-
-export function lookupMarkHandler(type: string): MarkHandler | undefined {
-  return markHandlers[type]
+  return baseRenderers[type]
 }

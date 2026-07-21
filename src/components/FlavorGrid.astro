@@ -1,16 +1,19 @@
 ---
 import { flavors } from '../data/flavors'
 import type { Flavor } from '../data/types'
+import { CATEGORY_ORDER } from '../lib/flavor-groups'
 import FlavorCard from './FlavorCard.astro'
 
-type Status = Flavor['status']
-const groups: Array<{ label: string; statuses: Status[] }> = [
-  { label: 'Supported Flavors', statuses: ['supported'] },
-  { label: 'Experimental', statuses: ['experimental'] },
-  { label: 'Private', statuses: ['private'] },
-]
-const flavorGroups = groups
-  .map(g => ({ ...g, items: flavors.filter(f => g.statuses.includes(f.status)) }))
+// The grid defaults to the full catalog but accepts any subset — the
+// caller owns which flavors are shown (props over globals). Grouping is
+// by flavor category (International / Industry / National), like the
+// header mega-menu; `docsIds` (mirror collection ids) marks flavors
+// whose docs are not on the site yet.
+interface Props { items?: Flavor[]; docsIds?: Set<string> }
+const { items = flavors, docsIds } = Astro.props
+
+const flavorGroups = CATEGORY_ORDER
+  .map(c => ({ ...c, items: items.filter(f => f.category === c.key) }))
   .filter(g => g.items.length > 0)
 ---
 
@@ -19,7 +22,9 @@ const flavorGroups = groups
     <section class="mb-12">
       <h2 class="mb-4 text-xl font-bold tracking-tight text-[var(--mn-c-text-1)]">{group.label}</h2>
       <div class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3">
-        {group.items.map(flavor => <FlavorCard flavor={flavor} />)}
+        {group.items.map(flavor => (
+          <FlavorCard flavor={flavor} hasDocs={docsIds ? docsIds.has(`flavors/${flavor.id}`) : true} />
+        ))}
       </div>
     </section>
   ))}

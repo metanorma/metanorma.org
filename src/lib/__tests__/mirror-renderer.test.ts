@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   renderMirrorToHtml,
+  renderMirrorWithHeadings,
   slugify,
   type MirrorNode,
 } from '../mirror-renderer'
@@ -674,5 +675,77 @@ describe('renderMirrorToHtml', () => {
     it('node with no marks and no text renders empty children', () => {
       expect(renderMirrorToHtml({ type: 'text' })).toBe('')
     })
+  })
+})
+
+// stripFirstHeadingIf: the renderer-level duplicate-title strip. The
+// loader passes the page title; the renderer drops the FIRST recordable
+// heading (depth 2–4 with an id) whose text matches it — from BOTH the
+// emitted HTML and the headings array, so the two can never disagree
+// (the old indexOf/substring loader surgery dropped headings[0] even
+// when the HTML strip did not fire).
+describe('renderMirrorWithHeadings: stripFirstHeadingIf', () => {
+  function clause(title: string, body = 'Body.'): MirrorNode {
+    return {
+      type: 'clause',
+      attrs: { title, level: 1 },
+      content: [p(text(body))],
+    }
+  }
+
+  it('strips the first heading from HTML and headings when it matches the title', () => {
+    const { html, headings } = renderMirrorWithHeadings(
+      doc(clause('My Page'), clause('Next Section')),
+      { stripFirstHeadingIf: 'My Page' },
+    )
+    expect(html).not.toContain('<h2 id="my-page"')
+    expect(html).toContain('Body.')
+    expect(html).toContain('<h2 id="next-section">Next Section</h2>')
+    expect(headings).toEqual([{ depth: 2, slug: 'next-section', text: 'Next Section' }])
+  })
+
+  it('keeps everything when the first heading does not match', () => {
+    const { html, headings } = renderMirrorWithHeadings(
+      doc(clause('A Section')),
+      { stripFirstHeadingIf: 'Other Title' },
+    )
+    expect(html).toContain('<h2 id="a-section">A Section</h2>')
+    expect(headings).toEqual([{ depth: 2, slug: 'a-section', text: 'A Section' }])
+  })
+
+  it('only the FIRST recordable heading is a strip candidate', () => {
+    // The second heading matches the title but is not stripped.
+    const { html, headings } = renderMirrorWithHeadings(
+      doc(clause('Intro'), clause('My Page')),
+      { stripFirstHeadingIf: 'My Page' },
+    )
+    expect(html).toContain('<h2 id="intro">Intro</h2>')
+    expect(html).toContain('<h2 id="my-page">My Page</h2>')
+    expect(headings).toHaveLength(2)
+  })
+
+  it('trims the given title before matching', () => {
+    const { headings } = renderMirrorWithHeadings(
+      doc(clause('My Page')),
+      { stripFirstHeadingIf: '  My Page  ' },
+    )
+    expect(headings).toEqual([])
+  })
+
+  it('no option = no stripping', () => {
+    const { html, headings } = renderMirrorWithHeadings(doc(clause('My Page')))
+    expect(html).toContain('<h2 id="my-page">My Page</h2>')
+    expect(headings).toEqual([{ depth: 2, slug: 'my-page', text: 'My Page' }])
+  })
+
+  it('strips a matching floating_title as well', () => {
+    const d = doc(
+      { type: 'floating_title', attrs: { title: 'My Page', level: 1 } },
+      p(text('after')),
+    )
+    const { html, headings } = renderMirrorWithHeadings(d, { stripFirstHeadingIf: 'My Page' })
+    expect(html).not.toContain('<h2')
+    expect(html).toContain('after')
+    expect(headings).toEqual([])
   })
 })

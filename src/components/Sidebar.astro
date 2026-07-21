@@ -1,11 +1,12 @@
 ---
-import { sidebarFor } from '../config/site'
 import { sourcePathToUrl } from '../lib/nav-tree'
-import type { NavNode } from '../lib/nav-tree'
+import type { NavRoot, NavNode } from '../lib/nav-tree'
 
-interface Props { pathname: string }
-const { pathname } = Astro.props
-const nav = sidebarFor(pathname)
+// The nav tree comes in as a prop: pages resolve it ONCE (via
+// sidebarFor in src/config/site.ts) and hand it down — components do
+// not reach back into global config themselves.
+interface Props { nav: NavRoot | null; pathname: string }
+const { nav, pathname } = Astro.props
 
 function norm(url: string): string {
   return '/' + url.replace(/^\/+|\/+$/g, '') + '/'

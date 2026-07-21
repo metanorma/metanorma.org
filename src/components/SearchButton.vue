@@ -34,17 +34,24 @@ async function doSearch() {
     results.value = []
     return
   }
-  const pf = await ensurePagefind()
-  const search = await pf.search(query.value)
-  const limited = search.results.slice(0, 8)
-  results.value = await Promise.all(
-    limited.map(async (r: any) => {
-      const data = await r.data()
-      const title = data?.meta?.title || r.url
-      const excerpt = stripHtml(data?.excerpt || data?.meta?.description || '')
-      return { url: r.url, title, excerpt: excerpt.slice(0, 120) + (excerpt.length > 120 ? '...' : '') }
-    })
-  )
+  try {
+    const pf = await ensurePagefind()
+    const search = await pf.search(query.value)
+    const limited = search.results.slice(0, 8)
+    results.value = await Promise.all(
+      limited.map(async (r: any) => {
+        const data = await r.data()
+        const title = data?.meta?.title || r.url
+        const excerpt = stripHtml(data?.excerpt || data?.meta?.description || '')
+        return { url: r.url, title, excerpt: excerpt.slice(0, 120) + (excerpt.length > 120 ? '...' : '') }
+      })
+    )
+  } catch {
+    // Pagefind failed to load (e.g. index not built yet on dev) or the
+    // search itself errored — show no results rather than an unhandled
+    // rejection.
+    results.value = []
+  }
 }
 
 function onInput() {

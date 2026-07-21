@@ -1,15 +1,15 @@
 // Enhanced component renderers for the mirror-renderer.
 //
-// These override the base node renderers via registerNodeRenderer(),
-// the OCP extension point. AsciiDoc authors get richer HTML without
-// needing a new content pipeline. Each renderer is a pure function
-// that produces component-grade markup styled by global.css.
+// These override the base node renderers. AsciiDoc authors get richer
+// HTML without needing a new content pipeline. Each renderer is a pure
+// function that produces component-grade markup styled by global.css.
 //
-// Importing this module registers all components as a side effect.
-// The render pipeline imports it so registration happens before
-// any content is rendered.
+// This module has NO import-time side effects: it exports the
+// componentRenderers table, and RenderPipeline composes it explicitly
+// ({ ...baseRenderers, ...componentRenderers }) — production output no
+// longer depends on module import order.
 
-import { registerNodeRenderer, renderNode, type NodeRenderer } from './mirror-renderer'
+import { renderNode, type NodeRenderer } from './mirror-renderer'
 import { escapeHtml } from './html'
 
 // ── SVG icons ────────────────────────────────────────────────────────
@@ -70,13 +70,14 @@ const renderTableComponent: NodeRenderer = (node, ctx) => {
   return `<div class="table-wrapper"><table>${caption}${headHtml}${bodyHtml}</table></div>`
 }
 
-// ── Registration ─────────────────────────────────────────────────────
+// ── The component renderer table ─────────────────────────────────────
+// Overrides for base node types, composed into the production pipeline
+// by render-pipeline.ts. Adding a component override = adding one
+// entry here.
 
-export function registerComponentRenderers(): void {
-  registerNodeRenderer('admonition', renderAdmonitionComponent)
-  registerNodeRenderer('code_block', renderCodeBlockComponent)
-  registerNodeRenderer('sourcecode', renderCodeBlockComponent)
-  registerNodeRenderer('table', renderTableComponent)
+export const componentRenderers: Record<string, NodeRenderer> = {
+  admonition: renderAdmonitionComponent,
+  code_block: renderCodeBlockComponent,
+  sourcecode: renderCodeBlockComponent,
+  table: renderTableComponent,
 }
-
-registerComponentRenderers()
