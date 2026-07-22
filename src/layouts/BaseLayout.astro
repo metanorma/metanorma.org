@@ -73,5 +73,25 @@ const crumbs = props.crumbs ?? (pathname === '/' ? [] : autoCrumbs(pathname, doc
       <slot />
     </main>
     <Footer />
+    <script is:inline>
+      // The easter-egg registry — type help() in the console to meet them all.
+      window.help = function () {
+        console.log('%c Metanorma easter eggs ', 'background:#1a1a2e;color:#c8b8ff;padding:4px 8px;border-radius:4px;font-weight:bold;')
+        console.table([
+          { egg: 'The lighthouse', where: 'Homepage', how: 'Move to aim · click to kick · hold for SOS · Konami ↑↑↓↓←→←→BA · reduced motion? click to start' },
+          { egg: 'Fog & the occasional ship', where: 'Homepage hero', how: 'Just watch the sea for a while' },
+          { egg: 'IN FORCE stamp', where: 'Homepage code card', how: 'Already stamped. It means what you think it means' },
+          { egg: 'The :hidden: attribute', where: '/hidden/', how: 'The only attribute not in the reference' },
+          { egg: 'MN/PN-404', where: '/404.html', how: 'A page not found, expected publication Q3 2099' },
+          { egg: 'Annex Z (informative)', where: 'Every docs page', how: 'Scroll to the bottom' },
+          { egg: 'Search secrets', where: '⌘K / Ctrl+K', how: 'Rotating placeholders, the secretariat, the drafting committee' },
+          { egg: 'Day shift / night shift', where: 'Theme toggle', how: 'Hover it (the lamp knows)' },
+          { egg: 'Navigation, as amended', where: 'Mobile menu', how: 'Open the menu below 768px' },
+          { egg: 'Please initial each page', where: 'Print', how: '⌘P / Ctrl+P' },
+          { egg: 'help()', where: 'This console', how: 'You already know' },
+        ])
+        console.log('%c — The Committee ', 'color:#8a86a8;font-style:italic;')
+      }
+    </script>
   </body>
 </html>
