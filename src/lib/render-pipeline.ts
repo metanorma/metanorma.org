@@ -22,6 +22,7 @@ import { renderMath } from './render-math'
 import { renderCode } from './render-code'
 import { rewriteFlavorLinks } from './rewrite-flavor-links'
 import { normalizeLinks } from './normalize-links'
+import { chipifyVersionMentions } from './version-chips'
 
 export type RenderStep = (input: string) => string | Promise<string>
 
@@ -58,12 +59,14 @@ export class RenderPipeline {
 }
 
 // The production pipeline: base renderers + component overrides,
-// then renderMath → renderCode → rewriteFlavorLinks → normalizeLinks.
+// then renderMath → renderCode → chipifyVersionMentions →
+// rewriteFlavorLinks → normalizeLinks.
 export const defaultPipeline = new RenderPipeline(
   { ...baseRenderers, ...componentRenderers },
   [
     renderMath,
     renderCode,
+    chipifyVersionMentions,
     rewriteFlavorLinks,
     normalizeLinks,
   ],
