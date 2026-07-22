@@ -170,6 +170,10 @@ const allRedirects = mergeRedirects(
 
 const redirectSourceSet = new Set(Object.keys(allRedirects).flatMap(url => [url, url.replace(/\/$/, '')]))
 
+// URLs that must never appear in the sitemap: redirect sources, plus the
+// /hidden/ easter-egg page (hidden from crawlers by design).
+const sitemapExcludeSet = new Set([...redirectSourceSet, '/hidden/', '/hidden'])
+
 // Blog post dates → sitemap lastmod (the only content with reliable
 // dates; envelopes were already read above for redirects).
 const lastmodByPath = new Map()
@@ -185,7 +189,7 @@ export default defineConfig({
   output: 'static',
   integrations: [
     sitemap({
-      filter: makeSitemapFilter(redirectSourceSet),
+      filter: makeSitemapFilter(sitemapExcludeSet),
       serialize: (item) => {
         const lastmod = lastmodByPath.get(new URL(item.url).pathname)
         return lastmod ? { ...item, lastmod } : item

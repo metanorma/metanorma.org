@@ -2,10 +2,59 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 ---
 
-<BaseLayout title="Not Found" description="The page you requested does not exist.">
-  <div class="flex flex-col items-center gap-4 px-6 py-32 text-center">
-    <h1 class="m-0 text-7xl font-extrabold text-[var(--mn-c-brand-1)]">404</h1>
-    <p class="text-[var(--mn-c-text-2)]">The page you requested could not be found.</p>
-    <a href="/" class="rounded-lg bg-[var(--mn-c-brand-1)] px-6 py-3 font-semibold text-white no-underline">Return to the homepage</a>
+<BaseLayout title="MN/PN-404 — Page Not Found" description="The page you requested does not exist. It has been submitted to the working group for consideration.">
+  <div class="mx-auto max-w-2xl px-6 py-16">
+    <!-- Fake document header, in the finest standards-house style -->
+    <div class="rounded-xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-elv)] p-8">
+      <p class="m-0 text-xs font-bold uppercase tracking-[0.25em] text-[var(--mn-c-text-3)]">Metanorma · Provisional Publication</p>
+      <h1 class="mb-2 mt-3 text-4xl font-extrabold text-[var(--mn-c-text-1)]">Page Not Found</h1>
+      <p class="m-0 text-lg text-[var(--mn-c-text-2)]">The requested resource has been withdrawn from circulation</p>
+
+      <dl class="mt-6 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 border-t border-[var(--mn-c-divider)] pt-4 font-mono text-[13px] text-[var(--mn-c-text-2)]">
+        <dt class="font-bold text-[var(--mn-c-text-3)]">:docnumber:</dt><dd>404</dd>
+        <dt class="font-bold text-[var(--mn-c-text-3)]">:doctype:</dt><dd>international-standard (proposed)</dd>
+        <dt class="font-bold text-[var(--mn-c-text-3)]">:docstage:</dt><dd>00.00</dd>
+        <dt class="font-bold text-[var(--mn-c-text-3)]">:publisher:</dt><dd>The Committee</dd>
+        <dt class="font-bold text-[var(--mn-c-text-3)]">:status:</dt><dd>in-force (unfortunately)</dd>
+      </dl>
+    </div>
+
+    <div class="mn-rendered mt-8 text-[var(--mn-c-text-2)]">
+      <h2 class="text-xl font-bold text-[var(--mn-c-text-1)]">1&nbsp;&nbsp;Scope</h2>
+      <p>
+        This page does not exist (yet). It has been assigned the provisional
+        identifier <strong>MN/PN-404</strong> and submitted to the working group
+        for consideration. Expected publication: <strong>Q3 2099</strong>.
+      </p>
+
+      <h2 class="mt-6 text-xl font-bold text-[var(--mn-c-text-1)]">2&nbsp;&nbsp;Normative references</h2>
+      <p>You were probably looking for one of these:</p>
+      <ul class="list-disc pl-6">
+        <li><a href="/get-started/">Get Started</a> — the canonical entry point</li>
+        <li><a href="/flavors/">All flavors</a> — every standards organization we support</li>
+        <li><a href="/author/">Authoring Guide</a> — how to write documents</li>
+        <li><a href="/blog/">Blog</a> — news, as amended</li>
+      </ul>
+
+      <h2 class="mt-6 text-xl font-bold text-[var(--mn-c-text-1)]">3&nbsp;&nbsp;Terms and definitions</h2>
+      <dl class="mt-2">
+        <dt class="font-semibold text-[var(--mn-c-text-1)]">3.1&nbsp;&nbsp;<code>404</code></dt>
+        <dd class="ml-6">condition in which a resource is (a) moved to another flavor, (b) still in drafting, or (c) withdrawn by the committee without prejudice.</dd>
+      </dl>
+
+      <h2 class="mt-6 text-xl font-bold text-[var(--mn-c-text-1)]">Annex A <span class="font-normal">(informative)</span></h2>
+      <p class="italic">
+        Why pages go missing: they are moved (they are always moved), renamed
+        (never without a redirect — we checked), or assigned to a new work
+        item with a different number. If you reached this page from an
+        external link, the redirect working group would love to hear from you
+        via <a href="https://github.com/metanorma/metanorma.org/issues">GitHub issues</a>.
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <a href="/" class="rounded-full bg-[var(--mn-c-brand-1)] px-6 py-3 text-sm font-semibold text-white no-underline">Return to the homepage</a>
+        <a href="javascript:void(0)" onclick="window.dispatchEvent(new KeyboardEvent('keydown', {key: 'k', ctrlKey: true, bubbles: true}))" class="text-sm font-semibold text-[var(--mn-c-brand-1)] no-underline">Search the site (⌘K)</a>
+      </div>
+    </div>
   </div>
 </BaseLayout>

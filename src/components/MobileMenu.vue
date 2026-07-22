@@ -75,6 +75,9 @@ onBeforeUnmount(() => {
       class="absolute inset-x-0 top-full max-h-[calc(100vh-4rem)] overflow-y-auto border-b border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-elv)] shadow-lg"
     >
       <ul class="px-4 py-2">
+        <li class="border-b border-[var(--mn-c-divider)] py-2 text-[11px] uppercase tracking-[0.22em] text-[var(--mn-c-text-3)]">
+          Navigation, as amended
+        </li>
         <li v-for="item in nav" :key="item.text" class="border-b border-[var(--mn-c-divider)] last:border-b-0">
           <details v-if="item.items" class="mn-mobile-group">
             <summary class="flex cursor-pointer items-center justify-between py-3 text-sm font-medium text-[var(--mn-c-text-1)]">

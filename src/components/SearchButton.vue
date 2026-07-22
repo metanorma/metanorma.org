@@ -3,8 +3,20 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 const open = ref(false)
 const query = ref('')
+const searching = ref(false)
 const results = ref<Array<{ url: string; title: string; excerpt: string }>>([])
 let pagefind: any = null
+
+// A little secretariat humor, rotated per modal open.
+const PLACEHOLDERS = [
+  'Search documentation…',
+  'Search for the lost annex…',
+  'Search, as amended…',
+  'Find your flavor…',
+  'Search for meaning (and attributes)…',
+  'Search — no committees required…',
+]
+const placeholder = ref(PLACEHOLDERS[0])
 
 async function ensurePagefind() {
   if (!pagefind) {
@@ -34,6 +46,7 @@ async function doSearch() {
     results.value = []
     return
   }
+  searching.value = true
   try {
     const pf = await ensurePagefind()
     const search = await pf.search(query.value)
@@ -51,6 +64,8 @@ async function doSearch() {
     // search itself errored — show no results rather than an unhandled
     // rejection.
     results.value = []
+  } finally {
+    searching.value = false
   }
 }
 
@@ -63,6 +78,7 @@ function openModal() {
   open.value = true
   query.value = ''
   results.value = []
+  placeholder.value = PLACEHOLDERS[Math.floor(Math.random() * PLACEHOLDERS.length)]
   setTimeout(() => {
     const input = document.querySelector<HTMLInputElement>('#mn-search-input')
     input?.focus()
@@ -116,11 +132,14 @@ onBeforeUnmount(() => {
         id="mn-search-input"
         v-model="query"
         type="search"
-        placeholder="Search documentation..."
+        :placeholder="placeholder"
         class="w-full rounded-lg border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-soft)] px-4 py-3 text-base text-[var(--mn-c-text-1)] outline-none focus:border-[var(--mn-c-brand-1)]"
         @input="onInput"
       />
-      <div v-if="results.length" class="mt-3 max-h-[50vh] overflow-y-auto">
+      <div v-if="searching" class="mt-4 text-center text-sm text-[var(--mn-c-text-3)]">
+        Consulting the secretariat…
+      </div>
+      <div v-else-if="results.length" class="mt-3 max-h-[50vh] overflow-y-auto">
         <a
           v-for="r in results"
           :key="r.url"
@@ -133,7 +152,7 @@ onBeforeUnmount(() => {
         </a>
       </div>
       <div v-else-if="query" class="mt-4 text-center text-sm text-[var(--mn-c-text-3)]">
-        No results found.
+        No results found. The drafting committee has been notified.
       </div>
     </div>
   </dialog>

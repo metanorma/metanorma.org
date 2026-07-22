@@ -29,7 +29,7 @@ onBeforeUnmount(() => {
     class="inline-flex items-center justify-center rounded-lg border border-[var(--mn-c-divider)] p-1.5 text-[var(--mn-c-text-2)] transition-colors hover:text-[var(--mn-c-brand-1)]"
     :aria-pressed="isDark"
     aria-label="Toggle dark mode"
-    title="Toggle theme"
+    :title="isDark ? 'Day shift (the lamp dozes)' : 'Night shift (the lamp is on duty)'"
     @click="toggle"
   >
     <svg v-show="!isDark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
