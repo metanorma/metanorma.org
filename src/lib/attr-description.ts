@@ -18,6 +18,8 @@
 // the mirror renderer's output so the existing .mn-rendered CSS styles
 // both pipelines identically. Pure string → string: no Astro imports.
 
+import { versionChip } from './version-chips'
+
 function escapeHtml(text: string): string {
   return text
     .replace(/&/g, '&amp;')
@@ -75,25 +77,20 @@ export function renderInline(raw: string): string {
   // render as a version chip, the same markup AttrEntry.astro uses for
   // entry-level added_in chips (component from the repo, version from
   // the tag). Non-matching URLs fall back to a compact release link.
+  // Shared with the mirror pipeline step (src/lib/version-chips.ts).
   out = out.replace(/\[added in (https?:\/\/[^\]]+)\]/g, (_, url) => {
-    const m = url.match(/github\.com\/metanorma\/([^/]+)\/releases\/tag\/([^/?\]]+)/)
-    if (!m) {
-      const version = url.split('/').pop()
-      return stash(`<a class="added-in" href="${url}" target="_blank" rel="noopener">added in ${version}</a>`)
-    }
-    const [, component, version] = m
-    return stash(`<a class="attr-chip attr-chip-version" href="${url}" target="_blank" rel="noopener" title="Added in ${component} ${version}">${component} ≥ ${version}</a>`)
+    const chip = versionChip(url, 'added')
+    if (chip) return stash(chip)
+    const version = url.split('/').pop()
+    return stash(`<a class="added-in" href="${url}" target="_blank" rel="noopener">added in ${version}</a>`)
   })
 
   // [deprecated in https://…/releases/tag/vX] — warning version chip.
   out = out.replace(/\[deprecated in (https?:\/\/[^\]]+)\]/g, (_, url) => {
-    const m = url.match(/github\.com\/metanorma\/([^/]+)\/releases\/tag\/([^/?\]]+)/)
-    if (!m) {
-      const version = url.split('/').pop()
-      return stash(`<a class="added-in" href="${url}" target="_blank" rel="noopener">deprecated in ${version}</a>`)
-    }
-    const [, component, version] = m
-    return stash(`<a class="attr-chip attr-chip-warn" href="${url}" target="_blank" rel="noopener" title="Deprecated in ${component} ${version}">deprecated in ${component} ≥ ${version}</a>`)
+    const chip = versionChip(url, 'deprecated')
+    if (chip) return stash(chip)
+    const version = url.split('/').pop()
+    return stash(`<a class="added-in" href="${url}" target="_blank" rel="noopener">deprecated in ${version}</a>`)
   })
 
   // Bold / italic (constrained: not inside words).

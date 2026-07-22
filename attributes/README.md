@@ -121,6 +121,44 @@ bullet lists, `[NOTE]`/`[TIP]` admonitions, `[source]` fences,
 `[example]` blocks, and `.Caption` lines. Paragraphs are preserved. Do not
 paste HTML.
 
+## Version chips (`[added in …]` / `[deprecated in …]`)
+
+Anywhere in documentation prose — in a manifest `description`, an
+`example`, a companion page, a topic page, or a blog post — a version
+mention in this exact form renders as a linked **version chip**:
+
+```adoc
+[added in https://github.com/metanorma/<component>/releases/tag/<version>]
+[deprecated in https://github.com/metanorma/<component>/releases/tag/<version>]
+```
+
+Example:
+
+```adoc
+Applies to edition numbers [added in https://github.com/metanorma/metanorma-jis/releases/tag/v0.3.7].
+```
+
+renders as: [`metanorma-jis ≥ v0.3.7`](https://github.com/metanorma/metanorma-jis/releases/tag/v0.3.7)
+(a chip linking to the release; `[deprecated in …]` renders as a warning
+chip reading `deprecated in <component> ≥ <version>`).
+
+Rules:
+
+- The URL must be a release of a `metanorma/*` GitHub repo — the chip's
+  **component** comes from the repo name and the **version** from the
+  tag. Version tags differ per component (`metanorma-iso v1.3.25` ≠
+  `metanorma-standoc v1.3.25`), so always link the repo that shipped the
+  feature.
+- Non-release URLs fall back to a plain `added in vX` release link —
+  no chip.
+- Prefer the structured form in manifests (`added_in: {component,
+  version}` on the entry or value) — those become entry-level chips
+  automatically. The macro form is for prose mentions.
+- Where it renders: every page. YAML attribute pages convert it in
+  `src/lib/attr-description.ts`; all mirror pages convert it as the
+  `chipifyVersionMentions` step of the render pipeline
+  (`src/lib/version-chips.ts` — the shared helper both paths use).
+
 ## Authoring workflow
 
 ### Editing an existing manifest
