@@ -1,0 +1,11 @@
+# Validator amendments for attributes/jis.yaml (gem-review corrections;
+# loaded by scripts/extract_attributes.rb — regenerate with the extractor after edits)
+---
+doctype:
+  notes_update:
+    expert-commentary: 'Not accepted by the current metanorma-jis validator: doctype_validate
+      in lib/metanorma/jis/validate.rb (v1.1.5) accepts only japanese-industrial-standard,
+      technical-report, technical-specification and amendment, and logs error JIS_1
+      for any other doctype. The converter still processes expert-commentary (personal
+      contributors, EXP docidentifier; spec/metanorma/base_spec.rb), so the gem''s
+      validator and converter disagree on this value.'

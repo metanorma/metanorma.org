@@ -1,0 +1,89 @@
+# Validator amendments for attributes/gb.yaml (gem-review corrections;
+# loaded by scripts/extract_attributes.rb — regenerate with the extractor after edits)
+---
+scope:
+  add_values:
+  - name: national
+    description: "(default) National standard."
+  - name: sector
+    description: Sector (industry) standard. The `:prefix:` is validated against the
+      sector prefix list in the gem (lib/asciidoctor/gb/validate.rb prefix_validate).
+  - name: professional
+    description: Professional standard.
+  - name: local
+    description: Local standard. The `:prefix:` is the two-digit region code; any
+      leading `DB` is stripped by the converter (lib/asciidoctor/gb/front.rb get_prefix).
+  - name: enterprise
+    description: Enterprise standard (`Q/` prefix). `:issuer:` is required (lib/asciidoctor/gb/validate.rb
+      issuer_validate).
+  - name: social-group
+    description: Social group standard (`T/` prefix).
+  notes: Value set cross-checked against the gbstandard.rng gbscope enum (national/sector/professional/local/enterprise/social-group);
+    matches the inline list on the source page. When `:scope:` is omitted it is inferred
+    from a `T/` or `Q/` prefix, else defaults to `national` (lib/asciidoctor/gb/front.rb
+    get_scope).
+mandate:
+  add_values:
+  - name: mandatory
+    description: "(default) Mandatory standard. Rendered as document type `standard`."
+  - name: recommended
+    description: Recommended standard. Rendered as document type `recommendation`.
+  - name: guidelines
+    description: Guidelines. Also derived from a `/Z` prefix when `:mandate:` is not
+      given.
+    notes: Enumerated by gbstandard.rng gbmandate and produced by get_mandate, but
+      the current gem passes `guidelines` through unchanged as ext/doctype (lib/asciidoctor/gb/front.rb
+      doctype), which is rejected by doctype_validate and the gbstandard.rng DocumentType
+      enum (standard, recommendation). Accepted as a mandate, but currently triggers
+      a doctype validation warning.
+  notes: Value set cross-checked against the gbstandard.rng gbmandate enum (mandatory/recommended/guidelines);
+    matches the inline list on the source page. When `:mandate:` is omitted it is
+    inferred from a `/T` or `/Z` prefix suffix, else defaults to `mandatory` (lib/asciidoctor/gb/front.rb
+    get_mandate).
+  drop:
+  - required
+topic:
+  add_values:
+  - name: basic
+    description: "(default) Basic topic."
+  - name: health-and-safety
+    description: Health and safety.
+  - name: environment-protection
+    description: Environment protection.
+  - name: engineering-and-construction
+    description: Engineering and construction.
+  - name: product
+    description: Product.
+  - name: method
+    description: Method.
+  - name: management-techniques
+    description: Management techniques.
+  - name: other
+    description: Other.
+  notes: Value set cross-checked against the gbstandard.rng gbtopic enum (basic/health-and-safety/environment-protection/engineering-and-construction/product/method/management-techniques/other);
+    matches the inline list on the source page. Defaults to `basic` when omitted (lib/asciidoctor/gb/front.rb
+    get_topic).
+technical-committee-type:
+  add_values:
+  - name: technical
+    description: Technical committee.
+  - name: provisional
+    description: Provisional committee.
+  - name: drafting
+    description: Drafting committee.
+    notes: Enumerated by the gbstandard.rng schema (gbcommittee/@type) but not documented
+      on the source page.
+  notes: Value set cross-checked against the gbstandard.rng gbcommittee/@type enum
+    (technical/provisional/drafting).
+equivalence:
+  add_values:
+  - name: equivalent
+    description: "(default) The GB standard is equivalent to the corresponding ISO
+      standard."
+  - name: identical
+    description: The GB standard is identical to the corresponding ISO standard.
+  - name: nonequivalent
+    description: The GB standard is not equivalent to the corresponding ISO standard.
+  notes: Value set documented inline on the source page; the current gem does not
+    validate it — any string is accepted and the default is `equivalent` (lib/asciidoctor/gb/front.rb
+    metadata_equivalence).

@@ -1,0 +1,123 @@
+---
+layout: ogc-flavor
+title: Metanorma OGC attribute notes
+---
+
+This page collects the guidance that accompanies the
+link:/flavors/ogc/ref/document-attributes[Metanorma for OGC document attributes]
+reference: the mapping of legacy OGC document abbreviations, the rename of
+White Paper to Technical Paper, the OGC identity design schemes, and the
+legacy OGC AsciiDoc attribute synonyms.
+
+[NOTE]
+====
+Document attributes listed in the reference are unique to the processing of
+OGC documents in Metanorma.
+
+For _common document attributes_, see
+link:/author/ref/document-attributes/[Document attributes reference] which
+describes attributes that apply across all Metanorma flavors.
+
+For an _introduction to Metanorma document attributes_ and how Metanorma uses
+them, see
+link:/author/ref/document-attributes/[the corresponding topic].
+====
+
+== Legacy OGC document abbreviations
+
+Abbreviations are sometimes used to designate that a document has a
+certain document type, document subtype and document stage.
+This is a mapping from legacy OGC document values to the current normalized
+list:
+
+"`AS`" Abstract Specification:: Now `:doctype: abstract-specification-topic`.
+"`BP`" Best Practice:: Now `:doctype: best-practice`.
+"`CAN`" Candidate Standard:: Now `:doctype: standard` and `:docstage: swg-draft`.
+"`CC`" Conformance Class:: Not a standalone document, but a part of a document with `:doctype: standard`. No longer exists.
+"`CR`" Change Request:: Now `:doctype: change-request-supporting-document`; the actual Change Request is a database entry.
+"`CS`" Community Standard:: Now `:doctype: community-standard`.
+"`CP`" Community Practice:: Now `:doctype: community-practice`.
+"`DP`" Discussion Paper:: Now `:doctype: discussion-paper`.
+"`DP-Draft`" Draft Discussion Paper:: Now `:doctype: discussion-paper` with `:docstage: swg-draft`.
+"`IPR`" Interoperability Program Report -- Engineering Specification:: Now `:doctype: engineering-report`.
+"`IS`" Implementation Standard:: Now `:doctype: standard`, `:docsubtype: implementation`.
+"`ISC`" Implementation Standard Corrigendum:: Now `:doctype: standard`, `:docsubtype: implementation` (TBD to indicate `corrigendum`).
+"`ISx`" Extension Package Standard:: Now `:doctype: standard`, `:docsubtype: extension`.
+"`Notes`" Notes:: Now `:doctype: other`, there is no specific type for "`Notes`".
+"`ORM`" OGC Reference Model:: Now `:doctype: reference-model`.
+"`PC`" Profile Corrigendum:: Now `:doctype: standard`, `:docsubtype: profile` (TBD to indicate `corrigendum`).
+"`PER`" Public Engineering Report:: Now `:doctype: engineering-report`.
+"`POL`" Policy:: Now `:doctype: policy`.
+"`POL-NTS`" Policy -- Name Type Specification:: Now `:doctype: engineering-report`, there is no specific indication for "`NTS`".
+"`Primer`" Primer:: Now `:doctype: other`, there is no specific type for "`Primer`".
+"`Profile`" Profile:: Now `:doctype: standard`, `:docsubtype: profile`.
+"`RFC`" Request for Comment:: Now `:doctype: standard` and `:docstage: public-rfc`.
+"`Retired`" Retired document:: This is a document stage indicated `:docstage: retired`.
+"`SAP`" Standard Application Profile:: Now `:doctype: standard`, `:docsubtype: profile`.
+"`TS`":: Test Suite (TBD)
+"`WhitePaper`" Whitepaper:: Was `:doctype: white-paper`, but now `:doctype: technical-paper`.
+Please refer to the description of `technical-paper` under
+link:/flavors/ogc/ref/document-attributes#ogc-doctype[`:doctype:`] in the
+document attributes reference.
+
+[[legacy-ogc-whitepaper]]
+== OGC White Paper now renamed as Technical Paper
+
+The OGC Planning Committee at the 121st OGC Member Meeting has approved the
+rename of the document type "`White Paper`" to "`Technical Paper`".
+
+All documents issued or published before 2021-12-16 will remain with the
+document type "`White Paper`", and documents published on or after that date
+will have the document type "`Technical Paper".
+
+The two document types are treated identically, and are rendered differently
+depending on the date published or issued.
+
+== OGC identity design
+
+OGC has launched new logo and color scheme on 2021-11-08, and on 2026-01-01.
+
+Both current and previous identity designs are supported in Metanorma-OGC.
+The differences include:
+
+* OGC logo
+* PDF color scheme
+
+Application of the branding design depends solely on the publication date
+of an OGC deliverable:
+
+* a deliverable with a publication date on or after 2026-01-01 will use the
+  new branding. This will also be used if `:document-scheme: 2026` is provided,
+  or if no scheme is specified.
+
+* a deliverable with a publication date on or after 2021-11-08 will use the
+  2022 branding. This will also be used if `:document-scheme: 2022` is provided.
+
+* a deliverable dated prior to 2021-11-08 will utilize the 2018 branding.
+  This will also be used if `:document-scheme: 2018` is provided.
+
+=== PDF color scheme
+
+The PDF color scheme can be redefined via the
+`:presentation-metadata-color-*:` attributes documented in the
+link:/flavors/ogc/ref/document-attributes[Metanorma for OGC document attributes]
+reference.
+
+== Mapping to OGC legacy AsciiDoc
+
+Metanorma-OGC permits legacy OGC AsciiDoc template attributes,
+and are treated as synonyms of the corresponding Metanorma attributes:
+
+|===
+| OGC Metanorma AsciiDoc                    | OGC legacy AsciiDoc
+
+| `:copyright-year:`                        | `:copyrightYear`
+| `:workgroup:`                             | `:workingGroup:`
+| `:published-date:`                        | `:publicationDate:`
+| `:issued-date:`                           | `:approvalDate:`
+| `:received-date:`                         | `:submissionDate:`
+| `:docnumber:`                             | `:docReference:`
+| `:fullname:`, with `:role:` = `editor`    | `:editor:`
+| `:edition:`                               | `:version:`
+
+|===

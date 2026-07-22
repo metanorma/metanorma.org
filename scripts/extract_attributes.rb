@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "yaml"
+
 # Library for the document-attribute manifest extractor.
 #
 # Reads the four hand-written attribute reference pages:
@@ -26,12 +28,18 @@
 #   * A definition-list term line (`` `:name:`:: ``, tolerating missing
 #     colons, multi-name terms, `(legacy: ...)` and `(DEPRECATED)` suffixes)
 #     opens an attribute entry. The entry owns every line up to the next
-#     term line or heading.
+#     term line or heading. Colon-less terms (`` `name`:: ``) open entries
+#     too: several pages (IEEE, IHO) keep a whole section in one flat `::`
+#     list whose terms are sibling attributes. Only boolean-literal terms
+#     (`` `true`:: ``/`` `false`:: ``) inside an open entry stay value
+#     lines; real value lists use `:::` markers or `--` open blocks.
 #   * Within an entry: the dd zone (contiguous lines plus `+` continuation
-#     chains) may carry `` `value`::: `` lists and `[example]` blocks; free
-#     blocks after the dd re-attach to the entry description in reading
-#     order, except free fenced example blocks, which are section-level and
-#     are reported for the hand-written companion pages.
+#     chains) may carry `` `value`::: `` lists, `` `value`:: ``/`` `value`::: ``
+#     definition lists inside `--` open blocks (the term's value list), and
+#     `[example]` blocks; free blocks after the dd re-attach to the entry
+#     description in reading order, except free fenced example blocks,
+#     which are section-level and are reported for the hand-written
+#     companion pages.
 #   * Prose seen before the first entry of a (sub)section is section prose:
 #     stored in `sections:` for standoc, reported for the ISO/IETF companion
 #     pages. Page-intro prose becomes the manifest `description:`.
@@ -78,85 +86,104 @@ module ExtractAttributes
              "author-suffixing conventions, and xml2rfc processing " \
              "instruction guidance.",
     },
-  }.freeze
-
-  # Post-extraction corrections from the gem validator review (see
-  # attributes/extraction-report.txt for the full table). Each added value
-  # cites its evidence in `notes`.
-  VALIDATOR_AMENDMENTS = {
-    "iso" => {
-      "doctype" => {
-        "add_values" => [
-          { "name" => "recommendation",
-            "description" => "Recommendation (Rec)",
-            "notes" => "Accepted by the current metanorma-iso validator " \
-                       "(lib/metanorma/iso/validate.rb doctype_validate) and " \
-                       "mapped in lib/metanorma/iso/front_id.rb " \
-                       "DOCTYPE2HASHID, but not documented on the source page." },
-        ],
-      },
-      "document-scheme" => {
-        "add_values" => [
-          { "name" => "1979",
-            "description" => "Document layout used from 1979 to 1987.",
-            "notes" => "Accepted by the current metanorma-iso converter " \
-                       "(lib/metanorma/iso/base.rb DOCUMENT_SCHEMES) but not " \
-                       "documented on the source page." },
-        ],
-      },
-      "docstage" => {
-        "add_values" => [
-          { "name" => "00", "description" => "Preliminary stage (PWI)." },
-          { "name" => "10", "description" => "Proposal stage (NP, AWI)." },
-          { "name" => "20", "description" => "Preparatory stage (WD)." },
-          { "name" => "30", "description" => "Committee stage (CD)." },
-          { "name" => "40", "description" => "Enquiry stage (DIS)." },
-          { "name" => "50", "description" => "Approval stage (FDIS)." },
-          { "name" => "60",
-            "description" => "Publication stage (`60.00` is the PRF proof, " \
-                             "`60.60` the published document)." },
-          { "name" => "90", "description" => "Review stage.",
-            "notes" => "Enumerated by the isostandard.rnc schema but not " \
-                       "described on the source page." },
-          { "name" => "95", "description" => "Withdrawal stage.",
-            "notes" => "Enumerated by the isostandard.rnc schema but not " \
-                       "described on the source page." },
-        ],
-        "notes" => "Stage-code value set cross-checked against the " \
-                   "isostandard.rnc schema enum (00/10/20/30/40/50/60/90/95).",
-      },
-      "docsubstage" => {
-        "add_values" => [
-          { "name" => "00",
-            "description" => "Assumed substage when omitted (except at stage " \
-                             "`60`)." },
-          { "name" => "20", "description" => "Substage 20.",
-            "notes" => "Enumerated by the isostandard.rnc schema but not " \
-                       "described on the source page." },
-          { "name" => "60",
-            "description" => "Assumed substage at stage `60` (`60.00` = PRF " \
-                             "proof, `60.60` = published)." },
-          { "name" => "90", "description" => "Substage 90.",
-            "notes" => "Enumerated by the isostandard.rnc schema but not " \
-                       "described on the source page." },
-          { "name" => "92", "description" => "Substage 92.",
-            "notes" => "Enumerated by the isostandard.rnc schema but not " \
-                       "described on the source page." },
-          { "name" => "93", "description" => "Substage 93.",
-            "notes" => "Enumerated by the isostandard.rnc schema but not " \
-                       "described on the source page." },
-          { "name" => "98", "description" => "Substage 98.",
-            "notes" => "Enumerated by the isostandard.rnc schema but not " \
-                       "described on the source page." },
-          { "name" => "99", "description" => "Substage 99.",
-            "notes" => "Enumerated by the isostandard.rnc schema but not " \
-                       "described on the source page." },
-        ],
-        "notes" => "Substage value set cross-checked against the " \
-                   "isostandard.rnc schema enum (00/20/60/90/92/93/98/99).",
-      },
+    "iec" => {
+      flavor: "iec", label: "IEC",
+      gem: "metanorma-iec", inherits_from: "standoc",
+      source: "flavors/iec/ref/document-attributes.adoc",
+      companion: "flavors/iec/ref/notes.adoc",
+      notes: "See /flavors/iec/ref/notes/ for stage-code mappings and " \
+             "usage notes.",
+    },
+    "ieee" => {
+      flavor: "ieee", label: "IEEE SA",
+      gem: "metanorma-ieee", inherits_from: "standoc",
+      source: "flavors/ieee/ref/document-attributes.adoc",
+      companion: "flavors/ieee/ref/contributors.adoc",
+      notes: "See /flavors/ieee/ref/contributors/ for contributor " \
+             "metadata guidance.",
+    },
+    "itu" => {
+      flavor: "itu", label: "ITU-T",
+      gem: "metanorma-itu", inherits_from: "standoc",
+      source: "flavors/itu/ref/document-attributes.adoc",
+      companion: "flavors/itu/ref/editorial-groups.adoc",
+      notes: "See /flavors/itu/ref/editorial-groups/ for the ITU " \
+             "editorial group structure.",
+    },
+    "jis" => {
+      flavor: "jis", label: "JIS",
+      gem: "metanorma-jis", inherits_from: "standoc",
+      source: "flavors/jis/ref/document-attributes.adoc",
+      companion: "flavors/jis/ref/notes.adoc",
+      notes: "See /flavors/jis/ref/notes/ for additional guidance.",
+    },
+    "iho" => {
+      flavor: "iho", label: "IHO",
+      gem: "metanorma-iho", inherits_from: "standoc",
+      source: "flavors/iho/ref/document-attributes.adoc",
+      companion: "flavors/iho/ref/notes.adoc",
+      notes: "See /flavors/iho/ref/notes/ for additional guidance.",
+    },
+    "nist" => {
+      flavor: "nist", label: "NIST",
+      gem: "metanorma-nist", inherits_from: "standoc",
+      source: "flavors/nist/ref/document-attributes.adoc",
+      companion: "flavors/nist/ref/notes.adoc",
+      notes: "See /flavors/nist/ref/notes/ for identifier-composition " \
+             "rules, series guidance, and document-relationship conventions.",
+    },
+    "bsi" => {
+      flavor: "bsi", label: "BSI",
+      gem: "metanorma-bsi", inherits_from: "standoc",
+      source: "flavors/bsi/ref/document-attributes.adoc",
+      companion: "flavors/bsi/ref/notes.adoc",
+      notes: "See /flavors/bsi/ref/notes/ for document-type lists, " \
+             "identifier construction rules, and adoption and commentary " \
+             "guidance.",
+    },
+    "gb" => {
+      flavor: "gb", label: "China Standards",
+      gem: "metanorma-gb", inherits_from: "standoc",
+      source: "flavors/gb/ref/document-attributes.adoc",
+      companion: "flavors/gb/ref/notes.adoc",
+      notes: "See /flavors/gb/ref/notes/ for title, classification and " \
+             "prefix-inference guidance.",
+    },
+    "plateau" => {
+      flavor: "plateau", label: "PLATEAU",
+      gem: "metanorma-plateau", inherits_from: "standoc",
+      source: "flavors/plateau/ref/document-attributes.adoc",
+      companion: "flavors/plateau/ref/notes.adoc",
+      notes: "See /flavors/plateau/ref/notes/ for additional guidance.",
+    },
+    "ogc" => {
+      flavor: "ogc", label: "OGC",
+      gem: "metanorma-ogc", inherits_from: "standoc",
+      source: "flavors/ogc/ref/document-attributes.adoc",
+      companion: "flavors/ogc/ref/notes.adoc",
+      notes: "See /flavors/ogc/ref/notes/ for legacy document-type " \
+             "abbreviations, the White Paper rename, branding schemes, " \
+             "and legacy AsciiDoc attribute synonyms.",
+    },
+    "bipm" => {
+      flavor: "bipm", label: "BIPM",
+      gem: "metanorma-bipm", inherits_from: "standoc",
+      source: "flavors/bipm/ref/document-attributes.adoc",
+      companion: "flavors/bipm/ref/notes.adoc",
+      notes: "See /flavors/bipm/ref/notes/ for additional guidance.",
     },
   }.freeze
+
+  # Post-extraction corrections from gem validator reviews, kept as DATA
+  # (one YAML per flavor in attributes/amendments/) rather than inline
+  # Ruby — the runner loads and applies them at extraction time. Each
+  # amendment block supports: add_values, notes_update, notes, set, drop
+  # (see Runner#apply_amendments and attributes/README.md).
+  AMENDMENTS_DIR = File.join(OUTPUT_DIR, "amendments")
+
+  VALIDATOR_AMENDMENTS = Dir.glob(File.join(AMENDMENTS_DIR, "*.yaml")).to_h do |path|
+    [File.basename(path, ".yaml"), YAML.safe_load_file(path)]
+  end.freeze
 
   autoload :SourcePage, File.join(__dir__, "extract_attributes", "source_page")
   autoload :Fences, File.join(__dir__, "extract_attributes", "fences")

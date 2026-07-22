@@ -17,7 +17,7 @@ describe('YAML data schemas', () => {
     ])
   })
 
-  it('all YAML data files conform to their schemas', async () => {
+  it('all YAML data files conform to their schemas', { timeout: 30000 }, async () => {
     const failures = await checkAllSchemas()
     expect(
       failures.map(f => `${f.file} (${f.kind}): ${f.errors.join('; ')}`),

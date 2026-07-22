@@ -1,0 +1,53 @@
+# Validator amendments for attributes/nist.yaml (gem-review corrections;
+# loaded by scripts/extract_attributes.rb — regenerate with the extractor after edits)
+---
+doctype:
+  add_values:
+  - name: standard
+    description: Standard (the only NIST document type).
+    notes: Only value accepted by the current metanorma-nist validator (lib/metanorma/nist/validate.rb
+      doctype_validate, NIST_1 warns on anything else). `doctype` itself is not documented
+      on the source page; the default comes from metanorma-standoc.
+status:
+  add_values:
+  - name: draft-internal
+    description: Internal NIST draft.
+  - name: draft-wip
+    description: Work-in-progress draft.
+  - name: draft-prelim
+    description: Preliminary draft.
+  - name: draft-public
+    description: Public draft.
+  - name: draft-approval
+    description: Draft in approval.
+  - name: final
+    description: 'Final (default: document is published).'
+  - name: final-review
+    description: Final, in review.
+  notes: Value set matches the metanorma-nist validator exactly (lib/metanorma/nist/validate.rb
+    stage_validate, NIST_2); values were previously only listed in the description
+    prose. Default is `final` and the legacy `:docstage:` attribute is also honored
+    (lib/metanorma/nist/front.rb metadata_status).
+substage:
+  add_values:
+  - name: active
+    description: Active (default).
+  - name: retired
+    description: Retired (applies only to drafts, when they are abandoned). `:abandoned-date:`
+      must be provided, to indicate when the draft was abandoned.
+  - name: withdrawn
+    description: Withdrawn (applies to drafts superseded by the next draft stage,
+      and to published documents superseded or no longer valid).
+  notes: Value set matches the metanorma-nist validator exactly (lib/metanorma/nist/validate.rb
+    substage_validate, NIST_3); values were previously only listed in the description
+    prose. Default is `active` (lib/metanorma/nist/front.rb metadata_status).
+iteration:
+  notes: The metanorma-nist validator only accepts `final` (case-insensitive) or a
+    plain number for iteration (lib/metanorma/nist/validate.rb iteration_validate,
+    NIST_4); other free text — including the source page's own "initial" example —
+    triggers a validation warning.
+series:
+  notes: No enum is hard-coded in the gem; the validator only checks that a secondary
+    (user-defined) series is present exactly when the main series is the NIST Cybersecurity
+    Technical Specification (CSTS) umbrella, and forbids it otherwise (lib/metanorma/nist/validate.rb
+    subseries_validate, NIST_5/NIST_6).

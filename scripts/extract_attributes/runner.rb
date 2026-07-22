@@ -16,16 +16,19 @@ module ExtractAttributes
 
     attr_reader :report
 
-    def run(keys, pages: PAGES)
+    def run(keys, pages: PAGES, amendments: VALIDATOR_AMENDMENTS)
       FileUtils.mkdir_p(@output_dir)
-      keys.each { |key| run_one(key, pages.fetch(key) { raise "unknown flavor #{key.inspect}" }) }
+      keys.each do |key|
+        run_one(key, pages.fetch(key) { raise "unknown flavor #{key.inspect}" },
+                amendments.fetch(key, {}))
+      end
       File.write(File.join(@output_dir, "extraction-report.txt"), @report.render)
       @out.puts "report written to #{File.join(@output_dir, 'extraction-report.txt')}"
     end
 
     private
 
-    def run_one(key, config)
+    def run_one(key, config, amendments)
       page = SourcePage.load(config[:source])
       facts = @report[key]
       facts[:prose_target] = config[:companion] ? "(companion: #{config[:companion]})" : "(manifest sections:)"
@@ -82,7 +85,7 @@ module ExtractAttributes
       end
 
       merged = merge_duplicates(raw_entries, facts)
-      apply_amendments(key, merged, facts)
+      apply_amendments(merged, facts, amendments)
       crosscheck(page, merged, facts)
       collect_stats(merged, facts)
       write_manifest(key, config, intro, merged, prose_events)
@@ -172,10 +175,30 @@ module ExtractAttributes
       "#{name} (second occurrence near line #{line_no}: #{notes.join('; ')})"
     end
 
-    def apply_amendments(key, merged, facts)
-      amendments = VALIDATOR_AMENDMENTS.fetch(key, {})
-      merged.each do |name, entry|
-        amend = amendments[name] or next
+    # Validator-review corrections. Amendments merge into extracted
+    # entries; an amendment naming an attribute with NO extracted entry
+    # creates it (validator-only attributes — e.g. an undocumented doctype
+    # whose value set is enforced by the gem but absent from the page).
+    # The new entry's category comes from the amendment's optional
+    # "category" key, falling back to the manifest's first category.
+    # Field-level operations per attribute block:
+    #   "add_values"   => [ {name, description?, notes?}, ... ] (union)
+    #   "notes_update" => { value-name => note } (per-value notes)
+    #   "notes"        => attribute-level note (appended)
+    #   "set"          => { field => value } (overwrite fields, e.g. type/default)
+    #   "drop"         => [ field, ... ] (remove fields, e.g. required/added_in)
+    def apply_amendments(merged, facts, amendments)
+      index = merged.to_h
+      amendments.each do |name, amend|
+        entry = index[name]
+        unless entry
+          entry = {}
+          category = amend["category"] || index.values.first&.dig("category")
+          entry["category"] = category if category
+          merged << [name, entry]
+          index[name] = entry
+          facts[:amendments] << "#{name}: entry created from validator amendment (not documented on the source page)"
+        end
         if amend["add_values"]
           have = (entry["values"] ||= []).map { |v| v["name"] }
           amend["add_values"].each do |v|
@@ -184,7 +207,33 @@ module ExtractAttributes
             entry["values"] << v
             facts[:amendments] << "#{name}: added value #{v['name']} (#{v['notes'] || 'from gem validation'})"
           end
-          entry["type"] = "enum" if entry["type"] == "string"
+          entry["type"] = "enum" if entry["type"].nil? || entry["type"] == "string"
+        end
+        if amend["set"]
+          amend["set"].each do |field, value|
+            entry[field] = value
+            facts[:amendments] << "#{name}: set #{field} = #{value.inspect}"
+          end
+        end
+        if amend["drop"]
+          amend["drop"].each do |field|
+            next unless entry.key?(field)
+
+            entry.delete(field)
+            facts[:amendments] << "#{name}: dropped #{field}"
+          end
+        end
+        if amend["notes_update"]
+          values = entry["values"] ||= []
+          amend["notes_update"].each do |value_name, note|
+            value = values.find { |v| v["name"] == value_name }
+            if value
+              value["notes"] = [value["notes"], note].compact.join(" ")
+            else
+              values << { "name" => value_name, "notes" => note }
+            end
+            facts[:amendments] << "#{name}: noted value #{value_name}"
+          end
         end
         next unless amend["notes"]
 

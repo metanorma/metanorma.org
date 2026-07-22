@@ -71,10 +71,29 @@ export function renderInline(raw: string): string {
   out = out.replace(/&lt;(https?:\/\/[^&]+?)&gt;/g, (_, url) =>
     stash(`<a href="${url}" target="_blank" rel="noopener">${url}</a>`))
 
-  // [added in https://…/releases/tag/vX.Y.Z] — compact release link.
+  // [added in https://github.com/metanorma/<component>/releases/tag/vX] —
+  // render as a version chip, the same markup AttrEntry.astro uses for
+  // entry-level added_in chips (component from the repo, version from
+  // the tag). Non-matching URLs fall back to a compact release link.
   out = out.replace(/\[added in (https?:\/\/[^\]]+)\]/g, (_, url) => {
-    const version = url.split('/').pop()
-    return stash(`<a class="added-in" href="${url}" target="_blank" rel="noopener">added in ${version}</a>`)
+    const m = url.match(/github\.com\/metanorma\/([^/]+)\/releases\/tag\/([^/?\]]+)/)
+    if (!m) {
+      const version = url.split('/').pop()
+      return stash(`<a class="added-in" href="${url}" target="_blank" rel="noopener">added in ${version}</a>`)
+    }
+    const [, component, version] = m
+    return stash(`<a class="attr-chip attr-chip-version" href="${url}" target="_blank" rel="noopener" title="Added in ${component} ${version}">${component} ≥ ${version}</a>`)
+  })
+
+  // [deprecated in https://…/releases/tag/vX] — warning version chip.
+  out = out.replace(/\[deprecated in (https?:\/\/[^\]]+)\]/g, (_, url) => {
+    const m = url.match(/github\.com\/metanorma\/([^/]+)\/releases\/tag\/([^/?\]]+)/)
+    if (!m) {
+      const version = url.split('/').pop()
+      return stash(`<a class="added-in" href="${url}" target="_blank" rel="noopener">deprecated in ${version}</a>`)
+    }
+    const [, component, version] = m
+    return stash(`<a class="attr-chip attr-chip-warn" href="${url}" target="_blank" rel="noopener" title="Deprecated in ${component} ${version}">deprecated in ${component} ≥ ${version}</a>`)
   })
 
   // Bold / italic (constrained: not inside words).

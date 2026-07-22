@@ -10,6 +10,8 @@ module ExtractAttributes
     BULLET_RE = /\A\*\s+`([^`]+)`\s*:?(.*)\z/.freeze
     VALUES_INTRO_RE = /values?\s+(?:are|allowed)\b|choices\b|possible values/i.freeze
     INLINE_ENUM_RE = /(?:valid|legal|allowed|accepted|possible)\s+values(?:\s+are|\s+is)?\s*:?\s*((?:`[^`]+`(?:\s*\((?:default|default value)\))?(?:\s*,\s*|\s+(?:or|and)\s+|\s*\.\s*$))+)/i.freeze
+    # Italic-token enumeration starting its own line: "_a_ or _b_".
+    ITALIC_ENUM_RE = /(?:\A|\n)[ \t]*((?:_[A-Za-z][A-Za-z0-9-]*_(?:[ \t]*,[ \t]*|[ \t]+(?:or|and)[ \t]+))+_[A-Za-z][A-Za-z0-9-]*_)/.freeze
     COMMENT_RE = /\A\s*\/\//.freeze
     TITLE_LINE_RE = /\A\.([^.].*)\z/.freeze
 
@@ -240,6 +242,11 @@ module ExtractAttributes
     # anywhere in the entry body, outside opaque fences. A value consumes
     # its dd-style sub-content: contiguous lines plus `+`-continuation
     # chains. Blank-separated free blocks stay with the entry flow.
+    #
+    # `--` open blocks are transparent to this scan: a definition list
+    # inside an open block attached to the term is that term's value list
+    # (IEEE `doctype`/`docsubtype`, ITU `status`), not description text.
+    # Blocks without value lines (e.g. NOTE wrappers) stay verbatim.
     def extract_line_values(lines)
       kept = []
       values = []
@@ -252,6 +259,17 @@ module ExtractAttributes
           kept << line
           open = nil if marker == open
           i += 1
+          next
+        end
+        if marker == "--" && (close = lines[(i + 1)..]&.index { |l| l.strip == "--" })
+          inner_kept, inner_values = extract_line_values(lines[(i + 1)...(i + 1 + close)])
+          if inner_values.any?
+            values.concat(inner_values)
+            kept.concat(inner_kept)
+          else
+            kept.concat(lines[i..(i + 1 + close)])
+          end
+          i += close + 2
           next
         end
         if marker
@@ -358,16 +376,21 @@ module ExtractAttributes
     end
 
     # "Allowed values: `a`, `b`, and `c`." inline enumerations. Recording
-    # only — the prose stays in the description.
+    # only — the prose stays in the description. Italic enumerations
+    # starting their own line ("_individual_ or _entity_") are the same
+    # construct without backticks (IEEE `balloting-group-type`).
     def extract_inline_values(description)
-      m = INLINE_ENUM_RE.match(description)
-      return [] unless m
-
-      tokens = m[1].scan(/`([^`]+)`/).flatten.uniq
-      return [] if tokens.size < 2
+      tokens = default_token = nil
+      if (m = INLINE_ENUM_RE.match(description))
+        tokens = m[1].scan(/`([^`]+)`/).flatten.uniq
+        default_token = m[1][/`([^`]+)`\s*\((?:default|default value)\)/, 1]
+      elsif (m = ITALIC_ENUM_RE.match(description))
+        tokens = m[1].scan(/_([^_]+)_/).flatten.uniq
+        default_token = description[/\(default:\s*_([^_]+)_\)/, 1]
+      end
+      return [] unless tokens && tokens.size >= 2
 
       @stats[:inline_values] += tokens.size
-      default_token = m[1][/`([^`]+)`\s*\((?:default|default value)\)/, 1]
       tokens.map do |t|
         v = { "name" => t }
         v["_desc"] = []

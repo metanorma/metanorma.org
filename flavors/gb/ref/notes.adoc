@@ -1,0 +1,120 @@
+---
+layout: gb-flavor
+title: Metanorma China Standards attribute notes
+---
+
+This page collects supplementary guidance that accompanies the
+link:/flavors/gb/ref/document-attributes[Metanorma China Standards document attributes]
+reference. The attributes themselves are documented there.
+
+== Document title
+
+GB standards carry bilingual titles: a Chinese title, given through
+`:title-intro-zh:`, `:title-main-zh:` and `:title-part-zh:`, and an English
+title, given through `:title-intro-en:`, `:title-main-en:` and
+`:title-part-en:`. The main titles are mandatory; the intro and part titles
+are optional.
+
+The Chinese title attributes replace their French counterparts in
+https://github.com/metanorma/metanorma-iso[metanorma-iso], while the English
+title attributes form the document subtitle, instead of the document title as
+in metanorma-iso.
+
+These `:title-*` document attributes are used instead of the
+`metanorma-standoc` `:title:` attribute and the default AsciiDoc title (the
+first line of the document header, prefixed with `=`).
+
+== Classification
+
+=== Scope, mandate and prefix
+
+The `:scope:`, `:mandate:`, `:topic:` and `:prefix:` attributes classify the
+GB standard. Their accepted values are listed in the
+link:/flavors/gb/ref/document-attributes[document attributes] reference.
+
+The `:scope:` and `:mandate:` attributes can be left out when the prefix
+already implies them:
+
+* Any `Q/` or `T/` prefix (for enterprise and social group standards) is used
+to infer the scope when the `:scope:` attribute is not given; otherwise it is
+ignored.
+
+* Any `/T` or `/Z` suffix on the prefix (indicating a "`recommended`" or
+"`guidelines`" mandate) is used to infer the mandate when the `:mandate:`
+attribute is not given; otherwise it is ignored.
+
+If no prefix is given, `GB` is assumed.
+
+The prefixes classifying GB standards are listed in the data models:
+
+* https://github.com/metanorma/metanorma-model-gb/blob/main/models/gb-standard-national-prefix.adoc[GB National Standard Prefixes]
+* https://github.com/metanorma/metanorma-model-gb/blob/main/models/gb-standard-sector-prefix.adoc[GB Sector Standard Prefixes]
+* https://github.com/metanorma/metanorma-model-gb/blob/main/models/gb-standard-local-prefix.adoc[GB Local Standard Prefixes]
+* https://github.com/metanorma/metanorma-gb/issues/54[GB Social and Enterprise Standard Prefixes]
+
+=== Library classification
+
+The `:library-ics:` attribute takes the ICS (International Categorization for
+Standards) number for the GB standard; multiple ICS numbers are
+comma-delimited. Unlike the case for ISO, the ICS identifier is output to the
+front page of the GB standard.
+
+The `:library-ccs:` attribute takes the CCS (Chinese Categorization Scheme)
+code for the GB standard (see https://github.com/metanorma/cn-ccs-codes), and
+`:plan-number:` the Plan Number (计划单号).
+
+== Relations to other standards
+
+A GB standard can record its relation to a corresponding ISO standard and to
+the GB standards it obsoletes:
+
+* `:iso-standard:` gives a corresponding ISO standard, as a full document
+code, optionally followed by a comma and the document title; e.g.
+`ISO/IEC 27001:2013, Information security management systems`.
+
+* `:equivalence:` (only valid if there is a corresponding `:iso-standard:`)
+gives the relation of the GB standard to that ISO standard, and defaults to
+`equivalent`.
+
+* `:obsoletes:` gives a corresponding GB standard that this GB standard
+obsoletes, in the same format; e.g. `GB/T 22080-2008`.
+
+* `:obsoletes-parts:` lists the bibliographic localities in the corresponding
+GB standard that this GB standard obsoletes, formatted the same way as the
+localities in citations; e.g. `clause 7-9, clause 11`.
+
+The attributes themselves are documented in the
+link:/flavors/gb/ref/document-attributes[document attributes] reference.
+
+== Authorship and publishing
+
+The *issuer* of the standard is the authority which authors, manages, and
+issues the standard: for social standards, the social group; for enterprise
+standards, the company. The issuer appears on the standard frontispiece. By
+default, the issuer is inferred from the prefix of the standard; the
+`:issuer:` attribute overrides the value inferred from the prefix, and is
+required for social and enterprise standards.
+
+The *publisher*, given through `:publisher:`, is distinct from the issuer: it
+distributes the standard rather than authoring it.
+
+Further parties are recorded through `:proposer:` (the party which proposed
+the standard), `:authority:` (the authority which sponsored the standard),
+`:author:` (the individuals who drafted the standard), and
+`:author-committee:` (the committees which drafted the standard; multiple
+committees are given as `:author-committee_2:`, `:author-committee_3:`...).
+
+== Visual appearance
+
+The appearance attributes are documented in the
+link:/flavors/gb/ref/document-attributes[document attributes] reference. Two
+behaviours are worth noting:
+
+* If `:title-font:` is not provided, the font used for the standard class and
+issuer on the (Word) cover page is inferred from the scope of the standard,
+aligning with existing practice: SimSun for national scope, SimHei for all
+other scopes.
+
+* If `:keep-boilerplate:` is absent (the default), any paragraphs supplied at
+the start of the Terms and Definitions section are deleted and replaced with
+standard predefined text; if present, such paragraphs are retained.

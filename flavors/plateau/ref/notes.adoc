@@ -1,0 +1,53 @@
+---
+layout: plateau-flavor
+title: Metanorma PLATEAU attribute notes
+---
+
+This page collects supplementary guidance that accompanies the
+link:/flavors/plateau/ref/document-attributes[Metanorma PLATEAU document attributes]
+reference.
+
+== Document information
+
+=== Dates
+
+NOTE: Dates are expected to be provided in ISO 8601 format, e.g. `2003-01-13`.
+Dates can be provided in the Japanese calendar, by appending `-ja` to the
+attribute name, e.g. `:announced-date-ja: 平成十五年1月13日`. However, without
+that, Metanorma will translate Gregorian dates to Japanese calendar dates in
+Japanese-language documents.
+
+== Contributor information
+
+=== Multilingual values
+
+All contributor information values can be specified in multilingual form, by
+adding `-ja` or `-en` after each attribute name.
+
+.Multilingual values for attribute `:fullname:`
+[example]
+====
+For `:fullname:`, the Japanese version would be `:fullname-ja:`, and the English
+version would be `:fullname-en:`.
+====
+
+.Multilingual values for attribute `:investigative-organization:`
+[example]
+====
+For `:investigative-organization_2:`, the Japanese version would be
+`:investigative-organization-ja_2:`, and the English version would be
+`:investigative-organization-en_2:`.
+====
+
+=== Personal contributors (for document type `expert-commentary` only)
+
+For the document type `expert-commentary`, personal authors are supported. For
+all other document types, only organizations are supported.
+
+== Document presentation
+
+`:presentation-metadata-autonumbering-style:`::
+What numbering style to apply to automatically generated text
+containing numbers [added in https://github.com/metanorma/metanorma-jis/releases/tag/v0.3.7].
+Applies to edition numbers, Japanese dates, clause numbers, and ordered list numbers (in PDF).
+Allowed values are `arabic` (default) and `japanese`.

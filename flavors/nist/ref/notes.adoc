@@ -1,0 +1,107 @@
+---
+layout: nist-flavor
+title: Metanorma NIST attribute notes
+---
+
+This page collects the identifier-composition rules, series guidance, and
+document-relationship conventions that accompany the
+link:/flavors/nist/ref/document-attributes[Metanorma NIST document attributes]
+reference. The attributes themselves (including `:series:`, the
+`:superseding-*:` family, and the contributor attributes) are documented
+there.
+
+== Document identifier
+
+The NIST document identifier is composed from the document series, document
+number, document volume, and edition/revision (e.g. _NIST SP 800 Revision 1_).
+The internal identifier referring to the document (`:docnumber:`) is a number;
+the prefix, e.g. "NIST SP", is supplied by the `:series:` attribute. The NIST
+identifier is docnumber-edition (if edition is present).
+
+`:docidentifier:` should normally not be supplied; if it is provided, it
+overrides the composed value.
+
+CSWP publications do not have a distinct `:docidentifier:` or `:docnumber:`:
+they are identified by their `:issued-date:`.
+
+The `:part:`, `:section:`, `:supplement:`, `:index:`, and `:update:`
+attributes are only used to generate the machine-readable NIST identifier
+(nist-mr). `:addendum:` additionally styles the document as an addendum.
+
+== Document series
+
+The formal documents published by NIST belong to a registered list of series,
+each with a predefined title and abbreviation. Legal `:series:` values are
+given as the keys of the
+https://github.com/metanorma/pubid-nist/blob/main/series.yaml[pubid-nist series listing].
+
+For legacy purposes, `nist-*` is converted to `NIST *` in all caps; and
+`nist-cswp` (Cybersecurity White Papers) is converted to the correct
+`CSRC White Paper`. `nist-csts` is also supported as an ad hoc series.
+
+Documents belonging to different series are expected to be rendered
+differently. As of this writing, styling has been provided for `nist-cswp`
+(Cybersecurity White Papers), `nist-csts` (Cybersecurity Technical
+Specifications), and for `nist-sp` (SP-800).
+
+Non-formal documents instead belong to ad hoc series defined for the purposes
+of Metanorma, such as `nist-csts`. That particular series acts as an umbrella
+for user-defined series of publications; so when it is used, the user needs to
+provide a title (e.g. "Automated Cryptographic Validation Protocol") and
+abbreviation (e.g. ACVP) for the user-defined series, through
+`:series-title:` and `:series-abbrev:`. The user also needs to provide the
+prefix by which the series will be identified in the machine-readable NIST
+identifier (`:series-mrprefix:`), when it is at variance with the
+abbreviation.
+
+In this case, CSTS is retained as the primary series of the publication (and
+all CSTS documents are rendered the same way), and ACVP is modelled as a
+secondary series specific to CSTS. However, the series information rendered
+for the document involves the user-defined series, not CSTS itself.
+
+== Document relationships
+
+`:obsoletes:` implies that the obsoleted document is withdrawn, and no longer
+in effect; `:supersedes:` means the superseded document may still remain in
+effect. Likewise, `:obsoleted-by:` is the relation between a withdrawn draft
+and the next draft in the approval process, while `:superseded-by:` is *not*
+(since the earlier draft is automatically no longer in effect).
+
+NOTE: The distinction between `obsoletes` and `supersedes` is the withdrawal
+date of the original document (`obsoleted-date`); that means that the
+distinction is predictable given that external information. The distinction
+between `obsoleted-by` and `superseded-by`, in the same way, is made by the
+withdrawal date of the current document. Relaton does not differentiate
+between the two relations for that reason.
+
+== Document contributors
+
+A second person is indicated by using a numeric suffix on the contributor
+attributes: `:fullname:`, `:fullname_2:`, `:fullname_3:`, &c. The same
+convention applies to all the contributor attributes (`:surname{_i}:`,
+`:givenname{_i}:`, `:initials{_i}:`, `:role{_i}:`, `:affiliation{_i}:`,
+`:address{_i}:`).
+
+In NIST, only the city is given as the address of a contributor.
+
+By default, a contributor is coded as an `editor`; they can also be
+represented as an `author`.
+
+== Superseding document appearance
+
+The `:superseding-*:` attributes capture details of the document superseding
+the present document, which populate the present document's coverpage. They
+are used for withdrawn drafts, and for withdrawn published documents if an
+entry for the superseding document is not available on the CSRC website
+(where it can be retrieved through the `:obsoleted-by:` document attribute).
+
+== Visual appearance
+
+The default authority statement included in the gem is
+https://github.com/metanorma/metanorma-nist/blob/main/lib/metanorma/nist/nist_intro.xml[`lib/metanorma/nist/nist_intro.xml`]
+(for CSWP documents,
+https://github.com/metanorma/metanorma-nist/blob/main/lib/metanorma/nist/nist_intro_cswp.xml[`lib/metanorma/nist/nist_intro_cswp.xml`]).
+`:boilerplate-authority:` nominates a Metanorma XML file encoding the
+authority statement of the document, to overwrite the default, in case the
+document is historical and needs to be generated with a previous authority
+statement.

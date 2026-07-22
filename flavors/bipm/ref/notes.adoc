@@ -1,0 +1,34 @@
+---
+layout: bipm-flavor
+title: Metanorma BIPM attribute notes
+---
+
+This page collects usage notes that accompany the
+link:/flavors/bipm/ref/document-attributes[Metanorma BIPM document attributes]
+reference. The attributes themselves (including `:si-aspect:`,
+`:document-scheme:`, and `:meeting-note:`) are documented there.
+
+== Draft mode
+
+The attribute `:draft:`, if present, includes review notes in the XML output;
+these are otherwise suppressed.
+
+== SI aspect logo
+
+The `:si-aspect:` attribute gives the domain of SI covered by the document; it
+is used to select the logo on the PDF cover page. The logo nominates one
+primary SI base units, and defining consonants for that unit and possibly
+others as well.
+
+NOTE: See the https://github.com/metanorma/metanorma-bipm/issues/14[SI Aspect implementation issue] for rendering details.
+
+== Document scheme and ancillary content
+
+Naming of appendices and annexes varies by document-scheme. The attribute name
+remains consistently `appendix-id` for the top level of ancillary content, and
+`annex-id` for the second level of ancillary content.
+
+If the scheme is `2019`, the labels of second-level and third-level ancillary
+content are _Appendix/Annex_ in English, _Annexe/Annexe_ in French.
+If the scheme is `2021` or later, the labels are _Annex/Annexe_ in English,
+_Appendix/Appendice_ in French [added in https://github.com/metanorma/metanorma-bipm/releases/tag/v2.6.11].

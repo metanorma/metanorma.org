@@ -19,22 +19,32 @@ module ExtractAttributes
     # end with `:::` and are handled by EntryBuilder instead.
     TERM_RE = /\A\s*(?:\[\[([^\]]+)\]\]\s*)?(.+?)::(?:\s+(.*))?\z/.freeze
 
+    # Boolean-literal term names. Inside an open entry, `` `true`:: `` /
+    # `` `false`:: `` (etc.) lines are value lines of a boolean attribute
+    # (the standoc `pdf-allow-*` entries), never attribute terms.
+    VALUE_LITERAL_RE = /\A(?:true|false|yes|no)\z/i.freeze
+
     module_function
 
     # True when the raw line is a definition term line whose backticked
-    # names mark it as an attribute term (leading colon) — or, when no
-    # attribute entry is currently open (`entry_position`), any backticked
-    # term (covers `svg-conform-profile` and `= Document Title`). A
-    # backticked term without a leading colon inside an open entry is a
-    # value line, not an attribute.
+    # names mark it as an attribute term. A name with a leading colon
+    # (`:name:`) is always an attribute. Colon-less names (`name`) are
+    # attributes too — at entry position this covers `svg-conform-profile`
+    # and `= Document Title`; inside an open entry they are sibling
+    # attributes of a flat `::` list (the IEEE/IHO pages keep every
+    # attribute of a section in one such list). The only colon-less terms
+    # treated as value lines inside an open entry are boolean literals
+    # (`true`/`false`/`yes`/`no`); real value lists use `:::` markers or
+    # fenced `--` blocks, both handled elsewhere.
     def attribute_term?(line, entry_position:)
       return false if line.strip.include?(":::") # value definition line
 
       parsed = parse(line)
       return false unless parsed
       return true if parsed[:names].any? { |n| n.start_with?(":") }
+      return true if entry_position
 
-      entry_position
+      !parsed[:names].all? { |n| VALUE_LITERAL_RE.match?(clean_name(n)) }
     end
 
     # Parse a term line into a name record, or nil when the line is not a

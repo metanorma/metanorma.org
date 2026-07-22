@@ -1,0 +1,96 @@
+# Validator amendments for attributes/ieee.yaml (gem-review corrections;
+# loaded by scripts/extract_attributes.rb — regenerate with the extractor after edits)
+---
+doctype:
+  add_values:
+  - name: standard
+    description: This document is a Standard (default)
+    notes: Documented on the source page and accepted by the current metanorma-ieee
+      validator (lib/metanorma/ieee/validate.rb doctype_validate); missing from the
+      YAML only because the extractor flattened doctype into docnumber's description.
+  - name: recommended-practice
+    description: This document is a Recommended Practice
+    notes: Documented on the source page and accepted by the current metanorma-ieee
+      validator (lib/metanorma/ieee/validate.rb doctype_validate); missing from the
+      YAML only because the extractor flattened doctype into docnumber's description.
+  - name: guide
+    description: This document is a Guide
+    notes: Documented on the source page and accepted by the current metanorma-ieee
+      validator (lib/metanorma/ieee/validate.rb doctype_validate); missing from the
+      YAML only because the extractor flattened doctype into docnumber's description.
+  - name: whitepaper
+    description: This document is a White Paper
+    notes: Documented on the source page and accepted by the current metanorma-ieee
+      validator (lib/metanorma/ieee/validate.rb doctype_validate); missing from the
+      YAML only because the extractor flattened doctype into docnumber's description.
+  - name: redline
+    description: This document is a Redline product document
+    notes: Documented on the source page and accepted by the current metanorma-ieee
+      validator (lib/metanorma/ieee/validate.rb doctype_validate); missing from the
+      YAML only because the extractor flattened doctype into docnumber's description.
+  - name: other
+    description: This document is of a type not otherwise described
+    notes: Documented on the source page and accepted by the current metanorma-ieee
+      validator (lib/metanorma/ieee/validate.rb doctype_validate); missing from the
+      YAML only because the extractor flattened doctype into docnumber's description.
+docsubtype:
+  add_values:
+  - name: document
+    description: Document is new or a revision (default)
+    notes: Documented on the source page and accepted by the current metanorma-ieee
+      validator (lib/metanorma/ieee/validate.rb doctype_validate); missing from the
+      YAML only because the extractor flattened docsubtype into docnumber's description.
+  - name: amendment
+    description: Document is an amendment
+    notes: Documented on the source page and accepted by the current metanorma-ieee
+      validator (lib/metanorma/ieee/validate.rb doctype_validate); missing from the
+      YAML only because the extractor flattened docsubtype into docnumber's description.
+  - name: corrigendum
+    description: Document is an corrigendum
+    notes: Documented on the source page and accepted by the current metanorma-ieee
+      validator (lib/metanorma/ieee/validate.rb doctype_validate); missing from the
+      YAML only because the extractor flattened docsubtype into docnumber's description.
+  - name: erratum
+    description: Document is an erratum
+    notes: Documented on the source page and accepted by the current metanorma-ieee
+      validator (lib/metanorma/ieee/validate.rb doctype_validate); missing from the
+      YAML only because the extractor flattened docsubtype into docnumber's description.
+  - name: icap
+    description: Document is an ICAP (IEEE Conformity Assessment Program) document
+      (applies only to `whitepaper`)
+    notes: Documented on the source page and functionally recognised by isodoc-ieee
+      whitepaper rendering (lib/isodoc/ieee/metadata.rb:143, lib/isodoc/ieee/presentation_xml_convert.rb:123),
+      but NOT in the validator's accepted list -- lib/metanorma/ieee/validate.rb doctype_validate
+      logs an IEEE_6 warning for it.
+  - name: industry-connection-report
+    description: Document is an Industry Connections Report document (applies only
+      to `whitepaper`)
+    notes: Spelling actually recognised by the gem (lib/metanorma/ieee/front.rb:9,
+      lib/isodoc/ieee/metadata.rb:144, lib/isodoc/ieee/word_wp_convert.rb:35, spec/metanorma/base_spec.rb:413).
+      The source page documents the plural `industry-connections-report`, which matches
+      nothing in the gem. Not in the validator's accepted list -- doctype_validate
+      logs an IEEE_6 warning for it.
+  notes_update:
+    industry-connections-report: 'Not recognised by the current gem as spelled: the
+      code uses the singular `industry-connection-report` (lib/metanorma/ieee/front.rb:9,
+      lib/isodoc/ieee/metadata.rb:144, lib/isodoc/ieee/presentation_xml_convert.rb:123).
+      The validator (lib/metanorma/ieee/validate.rb doctype_validate) accepts only
+      amendment, corrigendum, erratum, document and logs an IEEE_6 warning for any
+      other subdoctype.'
+    industry-affiliate-network: Documented on the source page (added in metanorma-ieee
+      v1.5.3) but not referenced anywhere in metanorma-ieee lib code (checked master
+      == v1.6.15); the validator (lib/metanorma/ieee/validate.rb doctype_validate)
+      logs an IEEE_6 warning for it.
+docstage: {}
+balloting-group-type:
+  add_values:
+  - name: individual
+    description: Balloting group of individual members (default)
+    notes: 'Documented inline on the source page (''_individual_ or _entity_ (default:
+      _individual_)''). The gem does not validate the value; it defaults to "individual"
+      in lib/metanorma/ieee/front.rb metadata_committee_prep.'
+  - name: entity
+    description: Balloting group of entity (organisation) members
+    notes: 'Documented inline on the source page (''_individual_ or _entity_ (default:
+      _individual_)''). The gem does not validate the value; it is passed through
+      as the balloting-group organisation subtype.'

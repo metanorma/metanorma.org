@@ -1,0 +1,52 @@
+# Validator amendments for attributes/itu.yaml (gem-review corrections;
+# loaded by scripts/extract_attributes.rb — regenerate with the extractor after edits)
+---
+doctype:
+  notes_update:
+    resolution: 'Not accepted by the current validator: lib/metanorma/itu/validate.rb
+      doctype_validate (log ITU_1, severity 2) omits it, although the gem otherwise
+      fully supports it (doctype_dict entry in lib/isodoc/itu/i18n-en.yaml, lib/metanorma/itu/cleanup_section.rb,
+      lib/isodoc/itu/itu.resolution.xsl). The validator accept-list appears stale
+      upstream.'
+    handbook: 'Not accepted by the current validator: lib/metanorma/itu/validate.rb
+      doctype_validate (log ITU_1, severity 2) omits it; the only gem support is a
+      cover-color rule in lib/isodoc/itu/itu.technical-report.xsl.'
+    question: 'Not accepted by the current validator: lib/metanorma/itu/validate.rb
+      doctype_validate (log ITU_1, severity 2) omits it; no rendering support for
+      this doctype found in the gem.'
+status:
+  add_values:
+  - name: in-force
+    description: This document is In-force.
+    notes: Accepted by the current metanorma-itu validator (lib/metanorma/itu/validate.rb
+      stage_validate, log ITU_2). Documented on the source page only inline in the
+      attribute description.
+  - name: in-force-prepublished
+    description: This document is In-force but the text is not final.
+    notes: Accepted by the current metanorma-itu validator (lib/metanorma/itu/validate.rb
+      stage_validate, log ITU_2). Documented on the source page only inline in the
+      attribute description.
+  - name: superseded
+    description: This document has been superseded.
+    notes: Accepted by the current metanorma-itu validator (lib/metanorma/itu/validate.rb
+      stage_validate, log ITU_2). Documented on the source page only inline in the
+      attribute description.
+  - name: withdrawn
+    description: This document has been withdrawn.
+    notes: Accepted by the current metanorma-itu validator (lib/metanorma/itu/validate.rb
+      stage_validate, log ITU_2). Documented on the source page only inline in the
+      attribute description.
+  - name: draft
+    description: Do not use this value! If the document is a draft, use the general
+      `:draft:` document attribute instead of `:status:`.
+    notes: Accepted by the current metanorma-itu validator (lib/metanorma/itu/validate.rb
+      stage_validate, log ITU_2), but the source page explicitly discourages it in
+      favour of the general `:draft:` attribute.
+ip-notice-received:
+  drop:
+  - required
+sector:
+  set:
+    description: Standardization sector that publishes the document, if the document
+      is published outside of the defined bureaus. Only use this attribute if it does
+      not belong to the ITU-{D/R/T} sectors, otherwise use `:bureau:` instead.
