@@ -1,0 +1,31 @@
+# Validator amendments for attributes/plateau.yaml (gem-review corrections;
+# loaded by scripts/extract_attributes.rb — regenerate with the extractor after edits)
+---
+doctype:
+  add_values:
+  - name: handbook
+    description: Handbook.
+    notes: Documented on the source page as a prose bullet and accepted by the current
+      metanorma-plateau converter (lib/metanorma/plateau/converter.rb doctype_validate).
+  - name: technical-report
+    description: Technical report (default).
+    notes: Documented on the source page as a prose bullet and accepted by the current
+      metanorma-plateau converter (lib/metanorma/plateau/converter.rb doctype_validate);
+      default per converter.rb init_metadata (@default_doctype = "technical-report").
+  - name: annex
+    description: Annex.
+    notes: Documented on the source page as a prose bullet and accepted by the current
+      metanorma-plateau converter (lib/metanorma/plateau/converter.rb doctype_validate).
+  notes: 'Value set cross-checked against the metanorma-plateau converter (lib/metanorma/plateau/converter.rb
+    doctype_validate: handbook, technical-report, annex).'
+publisher_{i}:
+  set:
+    default: MLIT
+  notes: 'Default publisher is MLIT, not JIS: the plateau converter overrides default_publisher
+    (lib/metanorma/plateau/converter.rb, org_abbrev maps Ministry of Land, Infrastructure,
+    Transport and Tourism to MLIT); the JIS default came from commented-out inherited
+    prose.'
+copyright-holder_{i}:
+  set:
+    default: MLIT
+  notes: Default copyright holder is MLIT (lib/metanorma/plateau/converter.rb default_publisher).

@@ -1,0 +1,43 @@
+---
+layout: itu-flavor
+title: ITU editorial group structure
+---
+
+This page collects the guidance on ITU editorial group structure that
+accompanies the
+link:/flavors/itu/ref/document-attributes[Metanorma ITU document attributes]
+reference. The attributes themselves (`:bureau:`, `:sector:`, the `:group:`,
+`:subgroup:` and `:workgroup:` families, and `:question:`) are documented
+there.
+
+== Editorial groups
+
+ITU documents are produced by editorial groups within a Bureau/Sector
+(BDT: ITU-D, RRB: ITU-R, TSB: ITU-T).
+
+ITU groups are hierarchically arranged, and represented in Metanorma through a
+three-level encoding also used elsewhere in Metanorma: `group`, `subgroup` and
+`workgroup` below the Bureau/Sector level.
+
+Groups have types (e.g. `tsag`, `study-group`, `working-party`, `focus-group`),
+and the same type of group can attach to different super-groups.
+
+.Example of ITU group hierarchy
+[example]
+====
+Both TSAG and Study Groups can have Focus Groups.
+====
+
+An ITU project group is specified using a 4 level encoding:
+
+* `bureau` (or `sector`)
+* `group`
+* `subgroup`
+* `workgroup`
+
+There may be multiple project groups associated with a document. Each group
+after the first is indicated by a trailing number, e.g. `bureau_2`, `group_2`.
+
+On top of this structure, documents can respond to Questions, which are
+allocated to Study Groups, and then worked on by Working Parties. Questions are
+represented separately, outside the group hierarchical structure.

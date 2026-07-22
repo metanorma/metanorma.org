@@ -1,0 +1,75 @@
+# Validator amendments for attributes/iso.yaml (gem-review corrections;
+# loaded by scripts/extract_attributes.rb — regenerate with the extractor after edits)
+---
+doctype:
+  add_values:
+  - name: recommendation
+    description: Recommendation (Rec)
+    notes: Accepted by the current metanorma-iso validator (lib/metanorma/iso/validate.rb
+      doctype_validate) and mapped in lib/metanorma/iso/front_id.rb DOCTYPE2HASHID,
+      but not documented on the source page.
+document-scheme:
+  add_values:
+  - name: '1979'
+    description: Document layout used from 1979 to 1987.
+    notes: Accepted by the current metanorma-iso converter (lib/metanorma/iso/base.rb
+      DOCUMENT_SCHEMES) but not documented on the source page.
+docstage:
+  add_values:
+  - name: '00'
+    description: Preliminary stage (PWI).
+  - name: '10'
+    description: Proposal stage (NP, AWI).
+  - name: '20'
+    description: Preparatory stage (WD).
+  - name: '30'
+    description: Committee stage (CD).
+  - name: '40'
+    description: Enquiry stage (DIS).
+  - name: '50'
+    description: Approval stage (FDIS).
+  - name: '60'
+    description: Publication stage (`60.00` is the PRF proof, `60.60` the published
+      document).
+  - name: '90'
+    description: Review stage.
+    notes: Enumerated by the isostandard.rnc schema but not described on the source
+      page.
+  - name: '95'
+    description: Withdrawal stage.
+    notes: Enumerated by the isostandard.rnc schema but not described on the source
+      page.
+  notes: Stage-code value set cross-checked against the isostandard.rnc schema enum
+    (00/10/20/30/40/50/60/90/95).
+docsubstage:
+  add_values:
+  - name: '00'
+    description: Assumed substage when omitted (except at stage `60`).
+  - name: '20'
+    description: Substage 20.
+    notes: Enumerated by the isostandard.rnc schema but not described on the source
+      page.
+  - name: '60'
+    description: Assumed substage at stage `60` (`60.00` = PRF proof, `60.60` = published).
+  - name: '90'
+    description: Substage 90.
+    notes: Enumerated by the isostandard.rnc schema but not described on the source
+      page.
+  - name: '92'
+    description: Substage 92.
+    notes: Enumerated by the isostandard.rnc schema but not described on the source
+      page.
+  - name: '93'
+    description: Substage 93.
+    notes: Enumerated by the isostandard.rnc schema but not described on the source
+      page.
+  - name: '98'
+    description: Substage 98.
+    notes: Enumerated by the isostandard.rnc schema but not described on the source
+      page.
+  - name: '99'
+    description: Substage 99.
+    notes: Enumerated by the isostandard.rnc schema but not described on the source
+      page.
+  notes: Substage value set cross-checked against the isostandard.rnc schema enum
+    (00/20/60/90/92/93/98/99).

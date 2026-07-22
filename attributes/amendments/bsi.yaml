@@ -1,0 +1,180 @@
+# Validator amendments for attributes/bsi.yaml (gem-review corrections;
+# loaded by scripts/extract_attributes.rb — regenerate with the extractor after edits)
+---
+doctype:
+  add_values:
+  - name: british-standard
+    description: British Standard (BS).
+    notes: Mapped to a BS identifier (F get_typeabbr) but not in the validator's native
+      allowlist (V doctypes_allowed default branch) — the validator logs warning BSI_1
+      for it.
+  - name: draft-for-development
+    description: Draft for Development (DD).
+    notes: Mapped to a DD identifier (F get_typeabbr) but not in the validator's native
+      allowlist (V) — warning BSI_1.
+  - name: published-document
+    description: Published Document (PD).
+    notes: On the source page and in both gem lists (F get_typeabbr :pd; V native
+      allowlist).
+  - name: privately-subscribed-standard
+    description: Privately Subscribed Standard.
+    notes: Mapped to a BS identifier (F get_typeabbr) but not in the validator's native
+      allowlist (V) — warning BSI_1.
+  - name: publicly-available-specification
+    description: Publicly Available Specification (PAS).
+    notes: Mapped to a PAS identifier (F get_typeabbr). The page lists it for native
+      and ISO-adopted documents; the validator's ISO-adopted allowlist instead names
+      international-publicly-available-specification (V).
+  - name: flex-standard
+    description: BSI Flex standard.
+    notes: Mapped to a Flex identifier (F get_typeabbr) but not in the validator's
+      native allowlist (V) — warning BSI_1.
+  - name: international-standard
+    description: International Standard (ISO/IEC adoption).
+    notes: Documented for ISO and IEC adoptions. Identifier generation accepts it
+      (Iso get_typeabbr), but the validator's adopted allowlists expect `standard`
+      and log warning BSI_1 for international-standard (V).
+  - name: technical-specification
+    description: Technical Specification (TS).
+    notes: Page and validator agree for ISO, IEC and CEN/CENELEC adoptions (V doctypes_allowed).
+  - name: technical-report
+    description: Technical Report (TR).
+    notes: Page and validator agree for ISO, IEC and CEN/CENELEC adoptions (V).
+  - name: guide
+    description: Guide.
+    notes: Page lists it for ISO and CEN/CENELEC adoptions; the validator accepts
+      it for all flavours (V BSI_DOCTYPES).
+  - name: international-workshop-agreement
+    description: International Workshop Agreement (IWA).
+    notes: Page and validator agree for ISO adoptions (V).
+  - name: industry-technical-agreement
+    description: Industry Technical Agreement (ITA).
+    notes: Page and validator agree for IEC adoptions (V).
+  - name: standard
+    description: Standard (EN, for CEN/CENELEC adoptions).
+    notes: Page lists it for CEN/CENELEC adoptions; the validator accepts it for ISO,
+      IEC and CEN adoptions (V).
+  - name: european-workshop-agreement
+    description: European Workshop Agreement (CWA).
+    notes: Page and validator agree for CEN/CENELEC adoptions (V).
+  - name: expert-commentary
+    description: Expert Commentary (EC); a commentary of another document, indicated
+      with `:annotation-of:`.
+    notes: Documented in the source page's 'Expert Commentaries' section (prose, not
+      in the doctype lists). Accepted by the validator (V BSI_DOCTYPES) and mapped
+      to an EC identifier (F get_typeabbr :ec).
+  - name: national-annex
+    description: National Annex (NA to an EN standard).
+    notes: Accepted by the current metanorma-bsi gem (F get_typeabbr :na; special-cased
+      in V euro_annex?/foreword_validate) but not documented on the source page.
+  - name: specification
+    description: Specification (content type per BSI 0:2016).
+    notes: The page documents this under `:docsubtype:`; the validator accepts it
+      as a doctype for all flavours (V BSI_DOCTYPES).
+  - name: code-of-practice
+    description: Code of Practice (content type per BSI 0:2016).
+    notes: The page documents this under `:docsubtype:`; the validator accepts it
+      as a doctype for all flavours (V BSI_DOCTYPES).
+  - name: method-of-test
+    description: Method of Test (content type per BSI 0:2016).
+    notes: The page documents this under `:docsubtype:`; the validator accepts it
+      as a doctype for all flavours (V BSI_DOCTYPES).
+  - name: vocabulary
+    description: Vocabulary (content type per BSI 0:2016).
+    notes: The page documents this under `:docsubtype:`; the validator accepts it
+      as a doctype for all flavours (V BSI_DOCTYPES).
+  - name: method-of-specifying
+    description: Method of Specifying (content type per BSI 0:2016).
+    notes: The page documents this under `:docsubtype:`; the validator accepts it
+      as a native-BSI doctype (V doctypes_allowed default branch).
+  - name: management-systems-standard
+    description: Management Systems Standard (MSS).
+    notes: Accepted by the current metanorma-bsi validator (V native allowlist) but
+      not documented on the source page.
+  - name: classification
+    description: Classification (content type per BSI 0:2016).
+    notes: Accepted by the current metanorma-bsi validator (V native allowlist) but
+      not documented on the source page.
+  - name: international-publicly-available-specification
+    description: International Publicly Available Specification (ISO PAS adoption).
+    notes: Accepted by the current metanorma-bsi validator for ISO-adopted documents
+      (V) but not documented on the source page, which lists plain publicly-available-specification
+      for ISO adoptions.
+  notes: 'Doctype validation in metanorma-bsi is warn-only (V doctype_validate logs
+    BSI_1, keyed off the docidentifier prefix: BS ISO / BS IEC / BS EN(CEN) vs native
+    BS); no value is hard-rejected. Identifier generation (F get_typeabbr) is the
+    code path that must recognise the value.'
+docsubtype:
+  add_values:
+  - name: specification
+    description: Specification.
+  - name: method-of-test
+    description: Method of Test.
+  - name: method-of-specifying
+    description: Method of Specifying.
+  - name: vocabulary
+    description: Vocabulary.
+  - name: code-of-practice
+    description: Code of Practice.
+  notes: Value list documented on the source page. No code in the current metanorma-bsi
+    gem reads or validates `:docsubtype:` (grep of lib/ finds nothing); the validator
+    instead accepts these same names (except method-of-specifying, which is in the
+    native branch) as doctypes — see doctype notes.
+document-scheme:
+  add_values:
+  - name: with-publication-information
+    description: 'Old-style document history: full publication history (enumerating
+      all editions) and four-column amendments (date issued, date effective, amendment
+      designation, description).'
+    notes: 'The only value recognised by the gem: lib/isodoc/bsi/presentation_bibdata.rb
+      compares @docscheme == "with-publication-information"; any other value (or none)
+      selects the new-style history. Matches the source page.'
+docstage:
+  add_values:
+  - name: '00'
+    description: Preliminary stage.
+  - name: '10'
+    description: Proposal stage.
+  - name: '20'
+    description: Preparatory stage.
+  - name: '30'
+    description: Committee stage.
+  - name: '40'
+    description: Enquiry stage.
+  - name: '50'
+    description: Approval stage.
+  - name: '60'
+    description: Publication stage (default when `:docstage:` is omitted — FR get_stage).
+  - name: '90'
+    description: Review stage.
+    notes: Part of the harmonized stage code set enforced via pubid-bsi/pubid-core,
+      but not documented on the source page.
+  - name: '95'
+    description: Withdrawal stage.
+    notes: Part of the harmonized stage code set enforced via pubid-bsi/pubid-core;
+      norm_bibitem_style (V) treats a 9x stage in referenced documents as withdrawn.
+      Not documented on the source page.
+  notes: FR get_stage reads the `:status:` attribute first, then `:docstage:` (they
+    are aliases), defaulting to `60`. Stages 00-50 mark the identifier as unpublished
+    (F iso_id_params_core, /^[0-5]/). Illegal stage codes are reported through the
+    inherited metanorma-iso metadata_status (pubid HarmonizedStageCode errors). The
+    source page documents no stage values.
+docsubstage:
+  add_values:
+  - name: '00'
+    description: Assumed substage when `:docsubstage:` is omitted (except at stage
+      60 — FR get_substage).
+  - name: '20'
+    description: Substage 20.
+    notes: Part of the harmonized stage code set enforced via pubid-bsi/pubid-core,
+      but not documented on the source page.
+  - name: '60'
+    description: Assumed substage at stage 60 (FR get_substage).
+  - name: '90'
+    description: Substage 90.
+    notes: Part of the harmonized stage code set enforced via pubid-bsi/pubid-core,
+      but not documented on the source page.
+  - name: '92'
+    description: Substage 92.
+    notes: Part of the harmonized stage code set enforced via pubid-bsi/pubid-core,
+      but not documented on the source page.

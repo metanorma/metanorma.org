@@ -49,6 +49,17 @@ module Convert
       "flavors/iso/ref/document-attributes.adoc"         => "superseded by attributes/iso.yaml generated reference",
       "flavors/ietf/ref/document-attributes.adoc"        => "superseded by attributes/ietf.yaml generated reference",
       "flavors/ietf/ref/document-attributes-v2.adoc"     => "superseded by attributes/ietf-v2.yaml generated reference",
+      "flavors/iec/ref/document-attributes.adoc"         => "superseded by attributes/iec.yaml generated reference",
+      "flavors/ieee/ref/document-attributes.adoc"        => "superseded by attributes/ieee.yaml generated reference",
+      "flavors/itu/ref/document-attributes.adoc"         => "superseded by attributes/itu.yaml generated reference",
+      "flavors/jis/ref/document-attributes.adoc"         => "superseded by attributes/jis.yaml generated reference",
+      "flavors/iho/ref/document-attributes.adoc"         => "superseded by attributes/iho.yaml generated reference",
+      "flavors/nist/ref/document-attributes.adoc"        => "superseded by attributes/nist.yaml generated reference",
+      "flavors/bsi/ref/document-attributes.adoc"         => "superseded by attributes/bsi.yaml generated reference",
+      "flavors/gb/ref/document-attributes.adoc"          => "superseded by attributes/gb.yaml generated reference",
+      "flavors/plateau/ref/document-attributes.adoc"     => "superseded by attributes/plateau.yaml generated reference",
+      "flavors/ogc/ref/document-attributes.adoc"         => "superseded by attributes/ogc.yaml generated reference",
+      "flavors/bipm/ref/document-attributes.adoc"        => "superseded by attributes/bipm.yaml generated reference",
       # learn/template.html is an unfinished author scratch template (empty
       # <title>, Jekyll-era include notes), not content. Redirected to
       # /learn/; the file stays on disk per the never-delete-source rule.

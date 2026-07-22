@@ -1,0 +1,37 @@
+# Validator amendments for attributes/ogc.yaml (gem-review corrections;
+# loaded by scripts/extract_attributes.rb — regenerate with the extractor after edits)
+---
+status:
+  notes_update:
+    oab-review: Also accepted by the current validator for best-practice and community-practice
+      (lib/metanorma/ogc/validate.rb stage_type_validate only rejects draft, swg-draft
+      and work-item-draft for those doctypes); it is rejected only for the remaining
+      doctypes.
+    legacy: Not accepted by the current validator (lib/metanorma/ogc/validate.rb stage_type_validate)
+      for doctypes other than standard, draft-standard, abstract-specification-topic,
+      community-standard, best-practice and community-practice. The source page's
+      status/doctype matrix predates this stage and has no column for it.
+role:
+  add_values:
+  - name: contributor
+    description: Contributor. Encoded by the gem as an `author` role with description
+      `contributor`.
+    notes: Documented on the source page as a legal value (added in metanorma-ogc
+      v2.0.2) and special-cased by the current gem (lib/metanorma/ogc/front.rb personal_role),
+      but not captured as a structured value by the extractor.
+document-scheme:
+  add_values:
+  - name: '2026'
+    description: 2026 OGC branding (logo and PDF color scheme). Default; also used
+      when no scheme is specified, when an unrecognized value is given, or for deliverables
+      published on or after 2026-01-01.
+    notes: Accepted by the current metanorma-ogc converter (lib/metanorma/ogc/converter.rb
+      document_scheme); not listed as an OGC-specific value in the manifest.
+  - name: '2022'
+    description: 2022 OGC branding, for deliverables published on or after 2021-11-08.
+    notes: Accepted by the current metanorma-ogc converter (lib/metanorma/ogc/converter.rb
+      document_scheme); not listed as an OGC-specific value in the manifest.
+  - name: '2018'
+    description: 2018 OGC branding, for deliverables dated prior to 2021-11-08.
+    notes: Accepted by the current metanorma-ogc converter (lib/metanorma/ogc/converter.rb
+      document_scheme); not listed as an OGC-specific value in the manifest.

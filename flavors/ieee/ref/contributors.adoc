@@ -1,0 +1,169 @@
+---
+layout: ieee-flavor
+title: Metanorma IEEE SA contributor metadata
+---
+
+This page collects the contributor-metadata guidance that accompanies the
+link:/flavors/ieee/ref/document-attributes[Metanorma IEEE SA document attributes]
+reference. The IEEE-specific contributor attributes (`society`, `committee`,
+`working-group`, `balloting-group`, `balloting-group-type`, and the personal
+author attributes) are documented there; the sponsor and corporate author
+sections below describe IEEE-specific usage of the general Metanorma
+attributes.
+
+== General
+
+There are multiple types of contributors to an IEEE SA document, and the
+document displays full provenance of where the document was developed, balloted
+and eventually approved.
+
+The basic information of these groups are entered as document attributes,
+including:
+
+* the working group
+* the balloting group
+* the standards board, at the time of publishing the document.
+
+Members of these groups are entered in the
+link:/author/ieee/topics/markup#participants[Participants clause].
+
+== Society
+
+An IEEE SA document is sponsored by or developed by an IEEE society.
+This IEEE society is prominently displayed on the cover page.
+
+NOTE: This is mandatory information.
+
+The `society` attribute is documented in the
+link:/flavors/ieee/ref/document-attributes[IEEE SA document attributes]
+reference.
+
+== Committee
+
+An IEEE SA document is developed within a working group under an IEEE SA
+committee.
+This IEEE SA committee is prominently displayed on the cover page.
+
+NOTE: This is mandatory information.
+
+The `committee` attribute is documented in the
+link:/flavors/ieee/ref/document-attributes[IEEE SA document attributes]
+reference.
+
+== Working group
+
+An IEEE SA document is developed by a working group.
+
+NOTE: This is mandatory information.
+
+An IEEE SA working group can be one of two modes
+(more details at link:/author/ieee/authoring-guide/process[process]):
+
+* Entity-based: members are IEEE SA member organizations
+* Individual-based: members are individual contributors
+
+The `working-group` attribute is documented in the
+link:/flavors/ieee/ref/document-attributes[IEEE SA document attributes]
+reference; its value is rendered as "_the Spatial Web Working Group had the
+following membership:..._".
+
+Members of the working group are to be listed in the
+link:/author/ieee/topics/markup#participants[Participants clause].
+
+== Balloting group
+
+The balloting group, or balloting committee, is the group that recommends
+the document for approval as a standard by the IEEE SA Standardization board.
+
+The balloting group is composed of voting members of the working group, or the
+committee that the working group belongs to.
+
+The `balloting-group` and `balloting-group-type` attributes are documented in
+the link:/flavors/ieee/ref/document-attributes[IEEE SA document attributes]
+reference.
+
+Members of the balloting group are to be listed in the
+link:/author/ieee/topics/markup#participants[Participants clause].
+
+== Standardization board
+
+The IEEE Standardization Board at the time of document publication is rendered
+in the document preface.
+
+Members of the IEEE SA Standardization Board (SASB) are to be listed in the
+link:/author/ieee/topics/markup#participants[Participants clause].
+
+== Personal authors
+
+White papers require personal authors to be specified, as follows:
+
+`:surname:`, `:surname_2:`, `:surname_{i}:`::
+Surname of personal authors
+
+`:givenname:`, `:givenname_2:`, `:givenname_{i}:`::
+Given name of personal authors
+
+`:contributor-position:`, `:contributor-position_2:`, `:contributor-position_{i}:`::
+Job title of personal authors
+
+== Sponsors
+
+The sponsoring bodies, if any, are indicated through the `:sponsor:` and
+`:sponsor-subdivision:` attributes.
+
+As with other author values, multiple instances of sponsoring organisations and
+their subdivisions are indicated as `:sponsor_2:` and `:sponsor-subdivision_2:`,
+`:sponsor_3:` and `:sponsor-subdivision_3:`, etc.
+
+The values of `:sponsor-subdivision_{i}:` can be:
+
+* multiple (semicolon-delimited: processed via CSV, recognising quote marks)
+* hierarchical, with multiple levels of subdivision (comma-delimited, from larger to
+  smaller) [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.3];
+
+The different hierarchical levels can optionally be prefixed with type and a colon.
+
+On the front cover, if it is a sponsor, "IEEE" is prefixed to the first
+subdivision, rather than being rendered on a separate line.
+
+The following is an example of how two divisions of the IEEE are indicated as sponsoring the document:
+
+.IEEE subdivsion sponsors to a document
+====
+[source,adoc]
+----
+:sponsor: IEEE
+:sponsor-subdivision: "Power & Energy Society", Power System Communications Committee; Communications Society, Standards Committee
+----
+
+rendered as:
+
+____
+Sponsored by the +
+*Power System Communications Committee* +
+of the +
+*IEEE Power & Energy Society* +
+and the +
+*Standards Committee* +
+of the +
+*IEEE Communications Society*
+____
+====
+
+NOTE: The quotation marks are needed to process the CSV correctly.
+
+== Corporate authors
+
+In Industry Affiliate Network documents, an affiliate needs to be nominated, along with its logo.
+These are indicated through the `:corporate-author:` attribute, which overrides the default of IEEE
+to indicate which organisations have been involved
+in authoring the document [added in https://github.com/metanorma/metanorma-ieee/releases/tag/v1.5.3].
+The affiliate should be given as the second `:corporate-author:` instance, after IEEE.
+The `:corporate-author_logo:` attribute should match the `:corporate-author:` attribute:
+
+[source,adoc]
+----
+:corporate-author: IEEE
+:corporate-author_2: Spatial Web Foundation
+:corporate-author_logo_2: swf.png
+----

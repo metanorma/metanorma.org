@@ -44,10 +44,21 @@ describe('renderInline', () => {
       'see <a href="#distribution-group">Distribution group</a>.')
   })
 
-  it('renders [added in URL] as a compact release link', () => {
+  it('renders [added in URL] as a version chip (same markup as entry chips)', () => {
     const url = 'https://github.com/metanorma/metanorma-standoc/releases/tag/v2.7.0'
     expect(renderInline(`multiple values [added in ${url}].`)).toBe(
-      `multiple values <a class="added-in" href="${url}" target="_blank" rel="noopener">added in v2.7.0</a>.`)
+      `multiple values <a class="attr-chip attr-chip-version" href="${url}" target="_blank" rel="noopener" title="Added in metanorma-standoc v2.7.0">metanorma-standoc ≥ v2.7.0</a>.`)
+  })
+
+  it('renders [deprecated in URL] as a warning chip', () => {
+    const url = 'https://github.com/metanorma/metanorma-iso/releases/tag/v1.2.0'
+    expect(renderInline(`legacy [deprecated in ${url}].`)).toBe(
+      `legacy <a class="attr-chip attr-chip-warn" href="${url}" target="_blank" rel="noopener" title="Deprecated in metanorma-iso v1.2.0">deprecated in metanorma-iso ≥ v1.2.0</a>.`)
+  })
+
+  it('falls back to a compact release link for non-GitHub URLs', () => {
+    expect(renderInline('x [added in https://example.com/rel/v9].')).toBe(
+      'x <a class="added-in" href="https://example.com/rel/v9" target="_blank" rel="noopener">added in v9</a>.')
   })
 
   it('does not format inside code spans', () => {

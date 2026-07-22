@@ -1,0 +1,225 @@
+# Validator amendments for attributes/bipm.yaml (gem-review corrections;
+# loaded by scripts/extract_attributes.rb — regenerate with the extractor after edits)
+---
+doctype:
+  add_values:
+  - name: brochure
+    description: Brochure.
+    notes: Default document type (metanorma.yml default_doctype).
+  - name: mise-en-pratique
+    description: Mise en pratique.
+  - name: rapport
+    description: Rapport.
+  - name: monographie
+    description: Monographie.
+  - name: guide
+    description: Guide.
+  - name: meeting-report
+    description: Meeting report.
+  - name: technical-report
+    description: Technical report.
+  - name: working-party-note
+    description: Working party note.
+  - name: strategy
+    description: Strategy.
+  - name: cipm-mra
+    description: CIPM MRA.
+  - name: resolution
+    description: Resolution.
+  - name: policy
+    description: Policy (for JCTLM).
+    notes: Added in metanorma-bipm v2.4.3 (per source page).
+  - name: working-part-note
+    description: Working party note (gem configuration spelling).
+    notes: 'Accepted by the current metanorma-bipm configuration (metanorma.yml doctypes)
+      but not documented on the source page. Almost certainly an upstream typo of
+      `working-party-note`: the gem i18n files label `working-party-note` (lib/isodoc/bipm/i18n-fr.yaml)
+      and have no entry for `working-part-note`.'
+  notes_update:
+    working-party-note: 'Documented on the source page and labelled in the gem i18n
+      files, but NOT accepted by the current validator: metanorma.yml doctypes lists
+      `working-part-note` instead, so the converter (metanorma-generic lib/metanorma/generic/converter.rb
+      doctype) logs GENERIC_1 and silently falls back to `brochure`.'
+  notes: Value set cross-checked against metanorma.yml doctypes (enforced at conversion
+    time by metanorma-generic converter.rb doctype, fallback `brochure`).
+  drop:
+  - added_in
+status:
+  add_values:
+  - name: draft-proposal
+    description: Draft proposal.
+  - name: draft-development
+    description: Draft development.
+  - name: in-force
+    description: In force.
+    notes: Default stage (metanorma.yml default_stage) and a published stage.
+  - name: retired
+    description: Retired.
+    notes: Published stage (metanorma.yml published_stages).
+  notes: Value set cross-checked against metanorma.yml stage_abbreviations + published_stages
+    + default_stage; enforced by metanorma-generic validate.rb stage_validate. All
+    four documented values match the gem exactly.
+si-aspect:
+  add_values:
+  - name: A_e_deltanu
+    description: Ampere; time.
+  - name: A_e
+    description: Ampere.
+  - name: cd_Kcd_h_deltanu
+    description: Candela; mass, time.
+  - name: cd_Kcd
+    description: Candela.
+  - name: full
+    description: All units.
+  - name: K_k_deltanu
+    description: Kelvin; mass, time.
+  - name: K_k
+    description: Kelvin.
+  - name: kg_h_c_deltanu
+    description: Kilogram; length, time.
+  - name: kg_h
+    description: Kilogram.
+  - name: m_c_deltanu
+    description: Metre; time.
+  - name: m_c
+    description: Metre.
+  - name: mol_NA
+    description: Mole.
+  - name: s_deltanu
+    description: Second.
+  - name: K_k_deltanu_h
+    description: Kelvin; mass, time (validator spelling).
+    notes: Accepted by the current metanorma-bipm validator (lib/metanorma/bipm/validate.rb
+      SI_ASPECT_VALUES) but not documented on the source page and absent from lib/isodoc/bipm/metadata.rb
+      SI_ASPECT (PDF logo selection), which uses `K_k_deltanu` instead.
+  - name: units_A
+    description: Not documented on the source page.
+    notes: Accepted by the current metanorma-bipm validator (lib/metanorma/bipm/validate.rb
+      SI_ASPECT_VALUES) but absent from lib/isodoc/bipm/metadata.rb SI_ASPECT (PDF
+      logo selection).
+  - name: units_cd
+    description: Not documented on the source page.
+    notes: Accepted by the current metanorma-bipm validator (lib/metanorma/bipm/validate.rb
+      SI_ASPECT_VALUES) but absent from lib/isodoc/bipm/metadata.rb SI_ASPECT (PDF
+      logo selection).
+  - name: units_full
+    description: Not documented on the source page.
+    notes: Accepted by the current metanorma-bipm validator (lib/metanorma/bipm/validate.rb
+      SI_ASPECT_VALUES) but absent from lib/isodoc/bipm/metadata.rb SI_ASPECT (PDF
+      logo selection).
+  - name: units_K
+    description: Not documented on the source page.
+    notes: Accepted by the current metanorma-bipm validator (lib/metanorma/bipm/validate.rb
+      SI_ASPECT_VALUES) but absent from lib/isodoc/bipm/metadata.rb SI_ASPECT (PDF
+      logo selection).
+  - name: units_kg
+    description: Not documented on the source page.
+    notes: Accepted by the current metanorma-bipm validator (lib/metanorma/bipm/validate.rb
+      SI_ASPECT_VALUES) but absent from lib/isodoc/bipm/metadata.rb SI_ASPECT (PDF
+      logo selection).
+  - name: units_m
+    description: Not documented on the source page.
+    notes: Accepted by the current metanorma-bipm validator (lib/metanorma/bipm/validate.rb
+      SI_ASPECT_VALUES) but absent from lib/isodoc/bipm/metadata.rb SI_ASPECT (PDF
+      logo selection).
+  - name: units_mol
+    description: Not documented on the source page.
+    notes: Accepted by the current metanorma-bipm validator (lib/metanorma/bipm/validate.rb
+      SI_ASPECT_VALUES) but absent from lib/isodoc/bipm/metadata.rb SI_ASPECT (PDF
+      logo selection).
+  - name: units_s
+    description: Not documented on the source page.
+    notes: Accepted by the current metanorma-bipm validator (lib/metanorma/bipm/validate.rb
+      SI_ASPECT_VALUES) but absent from lib/isodoc/bipm/metadata.rb SI_ASPECT (PDF
+      logo selection).
+  notes_update:
+    K_k_deltanu: 'Documented on the source page and accepted by lib/isodoc/bipm/metadata.rb
+      SI_ASPECT (PDF logo selection), but REJECTED by the current validator: lib/metanorma/bipm/validate.rb
+      SI_ASPECT_VALUES lists `K_k_deltanu_h` instead.'
+    s_deltanu: 'Documented on the source page and accepted by lib/isodoc/bipm/metadata.rb
+      SI_ASPECT (PDF logo selection), but REJECTED by the current validator: absent
+      from lib/metanorma/bipm/validate.rb SI_ASPECT_VALUES.'
+  notes: 'The gem carries two disagreeing value sets: the validator (validate.rb SI_ASPECT_VALUES,
+    20 values) and the metadata logo list (isodoc/bipm/metadata.rb SI_ASPECT, 13 values
+    = the documented set). Documented values match metadata.rb exactly; deltas against
+    validate.rb are annotated per value.'
+document-scheme:
+  add_values:
+  - name: '2019'
+    description: Labels of second-level and third-level ancillary content are _Appendix/Annex_
+      in English, _Annexe/Annexe_ in French.
+  - name: '2021'
+    description: Labels of second-level and third-level ancillary content are _Annex/Annexe_
+      in English, _Appendix/Appendice_ in French (scheme 2021 or later).
+    notes: 'Default scheme (lib/isodoc/bipm/presentation_xml_convert.rb: `@docscheme
+      ||= "2021"`). Added in metanorma-bipm v2.6.11 (per source page).'
+  notes: Cross-checked against lib/metanorma/bipm/front.rb:119 (`@document_scheme
+    == "2019"`) and lib/isodoc/bipm/presentation_xml_convert.rb:29,40. Any value other
+    than `2019` behaves as `2021`.
+language:
+  add_values:
+  - name: en
+    description: English.
+  - name: fr
+    description: French.
+  notes: Only `en` and `fr` ship i18n in the gem (metanorma.yml i18nyaml).
+committee-acronym:
+  add_values:
+  - name: CGPM
+    description: General Conference on Weights and Measures / Conférence générale
+      des poids et mesures.
+  - name: CIPM
+    description: International Committee for Weights and Measures / Comité international
+      des poids et mesures.
+  - name: BIPM
+    description: International Bureau of Weights and Measures / Bureau International
+      des Poids et Mesures.
+  - name: CCAUV
+    description: Consultative Committee for Acoustics, Ultrasound and Vibration /
+      Comité consultatif de l'acoustique, des ultrasons et des vibrations.
+  - name: CCEM
+    description: Consultative Committee for Electricity and Magnetism / Comité consultatif
+      d'électricité et magnétisme.
+  - name: CCL
+    description: Consultative Committee for Length / Comité consultatif des longueurs.
+  - name: CCM
+    description: Consultative Committee for Mass and Related Quantities / Comité consultatif
+      pour la masse et les grandeurs apparentées.
+  - name: CCPR
+    description: Consultative Committee for Photometry and Radiometry / Comité consultatif
+      de photométrie et radiométrie.
+  - name: CCQM
+    description: 'Consultative Committee for Amount of Substance: Metrology in Chemistry
+      and Biology / Comité consultatif pour la quantité de matière : métrologie en
+      chimie et biologie.'
+  - name: CCRI
+    description: Consultative Committee for Ionizing Radiation / Comité consultatif
+      des rayonnements ionisants.
+  - name: CCT
+    description: Consultative Committee for Thermometry / Comité consultatif de thermométrie.
+  - name: CCTF
+    description: Consultative Committee for Time and Frequency / Comité consultatif
+      du temps et des fréquences.
+  - name: CCU
+    description: Consultative Committee for Units / Comité consultatif des unités.
+  - name: CCL-CCTF-WGFS
+    description: CCL-CCTF Frequency Standards Working Group.
+  - name: JCGM
+    description: Joint Committee for Guides in Metrology / Comité commun pour les
+      guides en métrologie.
+  - name: JCRB
+    description: Joint Committee of the Regional Metrology Organizations and the BIPM
+      / Comité mixte des organisations régionales de métrologie et du BIPM.
+  - name: JCTLM
+    description: Joint Committee for Traceability in Laboratory Medicine / Comité
+      commun pour la traçabilité en médecine de laboratoire.
+  - name: INetQI
+    description: International Network on Quality Infrastructure.
+  notes: All 18 documented acronyms match metanorma.yml committees exactly. The validator
+    (validate.rb committee_validate) additionally accepts the full English and French
+    committee names listed in metanorma.yml, in both the subdivision name and identifier
+    fields.
+meeting-note:
+  set:
+    type: string
+    description: Note on when and where a guide was adopted.

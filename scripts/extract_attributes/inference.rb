@@ -10,6 +10,7 @@ module ExtractAttributes
       /[Dd]efaults?\s+to\s+`([^`]+)`/,
       /[Dd]efault\s+value\s+(?:is\s+)?`([^`]+)`/,
       /\(default:\s*`([^`]+)`\)/,
+      /\(default:\s*_([^_]+)_\)/,
       /[Dd]efault:\s*`([^`]+)`/,
       /[Bb]y\s+default\s+this\s+is\s+`([^`]+)`/,
       /[Dd]efaults?\s+to\s+(true|false|\d+)\b/,

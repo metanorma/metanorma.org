@@ -155,8 +155,23 @@ the manifest, and note discrepancies in the entry's `notes:`.
 
 `bundle exec ruby scripts/extract-attributes.rb` re-extracts from the
 (superseded but kept) source pages. Hand corrections made after the first
-extraction live in `VALIDATOR_AMENDMENTS` (`scripts/extract_attributes.rb`)
-so re-runs stay stable — add new corrections there, not only in the YAML.
+extraction live as **data** in `attributes/amendments/<flavor>.yaml`
+(gem-validator reviews — value sets, per-value notes, field fixes) so
+re-runs stay stable. The runner applies them via
+`Runner#apply_amendments`:
+
+| Operation | Shape | Effect |
+|---|---|---|
+| `add_values` | list of `{name, description?, notes?}` | union into `values:` (type promoted to `enum`) |
+| `notes_update` | map of value-name → note | per-value notes |
+| `notes` | string | attribute-level note (appended) |
+| `set` | map of field → value | overwrite fields (e.g. `type`, `default`) |
+| `drop` | list of fields | remove fields (e.g. `required`, `added_in`) |
+
+An amendment naming an attribute with no extracted entry **creates** it
+(validator-only attributes, e.g. an undocumented `doctype`). Add new
+corrections as a new/edited YAML block in the flavor's amendments file —
+never only in the manifest, or the next regeneration will lose them.
 
 ## The future home of these manifests
 
