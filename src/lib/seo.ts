@@ -73,6 +73,14 @@ export function buildJsonLd(input: JsonLdInput): Record<string, unknown> {
       description: SITE.defaultDescription,
       publisher: { '@id': `${SITE.url}/#organization` },
       inLanguage: SITE.language,
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: `${SITE.url}/search/?q={search_term_string}`,
+        },
+        'query-input': 'required name=search_term_string',
+      },
     },
   ]
 

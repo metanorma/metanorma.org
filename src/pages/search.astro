@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="Search" description="Search the Metanorma documentation — attributes, flavors, tutorials, and more.">
+  <div class="mx-auto max-w-2xl px-6 py-24 text-center">
+    <h1 class="text-3xl font-extrabold text-[var(--mn-c-text-1)]">Search the documentation</h1>
+    <p class="mt-4 text-[var(--mn-c-text-2)]">
+      The search dialog opens automatically with your query.
+      You can open it from anywhere with
+      <kbd class="rounded border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-soft)] px-1.5 py-0.5 text-xs">⌘K</kbd>
+      or
+      <kbd class="rounded border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-soft)] px-1.5 py-0.5 text-xs">Ctrl+K</kbd>.
+    </p>
+    <noscript>
+      <p class="mt-6 text-[var(--mn-c-text-3)]">Search needs JavaScript — the index is queried client-side with Pagefind.</p>
+    </noscript>
+  </div>
+  <script is:inline>
+    (function () {
+      var q = new URLSearchParams(location.search).get('q')
+      if (!q) return
+      // The nav SearchButton island hydrates async (client:load), and its
+      // dialog input only exists once open — so dispatch mn:search on a
+      // retry loop until the island is listening and opens the dialog.
+      var tries = 0
+      var timer = setInterval(function () {
+        tries++
+        if (document.querySelector('dialog[open]') || tries > 30) {
+          clearInterval(timer)
+          return
+        }
+        document.dispatchEvent(new CustomEvent('mn:search', { detail: { q: q } }))
+      }, 150)
+    })()
+  </script>
+</BaseLayout>
