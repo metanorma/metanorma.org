@@ -29,15 +29,30 @@ import type { Loader, LoaderContext } from 'astro/loaders'
 // and store.set is keyed by id, so insertion order is irrelevant anyway.
 const RENDER_CONCURRENCY = 16
 
+// Meta-description fallback: when frontmatter carries neither description
+// nor excerpt, derive one from the first paragraph of the rendered page
+// (so hundreds of pages stop sharing the site-wide default description).
+function excerptFromHtml(html: string, max = 160): string {
+  const m = html.match(/<p[^>]*>([\s\S]*?)<\/p>/)
+  if (!m) return ''
+  const text = m[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+  return text.length > max ? text.slice(0, max - 1).trimEnd() + '…' : text
+}
+
 async function renderEntry(envelope: MirrorEnvelope): Promise<{ id: string; data: MirrorEntryData }> {
   const { html, headings } = await defaultPipeline.run(envelope.mirror_json, {
     stripFirstHeadingIf: envelope.title || undefined,
   })
+  const frontmatter = { ...envelope.frontmatter }
+  if (!frontmatter.description && !frontmatter.excerpt) {
+    const excerpt = excerptFromHtml(html)
+    if (excerpt) frontmatter.excerpt = excerpt
+  }
   return {
     id: envelope.slug,
     data: {
       title: envelope.title,
-      frontmatter: envelope.frontmatter,
+      frontmatter,
       headings,
       source: envelope.source,
       redirect_from: envelope.redirect_from,

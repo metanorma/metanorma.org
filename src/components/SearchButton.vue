@@ -20,15 +20,11 @@ const placeholder = ref(PLACEHOLDERS[0])
 
 async function ensurePagefind() {
   if (!pagefind) {
-    await new Promise<void>((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = '/pagefind/pagefind.js'
-      script.onload = () => resolve()
-      script.onerror = () => reject(new Error('Failed to load Pagefind'))
-      document.head.appendChild(script)
-    })
-    pagefind = (window as any).pagefind
-    await pagefind?.init()
+    // Pagefind 1.x ships a pure ES module (named exports, no global).
+    // Load it as a module; @vite-ignore keeps Vite from resolving the
+    // path at build time (the index is generated post-build by pagefind).
+    pagefind = await import(/* @vite-ignore */ '/pagefind/pagefind.js')
+    await pagefind.init?.()
   }
   return pagefind
 }
@@ -97,12 +93,23 @@ function onKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape' && open.value) closeModal()
 }
 
+// External trigger (e.g. /search/?q=…): open the modal with a query and run it.
+function onExternalSearch(e: Event) {
+  const q = (e as CustomEvent).detail?.q
+  if (typeof q !== 'string' || !q.trim()) return
+  openModal()
+  query.value = q
+  doSearch()
+}
+
 onMounted(() => {
   document.addEventListener('keydown', onKeydown)
+  document.addEventListener('mn:search', onExternalSearch)
 })
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', onKeydown)
+  document.removeEventListener('mn:search', onExternalSearch)
 })
 </script>
 

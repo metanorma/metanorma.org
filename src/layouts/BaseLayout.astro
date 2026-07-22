@@ -68,8 +68,14 @@ const crumbs = props.crumbs ?? (pathname === '/' ? [] : autoCrumbs(pathname, doc
     </script>
   </head>
   <body class="min-h-screen flex flex-col bg-[var(--mn-c-bg)] text-[var(--mn-c-text-1)] antialiased transition-colors duration-300">
+    <a
+      href="#mn-main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[300] focus:rounded-lg focus:bg-[var(--mn-c-brand-1)] focus:px-4 focus:py-2 focus:text-white"
+    >
+      Skip to content
+    </a>
     <Nav />
-    <main class="flex-1">
+    <main id="mn-main" class="flex-1">
       <slot />
     </main>
     <Footer />
