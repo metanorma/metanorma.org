@@ -51,7 +51,9 @@ const tileImgClass = 'h-12 max-w-full object-contain transition-transform durati
         </div>
 
         <!-- Code sample -->
-        <figure class="mn-rise mt-10 max-w-[520px] overflow-hidden rounded-2xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-elv)]" style="animation-delay: 0.4s;">
+        <figure class="mn-rise relative mt-10 max-w-[520px] overflow-hidden rounded-2xl border border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-elv)]" style="animation-delay: 0.4s;">
+          <!-- Easter egg: the rubber stamp every standards person knows -->
+          <span class="mn-stamp" title="This site is in force (published and maintained)">In&nbsp;Force</span>
           <figcaption class="border-b border-[var(--mn-c-divider)] px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-[var(--mn-c-text-3)]">{d.hero.codeSample.label}</figcaption>
           <pre class="overflow-x-auto px-5 py-4"><code class="text-[13px] leading-relaxed text-[var(--mn-c-text-2)]" style="font-family: var(--mn-font-mono)">{d.hero.codeSample.code}</code></pre>
           <pre class="overflow-x-auto border-t border-[var(--mn-c-divider)] bg-[var(--mn-c-bg-soft)] px-5 py-3"><code class="text-[13px] font-medium text-[var(--mn-c-brand-1)]" style="font-family: var(--mn-font-mono)">$ {d.hero.codeSample.command}</code></pre>
@@ -64,6 +66,12 @@ const tileImgClass = 'h-12 max-w-full object-contain transition-transform durati
         <div class="mn-hero-float relative">
           <HeroLighthouse class="h-64 w-64 md:h-80 md:w-80 lg:h-96 lg:w-96" />
         </div>
+        <!-- Easter eggs: a slow fog roll and the occasional ship, paying
+             respect to the lighthouse. Hidden for reduced motion. -->
+        <div class="mn-fog" aria-hidden="true"></div>
+        <svg class="mn-ship" aria-hidden="true" viewBox="0 0 64 20" fill="currentColor">
+          <path d="M4 12h56l-6 6H12L4 12Zm10-8h4v8h-4V4Zm8 0h4v8h-4V4Zm-16 6h24l2 2H4l2-2Z"/>
+        </svg>
       </div>
     </div>
   </section>

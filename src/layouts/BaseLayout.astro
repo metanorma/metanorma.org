@@ -19,6 +19,7 @@ interface Props {
   authorName?: string
   seoTitle?: string          // absolute <title>, bypasses the "| Metanorma" suffix
   crumbs?: Crumb[]           // override; defaults to pathname-derived crumbs
+  robots?: string            // override robots meta (default: index,follow)
 }
 
 const props = Astro.props as Props
@@ -58,6 +59,7 @@ const crumbs = props.crumbs ?? (pathname === '/' ? [] : autoCrumbs(pathname, doc
       publishedAt={publishedAt}
       authorName={authorName}
       crumbs={crumbs}
+      robots={props.robots}
     />
     <ClientRouter />
     <script is:inline define:vars={{ THEME_KEY }}>

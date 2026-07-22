@@ -16,6 +16,7 @@ interface Props {
   publishedAt?: string | null
   authorName?: string | null
   crumbs?: Crumb[]
+  robots?: string
 }
 
 const {
@@ -29,6 +30,7 @@ const {
   publishedAt = null,
   authorName = null,
   crumbs = [],
+  robots = 'index,follow,max-image-preview:large',
 } = Astro.props
 
 const ogImage = new URL(image || SITE.defaultOgImage, SITE.url).toString()
@@ -45,7 +47,7 @@ const jsonLd = buildJsonLd({
 
 <title>{title}</title>
 <meta name="description" content={description} />
-<meta name="robots" content="index,follow,max-image-preview:large" />
+<meta name="robots" content={robots} />
 {authorName && <meta name="author" content={authorName} />}
 <link rel="canonical" href={canonical} />
 
