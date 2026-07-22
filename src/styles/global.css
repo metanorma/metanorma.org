@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* The site theme is class-driven (.dark on <html>, set by the anti-FOUC
+   script + DarkToggle) — NOT the OS preference. Tailwind v4's default
+   dark: variant is the prefers-color-scheme media query, which disagrees
+   with the toggle whenever OS and site themes differ (e.g. light-colored
+   "dark" logo shown on a light page). Bind dark: to the class instead. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-brand-1: #575ABE;
   --color-brand-2: #4458A9;

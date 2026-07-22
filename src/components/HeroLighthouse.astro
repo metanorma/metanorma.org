@@ -70,6 +70,15 @@ const { class: className = '' } = Astro.props
         mode: reduced ? 'static' : 'rotate',
         period: 7.5,
       })
+      if (reduced) {
+        // Reduced motion = static BY DEFAULT, but an explicit click is
+        // consent to motion: let the visitor start (and stop) the beam.
+        mount.addEventListener('click', () => {
+          const lh = window.__mnLh
+          if (!lh) return
+          lh.setMode(lh.getOptions().mode === 'static' ? 'rotate' : 'static')
+        })
+      }
       document
         .querySelectorAll('[data-lighthouse-hero] [data-lh-fallback]')
         .forEach((el) => el.remove())
