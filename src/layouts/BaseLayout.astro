@@ -16,10 +16,12 @@ interface Props {
   ogImage?: string
   ogImageAlt?: string
   publishedAt?: string
+  modifiedAt?: string | null
   authorName?: string
   seoTitle?: string          // absolute <title>, bypasses the "| Metanorma" suffix
   crumbs?: Crumb[]           // override; defaults to pathname-derived crumbs
   robots?: string            // override robots meta (default: index,follow)
+  editUrl?: string | null    // "Edit this page" link target (GitHub edit URL)
 }
 
 const props = Astro.props as Props
@@ -30,9 +32,11 @@ const description = buildDescription(props.description, frontmatter.description,
 const canonical = new URL(Astro.url.pathname, Astro.site).toString()
 const ogImage = props.ogImage || frontmatter.card_image || null
 const publishedAt = props.publishedAt || frontmatter.date || null
+const modifiedAt = props.modifiedAt || null
 const authorName = props.authorName || frontmatter.author?.name || null
 const pathname = Astro.url.pathname
 const crumbs = props.crumbs ?? (pathname === '/' ? [] : autoCrumbs(pathname, docTitle))
+const editUrl = props.editUrl || null
 ---
 
 <!doctype html>
@@ -57,6 +61,7 @@ const crumbs = props.crumbs ?? (pathname === '/' ? [] : autoCrumbs(pathname, doc
       image={ogImage}
       imageAlt={props.ogImageAlt}
       publishedAt={publishedAt}
+      modifiedAt={modifiedAt}
       authorName={authorName}
       crumbs={crumbs}
       robots={props.robots}

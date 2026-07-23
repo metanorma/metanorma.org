@@ -504,7 +504,7 @@ describe('renderMirrorToHtml', () => {
   describe('images', () => {
     it('renders image with src and alt only', () => {
       const out = renderMirrorToHtml({ type: 'image', attrs: { src: '/a.png', alt: 'A' } })
-      expect(out).toBe('<img src="/a.png" alt="A" loading="lazy" />')
+      expect(out).toBe('<img src="/a.png" alt="A" loading="lazy" decoding="async" />')
     })
 
     it('renders image with title and caption', () => {
@@ -518,7 +518,7 @@ describe('renderMirrorToHtml', () => {
 
     it('renders image with missing src as empty', () => {
       expect(renderMirrorToHtml({ type: 'image' }))
-        .toBe('<img src="" alt="" loading="lazy" />')
+        .toBe('<img src="" alt="" loading="lazy" decoding="async" />')
     })
   })
 

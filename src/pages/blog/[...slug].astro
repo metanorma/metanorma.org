@@ -6,6 +6,7 @@ import BlogPostArticle from '../../components/BlogPostArticle.astro'
 import TOC from '../../components/TOC.astro'
 import { formatDate } from '../../lib/format-date'
 import { hasToc } from '../../lib/toc'
+import { editUrlFor, lastmodFor } from '../../lib/source-meta'
 import type { MirrorFrontmatterAuthor } from '../../lib/mirror-schema'
 
 export const getStaticPaths = (async () => {
@@ -22,16 +23,23 @@ interface Props { entry: CollectionEntry<'mirror'> }
 const { entry } = Astro.props as Props
 // entry.data conforms to mirrorEntrySchema (src/lib/mirror-schema.ts) —
 // the one envelope model. No inline shape re-assertion.
-const { title, frontmatter, headings, rendered_html } = entry.data
+const { title, frontmatter, headings, rendered_html, source } = entry.data
 const date = frontmatter.date ? formatDate(String(frontmatter.date)) : ''
 const isoDate = frontmatter.date ? String(frontmatter.date).slice(0, 10) : ''
+const modifiedAt = lastmodFor(source)
+const editUrl = editUrlFor(source)
 const author: MirrorFrontmatterAuthor = frontmatter.author ?? {}
 const desc = frontmatter.excerpt || frontmatter.description || ''
 const authorPicture = author.use_picture ? `/assets/${author.use_picture.replace(/^assets\/?/, '')}` : null
 const showToc = hasToc(headings)
+// Per-post dynamic OG image only when frontmatter doesn't supply one.
+// Generated at build time by scripts/build-og-images.mjs (writes to
+// dist/og/<slug>.png); posts with card_image are skipped by the script.
+const slug = entry.id.replace(/^blog\//, '')
+const ogImage = frontmatter.card_image || `/og/${slug}.png`
 ---
 
-<BaseLayout title={title} description={desc} frontmatter={frontmatter} publishedAt={isoDate} crumbs={[
+<BaseLayout title={title} description={desc} frontmatter={frontmatter} publishedAt={isoDate} modifiedAt={modifiedAt} ogImage={ogImage} crumbs={[
   { label: 'Blog', href: '/blog/', isLast: false },
   { label: title, href: Astro.url.pathname, isLast: true },
 ]}>
@@ -47,6 +55,7 @@ const showToc = hasToc(headings)
         author={author}
         authorPicture={authorPicture}
         html={rendered_html}
+        editUrl={editUrl}
       />
       <TOC headings={headings} variant="desktop" />
     </div>
@@ -60,6 +69,7 @@ const showToc = hasToc(headings)
       author={author}
       authorPicture={authorPicture}
       html={rendered_html}
+      editUrl={editUrl}
     />
   )}
 </BaseLayout>

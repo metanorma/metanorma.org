@@ -44,7 +44,9 @@ export interface JsonLdInput {
   canonical: string
   type: 'website' | 'article'
   publishedAt?: string | null
+  modifiedAt?: string | null
   authorName?: string | null
+  image?: string | null
   crumbs?: Crumb[]
 }
 
@@ -89,12 +91,17 @@ export function buildJsonLd(input: JsonLdInput): Record<string, unknown> {
     '@id': `${input.canonical}#page`,
     url: input.canonical,
     name: input.title,
+    headline: input.title,
     description: input.description,
     isPartOf: { '@id': `${SITE.url}/#website` },
     inLanguage: SITE.language,
   }
+  if (input.image) {
+    page.image = new URL(input.image, SITE.url).toString()
+  }
   if (input.type === 'article') {
     if (input.publishedAt) page.datePublished = input.publishedAt
+    if (input.modifiedAt) page.dateModified = input.modifiedAt
     page.author = input.authorName
       ? { '@type': 'Person', name: input.authorName }
       : { '@id': `${SITE.url}/#organization` }

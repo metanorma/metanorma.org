@@ -15,9 +15,10 @@ interface Props {
   author: MirrorFrontmatterAuthor
   authorPicture: string | null
   html: string
+  editUrl?: string | null
   class?: string
 }
-const { title, date, isoDate, desc, author, authorPicture, html, class: className } = Astro.props
+const { title, date, isoDate, desc, author, authorPicture, html, editUrl = null, class: className } = Astro.props
 ---
 
 <article class={className}>
@@ -61,5 +62,10 @@ const { title, date, isoDate, desc, author, authorPicture, html, class: classNam
   )}
   <div class="mt-12">
     <a href="/blog/" class="text-sm font-medium text-[var(--mn-c-brand-1)] no-underline hover:underline">← Back to blog</a>
+    {editUrl && (
+      <a href={editUrl} target="_blank" rel="noopener" class="ml-4 text-sm text-[var(--mn-c-text-3)] no-underline hover:text-[var(--mn-c-brand-1)] hover:underline">
+        Edit on GitHub →
+      </a>
+    )}
   </div>
 </article>
