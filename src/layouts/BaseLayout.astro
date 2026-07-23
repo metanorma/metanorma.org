@@ -67,6 +67,7 @@ const editUrl = props.editUrl || null
       robots={props.robots}
     />
     <ClientRouter />
+    <script src="/js/easter-eggs.js" defer is:inline></script>
     <script is:inline define:vars={{ THEME_KEY }}>
       (function(){try{var s=localStorage.getItem(THEME_KEY);var d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(s==='dark'||(s!=='light'&&d))document.documentElement.classList.add('dark')}catch(e){}})()
       document.addEventListener('astro:before-swap',function(ev){if(document.documentElement.classList.contains('dark')){ev.newDocument.documentElement.classList.add('dark')}})
@@ -99,6 +100,11 @@ const editUrl = props.editUrl || null
           { egg: 'Day shift / night shift', where: 'Theme toggle', how: 'Hover it (the lamp knows)' },
           { egg: 'Navigation, as amended', where: 'Mobile menu', how: 'Open the menu below 768px' },
           { egg: 'Please initial each page', where: 'Print', how: '⌘P / Ctrl+P' },
+          { egg: 'APPROVED ✓', where: 'Anywhere (keyboard)', how: 'Press A outside an input — a rubber-stamp sweeps the page' },
+          { egg: 'Joint Secretariat seal', where: 'Header logo', how: 'Long-press the logo (1.2s) — it spins, the tagline slips' },
+          { egg: 'Year time-machine', where: 'Footer copyright', how: 'Tap the year rapidly — cycles back through history (floor: 1947)' },
+          { egg: 'Drafting committee', where: 'Any selection', how: 'Select 280+ characters — the committee is convened' },
+          { egg: 'PEER REVIEWED', where: 'Code blocks (<pre>)', how: 'Long-press (800ms) inside a code block' },
           { egg: 'help()', where: 'This console', how: 'You already know' },
         ])
         console.log('%c — The Committee ', 'color:#8a86a8;font-style:italic;')
