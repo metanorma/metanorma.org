@@ -14,6 +14,7 @@ import { hasToc } from '../lib/toc'
 import { getNavTrees } from '../lib/nav-tree'
 import { buildCrumbs } from '../lib/breadcrumbs'
 import { ATTRIBUTE_PAGES } from '../lib/attr-registry'
+import { editUrlFor, lastmodFor } from '../lib/source-meta'
 
 export const getStaticPaths = (async () => {
   const entries = await getCollection('mirror')
@@ -45,7 +46,7 @@ interface Props { entry: CollectionEntry<'mirror'> }
 const { entry } = Astro.props as Props
 // entry.data conforms to mirrorEntrySchema (src/lib/mirror-schema.ts) —
 // the one envelope model. No inline shape re-assertion.
-const { title, frontmatter, headings, rendered_html } = entry.data
+const { title, frontmatter, headings, rendered_html, source } = entry.data
 const subtitle = frontmatter.subtitle || frontmatter.description || ''
 const pathname = Astro.url.pathname
 // The page resolves the nav tree ONCE and hands it to Sidebar and
@@ -53,6 +54,8 @@ const pathname = Astro.url.pathname
 const nav = sidebarFor(pathname)
 const showToc = hasToc(headings)
 const hasSidebar = nav !== null && nav.items.length > 0
+const editUrl = editUrlFor(source)
+const modifiedAt = lastmodFor(source)
 // Prev/next pagination is a /learn/ feature: the sequence is the course
 // order declared in learn/_nav.yml (the learn ROOT tree — lesson pages
 // resolve the /learn/lessons/ sidebar tree, whose item order is not the
@@ -62,7 +65,7 @@ const learnNav = pathname.startsWith('/learn/')
   : null
 ---
 
-<BaseLayout title={title} frontmatter={frontmatter} crumbs={buildCrumbs(nav, pathname)}>
+<BaseLayout title={title} frontmatter={frontmatter} crumbs={buildCrumbs(nav, pathname)} modifiedAt={modifiedAt}>
   {hasSidebar ? (
     <div class="mx-auto grid max-w-[1440px] gap-8 px-6 pb-8 grid-cols-1 lg:grid-cols-[288px_minmax(0,1fr)] xl:grid-cols-[288px_minmax(0,1fr)_224px]">
       <Sidebar nav={nav} pathname={pathname} />
@@ -71,7 +74,7 @@ const learnNav = pathname.startsWith('/learn/')
         <div class="px-2 pt-4">
           <Breadcrumb nav={nav} pathname={pathname} />
         </div>
-        <Article title={title} subtitle={subtitle}>
+        <Article title={title} subtitle={subtitle} editUrl={editUrl}>
           <MirrorContent html={rendered_html} />
           {learnNav && <PrevNext nav={learnNav} pathname={pathname} />}
         </Article>
@@ -82,7 +85,7 @@ const learnNav = pathname.startsWith('/learn/')
     <div class="mx-auto grid max-w-[1440px] gap-8 px-6 pb-8 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_224px]">
       <div>
         <TOC headings={headings} variant="mobile" bp="lg" />
-        <Article class="mn-rendered mx-auto max-w-3xl px-2 py-12" title={title} subtitle={subtitle}>
+        <Article class="mn-rendered mx-auto max-w-3xl px-2 py-12" title={title} subtitle={subtitle} editUrl={editUrl}>
           <Breadcrumb slot="breadcrumb" nav={nav} pathname={pathname} />
           <MirrorContent html={rendered_html} />
           {learnNav && <PrevNext nav={learnNav} pathname={pathname} />}
@@ -91,7 +94,7 @@ const learnNav = pathname.startsWith('/learn/')
       <TOC headings={headings} variant="desktop" bp="lg" />
     </div>
   ) : (
-    <Article class="mn-rendered mx-auto max-w-3xl px-6 py-12" title={title} subtitle={subtitle}>
+    <Article class="mn-rendered mx-auto max-w-3xl px-6 py-12" title={title} subtitle={subtitle} editUrl={editUrl}>
       <Breadcrumb slot="breadcrumb" nav={nav} pathname={pathname} />
       <MirrorContent html={rendered_html} />
       {learnNav && <PrevNext nav={learnNav} pathname={pathname} />}

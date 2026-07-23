@@ -61,6 +61,27 @@ describe('buildJsonLd', () => {
     expect(article.author).toEqual({ '@type': 'Person', name: 'Jane Doe' })
   })
 
+  it('emits Article with headline, image, dateModified when supplied', () => {
+    const ld = buildJsonLd({
+      ...base,
+      type: 'article',
+      publishedAt: '2024-01-02',
+      modifiedAt: '2024-06-01',
+      authorName: 'Jane Doe',
+      image: '/assets/og/x.png',
+    }) as any
+    const article = ld['@graph'].find((n: any) => n['@type'] === 'Article')
+    expect(article.headline).toBe('Some page')
+    expect(article.dateModified).toBe('2024-06-01')
+    expect(article.image).toBe('https://www.metanorma.org/assets/og/x.png')
+  })
+
+  it('omits dateModified when not supplied', () => {
+    const ld = buildJsonLd({ ...base, type: 'article', publishedAt: '2024-01-02' }) as any
+    const article = ld['@graph'].find((n: any) => n['@type'] === 'Article')
+    expect(article.dateModified).toBeUndefined()
+  })
+
   it('falls back to the organization as article author', () => {
     const ld = buildJsonLd({ ...base, type: 'article', publishedAt: '2024-01-02' }) as any
     const article = ld['@graph'].find((n: any) => n['@type'] === 'Article')

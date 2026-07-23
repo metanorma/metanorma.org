@@ -6,8 +6,9 @@ interface Props {
   // the default plain wrapper; standalone pages pass their centering /
   // typography classes (e.g. "mn-rendered mx-auto max-w-3xl px-6 py-12").
   class?: string
+  editUrl?: string | null
 }
-const { title, subtitle, class: className = 'w-full' } = Astro.props
+const { title, subtitle, class: className = 'w-full', editUrl = null } = Astro.props
 ---
 
 <article class={className}>
@@ -19,6 +20,13 @@ const { title, subtitle, class: className = 'w-full' } = Astro.props
     </header>
   )}
   <slot />
+  {editUrl && (
+    <p class="mt-12 border-t border-[var(--mn-c-divider)] pt-6 text-sm text-[var(--mn-c-text-3)]">
+      <a href={editUrl} target="_blank" rel="noopener" class="text-[var(--mn-c-brand-1)] no-underline hover:underline">
+        Edit this page on GitHub →
+      </a>
+    </p>
+  )}
   <p class="mn-annex-z" aria-hidden="true">
     <strong>Annex Z</strong> (informative) — You found the bottom of the page.
   </p>

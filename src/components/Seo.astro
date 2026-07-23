@@ -14,6 +14,7 @@ interface Props {
   image?: string | null
   imageAlt?: string
   publishedAt?: string | null
+  modifiedAt?: string | null
   authorName?: string | null
   crumbs?: Crumb[]
   robots?: string
@@ -28,6 +29,7 @@ const {
   image,
   imageAlt = `${SITE.name} — ${SITE.tagline}`,
   publishedAt = null,
+  modifiedAt = null,
   authorName = null,
   crumbs = [],
   robots = 'index,follow,max-image-preview:large',
@@ -40,7 +42,9 @@ const jsonLd = buildJsonLd({
   canonical,
   type,
   publishedAt,
+  modifiedAt,
   authorName,
+  image,
   crumbs,
 })
 ---
@@ -60,6 +64,7 @@ const jsonLd = buildJsonLd({
 <meta property="og:image" content={ogImage} />
 <meta property="og:image:alt" content={imageAlt} />
 {type === 'article' && publishedAt && <meta property="article:published_time" content={publishedAt} />}
+{type === 'article' && modifiedAt && <meta property="article:modified_time" content={modifiedAt} />}
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={docTitle} />

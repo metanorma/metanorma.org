@@ -10,6 +10,7 @@ import { flavors } from './src/data/flavors.ts'
 import { readAllEnvelopes } from './src/lib/mirror-store.ts'
 import { normalizeDate } from './src/lib/blog-date.ts'
 import { ATTRIBUTE_PAGES } from './src/lib/attr-registry.ts'
+import { lastmodFor } from './src/lib/source-meta.ts'
 
 // Static legacy-redirect rules: the genuinely one-off entries. The
 // per-flavor /author/{id}/ and /flavor/{id}/ redirects that used to be
@@ -174,13 +175,23 @@ const redirectSourceSet = new Set(Object.keys(allRedirects).flatMap(url => [url,
 // /hidden/ easter-egg page (hidden from crawlers by design).
 const sitemapExcludeSet = new Set([...redirectSourceSet, '/hidden/', '/hidden'])
 
-// Blog post dates → sitemap lastmod (the only content with reliable
-// dates; envelopes were already read above for redirects).
+// Sitemap lastmod:
+//   - blog posts: published date (canonical — a back-dated post keeps
+//     its publication date even if git mtime is older)
+//   - everything else: git last-commit date of the source `.adoc`
+//     (so sitemap reflects when content actually changed, not just the
+//     build time). Source is absent for synthetic pages (hubs), which
+//     correctly get no lastmod.
 const lastmodByPath = new Map()
 for (const env of envelopes) {
-  if (!env.slug.startsWith('blog/')) continue
-  const iso = normalizeDate(env.frontmatter?.date)
-  if (iso) lastmodByPath.set(`/${env.slug}/`, iso)
+  const path = `/${env.slug}/`
+  if (env.slug.startsWith('blog/')) {
+    const iso = normalizeDate(env.frontmatter?.date)
+    if (iso) lastmodByPath.set(path, iso)
+  } else if (env.source) {
+    const iso = lastmodFor(env.source)
+    if (iso) lastmodByPath.set(path, iso)
+  }
 }
 
 export default defineConfig({

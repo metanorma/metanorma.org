@@ -266,7 +266,7 @@ const renderImage: NodeRenderer = (node) => {
   const src = (attrs.src as string) || ''
   const alt = (attrs.alt as string) || ''
   const title = attrs.title ? ` title="${escapeHtml(String(attrs.title))}"` : ''
-  const img = `<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}"${title} loading="lazy" />`
+  const img = `<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}"${title} loading="lazy" decoding="async" />`
   if (attrs.caption) {
     return `<figure>${img}<figcaption>${escapeHtml(String(attrs.caption))}</figcaption></figure>`
   }
