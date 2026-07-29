@@ -238,3 +238,24 @@ AsciiDoc's native plus-delimited inline passthrough (`+...+`) does *not* prevent
 smart-quote conversion, because Metanorma applies smart quotes in postprocessing,
 after AsciiDoc passthroughs have already been resolved; use `pass-format` (or
 `pass:[...]`) instead.
+
+[[pass-format-straightquotes-span]]
+A `pass-format:straightquotes[...]` passthrough can be nested inside a `span`
+inline macro to produce a styled semantic span whose text also keeps straight
+quotes — useful, for example, when styling a PDF operator that itself contains
+the `"`/`'` string delimiters
+[added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.4.10]:
+
+[example]
+.A styled span that keeps straight quotes
+====
+[source,asciidoc]
+--
+span:pdf-operator[pass-format:straightquotes["Tj"]]
+--
+====
+
+The `span:` macro must be the outer wrapper, with `pass-format` as its inner
+content: the passthrough is resolved first, so the span delimits its brackets
+correctly. The reverse nesting (`pass-format` outside a `span`) does not work,
+because passthrough content is not interpreted as Metanorma markup.
