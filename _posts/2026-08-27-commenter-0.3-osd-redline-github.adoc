@@ -1,0 +1,80 @@
+---
+layout: post
+title: "Commenter 0.3: ISO Comment Imports from OSD XLSX and Redline DOCX, with a GitHub Issue Round-Trip"
+date: 2026-08-27
+categories: news release
+
+authors:
+  - name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+    - https://github.com/ronaldtse
+
+excerpt: >-
+  The commenter gem now imports ISO comments from ISO Online Standards Development (OSD) XLSX exports and redlined DOCX with tracked changes, keeps everything in schema-validated YAML, and syncs comments to GitHub issues and back.
+---
+
+== Commenter 0.3: ISO comment imports from OSD XLSX and redline DOCX, with a GitHub issue round-trip
+
+ISO comment handling has always been a battle against formats: balloting templates arrive as DOCX, ISO Online Standards Development (OSD) exports arrive as XLSX, and ISO/CS editors return redlined documents full of tracked changes. The https://github.com/metanorma/commenter[commenter] gem now reads all of them into one structured, schema-validated YAML representation — and can round-trip comments through GitHub issues for collaborative review.
+
+[source,shell]
+----
+$ gem install commenter
+----
+
+== Import from ISO OSD XLSX exports
+
+OSD comment exports come in two shapes, and commenter auto-detects both from the header row: the "resolved" export with resolution data (`Resolution status`, `Motivation`, `Resolution date`, `Stage code`) and the comments-only export with discussion replies.
+
+[source,shell]
+----
+# ISO OSD resolved comment export
+$ commenter import "91855-Comments-resolved.xlsx" -o comments.yaml
+
+# ISO OSD comments-only export
+$ commenter import "ISO 5843-6-Comments.xlsx" -o comments.yaml
+----
+
+Sheet metadata is extracted automatically — the document reference (`ISO/DIS 5843-6(en)`), the ballot stage, the project number, and the English/French document titles — so the YAML is complete without manual cleanup. Resolution status and motivation are combined into the `observations` field, ready for comment-sheet assembly.
+
+Multi-sheet workbooks are supported: pick the sheet by name, or use `--resolved-only` / `--unresolved-only`.
+
+== Import redline DOCX with tracked changes
+
+ISO/CS editors often answer a ballot not with a comment sheet but with a redline — a Word document full of tracked changes. Those changes are comments too, so commenter now turns them into comment entries:
+
+[source,shell]
+----
+$ commenter import "ISO_DIS 2533 Enquiry Trackchange Word.docx" --format redline \
+    --body CS --document "ISO 2533:2026" --stage DIS \
+    --observations "Accepted. ISO/CS tracked change accepted." \
+    -o comments-cs.yaml
+----
+
+Each tracked change (`w:ins`, `w:del`, `w:moveFrom`, `w:moveTo`) becomes a comment whose `proposed_change` renders the change itself — `Insert: "..."`, `Delete: "..."`, `Move ...: "..."` — and whose clause is resolved from the nearest preceding heading, including sub-clauses such as `4.2.1` and annexes such as `Annex A`. The `--body` option stamps the member body code onto comment IDs (`CS-1`, `CS-2`, …), so the redline slots straight into the ballot record alongside the member bodies' comment sheets.
+
+Redlines can be enormous, so the parser streams `word/document.xml` with a SAX-style reader instead of loading a full DOM — 100 MB redlines import without issue.
+
+== GitHub issue round-trip
+
+For teams that review comments as GitHub issues, commenter closes the loop:
+
+* `commenter github-create` creates one issue per comment using Liquid templates (fully customizable), and records issue numbers and URLs back into the YAML.
+* `commenter github-retrieve` pulls official observations back out of closed issues — written as `> **OBSERVATION:**` blockquotes — and updates the YAML in place.
+
+Duplicate detection is stage-aware: the same comment ID (`GB-001`) appears at every ballot stage, so the default unique ID renders as `[DIS] GB-001` — CD and DIS comments of the same number become separate issues rather than being skipped as duplicates. The pattern is configurable through a `unique_id` Liquid template.
+
+== Schema-validated YAML
+
+Every import writes YAML with a matching JSON-Schema-style schema (`schema/iso_comment_2012-03.yaml` or `schema/iso_comment_osd.yaml`), stamped into the file header for editor support. The same schema reference is now preserved across the GitHub round-trip: rewriting an OSD YAML through `github-create` or `github-retrieve` keeps the OSD schema header intact, and round-tripping YAML through the data model is representation-stable — reload your output and you get byte-identical YAML.
+
+== Under the hood
+
+The 0.3 series also hardened the gem itself: the OSD XLSX parser maps columns by header name and real position (tolerating gaps in header rows), numeric IDs are normalized, and the whole pipeline — including a runtime-generated XLSX/DOCX fixture suite, with no binary fixtures in the repository — is covered by the CI matrix on Ruby 3.2 through 4.0 across macOS, Linux, and Windows.
+
+Internally, the comment-type vocabulary (`ge`/`te`/`ed` and their expanded names) now lives in a single `CommentType` module, and the shared GitHub connection setup lives in `GitHubSession` — small changes, but they make the behavior of every entry point identical by construction.
+
+== Get involved
+
+Comments, bug reports, and pull requests are welcome at https://github.com/metanorma/commenter[github.com/metanorma/commenter]. If you receive ISO comments in a format commenter does not yet understand, please open an issue with a (sanitized) sample — format coverage grows one real-world document at a time.
