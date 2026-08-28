@@ -18,9 +18,11 @@ excerpt: >-
 
 ISO comment handling has always been a battle against formats: balloting templates arrive as DOCX, ISO Online Standards Development (OSD) exports arrive as XLSX, and ISO/CS editors return redlined documents full of tracked changes. The https://github.com/metanorma/commenter[commenter] gem now reads all of them into one structured, schema-validated YAML representation — and can round-trip comments through GitHub issues for collaborative review.
 
+This work was done for the ISO 2533 publication: at the FDIS stage we needed to distribute the changes the ISO/CS editors had made to the document, together with their disposition, to everyone following the ballot — in the same comment-sheet form as every other response.
+
 [source,shell]
 ----
-$ gem install commenter
+gem install commenter
 ----
 
 == Import from ISO OSD XLSX exports
@@ -30,10 +32,10 @@ OSD comment exports come in two shapes, and commenter auto-detects both from the
 [source,shell]
 ----
 # ISO OSD resolved comment export
-$ commenter import "91855-Comments-resolved.xlsx" -o comments.yaml
+commenter import "91855-Comments-resolved.xlsx" -o comments.yaml
 
 # ISO OSD comments-only export
-$ commenter import "ISO 5843-6-Comments.xlsx" -o comments.yaml
+commenter import "ISO 5843-6-Comments.xlsx" -o comments.yaml
 ----
 
 Sheet metadata is extracted automatically — the document reference (`ISO/DIS 5843-6(en)`), the ballot stage, the project number, and the English/French document titles — so the YAML is complete without manual cleanup. Resolution status and motivation are combined into the `observations` field, ready for comment-sheet assembly.
@@ -42,11 +44,11 @@ Multi-sheet workbooks are supported: pick the sheet by name, or use `--resolved-
 
 == Import redline DOCX with tracked changes
 
-ISO/CS editors often answer a ballot not with a comment sheet but with a redline — a Word document full of tracked changes. Those changes are comments too, so commenter now turns them into comment entries:
+ISO/CS editors often answer a ballot not with a comment sheet but with a redline — a Word document full of tracked changes. That is exactly what happened with ISO 2533: for the FDIS stage we wanted to distribute the changes the ISO/CS editors made to the document along with their disposition, which meant turning a redline into a comment sheet. commenter now does that:
 
 [source,shell]
 ----
-$ commenter import "ISO_DIS 2533 Enquiry Trackchange Word.docx" --format redline \
+commenter import "ISO_DIS 2533 Enquiry Trackchange Word.docx" --format redline \
     --body CS --document "ISO 2533:2026" --stage DIS \
     --observations "Accepted. ISO/CS tracked change accepted." \
     -o comments-cs.yaml
