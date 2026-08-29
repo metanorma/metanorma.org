@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Commenter 0.3: ISO Comment Imports from OSD XLSX and Redline DOCX, with a GitHub Issue Round-Trip"
+title: "Commenter 0.3–0.6: ISO Comments From Anywhere — and the Complete Ballot Workflow"
 date: 2026-08-27
 categories: news release
 
@@ -11,14 +11,14 @@ authors:
     - https://github.com/ronaldtse
 
 excerpt: >-
-  The commenter gem now imports ISO comments from ISO Online Standards Development (OSD) XLSX exports and redlined DOCX with tracked changes, keeps everything in schema-validated YAML, and syncs comments to GitHub issues and back.
+  The commenter gem now reads ISO comments from every format they arrive in — DOCX balloting templates, ISO OSD XLSX exports, and ISO/CS editor redlines — and carries them through the whole ballot lifecycle: collation, GitHub-based resolution, disposition statistics, stage comparison, and the final exported disposition document.
 ---
 
-== Commenter 0.3: ISO comment imports from OSD XLSX and redline DOCX, with a GitHub issue round-trip
+== Commenter 0.3–0.6: ISO comments from anywhere — and the complete ballot workflow
 
-ISO comment handling has always been a battle against formats: balloting templates arrive as DOCX, ISO Online Standards Development (OSD) exports arrive as XLSX, and ISO/CS editors return redlined documents full of tracked changes. The https://github.com/metanorma/commenter[commenter] gem now reads all of them into one structured, schema-validated YAML representation — and can round-trip comments through GitHub issues for collaborative review.
+ISO comment handling has always been a battle against formats: balloting templates arrive as DOCX, ISO Online Standards Development (OSD) exports arrive as XLSX, and ISO/CS editors return redlined documents full of tracked changes. This work was done for the ISO 2533 publication: at the FDIS stage we needed to distribute the changes the ISO/CS editors had made to the document, together with their disposition, to everyone following the ballot — in the same comment-sheet form as every other response.
 
-This work was done for the ISO 2533 publication: at the FDIS stage we needed to distribute the changes the ISO/CS editors had made to the document, together with their disposition, to everyone following the ballot — in the same comment-sheet form as every other response.
+The https://github.com/metanorma/commenter[commenter] gem (releases 0.3.0 through 0.6.0) now does both halves: it reads every format into one structured, schema-validated YAML — and it carries that YAML through the entire ballot lifecycle. One file, from intake to the final disposition document.
 
 [source,shell]
 ----
@@ -38,9 +38,7 @@ commenter import "91855-Comments-resolved.xlsx" -o comments.yaml
 commenter import "ISO 5843-6-Comments.xlsx" -o comments.yaml
 ----
 
-Sheet metadata is extracted automatically — the document reference (`ISO/DIS 5843-6(en)`), the ballot stage, the project number, and the English/French document titles — so the YAML is complete without manual cleanup. Resolution status and motivation are combined into the `observations` field, ready for comment-sheet assembly.
-
-Multi-sheet workbooks are supported: pick the sheet by name, or use `--resolved-only` / `--unresolved-only`.
+Sheet metadata is extracted automatically — the document reference (`ISO/DIS 5843-6(en)`), the ballot stage, the project number, and the English/French document titles. Resolution status and motivation are combined into the `observations` field, ready for comment-sheet assembly. Multi-sheet workbooks are supported: pick the sheet by name, or use `--resolved-only` / `--unresolved-only`.
 
 == Import redline DOCX with tracked changes
 
@@ -54,29 +52,66 @@ commenter import "ISO_DIS 2533 Enquiry Trackchange Word.docx" --format redline \
     -o comments-cs.yaml
 ----
 
-Each tracked change (`w:ins`, `w:del`, `w:moveFrom`, `w:moveTo`) becomes a comment whose `proposed_change` renders the change itself — `Insert: "..."`, `Delete: "..."`, `Move ...: "..."` — and whose clause is resolved from the nearest preceding heading, including sub-clauses such as `4.2.1` and annexes such as `Annex A`. The `--body` option stamps the member body code onto comment IDs (`CS-1`, `CS-2`, …), so the redline slots straight into the ballot record alongside the member bodies' comment sheets.
+Each tracked change (`w:ins`, `w:del`, `w:moveFrom`, `w:moveTo`) becomes a comment whose `proposed_change` renders the change itself — `Insert: "..."`, `Delete: "..."`, `Move ...: "..."` — and whose clause is resolved from the nearest preceding heading, including sub-clauses such as `4.2.1` and annexes such as `Annex A`. Reviewer comment threads in the redline become comment entries too. Redlines can be enormous, so the parser streams `word/document.xml` with a SAX-style reader instead of loading a full DOM — 100 MB redlines import without issue.
 
-Redlines can be enormous, so the parser streams `word/document.xml` with a SAX-style reader instead of loading a full DOM — 100 MB redlines import without issue.
+== Collate the ballot: merge member-body sheets
 
-== GitHub issue round-trip
+A secretariat receives one comment file per member body per ballot — mixed DOCX templates, OSD XLSX exports, and late redlines that arrive by email. ISO's own Comment Collation Tool gives up on non-conforming formatting, so merging happens by hand. Now:
 
-For teams that review comments as GitHub issues, commenter closes the loop:
+[source,shell]
+----
+commenter merge de.yaml us.yaml jp.yaml cs-redline.yaml -o ballot.yaml
+----
 
-* `commenter github-create` creates one issue per comment using Liquid templates (fully customizable), and records issue numbers and URLs back into the YAML.
+Metadata comes from the first sheet that provides each field, identical duplicates are dropped, and a comment ID carrying different content in two files stops the merge loudly instead of silently losing someone's comment.
+
+== Resolve on GitHub: from create-once to a true sync
+
+For teams that review comments as GitHub issues, commenter closes the loop.
+
+* `commenter github-create` creates one issue per comment using customizable Liquid templates, and records issue numbers and URLs back into the YAML.
+* `commenter github-sync` treats the YAML as the source of truth and reconciles the issues with it: missing issues are created, issue content is refreshed from the YAML under a configurable conflict policy (`--conflict yaml`, `github`, or `skip` — because which side wins is situational), and an open issue whose comment has a recorded disposition is closed.
 * `commenter github-retrieve` pulls official observations back out of closed issues — written as `> **OBSERVATION:**` blockquotes — and updates the YAML in place.
 
-Duplicate detection is stage-aware: the same comment ID (`GB-001`) appears at every ballot stage, so the default unique ID renders as `[DIS] GB-001` — CD and DIS comments of the same number become separate issues rather than being skipped as duplicates. The pattern is configurable through a `unique_id` Liquid template.
+Duplicate detection is stage-aware: the same comment ID (`GB-001`) appears at every ballot stage, so the default unique ID renders as `[DIS] GB-001` — CD and DIS comments of the same number become separate issues rather than being skipped as duplicates. Closing dispositioned issues is exactly what keeps the observation round-trip working.
+
+== Report: statistics and stage comparison
+
+Ballot reports need disposition counts, and until now every standards body we looked at — OASIS resolution logs, W3C disposition-of-comments documents, ISO ballot summaries — counted them by hand. The data is already in the YAML:
+
+[source,shell]
+----
+commenter stats ballot.yaml
+----
+
+And because the same comment ID reappears at every ballot stage, comparing two stages answers the working group's standing question — what happened between CD and DIS:
+
+[source,shell]
+----
+commenter diff cd-ballot.yaml dis-ballot.yaml
+----
+
+New, withdrawn, repeated, revised, and resolved counts, as a Markdown table that pastes straight into WG minutes.
+
+== The final deliverable: fill and export
+
+The ballot's last step used to be two commands and a manual header. Now:
+
+[source,shell]
+----
+commenter export ballot.yaml --config github_config.yaml -o disposition.docx --shading
+----
+
+Closed-issue observations are retrieved, the template is filled, the sheet's Date/Document/Project metadata are written into the page header, and disposition cells get status-based shading (accepted, accepted-with-modifications, noted, rejected). `commenter fill` remains available for filling without the GitHub step.
 
 == Schema-validated YAML
 
-Every import writes YAML with a matching JSON-Schema-style schema (`schema/iso_comment_2012-03.yaml` or `schema/iso_comment_osd.yaml`), stamped into the file header for editor support. The same schema reference is now preserved across the GitHub round-trip: rewriting an OSD YAML through `github-create` or `github-retrieve` keeps the OSD schema header intact, and round-tripping YAML through the data model is representation-stable — reload your output and you get byte-identical YAML.
+Every import writes YAML with a matching JSON-Schema-style schema (`schema/iso_comment_2012-03.yaml` or `schema/iso_comment_osd.yaml`), stamped into the file header for editor support. Short type codes (`ge`/`te`/`ed`) are normalized to full names on load, and the schema reference survives every round-trip — reload your output and you get identical YAML.
 
 == Under the hood
 
-The 0.3 series also hardened the gem itself: the OSD XLSX parser maps columns by header name and real position (tolerating gaps in header rows), numeric IDs are normalized, and the whole pipeline — including a runtime-generated XLSX/DOCX fixture suite, with no binary fixtures in the repository — is covered by the CI matrix on Ruby 3.2 through 4.0 across macOS, Linux, and Windows.
-
-Internally, the comment-type vocabulary (`ge`/`te`/`ed` and their expanded names) now lives in a single `CommentType` module, and the shared GitHub connection setup lives in `GitHubSession` — small changes, but they make the behavior of every entry point identical by construction.
+The data model serializes through https://github.com/lutaml/lutaml-model[lutaml-model] — the same foundation Metanorma uses elsewhere — with typed nested models for comment locality and GitHub tracking state. The disposition vocabulary lives in one matcher shared by cell shading and ballot statistics, so "what counts as accepted" has one answer everywhere. The test suite has grown from 38 to 122 examples — with runtime-generated XLSX and DOCX fixtures instead of binary files — and CI is green across Ruby 3.2–4.0 on macOS, Linux, and Windows.
 
 == Get involved
 
-Comments, bug reports, and pull requests are welcome at https://github.com/metanorma/commenter[github.com/metanorma/commenter]. If you receive ISO comments in a format commenter does not yet understand, please open an issue with a (sanitized) sample — format coverage grows one real-world document at a time.
+Comments, bug reports, and pull requests are welcome at https://github.com/metanorma/commenter[github.com/metanorma/commenter]. If you receive ISO comments in a format commenter does not yet understand, open an issue with a (sanitized) sample — format coverage grows one real-world document at a time.
