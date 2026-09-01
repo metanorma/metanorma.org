@@ -6,7 +6,7 @@
 //                  renderer + the AsciiDoc source as a rendition)
 //     body.adoc    the source rendition
 import type { APIRoute, GetStaticPaths } from 'astro'
-import { getCollection } from 'astro:content'
+import { getCollection, type CollectionEntry } from 'astro:content'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { buildNewsItem, buildNewsMessage } from 'newsmlg2-ts'
@@ -28,7 +28,7 @@ interface Emitted {
 const isoDate = (v: unknown): string => String(v ?? '').slice(0, 10)
 
 const emittedPosts = async (): Promise<Emitted[]> => {
-  const entries = await getCollection('mirror')
+  const entries: CollectionEntry<'mirror'>[] = await getCollection('mirror')
   return entries
     .filter((e) => e.id.startsWith('blog/') && e.data.frontmatter?.published !== false)
     .map((e) => {
@@ -55,7 +55,7 @@ const emittedPosts = async (): Promise<Emitted[]> => {
       }
     })
     .filter((p) => /^\d{4}-\d{2}-\d{2}/.test(p.slug))
-    .sort((a, b) => b.date.localeCompare(a.date))
+    .sort((a: Emitted, b: Emitted) => b.date.localeCompare(a.date))
 }
 
 const itemModel = (p: Emitted, full: boolean) => ({
@@ -101,7 +101,7 @@ export const GET: APIRoute = async ({ params }) => {
     const posts = await emittedPosts()
     const xml = buildNewsMessage({
       header: { sent: new Date().toISOString(), sender: 'Ribose' },
-      items: posts.map((p) => itemModel(p, false)),
+      items: posts.map((p: Emitted) => itemModel(p, false)),
     }).toXml()
     return new Response(xml, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } })
   }
@@ -109,7 +109,7 @@ export const GET: APIRoute = async ({ params }) => {
   if (!m) return new Response('not found', { status: 404 })
   const [, slug, kind] = m
   const posts = await emittedPosts()
-  const post = posts.find((p) => p.slug === slug)
+  const post: Emitted | undefined = posts.find((p: Emitted) => p.slug === slug)
   if (!post) return new Response('not found', { status: 404 })
   if (kind === 'body.adoc') {
     return new Response(post.bodyAdoc, {
