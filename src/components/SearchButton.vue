@@ -21,9 +21,10 @@ const placeholder = ref(PLACEHOLDERS[0])
 async function ensurePagefind() {
   if (!pagefind) {
     // Pagefind 1.x ships a pure ES module (named exports, no global).
-    // Load it as a module; @vite-ignore keeps Vite from resolving the
+    // Load it as a module; the variable prevents Vite from resolving the
     // path at build time (the index is generated post-build by pagefind).
-    pagefind = await import(/* @vite-ignore */ '/pagefind/pagefind.js')
+    const pfPath = '/pagefind/pagefind.js'
+    pagefind = await import(/* @vite-ignore */ pfPath)
     await pagefind.init?.()
   }
   return pagefind
@@ -50,9 +51,10 @@ async function doSearch() {
     results.value = await Promise.all(
       limited.map(async (r: any) => {
         const data = await r.data()
-        const title = data?.meta?.title || r.url
+        const url = data?.url || r.url || ''
+        const title = data?.meta?.title || url
         const excerpt = stripHtml(data?.excerpt || data?.meta?.description || '')
-        return { url: r.url, title, excerpt: excerpt.slice(0, 120) + (excerpt.length > 120 ? '...' : '') }
+        return { url, title, excerpt: excerpt.slice(0, 120) + (excerpt.length > 120 ? '...' : '') }
       })
     )
   } catch {
@@ -83,6 +85,10 @@ function openModal() {
 
 function closeModal() {
   open.value = false
+}
+
+function navigateTo(url: string) {
+  window.location.href = url
 }
 
 function onKeydown(e: KeyboardEvent) {
@@ -152,7 +158,7 @@ onBeforeUnmount(() => {
           :key="r.url"
           :href="r.url"
           class="block rounded-lg px-4 py-3 transition-colors hover:bg-[var(--mn-c-bg-soft)]"
-          @click="closeModal"
+          @click.prevent="navigateTo(r.url)"
         >
           <div class="font-semibold text-[var(--mn-c-brand-1)]">{{ r.title }}</div>
           <div class="mt-0.5 text-sm text-[var(--mn-c-text-3)]">{{ r.excerpt }}</div>
