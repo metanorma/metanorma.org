@@ -58,9 +58,12 @@ const emittedPosts = async (): Promise<Emitted[]> => {
     .sort((a: Emitted, b: Emitted) => b.date.localeCompare(a.date))
 }
 
+// The GUID's date MUST be the slug's date prefix: consumers rebuild the
+// article path from the GUID segments, so a frontmatter date that
+// disagrees with the filename (two posts do) breaks the article URL.
 const itemModel = (p: Emitted, full: boolean) => ({
   itemMeta: {
-    guid: `urn:ribose:news:${p.date}:${SPOKE.id}:${p.slug.replace(/^\d{4}-\d{2}-\d{2}-/, '')}`,
+    guid: `urn:ribose:news:${p.slug.slice(0, 10)}:${SPOKE.id}:${p.slug.replace(/^\d{4}-\d{2}-\d{2}-/, '')}`,
     lang: 'en',
     version: 1,
     itemClass: 'ninat:text',
