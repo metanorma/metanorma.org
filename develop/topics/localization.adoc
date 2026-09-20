@@ -62,6 +62,29 @@ In the case of cross-reference labels (`clause`, `table`, `figure`, etc.), the c
 or `lowercase%` as the content of the cross-reference, to force that casing on the
 cross-reference [added in https://github.com/metanorma/isodoc/releases/tag/v1.0.28].
 
+=== Caption delimiters
+
+The delimiter after a caption's number can be configured per caption type through
+i18n. Each caption type reads a `<type>_delimiter` key --- `clause_delimiter`,
+`table_delimiter`, `figure_delimiter`, `note_delimiter`, `annex_delimiter`,
+`example_delimiter`, `admonition_delimiter`, `termnote_delimiter`,
+`sourcecode_delimiter`, `subfigure_delimiter` --- falling back to a shared
+`caption_delimiter` key, falling back to the built-in default. The keys are
+optional: if none is set, the default rendering is unchanged.
+
+For example, to remove the terminal period after clause numbers, so that `1.2.3.`
+renders as `1.2.3`, set in your `:i18nyaml:` file:
+
+[source,yaml]
+----
+clause_delimiter: ''
+----
+
+The terminal clause-number delimiter is emitted in the Presentation XML as
+`span[@class='fmt-clause-delim']`, distinct from the `fmt-autonum-delim` used for
+the internal `1.1.1` separators
+[added in https://github.com/metanorma/isodoc/releases/tag/v3.7.2].
+
 === Example internationalization code
 
 * `metanorma-mpfa/lib/isodoc/mpfa/i18n-en.yaml`: customization of clause label in YAML
