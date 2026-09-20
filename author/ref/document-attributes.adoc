@@ -38,6 +38,13 @@ Suppress document validation.
 Terms (and symbols) are indexed automatically in postprocessing.
 See link:/author/topics/inline-markup/index-terms#auto-index-terms[automatic terms indexing]. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v1.11.3]
 
+`:index-case-sensitive:`::
+Index entries that differ only in capitalisation are kept as distinct index headwords.
+By default, they are folded into a single headword (the lowercase spelling), with their
+subentries and locators merged. This attribute is intended for identifier-heavy documents
+in which uppercase and lowercase names are distinct, such as EXPRESS entity names in
+ISO 10303. [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v3.5.0]
+
 `:relaton-output-file:` (legacy: `:mn-relaton-output-file:`)::
 Output the bibliographic record describing the document as a Relaton XML file (with the suffix `.rxl`).
 
