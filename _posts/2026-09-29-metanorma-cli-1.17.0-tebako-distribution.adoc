@@ -1,0 +1,141 @@
+---
+layout: post
+title: "Metanorma CLI 1.17.0 is now distributed through tebako: one-command installation on two Ruby lines, with signed payload images"
+date: 2026-09-29
+categories: news release
+
+authors:
+  - name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+    - https://github.com/ronaldtse
+
+excerpt: >-
+  Metanorma CLI 1.17.0 has been published as a tebako distribution of six
+  signed, self-contained payload images spanning two Ruby lines and three
+  platform triplets, installable with one command and requiring no Ruby
+  toolchain, no native compilation, and no Java setup.
+---
+
+== Metanorma CLI 1.17.0 is now distributed through tebako
+
+Installing Metanorma from source gems has always meant assembling three
+dependency chains before a single document could be compiled: a Ruby
+interpreter of a compatible line, a working native-extension toolchain for
+gems such as Nokogiri, and a Java runtime for PDF production through
+mn2pdf. Each chain differs across macOS, Linux and Windows, each drifts
+independently of the document the author is trying to write, and each
+fails in its own vocabulary when it breaks.
+
+The tebako packaging ecosystem removes these chains from the author's
+path. tebako distributes software as read-only filesystem images that are
+mounted in-process — never extracted — and pairs them with shared,
+content-addressed language runtimes that are downloaded once per machine
+and verified against published digests. Metanorma CLI 1.17.0, released to
+RubyGems on 2026-08-18, has now been published as a tebako distribution:
+payload release 1.17.0-3 of 2026-09-28 carries the full Metanorma CLI,
+its gem closure, and its composition edges as six signed payload images.
+
+== What the distribution contains
+
+Payload release 1.17.0-3 publishes eighteen assets, of which six are
+payload images spanning two Ruby lines and three platform triplets:
+
+* the default line, which rides Ruby 4.0.7, the current Ruby feature
+  line, and is what an unqualified install resolves; and
+* the compatibility line, published as flavor `1.17.0-ruby3.3`, which
+  rides Ruby 3.3.12 and serves workflows pinned to the Ruby 3.3 ABI —
+  native-extension payloads lock to the ABI line they were built against,
+  so a document workflow that depends on such a payload keeps its exact
+  interpreter line;
+
+each line covering macOS on Apple silicon, Linux on x86_64 (glibc), and
+Windows on x86_64 (UCRT). Every image is a LimniFS filesystem image — the
+read-only image format that the tebako loader mounts directly — and every
+image carries a detached OpenPGP signature under the Metanorma release
+signing key (key ID `efc3c250f7862a48`) together with a SHA-256 trust
+anchor, both verified at install time.
+
+== Installing Metanorma 1.17.0
+
+The tebako command-line tools install through Homebrew on macOS and
+Linux, and as signed binaries from the tebako releases page on Windows:
+
+[source,shell]
+----
+brew install tamatebako/tap/tebako
+----
+
+Installing Metanorma is then one command, which fetches the payload image
+and the runtimes its manifest declares, verifies them, and registers the
+`metanorma` command in the tebako shim directory:
+
+[source,shell]
+----
+tebako install metanorma@1.17.0
+----
+
+The compatibility line is installed by naming its flavor:
+
+[source,shell]
+----
+tebako install metanorma@1.17.0-ruby3.3
+----
+
+A project pins its line in its own `.tebako-tools.yaml`, so two documents
+on one machine can ride different Ruby lines without interference.
+
+== What the distribution guarantees
+
+The distribution is designed to meet the needs of authors who should
+never have to administer a language toolchain, and it states its
+guarantees as follows:
+
+* no Ruby, no C toolchain and no Java installation is required on the
+  host, because the Ruby 4.0.7, Eclipse Temurin 21.0.12 and Python 3.14.7
+  runtimes that Metanorma's composition declares are resolved by tebako
+  itself into a shared machine cache, where they are downloaded once and
+  serve every payload that needs them;
+* runtime and payload images are mounted as files, never extracted into
+  temporary trees, and the cached payload bytes remain identical to the
+  bytes the registry published;
+* integrity and authenticity are enforced at install time through the
+  SHA-256 trust anchors and the OpenPGP signatures, verification never
+  runs per invocation, and an environment that requires signed artifacts
+  can set `TEBAKO_REQUIRE_SIGNED=1` to fail closed on anything unsigned;
+* PDF production works out of the box, because the Java runtime that
+  mn2pdf spawns is itself a tebako runtime edge, resolved and verified by
+  the same mechanism rather than discovered on the host; and
+* failure modes are named errors with stable exit codes — an offline
+  request for a runtime line that is not cached, for example, is refused
+  with a named error (exit 69) rather than a crash or a silent fallback.
+
+== Verification evidence
+
+The release was exercised end to end on 2026-09-29 on a clean macOS
+(Apple silicon) machine with an empty tebako store. A single
+`tebako install metanorma@1.17.0` resolved the Ruby 4.0.7, Temurin
+21.0.12 and Python 3.14.7 runtimes; every image in the resulting store
+was verified byte-by-byte as a LimniFS image; and a Metanorma ISO
+document was compiled through the full pipeline, including the spawned
+Java edge that runs jing and mn2pdf. The compatibility flavor was
+installed on the same store and resolved to Ruby 3.3.12 as declared, and
+an offline request for the 3.3 line on a machine holding only the 4.0
+line was refused with the named error the guarantee above describes.
+`metanorma version` on the installed shim reports Metanorma::Cli 1.17.0.
+
+== Scope of this release
+
+The boundaries of this release are stated explicitly. Payload images for
+macOS on Intel (x86_64), Linux on arm64, and Linux on musl are not part
+of 1.17.0-3 and follow as additional build legs. The packed-mn
+single-file installers, which currently ship Metanorma CLI 1.16.9, are
+refreshed on their own schedule and are not superseded by this release.
+Authors who administer their own Ruby installation can continue to
+install the metanorma-cli 1.17.0 gem from RubyGems, which is unchanged by
+this announcement.
+
+*Release:* https://github.com/tebako-packages/metanorma/releases/tag/1.17.0-3
+
+*tebako:* https://github.com/tamatebako/tebako — installation and shell
+setup are documented at https://tebako.org
