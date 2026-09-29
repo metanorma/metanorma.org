@@ -11,10 +11,10 @@ authors:
     - https://github.com/ronaldtse
 
 excerpt: >-
-  Metanorma CLI 1.17.0 has been published as a tebako distribution of six
-  signed, self-contained payload images spanning two Ruby lines and three
-  platform triplets, installable with one command and requiring no Ruby
-  toolchain, no native compilation, and no Java setup.
+  Metanorma CLI 1.17.0 has been published as a tebako distribution of
+  fourteen signed, self-contained payload images spanning two Ruby lines
+  and seven platform triplets, installable with one command and requiring
+  no Ruby toolchain, no native compilation, and no Java setup.
 ---
 
 == Metanorma CLI 1.17.0 is now distributed through tebako
@@ -33,13 +33,16 @@ mounted in-process — never extracted — and pairs them with shared,
 content-addressed language runtimes that are downloaded once per machine
 and verified against published digests. Metanorma CLI 1.17.0, released to
 RubyGems on 2026-08-18, has now been published as a tebako distribution:
-payload release 1.17.0-3 of 2026-09-28 carries the full Metanorma CLI,
-its gem closure, and its composition edges as six signed payload images.
+payload release 1.17.0-4 of 2026-09-29 carries the full Metanorma CLI,
+its gem closure, and its composition edges as fourteen signed payload
+images.
 
 == What the distribution contains
 
-Payload release 1.17.0-3 publishes eighteen assets, of which six are
-payload images spanning two Ruby lines and three platform triplets:
+Payload release 1.17.0-4 publishes forty-two assets, of which fourteen
+are payload images spanning two Ruby lines and seven platform triplets,
+each image accompanied by a detached OpenPGP signature and a gem-closure
+inventory:
 
 * the default line, which rides Ruby 4.0.7, the current Ruby feature
   line, and is what an unqualified install resolves; and
@@ -49,12 +52,13 @@ payload images spanning two Ruby lines and three platform triplets:
   so a document workflow that depends on such a payload keeps its exact
   interpreter line;
 
-each line covering macOS on Apple silicon, Linux on x86_64 (glibc), and
-Windows on x86_64 (UCRT). Every image is a LimniFS filesystem image — the
-read-only image format that the tebako loader mounts directly — and every
-image carries a detached OpenPGP signature under the Metanorma release
-signing key (key ID `efc3c250f7862a48`) together with a SHA-256 trust
-anchor, both verified at install time.
+each line covering macOS on Apple silicon and Intel, Linux on x86_64 and
+arm64 under both glibc and musl, and Windows on x86_64 (UCRT). Every
+image is a LimniFS filesystem image — the read-only image format that the
+tebako loader mounts directly — and every image carries a detached
+OpenPGP signature under the tebako release signing key (key ID
+`efc3c250f7862a48`) together with a SHA-256 trust anchor, both verified
+at install time.
 
 == Installing Metanorma 1.17.0
 
@@ -124,18 +128,28 @@ an offline request for the 3.3 line on a machine holding only the 4.0
 line was refused with the named error the guarantee above describes.
 `metanorma version` on the installed shim reports Metanorma::Cli 1.17.0.
 
+The published bytes were verified against the registry that serves them.
+Both Ruby lines name all seven triplets in their registry rows; every
+image on the four triplets added by this release serves the LimniFS magic
+bytes at its published URL; the Linux musl (x86_64) image hashes to its
+registry row exactly (SHA-256 `773d9c73…950dc`); and every detached
+signature chains to the tebako release signing key stated above.
+
 == Scope of this release
 
-The boundaries of this release are stated explicitly. Payload images for
-macOS on Intel (x86_64), Linux on arm64, and Linux on musl are not part
-of 1.17.0-3 and follow as additional build legs. The packed-mn
-single-file installers, which currently ship Metanorma CLI 1.16.9, are
-refreshed on their own schedule and are not superseded by this release.
-Authors who administer their own Ruby installation can continue to
-install the metanorma-cli 1.17.0 gem from RubyGems, which is unchanged by
-this announcement.
+The boundaries of this release are stated explicitly. The packed-mn
+single-file distribution has been refreshed in step as packed-metanorma
+release v1.17.0, which publishes a signed and notarized macOS installer
+package for Apple silicon and portable archives for macOS (Apple silicon)
+and Linux (x86_64); its Windows installer legs remain parked and follow
+separately. Authors who administer their own Ruby installation can
+continue to install the metanorma-cli 1.17.0 gem from RubyGems, which is
+unchanged by this announcement.
 
-*Release:* https://github.com/tebako-packages/metanorma/releases/tag/1.17.0-3
+*Release:* https://github.com/tebako-packages/metanorma/releases/tag/1.17.0-4
+
+*Installers:*
+https://github.com/metanorma/packed-metanorma/releases/tag/v1.17.0
 
 *tebako:* https://github.com/tamatebako/tebako — installation and shell
 setup are documented at https://tebako.org
