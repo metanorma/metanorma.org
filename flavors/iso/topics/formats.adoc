@@ -24,12 +24,17 @@ The accept format values of Metanorma-ISO output are as follows:
 `html_alt`:: HTML output with a more Web-like rendering (whereas `html` abides by ISO document style as much as possible)
 `sts`:: NISO STS XML
 `isosts`:: ISOSTS XML [added in https://github.com/metanorma/isodoc/releases/tag/v1.5.6]
+// PLACEHOLDER version below: `sts_html` ships with the native ISO-STS
+// transformer adoption (metanorma-iso#1610), which is gated on the relaton-2.2 /
+// pubid-2 release. Replace `vNEXT` with the actual metanorma-iso release (likely
+// a minor version) when that PR lands.
+`sts_html`:: Branded HTML rendering of the ISO-STS XML [added in https://github.com/metanorma/metanorma-iso/releases/tag/vNEXT]
 
 [example]
 .Generating ISOSTS and NISO STS XML output from an ISO document
 ====
 [source,console]
 ----
-metanorma -t iso -x html,html_alt,sts,isosts test.adoc
+metanorma -t iso -x html,html_alt,sts,isosts,sts_html test.adoc
 ----
 ====
