@@ -167,6 +167,17 @@ Unlike the curated metadata values below, which are normalized for display,
 this is a faithful representation of the entire bibliographic data set of the
 document, so any of its fields can be addressed in templated text without
 flavour code.
++
+Document-extension metadata under `//bibdata/ext` that the Relaton object model
+does not itself represent (such as `coverpage-image`, `innercoverpage-image`) is
+also folded into `bibdata.ext`, following the same serialisation convention, so
+those elements can be addressed too
+[added in https://github.com/metanorma/isodoc/releases/tag/v3.7.1].
+Hyphens in element names become underscores (as `schema-version` becomes
+`schema_version`); for example the cover image is
+`{{ bibdata.ext.coverpage_image.image.src }}`, and a comma-separated
+`:coverpage-image:` yields an array,
+`{{ bibdata.ext.coverpage_image.image[0].src }}`.
 
 `authors`:: an array of personal author names, each name extracted from
 `//bibdata/contributor[role/@type = 'author' or xmlns:role/@type = 'editor']/person`,
