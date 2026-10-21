@@ -1,52 +1,174 @@
 ---
 layout: author-docs
+title: AsciiMath support
 ---
 
 = AsciiMath support
 
-Metanorma uses the https://github.com/plurimath/plurimath[Plurimath]
-to process AsciiMath, converting it to MathML for Metanorma processing.
+AsciiMath is a compact way to write equations as text. Metanorma uses
+https://github.com/plurimath/plurimath[Plurimath] to convert AsciiMath to
+MathML for processing.
 
 For rendering in HTML, the MathML generated is processed by
 https://www.mathjax.org[MathJax] for browser compatibility.
 
-For rendering in Word, the MathML is converted to OOML (the math format of 
-https://en.wikipedia.org/wiki/Office_Open_XML[Office Open XML (OOXML)]).
+For rendering in Word, the MathML is converted to Office Math Markup Language
+(OMML), the math format of Office Open XML (OOXML).
 
-NOTE: AsciiMath only recognises decimal points and not decimal commas. Any
-attempt to use a decimal comma (e.g. _3,4_) will be processed as an operator,
-and will end up treating the integer and fractional parts of the number as two
-separate numerals, separated by a space as well as a comma. This applies to all
-versions of Asciimath.
+The examples below use Plurimath 0.11.12. For a list of recognized functions
+and fonts, see the Plurimath
+https://github.com/plurimath/plurimath/blob/main/AsciiMath-Supported-Data.adoc[AsciiMath support list].
+
+
+== Writing an equation in Metanorma
+
+Set the document attribute `:stem: asciimath`, then put an equation in a
+`[stem]` block:
+
+[source,asciidoc]
+----
+:stem: asciimath
+
+[stem]
+++++
+sqrt(x^2+y^2)
+++++
+----
+
+This expression is the square root of the sum of the squares of `x` and `y`.
+Use `\stem:[sqrt(x^2+y^2)]` for the same expression within a paragraph.
+See link:/author/topics/blocks/math/[Mathematical expressions] for more about
+block and inline math.
+
+
+== Grouping and visible parentheses
+
+Parentheses can group an operand without appearing in the converted equation.
+For example, the numerator of `(a+b)/c` is `a+b`; the grouping parentheses
+are omitted from the MathML. Use a second pair when the numerator must retain
+visible parentheses:
+
+[source,asciimath]
+----
+(a+b)/c
+((a+b))/c
+----
+
+The second form retains parentheses around the numerator. This
+https://github.com/plurimath/plurimath/issues/146#issuecomment-1637008565[double-parentheses convention is shared with MathJax's AsciiMath parser].
+Plurimath 0.11.12 represents the doubled numerator as a one-cell table in
+MathML, so inspect the equation's layout when using this form in Word.
+
+Some contexts already retain visible parentheses: `(a)_n` keeps the
+parentheses around `a` without an extra pair.
+
+
+== Scripts, fractions, and functions
+
+Use `_` for a subscript and `^` for a superscript. Group an operand in
+parentheses to make its extent clear:
+
+[source,asciimath]
+----
+a_1
+x^(-2)
+sum_(i=1)^n i^3
+----
+
+Here, `(-2)` groups the negative exponent and `(i=1)` groups the lower bound
+of the sum.
+
+Use `/` for a fraction. Parentheses group a compound numerator, denominator,
+or function argument:
+
+[source,asciimath]
+----
+(a+b)/c
+sqrt(x^2+y^2)
+----
+
+Plurimath also recognizes functions such as `root`, `frac`, `sin`, and
+`text`; the support list above gives the available names.
+
+
+== Matrices and commas
+
+Commas separate matrix entries, and each bracketed inner list supplies a row:
+
+[source,asciimath]
+----
+[[a,b],[c,d]]
+----
+
+This matrix has two rows and two columns.
+
+
+== Text and units
+
+Use quoted text or `text(...)` to include words in an equation:
+
+[source,asciimath]
+----
+"when x > 0"
+text(when x > 0)
+----
+
+Both forms produce MathML text (`mtext`). When converted back to AsciiMath,
+both use the quoted form.
+
+Use a quoted `unitsml(...)` expression to include units:
+
+[source,asciimath]
+----
+h = 6.62607015 xx 10^(-34) "unitsml(kg*m^2*s^(-1))"
+----
+
+The quotes are part of this input form. Plurimath recognizes the embedded
+AsciiUnits expression and parses the units. See the
+https://www.plurimath.org/blog/2024-04-09-unitsml/[UnitsML guide] for unit
+syntax and conversions.
+
+
+== Decimal commas
+
+By default, Plurimath uses a full stop as the decimal marker. In this mode,
+`1,2` is two numbers separated by a comma operator.
+
+Plurimath also accepts a locale when parsing an expression. For example,
+the Ruby API can select French decimal notation:
+
+[source,ruby]
+----
+Plurimath::Math.parse("1,2", :asciimath, locale: :fr)
+----
+
+With a comma decimal marker, `1,2` is one decimal number. Add spaces around
+a comma that separates expressions or numeric matrix entries:
+
+[source,asciimath]
+----
+1 , 2
+----
+
+Choose the input form to match the locale configured by the application
+calling Plurimath.
 
 
 == Plurimath AsciiMath
 
-The version of AsciiMath supported by Plurimath parser is slightly different
-to other variants of AsciiMath. The following are differences between Plurimath
-and the version of AsciiMath
-documented on http://asciimath.org[asciimath.org]:
+AsciiMath implementations differ in their supported names and input forms.
+The following symbols and formatting commands are supported by Plurimath
+0.11.12.
 
 === Miscellaneous symbols
 
-Plurimath adds the following as distinct symbols:
+`...`:: ellipsis, &#x2026;
 
-`dx`:: dx identifier
+`\ `:: non-breaking space (a backslash followed by a space)
 
-`dy`:: dy identifier
-
-`dz`:: dz identifier
-
-`dt`:: dt identifier
-
-`...`:: ... operator
-
-`"\ "`:: non-breaking space
-
-`qquad`:: four non-breaking spaces (just as `quad` is processed as two non-breaking spaces)
+`quad`:: two non-breaking spaces
 
 `lim`:: lim operator
-`Lim`:: Lim operator
 
 `'`:: prime operator, &#x2032;
 
@@ -56,133 +178,76 @@ Plurimath adds the following as distinct symbols:
 
 `frown`:: &#x2322;
 
-=== Relation symbols
-
-Plurimath adds the following as distinct symbols:
-
-`:=`:: := operator
-
-=== Operation symbols
-
-`setminus`:: \
-`divide`:: &#xf7;
-`:|:`:: | as operator
-
-
-=== Logical symbols
-
-No difference.
-
-
 === Grouping brackets
-Plurimath adds the following as distinct brackets:
 
 `|:`:: | as left bracket
 `:|`:: | as right bracket
 
+For example, `|:x:|` puts a vertical bar on either side of `x`.
 
-=== Arrows
+=== Accents and color
 
-No difference.
+`tilde(x)`:: a tilde accent above `x`
 
-=== Accents
+`cancel(x)`:: an upward diagonal strike through `x`
 
-The following operators are currently missing from Plurimath:
-
-* `color(red)(x)`
-* `cancel(x)`
-
-Plurimath adds the following as distinct accents
-
-`tilde`:: ~
-`overarc`:: &#x23dc;
-
-=== Greek letters
-
-Plurimath supports several capital letter symbols, which are not named
-in asciimath.org:
-
-`Alpha`:: Alpha
-
-`Beta`:: Beta
-
-`Epsilon`:: Epsilon
-
-`Zeta`:: Zeta
-
-`Eta`:: Eta
-
-`Iota`:: Iota
-
-`Kappa`:: Kappa
-
-`Mu`:: Mu
-
-`Nu`:: Nu
-
-`Rho`:: Rho
-
-`Tau`:: Tau
-
-`Upsilon`:: Upsilon
-
-`Chi`:: Chi
-
-=== Standard functions
-
-No difference.
+`color(red)(x)`:: `x` with its MathML color set to red
 
 === Font commands
 
-The following are font commands supported by Plurimath, in addition
-to those named in http://www.asciimath.org[Asciimath.org].
-
-`ii`:: italic font
-`bii`:: bold italic font
-`bcc`:: bold script font
-`bfr`:: bold fraktur font
-`bsf`:: bold sans serif font
-`sfi`:: italic sans serif font
-`sfbi`:: sans serif bold italic font
+`ii(x)` sets `x` in italic. The
+https://github.com/plurimath/plurimath/blob/main/AsciiMath-Supported-Data.adoc#fonts[font support list]
+includes the other font commands.
 
 
-== Conversion to Word OOXML
+== Word output and invisible brackets
 
-AsciiMath and MathJax processors are tolerant of loose syntax in mathematical expressions.
-
-Currently the conversion of MathML to OOXML is not as tolerant: if a mathematical operator
-takes a single argument, the OOXML expects to find that argument brackets as a single entity.
-If that does not happen, Word displays a dotted square where it would expect the single
-argument to appear. To remedy this, you will need to bracket the argument of the operator
-in invisible brackets (`{:`, `:}`).
-
-For example, the following AsciiMath displays correctly in HTML under MathJax:
+Invisible brackets (`{:`, `:}`) group an operator's argument without adding
+visible parentheses. The following example was previously documented with
+an unwanted placeholder square in Word output:
 
 [source,asciidoc]
---
+----
 [stem]
 ++++
 bar X' = (1)/(v) sum_(i = 1)^v t_i
 ++++
---
+----
 
-However, it displays incorrectly in Word with an extraneous "`square`":
+image::/assets/site/sum_error.png[Earlier Word output with an unwanted placeholder square]
 
-image::/assets/site/sum_error.png[]
-
-That is because the `sum` operator expects to find a single expression as its argument,
-but `t_i` is processed as two tokens. To get this expression processed correctly for
-Word, you will need to bracket `t_i`:
+The documented workaround groups `t_i` as the argument of `sum`:
 
 [source,asciidoc]
---
+----
 [stem]
 ++++
 bar X' = (1)/(v) sum_(i = 1)^v {:t_i:}
 ++++
---
+----
 
-and it should display correctly as:
+The corresponding earlier Word output was:
 
-image::/assets/site/sum_corrected.png[]
+image::/assets/site/sum_corrected.png[Earlier Word output with the sum argument grouped]
 
+In Plurimath 0.11.12, the grouped form adds an OMML delimiter around `t_i`;
+the ungrouped form omits that delimiter. Check the generated Word document
+to confirm the layout when using this workaround.
+
+
+== Converting AsciiMath with the Ruby API
+
+An application can parse the same expressions directly with Plurimath:
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("sqrt(x^2+y^2)", :asciimath)
+formula.to_mathml
+----
+
+Converting a formula back to AsciiMath may change its spelling or grouping.
+For example, the expression above serializes as `sqrt(x^(2) + y^(2))`.
+
+Quoted compatibility forms need particular care when reused as input.
+For example, parsing `"__{backepsilon}"` in Plurimath 0.11.12 produces
+MathML text containing `__{backepsilon}`, rather than a backepsilon symbol.
