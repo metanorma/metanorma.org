@@ -36,7 +36,13 @@ sqrt(x^2+y^2)
 ----
 
 This expression is the square root of the sum of the squares of `x` and `y`.
-Use `\stem:[sqrt(x^2+y^2)]` for the same expression within a paragraph.
+For the same expression within a paragraph, write:
+
+[source,asciidoc]
+----
+stem:[sqrt(x^2+y^2)]
+----
+
 See link:/author/topics/blocks/math/[Mathematical expressions] for more about
 block and inline math.
 
@@ -162,7 +168,7 @@ The following symbols and formatting commands are supported by Plurimath
 
 === Miscellaneous symbols
 
-`...`:: ellipsis, &#x2026;
+`...`:: ellipsis, …
 
 `\ `:: non-breaking space (a backslash followed by a space)
 
@@ -170,13 +176,18 @@ The following symbols and formatting commands are supported by Plurimath
 
 `lim`:: lim operator
 
-`'`:: prime operator, &#x2032;
+`:'`:: ∵
 
-`:'`:: &#x2235;
+`/_\`:: △
 
-`/_\`:: &#x25b3;
+`frown`:: ⌢
 
-`frown`:: &#x2322;
+A single apostrophe represents the prime operator (′):
+
+[source,asciimath]
+----
+'
+----
 
 === Grouping brackets
 
@@ -246,8 +257,20 @@ formula.to_mathml
 ----
 
 Converting a formula back to AsciiMath may change its spelling or grouping.
-For example, the expression above serializes as `sqrt(x^(2) + y^(2))`.
+For example, the expression above serializes as:
+
+[source,asciimath]
+----
+sqrt(x^(2) + y^(2))
+----
 
 Quoted compatibility forms need particular care when reused as input.
-For example, parsing `"__{backepsilon}"` in Plurimath 0.11.12 produces
-MathML text containing `__{backepsilon}`, rather than a backepsilon symbol.
+For example, consider this quoted input:
+
+[source,asciimath]
+----
+"__{backepsilon}"
+----
+
+Plurimath 0.11.12 parses it as a text element (`mtext`) containing the
+compatibility wrapper, rather than a backepsilon symbol.
