@@ -1,0 +1,222 @@
+---
+layout: docs-base
+html-class: docs-page
+title: AI skills
+---
+
+== Metanorma AI skills
+
+Metanorma ships https://github.com/anthropics/skills[Agent Skills] —
+portable instruction packages that give AI coding assistants
+production-grade knowledge of Metanorma. Three skills are available,
+distilled from production transcription and editorial-review work
+across dozens of real document corpora:
+
+[cols="1,2",options="header"]
+|===
+|Skill
+|What it gives the assistant
+
+|link:https://github.com/metanorma/skills/tree/main/skills/metanorma-transcription[metanorma-transcription]
+|Encode your organization's documents (PDFs, HTML exports,
+legacy machine conversions) into publication-grade Metanorma
+AsciiDoc: flavor
+attributes, heading reconstruction, term clauses with concept
+mentions, table normalization, math encoding rules, and the compile
+validation battery.
+
+|link:https://github.com/metanorma/skills/tree/main/skills/metanorma-review[metanorma-review]
+|Editorially review and correct existing Metanorma encodes against
+their source of record: the three-layer verification battery
+(mechanical, ground-truth, pipeline gates), correction conventions,
+merge verdicts, and per-corpus policies.
+
+|link:https://github.com/metanorma/skills/tree/main/skills/metanorma-corpus[metanorma-corpus]
+|Manage multi-document Metanorma site repositories: the collection
+manifest, per-edition directory layout, build-artifact hygiene, and
+the site pipeline's STS conversion and completeness gates.
+|===
+
+== Using them
+
+The skills are built for your organization's own documents — the
+specifications, reports, and guidelines you own or publish. They
+activate automatically when the conversation matches their triggers —
+no slash commands to remember. Typical invocations:
+
+[source,text]
+----
+Transcribe reference-docs/acme-protocol-spec-rev3.pdf into
+sources/acme-protocol-spec/ following the repo conventions.
+----
+
+It produces a sectioned encode (`document.adoc` + `sections/` +
+`images/`) that compiles clean and passes the validation battery —
+not a wall of prose about how one might do it.
+
+[source,text]
+----
+Review this PR against the source PDF and tell me if it can merge.
+----
+
+It produces a verdict — *approve-quality*, *concerns*, or *problem* —
+with file:line findings, each backed by the source text ("formula
+variable changed p → rho, but the source defines p") and a fix-up
+commit on the PR branch when something is provably wrong.
+
+[source,text]
+----
+The site build fails in the STS step on one of our documents — diagnose.
+----
+
+It produces the failure class (mid-body bibliography section, termbase
+preformat, duplicate level-0 titles), the source location, and the
+structural fix.
+
+== What the results look like
+
+. A transcription compiles with zero FATAL errors and passes the
+structural battery: fence balance, dangling cross-references,
+prose-in-source-blocks, term-element counts — reported as
+`[PASS]`/`[FAIL]` lines with exit status.
+. The completeness gate prints one line per document
+(`OK acme-protocol-spec (81 source sections)` …
+`NOTHING MISSING — every source section title compiles through.`)
+and fails loudly when a clause is dropped.
+. A review answers the only question that matters — can this merge? —
+with evidence per finding and the faithful-oddity rule applied:
+printed typos stay printed.
+
+== How they work with flavors
+
+The skills are flavor-aware along two dimensions: each SDO's own
+document practices (how its documents are structured and numbered),
+and the object-type encoding practices applied within that flavor
+(numbers, units, math, bibliographies, section splitting, the site
+manifest). ISO and IEC support is always present — some project
+leaders there use Metanorma for new projects, such as converting
+DOCX into Metanorma and STS — alongside the standards organizations
+we work with directly.
+
+=== Flavor-specific document practices
+
+[cols="1,2",options="header"]
+|===
+|Flavor
+|Document practices the skills encode
+
+|iso
+|Terms and definitions at clause 3 per the ISO/IEC directives;
+directive-style foreword; `:docnumber:` + `:partnumber:` split;
+stage vocabulary; numeric bracket citations in text.
+
+|iec
+|Language-aware foreword boilerplate (English and French); English
+clause-keyword detection in translated trees; national-adoption
+preface roles; two-language trees for bilingual editions.
+
+|iho
+|PubID-parsed `:docnumber:` — display-only strings park in a dummy
+attribute; S-series guideline structures; revision-record prefaces.
+
+|oiml
+|OIML publications encode through the IEC flavor; the review
+skill's verification battery and verdict conventions were hardened
+on OIML document corpora.
+
+|nist
+|Special-publication document structure with authority and abstract
+front matter; OSCAL-fed control tables for the security frameworks.
+
+|bipm
+|JCGM guide conventions
+alongside the English text.
+
+|ogc
+|Literal double-hyphen preservation through zero-width non-joiner
+entities; unnumbered annex clauses; inline math kept as stem blocks.
+
+|iala
+|Circular and guideline doctypes; revision-record prefaces;
+correspondence heads; verbatim transcription with form variants
+recorded as source comments.
+
+|ieee
+|Amendment change markup (`del:[…]`/`add:[…]`, `[change=…]` clause
+attributes); Participants rendered from `item::`/`role:::` blocks;
+draft-stage attributes.
+
+|ietf, cc, itu, ribose, …
+|Per-flavor attribute remaps — changing `:mn-document-class:` is
+treated as a vocabulary migration, not a string replace.
+|===
+
+=== Object-type practices (flavor-independent)
+
+One set of rules holds in every flavor; corpus deviations are noted
+inline as exceptions.
+
+- *Number encoding*: decimal comma or point as the document prints
+  it — per SDO convention and language variant; never normalized.
+- *Bibliography encoding*: relaton-fetched entries carry anchor-only
+  list items (`[[[anchor,id]]]`), with display strings that must equal
+  the fetched citation; per-flavor citation forms (ISO bracket
+  numbers, footnote references, endnote anchors).
+- *metanorma.yml*: one registration per edition, language tiers for
+  multilingual documents, pending documents noted as manifest
+  comments, register-only-publish-clean discipline.
+- *Section splitting*: files split at clause granularity, annexes
+  filed to the end (`aa-…`), bibliography last — section-file
+  conventions stay comparable across review waves.
+- *Units*: UnitsML strings for unitful values in math
+  (`"unitsml(K)"`, `"unitsml(degC)"`) — plain text in titles and
+  attribute values.
+- *Stem and math*: asciimath `stem` blocks by default with reserved
+  names wrapped (`rm(min)`) and multi-word identifiers quoted;
+  `[latexmath]` open blocks when the source is LaTeX; `[[eq-…]]`
+  anchors instead of `\tag{}`.
+
+== Installing
+
+Three ways, from most automatic to most manual:
+
+=== Plugin marketplace (Claude Code)
+
+[source,sh]
+----
+/plugin marketplace add metanorma/skills
+/plugin install metanorma
+----
+
+=== Cross-agent installer
+
+The skills follow the open
+https://agentskills.io/home[Agent Skills] standard, so the same packages
+work across other AI coding tools:
+
+[source,sh]
+----
+npx skills add metanorma/skills
+----
+
+=== Manual
+
+Copy any skill folder into the agent's skills directory
+(`~/.claude/skills/` for personal skills, `.claude/skills/` in a
+project) — the skill activates when the conversation matches its
+trigger phrases.
+
+== What they encode
+
+The skills are not generic prompt packs — they are the working method
+of the Metanorma editorial team, whose professional editors have
+helped organizations such as https://www.ogc.org[OGC],
+https://www.oiml.org/en[OIML], https://iho.int[IHO],
+https://www.iala.int[IALA], and https://www.pdfa.org[PDF/A]
+convert,
+review, and publish their own document corpora. Every rule was mined
+from real correction commits and real build failures: the math forms
+the plurimath parser accepts, the structures the STS publish step
+rejects, the boilerplate the toolchain injects automatically, the
+review conventions that keep faithful transcriptions faithful. When
+the toolchain changes, the skills change with it.

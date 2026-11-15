@@ -1,0 +1,159 @@
+---
+layout: post
+title: "Metanorma AI skills: teaching your assistant the rules the hard way"
+date: 2026-11-15
+categories: news release
+
+authors:
+  - name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+    - https://github.com/ronaldtse
+
+excerpt: >-
+  Metanorma now ships Agent Skills — portable instruction packages for AI coding assistants, installable with one command from the new metanorma/skills plugin marketplace. Three skills cover the whole lifecycle: transcribing standards into Metanorma AsciiDoc, editorially reviewing encodes against their sources, and managing multi-document corpus repositories. Every rule was mined from production: real correction commits, real review waves, and real build failures.
+---
+
+== Skills, not prompts
+
+AI assistants increasingly write Metanorma — converting an organization's own documents, repairing machine conversions, reviewing each other's output. What they lacked was the accumulated craft: which math form the plurimath parser actually accepts, which structures the STS publish step rejects after a compile passes, which boilerplate the toolchain injects so that "restoring" it is a mistake, and how an editorial review decides that a correction moves toward the source instead of away from it.
+
+The new https://github.com/metanorma/skills[metanorma/skills] repository packages that craft as https://agentskills.io/home[Agent Skills] — the open, portable format that Claude Code, Codex, Cursor, and GitHub Copilot all consume. Three skills cover the lifecycle:
+
+- *metanorma-transcription* — encode your organization's documents into publication-grade Metanorma AsciiDoc, from flavor attributes and heading reconstruction through term clauses, tables, math, and the compile validation battery.
+- *metanorma-review* — editorially review an existing encode against its source of record: a three-layer verification battery (mechanical, ground-truth, pipeline gates), a verdict taxonomy, correction conventions, and merge mechanics.
+- *metanorma-corpus* — run the multi-document repositories that build as one site: the collection manifest, per-edition layout, build-artifact hygiene, and the wave-merge mechanics that keep linear history.
+
+== Install in one command
+
+[source,sh]
+----
+/plugin marketplace add metanorma/skills
+/plugin install metanorma
+----
+
+For other agent tools following the open standard:
+
+[source,sh]
+----
+npx skills add metanorma/skills
+----
+
+Or copy any skill folder into your agent's skills directory — see the https://github.com/metanorma/skills#installing[README] for the details.
+
+== What using them looks like
+
+The skills are for your organization's own documents — your
+specifications, technical reports, guidelines, and internal standards
+that you own or publish. Point the assistant at one of your source
+documents and the transcription skill runs the full encode — intake,
+front matter, heading reconstruction, term clauses, furniture
+removal, table normalization, math, compile:
+
+[source,text]
+----
+Transcribe reference-docs/acme-protocol-spec-rev3.pdf into
+sources/acme-protocol-spec/ following the repo conventions.
+----
+
+The result is a sectioned encode (`document.adoc`, `sections/`,
+`images/`) that compiles with zero fatal errors and passes the
+validation battery — reported as `[PASS]`/`[FAIL]` lines with an exit
+status, not a summary of good intentions.
+
+Point it at a pull request in your document repository and the review
+skill runs the three-layer verification battery against your printed
+source:
+
+[source,text]
+----
+Review this PR against the source PDF — can it merge?
+----
+
+The answer is a verdict (*approve-quality*, *concerns*, or
+*problem*) with evidence per finding, down to the failure mode you
+would have missed by hand: "the formula's air-pressure symbol was
+changed to rho, but the source defines p — restore it", alongside
+the equally important "this printed typo was transcribed faithfully —
+do not repair it".
+
+And when your site build breaks, the corpus skill names the failure
+class and the fix:
+
+[source,text]
+----
+The site build fails in the STS step on one of our documents — diagnose.
+----
+
+"Mid-body bibliography-styled section with nested sections" is a
+rejection the compiler does not catch; the skill has seen it, knows
+where it hides, and knows the structural fix.
+
+== They work per flavor
+
+Flavor awareness runs along two dimensions. The first is each SDO's
+own document practices: ISO puts terms and definitions at clause 3
+per the directives and cites with bracket numbers; IEC injects its
+foreword boilerplate in the document's language and keys clause
+detection on the English keyword; IHO pubID-parses its `:docnumber:`
+so display-only strings never break identifier minting; NIST
+special publications carry OSCAL-fed control tables; BIPM documents
+follow JCGM guide conventions; OGC documents preserve printed
+double hyphens through zero-width non-joiner entities and keep
+inline math as stem blocks; IALA adds doctype-catalogue discipline,
+verbatim transcription with recorded form variants, and structured
+revision records; IEEE encodes amendments with change markup
+(`del:[…]`/`add:[…]`) and Participants rendered from structured
+blocks; OIML's own publications compile through the dedicated `oiml`
+flavor, with OIML STS output validated against the OIML X 999:2026
+profile. ISO and IEC support stays present throughout: some project
+leaders there use Metanorma for new projects, converting DOCX into
+Metanorma and STS.
+
+The second dimension is the object-type practices — and these are
+flavor-independent: one set of rules holds everywhere. Number
+encoding transcribes decimal comma or point as the document prints
+it; bibliographies are anchor-only relaton entries whose display
+strings must match the fetched citation; the site manifest registers
+one entry per edition; section splitting follows clause granularity
+with annexes filed last; units are UnitsML strings in math;
+asciimath stems are the default with reserved names wrapped, and
+`[latexmath]` blocks carry LaTeX sources. The document practices
+vary by flavor; the object rules stay constant — the full catalogue
+lives in the
+https://github.com/metanorma/skills/blob/main/skills/metanorma-transcription/references/flavors.md[flavors
+reference], and together they make the assistant encode the document
+the way that organization does, not the way a generic prompt
+imagines.
+
+== Built by professional editors, proven in the field
+
+These skills are not community prompt collections — they are the
+working method of the Metanorma editorial team, whose professional
+editors have helped organizations such as https://www.ogc.org[OGC],
+https://www.oiml.org/en[OIML], https://iho.int[IHO],
+https://www.iala.int[IALA], and https://www.pdfa.org[PDF/A]
+convert, review, and publish their own document corpora with
+Metanorma. What the skills teach is what those editors check by
+hand.
+
+Every rule carries the scar tissue of a real failure. A few examples of what your assistant now knows not to do:
+
+- LaTeX belongs in `[latexmath]` open blocks; the same content in a stem paragraph silently routes to the asciimath parser and fails one formula at a time, each failure costing a full compile cycle.
+- Compile-clean is not publish-clean: the mnconvert STS step rejects mid-body bibliography sections, tabular content inside term definitions, and duplicate level-0 titles that the compiler happily accepts.
+- The foreword's numbered items, the terms-clause intro, and the "no normative references" sentence are injected by the toolchain at compile time — restoring them is a review error, not thoroughness.
+- In non-English trees the clause keywords stay English ("Normative references"), because Metanorma's clause detection keys on them; translated headings silently reclassify the section.
+
+The review skill also encodes the judgment layer: corrections must be verifiable against the source document, faithful typos are transcribed rather than repaired, per-corpus policies are recorded rather than unified, and a review that adds annexes the original conversion dropped is a coverage gain, not scope creep.
+
+== Where this came from
+
+The rules were mined from that production work — editorial review
+waves across hundreds of merged correction commits in
+organization-owned repositories. Each skill's references cite the
+failure classes they encode; when the toolchain changes, the skills
+change with it.
+
+If your organization produces documents with AI assistance, install
+the marketplace and let the assistant start with the rules already
+learned — on documents you own.
