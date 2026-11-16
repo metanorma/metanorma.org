@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 820" font-family="Helvetica Neue, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2e6e9e"/>
+    </marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3e7d4e"/>
+    </marker>
+  </defs>
+  <style>
+    .laneT { font-size:15px; font-weight:bold; }
+    .step { fill:#ffffff; stroke-width:1.5; rx:8; }
+    .num { fill:#ffffff; font-size:13px; font-weight:bold; text-anchor:middle; }
+    .st { font-size:13px; font-weight:bold; fill:#1f2d3d; }
+    .d { font-size:11px; fill:#4a5a68; }
+    .chip { fill:#eef2f6; stroke:#c9d4de; }
+    .ct { font-size:10px; fill:#33475b; text-anchor:middle; }
+    .ar { stroke:#5a6b7a; stroke-width:2; fill:none; }
+    .exit { font-size:11px; fill:#8a6d1a; font-weight:bold; }
+  </style>
+
+  <!-- ===== EXTRACT: OSD -> Git ===== -->
+  <text class="laneT" x="30" y="40" fill="#2e6e9e">EXTRACT — pull a project out of OSD into the Git ledger (OSD → Git)</text>
+
+  <rect class="step" x="30" y="60" width="220" height="150" stroke="#2e6e9e"/>
+  <circle cx="52" cy="85" r="13" fill="#2e6e9e"/><text class="num" x="52" y="89">E1</text>
+  <text class="st" x="72" y="89">Export from OSD</text>
+  <text class="d" x="45" y="115">In OSD: export the draft as</text>
+  <text class="d" x="45" y="131">STS XML, and the comments</text>
+  <text class="d" x="45" y="147">as XLSX (resolved + comments-</text>
+  <text class="d" x="45" y="163">only exports both work).</text>
+  <rect class="chip" x="45" y="178" width="70" height="18" rx="4"/><text class="ct" x="80" y="191">STS XML</text>
+  <rect class="chip" x="122" y="178" width="80" height="18" rx="4"/><text class="ct" x="162" y="191">XLSX</text>
+
+  <rect class="step" x="290" y="60" width="230" height="150" stroke="#2e6e9e"/>
+  <circle cx="312" cy="85" r="13" fill="#2e6e9e"/><text class="num" x="312" y="89">E2</text>
+  <text class="st" x="332" y="89">Convert the document</text>
+  <text class="d" x="305" y="115">mnconvert (STS → Metanorma</text>
+  <text class="d" x="305" y="131">XML/AsciiDoc), or accept the STS</text>
+  <text class="d" x="305" y="147">as the canonical input. Verify the</text>
+  <text class="d" x="305" y="163">rendered PDF against the OSD view.</text>
+  <text class="d" x="305" y="185" font-weight="bold">Exit check: rendered PDF ≡ OSD</text>
+
+  <rect class="step" x="560" y="60" width="230" height="150" stroke="#2e6e9e"/>
+  <circle cx="582" cy="85" r="13" fill="#2e6e9e"/><text class="num" x="582" y="89">E3</text>
+  <text class="st" x="602" y="89">Import the comments</text>
+  <text class="d" x="575" y="115">commenter import of the OSD</text>
+  <text class="d" x="575" y="131">XLSX (resolved and comments-</text>
+  <text class="d" x="575" y="147">only exports auto-detected);</text>
+  <text class="d" x="575" y="163">one issue per comment posted</text>
+  <text class="d" x="575" y="179">with the document-qualified marker.</text>
+
+  <rect class="step" x="830" y="60" width="230" height="150" stroke="#2e6e9e"/>
+  <circle cx="852" cy="85" r="13" fill="#2e6e9e"/><text class="num" x="852" y="89">E4</text>
+  <text class="st" x="872" y="89">Stand up the ledger</text>
+  <text class="d" x="845" y="115">git repo + CI (render + validate),</text>
+  <text class="d" x="845" y="131">labels per stage/type, milestone</text>
+  <text class="d" x="845" y="147">mirroring the OSD stage code,</text>
+  <text class="d" x="845" y="163">published block pinned frozen.</text>
+  <text class="d" x="845" y="185" font-weight="bold">Exit check: CI green</text>
+
+  <rect class="step" x="1000" y="60" width="210" height="150" stroke="#2e6e9e"/>
+  <circle cx="1022" cy="85" r="13" fill="#2e6e9e"/><text class="num" x="1022" y="89">E5</text>
+  <text class="st" x="1042" y="89">Declare the ledger</text>
+  <text class="d" x="1015" y="115">Committee agrees (exemption</text>
+  <text class="d" x="1015" y="131">noted): the Git repo becomes the</text>
+  <text class="d" x="1015" y="147">ledger of record; OSD is read-only</text>
+  <text class="d" x="1015" y="163">archive until re-sync is agreed.</text>
+
+  <line class="ar" x1="250" y1="135" x2="288" y2="135" marker-end="url(#a)"/>
+  <line class="ar" x1="520" y1="135" x2="558" y2="135" marker-end="url(#a)"/>
+  <line class="ar" x1="790" y1="135" x2="828" y2="135" marker-end="url(#a)"/>
+  <line class="ar" x1="1060" y1="135" x2="998" y2="135" marker-end="url(#a)"/>
+
+  <!-- ===== IMPORT: Git -> OSD ===== -->
+  <text class="laneT" x="30" y="300" fill="#3e7d4e">IMPORT — take the Git ledger into OSD (Git → OSD), e.g. for the formal ballot</text>
+
+  <rect class="step" x="30" y="320" width="220" height="150" stroke="#3e7d4e"/>
+  <circle cx="52" cy="345" r="13" fill="#3e7d4e"/><text class="num" x="52" y="349">I1</text>
+  <text class="st" x="72" y="349">Freeze the draft</text>
+  <text class="d" x="45" y="375">Tag the git commit that goes to</text>
+  <text class="d" x="45" y="391">ballot; render STS XML + PDF +</text>
+  <text class="d" x="45" y="407">DOC via CI. This snapshot is what</text>
+  <text class="d" x="45" y="423">the ballot attaches to.</text>
+  <rect class="chip" x="45" y="438" width="70" height="18" rx="4"/><text class="ct" x="80" y="451">tag</text>
+  <rect class="chip" x="122" y="438" width="70" height="18" rx="4"/><text class="ct" x="157" y="451">STS XML</text>
+
+  <rect class="step" x="290" y="320" width="230" height="150" stroke="#3e7d4e"/>
+  <circle cx="312" cy="345" r="13" fill="#3e7d4e"/><text class="num" x="312" y="349">I2</text>
+  <text class="st" x="332" y="349">Import the document</text>
+  <text class="d" x="305" y="375">Today: Word import into OSD, or</text>
+  <text class="d" x="305" y="391">secretariat uploads the PDF for a</text>
+  <text class="d" x="305" y="407">document-based ballot. Tomorrow:</text>
+  <text class="d" x="305" y="423">direct STS XML import into OSD.</text>
+
+  <rect class="step" x="560" y="320" width="230" height="150" stroke="#3e7d4e"/>
+  <circle cx="582" cy="345" r="13" fill="#3e7d4e"/><text class="num" x="582" y="349">I3</text>
+  <text class="st" x="602" y="349">Seed the comments</text>
+  <text class="d" x="575" y="375">Open issues that already have</text>
+  <text class="d" x="575" y="391">proposed dispositions are emitted</text>
+  <text class="d" x="575" y="407">through the ISO commenting</text>
+  <text class="d" x="575" y="423">template (commenter filler), which</text>
+  <text class="d" x="575" y="439">OSD auto-collates.</text>
+
+  <rect class="step" x="830" y="320" width="230" height="150" stroke="#3e7d4e"/>
+  <circle cx="852" cy="345" r="13" fill="#3e7d4e"/><text class="num" x="852" y="349">I4</text>
+  <text class="st" x="872" y="349">Run the ballot in OSD</text>
+  <text class="d" x="845" y="375">Members comment/vote in OSD;</text>
+  <text class="d" x="845" y="391">the platform collates and tracks</text>
+  <text class="d" x="845" y="407">resolution status. The Git ledger</text>
+  <text class="d" x="845" y="423">records the ballot event as a</text>
+  <text class="d" x="845" y="439">milestone (40.20 → 40.60).</text>
+
+  <rect class="step" x="1090" y="320" width="130" height="150" stroke="#3e7d4e"/>
+  <circle cx="1112" cy="345" r="13" fill="#3e7d4e"/><text class="num" x="1112" y="349">I5</text>
+  <text class="st" x="1132" y="349">Close the loop</text>
+  <text class="d" x="1105" y="375">Ballot results export → feeds</text>
+  <text class="d" x="1105" y="391">EXTRACT E1. Import and extract</text>
+  <text class="d" x="1105" y="407">are one round trip.</text>
+
+  <line class="ar" x1="250" y1="395" x2="288" y2="395" marker-end="url(#a)"/>
+  <line class="ar" x1="520" y1="395" x2="558" y2="395" marker-end="url(#a)"/>
+  <line class="ar" x1="790" y1="395" x2="828" y2="395" marker-end="url(#a)"/>
+  <line class="ar" x1="1060" y1="395" x2="1088" y2="395" marker-end="url(#b)"/>
+
+  <!-- round trip note -->
+  <rect x="30" y="500" width="1180" height="80" rx="8" fill="#f4f8fb" stroke="#d7e3ec"/>
+  <text x="55" y="528" font-size="13" font-weight="bold" fill="#1f2d3d">What is possible today vs what is coming</text>
+  <text x="55" y="550" font-size="11.5" fill="#33475b">Today: OSD comment exports (XLSX) → commenter import ✓ · Metanorma → ISO STS ✓ · mnconvert STS → Metanorma XML ✓ · OSD Word import ✓ · OSD STS direct import — emerging.</text>
+  <text x="55" y="568" font-size="11.5" fill="#33475b">Coming (per the SMART/OSD trajectory): STS round-trip with OSD, and structured comment upload into OSD resolution — at that point E1–E3 and I2–I3 collapse into single API calls.</text>
+
+  <!-- ===== FALLBACK ===== -->
+  <text class="laneT" x="30" y="640" fill="#a06a2c">FALLBACK — what happens when OSD is unavailable, or the exemption is the chosen lane</text>
+
+  <rect class="step" x="30" y="660" width="270" height="140" stroke="#a06a2c"/>
+  <circle cx="52" cy="685" r="13" fill="#a06a2c"/><text class="num" x="52" y="689">F1</text>
+  <text class="st" x="72" y="689">Freeze the state</text>
+  <text class="d" x="45" y="715">Export/keep the last known</text>
+  <text class="d" x="45" y="731">good state: STS XML snapshot</text>
+  <text class="d" x="45" y="747">+ comment export. This is the</text>
+  <text class="d" x="45" y="763">recovery anchor.</text>
+
+  <rect class="step" x="330" y="660" width="270" height="140" stroke="#a06a2c"/>
+  <circle cx="352" cy="685" r="13" fill="#a06a2c"/><text class="num" x="352" y="689">F2</text>
+  <text class="st" x="372" y="689">Continue offline (Git lane)</text>
+  <text class="d" x="345" y="715">Drafting continues in Metanorma</text>
+  <text class="d" x="345" y="731">with full CI; comments continue as</text>
+  <text class="d" x="345" y="747">issues. Nothing in the Directives</text>
+  <text class="d" x="345" y="763">obliges a specific editing tool.</text>
+
+  <rect class="step" x="630" y="660" width="270" height="140" stroke="#a06a2c"/>
+  <circle cx="652" cy="685" r="13" fill="#a06a2c"/><text class="num" x="652" y="689">F3</text>
+  <text class="st" x="672" y="689">Ballots via the secretariat</text>
+  <text class="d" x="645" y="715">Ballots proceed through ISO CS</text>
+  <text class="d" x="645" y="731">with PDF/DOC ballots + comment</text>
+  <text class="d" x="645" y="747">sheets — the traditional documented</text>
+  <text class="d" x="645" y="763">flow, fully valid under the Directives.</text>
+
+  <rect class="step" x="930" y="660" width="280" height="140" stroke="#a06a2c"/>
+  <circle cx="952" cy="685" r="13" fill="#a06a2c"/><text class="num" x="952" y="689">F4</text>
+  <text class="st" x="972" y="689">Re-sync on recovery</text>
+  <text class="d" x="945" y="715">When OSD returns (or a stage must</text>
+  <text class="d" x="945" y="731">run there): run IMPORT I1–I4 from</text>
+  <text class="d" x="945" y="747">the newest git tag. The delta is the</text>
+  <text class="d" x="945" y="763">commits since the F1 anchor.</text>
+
+  <line class="ar" x1="300" y1="730" x2="328" y2="730" marker-end="url(#a)"/>
+  <line class="ar" x1="600" y1="730" x2="628" y2="730" marker-end="url(#a)"/>
+  <line class="ar" x1="900" y1="730" x2="928" y2="730" marker-end="url(#a)"/>
+</svg>
