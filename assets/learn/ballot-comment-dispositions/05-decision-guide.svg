@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 640" font-family="Helvetica Neue, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5a6b7a"/>
+    </marker>
+  </defs>
+  <style>
+    .q { fill:#ffffff; stroke:#2e6e9e; stroke-width:1.6; rx:10; }
+    .qt { font-size:13px; font-weight:bold; fill:#1f2d3d; text-anchor:middle; }
+    .out { rx:10; }
+    .ot { font-size:12.5px; font-weight:bold; text-anchor:middle; }
+    .od { font-size:11px; fill:#4a5a68; text-anchor:middle; }
+    .lbl { font-size:11.5px; font-weight:bold; fill:#33475b; }
+    .ar { stroke:#5a6b7a; stroke-width:2; fill:none; }
+    .note { font-size:11px; fill:#6a7a88; }
+  </style>
+
+  <text x="30" y="36" font-size="16" font-weight="bold" fill="#1f2d3d">Decision guide — which lane, at which moment</text>
+
+  <!-- Q1 -->
+  <rect class="q" x="60" y="60" width="360" height="70"/>
+  <text class="qt" x="240" y="90">Has the committee been granted an exemption</text>
+  <text class="qt" x="240" y="108">from OSD for this project?</text>
+
+  <line class="ar" x1="240" y1="130" x2="240" y2="160" marker-end="url(#a)"/>
+  <text class="lbl" x="250" y="150">yes (Metanorma/Git lane)</text>
+  <rect class="out" x="90" y="165" width="300" height="90" fill="#f4faf5" stroke="#3e7d4e"/>
+  <text class="ot" x="240" y="192" fill="#3e7d4e">Git-native lane (this document)</text>
+  <text class="od" x="240" y="212">commenter + GitHub issues + Metanorma CI;</text>
+  <text class="od" x="240" y="228">disposition sheets generated; STS XML to ISO CS.</text>
+
+  <line class="ar" x1="420" y1="95" x2="560" y2="95" marker-end="url(#a)"/>
+  <text class="lbl" x="430" y="85">no (default)</text>
+
+  <!-- Q2 -->
+  <rect class="q" x="565" y="60" width="360" height="70"/>
+  <text class="qt" x="745" y="90">Whole project in OSD (drafting, comments,</text>
+  <text class="qt" x="745" y="108">ballots) — and the team needs no Git history?</text>
+
+  <line class="ar" x1="745" y1="130" x2="745" y2="160" marker-end="url(#a)"/>
+  <text class="lbl" x="755" y="150">yes</text>
+  <rect class="out" x="600" y="165" width="290" height="90" fill="#f4f8fb" stroke="#2e6e9e"/>
+  <text class="ot" x="745" y="192" fill="#2e6e9e">OSD-native lane</text>
+  <text class="od" x="745" y="212">authoring, commenting, and ballots entirely</text>
+  <text class="od" x="745" y="228">in OSD; exports taken when needed.</text>
+
+  <line class="ar" x1="925" y1="95" x2="1010" y2="95" marker-end="url(#a)"/>
+  <text class="lbl" x="935" y="85">partly / needs both</text>
+
+  <!-- Q3 -->
+  <rect class="q" x="1015" y="60" width="200" height="70"/>
+  <text class="qt" x="1115" y="90">Which part runs</text>
+  <text class="qt" x="1115" y="108">where?</text>
+
+  <line class="ar" x1="1035" y1="130" x2="1035" y2="165" marker-end="url(#a)"/>
+  <rect class="out" x="920" y="170" width="290" height="90" fill="#f9f5fb" stroke="#7a4a8a"/>
+  <text class="ot" x="1065" y="197" fill="#7a4a8a">Hybrid (bridged) — diagram 03</text>
+  <text class="od" x="1065" y="217">drafting + ledger in Git; the formal ballot</text>
+  <text class="od" x="1065" y="233">imported into OSD (I1–I4); results exported</text>
+  <text class="od" x="1065" y="249">back (E1–E3).</text>
+
+  <!-- fallback box -->
+  <line class="ar" x1="240" y1="255" x2="240" y2="285" marker-end="url(#a)"/>
+  <rect x="60" y="290" width="560" height="130" rx="10" fill="#faf6f1" stroke="#ead9c8"/>
+  <text x="80" y="318" font-size="13.5" font-weight="bold" fill="#a06a2c">Any lane may fall back mid-flight (F1–F4, diagram 04):</text>
+  <text x="80" y="342" font-size="11.5" fill="#4a5a68">• OSD unavailable → freeze STS snapshot (F1), continue in Git (F2), ballots via ISO CS (F3),</text>
+  <text x="80" y="360" font-size="11.5" fill="#4a5a68">  re-sync on recovery (F4). The Directives bind the artifacts and decisions, not the tooling.</text>
+  <text x="80" y="384" font-size="11.5" fill="#4a5a68">• An exemption can be requested when the project enters the committee work programme.</text>
+
+  <!-- OSD convergence box -->
+  <rect x="660" y="290" width="550" height="130" rx="10" fill="#f4f8fb" stroke="#d7e3ec"/>
+  <text x="680" y="318" font-size="13.5" font-weight="bold" fill="#2e6e9e">When OSD gains STS round-trip and comment upload:</text>
+  <text x="680" y="342" font-size="11.5" fill="#33475b">• EXTRACT E1–E3 collapse to one export+import step; IMPORT I2–I3 collapse to an STS push.</text>
+  <text x="680" y="360" font-size="11.5" fill="#33475b">• The Git ledger remains the disposition history; OSD becomes the ballot surface.</text>
+  <text x="680" y="384" font-size="11.5" fill="#33475b">• Revisit this guide per ballot — the lanes are converging, the Directives obligations are not changing.</text>
+
+  <text class="note" x="30" y="460">Decision inputs: committee position on OSD (default/exemption), need for Git history and CI-rendered artifacts, stage timing</text>
+  <text class="note" x="30" y="478">(a stage about to ballot argues for OSD; a stage in heavy drafting argues for the Git lane), and the secretariat's distribution</text>
+  <text class="note" x="30" y="496">requirements (disposition DOCX + fixed document + STS XML — both lanes produce all three).</text>
+</svg>

@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1010" font-family="Helvetica Neue, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5a6b7a"/>
+    </marker>
+    <marker id="arrowLoop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a6d1a"/>
+    </marker>
+    <marker id="arrowStage" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7a4a8a"/>
+    </marker>
+  </defs>
+
+  <style>
+    .step { fill: #ffffff; stroke-width: 1.5; rx: 8; }
+    .num { fill: #ffffff; font-size: 15px; font-weight: bold; text-anchor: middle; }
+    .title { font-size: 15px; font-weight: bold; fill: #1f2d3d; }
+    .desc { font-size: 11.5px; fill: #4a5a68; }
+    .chip { fill: #eef2f6; stroke: #c9d4de; stroke-width: 1; }
+    .chiptext { font-size: 10.5px; fill: #33475b; text-anchor: middle; }
+    .lane { rx: 12; }
+    .lanetitle { font-size: 13px; font-weight: bold; letter-spacing: 1.5px; }
+    .arrow { stroke: #5a6b7a; stroke-width: 2; fill: none; }
+    .loop { stroke: #8a6d1a; stroke-width: 2; fill: none; stroke-dasharray: 7 4; }
+    .stagearrow { stroke: #7a4a8a; stroke-width: 2; fill: none; stroke-dasharray: 7 4; }
+    .tooltag { fill: #1f2d3d; font-size: 10.5px; font-weight: bold; }
+    .stage { fill: #ffffff; stroke: #7a4a8a; stroke-width: 1.4; }
+    .stagetext { font-size: 12px; font-weight: bold; fill: #4a2a5a; text-anchor: middle; }
+    .subtle { font-size: 10.5px; fill: #6a7a88; }
+  </style>
+
+  <!-- ============ LANE 1: COLLECT ============ -->
+  <rect class="lane" x="30" y="30" width="1440" height="250" fill="#f4f8fb" stroke="#d7e3ec"/>
+  <text class="lanetitle" x="55" y="60" fill="#2e6e9e">1 · COLLECT</text>
+
+  <!-- Step 1 -->
+  <rect class="step" x="60" y="80" width="270" height="170" stroke="#2e6e9e"/>
+  <circle cx="90" cy="110" r="16" fill="#2e6e9e"/><text class="num" x="90" y="115">1</text>
+  <text class="title" x="115" y="115">Ballot / systematic review</text>
+  <text class="desc" x="80" y="145">National bodies and liaisons comment</text>
+  <text class="desc" x="80" y="162">on the draft at the current stage.</text>
+  <text class="desc" x="80" y="188">Example: systematic review of</text>
+  <text class="desc" x="80" y="205">ISO 80000-2 / -4 (CalConnect, DIN,</text>
+  <text class="desc" x="80" y="222">PL, CN, Colombia) → Ed 3 revision.</text>
+
+  <!-- Step 2 -->
+  <rect class="step" x="390" y="80" width="270" height="170" stroke="#2e6e9e"/>
+  <circle cx="420" cy="110" r="16" fill="#2e6e9e"/><text class="num" x="420" y="115">2</text>
+  <text class="title" x="445" y="115">Secretariat receives sheets</text>
+  <text class="desc" x="410" y="145">Collated DOCX / legacy DOC /</text>
+  <text class="desc" x="410" y="162">OSD XLSX arrive at the project</text>
+  <text class="desc" x="410" y="179">leader via the secretariat.</text>
+  <rect class="chip" x="408" y="196" width="72" height="20" rx="4"/><text class="chiptext" x="444" y="210">.docx</text>
+  <rect class="chip" x="486" y="196" width="72" height="20" rx="4"/><text class="chiptext" x="522" y="210">.doc</text>
+  <rect class="chip" x="564" y="196" width="72" height="20" rx="4"/><text class="chiptext" x="600" y="210">.xlsx</text>
+
+  <!-- Step 3 -->
+  <rect class="step" x="720" y="80" width="270" height="170" stroke="#2e6e9e"/>
+  <circle cx="750" cy="110" r="16" fill="#2e6e9e"/><text class="num" x="750" y="115">3</text>
+  <text class="title" x="775" y="115">One comment = one issue</text>
+  <text class="desc" x="740" y="145">commenter imports sheets to YAML,</text>
+  <text class="desc" x="740" y="162">deduplicates, and posts each</text>
+  <text class="desc" x="740" y="179">comment as a GitHub issue.</text>
+  <rect class="chip" x="738" y="196" width="60" height="20" rx="4"/><text class="chiptext" x="768" y="210">YAML</text>
+  <rect class="chip" x="804" y="196" width="60" height="20" rx="4"/><text class="chiptext" x="834" y="210">issues</text>
+  <rect class="chip" x="870" y="196" width="60" height="20" rx="4"/><text class="chiptext" x="900" y="210">labels</text>
+  <rect x="1008" y="150" width="96" height="24" rx="6" fill="#2e6e9e"/>
+  <text x="1056" y="166" font-size="11.5px" font-weight="bold" fill="#ffffff" text-anchor="middle">commenter</text>
+
+  <!-- Step 3b (numbered 3, GitHub-native home) -->
+  <rect class="step" x="1160" y="80" width="280" height="170" stroke="#2e6e9e"/>
+  <circle cx="1190" cy="110" r="16" fill="#2e6e9e"/><text class="num" x="1190" y="115">3</text>
+  <text class="title" x="1215" y="115">GitHub = the ledger</text>
+  <text class="desc" x="1180" y="145">Issues are the single ledger for the</text>
+  <text class="desc" x="1180" y="162">whole revision: visible to the team,</text>
+  <text class="desc" x="1180" y="179">linkable from commits and PRs.</text>
+  <rect x="1160" y="150" width="0" height="0"/>
+  <rect x="1330" y="196" width="96" height="24" rx="6" fill="#24292e"/>
+  <text x="1378" y="212" font-size="11.5px" font-weight="bold" fill="#ffffff" text-anchor="middle">GitHub</text>
+
+  <line class="arrow" x1="330" y1="165" x2="388" y2="165" marker-end="url(#arrow)"/>
+  <line class="arrow" x1="660" y1="165" x2="718" y2="165" marker-end="url(#arrow)"/>
+  <line class="arrow" x1="990" y1="165" x2="1158" y2="165" marker-end="url(#arrow)"/>
+
+  <!-- ============ LANE 2: RESOLVE ============ -->
+  <rect class="lane" x="30" y="310" width="1440" height="260" fill="#f4faf5" stroke="#d5e6d8"/>
+  <text class="lanetitle" x="55" y="340" fill="#3e7d4e">2 · RESOLVE — repeat until dispositions are final</text>
+
+  <!-- Step 4 -->
+  <rect class="step" x="60" y="360" width="400" height="175" stroke="#3e7d4e"/>
+  <circle cx="90" cy="390" r="16" fill="#3e7d4e"/><text class="num" x="90" y="395">4</text>
+  <text class="title" x="115" y="395">Discuss and propose dispositions</text>
+  <text class="desc" x="80" y="425">Project team agrees Accepted / Noted /</text>
+  <text class="desc" x="80" y="442">Rejected per comment; the change is</text>
+  <text class="desc" x="80" y="459">made as one commit per issue</text>
+  <text class="desc" x="80" y="476">("fixes #N") inside one PR per document.</text>
+  <rect class="chip" x="80" y="492" width="80" height="20" rx="4"/><text class="chiptext" x="120" y="506">commit</text>
+  <rect class="chip" x="168" y="492" width="80" height="20" rx="4"/><text class="chiptext" x="208" y="506">PR</text>
+  <rect class="chip" x="256" y="492" width="80" height="20" rx="4"/><text class="chiptext" x="296" y="506">dataset</text>
+  <rect x="345" y="488" width="96" height="24" rx="6" fill="#24292e"/>
+  <text x="393" y="504" font-size="11.5px" font-weight="bold" fill="#ffffff" text-anchor="middle">GitHub</text>
+
+  <!-- Step 5 -->
+  <rect class="step" x="520" y="360" width="420" height="175" stroke="#3e7d4e"/>
+  <circle cx="550" cy="390" r="16" fill="#3e7d4e"/><text class="num" x="550" y="395">5</text>
+  <text class="title" x="575" y="395">Generate the disposition meeting pack</text>
+  <text class="desc" x="540" y="425">commenter retrieves every observation</text>
+  <text class="desc" x="540" y="442">from the issues and fills the ISO comment</text>
+  <text class="desc" x="540" y="459">sheet; distribute it with the fixed</text>
+  <text class="desc" x="540" y="476">document (PDF / DOC) and STS XML.</text>
+  <rect class="chip" x="540" y="492" width="110" height="20" rx="4"/><text class="chiptext" x="595" y="506">disposition .docx</text>
+  <rect class="chip" x="658" y="492" width="70" height="20" rx="4"/><text class="chiptext" x="693" y="506">PDF</text>
+  <rect class="chip" x="736" y="492" width="70" height="20" rx="4"/><text class="chiptext" x="771" y="506">DOC</text>
+  <rect class="chip" x="814" y="492" width="70" height="20" rx="4"/><text class="chiptext" x="849" y="506">STS XML</text>
+  <rect x="880" y="488" width="110" height="24" rx="6" fill="#3e7d4e"/>
+  <text x="935" y="504" font-size="11.5px" font-weight="bold" fill="#ffffff" text-anchor="middle">metanorma</text>
+
+  <!-- Step 6 -->
+  <rect class="step" x="1000" y="360" width="250" height="175" stroke="#3e7d4e"/>
+  <circle cx="1030" cy="390" r="16" fill="#3e7d4e"/><text class="num" x="1030" y="395">6</text>
+  <text class="title" x="1055" y="395">Disposition meeting</text>
+  <text class="desc" x="1020" y="425">Comments are agreed with</text>
+  <text class="desc" x="1020" y="442">national bodies; new remarks</text>
+  <text class="desc" x="1020" y="459">become new issues.</text>
+  <text class="desc" x="1020" y="490" font-weight="bold" fill="#8a6d1a">Steps 4–5 repeat.</text>
+
+  <!-- loop arrow: 6 back to 4 -->
+  <path class="loop" d="M 1125 535 C 1125 575, 260 575, 260 537" marker-end="url(#arrowLoop)"/>
+  <text x="690" y="568" font-size="11px" fill="#8a6d1a" text-anchor="middle">iterate until dispositions are final</text>
+
+  <!-- ============ LANE 3: STAGE & RELEASE ============ -->
+  <rect class="lane" x="30" y="600" width="1440" height="250" fill="#faf6f1" stroke="#ead9c8"/>
+  <text class="lanetitle" x="55" y="630" fill="#a06a2c">3 · STAGE &amp; RELEASE</text>
+
+  <!-- Step 7 -->
+  <rect class="step" x="60" y="650" width="500" height="170" stroke="#a06a2c"/>
+  <circle cx="90" cy="680" r="16" fill="#a06a2c"/><text class="num" x="90" y="685">7</text>
+  <text class="title" x="115" y="685">Ballot at the next stage</text>
+  <text class="desc" x="80" y="715">With dispositions final, the draft is staged</text>
+  <text class="desc" x="80" y="732">(WD → CD → DIS → FDIS → PRF) and circulated;</text>
+  <text class="desc" x="80" y="749">the final ballot round runs steps 1–6 once more.</text>
+  <rect class="chip" x="80" y="768" width="90" height="20" rx="4"/><text class="chiptext" x="125" y="782">stage label</text>
+  <rect class="chip" x="178" y="768" width="90" height="20" rx="4"/><text class="chiptext" x="223" y="782">ballot pack</text>
+
+  <!-- Step 8 -->
+  <rect class="step" x="620" y="650" width="440" height="170" stroke="#a06a2c"/>
+  <circle cx="650" cy="680" r="16" fill="#a06a2c"/><text class="num" x="650" y="685">8</text>
+  <text class="title" x="675" y="685">Release the approved artifact</text>
+  <text class="desc" x="640" y="715">metanorma-release conventions: the approved</text>
+  <text class="desc" x="640" y="732">PDF / DOC / STS XML are tagged and published as a</text>
+  <text class="desc" x="640" y="749">GitHub release (see iso-19135), then the cycle repeats.</text>
+  <rect class="chip" x="640" y="768" width="70" height="20" rx="4"/><text class="chiptext" x="675" y="782">tag</text>
+  <rect class="chip" x="718" y="768" width="90" height="20" rx="4"/><text class="chiptext" x="763" y="782">GH release</text>
+  <rect class="chip" x="816" y="768" width="90" height="20" rx="4"/><text class="chiptext" x="861" y="782">published</text>
+  <rect x="1010" y="764" width="130" height="24" rx="6" fill="#a06a2c"/>
+  <text x="1075" y="780" font-size="11px" font-weight="bold" fill="#ffffff" text-anchor="middle">metanorma-release</text>
+
+  <!-- ============ STAGE LADDER + CYCLE ============ -->
+  <rect class="lane" x="30" y="880" width="1440" height="110" fill="#f9f5fb" stroke="#e0d0ea"/>
+  <text class="lanetitle" x="55" y="910" fill="#7a4a8a">THE ISO STAGE CYCLE — steps 1–7 repeat at every stage until publication</text>
+
+  <rect class="stage" x="120" y="930" width="120" height="40" rx="8"/><text class="stagetext" x="180" y="955">AWI 10.99</text>
+  <line class="stagearrow" x1="240" y1="950" x2="298" y2="950" marker-end="url(#arrowStage)"/>
+  <rect class="stage" x="300" y="930" width="120" height="40" rx="8"/><text class="stagetext" x="360" y="955">WD 20.20</text>
+  <line class="stagearrow" x1="420" y1="950" x2="478" y2="950" marker-end="url(#arrowStage)"/>
+  <rect class="stage" x="480" y="930" width="120" height="40" rx="8"/><text class="stagetext" x="540" y="955">CD 30.99</text>
+  <line class="stagearrow" x1="600" y1="950" x2="658" y2="950" marker-end="url(#arrowStage)"/>
+  <rect class="stage" x="660" y="930" width="120" height="40" rx="8"/><text class="stagetext" x="720" y="955">DIS 40.00</text>
+  <line class="stagearrow" x1="780" y1="950" x2="838" y2="950" marker-end="url(#arrowStage)"/>
+  <rect class="stage" x="840" y="930" width="120" height="40" rx="8"/><text class="stagetext" x="900" y="955">FDIS 50.00</text>
+  <line class="stagearrow" x1="960" y1="950" x2="1018" y2="950" marker-end="url(#arrowStage)"/>
+  <rect class="stage" x="1020" y="930" width="120" height="40" rx="8"/><text class="stagetext" x="1080" y="955">PRF 60.00</text>
+  <line class="stagearrow" x1="1140" y1="950" x2="1198" y2="950" marker-end="url(#arrowStage)"/>
+  <rect class="stage" x="1200" y="930" width="150" height="40" rx="8" fill="#7a4a8a"/>
+  <text x="1275" y="955" font-size="12px" font-weight="bold" fill="#ffffff" text-anchor="middle">IS 60.60 published</text>
+
+  <!-- cycle-back from IS to AWI -->
+  <path class="stagearrow" d="M 1375 950 C 1430 950, 1430 870, 60 870 L 60 950 L 118 950" marker-end="url(#arrowStage)"/>
+  <text x="740" y="888" font-size="11px" fill="#7a4a8a" text-anchor="middle">new revision (new edition): the cycle starts again</text>
+</svg>
