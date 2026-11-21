@@ -155,8 +155,21 @@ bibliographies.
 
 === General
 
-In the "Normative references" clause, any content before the list of references
+Predefined text is provided only for _normative references_: a bibliography
+section with `normative=true`. That is the default for a section titled
+"Normative references"; any other `[bibliography]` section (for example
+`== Bibliography`) defaults to `normative=false` and is _informative_.
+
+In a normative references clause, any content before the list of references
 is ignored, and replaced by predefined text specific to the Metanorma flavour.
+
+An informative bibliography receives _no_ predefined text, and the override and
+`(default)` mechanisms described below do not apply to it. Where a document has
+both a normative references clause and an informative bibliography, only the
+normative references clause receives predefined text.
+
+NOTE: Predefined text (and boilerplate) for informative bibliographies is not
+currently supported.
 
 The predefined text may vary according to the contents of the bibliography:
 
@@ -237,6 +250,9 @@ structure, set the content of the boilerplate block as
 `(default)` [added in https://github.com/metanorma/metanorma-standoc/releases/tag/v2.8.12].
 
 The `(default)` text will be overwritten with the correct predefined text.
+
+NOTE: `(default)` is resolved only within normative references. In an
+informative bibliography it is not substituted, and renders literally.
 
 .Example of moving default predefined text
 ====
