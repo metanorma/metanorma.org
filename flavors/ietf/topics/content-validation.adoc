@@ -1,0 +1,112 @@
+---
+layout: ietf-flavor
+---
+
+= Content validation
+
+Metanorma for IETF validates the emitted RFC XML v3 at compile time, so that problems are caught before the document reaches the IETF toolchain. Validation runs on three layers: the RFC XML v3 schema (RFC 7991, RELAX NG), the released-path content checks of RFC 7991 sections 2 and 5, and the submission checks of https://github.com/ietf-tools/idnits[idnits3], the tool the IETF submission gate runs. The stream rules are taken from https://www.rfc-editor.org/rfc/rfc7841[RFC 7841] and mirror the behaviour of the xml2rfc preptool.
+
+Validation findings are recorded in the build log with a severity, and the full report is written next to the output as a `{basename}.err.html` file. The complete catalog of findings, with severities and categories, is generated from the metanorma-ietf source and rendered on the link:/flavors/ietf/topics/validation-catalog/[validation rule catalog] page.
+
+== Severities
+
+[cols="1,3"]
+|===
+| Severity | Behaviour
+
+| abort
+| The compile stops, and the invalid output is quarantined as `{name}.rfc.xml.err` so that it cannot be submitted by mistake.
+| serious / not serious
+| The compile completes, and the finding is recorded in the validation report.
+| info
+| Advice recorded in the validation report.
+|===
+
+== Stream rules (RFC 7841)
+
+These rules abort the compile. The stream is declared with `:submission-type:`, and both the hyphenated and the camelCase spelling (`:submissionType:`) are accepted. The five legal streams are `IETF`, `IAB`, `IRTF`, `independent`, and `editorial`.
+
+* The declared stream must be one of the five legal values. Datatracker's "Individual Submissions" stream is spelled `independent`; `individual` is not a legal value. This is the rule behind the `SUBMISSION_TYPE_UNEXPECTED` finding that idnits3 reports for drafts whose stream does not match their Datatracker record.
+* The document category must be one the stream carries, per RFC 7841. With no `:intended-series:` declared, the default category is `std` for the IETF stream and `info` for every other stream.
+
+[cols="1,3"]
+|===
+| Stream | Legal categories
+| IETF | std, bcp, exp, historic, info
+| IAB | info, historic
+| IRTF | exp, historic, info
+| independent | exp, historic, info
+| editorial | info
+|===
+
+* The `stream` of a `<seriesInfo>` in the front matter must agree with the `submissionType` of the `<rfc>` element (xml2rfc preptool section 5.4.2.1).
+* The `independent` and `editorial` streams take no `:consensus:` setting, and the IRTF stream takes one only when the document declares a `:workgroup:` (xml2rfc preptool section 5.4.2.2).
+* A restricted copyright notice (`noModificationTrust200902`, `noDerivativesTrust200902`) cannot be used in the IETF stream, because it withholds the right to produce derivative works (https://www.rfc-editor.org/rfc/rfc5378#section-3.3[RFC 5378, section 3.3]). Use `ipr="trust200902"` or `ipr="pre5378Trust200902"`.
+* A document name beginning `draft-iab-` or `draft-irtf-` implies that stream; the declaration must agree with it.
+
+== Submission requirements
+
+These rules abort the compile.
+
+* The abstract is required. It is written as the first block of the document:
+
+[source,asciidoc]
+----
+[abstract]
+--
+This document defines a distributed ledger time-stamp.
+--
+----
+
+* The file submitted to the IETF Datatracker must be named after the draft (`draft-name-revision.xml`). The compile reports the expected name for the document as advice, so the output file can be renamed before submission.
+
+== Author content warnings
+
+These findings do not abort the compile. They mirror the corresponding idnits3 warnings.
+
+* Lines of `<artwork>` wider than the 72 columns of the xml2rfc text output, and lines of `<sourcecode>` wider than 69 columns (72 columns less its three-column indent).
+* Tab characters in `<artwork>` or `<sourcecode>`, which the text output cannot align.
+* A reference listed in the References section that the document text never cites.
+* An `<author>` without a `fullname` attribute, and more than five authors or editors.
+
+== Vocabulary rules
+
+The RFC XML v3 vocabulary deprecates a set of elements and attributes, and the emitted document must not carry them. The deprecated elements are `spanx`, `texttable`, `ttcol`, and `vspace`. The deprecated attributes are listed below; they are detected on the emitted document, so a document built with a current release never triggers them.
+
+[cols="1,3"]
+|===
+| Element | Deprecated attributes
+| artwork | height, width, xml:space
+| figure | align, alt, height, src, suppress-title, title, width
+| note | title
+| references | title
+| section | title
+| seriesInfo | status, stream
+| t | hangText
+| texttable | title
+| xref | pageno
+|===
+
+== Document attribute checks
+
+These checks run on the source document while it is parsed.
+
+* A `[cref]` annotation without a matching entry.
+* The `editorial` stream requires the `informational` intended status.
+* Images other than SVG are not supported by the RFC XML rendering path.
+* A workgroup name that the IETF registry does not recognise.
+
+== RFC XML structure checks
+
+The schema validation runs against the RFC XML v3 grammar of RFC 7991, and the released-path content checks report:
+
+* a numbered section placed under, or following, an unnumbered section;
+* a `toc="include"` section nested in a `toc="exclude"` section;
+* a reference whose `seriesInfo` carries no value, or a section without a title where a table-of-contents entry would be needed;
+* an `xref` or `relref` whose target does not exist, or whose `format` and `section` or `relative` attributes are not valid for the target;
+* an `ipr` value outside the RFC 7991 set;
+* a mismatch between the RFC number and the `seriesInfo` that names it.
+
+== Validation report
+
+Findings are grouped by category (stream, submission, text output, references, vocabulary, front matter) and rendered into `{basename}.err.html` next to the output file, in the same report format as the other Metanorma flavors. The report is regenerated on every compile of the RFC XML output.

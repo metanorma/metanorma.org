@@ -1,0 +1,170 @@
+---
+layout: iso-flavor
+---
+
+= Validation rule catalog
+
+// GENERATED FILE: rendered from the metanorma-iso log
+// catalog (lib/metanorma/iso/log.rb), which is the
+// source of truth. Regenerate with `rake flavors:validation_catalog`;
+// CI fails when this file drifts.
+
+The severity of a finding decides what the compile does: an abort
+finding stops the compile and quarantines the invalid output; a
+serious or not-serious finding is recorded in the validation
+report; an info finding is advice. The prose for these rules is on
+the link:/flavors/iso/topics/content-validation/[content
+validation] page.
+
+[cols="2,1,2,5"]
+|===
+| Id | Severity | Category | Message
+
+| STANDOC_48 | not serious | Style | %s
+| ISO_1 | not serious | Style | Style override set for ordered list
+| ISO_2 | not serious | Document Attributes | invalid technical committee type %s
+| ISO_3 | not serious | Document Attributes | invalid subcommittee type %s
+| ISO_4 | not serious | Style | term definition starts with article: %s
+| ISO_5 | not serious | Document Attributes | %s is not a recognised document type
+| ISO_6 | not serious | Document Attributes | %s is not a recognised iteration
+| ISO_7 | not serious | Style | %s is not permitted in a subfigure
+| ISO_8 | not serious | Style | Reference does not have an associated footnote indicating unpublished status
+| ISO_9 | not serious | Document Attributes | Illegal document stage: %s.%s
+| ISO_10 | not serious | Style | No English Title Intro!
+| ISO_11 | not serious | Style | No French Title Intro!
+| ISO_12 | not serious | Style | No English Title!
+| ISO_13 | not serious | Style | No French Title!
+| ISO_14 | not serious | Style | No English Title Part!
+| ISO_15 | not serious | Style | No French Title Part!
+| ISO_16 | not serious | Style | Subpart defined on non-IEC document!
+| ISO_17 | not serious | Style | Main Title may name document type
+| ISO_18 | not serious | Style | Title Intro may name document type
+| ISO_19 | not serious | Style | %s: each first-level subclause must have a title
+| ISO_20 | not serious | Style | %s: all subclauses must have a title, or none
+| ISO_21 | serious | Style | %s %s has not been cross-referenced within document
+| ISO_22 | not serious | Style | (formula) %s %s has not been cross-referenced within document
+| ISO_23 | not serious | Style | foreword contains subclauses
+| ISO_24 | not serious | Style | %s
+| ISO_25 | not serious | Style | Only one Symbols and Abbreviated Terms section in the standard
+| ISO_26 | not serious | Style | Symbols and Abbreviated Terms can only contain a definition list
+| ISO_27 | not serious | Style | In vocabulary documents, Symbols and Abbreviated Terms are only permitted in annexes
+| ISO_28 | not serious | Style | (section sequencing) %s
+| ISO_29 | not serious | Style | Scope clause missing
+| ISO_30 | not serious | Style | Normative references missing
+| ISO_31 | not serious | Style | Terms & definitions missing
+| ISO_32 | not serious | Style | Document must contain at least one clause
+| ISO_33 | not serious | Style | Document must contain clause after Terms and Definitions
+| ISO_34 | not serious | Style | Scope must not occur after Terms and Definitions
+| ISO_35 | not serious | Style | term definition ends with period: %s
+| ISO_36 | not serious | Style | Only annexes and references can follow clauses
+| ISO_37 | not serious | Style | Only annexes and references can follow terms and clauses
+| ISO_38 | not serious | Style | Document must include (references) Normative References
+| ISO_39 | not serious | Style | Scope contains subclauses: should be succinct
+| ISO_40 | not serious | Style | Final section must be (references) Bibliography
+| ISO_41 | not serious | Style | There are sections after the final Bibliography
+| ISO_42 | not serious | Style | non-ISO/IEC reference is allowed as normative only subject to the conditions in ISO/IEC DIR 2 10.2: %s
+| ISO_43 | not serious | Style | subclause is only child
+| ISO_44 | not serious | Style | Single terms clause in vocabulary document should have normal Terms and definitions heading
+| ISO_45 | not serious | Style | Multiple terms clauses in vocabulary document should have 'Terms related to' heading
+| ISO_46 | not serious | Style | 'see %s' is pointing to a normative section
+| ISO_47 | not serious | Bibliography | '%s' is not pointing to a real reference
+| ISO_48 | not serious | Style | 'see %s' is pointing to a normative reference
+| ISO_49 | not serious | Style | undated reference %s should not contain specific elements
+| ISO_50 | not serious | Style | only terms clauses can cross-reference terms clause (%s)
+| ISO_51 | not serious | Style | non-terms clauses cannot cross-reference terms clause (%s)
+| ISO_52 | abort | Style | non-terms clauses cannot cross-reference terms clause (%s)
+| ISO_53 | serious | Abbreviated terms | abbreviated term %s used without prior expansion (%s)
+| ISO_54 | serious | Referencing | %s %s is cited in the text only after it appears: cite it before the place where it appears
+| ISO_55 | serious | Referencing | term %s: %s
+| ISO_56 | serious | Referencing | cross-reference target %s is undefined
+| ISO_57 | not serious | Document structure | foreword element is required in preface
+| ISO_58 | not serious | Lists | %s
+| ISO_59 | not serious | Lists | %s
+| ISO_60 | not serious | Lists | %s
+| ISO_61 | not serious | Plain language | %s
+| ISO_62 | not serious | Grammar | %s
+| ISO_63 | not serious | Grammar | %s
+| ISO_64 | not serious | Abbreviated terms | %s
+| ISO_65 | not serious | Abbreviations and contractions | %s
+| ISO_66 | not serious | Abbreviated terms | %s
+| ISO_67 | not serious | Abbreviated terms | %s
+| ISO_68 | not serious | Grammar | %s
+| ISO_69 | not serious | Punctuation | %s
+| ISO_70 | not serious | Punctuation | %s
+| ISO_71 | not serious | Grammar | %s
+| ISO_72 | not serious | Quantities and units | %s
+| ISO_73 | not serious | Punctuation | %s
+| ISO_74 | not serious | Additional elements | %s
+| ISO_75 | not serious | Abbreviated terms | %s
+| ISO_76 | not serious | Spelling and wording | %s
+| ISO_77 | not serious | Grammar | %s
+| ISO_78 | not serious | Spelling and wording | %s
+| ISO_79 | not serious | Numbers, values and dates | %s
+| ISO_80 | not serious | Spelling and wording | %s
+| ISO_81 | not serious | Symbols | %s
+| ISO_82 | not serious | Numbers, values and dates | %s
+| ISO_83 | not serious | Numbers, values and dates | %s
+| ISO_84 | not serious | Relationship with the ISO/IEC Directives, Parts 1 and 2 | %s
+| ISO_85 | not serious | e.g., etc. family | %s
+| ISO_86 | not serious | Abbreviated terms | %s
+| ISO_87 | not serious | Document structure | %s
+| ISO_88 | not serious | Numbers, values and dates | %s
+| ISO_89 | not serious | Spelling and wording | %s
+| ISO_90 | not serious | Grammar | %s
+| ISO_91 | not serious | Spelling and wording | %s
+| ISO_92 | not serious | Spelling and wording | %s
+| ISO_93 | not serious | Plain language | %s
+| ISO_94 | not serious | Referencing | %s
+| ISO_95 | not serious | Spelling and wording | %s
+| ISO_96 | not serious | Spelling and wording | %s
+| ISO_97 | not serious | Referencing | %s
+| ISO_98 | not serious | Spelling and wording | %s
+| ISO_99 | not serious | Numbers, values and dates | %s
+| ISO_100 | not serious | Spelling and wording | %s
+| ISO_101 | not serious | Lists | %s
+| ISO_102 | not serious | Punctuation | %s
+| ISO_103 | not serious | Additional elements | %s
+| ISO_104 | not serious | Abbreviated terms | %s
+| ISO_105 | not serious | Numbers, values and dates | %s
+| ISO_106 | not serious | Numbers, values and dates | %s
+| ISO_107 | not serious | Spelling and wording | %s
+| ISO_108 | not serious | Lists | %s
+| ISO_109 | not serious | Numbers, values and dates | %s
+| ISO_110 | not serious | Grammar | %s
+| ISO_111 | not serious | Punctuation | %s
+| ISO_112 | not serious | Grammar | %s
+| ISO_113 | not serious | Referencing | %s
+| ISO_114 | not serious | Numbers, values and dates | %s
+| ISO_115 | not serious | Grammar | %s
+| ISO_116 | not serious | Numbers, values and dates | %s
+| ISO_117 | not serious | Numbers, values and dates | %s
+| ISO_118 | not serious | Verbal forms | %s
+| ISO_119 | not serious | Vocabulary documents | %s
+| ISO_120 | not serious | Referencing | %s
+| ISO_121 | not serious | Numbers, values and dates | %s
+| ISO_122 | abort | Referencing | identifier %s: %s
+| ISO_123 | not serious | Plain language | %s
+| ISO_124 | not serious | Plain language | %s
+| ISO_125 | not serious | Formatting | %s
+| ISO_126 | not serious | Plain language | %s
+| ISO_127 | not serious | Plain language | %s
+| ISO_128 | not serious | Plain language | %s
+| ISO_129 | not serious | Plain language | %s
+| ISO_130 | not serious | Numbers, values and dates | %s
+| ISO_131 | not serious | Abbreviated terms, abbreviations and contractions | %s
+| ISO_132 | not serious | Punctuation | %s
+| ISO_133 | not serious | Symbols | %s
+| ISO_134 | not serious | Numbers, values and dates | %s
+| ISO_135 | not serious | Numbers, values and dates | %s
+| ISO_136 | not serious | Numbers, values and dates | %s
+| ISO_137 | not serious | Symbols | %s
+| ISO_138 | not serious | Punctuation | %s
+| ISO_139 | not serious | Punctuation | %s
+| ISO_140 | not serious | Punctuation | %s
+| ISO_141 | not serious | Punctuation | %s
+| ISO_142 | not serious | Formatting | %s
+| ISO_143 | not serious | Numbers, values and dates | %s
+| ISO_144 | not serious | Symbols | %s
+| ISO_145 | not serious | Symbols | %s
+| ISO_146 | not serious | Quantities and units | %s
+|===
