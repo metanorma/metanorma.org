@@ -1,0 +1,44 @@
+---
+layout: ietf-flavor
+---
+
+= Validation rule catalog
+
+// GENERATED FILE: rendered from the metanorma-ietf log
+// catalog (lib/metanorma/ietf/log.rb), which is the
+// source of truth. Regenerate with `rake flavors:validation_catalog`;
+// CI fails when this file drifts.
+
+The severity of a finding decides what the compile does: an abort
+finding stops the compile and quarantines the invalid output; a
+serious or not-serious finding is recorded in the validation
+report; an info finding is advice. The prose for these rules is on
+the link:/flavors/ietf/topics/content-validation/[content
+validation] page.
+
+[cols="2,1,2,5"]
+|===
+| Id | Severity | Category | Message
+
+| IETF_1 | serious | Crossrefences | No matching annotation for cref:[%s]
+| IETF_2 | not serious | Document Attributes | Editorial stream must have Informational status
+| IETF_3 | serious | Images | image %s is not SVG!
+| IETF_4 | serious | Document Attributes | IETF: unrecognised working group %s
+| IETF_5 | abort | RFC XML stream | Unknown submissionType (stream) on <rfc> element (:submission-type: %s): must be one of %s
+| IETF_6 | abort | RFC XML stream | The category of <rfc> (:intended-series: TYPE NUMBER) is invalid for the %s stream: must be one of %s, but is %s
+| IETF_7 | abort | RFC XML stream | The stream setting of <front> <seriesInfo> (%s) is inconsistent with the submissionType of <rfc> (%s)
+| IETF_8 | abort | RFC XML stream | Expected no consensus setting for the %s stream (:consensus: %s); remove the :consensus: document attribute
+| IETF_9 | abort | RFC XML stream | Expected no consensus setting for the IRTF stream with no workgroup (:consensus: %s); declare :workgroup: or remove :consensus:
+| IETF_10 | abort | RFC XML stream | The ipr attribute '%s' withholds the right to produce derivative works (RFC 5378, section 3.3), so it can't be used in the IETF stream; use ipr='trust200902' (or 'pre5378Trust200902')
+| IETF_11 | abort | RFC XML stream | The document name %s implies the %s stream, but the rfc tag declares submissionType='%s' (:submission-type:); align the two
+| IETF_12 | abort | RFC XML submission | The abstract section is missing (an :abstract: block or [abstract] section): the IETF submission check requires it
+| IETF_13 | not serious | RFC XML submission | The abstract section is present but contains no content (idnits3: at least 1 <t>, <ol>, <ul> or <dl> element)
+| IETF_14 | not serious | RFC XML text output | The <%s> has lines wider than the 72 columns of xml2rfc's text output (widest is %s); xml2rfc will wrap or truncate them
+| IETF_15 | not serious | RFC XML references | The reference %s is listed in the References section but is not mentioned in the document text
+| IETF_16 | serious | RFC XML vocabulary | The %s attribute of <%s> is deprecated (%s="%s"): it must not be emitted
+| IETF_17 | serious | RFC XML vocabulary | The <%s> element is deprecated and must not be emitted
+| IETF_18 | not serious | RFC XML front matter | The <author> is missing its fullname attribute
+| IETF_19 | info | RFC XML front matter | There are more than 5 authors / editors; discuss the need with the relevant stream leadership
+| IETF_20 | not serious | RFC XML text output | The <%s> contains tab characters, which xml2rfc's text output does not align; use spaces
+| IETF_21 | info | RFC XML submission | The IETF submission check expects the submitted file to be named %s.xml; rename the output file before submitting it
+|===
