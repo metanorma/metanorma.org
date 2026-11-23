@@ -1,0 +1,105 @@
+---
+layout: post
+title: "Metanorma CLI 1.18.7: the first stable release of the 1.18 line, verified against every reporter in the prerelease window"
+date: 2026-11-23
+categories: news release
+
+authors:
+  - name: Ronald Tse
+    email: ronald.tse@ribose.com
+    social_links:
+    - https://github.com/ronaldtse
+
+excerpt: >-
+  Metanorma CLI 1.18.7 closes the 1.18 prerelease channel and ships as
+  the line's first stable release: a Docker image and gem whose lock set
+  was verified against every reporter who tested the prereleases, with
+  Word output restored to the 1.17 standard, bibliography rendering
+  corrected at the source, and a twenty-five-document IALA corpus
+  compiling clean end to end.
+---
+
+== Metanorma CLI 1.18.7 is the first stable release of the 1.18 line
+
+Since November, the 1.18 line shipped through a prerelease channel: one
+Docker image and gem per day, each carrying that day's fixes, each
+verified in-container against the exact documents that the reporters
+had flagged, and each announced on the prerelease discussion before
+anyone was asked to retest. That channel closes today.
+**metanorma-cli 1.18.7** is published on RubyGems without a prerelease
+suffix, and the Docker images `metanorma/metanorma:1.18.7` and
+`:latest` carry the same frozen lock set. This is the release the
+1.18 line was building toward.
+
+== What the stable lock set carries
+
+The 1.18.7 gemspec raises the floor under every fix that the
+prerelease window proved out:
+
+* *metanorma-iso 3.5.30* — DOC output routes through the isodoc chain
+  again, the ISO_54 citation rule no longer crashes on string
+  cross-references, DAM draft-stage references survive rendering, and
+  the new identifier-uniqueness rule no longer walks the render-mirror
+  of front-matter clauses, which aborted multi-document site
+  generation with duplicate-identifier errors;
+* *isodoc 3.7.18* — bibdata parsing goes through relaton's library
+  interface instead of the retired command-line surface, and the
+  bibliography renderer can no longer emit an element identifier
+  twice, which Apache FOP treats as a fatal error;
+* *relaton 3.1.8* — the bibliography terminator again honors each
+  flavor's own punctuation channel, closing the trailing-period
+  regression that 1.18 prereleases introduced against 1.17-era output;
+* *metanorma 2.5.25* — collection bibdata parsing and collection XML
+  serialization sit on the library interfaces;
+* *metanorma-ietf 3.7.16*, *metanorma-generic 3.5.3* (a doubled
+  "Contents" heading fix), *metanorma-iho 1.4.8*, and the LutaML stack
+  through *lutaml-model 0.8.176*, *expressir 2.4.73*,
+  *metanorma-plugin-lutaml 0.7.80*, and *parsanol 1.3.123*.
+
+== Verified against every reporter in the window
+
+Each claim below was reproduced on the released builds, not inferred
+from test suites.
+
+*osamu620* re-ran two ISO documents and the defect test document from
+metanorma-iso#1764 on the 20261123 build and confirmed: the Word text,
+including cover page and contents, is identical to 1.17.0; the style
+rules match 1.17.0 across 510 and 281 rules; 175 and 45 inline formulas
+are Word equations again; and the trailing-period defect in reference
+titles is gone in DOC, HTML and PDF. His verdict: "everything we
+reported on this issue is fixed", and his team is moving their CI from
+1.17.0 to 1.18.7.
+
+*petervwyatt*'s site-generation matrix — both the ISO and PDF/a flavors
+across all four documents he reported — completes with exit 0 on the
+release build, with none of the bibdata parse failures his logs
+captured in earlier builds. His STS and ISO STS outputs compile through
+the same path his CI uses.
+
+The *IALA* corpus (metanorma/mn-samples-iala) compiles all
+twenty-five documents with the full format set on the release toolchain
+and deploys through its own build flow; the AtoN specification build
+flow now integrates into metanorma/S-201_AtoN-Information.
+
+Two defects found during this verification cycle are fixed at the
+source and included above: a duplicate-identifier abort that took the
+mn-samples-bsi corpus offline for four days (root-caused to the
+identifier rule walking a render-mirror subtree under lutaml-model
+0.8.176's parse materialization, fixed in metanorma-iso#1838), and a
+bibliography-rendering identifier collision that Apache FOP rejects as
+fatal (isodoc#907).
+
+== Getting it
+
+* Gem: `gem install metanorma-cli -v 1.18.7` — local installations should
+  ride a bundle against the floor set above.
+* Docker: `docker pull metanorma/metanorma:1.18.7` (or `:latest`).
+
+The closing wave tracker for this release lives at
+metanorma/release-engineering, and the prerelease discussion at
+metanorma/discussions#20 records each daily build and its verification
+battery. Reporter items that remain open are tracked individually —
+notably the DOCX-template conformance list (metanorma-iso#1839 through
+#1851, with DOCX still flagged experimental while the DOC output
+remains the submission-grade format) — and none of them gate this
+release.
