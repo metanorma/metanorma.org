@@ -89,6 +89,10 @@ docker pull metanorma/metanorma:1.18.7     # or :latest
 
 A plain `bundle update` resolves without prereleases. The full dependency ledger of the image is in the wave tracker (metanorma/release-engineering#7).
 
+=== Packed distribution
+
+The tebako-packed distribution continues alongside the gem and Docker images: packed payloads for the 1.18.7 prerelease line shipped through the window (packed-metanorma v1.18.7.pre.20261121 of 2026-11-22, carrying fourteen signed payload images across the supported platform triplets). The stable 1.18.7 packed payload is cut on the same packing pipeline after the gem release; the packed install command from the 1.17 series is unchanged, and users of the packed distribution can stay on the packing channel's release feed to pick up the stable payload when it lands.
+
 == Acknowledgments
 
 Thank you to Osamu Watenabe, Peter Wyatt of the PDF Association, Minsu Jeon of IALA, and Thomas Thurman of the Express Language Foundation and ISO/TC 184/SC 4, who tested the prerelease builds and filed the findings that shaped this release.
