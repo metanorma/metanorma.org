@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Metanorma CLI 1.18.7: the first stable release of the 1.18 line, verified against every reporter in the prerelease window"
-date: 2026-11-23
+title: "Metanorma CLI 1.18.7 released"
+date: 2026-11-24
 categories: news release
 
 authors:
@@ -11,95 +11,84 @@ authors:
     - https://github.com/ronaldtse
 
 excerpt: >-
-  Metanorma CLI 1.18.7 closes the 1.18 prerelease channel and ships as
-  the line's first stable release: a Docker image and gem whose lock set
-  was verified against every reporter who tested the prereleases, with
-  Word output restored to the 1.17 standard, bibliography rendering
-  corrected at the source, and a twenty-five-document IALA corpus
-  compiling clean end to end.
+  Metanorma CLI 1.18.7 is released: the bibliography and identifier
+  libraries are rebuilt as two model-driven monogems, the Nokogiri
+  serialization layer is replaced by the leptris family, a typed
+  document model now underpins the toolchain, DOCX and STS ship as new
+  output paths, and the platform moves to Ruby 4.0.
 ---
 
-== Metanorma CLI 1.18.7 is the first stable release of the 1.18 line
+== Metanorma CLI 1.18.7
 
-Since November, the 1.18 line shipped through a prerelease channel: one
-Docker image and gem per day, each carrying that day's fixes, each
-verified in-container against the exact documents that the reporters
-had flagged, and each announced on the prerelease discussion before
-anyone was asked to retest. That channel closes today.
-**metanorma-cli 1.18.7** is published on RubyGems without a prerelease
-suffix, and the Docker images `metanorma/metanorma:1.18.7` and
-`:latest` carry the same frozen lock set. This is the release the
-1.18 line was building toward.
+Metanorma CLI 1.18.7 is released as the first stable release of the 1.18 line. The release rebuilds the substrate of the toolchain: the bibliography and document-identifier libraries are consolidated into two model-driven monogems, the XML serialization layer is replaced in full, a typed document model becomes the basis for a new generation of output paths, and the platform moves to Ruby 4.0. `metanorma-cli 1.18.7` is on RubyGems, and `metanorma/metanorma:1.18.7` (with `:latest`) is on Docker Hub with the identical dependency set.
 
-== What the stable lock set carries
+== Notable changes
 
-The 1.18.7 gemspec raises the floor under every fix that the
-prerelease window proved out:
+=== pubid 2.0: document identifiers as one model-driven monogem
 
-* *metanorma-iso 3.5.30* — DOC output routes through the isodoc chain
-  again, the ISO_54 citation rule no longer crashes on string
-  cross-references, DAM draft-stage references survive rendering, and
-  the new identifier-uniqueness rule no longer walks the render-mirror
-  of front-matter clauses, which aborted multi-document site
-  generation with duplicate-identifier errors;
-* *isodoc 3.7.18* — bibdata parsing goes through relaton's library
-  interface instead of the retired command-line surface, and the
-  bibliography renderer can no longer emit an element identifier
-  twice, which Apache FOP treats as a fatal error;
-* *relaton 3.1.8* — the bibliography terminator again honors each
-  flavor's own punctuation channel, closing the trailing-period
-  regression that 1.18 prereleases introduced against 1.17-era output;
-* *metanorma 2.5.25* — collection bibdata parsing and collection XML
-  serialization sit on the library interfaces;
-* *metanorma-ietf 3.7.16*, *metanorma-generic 3.5.3* (a doubled
-  "Contents" heading fix), *metanorma-iho 1.4.8*, and the LutaML stack
-  through *lutaml-model 0.8.176*, *expressir 2.4.73*,
-  *metanorma-plugin-lutaml 0.7.80*, and *parsanol 1.3.123*.
+The pubid family of eleven gems (pubid-iso, pubid-bsi, pubid-iec, pubid-ieee, pubid-itu, pubid-iho, pubid-nist, pubid-jis, pubid-ccsds, pubid-cen and pubid-etsi) is consolidated into a single pubid 2.0 monogem, and the parser behind every identifier is now driven by declarative models on lutaml-model rather than hand-written rule code.
 
-== Verified against every reporter in the window
+Users can cite far more than before. One gem now understands the identifier syntax of over sixty issuing bodies: the previous eleven, joined by Adobe, AMCA, ANSI, arXiv, ASHRAE, ASME, ASTM, BIPM, BSI Preferred Publications, Calconnect, CCSDS, CEN/CENELEC, CIE, CSA, DOI, EASC, ECMA, ETSI, the EU, EVS, GB, GOST, IALA, IANA, ISBN, JCGM, OASIS, OGC, OIML, OMG, Plateau, SAE, 3GPP, UN, W3C, WMO and XSF. Identifiers render as citations, as URNs, and through automatic format detection, from a single ruleset maintained in one place.
 
-Each claim below was reproduced on the released builds, not inferred
-from test suites.
+=== relaton 3.1: bibliographic metadata as one model-driven monogem
 
-*osamu620* re-ran two ISO documents and the defect test document from
-metanorma-iso#1764 on the 20261123 build and confirmed: the Word text,
-including cover page and contents, is identical to 1.17.0; the style
-rules match 1.17.0 across 510 and 281 rules; 175 and 45 inline formulas
-are Word equations again; and the trailing-period defect in reference
-titles is gone in DOC, HTML and PDF. His verdict: "everything we
-reported on this issue is fixed", and his team is moving their CI from
-1.17.0 to 1.18.7.
+The same consolidation happened on the bibliography side: thirty relaton gems (relaton-cli, relaton-render, relaton-bib, relaton-iso, relaton-iec, relaton-ieee, relaton-itu, relaton-iho, relaton-nist, relaton-bsi, and the rest) are folded into relaton 3.1, a monogem whose bibliographic entities are lutaml-model classes with round-trippable serialization.
 
-*petervwyatt*'s site-generation matrix — both the ISO and PDF/a flavors
-across all four documents he reported — completes with exit 0 on the
-release build, with none of the bibdata parse failures his logs
-captured in earlier builds. His STS and ISO STS outputs compile through
-the same path his CI uses.
+Relaton 3.1 ships thirty-seven bibliographic sources in one gem, covering the same bodies as pubid plus IEEE, IETF, W3C, 3GPP, and ISO 639 language and script registries. Reference resolution, the rendering pipeline that was relaton-render, and the command-line interface that was relaton-cli are part of the one library, so a citation retrieved by any flavor renders through the same code path as every other flavor.
 
-The *IALA* corpus (metanorma/mn-samples-iala) compiles all
-twenty-five documents with the full format set on the release toolchain
-and deploys through its own build flow; the AtoN specification build
-flow now integrates into metanorma/S-201_AtoN-Information.
+=== The leptris serialization family replaces Nokogiri
 
-Two defects found during this verification cycle are fixed at the
-source and included above: a duplicate-identifier abort that took the
-mn-samples-bsi corpus offline for four days (root-caused to the
-identifier rule walking a render-mirror subtree under lutaml-model
-0.8.176's parse materialization, fixed in metanorma-iso#1838), and a
-bibliography-rendering identifier collision that Apache FOP rejects as
-fatal (isodoc#907).
+Metanorma's XML handling moves from Nokogiri, which binds to libxml2, to the leptris family: leptris for XML, HTML and XSLT, yeptris for schema validation, and moxml 0.6 as the document-adapter seam that the whole stack now programs against. Nokogiri remains in the dependency tree only through third-party libraries; Metanorma's own gems no longer call it.
 
-== Getting it
+On a one-megabyte Metanorma document, a parse, full node walk, and serialize round trip through leptris runs 2.46 times faster than through Nokogiri (1.35 ms versus 3.32 ms per iteration, benchmarked in the released container with the default parser settings), with the advantage growing with document size. On a 170-kilobyte document the round trip is 1.18 times faster. Resident memory is comparable across both engines. The schema-validation path, previously handled by shelling out to the Java-based Jing, now runs in-process with native diagnostics, which removes a JVM dependency from validation entirely.
 
-* Gem: `gem install metanorma-cli -v 1.18.7` — local installations should
-  ride a bundle against the floor set above.
-* Docker: `docker pull metanorma/metanorma:1.18.7` (or `:latest`).
+=== A typed document model, and what it is for
 
-The closing wave tracker for this release lives at
-metanorma/release-engineering, and the prerelease discussion at
-metanorma/discussions#20 records each daily build and its verification
-battery. Reporter items that remain open are tracked individually —
-notably the DOCX-template conformance list (metanorma-iso#1839 through
-#1851, with DOCX still flagged experimental while the DOC output
-remains the submission-grade format) — and none of them gate this
-release.
+metanorma-document 0.5 introduces a round-trippable, lutaml-model-typed model of the Metanorma XML document. It is the basis of the toolchain's second stage: processors that read a compiled document and emit output, instead of parsing AsciiDoc source again. The first users of that model are the new output engines in this release (uniword for DOCX, the STS validator, and the flavor taste system for HTML themes), and features such as update units for amendment and revision records are declared against it.
+
+metanorma-mirror 1.0 ships on the same model, providing the document-mirror system used for publication mirroring.
+
+=== Word output from the document model (technology preview in ISO)
+
+uniword 1.7 generates DOCX from the document model, and it is the engine behind the new ISO DOCX output, which is available in alpha. The previous DOC (MHTML) output remains the submission-grade format for ISO documents; uniword DOCX is the path under active development, and feedback from ISO document authors is welcome while it matures.
+
+=== ISO/NISO STS as a validated pipeline
+
+The STS gem reaches 0.6 with the NISO JATS model in the stack, and STS generation is now a validated pipeline: documents converted to ISO/NISO STS (standard-tagged XML with MathML 3) are checked against the NISO STS XSD as part of the conversion. STS consumes the presentation XML produced by the toolchain, so the tagged output carries the same content users see in HTML and PDF.
+
+=== The LutaML stack
+
+lutaml-model absorbs one hundred and fifty-seven releases in this window (0.8.19 to 0.8.176), hardening parse materialization and content models across the board. The LutaML language gains two new surfaces, lutaml-jsonschema and lutaml-openapi, alongside lutaml 0.11. lutaml-uml reaches 1.0.4 and its Enterprise Architect front end ea 0.6.149, which now maps enumeration literal initial and code values onto Lutaml::Uml. metanorma-plugin-lutaml 0.7.81 stages document figures eagerly and by stable basename, so large figure sets render completely.
+
+=== Correctness in the renderers
+
+The first stage of the toolchain, the renderers users depend on today, is corrected on several fronts. Word output restores inline formulas as native Word equations and returns block content that was dropped: notes after tables, term definitions, notes to entry, and annex subclause notes, at style parity with the 1.17 series. Bibliographies terminate according to each flavor's own punctuation rules, and reference lists carry a single Contents heading. Duplicate identifiers, a class of defect that previously could abort PDF rendering late or truncate it silently, now fail the build at the correct stage. ISO draft-stage references (DAM and AMD) survive rendering, and the ISO flavor's DOC path routes through the maintained isodoc chain. The IHO flavor gains the publisher cover identity, and the IALA corpus (twenty-five documents) compiles end to end under the released toolchain.
+
+=== Ruby 4.0 and the frozen image
+
+The toolchain line is Ruby 4.0: the Docker image runs Ruby 4.0.7 on both the Debian and Alpine variants, and the dependency lock has dropped the gems that Ruby 4.0 provides by default. The image also moves to fontist 3.0 on the formulas v3 line, mn2pdf 2.74, and mnconvert 1.89. In total, sixty-two gems leave the dependency set and thirty-three join it; the complete ledger is published in the wave tracker (metanorma/release-engineering#7).
+
+== Fixed
+
+* Bibliography terminators honor flavor i18n punctuation; the trailing-period drift between builds is gone.
+* ISO citation rules no longer crash on string cross-references; the uniqueness rule no longer mis-flags mirrored front-matter clauses, and documents that previously aborted multi-document site generation compile.
+* Bibliography rendering can no longer emit one element identifier twice, which Apache FOP rejects as fatal.
+* Figure sets in LutaML documents render completely; EMF and SVG output gains pattern-fill fixes (emfsvg 0.1.5).
+* JIS documents parse again (parsanol 1.5, now with native platform builds).
+
+== Compatibility notes
+
+The toolchain line is Ruby 4.0. Projects pinned to Ruby 3.3 should remain on the 1.17 series until their runtime moves. Projects pinning individual relaton-* or pubid-* gems should pin `relaton` and `pubid` instead, since the family gems no longer exist. The un, m3aawg and gb flavors return to the default image bundle; the OIML flavor is new in this line.
+
+== Upgrading
+
+```
+gem install metanorma-cli -v 1.18.7
+docker pull metanorma/metanorma:1.18.7     # or :latest
+```
+
+A plain `bundle update` resolves without prereleases. The full dependency ledger of the image is in the wave tracker (metanorma/release-engineering#7).
+
+== Acknowledgments
+
+Thank you to Osamu Watenabe, Peter Wyatt of the PDF Association, Minsu Jeon of IALA, and Thomas Thurman of the Express Language Foundation and ISO/TC 184/SC 4, who tested the prerelease builds and filed the findings that shaped this release.
