@@ -2,8 +2,8 @@
 
 # Regression specs for definition-list continuation parsing. The bugs
 # (list splitting after `+`-attached blocks; `+` unable to attach lists)
-# were fixed upstream in coradoc-adoc's parser
-# (~/src/mn/coradoc/coradoc-adoc parser/list.rb, > 2.0.31); these specs
+# were fixed upstream in ceradoc-adoc's parser
+# (~/src/mn/ceradoc/ceradoc-adoc parser/list.rb, > 2.0.31); these specs
 # guard the behavior the site's content relies on: nested values
 # (`:::`/`::::`) belong inside the parent item, subsequent `::`
 # attributes stay at the top level.
@@ -20,7 +20,7 @@ RSpec.describe "definition list continuation parsing" do
   end
 
   def top_level_lists(src)
-    doc = Coradoc.parse(src, format: :asciidoc)
+    doc = Ceradoc.parse(src, format: :asciidoc)
     doc.children.select { |c| c.class.name.end_with?("DefinitionList") }
   end
 

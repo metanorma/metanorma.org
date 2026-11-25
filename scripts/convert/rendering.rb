@@ -5,8 +5,8 @@ module Convert
   # pipeline. Pure functions over SourceFile/NavTitles — the orchestration
   # (caching, writing, stats) lives in Converter/EnvelopeStore.
   module Rendering
-    TextSplitter = Coradoc::CoreModel::FrontmatterBlock::TextSplitter
-    Codec = Coradoc::CoreModel::FrontmatterBlock::Codec
+    TextSplitter = Ceradoc::CoreModel::FrontmatterBlock::TextSplitter
+    Codec = Ceradoc::CoreModel::FrontmatterBlock::Codec
 
     module_function
 
@@ -15,13 +15,13 @@ module Convert
     end
 
     # Parsed YAML frontmatter as a Hash ({} when absent or malformed).
-    # Coradoc's Codec swallows malformed YAML (logging its own warning
+    # Ceradoc's Codec swallows malformed YAML (logging its own warning
     # without a filename); detect that case and log it with the source
     # path instead of letting it pass silently.
     def read_frontmatter_data(text, path: nil)
       split = split_source(text)
       return {} unless split.frontmatter? && !split.frontmatter.strip.empty?
-      data = Codec.from_yaml(split.frontmatter).data
+      data = Codec.to_hash(Codec.from_yaml(split.frontmatter))
       if data.nil? || (data.respond_to?(:empty?) && data.empty?)
         begin
           YAML.parse(split.frontmatter)
@@ -40,16 +40,16 @@ module Convert
     # caller writes the mirror-json envelope. No .md wrapper generation
     # (Astro reads JSON directly via the content loader).
     def build_result(core, adoc_path, output_key, legacy_redirects: [], site_root:, nav:)
-      mirror_doc = Coradoc::Mirror.transform(core, partition_structural: true)
+      mirror_doc = Ceradoc::Mirror.transform(core, partition_structural: true)
       mirror_json = mirror_doc.to_json
-      frontmatter = Coradoc::Mirror::FrontmatterQuery.to_hash(mirror_doc)
+      frontmatter = Ceradoc::Mirror::FrontmatterQuery.to_hash(mirror_doc)
 
-      fm_block = core.children&.find { |c| c.is_a?(Coradoc::CoreModel::FrontmatterBlock) }
+      fm_block = core.children&.find { |c| c.is_a?(Ceradoc::CoreModel::FrontmatterBlock) }
 
       if !legacy_redirects.empty?
-        fm_block ||= Coradoc::CoreModel::FrontmatterBlock.new(data: {})
-        existing = Array(fm_block.data["redirect_from"])
-        fm_block.data["redirect_from"] = (existing + legacy_redirects).uniq
+        fm_block ||= Codec.from_hash({})
+        merged = (Array(Codec.to_hash(fm_block)["redirect_from"]) + legacy_redirects).uniq
+        fm_block = Codec.from_hash(Codec.to_hash(fm_block).merge("redirect_from" => merged))
       end
 
       frontmatter_yaml = fm_block ? Codec.to_yaml(fm_block) : ""
@@ -114,15 +114,15 @@ module Convert
       title = fm_data["title"] || nav.title_for(rel_dir, File.basename(adoc_path, ".adoc")) || File.basename(adoc_path, ".adoc")
       description = fm_data["description"].to_s.strip
 
-      core_children = [Coradoc::CoreModel::FrontmatterBlock.new(data: fm_data.merge("title" => title))]
+      core_children = [Codec.from_hash(fm_data.merge("title" => title))]
       unless description.empty?
-        core_children << Coradoc::CoreModel::ParagraphBlock.new(content: description)
+        core_children << Ceradoc::CoreModel::ParagraphBlock.new(content: description)
       end
-      core_children << Coradoc::CoreModel::ParagraphBlock.new(
-        children: [Coradoc::CoreModel::ItalicElement.new(content: "This page is a placeholder. Content is forthcoming.")]
+      core_children << Ceradoc::CoreModel::ParagraphBlock.new(
+        children: [Ceradoc::CoreModel::ItalicElement.new(content: "This page is a placeholder. Content is forthcoming.")]
       )
 
-      core = Coradoc::CoreModel::DocumentElement.build(title: title, children: core_children)
+      core = Ceradoc::CoreModel::DocumentElement.build(title: title, children: core_children)
       build_result(core, adoc_path, output_key, legacy_redirects:, site_root:, nav:)
     end
 
@@ -140,8 +140,8 @@ module Convert
                     else
                       split.body
                     end
-        core = Coradoc.parse(full_text, format: :asciidoc)
-        core = Coradoc.resolve_includes(
+        core = Ceradoc.parse(full_text, format: :asciidoc)
+        core = Ceradoc.resolve_includes(
           core,
           base_dir: File.dirname(source_file.path),
           missing_include: :passthrough,
@@ -151,7 +151,7 @@ module Convert
         # passes depend on the source file's output_key and rewrite_links
         # returns a NEW tree (later mutations on the old tree are lost).
         ImagePathNormalizer.new(source_output_key: output_key).normalize!(core)
-        core = Coradoc.rewrite_links(core, rewriter: SiteLinkRewriter.new(source_output_key: output_key))
+        core = Ceradoc.rewrite_links(core, rewriter: SiteLinkRewriter.new(source_output_key: output_key))
 
         if core.empty_body?
           return generate_hub_page(source_file, output_key, legacy_redirects:, site_root:, nav:) ||

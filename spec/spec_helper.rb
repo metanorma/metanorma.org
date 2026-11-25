@@ -2,9 +2,9 @@
 
 require "bundler/setup"
 
-require "coradoc"
-require "coradoc/asciidoc"
-require "coradoc/mirror"
+require "ceradoc"
+require "ceradoc/asciidoc"
+require "ceradoc/mirror"
 
 # Keep parser diagnostics out of the spec output (mirrors convert-adoc.rb).
 Parslet::Logger.instance.level = Logger::FATAL if defined?(Parslet::Logger)

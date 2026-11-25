@@ -13,11 +13,11 @@ RSpec.describe Convert::Rendering do
   let(:nav) { Convert::NavTitles.new(site_root: site_root, err: File.open(File::NULL, "w")) }
 
   def build_doc(title:, children:)
-    Coradoc::CoreModel::DocumentElement.build(title: title, children: children)
+    Ceradoc::CoreModel::DocumentElement.build(title: title, children: children)
   end
 
   def paragraph(text)
-    Coradoc::CoreModel::ParagraphBlock.new(content: text)
+    Ceradoc::CoreModel::ParagraphBlock.new(content: text)
   end
 
   def source_file_for(path, site_root:)
@@ -80,7 +80,7 @@ RSpec.describe Convert::Rendering do
 
       it "merges with existing redirect_from, keeping existing entries first" do
         core = build_doc(title: "T", children: [
-          Coradoc::CoreModel::FrontmatterBlock.new(data: { "title" => "T", "redirect_from" => ["/setup/"] }),
+          Ceradoc::CoreModel::FrontmatterBlock::Codec.from_hash({ "title" => "T", "redirect_from" => ["/setup/"] }),
           paragraph("b"),
         ])
         result = build(core, legacy_redirects: ["/install/"])
@@ -89,7 +89,7 @@ RSpec.describe Convert::Rendering do
 
       it "deduplicates redirects present in both frontmatter and legacy" do
         core = build_doc(title: "T", children: [
-          Coradoc::CoreModel::FrontmatterBlock.new(data: { "title" => "T", "redirect_from" => ["/setup/"] }),
+          Ceradoc::CoreModel::FrontmatterBlock::Codec.from_hash({ "title" => "T", "redirect_from" => ["/setup/"] }),
           paragraph("b"),
         ])
         result = build(core, legacy_redirects: ["/setup/", "/install/"])
@@ -106,7 +106,7 @@ RSpec.describe Convert::Rendering do
     context "title fallback chain" do
       it "prefers the frontmatter title over the core title" do
         core = build_doc(title: "Core Title", children: [
-          Coradoc::CoreModel::FrontmatterBlock.new(data: { "title" => "FM Title" }),
+          Ceradoc::CoreModel::FrontmatterBlock::Codec.from_hash({ "title" => "FM Title" }),
           paragraph("b"),
         ])
         expect(build(core)[:title]).to eq("FM Title")

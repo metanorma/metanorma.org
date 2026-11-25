@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "coradoc"
-require "coradoc/asciidoc"
-require "coradoc/mirror"
+require "ceradoc"
+require "ceradoc/asciidoc"
+require "ceradoc/mirror"
 require "json"
 require "yaml"
 require "fileutils"
