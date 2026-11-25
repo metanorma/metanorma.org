@@ -149,6 +149,7 @@ For example, `metanorma -t {short name} document.adoc` or `:mn-document-class: {
 `htmlcoverpage`, `htmlintropage`, `htmlstylesheet`, `scripts`::
 paths used for styling HTML output files.
 Accepts a path to a CSS (`.css`) or SASS/SCSS (`.sass`, `.scss`) file.
+The cover page and the intro page are Liquid templates; see <<bibdata-liquid-paths>>.
 +
 .Examples available at the `metanorma-generic` gem
 [example]
@@ -169,6 +170,7 @@ filling in CSS-compliant values.
 --
 
 `wordcoverpage`, `wordintropage`, `wordstylesheet`, `header`:: paths used for styling word output files.
+The cover page, the intro page and the header are Liquid templates; see <<bibdata-liquid-paths>>.
 +
 .Examples available at the `metanorma-generic` gem
 [example]
@@ -181,8 +183,25 @@ https://shopify.github.io/liquid/[Liquid template language], and metadata values
 (see link:/develop/topics/metadata-and-boilerplate/#default-metadata[Default metadata values]);
 the config file values can also be used in the Liquid template [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.1].
 In addition, values from the `bibdata` metadata of the document are available directly to Liquid,
-via the `bibdata` object; e.g. `{{ bibdata.ext.doctype.type }}` is the doctype 
+via the `bibdata` object; e.g. `{{ bibdata.ext.doctype.content }}` is the doctype
 of the document [added in https://github.com/metanorma/metanorma-generic/releases/tag/v3.0.5].
+Use these `bibdata.*` paths in preference to the flat keys. The flat keys
+(`docnumeric`, `stage`, `agency`, ...) still work.
+See <<bibdata-liquid-paths>>.
++
+.Document identifier templates that use `bibdata.*` paths
+[example]
+====
+[source,yaml]
+----
+docid_template: "{{ organization_name_short }} {{ bibdata.docnumber }}"
+----
+
+[source,yaml]
+----
+docid_template: "{{ bibdata.status.stage.content }} {{ bibdata.ext.doctype.content }} {{ bibdata.docnumber }}"
+----
+====
 
 `i18nyaml`:: YAML file to be used for internationalization and
 labels [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.3].
@@ -203,6 +222,7 @@ files [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6
 `boilerplate`:: Predefined text file for inclusion in Metanorma XML [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.6.4].
 The configuration may be a single file, or a hash of language abbreviations to
 files, as with `i18nyaml`. For the format of boilerplate files, see link:/develop/topics/metadata-and-boilerplate/#boilerplate[Predefined text].
+Boilerplate files are Liquid templates; see <<bibdata-liquid-paths>>.
 
 `published_stages`:: list of stages considered published
 
@@ -355,6 +375,13 @@ in order to preserve its structure; so the foregoing example maps to:
 ----
 --
 
+** A Liquid template can also read an extension field through the `bibdata` object, as
+`{{ bibdata.ext.<field>.content }}`. This is the preferred path; the `metadata_extensions`
+hash stays available. In `ext`, a hyphen in an element name becomes an underscore
+(`comment-period` becomes `bibdata.ext.comment_period`), and the text of an element is in
+`content`. So in the foregoing example, `{{ bibdata.ext.security.content }}` gives `X`.
+See <<bibdata-liquid-paths>>.
+
 
 `webfont`:: A list of URLs of web fonts, to be loaded into HTML
 output [added in https://github.com/metanorma/metanorma-generic/releases/tag/v1.4.8].
@@ -397,6 +424,50 @@ gem configuration. This is done using a `:customize:` document attribute. [added
 = Title
 :customize: config/my_metanorma.yml
 ----
+
+[[bibdata-liquid-paths]]
+==== Liquid templates: `bibdata.*` paths
+
+The `docid_template` value, the cover pages (`htmlcoverpage`, `wordcoverpage`), the intro
+pages (`htmlintropage`, `wordintropage`) and the `boilerplate` files are Liquid templates.
+They can read the document bibliographic data by object path, through the `bibdata` object.
+The `bibdata` object is the Relaton parse of the `//bibdata` element of the document.
+Its structure follows the Relaton model, which
+https://www.relaton.org/specs/relaton-yaml/[Relaton YAML] also documents.
+But the `bibdata` object keeps the element names of the XML: it uses `docidentifier`,
+and Relaton YAML uses `docid`. Document identifiers that are still unresolved Liquid
+templates are not in the `bibdata` object.
+
+These rules apply to the paths:
+
+* In the `ext` subtree, a hyphen in an element name becomes an underscore
+(`comment-period` becomes `bibdata.ext.comment_period`).
+* The text of an element is in `content`.
+
+.Liquid expressions that use `bibdata.*` paths
+[example]
+====
+[source,liquid]
+----
+{{ bibdata.docnumber }}
+{{ bibdata.edition.content }}
+{{ bibdata.status.stage.content }}
+{{ bibdata.status.substage.content }}
+{{ bibdata.ext.doctype.content }}
+{% assign doi = bibdata.docidentifier | where: "type", "DOI" | first %}{{ doi.content }}
+----
+====
+
+The flat keys (`{{ stage }}`, `{{ doctype }}`, `{{ docnumeric }}`, `{{ agency }}`, ...) still
+work. Some flat keys give a formatted value, but the `bibdata.*` path gives the raw value:
+`{{ stage }}` gives `Working Draft`, and `{{ bibdata.status.stage.content }}` gives
+`working-draft`. The flat keys `stageabbr` and `unpublished` have no `bibdata.*`
+equivalent. The flat key `agency` comes from the publisher entries in
+`bibdata.contributor`, and has no single-path equivalent.
+
+NOTE: The Word `header` file is also a Liquid template. It can use `bibdata.*` paths only
+with an isodoc release later than 3.7.20. With isodoc 3.7.20 or earlier, use flat keys
+in the `header` file.
 
 === Customization via Ruby Gem
 
