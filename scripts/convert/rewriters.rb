@@ -8,7 +8,7 @@ module Convert
 
   # Post-parse link/xref rewriter.
   #
-  # Replaces former text-level regex convert_internal_links. Coradoc's
+  # Replaces former text-level regex convert_internal_links. Ceradoc's
   # rewrite_links walks the parsed AST and skips verbatim block types by
   # construction.
   #
@@ -68,12 +68,12 @@ module Convert
   class SiteRootFallbackResolver
     def initialize(site_root:)
       @site_root = site_root
-      @filesystem = Coradoc::IncludeResolver::Filesystem.new(base_dir: site_root)
+      @filesystem = Ceradoc::IncludeResolver::Filesystem.new(base_dir: site_root)
     end
 
     def call(target:, base_dir:, options:, context:)
       @filesystem.call(target: target, base_dir: base_dir, options: options, context: context)
-    rescue Coradoc::IncludeNotFoundError
+    rescue Ceradoc::IncludeNotFoundError
       @filesystem.call(target: target, base_dir: @site_root, options: options, context: context)
     end
   end
@@ -83,21 +83,21 @@ module Convert
   # rendered page one level deeper, breaking relative image srcs.
   class ImagePathNormalizer
     CONTAINER_READERS = {
-      Coradoc::CoreModel::DocumentElement => :children,
-      Coradoc::CoreModel::SectionElement => :children,
-      Coradoc::CoreModel::PreambleElement => :children,
-      Coradoc::CoreModel::HeaderElement => :children,
-      Coradoc::CoreModel::Block => :children,
-      Coradoc::CoreModel::ParagraphBlock => :children,
-      Coradoc::CoreModel::ListBlock => :items,
-      Coradoc::CoreModel::ListItem => :children,
-      Coradoc::CoreModel::Table => :rows,
-      Coradoc::CoreModel::TableRow => :cells,
-      Coradoc::CoreModel::TableCell => :children,
-      Coradoc::CoreModel::DefinitionList => :items,
-      Coradoc::CoreModel::Toc => :entries,
-      Coradoc::CoreModel::Bibliography => :entries,
-      Coradoc::CoreModel::AnnotationBlock => :children,
+      Ceradoc::CoreModel::DocumentElement => :children,
+      Ceradoc::CoreModel::SectionElement => :children,
+      Ceradoc::CoreModel::PreambleElement => :children,
+      Ceradoc::CoreModel::HeaderElement => :children,
+      Ceradoc::CoreModel::Block => :children,
+      Ceradoc::CoreModel::ParagraphBlock => :children,
+      Ceradoc::CoreModel::ListBlock => :items,
+      Ceradoc::CoreModel::ListItem => :children,
+      Ceradoc::CoreModel::Table => :rows,
+      Ceradoc::CoreModel::TableRow => :cells,
+      Ceradoc::CoreModel::TableCell => :children,
+      Ceradoc::CoreModel::DefinitionList => :items,
+      Ceradoc::CoreModel::Toc => :entries,
+      Ceradoc::CoreModel::Bibliography => :entries,
+      Ceradoc::CoreModel::AnnotationBlock => :children,
     }.freeze
 
     def initialize(source_output_key:)
@@ -106,7 +106,7 @@ module Convert
 
     def normalize!(node)
       return if node.nil?
-      rewrite_image(node) if node.is_a?(Coradoc::CoreModel::Image)
+      rewrite_image(node) if node.is_a?(Ceradoc::CoreModel::Image)
       children = child_collection(node)
       children&.each { |child| normalize!(child) }
     end

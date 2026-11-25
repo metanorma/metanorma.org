@@ -137,8 +137,8 @@ RSpec.describe Convert::ImagePathNormalizer do
   let(:normalizer) { described_class.new(source_output_key: "author/iso/authoring") }
 
   def normalized_src(src)
-    image = Coradoc::CoreModel::Image.new(src: src)
-    doc = Coradoc::CoreModel::DocumentElement.build(title: "T", children: [image])
+    image = Ceradoc::CoreModel::Image.new(src: src)
+    doc = Ceradoc::CoreModel::DocumentElement.build(title: "T", children: [image])
     normalizer.normalize!(doc)
     image.src
   end
@@ -168,17 +168,17 @@ RSpec.describe Convert::ImagePathNormalizer do
   end
 
   it "reaches images nested inside container elements" do
-    image = Coradoc::CoreModel::Image.new(src: "nested.png")
-    section = Coradoc::CoreModel::SectionElement.new(title: "Sec", children: [image])
-    doc = Coradoc::CoreModel::DocumentElement.build(title: "T", children: [section])
+    image = Ceradoc::CoreModel::Image.new(src: "nested.png")
+    section = Ceradoc::CoreModel::SectionElement.new(title: "Sec", children: [image])
+    doc = Ceradoc::CoreModel::DocumentElement.build(title: "T", children: [section])
     normalizer.normalize!(doc)
     expect(image.src).to eq("/author/iso/nested.png")
   end
 
   it "rebases relative to a first-level output directory" do
     normalizer = described_class.new(source_output_key: "install/index")
-    image = Coradoc::CoreModel::Image.new(src: "screenshot.png")
-    doc = Coradoc::CoreModel::DocumentElement.build(title: "T", children: [image])
+    image = Ceradoc::CoreModel::Image.new(src: "screenshot.png")
+    doc = Ceradoc::CoreModel::DocumentElement.build(title: "T", children: [image])
     normalizer.normalize!(doc)
     expect(image.src).to eq("/install/screenshot.png")
   end

@@ -10,7 +10,7 @@ RSpec.describe Convert::HubSynthesizer do
   let(:synth) { Convert::HubSynthesizer }
 
   def mirror_json_for(core)
-    JSON.parse(Coradoc::Mirror.transform(core, partition_structural: true).to_json)
+    JSON.parse(Ceradoc::Mirror.transform(core, partition_structural: true).to_json)
   end
 
   context "with children" do
@@ -27,13 +27,13 @@ RSpec.describe Convert::HubSynthesizer do
     end
 
     it "records the title in a frontmatter block" do
-      fm = core.children.find { |c| c.is_a?(Coradoc::CoreModel::FrontmatterBlock) }
+      fm = core.children.find { |c| c.is_a?(Ceradoc::CoreModel::FrontmatterBlock) }
       expect(fm).not_to be_nil
-      expect(fm.data["title"]).to eq("Basics")
+      expect(fm.entry("title")).to eq("Basics")
     end
 
     it "links every child under /<url_prefix>/<slug>/" do
-      list = core.children.find { |c| c.is_a?(Coradoc::CoreModel::ListBlock) }
+      list = core.children.find { |c| c.is_a?(Ceradoc::CoreModel::ListBlock) }
       expect(list).not_to be_nil
       targets = list.items.map { |item| item.children.first.target }
       expect(targets).to eq(["/author/basics/workflow/", "/author/basics/syntax/"])
@@ -50,7 +50,7 @@ RSpec.describe Convert::HubSynthesizer do
   context "without children" do
     it "omits the list block" do
       core = synth.build_document(title: "Empty Hub", children: [], url_prefix: "x")
-      expect(core.children.none? { |c| c.is_a?(Coradoc::CoreModel::ListBlock) }).to be(true)
+      expect(core.children.none? { |c| c.is_a?(Ceradoc::CoreModel::ListBlock) }).to be(true)
     end
   end
 
@@ -59,14 +59,14 @@ RSpec.describe Convert::HubSynthesizer do
       core = synth.build_document(
         title: "Hub", children: [], url_prefix: "x", description: "Intro text.",
       )
-      para = core.children.find { |c| c.is_a?(Coradoc::CoreModel::ParagraphBlock) }
+      para = core.children.find { |c| c.is_a?(Ceradoc::CoreModel::ParagraphBlock) }
       expect(para).not_to be_nil
       expect(para.content).to eq("Intro text.")
     end
 
     it "treats a blank description as absent" do
       core = synth.build_document(title: "Hub", children: [], url_prefix: "x", description: "  ")
-      expect(core.children.none? { |c| c.is_a?(Coradoc::CoreModel::ParagraphBlock) }).to be(true)
+      expect(core.children.none? { |c| c.is_a?(Ceradoc::CoreModel::ParagraphBlock) }).to be(true)
     end
   end
 end

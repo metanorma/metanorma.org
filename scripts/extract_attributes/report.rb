@@ -62,7 +62,7 @@ module ExtractAttributes
         end
         out << "AST cross-check:" 
         if f[:crosscheck].empty?
-          out << "  clean (entries and nested values match the coradoc AST)"
+          out << "  clean (entries and nested values match the ceradoc AST)"
         else
           f[:crosscheck].each { |c| out << "  #{c}" }
         end

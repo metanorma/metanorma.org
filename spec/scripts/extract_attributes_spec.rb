@@ -6,7 +6,7 @@ require "yaml"
 require_relative "../../scripts/extract_attributes"
 
 # Specs for the attribute-manifest extractor's mapping logic. Fixtures are
-# inline AsciiDoc strings, parsed for real (coradoc + the extractor's own
+# inline AsciiDoc strings, parsed for real (ceradoc + the extractor's own
 # pipeline) — no doubles, per project rule.
 RSpec.describe ExtractAttributes do
   let(:gem_name) { "metanorma-standoc" }
@@ -543,14 +543,14 @@ RSpec.describe ExtractAttributes do
   end
 
   describe ExtractAttributes::SourcePage do
-    it "splits frontmatter and parses the body with coradoc" do
+    it "splits frontmatter and parses the body with ceradoc" do
       Dir.mktmpdir do |dir|
         path = File.join(dir, "page.adoc")
         File.write(path, "---\nlayout: x\n---\n\n== Section\n\n`:a:`:: Alpha\n")
         page = described_class.new(path)
         expect(page.frontmatter).to include("layout: x")
         expect(page.body_lines.first).to eq("")
-        # coradoc really parsed the body: the AST knows the definition item
+        # ceradoc really parsed the body: the AST knows the definition item
         items = ExtractAttributes::AstCrosscheck.new(page.document)
         expect(items.collect_items(page.document, []).map(&:key)).to include("a")
       end
@@ -558,13 +558,13 @@ RSpec.describe ExtractAttributes do
   end
 
   describe ExtractAttributes::AstCrosscheck do
-    it "compares extracted keys against the coradoc AST" do
+    it "compares extracted keys against the ceradoc AST" do
       adoc = "== S\n\n`:a:`:: Alpha\n\n`v1`::: one\n`v2`::: two\n\n`:b:`:: Beta\n"
-      doc = Coradoc.parse(adoc, format: :asciidoc)
+      doc = Ceradoc.parse(adoc, format: :asciidoc)
       check = described_class.new(doc)
       expect(check.compare(%w[a b], { "a" => %w[v1 v2] })).to eq([])
       diffs = check.compare(%w[a], { "a" => %w[v1] })
-      expect(diffs.join).to include("only in coradoc AST")
+      expect(diffs.join).to include("only in ceradoc AST")
       expect(diffs.join).to include("v2")
     end
   end

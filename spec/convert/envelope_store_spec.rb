@@ -7,11 +7,11 @@ require "json"
 # envelope writing, orphan pruning, and the run manifest.
 RSpec.describe Convert::EnvelopeStore do
   def build_doc(title:, children:)
-    Coradoc::CoreModel::DocumentElement.build(title: title, children: children)
+    Ceradoc::CoreModel::DocumentElement.build(title: title, children: children)
   end
 
   def result_for(title, site_root:, source: "author/rt.adoc")
-    core = build_doc(title: title, children: [Coradoc::CoreModel::ParagraphBlock.new(content: "body")])
+    core = build_doc(title: title, children: [Ceradoc::CoreModel::ParagraphBlock.new(content: "body")])
     Convert::Rendering.build_result(
       core, File.join(site_root, source), "author/rt",
       site_root: site_root, nav: Convert::NavTitles.new(site_root: site_root, err: File.open(File::NULL, "w")),

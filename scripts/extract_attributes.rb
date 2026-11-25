@@ -12,8 +12,8 @@ require "yaml"
 #
 # Design notes
 # ------------
-# The pages are parsed with coradoc (the only sanctioned AsciiDoc parser in
-# this project). The coradoc CoreModel AST is used as a structural
+# The pages are parsed with ceradoc (the only sanctioned AsciiDoc parser in
+# this project). The ceradoc CoreModel AST is used as a structural
 # cross-check of the extraction (entry terms, nested value lists). The
 # extraction itself is line-oriented over the raw source, because absolute
 # fidelity of prose is a hard requirement and the AST normalizes inline

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 module ExtractAttributes
-  # Cross-checks the raw-line extraction against the coradoc AST: the
+  # Cross-checks the raw-line extraction against the ceradoc AST: the
   # parser's own view of definition-list terms (attribute entries) and
   # their nested lists (enum values). Differences are reported, not fatal —
-  # the raw pass recovers constructs coradoc drops or mis-parses on these
+  # the raw pass recovers constructs ceradoc drops or mis-parses on these
   # pages (anchors on term lines, the `:approval-workgroup::` typo entry,
   # unfenced `[example]` blocks, value lists orphaned from their entry).
   class AstCrosscheck
@@ -21,7 +21,7 @@ module ExtractAttributes
 
     # All DefinitionItem nodes in document order.
     def collect_items(node, acc)
-      if node.is_a?(Coradoc::CoreModel::DefinitionItem)
+      if node.is_a?(Ceradoc::CoreModel::DefinitionItem)
         raw_term = node.term.to_s
         # AST terms have backticks stripped; multi-name terms may follow the
         # first name with `,` or space. Take the first whitespace-delimited
@@ -55,7 +55,7 @@ module ExtractAttributes
         lines << "entries only in raw extraction (recovered by raw pass): #{only_mine.uniq.join(', ')}"
       end
       if only_ast.any?
-        lines << "entries only in coradoc AST (check for misses): #{only_ast.uniq.join(', ')}"
+        lines << "entries only in ceradoc AST (check for misses): #{only_ast.uniq.join(', ')}"
       end
 
       ast_attr_items.each do |item|

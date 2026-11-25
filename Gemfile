@@ -1,13 +1,13 @@
 source "https://rubygems.org"
 
-# Coradoc gemsuite — used by scripts/convert-adoc.rb to transform .adoc
+# Ceradoc gemsuite — used by scripts/convert-adoc.rb to transform .adoc
 # sources into mirror-json envelopes. The core gem provides the pipeline;
-# coradoc-adoc provides the AsciiDoc parser; coradoc-mirror provides the
-# mirror-json transformer. coradoc-adoc >= 2.0.32 carries the
+# ceradoc-adoc provides the AsciiDoc parser; ceradoc-mirror provides the
+# mirror-json transformer. ceradoc-adoc >= 2.0.32 carries the
 # definition-list continuation fix (parser/list.rb).
-gem "coradoc"
-gem "coradoc-adoc", ">= 2.0.32"
-gem "coradoc-mirror"
+gem "ceradoc", "~> 3.0"
+gem "ceradoc-adoc", ">= 2.0.32"
+gem "ceradoc-mirror", "~> 0.1"
 
 # Rake tasks for syncing upstream content (library/model repos).
 gem "rake"

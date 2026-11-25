@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require "coradoc"
-require "coradoc/asciidoc"
+require "ceradoc"
+require "ceradoc/asciidoc"
 
 module ExtractAttributes
   # One source .adoc page: raw body lines (frontmatter split off) plus the
-  # coradoc parse of the body (used by AstCrosscheck).
+  # ceradoc parse of the body (used by AstCrosscheck).
   class SourcePage
     attr_reader :path, :body_lines, :frontmatter, :document
 
@@ -19,7 +19,7 @@ module ExtractAttributes
       @frontmatter = text[/\A---\n.*?\n---\n/m]
       body = @frontmatter ? text[@frontmatter.length..] : text
       @body_lines = body.lines(chomp: true)
-      @document = Coradoc.parse(body, format: :asciidoc)
+      @document = Ceradoc.parse(body, format: :asciidoc)
     end
   end
 end
